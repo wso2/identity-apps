@@ -21,7 +21,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { Code, FormInputLabel, FormSection } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, SemanticWIDTHS } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface } from "../../../../core";
@@ -164,6 +164,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
         return (/* No validations */) => void 0;
     };
 
+    const i18nTargetKey = "console:develop.features.authenticationProvider.forms.authenticatorSettings.saml";
     return (
         <Form onSubmit={ onFormSubmit } uncontrolledForm={ true } initialValues={ initialFormValues }>
 
@@ -171,14 +172,16 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 required={ true }
                 name="SPEntityId"
                 value={ formValues?.SPEntityId }
-                placeholder={ "Enter service provider entity ID" }
-                ariaLabel={ "Service provider entity ID" }
+                placeholder={ t(`${i18nTargetKey}.SPEntityId.placeholder`) }
+                ariaLabel={ t(`${i18nTargetKey}.SPEntityId.ariaLabel`) }
                 inputType="default"
                 maxLength={ SERVICE_PROVIDER_ENTITY_ID_LENGTH.max }
                 minLength={ SERVICE_PROVIDER_ENTITY_ID_LENGTH.min }
                 label={ (
                     <FormInputLabel htmlFor="SPEntityId">
-                        Service provider <Code>entityID</Code>
+                        <Trans i18nKey={ `${i18nTargetKey}.SPEntityId.label` }>
+                            Service provider <Code>entityID</Code>
+                        </Trans>
                     </FormInputLabel>
                 ) }
                 validate={ composeValidators(
@@ -186,7 +189,9 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                     hasLength(SERVICE_PROVIDER_ENTITY_ID_LENGTH)
                 ) }
                 hint={ (
-                    <>Enter identity provider&apos;s SAML2 Web SSO URL value.</>
+                    <Trans i18nKey={ `${i18nTargetKey}.SPEntityId.hint` }>
+                        Enter identity provider <Code>entityId</Code> value.
+                    </Trans>
                 ) }
             />
 
@@ -195,12 +200,14 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 name="SSOUrl"
                 value={ formValues?.SSOUrl }
                 inputType="default"
-                placeholder={ "https://ENTERPRISE_IDP/samlsso" }
-                ariaLabel={ "Single Sign-On URL" }
+                placeholder={ t(`${i18nTargetKey}.SSOUrl.placeholder`) }
+                ariaLabel={ t(`${i18nTargetKey}.SSOUrl.ariaLabel`) }
                 data-testid={ `${testId}-SSOUrl-field` }
                 label={ (
                     <FormInputLabel htmlFor="SSOUrl">
-                        Single Sign-On <Code>URL</Code>
+                        <Trans i18nKey={ `${i18nTargetKey}.SSOUrl.label` }>
+                            Single Sign-On <Code>URL</Code>
+                        </Trans>
                     </FormInputLabel>
                 ) }
                 maxLength={ SSO_URL_LENGTH.max }
@@ -211,7 +218,9 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                     hasLength(SSO_URL_LENGTH)
                 ) }
                 hint={ (
-                    <>Enter identity provider&apos;s SAML2 Web Single Sign-On URL value.</>
+                    <Trans i18nKey={ `${i18nTargetKey}.SSOUrl.hint` }>
+                        Enter identity provider&apos;s SAML2 Web Single Sign-On URL value.
+                    </Trans>
                 ) }
             />
 
@@ -220,12 +229,14 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 name="IdPEntityId"
                 value={ formValues?.IdPEntityId }
                 inputType="default"
-                placeholder={ "Enter identity provider entity ID" }
-                ariaLabel={ "Identity provider entity ID" }
+                placeholder={ t(`${i18nTargetKey}.IdPEntityId.placeholder`) }
+                ariaLabel={ t(`${i18nTargetKey}.IdPEntityId.ariaLabel`) }
                 data-testid={ `${testId}-IdPEntityId-field` }
                 label={ (
                     <FormInputLabel htmlFor="IdPEntityId" disabled={ true }>
-                        Identity provider <Code>entityID</Code>
+                        <Trans i18nKey={ `${i18nTargetKey}.IdPEntityId.label` }>
+                            Identity provider <Code>entityID</Code>
+                        </Trans>
                     </FormInputLabel>
                 ) }
                 maxLength={ IDENTITY_PROVIDER_ENTITY_ID_LENGTH.max }
@@ -235,10 +246,10 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                     hasLength(IDENTITY_PROVIDER_ENTITY_ID_LENGTH)
                 ) }
                 hint={ (
-                    <>
+                    <Trans i18nKey={ `${i18nTargetKey}.IdPEntityId.hint` }>
                         Enter identity provider&apos;s entity identifier value.
                         This should be a valid <Code>URI</Code>/<Code>URL</Code>.
-                    </>
+                    </Trans>
                 ) }
             />
 
@@ -246,38 +257,36 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 required={ true }
                 name="NameIDType"
                 value={ formValues?.NameIDType }
-                placeholder={ "Select identity provider NameIDFormat" }
-                ariaLabel={ "Choose NameIDFormat for SAML 2.0 assertion" }
+                placeholder={ t(`${i18nTargetKey}.NameIDType.placeholder`) }
+                ariaLabel={ t(`${i18nTargetKey}.NameIDType.ariaLabel`) }
                 data-testid={ `${testId}-NameIDType-field` }
                 options={ getAvailableNameIDFormats() }
                 label={ (
                     <FormInputLabel htmlFor="NameIDType">
-                        Identity provider <Code>NameIDFormat</Code>
+                        <Trans i18nKey={ `${i18nTargetKey}.NameIDType.label` }>
+                            Identity provider <Code>NameIDFormat</Code>
+                        </Trans>
                     </FormInputLabel>
                 ) }
                 validate={ required }
-                hint={
-                    "Specify the name identifier formats supported by the identity " +
-                    "provider. Name identifiers are a way for providers to communicate " +
-                    "with each other regarding a user."
-                }
+                hint={ t(`${i18nTargetKey}.NameIDType.hint`) }
             />
 
             <Field.Dropdown
                 required={ true }
                 name="RequestMethod"
                 value={ formValues?.RequestMethod }
-                placeholder={ "Select HTTP protocol binding" }
-                ariaLabel={ "HTTP protocol for SAML 2.0 bindings" }
+                placeholder={ t(`${i18nTargetKey}.RequestMethod.placeholder`) }
+                ariaLabel={ t(`${i18nTargetKey}.RequestMethod.ariaLabel`) }
                 data-testid={ `${testId}-RequestMethod-field` }
                 options={ getAvailableProtocolBindingTypes() }
                 label={ (
                     <FormInputLabel htmlFor="RequestMethod">
-                        HTTP protocol binding
+                        { t(`${i18nTargetKey}.RequestMethod.label`) }
                     </FormInputLabel>
                 ) }
                 validate={ required }
-                hint={ "Choose the HTTP binding or decide from incoming request." }
+                hint={ t(`${i18nTargetKey}.RequestMethod.hint`) }
             />
 
             <FormSection heading="Single Logout">
@@ -287,16 +296,17 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             toggle
                             name="IsSLORequestAccepted"
                             value={ isSLORequestAccepted }
-                            ariaLabel={ "Specify whether logout is enabled for IdP" }
+                            ariaLabel={ t(`${i18nTargetKey}.IsSLORequestAccepted.ariaLabel`) }
                             data-testid={ `${testId}-IsSLORequestAccepted-field` }
                             label={ (
                                 <FormInputLabel htmlFor="IsSLORequestAccepted">
-                                    Accept identity provider logout request
+                                    { t(`${i18nTargetKey}.IsSLORequestAccepted.label`) }
                                 </FormInputLabel>
                             ) }
                             hint={
-                                `Specify whether single logout request from the identity 
-                                    provider must be accepted by ${config.ui.productName}`
+                                t(`${i18nTargetKey}.IsSLORequestAccepted.hint`, {
+                                    productName: config.ui.productName
+                                })
                             }
                             listen={ (value: any) => setIsSLORequestAccepted(Boolean(value)) }
                         />
@@ -306,20 +316,15 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             required={ false }
                             name="IsLogoutEnabled"
                             value={ isLogoutEnabled }
-                            ariaLabel={ "Specify whether logout is enabled for IdP" }
+                            ariaLabel={ t(`${i18nTargetKey}.IsLogoutEnabled.ariaLabel`) }
                             data-testid={ `${testId}-IsLogoutEnabled-field` }
                             toggle
                             label={ (
                                 <FormInputLabel htmlFor="IsLogoutEnabled">
-                                    Identity provider logout enabled
+                                    { t(`${i18nTargetKey}.IsLogoutEnabled.label`) }
                                 </FormInputLabel>
                             ) }
-                            hint={ (
-                                <>
-                                    Specify whether logout is supported by the external
-                                    identity provider.
-                                </>
-                            ) }
+                            hint={ t(`${i18nTargetKey}.IsLogoutEnabled.hint`) }
                             listen={ (value: any) => setIsLogoutEnabled(Boolean(value)) }
                         />
                     </SectionRow>
@@ -329,12 +334,14 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             value={ formValues?.LogoutReqUrl }
                             inputType="url"
                             disabled={ !isLogoutEnabled }
-                            placeholder={ "Enter logout URL" }
-                            ariaLabel={ "Specify SAML 2.0 IdP Logout URL" }
+                            placeholder={ t(`${i18nTargetKey}.LogoutReqUrl.placeholder`) }
+                            ariaLabel={ t(`${i18nTargetKey}.LogoutReqUrl.ariaLabel`) }
                             data-testid={ `${testId}-LogoutReqUrl-field` }
                             label={ (
                                 <FormInputLabel htmlFor="LogoutReqUrl">
-                                    IdP logout <Code>URL</Code>
+                                    <Trans i18nKey={ `${i18nTargetKey}.LogoutReqUrl.label` }>
+                                        IdP logout <Code>URL</Code>
+                                    </Trans>
                                 </FormInputLabel>
                             ) }
                             maxLength={ LOGOUT_URL_LENGTH.max }
@@ -348,10 +355,10 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                                     : undefined;
                             } }
                             hint={ (
-                                <>
+                                <Trans i18nKey={ `${i18nTargetKey}.LogoutReqUrl.hint` }>
                                     Enter the identity provider&apos;s logout URL value if it is different from the SSO
                                     URL (<Code>{ formValues.SSOUrl ?? "https://ENTERPRISE_IDP/samlsso" }</Code>)
-                                </>
+                                </Trans>
                             ) }
                         />
                     </SectionRow>
@@ -366,19 +373,14 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             required={ false }
                             disabled={ true }
                             name="IsAuthnRespSigned"
-                            ariaLabel={ "Authentication response must be signed always?" }
+                            ariaLabel={ t(`${i18nTargetKey}.IsAuthnRespSigned.ariaLabel`) }
                             data-testid={ `${testId}-IsAuthnRespSigned-field` }
                             label={ (
                                 <FormInputLabel htmlFor="IsAuthnRespSigned">
-                                    Strictly verify authentication response signature
+                                    { t(`${i18nTargetKey}.IsAuthnRespSigned.label`) }
                                 </FormInputLabel>
                             ) }
-                            hint={ (
-                                <>
-                                    Specifies if SAML2 authentication response from the external
-                                    identity provider must be signed or not.
-                                </>
-                            ) }
+                            hint={ t(`${i18nTargetKey}.IsAuthnRespSigned.hint`) }
                         />
                     </SectionRow>
                     <SectionRow>
@@ -387,19 +389,14 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             required={ false }
                             name="IsLogoutReqSigned"
                             value={ isLogoutReqSigned }
-                            ariaLabel={ "Specify whether logout is enabled for IdP" }
+                            ariaLabel={ t(`${i18nTargetKey}.IsLogoutReqSigned.ariaLabel`) }
                             data-testid={ `${testId}-IsLogoutReqSigned-field` }
                             label={ (
                                 <FormInputLabel htmlFor="IsLogoutEnabled">
-                                    Enable logout request signing
+                                    { t(`${i18nTargetKey}.IsLogoutReqSigned.label`) }
                                 </FormInputLabel>
                             ) }
-                            hint={ (
-                                <>
-                                    Specify whether SAML logout request to the external identity
-                                    provider must be signed or not.
-                                </>
-                            ) }
+                            hint={ t(`${i18nTargetKey}.IsLogoutReqSigned.hint`) }
                             listen={ (checked: any) => setIsLogoutReqSigned(Boolean(checked)) }
                         />
                     </SectionRow>
@@ -409,19 +406,14 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             required={ false }
                             name="ISAuthnReqSigned"
                             value={ isAuthnReqSigned }
-                            ariaLabel={ "Is authentication request signed?" }
+                            ariaLabel={ t(`${i18nTargetKey}.ISAuthnReqSigned.ariaLabel`) }
                             data-testid={ `${testId}-ISAuthnReqSigned-field` }
                             label={ (
                                 <FormInputLabel htmlFor="ISAuthnReqSigned">
-                                    Enable authentication request signing
+                                    { t(`${i18nTargetKey}.ISAuthnReqSigned.label`) }
                                 </FormInputLabel>
                             ) }
-                            hint={ (
-                                <>
-                                    Specify whether the SAML authentication request to the external
-                                    identity provider must be signed or not.
-                                </>
-                            ) }
+                            hint={ t(`${i18nTargetKey}.ISAuthnReqSigned.hint`) }
                             listen={ (value: any) => setIsAuthnReqSigned(Boolean(value)) }
                         />
                     </SectionRow>
@@ -432,13 +424,13 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             name="SignatureAlgorithm"
                             type="select"
                             disabled={ !isAlgorithmsEnabled }
-                            placeholder={ "Select signature algorithm." }
-                            ariaLabel={ "Select the signature algorithm for request signing." }
+                            placeholder={ t(`${i18nTargetKey}.SignatureAlgorithm.placeholder`) }
+                            ariaLabel={ t(`${i18nTargetKey}.SignatureAlgorithm.ariaLabel`) }
                             data-testid={ `${testId}-SignatureAlgorithm-field` }
                             options={ getSignatureAlgorithmOptionsMapped(authenticator.meta) }
                             label={ (
                                 <FormInputLabel htmlFor="SignatureAlgorithm">
-                                    Signature algorithm
+                                    { t(`${i18nTargetKey}.SignatureAlgorithm.label`) }
                                 </FormInputLabel>
                             ) }
                             validate={ getAlgorithmsDropdownFieldValidators() }
@@ -451,13 +443,13 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             value={ formValues?.DigestAlgorithm }
                             type="select"
                             disabled={ !isAlgorithmsEnabled }
-                            placeholder={ "Select digest algorithm" }
-                            ariaLabel={ "Select the digest algorithm for description." }
+                            placeholder={ t(`${i18nTargetKey}.DigestAlgorithm.placeholder`) }
+                            ariaLabel={ t(`${i18nTargetKey}.DigestAlgorithm.ariaLabel`) }
                             data-testid={ `${testId}-DigestAlgorithm-field` }
                             options={ getDigestAlgorithmOptionsMapped(authenticator.meta) }
                             label={ (
                                 <FormInputLabel htmlFor="DigestAlgorithm">
-                                    Select digest algorithm
+                                    { t(`${i18nTargetKey}.DigestAlgorithm.label`) }
                                 </FormInputLabel>
                             ) }
                             validate={ getAlgorithmsDropdownFieldValidators() }
@@ -474,19 +466,14 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             required={ false }
                             name="IncludeProtocolBinding"
                             value={ includeProtocolBinding }
-                            ariaLabel={ "Include protocol binding in the request" }
+                            ariaLabel={ t(`${i18nTargetKey}.IncludeProtocolBinding.ariaLabel`) }
                             data-testid={ `${testId}-IncludeProtocolBinding-field` }
                             label={ (
                                 <FormInputLabel htmlFor="IncludeProtocolBinding">
-                                    Include protocol binding in the request
+                                    { t(`${i18nTargetKey}.IncludeProtocolBinding.label`) }
                                 </FormInputLabel>
                             ) }
-                            hint={ (
-                                <>
-                                    Specifies whether the transport mechanism should be included in the SAML
-                                    request assertion.
-                                </>
-                            ) }
+                            hint={ t(`${i18nTargetKey}.IncludeProtocolBinding.hint`) }
                             listen={ (value: any) => setIncludeProtocolBinding(Boolean(value)) }
                         />
                     </SectionRow>
@@ -496,22 +483,34 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             required={ false }
                             name="IsUserIdInClaims"
                             value={ isUserIdInClaims }
-                            ariaLabel={ "Use Name ID as the user identifier." }
+                            ariaLabel={ t(`${i18nTargetKey}.IsUserIdInClaims.ariaLabel`) }
                             data-testid={ `${testId}-IsUserIdInClaims-field` }
                             label={ (
                                 <FormInputLabel htmlFor="IsUserIdInClaims">
                                     { isUserIdInClaims
-                                        ? (<span>User identifier found among <Code>claims</Code></span>)
-                                        : (<span>Use <Code>NameID</Code> as the user identifier</span>)
+                                        ? (
+                                            <span>
+                                                <Trans i18nKey={ `${i18nTargetKey}.IsUserIdInClaims.label.option1` }>
+                                                    User identifier found among <Code>claims</Code>
+                                                </Trans>
+                                            </span>
+                                        )
+                                        : (
+                                            <span>
+                                                <Trans i18nKey={ `${i18nTargetKey}.IsUserIdInClaims.label.option2` }>
+                                                    Use <Code>NameID</Code> as the user identifier
+                                                </Trans>
+                                            </span>
+                                        )
                                     }
                                 </FormInputLabel>
                             ) }
                             hint={ (
-                                <>
+                                <Trans i18nKey={ `${i18nTargetKey}.IsUserIdInClaims.hint` }>
                                     If you need to specify an attribute from the SAML assertion as the User Identifier,
                                     you can uncheck this option and configure the <Code>subject</Code> from
                                     the Attributes section.
-                                </>
+                                </Trans>
                             ) }
                             listen={ (value: any) => setIsUserIdInClaims(Boolean(value)) }
                         />
@@ -519,8 +518,8 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                     <SectionRow>
                         <Field.QueryParams
                             value={ formValues?.commonAuthQueryParams }
-                            label="Additional query parameters"
-                            ariaLabel="Request additional query paramters"
+                            label={ t(`${i18nTargetKey}.commonAuthQueryParams.label`) }
+                            ariaLabel={ t(`${i18nTargetKey}.commonAuthQueryParams.ariaLabel`) }
                             name="commonAuthQueryParams"
                         />
                     </SectionRow>

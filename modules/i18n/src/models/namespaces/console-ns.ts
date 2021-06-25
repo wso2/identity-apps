@@ -1172,6 +1172,24 @@ export interface ConsoleNS {
                                 }
                             };
                         };
+                        saml: {
+                            SPEntityId: FormAttributes;
+                            SSOUrl: FormAttributes;
+                            IdPEntityId: FormAttributes;
+                            NameIDType: FormAttributes;
+                            RequestMethod: FormAttributes;
+                            IsSLORequestAccepted: FormAttributes;
+                            IsLogoutEnabled: FormAttributes;
+                            LogoutReqUrl: FormAttributes;
+                            IsAuthnRespSigned: FormAttributes;
+                            IsLogoutReqSigned: FormAttributes;
+                            ISAuthnReqSigned: FormAttributes;
+                            SignatureAlgorithm: FormAttributes;
+                            DigestAlgorithm: FormAttributes;
+                            IncludeProtocolBinding: FormAttributes;
+                            IsUserIdInClaims: FormAttributes;
+                            commonAuthQueryParams: FormAttributes;
+                        }
                     },
                     outboundConnectorAccordion: {
                         default: {
