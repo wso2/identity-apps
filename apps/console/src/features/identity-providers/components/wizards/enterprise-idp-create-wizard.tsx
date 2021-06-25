@@ -408,12 +408,12 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                 selected={ selectedProtocol === "saml" }
                                 onClick={ () => setSelectedProtocol("saml") }
                                 imageSize="mini"
-                                // showTooltips={ true }
-                                // disabled={ false }
-                                // overlay={ renderDimmerOverlay() }
-                                // contentTopBorder={ false }
-                                // renderDisabledItemsAsGrayscale={ false }
-                                // overlayOpacity={ 0.6 }
+                                showTooltips={ true }
+                                disabled={ false }
+                                overlay={ renderDimmerOverlay() }
+                                contentTopBorder={ false }
+                                renderDisabledItemsAsGrayscale={ false }
+                                overlayOpacity={ 0.6 }
                                 data-testid={ `${ testId }-form-wizard-saml-selection-card` }
                             />
                         </div>
