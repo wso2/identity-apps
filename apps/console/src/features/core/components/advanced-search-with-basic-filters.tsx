@@ -241,6 +241,8 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
             submitted={ isFormSubmitted }
             dropdownPosition={ dropdownPosition }
             triggerClearQuery={ triggerClearQuery }
+            filterConditionOptions={ filterConditionOptions || defaultFilterConditionOptions }
+            filterAttributeOptions={ filterAttributeOptions }
             data-testid={ testId }
         >
             <Grid>
