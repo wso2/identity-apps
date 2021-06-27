@@ -72,7 +72,9 @@ export class ProfileConstants {
         .set("ACCOUNT_LOCKED", "accountLocked")
         .set("ACCOUNT_DISABLED", "accountDisabled")
         .set("ONETIME_PASSWORD", "oneTimePassword")
-        .set("DOB", "dateOfBirth");
+        .set("DOB", "dateOfBirth")
+        .set("USER_SOURCE", "userSource")
+        .set("USER_ACCOUNT_TYPE", "userAccountType");
 
     /**
      * States if the SCIM schema is mutable.
