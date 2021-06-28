@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import {scimClaimsMap} from "../../../extensions/configs/scim";
+import {SCIMConfigs} from "../../../extensions/configs/scim";
 
 /**
  * Class containing app constants which can be used across several applications.
@@ -103,7 +103,7 @@ export class UserManagementConstants {
      * @default
      */
     public static readonly SCIM2_ATTRIBUTES_DICTIONARY: Map<string, string> = new Map<string, string>()
-        .set("ACCOUNT_LOCKED", scimClaimsMap.scimEnterpriseUserClaimUri.accountLocked)
-        .set("ACCOUNT_DISABLED", scimClaimsMap.scimEnterpriseUserClaimUri.accountDisabled)
-        .set("ONETIME_PASSWORD", scimClaimsMap.scimEnterpriseUserClaimUri.oneTimePassword);
+        .set("ACCOUNT_LOCKED", SCIMConfigs.scimEnterpriseUserClaimUri.accountLocked)
+        .set("ACCOUNT_DISABLED", SCIMConfigs.scimEnterpriseUserClaimUri.accountDisabled)
+        .set("ONETIME_PASSWORD", SCIMConfigs.scimEnterpriseUserClaimUri.oneTimePassword);
 }

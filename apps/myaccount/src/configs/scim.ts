@@ -16,25 +16,26 @@
  * under the License.
  */
 
-import {scimConfig} from "./models/scim";
+import { SCIMConfigInterface } from "./models/scim";
 
-export const scimClaimsMap: scimConfig = {
+export const SCIMConfigs: SCIMConfigInterface = {
 
     oidc: "http://wso2.org/oidc/claim",
 
     scim: {
-        enterpriseSchema: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User",
-        userSchema: "urn:ietf:params:scim:schemas:core:2.0:User",
-        coreSchema: "urn:ietf:params:scim:schemas:core:2.0",
         core1Schema: "urn:scim:schemas:core:1.0",
+        coreSchema: "urn:ietf:params:scim:schemas:core:2.0",
+        enterpriseSchema: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User",
+        userSchema: "urn:ietf:params:scim:schemas:core:2.0:User"
+
     },
 
     scimEnterpriseUserClaimUri: {
-        accountLocked: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.accountLocked",
         accountDisabled: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.accountDisabled",
-        oneTimePassword: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.oneTimePassword",
+        accountLocked: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.accountLocked",
         askPassword: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.askPassword",
-        profileUrl: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.profileUrl",
         isReadOnlyUser: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.isReadOnlyUser",
-    },
+        oneTimePassword: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.oneTimePassword",
+        profileUrl: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.profileUrl"
+    }
 };

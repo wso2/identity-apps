@@ -59,7 +59,7 @@ import {
     onHttpRequestSuccess
 } from "../../utils";
 import { store } from "../index";
-import {scimClaimsMap} from "../../configs/scim";
+import {SCIMConfigs} from "../../configs/scim";
 
 /**
  * Dispatches an action of type `SET_SIGN_IN`.
@@ -150,7 +150,7 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                             setProfileInfo({
                                 ...infoResponse,
                                 isReadOnly:
-                                    response[scimClaimsMap.scim.enterpriseSchema]
+                                    response[SCIMConfigs.scim.enterpriseSchema]
                                         ?.isReadOnlyUser
                             })
                         );
@@ -159,7 +159,7 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                         if (isEmpty(store.getState().authenticationInformation.profileSchemas)) {
                             isCompletionCalculated = true;
                             dispatch(getScimSchemas(infoResponse,
-                                response[scimClaimsMap.scim.enterpriseSchema]?.isReadOnlyUser));
+                                response[SCIMConfigs.scim.enterpriseSchema]?.isReadOnlyUser));
                         }
 
                         // If `updateProfileCompletion` flag is enabled, update the profile completion.
@@ -168,7 +168,7 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                                 getProfileCompletion(
                                     infoResponse,
                                     store.getState().authenticationInformation.profileSchemas,
-                                    response[scimClaimsMap.scim.enterpriseSchema]
+                                    response[SCIMConfigs.scim.enterpriseSchema]
                                         ?.isReadOnlyUser
                                 );
                             } catch (e) {

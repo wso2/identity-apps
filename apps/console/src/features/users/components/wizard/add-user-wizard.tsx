@@ -39,7 +39,7 @@ import { AddUserWizardStateInterface, UserDetailsInterface, createEmptyUserDetai
 import { AddUser } from "../add-user";
 import { AddUserGroup } from "../add-user-groups";
 import { AddUserRole } from "../add-user-role";
-import {scimClaimsMap} from "../../../../extensions/configs/scim";
+import {SCIMConfigs} from "../../../../extensions/configs/scim";
 
 interface AddUserWizardPropsInterface extends TestableComponentInterface {
     closeWizard: () => void;
@@ -405,7 +405,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     },
                     password: userInfo.newPassword,
                     profileUrl: userInfo.profileUrl,
-                    [scimClaimsMap.scim.enterpriseSchema] : {
+                    [SCIMConfigs.scim.enterpriseSchema] : {
                         askPassword: "true"
                     },
                     userName

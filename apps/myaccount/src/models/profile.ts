@@ -16,7 +16,7 @@
  * under the License.
  */
 
- import {scimClaimsMap} from "../configs/scim";
+ import { SCIMConfigs } from "../configs/scim";
 
 /**
   * Multi-valued attribute model
@@ -169,7 +169,7 @@ export interface ProfileReducerStateInterface {
 export interface ReadOnlyUserStatus {
     id: string;
     schemas: string[];
-     [`scimClaimsMap.scim.enterpriseSchema`]: {
+     [ `SCIMConfigs.scim.enterpriseSchema` ]: {
         isReadOnlyUser: boolean;
     };
 }

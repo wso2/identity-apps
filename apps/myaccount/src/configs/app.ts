@@ -19,7 +19,7 @@
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { I18nConstants } from "../constants";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
-import {scimClaimsMap} from "./scim";
+import {SCIMConfigs} from "./scim";
 
 /**
  * Class to handle application config operations.
@@ -83,7 +83,7 @@ export class Config {
             }/api/users/v2/me/webauthn/start-usernameless-registration`,
             isReadOnlyUser:`${
                 this.getDeploymentConfig().serverHost
-            }/scim2/Me?attributes=${scimClaimsMap.scimEnterpriseUserClaimUri.isReadOnlyUser}`,
+            }/scim2/Me?attributes=${SCIMConfigs.scimEnterpriseUserClaimUri.isReadOnlyUser}`,
             issuer: `${this.getDeploymentConfig().serverHost}/oauth2/token`,
             jwks: `${this.getDeploymentConfig().serverHost}/oauth2/jwks`,
             logout: `${this.getDeploymentConfig().serverHost}/oidc/logout`,
