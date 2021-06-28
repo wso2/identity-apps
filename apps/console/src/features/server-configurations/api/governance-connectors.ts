@@ -163,3 +163,13 @@ export const getServerConfigurations = (): Promise<any> => {
 export const updateServerConfigurations = (data: object): Promise<any> => {
     return updateConfigurations(data, store.getState().config.endpoints.serverConfigurations);
 };
+
+/**
+ * Retrieve governance connector details.
+ *
+ * @returns {Promise<any>} a promise containing the data.
+ */
+ export const getConnectorDetails = (categoryId: string, connectorId: string): Promise<any> => {
+    return getData(store.getState().config.endpoints.governanceConnectorCategories + "/" + categoryId +
+        "/connectors/" + connectorId);
+};
