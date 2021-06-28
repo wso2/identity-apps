@@ -61,7 +61,7 @@ export interface GenericIconProps extends TestableComponentInterface {
     /**
      * Floated direction.
      */
-    floated?: string;
+    floated?: string | boolean;
     /**
      * Is hover style enabled.
      */
