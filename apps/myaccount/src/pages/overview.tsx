@@ -16,10 +16,12 @@
  * under the License.
  */
 
-import React, {ReactElement, useEffect, useState} from "react";
+import { ProfileConstants } from "@wso2is/core/constants";
+import React, { ReactElement, useEffect, useState } from "react";
+import { Simulate } from "react-dom/test-utils";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Overview } from "../components";
+import { FederatedUserOverview, Overview } from "../components";
 import { resolveUserProfileName } from "../helpers";
 import { InnerPageLayout } from "../layouts";
 import { AuthStateInterface } from "../models";
@@ -35,15 +37,25 @@ const OverviewPage = (): ReactElement => {
     const isProfileInfoLoading: boolean = useSelector( (state: AppState) => state.loaders.isProfileInfoLoading);
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const [ userProfileName, setUserProfileName ] = useState<string>(null);
+    const [ isFederatedUser, setIsFederatedUser ] = useState<boolean>(undefined);
 
     useEffect(() => {
-
         if (isProfileInfoLoading === undefined) {
             return;
         }
 
         setUserProfileName(resolveUserProfileName(profileDetails, isProfileInfoLoading));
     }, [ isProfileInfoLoading ]);
+
+    /**
+     * Checks if the user is a user without local credentials.
+     */
+    useEffect(() => {
+        if (profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
+            [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_ACCOUNT_TYPE")]) {
+            setIsFederatedUser(true);
+        }
+    }, [profileDetails?.profileInfo]);
 
     return (
         <InnerPageLayout
@@ -56,7 +68,18 @@ const OverviewPage = (): ReactElement => {
             pageDescription={ t("myAccount:pages:overview.subTitle") }
             pageTitleTextAlign="left"
         >
-            <Overview />
+            { /* Loads overview component only when user info is loaded.
+               * Loads overview component based on user credential type (local/non-local).
+               */
+            }
+            { isProfileInfoLoading == false &&
+                !isFederatedUser ? (
+                    <Overview/>
+                ) :
+                (
+                    <FederatedUserOverview/>
+                )
+            }
         </InnerPageLayout>
     );
 };
