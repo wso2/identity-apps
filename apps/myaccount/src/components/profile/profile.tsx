@@ -29,7 +29,6 @@ import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils, ProfileUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { EditAvatarModal, LinkButton, PrimaryButton, UserAvatar } from "@wso2is/react-components";
-import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, MouseEvent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -85,6 +84,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const [ showMobileUpdateWizard, setShowMobileUpdateWizard ] = useState<boolean>(false);
     const [ countryList, setCountryList ] = useState<DropdownItemProps[]>([]);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
+    const [ isFederatedUser, setIsFederatedUser ] = useState<boolean>(false);
 
     /**
      * Set the userId.
@@ -102,6 +102,16 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             setEmailPending(true);
         }
     }, [ profileDetails?.profileInfo?.pendingEmails ]);
+
+    /**
+     * Checks if the user is a user without local credentials.
+     */
+    useEffect(() => {
+        if (profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
+            [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_ACCOUNT_TYPE")]) {
+            setIsFederatedUser(true);
+        }
+    }, [profileDetails?.profileInfo]);
 
     /**
      * dispatch getProfileInformation action if the profileDetails object is empty
@@ -487,10 +497,19 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
          * the value matches.
          */
         const isProfileUsernameReadonly: boolean = config.ui.isProfileUsernameReadonly;
+        const { displayName, name } = schema;
         if (isProfileUsernameReadonly) {
-            const { displayName, name } = schema;
             const usernameClaim = "username";
             if (name?.toLowerCase() === usernameClaim || displayName?.toLowerCase() === usernameClaim) {
+                schema.mutability = ProfileConstants.READONLY_SCHEMA;
+            }
+        }
+
+        /**
+         *  Makes the email field read-only for users without local credentials
+         */
+        if (isFederatedUser) {
+            if (name?.toLowerCase() === "emails" ) {
                 schema.mutability = ProfileConstants.READONLY_SCHEMA;
             }
         }
