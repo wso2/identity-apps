@@ -18,9 +18,10 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode } from "react";
 import { Card, CardProps, Icon, Label, Popup } from "semantic-ui-react";
-import { GenericIcon, GenericIconSizes } from "../icon";
+import { LinkButton } from "../button";
+import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
 import { Tooltip } from "../typography";
 
 /**
@@ -56,6 +57,10 @@ export interface InfoCardPropsInterface extends CardProps, TestableComponentInte
      * Side of the image.
      */
     imageSize?: GenericIconSizes;
+    /**
+     * Extra options for the card image.
+     */
+    imageOptions?: Omit<GenericIconProps, "icon" | "size">;
     /**
      * Github repo metadata.
      */
@@ -114,18 +119,18 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
         description,
         disabled,
         fluid,
-        fluidImageSize,
         githubRepoCard,
         githubRepoMetaInfo,
         header,
         id,
         inline,
         image,
+        imageOptions,
         imageSize,
+        onClick,
         selected,
         subHeader,
         tags,
-        textAlign,
         showTooltips,
         [ "data-testid" ]: testId,
         ...rest
@@ -158,6 +163,8 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
                 {
                     image && (
                         <GenericIcon
+                            square
+                            transparent
                             data-testid={ `${ testId }-image` }
                             className="card-image"
                             size={
@@ -167,8 +174,7 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
                             }
                             icon={ image }
                             floated="left"
-                            square
-                            transparent
+                            { ...imageOptions }
                         />
                     )
                 }
@@ -266,7 +272,7 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
                 </Card.Content>
             ) }
             {
-                tags && tags instanceof Array && tags.length > 0
+                (tags && tags instanceof Array)
                     ? (
                         <Card.Content className="card-tags" data-testid={ `${ testId }-tags` }>
                             <Label.Group size="mini">
