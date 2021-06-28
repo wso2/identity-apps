@@ -38,6 +38,7 @@ const OverviewPage = (): ReactElement => {
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const [ userProfileName, setUserProfileName ] = useState<string>(null);
     const [ isFederatedUser, setIsFederatedUser ] = useState<boolean>(undefined);
+    const [ userSource, setUserSource ] = useState<string>(null);
 
     useEffect(() => {
         if (isProfileInfoLoading === undefined) {
@@ -51,19 +52,39 @@ const OverviewPage = (): ReactElement => {
      * Checks if the user is a user without local credentials.
      */
     useEffect(() => {
+        debugger;
         if (profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
             [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_ACCOUNT_TYPE")]) {
             setIsFederatedUser(true);
         }
+
+        if (profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
+            [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_SOURCE")]) {
+            setUserSource(profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
+                [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_SOURCE")]);
+        }
+
     }, [profileDetails?.profileInfo]);
 
     return (
         <InnerPageLayout
             pageTitle={ userProfileName ? (
-                t(
-                    "myAccount:pages:overview.title",
-                    { firstName: userProfileName }
-                )
+                <div>
+                    {
+                        t(
+                            "myAccount:pages:overview.title",
+                            { firstName: userProfileName }
+                        )
+                    }
+                    { userSource && isFederatedUser &&
+                        <div className="overview-page-header">
+                            {
+                                "(Signed up via " + userSource + ")"
+                            }
+                        </div>
+                    }
+                </div>
+
             ) : null }
             pageDescription={ t("myAccount:pages:overview.subTitle") }
             pageTitleTextAlign="left"
