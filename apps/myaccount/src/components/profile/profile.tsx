@@ -29,6 +29,7 @@ import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils, ProfileUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { EditAvatarModal, LinkButton, PrimaryButton, UserAvatar } from "@wso2is/react-components";
+import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, MouseEvent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -1141,3 +1142,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     );
 };
 
+/**
+ * Default properties for the {@link Profile} component.
+ * See type definitions in {@link ProfileProps}
+ */
+Profile.defaultProps = {
+    "data-testid": "profile"
+};
