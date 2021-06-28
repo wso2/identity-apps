@@ -37,6 +37,7 @@ import {
     MultiFactorAuthentication,
     UserSessionsComponent
 } from "../components";
+import { CreatePassword } from "../components/create-password/create-password";
 import { AppConstants, CommonConstants } from "../constants";
 import { commonConfig } from "../extensions";
 import { InnerPageLayout } from "../layouts";

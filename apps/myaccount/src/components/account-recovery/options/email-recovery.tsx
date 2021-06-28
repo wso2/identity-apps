@@ -265,7 +265,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
                                 <List.Description>
                                     {
                                         email || email !== ""
-                                            ? t("myAccount:components.accountRecovery.emailRecovery.descriptions.update",
+                                        ? t("myAccount:components.accountRecovery.emailRecovery.descriptions.update",
                                             { email: email ? maskEmail(email) : "" })
                                             : t("myAccount:components.accountRecovery.emailRecovery.descriptions.add")
                                     }
