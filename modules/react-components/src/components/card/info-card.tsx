@@ -27,6 +27,11 @@ import { Tooltip } from "../typography";
  * Proptypes for the info card component.
  */
 export interface InfoCardPropsInterface extends CardProps, TestableComponentInterface {
+
+    /**
+     * Action for the card
+     */
+    action?: ReactNode;
     /**
      * Is card disabled.
      */
@@ -104,6 +109,7 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
 ): ReactElement => {
 
     const {
+        action,
         className,
         description,
         disabled,
@@ -131,6 +137,7 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
             disabled,
             fluid,
             inline,
+            [ "no-hover" ]: action,
             selected,
             ["with-image"]: image
         },
@@ -144,6 +151,7 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
             link={ false }
             as="div"
             data-testid={ testId }
+            onClick={ !action && onClick }
             { ...rest }
         >
             <Card.Content>
@@ -308,6 +316,28 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
                                 <Icon name="eye" /> { githubRepoMetaInfo.watchers }
                             </Label>
                         </Label.Group>
+                    </Card.Content>
+                )
+            }
+            {
+                action && (
+                    <Card.Content className="action-container" data-testid={ `${ testId }-action-container` }>
+                        {
+                            typeof action === "string"
+                                ? (
+                                    <LinkButton
+                                        hoverType="underline"
+                                        className="info-card-inner-action"
+                                        onClick={ (e: MouseEvent<HTMLButtonElement>) => {
+                                            onClick(e as unknown as MouseEvent<HTMLAnchorElement>, null);
+                                        } }
+                                    >
+                                        { action }
+                                        <Icon name="caret right" />
+                                    </LinkButton>
+                                )
+                                : action
+                        }
                     </Card.Content>
                 )
             }
