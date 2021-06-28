@@ -30,6 +30,10 @@ export interface LinkButtonPropsInterface extends ButtonProps, TestableComponent
      */
     compact?: boolean;
     /**
+     * Hover type.
+     */
+    hoverType?: "underline";
+    /**
      * To represent info state.
      */
     info?: boolean;
@@ -62,6 +66,7 @@ export const LinkButton: FunctionComponent<LinkButtonPropsInterface> = (
         children,
         className,
         compact,
+        hoverType,
         info,
         loading,
         loaderPosition,
@@ -75,6 +80,7 @@ export const LinkButton: FunctionComponent<LinkButtonPropsInterface> = (
         "link-button",
         {
             compact,
+            [ `hover-${ hoverType }` ]: hoverType,
             info,
             [ `loader-${ loaderPosition }` ]: loading && loaderPosition,
             warning
