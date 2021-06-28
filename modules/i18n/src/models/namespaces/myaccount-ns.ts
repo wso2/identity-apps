@@ -87,6 +87,7 @@ export interface MyAccountNS {
                 descriptions: {
                     add: string;
                     update: string;
+                    view: string;
                 };
                 forms: {
                     emailResetForm: {

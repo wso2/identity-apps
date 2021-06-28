@@ -46,7 +46,8 @@ export const myAccount: MyAccountNS = {
             emailRecovery: {
                 descriptions: {
                     add: "Adicionar um endereço de email de recuperação",
-                    update: "Atualizar endereço de email de recuperação ({{email}})"
+                    update: "Atualizar endereço de email de recuperação ({{email}})",
+                    view: "Ver endereço de e-mail de recuperação ({{email}})"
                 },
                 forms: {
                     emailResetForm: {
@@ -194,7 +195,7 @@ export const myAccount: MyAccountNS = {
                         }
                     }
                 },
-                placeholder: "Procura por nome",
+                placeholder: "Procura por nome"
             },
             all: {
                 heading: "Todas as aplicações"
@@ -1079,7 +1080,7 @@ export const myAccount: MyAccountNS = {
                             placeholder: "Escolha o seu país"
                         }
                     }
-                },
+                }
             },
             messages: {
                 emailConfirmation: {
@@ -1091,7 +1092,7 @@ export const myAccount: MyAccountNS = {
                         "fator está habilitada e para enviar códigos de recuperação em caso de recuperação de nome " +
                         "de usuário / senha. Para atualizar este número, você deve verificar o novo número " +
                         "inserindo o código de verificação enviado para o seu novo número. Clique em atualizar se " +
-                        "quiser continuar.",
+                        "quiser continuar."
                 }
             },
             notifications: {
@@ -1243,7 +1244,7 @@ export const myAccount: MyAccountNS = {
         mobileUpdateWizard: {
             done: "Sucesso! O número do seu celular foi verificado com sucesso.",
             submitMobile: {
-                heading: "Insira seu novo número de celular",
+                heading: "Insira seu novo número de celular"
             },
             verifySmsOtp: {
                 generate: "Reenviar um novo código de verificação",
@@ -1251,7 +1252,7 @@ export const myAccount: MyAccountNS = {
                 error: "Falha na verificação. Por favor, tente novamente.",
                 label: "Código de verificação",
                 placeholder: "Digite seu código de verificação",
-                requiredError: "Insira o código de verificação",
+                requiredError: "Insira o código de verificação"
             },
             notifications: {
                 resendSuccess: {
