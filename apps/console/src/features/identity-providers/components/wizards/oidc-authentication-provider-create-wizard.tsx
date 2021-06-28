@@ -26,6 +26,7 @@ import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState }
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, Header } from "semantic-ui-react";
+import { OidcAuthenticationWizardFrom } from "./oidc-authentication-wizard-page";
 import { AppConstants, AppState, ModalWithSidePanel, store } from "../../../../features/core";
 import {
     createIdentityProvider,
@@ -40,7 +41,6 @@ import {
 import {
     handleGetFederatedAuthenticatorMetadataAPICallError
 } from "../utils";
-import { OidcAuthenticationWizardFrom } from "./oidc-authentication-wizard-page";
 
 /**
  * Proptypes for the identity provider creation wizard component.
@@ -205,7 +205,7 @@ export const OidcAuthenticationProviderCreateWizard: FunctionComponent<MinimalAu
      * Track wizard steps from wizard component.
      */
     useEffect(() => {
-        setCurrentWizardStep(wizStep + 1)
+        setCurrentWizardStep(wizStep + 1);
     }, [ wizStep ]);
 
     let submitAdvanceForm: () => void;
@@ -251,7 +251,7 @@ export const OidcAuthenticationProviderCreateWizard: FunctionComponent<MinimalAu
             }
         }
         handleWizardFormFinish(identityProvider);
-    } 
+    };
 
 
     const resolveStepActions = (): ReactElement => {

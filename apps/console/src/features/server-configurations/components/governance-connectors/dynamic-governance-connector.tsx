@@ -16,14 +16,13 @@
  * under the License.
  */
 
-import { AlertLevels, SVGRLoadedInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import get from "lodash-es/get";
 import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Checkbox, Divider, Grid, Header } from "semantic-ui-react";
 import DynamicConnectorForm from "./dynamic-connector-form";
 import { serverConfigurationConfig } from "../../../../extensions";
 import { updateGovernanceConnector } from "../../api";

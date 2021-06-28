@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { CopyInputField, Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import {Divider, Icon, Message } from "semantic-ui-react";
+import { Divider, Icon, Message } from "semantic-ui-react";
 import { store } from "../../../../../core";
 
 /**
@@ -33,9 +33,8 @@ type CustomIdentityProviderCreateWizardHelpPropsInterface = TestableComponentInt
  * @param {CustomIdentityProviderCreateWizardHelpPropsInterface} props - Props injected into the component.
  * @return {React.ReactElement}
  */
-const CustomIdentityProviderCreateWizardHelp: FunctionComponent<CustomIdentityProviderCreateWizardHelpPropsInterface> = (
-    props: CustomIdentityProviderCreateWizardHelpPropsInterface
-): ReactElement => {
+const CustomIdentityProviderCreateWizardHelp: FunctionComponent<CustomIdentityProviderCreateWizardHelpPropsInterface>
+    = ( props: CustomIdentityProviderCreateWizardHelpPropsInterface ): ReactElement => {
 
     const {
         [ "data-testid" ]: testId

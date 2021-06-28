@@ -53,7 +53,6 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         handleGroupListChange,
         handleTempListChange,
         handleInitialTempListChange,
-        handleInitialGroupListChange,
         handleSetGroupId
     } = props;
 

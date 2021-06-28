@@ -43,7 +43,8 @@ const SamlIDPWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement
             <Heading as="h5">Identity provider entity ID</Heading>
             <p>
                 This is the <Code>&lt;saml2:Issuer&gt;</Code> value specified in the SAML responses issued by the
-                external IdP. Also, this needs to be a unique value to identify the external IdP within your organization.
+                external IdP. Also, this needs to be a unique value to identify the external IdP within your
+                organization.
             </p>
             <Divider/>
             <Heading as="h5">SSO URL</Heading>
