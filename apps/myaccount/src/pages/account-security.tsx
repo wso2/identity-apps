@@ -16,11 +16,12 @@
  * under the License.
  */
 
+import { ProfileConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import React, {
     ReactElement,
     useEffect,
-    useRef
+    useRef, useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,9 +35,10 @@ import {
     MultiFactorAuthentication,
     UserSessionsComponent
 } from "../components";
+import { CreatePassword } from "../components/create-password/create-password";
 import { AppConstants, CommonConstants } from "../constants";
 import { InnerPageLayout } from "../layouts";
-import { AlertInterface, FeatureConfigInterface } from "../models";
+import { AlertInterface, AuthStateInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 import { addAlert } from "../store/actions";
 
@@ -48,10 +50,12 @@ import { addAlert } from "../store/actions";
 const AccountSecurityPage = (props: RouteProps): ReactElement => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
+    const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const disableMFAforSuperTenantUser: boolean = useSelector((state: AppState) => state?.config?.ui?.disableMFAforSuperTenantUser);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
+    const [ isFederatedUser, setIsFederatedUser ] = useState<boolean>(false);
 
     const consentControl = useRef<HTMLDivElement>(null);
     const accountSecurity = useRef<HTMLDivElement>(null);
@@ -84,6 +88,16 @@ const AccountSecurityPage = (props: RouteProps): ReactElement => {
     }, [ props.location ]);
 
     /**
+     * Checks if the user is a user without local credentials.
+     */
+    useEffect(() => {
+        if (profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
+            [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_ACCOUNT_TYPE")]) {
+            setIsFederatedUser(true);
+        }
+    }, [profileDetails?.profileInfo]);
+
+    /**
      * Dispatches the alert object to the redux store.
      * @param {AlertInterface} alert - Alert object.
      */
@@ -97,7 +111,7 @@ const AccountSecurityPage = (props: RouteProps): ReactElement => {
             pageDescription={ t("myAccount:pages.security.subTitle") }
         >
             <Grid>
-                { !isReadOnlyUser &&
+                { !isReadOnlyUser && !isFederatedUser &&
                     hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
                     isFeatureEnabled(
                         accessConfig?.security,
@@ -109,8 +123,19 @@ const AccountSecurityPage = (props: RouteProps): ReactElement => {
                             </Grid.Column>
                         </Grid.Row>
                     ) : null }
-
-                { !isReadOnlyUser &&
+                { !isReadOnlyUser && isFederatedUser &&
+                    hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
+                    isFeatureEnabled(
+                        accessConfig?.security,
+                        AppConstants.FEATURE_DICTIONARY.get("SECURITY_CREATE_PASSWORD")
+                    ) ? (
+                        <Grid.Row>
+                            <Grid.Column width={ 16 }>
+                                <CreatePassword onAlertFired={ handleAlerts } />
+                            </Grid.Column>
+                        </Grid.Row>
+                    ) : null }
+                { !isReadOnlyUser && !isFederatedUser &&
                     hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
                     isFeatureEnabled(
                         accessConfig?.security,

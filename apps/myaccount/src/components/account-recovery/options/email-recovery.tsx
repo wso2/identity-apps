@@ -260,7 +260,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                                 <List.Description>
                                     {
                                         email || email !== ""
-                                        ? t("myAccount:components.accountRecovery.emailRecovery.descriptions.update",
+                                        ? t("myAccount:components.accountRecovery.emailRecovery.descriptions.view",
                                             { email: email ? maskEmail(email) : "" })
                                         : t("myAccount:components.accountRecovery.emailRecovery.descriptions.add")
                                     }
@@ -292,27 +292,27 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                         </Grid.Column>
                         <Grid.Column width={ 5 } className="last-column">
                             <List.Content floated="right">
-                                {email || email !== "" ? (
+                                { email || email !== "" ? (
                                     <Icon
                                         link={ true }
                                         onClick={ handleEdit }
-                                        data-testid={`${testId}-edit-button`}
+                                        data-testid={ `${testId}-view-button` }
                                         className="list-icon"
                                         size="small"
                                         color="grey"
-                                        name="pencil alternate"
+                                        name="eye"
                                     />
                                 ) : (
                                         <Icon
                                             link={ true }
                                             onClick={ handleEdit }
                                             className="list-icon"
-                                            data-testid={`${testId}-edit-button`}
+                                            data-testid={ `${testId}-edit-button` }
                                             size="small"
                                             color="grey"
                                             name="plus"
                                         />
-                                    )}
+                                    ) }
                             </List.Content>
                         </Grid.Column>
                     </Grid.Row>
@@ -336,6 +336,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                                             <Field
                                                 data-testid={ `${testId}-edit-section-form-email-field` }
                                                 autoFocus={ true }
+                                                readOnly={ true }
                                                 label={ t(
                                                     "myAccount:components.accountRecovery.emailRecovery.forms" +
                                                     ".emailResetForm.inputs.email.label"
@@ -367,31 +368,32 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                                                 value={ editedEmail }
                                                 width={ 9 }
                                             />
-                                            <p style={ { fontSize: "12px" } }>
-                                                <Icon color="grey" floated="left" name="info circle" />
-                                                {t(
-                                                    "myAccount:components.profile.forms.emailChangeForm" +
-                                                    ".inputs.email.note"
-                                                )}
-                                            </p>
+                                            { /*<p style={ { fontSize: "12px" } }>*/ }
+                                            { /*    <Icon color="grey" floated="left" name="info circle" />*/ }
+                                            { /*    { t(*/ }
+                                            { /*        "myAccount:components.profile.forms.emailChangeForm" +*/ }
+                                            { /*        ".inputs.email.note"*/ }
+                                            { /*    ) }*/ }
+                                            { /*</p>*/ }
                                             <Field
                                                 hidden={ true }
                                                 type="divider"
                                             />
                                             <Form.Group inline={ true }>
+                                                { /* Temporarily added done button removing the edit option. */ }
+                                                { /*<Field*/ }
+                                                { /*    size="small"*/ }
+                                                { /*    type="submit"*/ }
+                                                { /*    value={ t("common:update").toString() }*/ }
+                                                { /*    data-testid={ `${testId}--edit-section-form-sumbit-button` }*/ }
+                                                { /*/>*/ }
                                                 <Field
-                                                    size="small"
-                                                    type="submit"
-                                                    value={ t("common:update").toString() }
-                                                    data-testid={`${testId}--edit-section-form-sumbit-button`}
-                                                />
-                                                <Field
-                                                    className="link-button"
+                                                    className="button"
                                                     onClick={ handleCancel }
                                                     size="small"
                                                     type="button"
-                                                    value={ t("common:cancel").toString() }
-                                                    data-testid={`${testId}--edit-section-form-cancel-button`}
+                                                    value={ t("common:done").toString() }
+                                                    data-testid={ `${testId}--edit-section-form-done-button` }
                                                 />
                                             </Form.Group>
                                         </Forms>
