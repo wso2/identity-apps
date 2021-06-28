@@ -284,7 +284,11 @@ export class AppConstants {
             .set("USERSTORES_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-user-store/:id`)
             .set("USERSTORE_TEMPLATES", `${ AppConstants.getAdminViewBasePath() }/userstore-templates`)
             .set("STORING_DATA_DISABLED", `${ AppConstants.getMainViewBasePath() }/storing_data_disabled`)
+            .set("GOVERNANCE_CONNECTOR", `${ AppConstants.getAdminViewBasePath() }/connector/:id`)
+            .set("GOVERNANCE_CONNECTOR_EDIT", `${ 
+                AppConstants.getAdminViewBasePath() }/connector/:categoryId/:connectorId`)
             .set("ATTRIBUTE_MAPPINGS", `${ AppConstants.getAdminViewBasePath() }/attribute-mappings/:type`);
+            
     }
 
     /**
