@@ -440,6 +440,20 @@
     }
 }
 
+/*-----------------------------
+     Resource Cards Grid
+------------------------------*/
+
+.ui.cards {
+    &.resource-grid {
+        .ui.card {
+            &.info-card {
+                width: @resourceCardDefaultWidth;
+            }
+        }
+    }
+}
+
 /*********************************************
              Template Card Variation
 *********************************************/
@@ -657,8 +671,11 @@
         &:hover {
             transform: none;
             text-decoration: none;
-            cursor: pointer;
-            box-shadow: @infoCardHoverBoxShadow;
+
+            &:not(.no-hover) {
+                cursor: pointer;
+                box-shadow: @infoCardHoverBoxShadow;
+            }
         }
         &.selected {
             border-color: @infoCardSelectedBorder;
@@ -675,7 +692,7 @@
         }
         .card-header-section {
             .card-header {
-                font-weight: 600;
+                font-weight: 500;
             }
         }
         .card-subheader {
@@ -683,7 +700,8 @@
             color: @lightFontColor;
         }
         .card-description-container {
-            padding-top: 0.5em;
+            padding-top: 0;
+            padding-bottom: 0;
         }
         .card-description {
             font-size: 0.9em;
@@ -734,6 +752,16 @@
             }
             &.inline {
                 display: inline-block;
+            }
+        }
+        .action-container {
+            .info-card-inner-action {
+                padding-left: 0;
+
+                .icon {
+                    margin-left: 0 !important;
+                    text-decoration: auto;
+                }
             }
         }
     }
