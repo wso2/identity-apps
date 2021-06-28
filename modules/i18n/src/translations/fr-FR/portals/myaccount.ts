@@ -1450,6 +1450,14 @@ export const myAccount: MyAccountNS = {
             description: "Assurez-vous de mettre à jour régulièrement votre mot de passe et de ne pas le réutiliser sur d'autres sites.",
             heading: "Changer de mot de passe"
         },
+        createPassword: {
+            actionTitles: {
+                create: "Créer un mot de passe"
+            },
+            description: "Créez un mot de passe dans Asgardeo. Vous pouvez utiliser ce mot de passe pour vous " +
+                "connecter à Asgardeo en plus de la connexion sociale.\n",
+            heading: "Créer un mot de passe"
+        },
         consentManagement: {
             actionTitles: {
                 empty: "Vous n'avez accordé votre consentement à aucune application"

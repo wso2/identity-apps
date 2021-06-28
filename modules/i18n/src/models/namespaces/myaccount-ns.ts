@@ -815,6 +815,13 @@ export interface MyAccountNS {
             description: string;
             heading: string;
         };
+        createPassword: {
+            actionTitles: {
+                create: string;
+            };
+            description: string;
+            heading: string;
+        };
         consentManagement: {
             actionTitles: {
                 empty: string;

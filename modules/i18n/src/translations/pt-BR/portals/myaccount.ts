@@ -1426,6 +1426,14 @@ export const myAccount: MyAccountNS = {
             description: "Alterar e modificar a senha existente",
             heading: "Mudar Senha"
         },
+        createPassword: {
+            actionTitles: {
+                create: "Criar senha"
+            },
+            description: "Crie uma senha no Asgardeo. Você pode usar essa senha para fazer login no Asgardeo, " +
+                "além do login social.",
+            heading: "Criar senha"
+        },
         consentManagement: {
             actionTitles: {
                 empty: "Você não concedeu consentimento a nenhum aplicativo"

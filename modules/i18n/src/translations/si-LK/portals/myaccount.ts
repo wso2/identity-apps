@@ -1434,6 +1434,14 @@ export const myAccount: MyAccountNS = {
                 "මුරපද වලින් අද්විතීය බව සහතික කරගන්න.",
             heading: "මුරපදය වෙනස් කරන්න"
         },
+        createPassword: {
+            actionTitles: {
+                create: "මුරපදය සාදන්න"
+            },
+            description: "අස්ගාර්ඩියෝ හි මුරපදයක් සාදන්න. ඔබට මෙම මුරපදය භාවිතා කර සමාජ මාධ්ය ප්‍රවේශයට අමතරව අස්ගාර්ඩියෝ" +
+                " වෙත පුරනය විය හැකිය.",
+            heading: "මුරපදය සාදන්න"
+        },
         consentManagement: {
             actionTitles: {
                 empty: "ඔබ කිසිදු යෙදුමක් අනුමත කර නැත"

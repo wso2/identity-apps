@@ -1437,6 +1437,14 @@ export const myAccount: MyAccountNS = {
             description: "Update your password regularly and make sure it's unique from other passwords you use.",
             heading: "Change Password"
         },
+        createPassword: {
+            actionTitles: {
+                create: "Create password"
+            },
+            description: "Create a password in Asgardeo. You can use this password to sign in to Asgardeo in addition " +
+                "to social login.",
+            heading: "Create Password"
+        },
         consentManagement: {
             actionTitles: {
                 empty: "You have not granted consent to any application"
