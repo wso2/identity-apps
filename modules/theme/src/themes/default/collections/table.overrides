@@ -47,6 +47,10 @@
         .data-table-header {
             th {
                 font-weight: @dataTableHeaderFontWeight;
+                .header-with-popup {
+                    display: flex;
+                    align-items: center;
+                }
             }
         }
 
