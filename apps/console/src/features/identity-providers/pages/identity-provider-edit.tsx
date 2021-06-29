@@ -291,7 +291,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
             title={ (
                 <>
                     { identityProvider.name }
-                    { isIdentityProviderRequestLoading === false && resolveStatusLabel() }
+                    { isIdentityProviderRequestLoading === false && identityProvider.name &&  resolveStatusLabel() }
                 </>
             ) }
             contentTopMargin={ true }
