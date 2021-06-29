@@ -16,18 +16,12 @@
  * under the License.
  */
 
-import { getRawDocumentation } from "@wso2is/core/api";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { StringUtils } from "@wso2is/core/utils";
 import {
     AnimatedAvatar,
     AppAvatar,
-    ContentLoader,
-    HelpPanelLayout,
-    HelpPanelTabInterface,
     LabelWithPopup,
-    Markdown,
     PageLayout
 } from "@wso2is/react-components";
 import get from "lodash-es/get";
@@ -40,14 +34,11 @@ import {
     AppConstants,
     AppState,
     ConfigReducerStateInterface,
-    HelpPanelUtils,
     PortalDocumentationStructureInterface,
-    getHelpPanelActionIcons,
     history, setHelpPanelDocsContentURL
 } from "../../core";
 import { getIdentityProviderDetail } from "../api";
 import { EditIdentityProvider } from "../components";
-import { getHelpPanelIcons } from "../configs";
 import { IdentityProviderManagementConstants } from "../constants";
 import {
     IdentityProviderInterface,
@@ -82,7 +73,6 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const helpPanelDocURL: string = useSelector((state: AppState) => state.helpPanel.docURL);
     const helpPanelDocStructure: PortalDocumentationStructureInterface = useSelector(
         (state: AppState) => state.helpPanel.docStructure);
     const identityProviderTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
@@ -91,11 +81,6 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
         = useState<IdentityProviderTemplateItemInterface>(undefined);
     const [ identityProvider, setIdentityProvider ] = useState<IdentityProviderInterface>(emptyIdentityProvider);
     const [ isIdentityProviderRequestLoading, setIdentityProviderRequestLoading ] = useState<boolean>(undefined);
-    const [ helpPanelDocContent, setHelpPanelDocContent ] = useState<string>(undefined);
-    const [
-        isHelpPanelDocContentRequestLoading,
-        setHelpPanelDocContentRequestLoadingStatus
-    ] = useState<boolean>(false);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(0);
     const [ isExtensionsAvailable, setIsExtensionsAvailable ] = useState<boolean>(false);
 
@@ -196,34 +181,6 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     }, [ identityProviderTemplates, identityProvider ]);
 
     /**
-     * Called when help panel doc URL status changes.
-     */
-    useEffect(() => {
-        if (!helpPanelDocURL) {
-            return;
-        }
-
-        setHelpPanelDocContentRequestLoadingStatus(true);
-
-        getRawDocumentation<string>(
-            config.endpoints.documentationContent,
-            helpPanelDocURL,
-            config.deployment.documentation.provider,
-            config.deployment.documentation.githubOptions.branch)
-            .then((response) => {
-                setHelpPanelDocContent(response);
-            })
-            .finally(() => {
-                setHelpPanelDocContentRequestLoadingStatus(false);
-            });
-    }, [
-        helpPanelDocURL,
-        config.deployment.documentation.githubOptions.branch,
-        config.deployment.documentation.provider,
-        config.endpoints.documentationContent
-    ]);
-
-    /**
      * Retrieves idp details from the API.
      *
      * @param {string} id - IDP id.
@@ -295,32 +252,6 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
         getIdentityProvider(id);
     }, []);
 
-    const helpPanelTabs: HelpPanelTabInterface[] = [
-        {
-            content: (
-                isHelpPanelDocContentRequestLoading
-                    ? <ContentLoader dimmer/>
-                    : (
-                        <Markdown
-                            source={ helpPanelDocContent }
-                            transformImageUri={ (uri) =>
-                                uri.startsWith("http" || "https")
-                                    ? uri
-                                    : config.deployment.documentation?.imagePrefixURL + "/"
-                                        + StringUtils.removeDotsAndSlashesFromRelativePath(uri)
-                            }
-                            data-testid={ `${ testId }-help-panel-docs-tab-markdown-renderer` }
-                        />
-                    )
-            ),
-            heading: t("common:docs"),
-            hidden: !helpPanelDocURL,
-            icon: {
-                icon: getHelpPanelIcons().tabs.docs
-            }
-        }
-    ];
-
     /**
      * Resolves the authentication provider status label.
      *
@@ -355,97 +286,79 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     };
 
     return (
-        <HelpPanelLayout
-            enabled={ false }
-            visible={ false }
-            sidebarDirection="right"
-            sidebarMiniEnabled={ false }
-            tabs={ helpPanelTabs }
-            onHelpPanelPinToggle={ () => HelpPanelUtils.togglePanelPin() }
-            isPinned={ HelpPanelUtils.isPanelPinned() }
-            icons={ {
-                close: getHelpPanelActionIcons().close,
-                pin: getHelpPanelActionIcons().pin,
-                unpin: getHelpPanelActionIcons().unpin
+        <PageLayout
+            isLoading={ isIdentityProviderRequestLoading }
+            title={ (
+                <>
+                    { identityProvider.name }
+                    { isIdentityProviderRequestLoading === false && resolveStatusLabel() }
+                </>
+            ) }
+            contentTopMargin={ true }
+            description={ (
+                <div className="with-label ellipsis">
+                    {
+                        identityProviderTemplate?.name &&
+                        <Label size="small">{ identityProviderTemplate.name }</Label>
+                    }
+                    { identityProvider.description }
+                </div>
+            ) }
+            image={
+                identityProvider.image
+                    ? (
+                        <AppAvatar
+                            name={ identityProvider.name }
+                            image={ identityProvider.image }
+                            size="tiny"
+                        />
+                    )
+                    : (
+                        <AnimatedAvatar
+                            name={ identityProvider.name }
+                            size="tiny"
+                            floated="left"
+                        />
+                    )
+            }
+            backButton={ {
+                "data-testid": `${ testId }-page-back-button`,
+                onClick: handleBackButtonClick,
+                text: t("console:develop.pages.authenticationProviderTemplate.backButton")
             } }
-            sidebarToggleTooltip={ t("console:develop.features.helpPanel.actions.open") }
-            pinButtonTooltip={ t("console:develop.features.helpPanel.actions.pin") }
-            unpinButtonTooltip={ t("console:develop.features.helpPanel.actions.unPin") }
+            titleTextAlign="left"
+            bottomMargin={ false }
+            data-testid={ `${ testId }-page-layout` }
         >
-            <PageLayout
+            <EditIdentityProvider
+                identityProvider={ identityProvider }
                 isLoading={ isIdentityProviderRequestLoading }
-                title={ (
-                    <>
-                        { identityProvider.name }
-                        { isIdentityProviderRequestLoading === false && resolveStatusLabel() }
-                    </>
-                ) }
-                contentTopMargin={ true }
-                description={ (
-                    <div className="with-label ellipsis">
-                        {
-                            identityProviderTemplate?.name &&
-                            <Label size="small">{ identityProviderTemplate.name }</Label>
-                        }
-                        { identityProvider.description }
-                    </div>
-                ) }
-                image={
-                    identityProvider.image
-                        ? (
-                            <AppAvatar
-                                name={ identityProvider.name }
-                                image={ identityProvider.image }
-                                size="tiny"
-                            />
-                        )
-                        : (
-                            <AnimatedAvatar
-                                name={ identityProvider.name }
-                                size="tiny"
-                                floated="left"
-                            />
-                        )
+                onDelete={ handleIdentityProviderDelete }
+                onUpdate={ handleIdentityProviderUpdate }
+                isGoogle={
+                    (identityProviderTemplate?.name === undefined)
+                        ? undefined
+                        : identityProviderTemplate.name === SupportedQuickStartTemplateTypes.GOOGLE
                 }
-                backButton={ {
-                    "data-testid": `${ testId }-page-back-button`,
-                    onClick: handleBackButtonClick,
-                    text: t("console:develop.pages.authenticationProviderTemplate.backButton")
-                } }
-                titleTextAlign="left"
-                bottomMargin={ false }
-                data-testid={ `${ testId }-page-layout` }
-            >
-                <EditIdentityProvider
-                    identityProvider={ identityProvider }
-                    isLoading={ isIdentityProviderRequestLoading }
-                    onDelete={ handleIdentityProviderDelete }
-                    onUpdate={ handleIdentityProviderUpdate }
-                    isGoogle={
-                        (identityProviderTemplate?.name === undefined)
-                            ? undefined
-                            : identityProviderTemplate.name === SupportedQuickStartTemplateTypes.GOOGLE
-                    }
-                    isSaml={
-                        (identityProvider?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
-                            ? undefined
-                            :(identityProvider.federatedAuthenticators.defaultAuthenticatorId
-                                === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID)
-                    }
-                    isOidc={
-                        (identityProvider?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
-                            ? undefined
-                            :(identityProvider.federatedAuthenticators.defaultAuthenticatorId
-                            === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID)
-                    }
-                    data-testid={ testId }
-                    template={ identityProviderTemplate }
-                    defaultActiveIndex={ defaultActiveIndex }
-                    isTabExtensionsAvailable={ (isAvailable) => setIsExtensionsAvailable(isAvailable) }
-                    type={ identityProviderTemplate?.id }
-                />
-            </PageLayout>
-        </HelpPanelLayout>
+                isSaml={
+                    (identityProvider?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
+                        ? undefined
+                        :(identityProvider.federatedAuthenticators.defaultAuthenticatorId
+                            === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID)
+                }
+                isOidc={
+                    (identityProvider?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
+                        ? undefined
+                        :(identityProvider.federatedAuthenticators.defaultAuthenticatorId
+                        === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID)
+                }
+                data-testid={ testId }
+                template={ identityProviderTemplate }
+                defaultActiveIndex={ defaultActiveIndex }
+                isTabExtensionsAvailable={ (isAvailable) => setIsExtensionsAvailable(isAvailable) }
+                type={ identityProviderTemplate?.id }
+            />
+        </PageLayout>
     );
 };
 
