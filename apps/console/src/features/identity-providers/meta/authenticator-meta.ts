@@ -62,6 +62,8 @@ export class AuthenticatorMeta {
             "existing accounts in the Enterprise IdP.",
             [ IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID ]: "Login users with " +
             "existing accounts in the Enterprise IdP.",
+            [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
+            "Email one-time password."
         }, authenticatorId);
     }
 
@@ -77,10 +79,10 @@ export class AuthenticatorMeta {
         return get({
             [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: [ AuthenticatorLabels.HANDLERS ],
             [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.SECOND_FACTOR, AuthenticatorLabels.PASSWORDLESS, AuthenticatorLabels.MULTI_FACTOR
+                AuthenticatorLabels.PASSWORDLESS, AuthenticatorLabels.MULTI_FACTOR
             ],
             [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.SECOND_FACTOR, AuthenticatorLabels.MULTI_FACTOR
+                AuthenticatorLabels.MULTI_FACTOR
             ],
             [ IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
@@ -99,6 +101,9 @@ export class AuthenticatorMeta {
             ],
             [ IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.SAML
+            ],
+            [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.MULTI_FACTOR
             ]
         }, authenticatorId);
     }
@@ -139,7 +144,11 @@ export class AuthenticatorMeta {
         
         return get({
             [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR ]: "Username & Password",
-            [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ]: "Username & Password"
+            [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ]: "Username & Password",
+            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "FIDO",
+            [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: "TOTP",
+            [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Email OTP",
+            [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Identifier First"
         }, authenticatorId);
     }
 
