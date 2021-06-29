@@ -73,8 +73,6 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const helpPanelDocStructure: PortalDocumentationStructureInterface = useSelector(
-        (state: AppState) => state.helpPanel.docStructure);
     const identityProviderTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
         (state: AppState) => state?.identityProvider?.templates);
     const [ identityProviderTemplate, setIdentityProviderTemplate ]
@@ -83,24 +81,6 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     const [ isIdentityProviderRequestLoading, setIdentityProviderRequestLoading ] = useState<boolean>(undefined);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(0);
     const [ isExtensionsAvailable, setIsExtensionsAvailable ] = useState<boolean>(false);
-
-    /**
-     * Set the default doc content URL for the tab.
-     */
-    useEffect(() => {
-        if (isEmpty(helpPanelDocStructure)) {
-            return;
-        }
-
-        const overviewDocs = get(helpPanelDocStructure,
-            IdentityProviderManagementConstants.IDP_EDIT_OVERVIEW_DOCS_KEY);
-
-        if (!overviewDocs) {
-            return;
-        }
-
-        dispatch(setHelpPanelDocsContentURL(overviewDocs));
-    }, [ helpPanelDocStructure, dispatch ]);
 
     /**
      * Triggered when the IDP state search param in the URL changes.
