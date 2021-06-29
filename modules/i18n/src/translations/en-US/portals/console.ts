@@ -2962,11 +2962,11 @@ export const console: ConsoleNS = {
                         },
                         google: {
                             callbackUrl: {
-                                hint: "The authorized redirect URL used to obtain Google credentials.",
-                                label: "Authorized redirect URL",
-                                placeholder: "Enter Authorized redirect URL.",
+                                hint: "The authorized redirect URI used to obtain Google credentials.",
+                                label: "Authorized redirect URI",
+                                placeholder: "Enter Authorized redirect URI.",
                                 validations: {
-                                    required: "Authorized redirect URL is a required field."
+                                    required: "Authorized redirect URI is a required field."
                                 }
                             },
                             clientId: {
@@ -3721,7 +3721,7 @@ export const console: ConsoleNS = {
                                 configureRedirectURL: "Add the following URL as the <1>Authorized Redirect URI</1>.",
                                 getCredentials: "Before you begin, create an <1>OAuth application</1> " +
                                     "<3>on Google</3>, and obtain a <5>client ID & secret</5>. Use the following " +
-                                    "URL as the <9>Authorization callback URL</9>.",
+                                    "URL as the <9>Authorized Redirect URI</9>.",
                                 heading: "Prerequisite"
                             },
                             subHeading: "Use the guide below"
