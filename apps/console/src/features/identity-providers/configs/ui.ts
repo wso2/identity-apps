@@ -26,14 +26,13 @@ import SCIMLogo from "../../../themes/default/assets/images/connectors/scim.png"
 import SPMLLogo from "../../../themes/default/assets/images/connectors/spml.png";
 import CertificateColoredIcon from "../../../themes/default/assets/images/icons/certificate-colored-icon.svg";
 import ClockColoredIcon from "../../../themes/default/assets/images/icons/clock-colored-icon.svg";
+import ConnectionIcon from "../../../themes/default/assets/images/icons/connection.svg";
 import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
 import { ReactComponent as GearsIcon } from "../../../themes/default/assets/images/icons/gears-icon.svg";
 import { ReactComponent as LockShieldIcon } from "../../../themes/default/assets/images/icons/lock-shield.svg";
 import MagnifierColoredIcon from "../../../themes/default/assets/images/icons/magnifier-colored-icon.svg";
 import { ReactComponent as OpenBookIcon } from "../../../themes/default/assets/images/icons/open-book-icon.svg";
 import { ReactComponent as ReportIcon } from "../../../themes/default/assets/images/icons/report-icon.svg";
-import AuthenticationCapabilityIcon
-    from "../../../themes/default/assets/images/identity-provider-capabilities/authentication.svg";
 import {
     ReactComponent as ProvisionCapabilityIcon
 } from "../../../themes/default/assets/images/identity-provider-capabilities/provision.svg";
@@ -123,7 +122,7 @@ export const getConnectorIcons = (): any => {
 export const getIdPIcons = (): any => {
 
     return {
-        default: AuthenticationCapabilityIcon,
+        default: ConnectionIcon,
         emailOTP: EmailOTPIcon,
         enterprise: EnterpriseModeIdPIcon,
         facebook: FacebookIdPIcon,
@@ -155,7 +154,7 @@ export const getIdPTemplateDocsIcons = (): any => {
 export const getIdPCapabilityIcons = (): any => {
 
     return {
-        [ SupportedServices.AUTHENTICATION ]: AuthenticationCapabilityIcon,
+        [ SupportedServices.AUTHENTICATION ]: ConnectionIcon,
         [ SupportedServices.PROVISIONING ]: ProvisionCapabilityIcon
     };
 };
