@@ -330,9 +330,7 @@ export class ApplicationManagementConstants {
     // Second factor authenticators.
     public static readonly SECOND_FACTOR_AUTHENTICATORS = [
         IdentityProviderManagementConstants.FIDO_AUTHENTICATOR,
-        IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
-        ApplicationManagementConstants.TOTP_AUTHENTICATOR_ID,
-        ApplicationManagementConstants.FIDO_AUTHENTICATOR_ID
+        IdentityProviderManagementConstants.TOTP_AUTHENTICATOR
     ];
 
     // Known social authenticators.
