@@ -24,18 +24,16 @@ import {
     LabelWithPopup,
     PageLayout
 } from "@wso2is/react-components";
-import get from "lodash-es/get";
-import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { RouteComponentProps } from "react-router";
 import { Label } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
     ConfigReducerStateInterface,
-    PortalDocumentationStructureInterface,
-    history, setHelpPanelDocsContentURL
+    history,
 } from "../../core";
 import { getIdentityProviderDetail } from "../api";
 import { EditIdentityProvider } from "../components";
@@ -52,64 +50,86 @@ import { IdentityProviderTemplateManagementUtils } from "../utils";
 /**
  * Proptypes for the IDP edit page component.
  */
-type IDPEditPagePropsInterface = TestableComponentInterface
+type IDPEditPagePropsInterface = TestableComponentInterface;
 
 /**
  * Identity Provider Edit page.
  *
  * @param {IDPEditPagePropsInterface} props - Props injected to the component.
+ *
  * @return {React.ReactElement}
  */
 const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
-    props: IDPEditPagePropsInterface
+    props: IDPEditPagePropsInterface & RouteComponentProps
 ): ReactElement => {
 
     const {
+        location,
         [ "data-testid" ]: testId
     } = props;
 
     const dispatch = useDispatch();
+
     const { t } = useTranslation();
+
     const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const identityProviderTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
         (state: AppState) => state?.identityProvider?.templates);
-    const [ identityProviderTemplate, setIdentityProviderTemplate ]
-        = useState<IdentityProviderTemplateItemInterface>(undefined);
+
+    const [
+        identityProviderTemplate,
+        setIdentityProviderTemplate
+    ] = useState<IdentityProviderTemplateItemInterface>(undefined);
     const [ identityProvider, setIdentityProvider ] = useState<IdentityProviderInterface>(emptyIdentityProvider);
     const [ isIdentityProviderRequestLoading, setIdentityProviderRequestLoading ] = useState<boolean>(undefined);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(0);
     const [ isExtensionsAvailable, setIsExtensionsAvailable ] = useState<boolean>(false);
 
     /**
+     * Use effect for the initial component load.
+     */
+    useEffect(() => {
+
+        const path: string[] = history.location.pathname.split("/");
+        const id: string = path[ path.length - 1 ];
+
+        getIdentityProvider(id);
+    }, []);
+
+    /**
      * Triggered when the IDP state search param in the URL changes.
      */
     useEffect(() => {
+
         if (!urlSearchParams.get(IdentityProviderManagementConstants.IDP_STATE_URL_SEARCH_PARAM_KEY)) {
             if (isExtensionsAvailable) {
                 setDefaultActiveIndex(1);
             }
             return;
         }
-
-    }, [ urlSearchParams.get(IdentityProviderManagementConstants.IDP_STATE_URL_SEARCH_PARAM_KEY),
-        isExtensionsAvailable ]);
+    }, [
+        urlSearchParams.get(IdentityProviderManagementConstants.IDP_STATE_URL_SEARCH_PARAM_KEY),
+        isExtensionsAvailable
+    ]);
 
     /**
      *  Get IDP templates.
      */
     useEffect(() => {
+
         if (identityProviderTemplates !== undefined) {
             return;
         }
 
         setIdentityProviderRequestLoading(true);
 
-        const useAPI: boolean = config.ui.identityProviderTemplateLoadingStrategy ?
-            config.ui.identityProviderTemplateLoadingStrategy === IdentityProviderTemplateLoadingStrategies.REMOTE :
-            IdentityProviderManagementConstants.
+        const useAPI: boolean = config.ui.identityProviderTemplateLoadingStrategy
+            ? config.ui.identityProviderTemplateLoadingStrategy === IdentityProviderTemplateLoadingStrategies.REMOTE
+            : IdentityProviderManagementConstants.
                 DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY === IdentityProviderTemplateLoadingStrategies.REMOTE;
+
         IdentityProviderTemplateManagementUtils.getIdentityProviderTemplates(useAPI)
             .finally(() => {
                 setIdentityProviderRequestLoading(false);
@@ -221,16 +241,6 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     const handleIdentityProviderUpdate = (id: string): void => {
         getIdentityProvider(id);
     };
-
-    /**
-     * Use effect for the initial component load.
-     */
-    useEffect(() => {
-        const path = history.location.pathname.split("/");
-        const id = path[ path.length - 1 ];
-
-        getIdentityProvider(id);
-    }, []);
 
     /**
      * Resolves the authentication provider status label.
