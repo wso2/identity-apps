@@ -17,6 +17,8 @@
  */
 
 import get from "lodash-es/get";
+import { ReactNode } from "react";
+import { getAuthenticatorIcons } from "../configs";
 import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorCategories, AuthenticatorLabels } from "../models";
 
@@ -139,5 +141,32 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR ]: "Username & Password",
             [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ]: "Username & Password"
         }, authenticatorId);
+    }
+
+    /**
+     * Get Authenticator Icon.
+     *
+     * @param {string} authenticatorId - Authenticator ID.
+     *
+     * @return {string}
+     */
+    public static getAuthenticatorIcon(authenticatorId: string): any {
+
+        const icon: ReactNode = get({
+            [
+                IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID
+                ]: getAuthenticatorIcons()?.identifierFirst,
+            [ IdentityProviderManagementConstants.JWT_BASIC_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.jwtBasic,
+            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.fido,
+            [ IdentityProviderManagementConstants.X509_CERTIFICATE_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.x509,
+            [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.totp,
+            [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.basic,
+            [
+                IdentityProviderManagementConstants.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
+                ]: getAuthenticatorIcons()?.sessionExecutor,
+            [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.emailOTP
+        }, authenticatorId);
+        
+        return icon ?? getAuthenticatorIcons().default;
     }
 }

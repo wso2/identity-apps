@@ -37,7 +37,6 @@ import {
     GenericAuthenticatorInterface,
     IdentityProviderListResponseInterface,
     LocalAuthenticatorInterface,
-    StrictGenericAuthenticatorInterface,
     StrictIdentityProviderInterface
 } from "../models";
 import { setAvailableAuthenticatorsMeta } from "../store/actions";
@@ -186,8 +185,7 @@ export class IdentityProviderManagementUtils {
                         displayName: authenticator.displayName,
                         id: `${ IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER }-${ authenticator.id }`,
                         idp: IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER,
-                        image: this.findAuthenticatorIcon(getSelectedLocalAuthenticators(), authenticator.id,
-                            authenticator.name),
+                        image: AuthenticatorMeta.getAuthenticatorIcon(authenticator.id),
                         isEnabled: authenticator.isEnabled,
                         name: authenticator.name
                     });
@@ -227,8 +225,7 @@ export class IdentityProviderManagementUtils {
                             idp: authenticator.name,
                             image: authenticator.image
                                 ? authenticator.image
-                                : this.findAuthenticatorIcon(getSelectedFederatedAuthenticators(), authenticator.id,
-                                    authenticator.name),
+                                : AuthenticatorMeta.getAuthenticatorIcon(authenticator.id),
                             isEnabled: authenticator.isEnabled,
                             name: authenticator.name
                         });
@@ -247,38 +244,6 @@ export class IdentityProviderManagementUtils {
                     error.response,
                     error.config);
             });
-    }
-
-    /**
-     * Resolves the icon for an authenticator.
-     *
-     * @param {StrictGenericAuthenticatorInterface[]} meta - Internal metadata.
-     * @param {string} id - Id of the authenticator.
-     * @param {string} name - Name of the authenticator.
-     *
-     * @return {any} Resolved image.
-     */
-    public static findAuthenticatorIcon(meta: StrictGenericAuthenticatorInterface[], id: string, name: string): any {
-
-        if (!(id || name)) {
-            return getAuthenticatorIcons().default;
-        }
-
-        const found: StrictGenericAuthenticatorInterface = meta.find((item) => {
-            if (item.id === id) {
-                return true;
-            }
-
-            if (item.name === name) {
-                return true;
-            }
-        });
-
-        if (found && found.image) {
-            return found.image;
-        }
-
-        return getAuthenticatorIcons().default;
     }
 
     /**
