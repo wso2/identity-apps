@@ -28,8 +28,6 @@ import isEmpty from "lodash-es/isEmpty";
 import { identityProviderConfig } from "../../../extensions";
 import { DocPanelUICardInterface, store } from "../../core";
 import { getFederatedAuthenticatorsList, getIdentityProviderList, getLocalAuthenticators } from "../api";
-import { getSelectedFederatedAuthenticators, getSelectedLocalAuthenticators } from "../components";
-import { getAuthenticatorIcons } from "../configs";
 import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorMeta } from "../meta";
 import {
@@ -105,9 +103,11 @@ export class IdentityProviderManagementUtils {
      * Modifies the federated and local authenticators to convert them to a more
      * generic model which will be easier to handle.
      *
+     * @param {boolean} skipFederated - Should skip loading federated authenticators.
+     *
      * @return {Promise<GenericAuthenticatorInterface[][]>} Combined response as a Promise.
      */
-    public static getAllAuthenticators(): Promise<GenericAuthenticatorInterface[][]> {
+    public static getAllAuthenticators(skipFederated?: boolean): Promise<GenericAuthenticatorInterface[][]> {
 
         // Loads the federated authenticators. ATM, the IDP listing API has a default pagination
         // limit of 15. Until there is a proper solution from the backend, we are continuously
@@ -149,11 +149,28 @@ export class IdentityProviderManagementUtils {
             return getIdPs();
         };
 
+        /**
+         * Loads the set of Local authenticators in the system.
+         * @return {Promise<LocalAuthenticatorInterface[]> | any}
+         */
         const loadLocalAuthenticators = (): Promise<LocalAuthenticatorInterface[]> | any => {
             return getLocalAuthenticators();
         };
 
-        return axios.all([ loadLocalAuthenticators(), loadFederatedAuthenticators() ])
+        /**
+         * Combine the two promises.
+         * @return {(Promise<LocalAuthenticatorInterface[]> | any)[]}
+         */
+        const getPromises = (): (Promise<LocalAuthenticatorInterface[]> | any)[] => {
+
+            if (skipFederated) {
+                return [ loadLocalAuthenticators() ];
+            }
+
+            return [ loadLocalAuthenticators(), loadFederatedAuthenticators() ];
+        };
+
+        return axios.all(getPromises())
             .then(axios.spread((local: LocalAuthenticatorInterface[],
                                           federated: IdentityProviderListResponseInterface) => {
 
@@ -182,8 +199,9 @@ export class IdentityProviderManagementUtils {
                             name: authenticator.name
                         },
                         description: AuthenticatorMeta.getAuthenticatorDescription(authenticator.id),
-                        displayName: authenticator.displayName,
-                        id: `${ IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER }-${ authenticator.id }`,
+                        displayName: AuthenticatorMeta.getAuthenticatorDisplayName(authenticator.id)
+                            ?? authenticator.displayName,
+                        id: authenticator.id,
                         idp: IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER,
                         image: AuthenticatorMeta.getAuthenticatorIcon(authenticator.id),
                         isEnabled: authenticator.isEnabled,
