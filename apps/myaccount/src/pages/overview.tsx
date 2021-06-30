@@ -52,7 +52,6 @@ const OverviewPage = (): ReactElement => {
      * Checks if the user is a user without local credentials.
      */
     useEffect(() => {
-        debugger;
         if (profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
             [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_ACCOUNT_TYPE")]) {
             setIsFederatedUser(true);
@@ -90,9 +89,7 @@ const OverviewPage = (): ReactElement => {
             pageTitleTextAlign="left"
         >
             { /* Loads overview component only when user info is loaded.
-               * Loads overview component based on user credential type (local/non-local).
-               */
-            }
+                Loads overview component based on user credential type (local/non-local).*/ }
             { isProfileInfoLoading == false &&
                 !isFederatedUser ? (
                     <Overview/>

@@ -91,6 +91,7 @@ const AccountSecurityPage = (props: RouteProps): ReactElement => {
      * Checks if the user is a user without local credentials.
      */
     useEffect(() => {
+        debugger;
         if (profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
             [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_ACCOUNT_TYPE")]) {
             setIsFederatedUser(true);
@@ -123,18 +124,19 @@ const AccountSecurityPage = (props: RouteProps): ReactElement => {
                             </Grid.Column>
                         </Grid.Row>
                     ) : null }
-                { !isReadOnlyUser && isFederatedUser &&
-                    hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
-                    isFeatureEnabled(
-                        accessConfig?.security,
-                        AppConstants.FEATURE_DICTIONARY.get("SECURITY_CREATE_PASSWORD")
-                    ) ? (
-                        <Grid.Row>
-                            <Grid.Column width={ 16 }>
-                                <CreatePassword onAlertFired={ handleAlerts } />
-                            </Grid.Column>
-                        </Grid.Row>
-                    ) : null }
+                { /* Create password section temporarily commented until feature is planned. */ }
+                { /*{ !isReadOnlyUser && isFederatedUser &&*/ }
+                { /*    hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&*/ }
+                { /*    isFeatureEnabled(*/ }
+                { /*        accessConfig?.security,*/ }
+                { /*        AppConstants.FEATURE_DICTIONARY.get("SECURITY_CREATE_PASSWORD")*/ }
+                { /*    ) ? (*/ }
+                { /*        <Grid.Row>*/ }
+                { /*            <Grid.Column width={ 16 }>*/ }
+                { /*                <CreatePassword onAlertFired={ handleAlerts } />*/ }
+                { /*            </Grid.Column>*/ }
+                { /*        </Grid.Row>*/ }
+                { /*    ) : null }*/ }
                 { !isReadOnlyUser && !isFederatedUser &&
                     hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
                     isFeatureEnabled(
