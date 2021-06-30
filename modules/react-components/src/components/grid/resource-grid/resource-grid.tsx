@@ -19,17 +19,11 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, {
-    Fragment,
     FunctionComponent, PropsWithChildren,
     ReactElement
 } from "react";
-import {
-    Card,
-    CardGroupProps,
-    Divider
-} from "semantic-ui-react";
+import { Card, CardGroupProps } from "semantic-ui-react";
 import { ResourceGridCard } from "./resource-grid-card";
-import { SearchWithFilterLabels, SearchWithFilterLabelsPropsInterface } from "../../input";
 
 /**
  * Interface for the Resource Grid sub components.
@@ -43,14 +37,6 @@ export interface ResourceGridSubComponentsInterface {
  */
 export interface ResourceGridPropsInterface extends CardGroupProps, TestableComponentInterface {
 
-    /**
-     * Show/Hide search.
-     */
-    search?: ReactElement;
-    /**
-     * Search component options.
-     */
-    searchOptions?: SearchWithFilterLabelsPropsInterface;
     /**
      * CSS classes for the wrapper.
      */
@@ -91,17 +77,6 @@ export const ResourceGrid: FunctionComponent<
 
     return (
         <div className={ wrapperClasses } data-testid={ testId }>
-            {
-                showSearch && (
-                    <Fragment>
-                        <SearchWithFilterLabels
-                            data-testid={ `${ testId }-search` }
-                            { ...searchOptions }
-                        />
-                        <Divider hidden />
-                    </Fragment>
-                )
-            }
             <Card.Group className={ classes } { ...rest }>
                 { children }
             </Card.Group>
