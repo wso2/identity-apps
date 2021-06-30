@@ -91,7 +91,6 @@ const AccountSecurityPage = (props: RouteProps): ReactElement => {
      * Checks if the user is a user without local credentials.
      */
     useEffect(() => {
-        debugger;
         if (profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
             [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_ACCOUNT_TYPE")]) {
             setIsFederatedUser(true);
