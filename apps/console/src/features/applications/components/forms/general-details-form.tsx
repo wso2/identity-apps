@@ -192,7 +192,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     hidden={ hiddenFields?.includes("imageUrl") }
                 />
             }
-            <Field.Checkbox
+            <Field.CheckboxLegacy
                 ariaLabel="Make application discoverable by end users"
                 name="discoverableByEndUsers"
                 required={ false }

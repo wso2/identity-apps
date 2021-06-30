@@ -87,7 +87,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 updateConfiguration(values);
             } }
         >
-            <Field.Checkbox
+            <Field.CheckboxLegacy
                 ariaLabel="Saas application"
                 name="saas"
                 label={ t("console:develop.features.applications.forms.advancedConfig.fields.saas.label") }
@@ -98,7 +98,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 hint={ t("console:develop.features.applications.forms.advancedConfig.fields.saas.hint") }
                 hidden={ !applicationConfig.advancedConfigurations.showSaaS }
             />
-            <Field.Checkbox
+            <Field.CheckboxLegacy
                 ariaLabel="Skip consent login"
                 name="skipConsentLogin"
                 label={ t("console:develop.features.applications.forms.advancedConfig.fields.skipConsentLogin" +
@@ -109,7 +109,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 data-testid={ `${testId}-skip-login-consent-checkbox` }
                 hint={ t("console:develop.features.applications.forms.advancedConfig.fields.skipConsentLogin.hint") }
             />
-            <Field.Checkbox
+            <Field.CheckboxLegacy
                 ariaLabel="Skip consent logout"
                 name="skipConsentLogout"
                 label={ t("console:develop.features.applications.forms.advancedConfig.fields.skipConsentLogout" +
@@ -123,7 +123,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                     ".hint"
                 ) }
             />
-            <Field.Checkbox
+            <Field.CheckboxLegacy
                 ariaLabel="Return authenticated IDP list"
                 name="returnAuthenticatedIdpList"
                 label={ t("console:develop.features.applications.forms.advancedConfig.fields." +
@@ -138,7 +138,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                     ".returnAuthenticatedIdpList.hint"
                 ) }
             />
-            <Field.Checkbox
+            <Field.CheckboxLegacy
                 ariaLabel="Enable authorization"
                 name="enableAuthorization"
                 label={ t("console:develop.features.applications.forms.advancedConfig.fields." +

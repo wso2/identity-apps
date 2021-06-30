@@ -106,7 +106,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                 updateConfiguration(values);
             } }
         >
-            <Field.Checkbox
+            <Field.CheckboxLegacy
                 ariaLabel="Proxy mode"
                 name="proxyMode"
                 label={ t("console:develop.features.applications.forms.provisioningConfig.fields.proxyMode.label") }
