@@ -432,7 +432,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                 onClick={ () => setSelectedProtocol("saml") }
                                 imageSize="mini"
                                 showTooltips={ true }
-                                disabled={ false }
+                                disabled={ true }
                                 overlay={ renderDimmerOverlay() }
                                 contentTopBorder={ false }
                                 renderDisabledItemsAsGrayscale={ false }
