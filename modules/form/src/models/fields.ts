@@ -21,6 +21,7 @@ export enum FieldInputTypes {
     INPUT_IDENTIFIER = "identifier",
     INPUT_PHONE_NUMBER = "phone_number",
     INPUT_NAME = "name",
+    INPUT_NUMBER = "number",
     INPUT_RESOURCE_NAME = "resourceName",
     INPUT_EMAIL = "email",
     INPUT_URL = "url",

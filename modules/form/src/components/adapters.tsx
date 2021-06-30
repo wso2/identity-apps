@@ -53,11 +53,15 @@ export const TextFieldAdapter = (props): ReactElement => {
             onBlur={ (event) => input.onBlur(event) }
             control={ Input }
             autoFocus={ childFieldProps.autoFocus || false }
-            type="text"
             value={ meta.modified ? input.value
                 : (childFieldProps?.value ? childFieldProps?.value
                     : (parentFormProps?.values[ childFieldProps?.name ] ? parentFormProps?.values[ childFieldProps?.name ] : "")) }
             { ...omit(childFieldProps, [ "value", "listen" ]) }
+            type={
+                childFieldProps.inputType === "number"
+                    ? "number"
+                    : "text"
+            }
             error={
                 (meta.error && meta.touched)
                     ? meta.error
