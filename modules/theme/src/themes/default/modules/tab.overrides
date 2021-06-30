@@ -41,6 +41,15 @@
                     }
                 }
             }
+
+            // To be used for tabs which are disabled and labeled as coming soon features.
+            &.upcoming-item {
+                .coming-soon-label {
+                    margin-left: 0.2em;
+                    font-style: italic;
+                    cursor: not-allowed !important;
+                }
+            }
         }
 
         .ui.tab {
