@@ -23,3 +23,4 @@ export * from "./file-upload";
 export * from "./url-input";
 export * from "./password";
 export * from "./inline-edit-field";
+export * from "./search-with-filter-labels";
