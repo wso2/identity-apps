@@ -22,6 +22,7 @@ import React, { ReactElement, cloneElement } from "react";
 import { FieldProps } from "react-final-form";
 import { FieldButton } from "./field-button";
 import { FieldCheckbox } from "./field-checkbox";
+import { FieldCheckboxLegacy } from "./field-checkbox-legacy";
 import { FieldDropdown } from "./field-dropdown";
 import { FieldInput } from "./field-input";
 import { FieldTextarea } from "./field-textarea";
@@ -81,5 +82,6 @@ export interface FormFieldPropsInterface extends FieldProps<any,any,any>, Testab
 Field.Input = FieldInput;
 Field.Button = FieldButton;
 Field.Textarea = FieldTextarea;
+Field.CheckboxLegacy = FieldCheckboxLegacy;
 Field.Checkbox = FieldCheckbox;
 Field.Dropdown = FieldDropdown;

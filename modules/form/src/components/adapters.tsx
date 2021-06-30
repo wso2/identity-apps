@@ -20,7 +20,7 @@ import { Button, CopyInputField, DangerButton, LinkButton, Password, PrimaryButt
 import omit from "lodash-es/omit";
 import React, { ReactElement } from "react";
 import { Checkbox, Form, Input, Select } from "semantic-ui-react";
-import { FieldButtonTypes } from "../models";
+import { CheckboxAdapterPropsInterface, FieldButtonTypes } from "../models";
 
 /**
  * The enter key.
@@ -173,6 +173,14 @@ export const TextAreaAdapter = (props): ReactElement => {
     );
 };
 
+/**
+ * Toggle adapter.
+ * @deprecated Use `CheckboxAdapter` instead.
+ *
+ * @param props - Props injected to the component. props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
+ */
 export const ToggleAdapter = (props): ReactElement => {
 
     const { childFieldProps, input, meta } = props;
@@ -195,6 +203,47 @@ export const ToggleAdapter = (props): ReactElement => {
             defaultChecked={ !(childFieldProps.value.length == 0) }
             autoFocus={ childFieldProps.autoFocus || false }
             { ...childFieldProps }
+        />
+    );
+};
+
+/**
+ * Semantic Checkbox adapter.
+ * @see {@link https://codesandbox.io/s/react-final-form-simple-example-3we74?fontsize=14&file=/index.js}
+ *
+ * @param {CheckboxAdapterPropsInterface} props - Props injected to the component.
+ * 
+ * @return {React.ReactElement}
+ */
+export const CheckboxAdapter = (props: CheckboxAdapterPropsInterface): ReactElement => {
+
+    const {
+        childFieldProps,
+        input: { value, ...input },
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        type, // unused, just don't pass it along with the ...rest
+        ...rest
+    } = props;
+
+    return (
+        <Form.Checkbox
+            { ...input }
+            { ...rest }
+            label={ childFieldProps?.label }
+            name={ childFieldProps?.name }
+            onChange={ (event, { checked }) => {
+                if (childFieldProps?.listen && typeof childFieldProps.listen === "function") {
+                    childFieldProps.listen(checked);
+                }
+
+                input.onChange({
+                    target: {
+                        checked,
+                        type: "checkbox",
+                        value
+                    }
+                });
+            } }
         />
     );
 };

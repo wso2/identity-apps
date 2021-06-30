@@ -20,6 +20,7 @@ export * from "./adapters";
 export * from "./field";
 export * from "./field-button";
 export * from "./field-checkbox";
+export * from "./field-checkbox-legacy";
 export * from "./field-input";
 export * from "./field-textarea";
 export * from "./field-dropdown";

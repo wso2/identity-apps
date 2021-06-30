@@ -16,7 +16,16 @@
  * under the License.
  */
 
-export * from "./adapters";
-export * from "./fields";
-export * from "./form";
-export * from "./validation";
+import { CheckboxProps } from "semantic-ui-react";
+import { CheckboxField } from "./form";
+
+/**
+ * Checkbox adapter props interface.
+ */
+export interface CheckboxAdapterPropsInterface extends CheckboxProps {
+
+    /**
+     * Props for the child.
+     */
+    childFieldProps: CheckboxField;
+}

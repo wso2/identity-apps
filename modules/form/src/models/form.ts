@@ -62,7 +62,7 @@ interface FormFieldModel {
     className?: string;
     name: string;
     label?: string | React.ReactElement;
-    listen?: (values: Map<string, FormValue>) => void;
+    listen?: (values: (Map<string, FormValue> | any)) => void;
     autoFocus?: boolean;
     readOnly?: boolean;
     disabled?: boolean;
