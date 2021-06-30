@@ -126,7 +126,7 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
                             icon: getSidePanelIcons().identityProviders
                         },
                         id: "identityProviders",
-                        name: "common:identityProviders",
+                        name: "console:develop.features.sidePanel.identityProviders",
                         order: 2,
                         path: AppConstants.getPaths().get("IDP"),
                         protected: true,
