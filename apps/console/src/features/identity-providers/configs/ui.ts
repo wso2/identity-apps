@@ -17,10 +17,7 @@
  */
 
 import BasicAuthIcon from "../../../themes/default/assets/images/authenticators/basic-auth.png";
-import EmailOTPIcon from "../../../themes/default/assets/images/authenticators/email-otp.svg";
 import FIDOLogo from "../../../themes/default/assets/images/authenticators/fido.png";
-import SMSOTPIcon from "../../../themes/default/assets/images/authenticators/sms-otp.svg";
-import TOTPIcon from "../../../themes/default/assets/images/authenticators/totp.png";
 import SalesforceLogo from "../../../themes/default/assets/images/connectors/salesforce.png";
 import SCIMLogo from "../../../themes/default/assets/images/connectors/scim.png";
 import SPMLLogo from "../../../themes/default/assets/images/connectors/spml.png";
@@ -29,10 +26,12 @@ import ClockColoredIcon from "../../../themes/default/assets/images/icons/clock-
 import ConnectionIcon from "../../../themes/default/assets/images/icons/connection.svg";
 import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
 import { ReactComponent as GearsIcon } from "../../../themes/default/assets/images/icons/gears-icon.svg";
-import { ReactComponent as LockShieldIcon } from "../../../themes/default/assets/images/icons/lock-shield.svg";
 import MagnifierColoredIcon from "../../../themes/default/assets/images/icons/magnifier-colored-icon.svg";
 import { ReactComponent as OpenBookIcon } from "../../../themes/default/assets/images/icons/open-book-icon.svg";
+import TOTPIcon from "../../../themes/default/assets/images/icons/outline-icons/clock-outline.svg";
 import { ReactComponent as ReportIcon } from "../../../themes/default/assets/images/icons/report-icon.svg";
+import EmailOTPIcon from "../../../themes/default/assets/images/icons/solid-icons/email-solid.svg";
+import SMSOTPIcon from "../../../themes/default/assets/images/icons/solid-icons/sms-solid.svg";
 import {
     ReactComponent as ProvisionCapabilityIcon
 } from "../../../themes/default/assets/images/identity-provider-capabilities/provision.svg";
@@ -91,7 +90,7 @@ export const getAuthenticatorIcons = (): any => {
 
     return {
         basic: BasicAuthIcon,
-        default: LockShieldIcon,
+        default: ConnectionIcon,
         emailOTP: EmailOTPIcon,
         facebook: FacebookLogo,
         fido: FIDOLogo,
