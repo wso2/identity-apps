@@ -46,6 +46,9 @@ export const getServerConfigurationsResourceEndpoints = (
       loginPolicies: `${ serverHost }/api/server/v1/identity-governance/${
           ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
           }`,
+      multiFactorAuthenticators: `${ serverHost }/api/server/v1/identity-governance/${
+          ServerConfigurationsConstants.MFA_CONNECTOR_CATEGORY_ID
+          }`,
       passwordHistory: `${ serverHost }/api/server/v1/identity-governance/${
           ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
           }/connectors/${ServerConfigurationsConstants.PASSWORD_HISTORY_CONNECTOR_ID}`,

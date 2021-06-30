@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { getServerConfigurationsResourceEndpoints } from "../../server-configurations/configs";
 import { IDPResourceEndpointsInterface } from "../models";
 
 /**
@@ -27,6 +28,7 @@ import { IDPResourceEndpointsInterface } from "../models";
 export const getIDPResourceEndpoints = (serverHost: string): IDPResourceEndpointsInterface => {
     return {
         identityProviders: `${ serverHost }/api/server/v1/identity-providers`,
-        localAuthenticators: `${ serverHost }/api/server/v1/configs/authenticators`
+        localAuthenticators: `${ serverHost }/api/server/v1/configs/authenticators`,
+        multiFactorAuthenticators: getServerConfigurationsResourceEndpoints(serverHost).multiFactorAuthenticators
     };
 };

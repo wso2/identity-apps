@@ -22,4 +22,5 @@
 export interface IDPResourceEndpointsInterface {
     identityProviders: string;
     localAuthenticators: string;
+    multiFactorAuthenticators: string;
 }

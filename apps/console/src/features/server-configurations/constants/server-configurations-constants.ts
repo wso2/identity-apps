@@ -189,6 +189,11 @@ export class ServerConfigurationsConstants {
 	 */
 	public static readonly ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID: string = "QWNjb3VudCBNYW5hZ2VtZW50";
 
+	/**
+	 * UUID of the Multi-Factor Authenticators governance connector category.
+	 */
+	public static readonly MFA_CONNECTOR_CATEGORY_ID: string = "TXVsdGkgRmFjdG9yIEF1dGhlbnRpY2F0b3Jz";
+
     /**
      * User email verification API Keyword constants.
      */

@@ -17,6 +17,7 @@
  */
 
 import { LinkInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { GovernanceConnectorInterface } from "../../server-configurations/models";
 import { TemplateContentInterface } from "../data/identity-provider-templates";
 
 export interface IdentityProviderTemplateGroupInterface {
@@ -426,6 +427,7 @@ export interface CommonPluggableComponentMetaInterface {
 
 export interface CommonPluggableComponentPropertyInterface {
     key?: string;
+    name?: string;
     value?: string;
 }
 
@@ -511,21 +513,6 @@ export enum SupportedIdentityProviderTemplateCategories {
 }
 
 /**
- *  Identity provider templates interface.
- */
-export interface IdentityProviderTemplatesInterface {
-    [key: string]: IdentityProviderTemplateInterface[];
-}
-
-export const emptyIdentityProvider = (): StrictIdentityProviderInterface => ({
-    description: "",
-    id: "",
-    image: "",
-    isEnabled: false,
-    name: ""
-});
-
-/**
  * Interface for the identity provider reducer state. With {@link groupedTemplates}
  * we add support for grouped templates for identity providers.
  */
@@ -563,10 +550,20 @@ export interface LocalAuthenticatorInterface extends CommonPluggableComponentInt
      */
     isEnabled?: boolean;
     /**
+     * Authenticator Type.
+     * @example [ LOCAL, REQUEST_PATH ]
+     */
+    type?:  string;
+    /**
      * Details endpoint.
      */
     self?: string;
 }
+
+/**
+ * Interface for Multi-factor Authenticators.
+ */
+export type MultiFactorAuthenticatorInterface = GovernanceConnectorInterface;
 
 /**
  * Generic interface for authenticators local/federated.

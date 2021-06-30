@@ -206,10 +206,18 @@ export class IdentityProviderManagementConstants {
         "the required identity provider templates list.";
     public static readonly IDENTITY_PROVIDER_JIT_PROVISIONING_UPDATE_ERROR: string = "An error occurred while" +
         " updating the JIT provisioning configurations of the identity provider.";
-    public static readonly LOCAL_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
+    public static readonly LOCAL_AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while fetching local authenticators.";
-    public static readonly LOCAL_AUTHENTICATOR_FETCH_ERROR: string = "An error occurred while fetching the local" +
+    public static readonly LOCAL_AUTHENTICATORS_FETCH_ERROR: string = "An error occurred while fetching the local" +
         "authenticators.";
+    public static readonly MULTI_FACTOR_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
+        "status code while fetching the multi-factor authenticator.";
+    public static readonly MULTI_FACTOR_AUTHENTICATOR_FETCH_ERROR: string = "An error occurred while fetching the " +
+        "multi-factor authenticator.";
+    public static readonly MULTI_FACTOR_AUTHENTICATOR_UPDATE_INVALID_STATUS_CODE_ERROR: string = "Received an " +
+        "invalid status code while updating the multi-factor authenticator.";
+    public static readonly MULTI_FACTOR_AUTHENTICATOR_UPDATE_ERROR: string = "An error occurred while updating the " +
+        "multi-factor authenticator.";
     public static readonly COMBINED_AUTHENTICATOR_FETCH_ERROR: string = "An error occurred while fetching the local" +
         "and federated authenticators.";
     public static readonly IDENTITY_PROVIDER_CLAIMS_UPDATE_ERROR: string = "An error occurred while updating claims " +
