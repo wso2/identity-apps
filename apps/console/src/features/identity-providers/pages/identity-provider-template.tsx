@@ -114,14 +114,6 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
         isIDPTemplateRequestLoading,
         setIDPTemplateRequestLoadingStatus
     ] = useState<boolean>(false);
-    const [ helpPanelDocContent, setHelpPanelDocContent ] = useState<string>(undefined);
-    const [ helpPanelSelectedTemplateDoc, setHelpPanelSelectedTemplateDoc ] = useState<any>(undefined);
-    const [ docsTabBackButtonEnabled, setDocsTabBackButtonEnabled ] = useState<boolean>(true);
-    const [ templateDocs, setTemplateDocs ] = useState<DocPanelUICardInterface[]>(undefined);
-    const [
-        isHelpPanelDocContentRequestLoading,
-        setHelpPanelDocContentRequestLoadingStatus
-    ] = useState<boolean>(false);
 
     /**
      * We use this state to track which template is currently
@@ -132,57 +124,6 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
      * Also, see {@link handleTemplateSelection} to set states.
      */
     const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderTemplateInterface>(undefined);
-
-    /**
-     * Called when the template doc is changed in the template section.
-     */
-    useEffect(() => {
-        if (!helpPanelSelectedTemplateDoc?.docs) {
-            return;
-        }
-
-        setHelpPanelDocContentRequestLoadingStatus(true);
-
-        getRawDocumentation<string>(
-            config.endpoints.documentationContent,
-            helpPanelSelectedTemplateDoc.docs,
-            config.deployment.documentation.provider,
-            config.deployment.documentation.githubOptions.branch)
-            .then((response) => {
-                setHelpPanelDocContent(response);
-            })
-            .finally(() => {
-                setHelpPanelDocContentRequestLoadingStatus(false);
-            });
-    }, [
-        helpPanelSelectedTemplateDoc,
-        config.endpoints.documentationContent,
-        config.deployment.documentation.provider,
-        config.deployment.documentation.githubOptions.branch
-    ]);
-
-    /**
-     * Filter documents based on the template type.
-     */
-    useEffect(() => {
-        const templateDocs = get(helpPanelDocStructure,
-            IdentityProviderManagementConstants.IDP_TEMPLATES_CREATE_DOCS_KEY);
-
-        if (!templateDocs) {
-            return;
-        }
-
-        const templates: DocPanelUICardInterface[] =
-            IdentityProviderManagementUtils.generateIDPTemplateDocs(templateDocs)
-                .filter((doc) => doc.name !== "overview");
-
-        if (templates instanceof Array && templates.length === 1) {
-            setHelpPanelSelectedTemplateDoc(templateDocs[ 0 ]);
-            setDocsTabBackButtonEnabled(false);
-        }
-
-        setTemplateDocs(templates);
-    }, [ helpPanelDocStructure ]);
 
     /**
      *  Get IDP templates.
@@ -279,89 +220,6 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     };
 
     /**
-     * Handles help panel template doc change event.
-     *
-     * @param template - Selected template.
-     */
-    const handleHelpPanelSelectedTemplate = (template: any) => {
-        setHelpPanelSelectedTemplateDoc(template);
-    };
-
-    const helpPanelTabs: HelpPanelTabInterface[] = [
-        {
-            content: (
-                helpPanelSelectedTemplateDoc
-                    ? (
-                        <>
-                            <PageHeader
-                                title={ helpPanelSelectedTemplateDoc.displayName }
-                                titleAs="h4"
-                                backButton={ docsTabBackButtonEnabled && {
-                                    onClick: () => setHelpPanelSelectedTemplateDoc(undefined),
-                                    text: t("console:develop.features.authenticationProvider.helpPanel.tabs." +
-                                        "samples.content.docs.goBack")
-                                } }
-                                bottomMargin={ false }
-                                data-testid={ `${ testId }-help-panel-docs-tab-page-header` }
-                            />
-                            <Divider hidden/>
-                            {
-                                helpPanelSelectedTemplateDoc.docs && (
-                                    isHelpPanelDocContentRequestLoading
-                                        ? <ContentLoader dimmer/>
-                                        : (
-                                            <Markdown
-                                                source={ helpPanelDocContent }
-                                                data-testid={ `${ testId }-help-panel-docs-tab-markdown-renderer` }
-                                            />
-                                        )
-                                )
-                            }
-                        </>
-                    )
-                    : (
-                        <>
-                            <Heading as="h4">
-                                { t("console:develop.features.authenticationProvider.helpPanel.tabs.samples." +
-                                    "content.docs.title") }
-                            </Heading>
-                            <Hint>
-                                { t("console:develop.features.authenticationProvider.helpPanel.tabs.samples." +
-                                    "content.docs.hint") }
-                            </Hint>
-                            <Divider hidden/>
-
-                            <Grid>
-                                <Grid.Row columns={ 4 }>
-                                    {
-                                        templateDocs && templateDocs.map((sample, index) => (
-                                            <Grid.Column key={ index }>
-                                                <SelectionCard
-                                                    size="auto"
-                                                    header={ sample.displayName }
-                                                    image={ getIdPTemplateDocsIcons()[ sample.image ] }
-                                                    imageSize="mini"
-                                                    spaced="bottom"
-                                                    onClick={ () => handleHelpPanelSelectedTemplate(sample) }
-                                                    data-testid={ `${ testId }-help-panel-docs-tab-selection-card` }
-                                                />
-                                            </Grid.Column>
-                                        ))
-                                    }
-                                </Grid.Row>
-                            </Grid>
-                        </>
-                    )
-            ),
-            heading: t("common:docs"),
-            hidden: !templateDocs || (templateDocs instanceof Array && templateDocs.length < 1),
-            icon: {
-                icon: getHelpPanelIcons().tabs.docs
-            }
-        }
-    ];
-
-    /**
      * Generic function to render the template grid.
      *
      * @param {IdentityProviderTemplateInterface[]} templates - Set of templates to be displayed.
@@ -427,23 +285,6 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     };
 
     return (
-        <HelpPanelLayout
-            enabled={ false }
-            visible={ false }
-            sidebarDirection="right"
-            sidebarMiniEnabled={ false }
-            tabs={ helpPanelTabs }
-            onHelpPanelPinToggle={ () => HelpPanelUtils.togglePanelPin() }
-            isPinned={ HelpPanelUtils.isPanelPinned() }
-            icons={ {
-                close: getHelpPanelActionIcons().close,
-                pin: getHelpPanelActionIcons().pin,
-                unpin: getHelpPanelActionIcons().unpin
-            } }
-            sidebarToggleTooltip={ t("console:develop.features.helpPanel.actions.open") }
-            pinButtonTooltip={ t("console:develop.features.helpPanel.actions.pin") }
-            unpinButtonTooltip={ t("console:develop.features.helpPanel.actions.unPin") }
-        >
             <PageLayout
                 title={ t("console:develop.pages.authenticationProviderTemplate.title") }
                 contentTopMargin={ true }
@@ -509,7 +350,6 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                     } }
                 />
             </PageLayout>
-        </HelpPanelLayout>
     );
 };
 
