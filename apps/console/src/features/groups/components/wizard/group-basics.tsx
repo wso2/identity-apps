@@ -117,6 +117,9 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
     };
 
     useEffect(() => {
+        if (!initialValues?.basicDetails?.groupName) {
+            return;
+        }
         const input = groupName.current.children[ 0 ].children[ 1 ].children[ 0 ] as HTMLInputElement;
         input.focus();
         input.blur();
@@ -293,7 +296,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                                         });
                                     }
                                 } }
-                                value={ initialValues && initialValues.basicDetails?.groupName }
+                                value={ (initialValues && initialValues.basicDetails?.groupName) ?? "" }
                                 loading={ isRegExLoading }
                             />
                         </GridColumn>
