@@ -216,18 +216,20 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
                                                         hidden
                                                     />
                                                     <Table celled compact>
-                                                        <Table.Header>
-                                                            <Table.Row>
-                                                                <Table.HeaderCell>
-                                                                    { t("common:applicationName") }
-                                                                </Table.HeaderCell>
-                                                                { showUsernameInApplicationUsingSub && (
-                                                                    <Table.HeaderCell>
-                                                                        { t("common:user") }
-                                                                    </Table.HeaderCell>
-                                                                ) }
-                                                            </Table.Row>
-                                                        </Table.Header>
+                                                        { /* Temporarily removed table headers as currently one column
+                                                         is displayed. */ }
+                                                        { /*<Table.Header>*/ }
+                                                        { /*    <Table.Row>*/ }
+                                                        { /*        <Table.HeaderCell>*/ }
+                                                        { /*            { t("common:applicationName") }*/ }
+                                                        { /*        </Table.HeaderCell>*/ }
+                                                        { /*        { showUsernameInApplicationUsingSub && (*/ }
+                                                        { /*            <Table.HeaderCell>*/ }
+                                                        { /*                { t("common:user") }*/ }
+                                                        { /*            </Table.HeaderCell>*/ }
+                                                        { /*        ) }*/ }
+                                                        { /*    </Table.Row>*/ }
+                                                        { /*</Table.Header>*/ }
                                                         <Table.Body>
                                                             {
                                                                 userSession.applications.map(
@@ -306,5 +308,5 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
  */
 UserSessionsEdit.defaultProps = {
     "data-testid": "user-sessions-edit",
-    showUsernameInApplicationUsingSub: false,
+    showUsernameInApplicationUsingSub: false
 };
