@@ -18,8 +18,8 @@
 
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { I18nConstants } from "../constants";
+import { SCIMConfigs } from "../extensions/configs";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
-import {SCIMConfigs} from "./scim";
 
 /**
  * Class to handle application config operations.

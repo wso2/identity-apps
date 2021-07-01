@@ -18,6 +18,10 @@
 
 import { SCIMConfigInterface } from "./models/scim";
 
+/**
+ * This configuration is used to overwrite (in asgardeo-app-extension) and pass the,
+ * wso2 custom dialect to the Asgardeo.
+ */
 export const SCIMConfigs: SCIMConfigInterface = {
 
     oidc: "http://wso2.org/oidc/claim",

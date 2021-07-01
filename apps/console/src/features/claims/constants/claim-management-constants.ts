@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import {SCIMConfigs} from "../../../extensions/configs/scim";
+import { SCIMConfigs } from "../../../extensions/configs";
 
 /**
  * Class containing claim constants.
@@ -127,10 +127,10 @@ export class ClaimManagementConstants {
     public static readonly OTHERS: string = "others";
 
     public static readonly SCIM_TABS = [
-        {name: "Enterprise Schema", uri: SCIMConfigs.scim.enterpriseSchema},
-        {name: "User Schema", uri: SCIMConfigs.scim.userSchema},
-        {name: "Core Schema", uri: SCIMConfigs.scim.coreSchema},
-        {name: "Core 1.0 Schema", uri: SCIMConfigs.scim.core1Schema}
+        { name: "Enterprise Schema", uri: SCIMConfigs.scim.enterpriseSchema },
+        { name: "User Schema", uri: SCIMConfigs.scim.userSchema },
+        { name: "Core Schema", uri: SCIMConfigs.scim.coreSchema },
+        { name: "Core 1.0 Schema", uri: SCIMConfigs.scim.core1Schema }
     ]
 
 }

@@ -43,6 +43,7 @@ import { AuthAction, authenticateActionTypes } from "./types";
 import { getProfileInfo, getUserReadOnlyStatus, switchAccount } from "../../api";
 import { Config } from "../../configs";
 import { AppConstants, CommonConstants } from "../../constants";
+import { SCIMConfigs } from "../../extensions/configs";
 import { history } from "../../helpers";
 import {
     AlertLevels,
@@ -59,7 +60,6 @@ import {
     onHttpRequestSuccess
 } from "../../utils";
 import { store } from "../index";
-import {SCIMConfigs} from "../../configs/scim";
 
 /**
  * Dispatches an action of type `SET_SIGN_IN`.
