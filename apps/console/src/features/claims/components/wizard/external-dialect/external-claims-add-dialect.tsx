@@ -127,10 +127,12 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
      */
     useEffect(() => {
 
-        if (claims.length === initialList.length) {
-            onClaimListChange(true);
-        } else {
-            onClaimListChange(false);
+        if (typeof onClaimListChange === "function") {
+            if (claims.length === initialList.length) {
+                onClaimListChange(true);
+            } else {
+                onClaimListChange(false);
+            }
         }
     }, [ claims ]);
 
