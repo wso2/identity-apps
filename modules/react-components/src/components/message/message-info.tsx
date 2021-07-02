@@ -34,6 +34,10 @@ export interface MessageInfoProps extends TestableComponentInterface {
      * Shorthand for primary content.
      * */
     content?: SemanticShorthandContent;
+    /**
+     * Callback method for handle close icon.
+     * */
+    handleCloseInfo?: () => void;
 }
 
 /**
@@ -48,6 +52,7 @@ export const MessageInfo: FunctionComponent<MessageInfoProps> = (props: MessageI
     const {
         header,
         content,
+        handleCloseInfo,
         [ "data-testid" ]: testId
     } = props;
 
@@ -68,14 +73,18 @@ export const MessageInfo: FunctionComponent<MessageInfoProps> = (props: MessageI
     return (
             <Message
                 info
-                header={ (
-                    <Header as='h4'>
-                        <Header.Content>
-                            <Icon name='info circle'/>
-                            { (header) }
-                        </Header.Content>
-                    </Header>
-                ) }
+                onDismiss={ handleCloseInfo }
+                header={
+                    header
+                        ? (
+                            <Header as='h4'>
+                                <Header.Content>
+                                    <Icon name='info circle'/>
+                                    { (header) }
+                                </Header.Content>
+                            </Header>
+                        ) : undefined
+                }
                 content={ generateContent() }
             />
     );
