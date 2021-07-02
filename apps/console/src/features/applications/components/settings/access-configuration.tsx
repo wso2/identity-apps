@@ -444,7 +444,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         // Filter out legacy and unsupported auth protocols.
         supportedProtocols = supportedProtocols.filter((protocol) => {
 
-            if (template.id === CustomApplicationTemplate.id
+            if (template && template.id === CustomApplicationTemplate.id
                 && applicationConfig.customApplication.allowedProtocolTypes
                 && applicationConfig.customApplication.allowedProtocolTypes.length > 0 ) {
                 if (applicationConfig.customApplication.allowedProtocolTypes.includes(protocol)){
