@@ -775,6 +775,49 @@ export const getMultiFactorAuthenticatorDetails = (id: string): Promise<MultiFac
 };
 
 /**
+ * Get the details of a Multi-factor authenticator.
+ *
+ * @param {string} id - Authenticator ID.
+ *
+ * @return {Promise<MultiFactorAuthenticatorInterface>} Response as a promise.
+ */
+export const getMultiFactorAuthenticatorDetails = (id: string): Promise<MultiFactorAuthenticatorInterface> => {
+
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${ store.getState().config.endpoints.multiFactorAuthenticators }/connectors/${ id }`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    IdentityProviderManagementConstants.MULTI_FACTOR_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data as MultiFactorAuthenticatorInterface);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                IdentityProviderManagementConstants.MULTI_FACTOR_AUTHENTICATOR_FETCH_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
  * Update a Multi-factor authenticator.
  *
  * @param {string} id - Authenticator ID.
