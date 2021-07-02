@@ -33,6 +33,7 @@
                 // To be used for tabs which are disabled and labeled as coming soon features.
                 &.upcoming-item {
                     cursor: not-allowed !important;
+                    border-color: transparent;
 
                     .coming-soon-label {
                         margin-left: 0.2em;
