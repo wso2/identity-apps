@@ -1,6 +1,6 @@
 {
     "category": "DEFAULT",
-    "description": "Enterprise connectors via standard protocols",
+    "description": "Login users with existing accounts Enterprise IdPs.",
     "enabled": true,
     "displayOrder": 4,
     "id": "enterprise-protocols",
