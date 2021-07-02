@@ -4,6 +4,7 @@
     "description": "Configure a new enterprise identity provider with SAML 2.0",
     "displayOrder": 5,
     "id": "saml-idp",
+    "tags": [ "SAML" ],
     "idp": {
         "certificate": {},
         "claims": {

@@ -6,6 +6,7 @@
     "category": "DEFAULT",
     "displayOrder": 2,
     "services": [],
+    "tags": [ "Social-Login" ],
     "idp": {
         "name": "Facebook",
         "description": "",

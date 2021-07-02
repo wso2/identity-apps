@@ -8,5 +8,6 @@
     "name": "Enterprise",
     "services": [],
     "disabled": false,
-    "type": "ENTERPRISE"
+    "type": "ENTERPRISE",
+    "tags": [ "OIDC", "SAML" ]
 }

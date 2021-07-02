@@ -4,6 +4,7 @@
     "templateGroup": "enterprise-protocols",
     "displayOrder": 4,
     "id": "oidc-idp",
+    "tags": [ "OIDC" ],
     "idp": {
         "certificate": {},
         "claims": {
