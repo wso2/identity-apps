@@ -422,6 +422,8 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
             bottomMargin={ false }
             showBottomDivider
             data-testid={ `${ testId }-page-layout` }
+            headingColumnWidth={ 13 }
+            actionColumnWidth={ 3 }
         >
             {
                 (SHOW_TEMPLATE_SEARCH || SHOW_TEMPLATE_FILTER) && (

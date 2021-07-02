@@ -4747,8 +4747,9 @@ export const console: ConsoleNS = {
         pages: {
             applicationTemplate: {
                 backButton: "Go back to applications",
-                subTitle: "Choose one of the predefined types to onboard an application.",
-                title: "Use Predefined Application Type"
+                subTitle: "Register an application using one of the templates given below. " +
+                    "If you don't find a matching template, create a custom application.",
+                title: "Register New Application"
             },
             applications: {
                 subTitle: "Manage applications using templates, and configure authentication.",
