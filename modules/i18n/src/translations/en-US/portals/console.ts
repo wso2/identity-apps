@@ -2849,6 +2849,38 @@ export const console: ConsoleNS = {
                         }
                     },
                     authenticatorSettings: {
+                        emailOTP: {
+                            enableBackupCodes: {
+                                hint: "Enable authenticate with backup codes.",
+                                label: "Enable authenticate with backup codes",
+                                validations: {
+                                    required: "Enable authenticate with backup codes is a required field."
+                                }
+                            },
+                            expiryTime: {
+                                hint: "Define the time in seconds between two new passwords.",
+                                label: "Email OTP expiry time",
+                                placeholder: "Enter Email OTP expiry time.",
+                                validations: {
+                                    required: "Enter Email OTP expiry time is a required field."
+                                }
+                            },
+                            tokenLength: {
+                                hint: "Number of characters in the OTP token.",
+                                label: "Email OTP token length",
+                                placeholder: "Enter Email OTP token length.",
+                                validations: {
+                                    required: "Enter Email OTP token length is a required field."
+                                }
+                            },
+                            useNumericChars: {
+                                hint: "Allow OTP token to have <1>0-9</1> characters only.",
+                                label: "Use numeric characters for OTP token",
+                                validations: {
+                                    required: "Enable authenticate with backup codes is a required field."
+                                }
+                            }
+                        },
                         facebook: {
                             callbackUrl: {
                                 hint: "The set of redirect URIs specified as valid in the Facebook OAuth app.",

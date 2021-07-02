@@ -1087,6 +1087,38 @@ export interface ConsoleNS {
                         };
                     };
                     authenticatorSettings: {
+                        emailOTP: {
+                            enableBackupCodes: {
+                                hint: string;
+                                label: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            expiryTime: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            tokenLength: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            useNumericChars: {
+                                hint: string;
+                                label: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                        };
                         facebook: {
                             callbackUrl: FormAttributes;
                             clientId: FormAttributes;

@@ -26,6 +26,7 @@ import {
     GithubAuthenticatorForm,
     GoogleAuthenticatorForm
 } from "../authenticators";
+import { EmailOTPAuthenticatorForm } from "../authenticators/email-otp-authenticator-form";
 
 /**
  * Proptypes for the authenticator form factory component.
@@ -92,6 +93,18 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
         case IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID:
             return (
                 <GithubAuthenticatorForm
+                    initialValues={ initialValues }
+                    metadata={ metadata }
+                    onSubmit={ onSubmit }
+                    triggerSubmit={ triggerSubmit }
+                    enableSubmitButton={ enableSubmitButton }
+                    data-testid={ testId }
+                    showCustomProperties={ showCustomProperties }
+                />
+            );
+        case IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID:
+            return (
+                <EmailOTPAuthenticatorForm
                     initialValues={ initialValues }
                     metadata={ metadata }
                     onSubmit={ onSubmit }
