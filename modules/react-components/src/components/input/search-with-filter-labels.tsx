@@ -51,6 +51,10 @@ export interface SearchWithFilterLabelsPropsInterface extends InputProps,
      * @param {string[]} selectedFilters - Set of already selected filters.
      */
     onSearch: (query: string, selectedFilters: string[]) => void;
+    /**
+     * Externally provided search input.
+     */
+    searchInput?: ReactElement;
 }
 
 /**
@@ -72,6 +76,7 @@ export const SearchWithFilterLabels: FunctionComponent<PropsWithChildren<SearchW
         isLoading,
         icon,
         placeholder,
+        searchInput,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -121,17 +126,23 @@ export const SearchWithFilterLabels: FunctionComponent<PropsWithChildren<SearchW
             className={ classes }
             data-testid={ testId }
         >
-            <Input
-                fluid
-                loading={ isLoading }
-                className="mb-3"
-                icon={ icon ?? <Icon name="search"/> }
-                value={ searchQuery }
-                iconPosition="left"
-                onChange={ handleQuerySearch }
-                placeholder={ placeholder }
-                { ...rest }
-            />
+            {
+                searchInput
+                    ? searchInput
+                    : (
+                        <Input
+                            fluid
+                            loading={ isLoading }
+                            className="mb-3"
+                            icon={ icon ?? <Icon name="search"/> }
+                            value={ searchQuery }
+                            iconPosition="left"
+                            onChange={ handleQuerySearch }
+                            placeholder={ placeholder }
+                            { ...rest }
+                        />
+                    )
+            }
             {
                 (filterLabels && Array.isArray(filterLabels) && filterLabels.length > 0) && (
                     <Label.Group>
