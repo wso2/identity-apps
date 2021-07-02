@@ -410,7 +410,7 @@ export const AppUtils = (function() {
                         .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, _config.serverOrigin)
                         .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                         .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenantProxy())
-                        .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
+                        .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName() !== this.getSuperTenant()
                             ? this.getTenantName()
                             : this.getSuperTenantProxy()),
                 tokenEndpointURL: _config.idpConfigs
