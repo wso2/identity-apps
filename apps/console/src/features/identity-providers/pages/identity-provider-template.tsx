@@ -16,44 +16,25 @@
  * under the License.
  */
 
-import { getRawDocumentation } from "@wso2is/core/api";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
-    EmptyPlaceholder,
-    Heading,
-    HelpPanelLayout,
-    HelpPanelTabInterface,
-    Hint,
-    Markdown,
-    PageHeader,
+    GridLayout,
     PageLayout,
-    SelectionCard,
-    TemplateGrid
+    ResourceGrid
 } from "@wso2is/react-components";
-import get from "lodash-es/get";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { Divider, Grid } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
     ConfigReducerStateInterface,
-    DocPanelUICardInterface,
-    HelpPanelUtils,
-    PortalDocumentationStructureInterface,
-    getEmptyPlaceholderIllustrations,
-    getHelpPanelActionIcons,
     history
 } from "../../core";
 import { AuthenticatorCreateWizardFactory } from "../components/wizards";
-import {
-    getHelpPanelIcons,
-    getIdPIcons,
-    getIdPTemplateDocsIcons
-} from "../configs";
+import { getIdPIcons } from "../configs";
 import { IdentityProviderManagementConstants } from "../constants";
 import {
     IdentityProviderTemplateCategoryInterface,
@@ -62,8 +43,7 @@ import {
     IdentityProviderTemplateLoadingStrategies
 } from "../models";
 import { setAvailableAuthenticatorsMeta } from "../store";
-import { IdentityProviderManagementUtils } from "../utils";
-import { IdentityProviderTemplateManagementUtils } from "../utils";
+import { IdentityProviderManagementUtils, IdentityProviderTemplateManagementUtils } from "../utils";
 
 /**
  * Proptypes for the IDP template selection page component.
@@ -89,46 +69,28 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
 
     const dispatch = useDispatch();
+
     const { t } = useTranslation();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const availableAuthenticators = useSelector((state: AppState) => state.identityProvider.meta.authenticators);
-    const helpPanelDocStructure: PortalDocumentationStructureInterface = useSelector(
-        (state: AppState) => state.helpPanel.docStructure);
+    const identityProviderTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
+        (state: AppState) => state.identityProvider?.groupedTemplates);
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ templateType, setTemplateType ] = useState<string>(undefined);
     const [ categorizedTemplates, setCategorizedTemplates ] = useState<IdentityProviderTemplateCategoryInterface[]>([]);
-
-    /**
-     * Since we have grouped templates for identity providers,
-     * we pick the {@link groupedTemplates}. If you want to see
-     * where the state is populated check dispatch events in
-     * {@link getIdentityProviderTemplates} method.
-     */
-    const identityProviderTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
-        (state: AppState) => state.identityProvider?.groupedTemplates
-    );
-
     const [
         isIDPTemplateRequestLoading,
         setIDPTemplateRequestLoadingStatus
     ] = useState<boolean>(false);
-
-    /**
-     * We use this state to track which template is currently
-     * selected. This value will get populated once the user clicks
-     * on a selection card. With this new piece of state we pass
-     * down both {@link type} (which is the templateId) and
-     * template object itself to {@link AuthenticatorCreateWizardFactory}.
-     * Also, see {@link handleTemplateSelection} to set states.
-     */
     const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderTemplateInterface>(undefined);
 
     /**
      *  Get IDP templates.
      */
     useEffect(() => {
+
         if (identityProviderTemplates !== undefined) {
             return;
         }
@@ -146,6 +108,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
          * template-group.
          */
         const skipGrouping = false, sortTemplates = true;
+
         IdentityProviderTemplateManagementUtils
             .getIdentityProviderTemplates(useAPI, skipGrouping, sortTemplates)
             .finally(() => setIDPTemplateRequestLoadingStatus(false));
@@ -156,6 +119,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
      * Categorize the IDP templates.
      */
     useEffect(() => {
+
         if (!identityProviderTemplates || !Array.isArray(identityProviderTemplates)
             || !(identityProviderTemplates.length > 0)) {
             return;
@@ -184,7 +148,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
         if (urlSearchParams.get(IdentityProviderManagementConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY)
             === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE) {
 
-            handleTemplateSelection(null, { id: IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE });
+            handleTemplateSelection(null, IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE);
             return;
         }
     }, [ urlSearchParams.get(IdentityProviderManagementConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY) ]);
@@ -193,9 +157,11 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
      * Handles back button click.
      */
     const handleBackButtonClick = (): void => {
+
         if (availableAuthenticators) {
             dispatch(setAvailableAuthenticatorsMeta(undefined));
         }
+
         history.push(AppConstants.getPaths().get("IDP"));
     };
 
@@ -205,62 +171,19 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
      * @param {React.SyntheticEvent} e - Click event.
      * @param {string} id - Id of the template.
      */
-    const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
+    const handleTemplateSelection = (e: SyntheticEvent, id: string): void => {
+
         /**
          * Find the matching template for the selected card.
          * if found then set the template to state.
          */
-        const selectedTemplate = identityProviderTemplates.find(
-            ({ id: templateId }) => (templateId === id)
-        );
+        const selectedTemplate = identityProviderTemplates.find(({ id: templateId }) => (templateId === id));
+
         if (selectedTemplate) {
             setSelectedTemplate(selectedTemplate);
         }
+
         setTemplateType(id);
-    };
-
-    /**
-     * Generic function to render the template grid.
-     *
-     * @param {IdentityProviderTemplateInterface[]} templates - Set of templates to be displayed.
-     * @param {object} additionalProps - Additional props for the `TemplateGrid` component.
-     * @param {React.ReactElement} placeholder - Empty placeholder for the grid.
-     * @param {IdentityProviderTemplateInterface[]} templatesOverrides - Template array which will get precedence.
-     * @return {React.ReactElement}
-     */
-    const renderTemplateGrid = (templates: IdentityProviderTemplateInterface[],
-                                additionalProps: object,
-                                placeholder?: ReactElement,
-                                templatesOverrides?: IdentityProviderTemplateInterface[]): ReactElement => {
-
-        return (
-            <TemplateGrid<any>
-                className="idp-template-grid"
-                type="idp"
-                templates={
-                    templatesOverrides
-                        ? templatesOverrides
-                        : templates
-                }
-                templateIcons={ getIdPIcons() }
-                templateIconOptions={ {
-                    as: "data-url",
-                    fill: "primary"
-                } }
-                templateIconSize="x60"
-                onTemplateSelect={ handleTemplateSelection }
-                paginate={ true }
-                paginationLimit={ 5 }
-                paginationOptions={ {
-                    showLessButtonLabel: t("common:showLess"),
-                    showMoreButtonLabel: t("common:showMore")
-                } }
-                overlayOpacity={ 0.6 }
-                renderDisabledItemsAsGrayscale={ false }
-                emptyPlaceholder={ placeholder }
-                { ...additionalProps }
-            />
-        );
     };
 
     /**
@@ -285,71 +208,67 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     };
 
     return (
-            <PageLayout
-                title={ t("console:develop.pages.authenticationProviderTemplate.title") }
-                contentTopMargin={ true }
-                description={ t("console:develop.pages.authenticationProviderTemplate.subTitle") }
-                backButton={ {
-                    "data-testid": `${ testId }-page-back-button`,
-                    onClick: handleBackButtonClick,
-                    text: t("console:develop.pages.authenticationProviderTemplate.backButton")
-                } }
-                titleTextAlign="left"
-                bottomMargin={ false }
-                data-testid={ `${ testId }-page-layout` }
-                showBottomDivider
-            >
+        <PageLayout
+            title={ t("console:develop.pages.authenticationProviderTemplate.title") }
+            contentTopMargin={ true }
+            description={ t("console:develop.pages.authenticationProviderTemplate.subTitle") }
+            backButton={ {
+                "data-testid": `${ testId }-page-back-button`,
+                onClick: handleBackButtonClick,
+                text: t("console:develop.pages.authenticationProviderTemplate.backButton")
+            } }
+            titleTextAlign="left"
+            bottomMargin={ false }
+            data-testid={ `${ testId }-page-layout` }
+            showBottomDivider
+        >
+            <GridLayout>
                 {
                     (categorizedTemplates && !isIDPTemplateRequestLoading)
                         ? (
                             categorizedTemplates
                                 .map((category: IdentityProviderTemplateCategoryInterface, index: number) => (
-                                <div key={ index } className="templates quick-start-templates">
-                                    {
-                                        renderTemplateGrid(
-                                            category.templates,
-                                            {
-                                                "data-testid": `${ category.id }-template-grid`,
-                                                heading: category.displayName,
-                                                showTagIcon: category.viewConfigs?.tags?.showTagIcon,
-                                                showTags:  category.viewConfigs?.tags?.showTags,
-                                                subHeading: category.description,
-                                                tagsAs: category.viewConfigs?.tags?.as,
-                                                tagsKey: category.viewConfigs?.tags?.tagsKey,
-                                                tagsSectionTitle: category.viewConfigs?.tags?.sectionTitle
-                                            },
-                                            <EmptyPlaceholder
-                                                image={ getEmptyPlaceholderIllustrations().newList }
-                                                imageSize="tiny"
-                                                title={ t("console:develop.features.templates.emptyPlaceholder.title") }
-                                                subtitle={
-                                                    [ t("console:develop.features.templates.emptyPlaceholder." +
-                                                        "subtitles") ]
-                                                }
-                                                data-testid={
-                                                    `${ testId }-quick-start-template-grid-empty-placeholder`
-                                                }
-                                            />
-                                        )
-                                    }
-                                    <Divider hidden />
-                                </div>
-                            ))
+                                    <ResourceGrid key={ index }>
+                                        {
+                                            category.templates.map((
+                                                template: IdentityProviderTemplateInterface,
+                                                templateIndex: number
+                                            ) => (
+                                                <ResourceGrid.Card
+                                                    key={ templateIndex }
+                                                    resourceName={ template.name }
+                                                    isResourceComingSoon={ template.disabled }
+                                                    comingSoonRibbonLabel={ t("common:comingSoon") }
+                                                    resourceDescription={ template.description }
+                                                    resourceImage={
+                                                        IdentityProviderManagementUtils
+                                                            .resolveTemplateImage(template.image, getIdPIcons())
+                                                    }
+                                                    tags={ template.tags }
+                                                    onClick={ (e: SyntheticEvent) => {
+                                                        handleTemplateSelection(e, template.id);
+                                                    } }
+                                                    data-testid={ `${ testId }-${ template.name }` }
+                                                />
+                                            ))
+                                        }
+                                    </ResourceGrid>
+                                ))
                         )
                         : <ContentLoader dimmer/>
                 }
-                <Divider hidden/>
-                <AuthenticatorCreateWizardFactory
-                    open={ showWizard }
-                    type={ templateType }
-                    selectedTemplate={ selectedTemplate }
-                    onIDPCreate={ handleSuccessfulIDPCreation }
-                    onWizardClose={ () => {
-                        setTemplateType(undefined);
-                        setShowWizard(false);
-                    } }
-                />
-            </PageLayout>
+            </GridLayout>
+            <AuthenticatorCreateWizardFactory
+                open={ showWizard }
+                type={ templateType }
+                selectedTemplate={ selectedTemplate }
+                onIDPCreate={ handleSuccessfulIDPCreation }
+                onWizardClose={ () => {
+                    setTemplateType(undefined);
+                    setShowWizard(false);
+                } }
+            />
+        </PageLayout>
     );
 };
 
