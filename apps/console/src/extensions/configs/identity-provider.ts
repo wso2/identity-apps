@@ -31,7 +31,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
     },
     templates: {
         enterprise: true,
-        facebook: false,
+        facebook: true,
         github: true,
         google: true,
         oidc: true,
