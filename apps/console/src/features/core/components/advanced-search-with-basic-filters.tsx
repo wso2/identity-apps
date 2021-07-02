@@ -61,6 +61,10 @@ export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableCo
      */
     dropdownPosition?: AdvancedSearchPropsInterface["dropdownPosition"];
     /**
+     * Fill color.
+     */
+    fill?: AdvancedSearchPropsInterface[ "fill" ];
+    /**
      * Callback to be triggered on filter query change.
      */
     onFilter: (query: string) => void;
@@ -125,6 +129,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
         defaultSearchOperator,
         dropdownPosition,
         enableQuerySearch,
+        fill,
         filterAttributeOptions,
         filterConditionOptions,
         filterConditionsPlaceholder,
@@ -229,6 +234,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
             clearIcon={ getAdvancedSearchIcons().clear }
             defaultSearchStrategy={ defaultSearchAttribute + " " + defaultSearchOperator }
             dropdownTriggerPopupLabel={ t("console:common.advancedSearch.popups.dropdown") }
+            fill={ fill }
             hintActionKeys={ t("console:common.advancedSearch.hints.querySearch.actionKeys") }
             hintLabel={ t("console:common.advancedSearch.hints.querySearch.label") }
             onExternalSearchQueryClear={ handleExternalSearchQueryClear }
