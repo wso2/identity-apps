@@ -20,6 +20,7 @@
         "build:external": "npx lerna run build --stream --ignore '{@wso2is/console,@wso2is/myaccount}' && npx lerna run build:external --stream --scope '{@wso2is/console,@wso2is/myaccount}'",
         "clean": "npx lerna run clean --stream",
         "clean-all": "npm run remove-package-lock && npm run remove-maven-folders && npm run remove-node-modules",
+        "postinstall": "node ./scripts/pre-install.js",
         "remove-node-modules": "npx lerna exec -- rimraf -rf node_modules && rimraf -rf node_modules",
         "remove-package-lock": "npx lerna exec -- rimraf -rf package-lock.json && rimraf -rf package-lock.json",
         "remove-maven-folders": "npx lerna exec -- rimraf -rf target npm ./apps/myaccount/src/main ./apps/console/src/main && rimraf -rf target npm ./apps/user-portal/src/main ./apps/console/src/main",
