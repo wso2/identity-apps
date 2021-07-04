@@ -50,7 +50,7 @@ import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
     AppState,
-    EventPublisher
+    EventPublisher,
     FeatureConfigInterface,
     UIConstants,
     history,
