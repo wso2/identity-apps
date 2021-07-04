@@ -40,7 +40,7 @@ import { AdvanceAttributeSettings } from "./advance-attribute-settings";
 import { AttributeSelection } from "./attribute-selection";
 import { RoleMapping } from "./role-mapping";
 import { applicationConfig } from "../../../../../extensions";
-import { AppState, FeatureConfigInterface } from "../../../../core";
+import { AppState, EventPublisher, FeatureConfigInterface } from "../../../../core";
 import { SubjectAttributeListItem } from "../../../../identity-providers/components/settings";
 import { updateClaimConfiguration } from "../../../api/";
 import {
@@ -206,6 +206,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     const [ isClaimLoading, setIsClaimLoading ] = useState<boolean>(true);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+
+    const eventPublisher = EventPublisher.getInstance();
 
     const getClaims = () => {
         setIsClaimLoading(true);
@@ -560,6 +562,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     };
 
     const updateValues = () => {
+        eventPublisher.publish("application-user-attribute-click-update-button");
+        
         submitAdvanceForm();
         setTriggerAdvanceSettingFormSubmission();
     };

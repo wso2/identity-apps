@@ -39,12 +39,13 @@ import {
 } from "./attribute-settings";
 import { applicationConfig } from "../../../../../extensions";
 import { ClaimManagementConstants } from "../../../../claims/constants";
-import { AppConstants, getEmptyPlaceholderIllustrations, history } from "../../../../core";
+import { AppConstants, EventPublisher, getEmptyPlaceholderIllustrations, history } from "../../../../core";
 import {
     ClaimConfigurationInterface,
     ClaimMappingInterface,
     RequestedClaimConfigurationInterface
 } from "../../../models";
+
 interface AttributeSelectionPropsInterface extends TestableComponentInterface {
     claims: ExtendedClaimInterface[];
     setClaims: any;
@@ -134,6 +135,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     const [ localClaimURIToBeDeleted, setLocalClaimURIToBeDeleted ] = useState<string>();
 
     const initValue = useRef(false);
+
+    const eventPublisher = EventPublisher.getInstance();
 
     useEffect(() => {
         const tempFilterSelectedExternalClaims = [ ...filterSelectedExternalClaims ];
@@ -392,6 +395,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     };
 
     const handleOpenSelectionModal = () => {
+        eventPublisher.publish("application-user-attribute-click-add");
+        
         setShowSelectionModal(true);
     };
 

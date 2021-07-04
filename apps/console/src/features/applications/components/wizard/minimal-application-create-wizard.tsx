@@ -51,6 +51,7 @@ import {
     AppConstants,
     AppState,
     CORSOriginsListInterface,
+    EventPublisher,
     ModalWithSidePanel,
     getCORSOrigins,
     getTechnologyLogos,
@@ -135,6 +136,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const [samlConfigureMode, setSAMLConfigureMode] = useState<string>(undefined);
 
     const [ alert, setAlert, notification ] = useWizardAlert();
+
+    const eventPublisher = EventPublisher.getInstance();
 
     useEffect(() => {
         // Stop fetching CORS origins if the selected template is `Expert Mode`.
@@ -227,6 +230,11 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         }
         createApplication(application)
             .then((response) => {
+                eventPublisher.publish("application-register-new-application", {
+                    "type": title,
+                    "protocol": selectedTemplate.name
+                });
+                
                 dispatch(
                     addAlert({
                         description: t(

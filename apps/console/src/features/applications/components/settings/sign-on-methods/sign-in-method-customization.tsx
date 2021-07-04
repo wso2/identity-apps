@@ -27,7 +27,7 @@ import { Divider, Grid, Icon } from "semantic-ui-react";
 import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
-import { AppState, ConfigReducerStateInterface, FeatureConfigInterface } from "../../../../core";
+import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
 import { GenericAuthenticatorInterface } from "../../../../identity-providers";
 import { getRequestPathAuthenticators, updateAuthenticationSequence } from "../../../api";
 import {
@@ -114,6 +114,8 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
     const [ steps, setSteps ] = useState<number>(1);
     const [ isDefaultScript, setIsDefaultScript ] = useState<boolean>(true);
     const [ isButtonDisabled, setIsButtonDisabled ] = useState<boolean>(false);
+
+    const eventPublisher = EventPublisher.getInstance();
 
     /**
      * Toggles the update trigger.
@@ -306,6 +308,8 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
      * Handles the update button click event.
      */
     const handleUpdateClick = (): void => {
+        eventPublisher.publish("application-sign-in-method-click-update-button");
+        
         if (AdaptiveScriptUtils.isEmptyScript(adaptiveScript)) {
             setAdaptiveScript(AdaptiveScriptUtils.generateScript(steps + 1).join("\n"));
             setIsDefaultScript(true);

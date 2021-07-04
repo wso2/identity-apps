@@ -30,6 +30,7 @@ import { attributeConfig } from "../../../../../extensions";
 import { 
     AdvancedSearchWithBasicFilters, 
     AppState, 
+    EventPublisher,
     FeatureConfigInterface, 
     UIConstants, 
     filterList, 
@@ -118,6 +119,8 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
     const dispatch = useDispatch();
 
     const { dialectID, claims, update, isLoading } = props;
+
+    const eventPublisher = EventPublisher.getInstance();
 
     useEffect(() => {
         if (claims) {
@@ -363,6 +366,10 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                             <PrimaryButton
                                 disabled={ disableSubmit }
                                 onClick={ () => {
+                                    eventPublisher.publish("manage-attribute-add-new-attribute", {
+                                        "attributeType": attributeType
+                                    });
+                                    
                                     setTriggerAddExternalClaim();
                                 } }
                                 data-testid={ `${ testId }-add-external-claim-modal-save-button` }

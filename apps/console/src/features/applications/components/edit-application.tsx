@@ -26,7 +26,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Form, Grid } from "semantic-ui-react";
+import { Form, Grid, TabProps } from "semantic-ui-react";
 import { InboundProtocolsMeta } from "./meta";
 import {
     AccessConfiguration,
@@ -38,7 +38,14 @@ import {
 } from "./settings";
 import { Info } from "./settings/info";
 import { ComponentExtensionPlaceholder, applicationConfig } from "../../../extensions";
-import { AppState, CORSOriginsListInterface, FeatureConfigInterface, getCORSOrigins, history } from "../../core";
+import { 
+    AppState, 
+    CORSOriginsListInterface, 
+    EventPublisher, 
+    FeatureConfigInterface, 
+    getCORSOrigins, 
+    history 
+} from "../../core";
 import { getInboundProtocolConfig } from "../api";
 import { ApplicationManagementConstants } from "../constants";
 import {
@@ -153,6 +160,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ activeTabIndex, setActiveTabIndex ] = useState<number>(undefined);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(undefined);
     const [ totalTabs, setTotalTabs ] = useState<number>(undefined);
+
+    const eventPublisher = EventPublisher.getInstance();
 
     /**
      * Called when an application updates.
@@ -407,11 +416,14 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      * Handles the tab change.
      *
      * @param {React.SyntheticEvent} e - Click event.
-     * @param {number} activeIndex - Active tab index.
+     * @param {TabProps} data - 
      */
-    const handleTabChange = (e: SyntheticEvent, { activeIndex }): void => {
+     const handleTabChange = (e: SyntheticEvent, data: TabProps): void => {
+        eventPublisher.publish("application-switch-edit-application-tabs", {
+            "menuItemName": data.panes[data.activeIndex].menuItem
+        });
 
-        handleActiveTabIndexChange(activeIndex);
+        handleActiveTabIndexChange(data.activeIndex as number);
     };
 
     /**

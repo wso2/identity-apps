@@ -45,7 +45,7 @@ import { AppConstants } from "../constants";
 import { history } from "../helpers";
 import { ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
-import { CommonUtils } from "../utils";
+import { CommonUtils, EventPublisher } from "../utils";
 
 /**
  * Dashboard layout Prop types.
@@ -95,6 +95,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         useSelector((state: AppState) => state.accessControl.isManageAllowed);
 
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>(undefined);
+
+    const eventPublisher = EventPublisher.getInstance();
 
     useEffect(() => {
         if (isEmpty(config)) {
@@ -152,6 +154,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         icon: AppSwitcherIcons().console,
                         name: t("console:common.header.appSwitch.console.name"),
                         onClick: () => {
+                            eventPublisher.publish("console-click-visit-console");
+
                             window.open(consoleAppURL, "_self");
                         }
                     },
@@ -162,6 +166,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         icon: AppSwitcherIcons().myAccount,
                         name: t("console:common.header.appSwitch.myAccount.name"),
                         onClick: () => {
+                            eventPublisher.publish("console-click-visit-my-account");
+
                             window.open(accountAppURL, "_blank", "noopener");
                         }
                     }
@@ -235,7 +241,11 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     {
                         icon: "power off",
                         name: t("common:logout"),
-                        onClick: () => history.push(window[ "AppUtils" ].getConfig().routes.logout)
+                        onClick: () => {
+                            eventPublisher.publish("console-click-logout");
+                            
+                            history.push(window[ "AppUtils" ].getConfig().routes.logout);
+                        }
                     }
                 ] : [
                     {
@@ -246,7 +256,11 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     },{
                         icon: "power off",
                         name: t("common:logout"),
-                        onClick: () => history.push(window[ "AppUtils" ].getConfig().routes.logout)
+                        onClick: () => {
+                            eventPublisher.publish("console-click-logout");
+
+                            history.push(window[ "AppUtils" ].getConfig().routes.logout);
+                        }
                     }
             ] }
             profileInfo={ profileInfo }

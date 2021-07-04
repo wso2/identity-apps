@@ -36,7 +36,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Icon } from "semantic-ui-react";
 import { AddAuthenticatorModal } from "./add-authenticator-modal";
 import { AuthenticationStep } from "./authentication-step";
-import { AppState, ConfigReducerStateInterface } from "../../../../../core";
+import { AppState, ConfigReducerStateInterface, EventPublisher } from "../../../../../core";
 import {
     AuthenticatorCategories,
     AuthenticatorMeta,
@@ -149,6 +149,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const [ addNewAuthenticatorClicked, setAddNewAuthenticatorClicked ] = useState<boolean>(false);
 
     const authenticationStepsDivRef = useRef<HTMLDivElement>(null);
+
+    const eventPublisher = EventPublisher.getInstance();
 
     /**
      * Separates out the different authenticators to their relevant categories.
@@ -591,6 +593,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             id: steps.length + 1,
             options: []
         });
+
+        eventPublisher.publish("application-sign-in-method-click-add-new-step");
 
         setAuthenticationSteps(steps);
         updateSteps(true);

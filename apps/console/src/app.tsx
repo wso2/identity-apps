@@ -40,7 +40,7 @@ import { I18nextProvider, Trans } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { initializeAuthentication } from "./features/authentication";
-import { PreLoader } from "./features/core";
+import { EventPublisher, PreLoader } from "./features/core";
 import { ProtectedRoute } from "./features/core/components";
 import { Config, getBaseRoutes } from "./features/core/configs";
 import { AppConstants } from "./features/core/constants";
@@ -72,6 +72,8 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
     const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
 
     const [ baseRoutes, setBaseRoutes ] = useState<RouteInterface[]>(getBaseRoutes());
+
+    const eventPublisher = EventPublisher.getInstance();
 
     /**
      * Set the deployment configs in redux state.
@@ -135,6 +137,8 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
         }
 
         if (isPortalAccessGranted<FeatureConfigInterface>(config?.ui?.features, allowedScopes)) {
+            eventPublisher.publish("page-visit-console-landing-page");
+
             return;
         }
 

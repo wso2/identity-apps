@@ -30,7 +30,7 @@ import FacebookLoginSequenceTemplate from "./templates/facebook-login-sequence.j
 import GitHubLoginSequenceTemplate from "./templates/github-login-sequence.json";
 import GoogleLoginSequenceTemplate from "./templates/google-login-sequence.json";
 import SecondFactorTOTPSequenceTemplate from "./templates/second-factor-totp-sequence.json";
-import { AppConstants, FeatureConfigInterface, history } from "../../../../core";
+import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "../../../../core";
 import {
     AuthenticatorMeta,
     GenericAuthenticatorInterface,
@@ -130,6 +130,8 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         setIDPCreateWizardTriggerOrigin
     ] = useState<"INTERNAL"|"EXTERNAL">(undefined);
 
+    const eventPublisher = EventPublisher.getInstance();
+
     /**
      * Loads federated authenticators and local authenticators on component load.
      */
@@ -223,6 +225,10 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                    googleAuthenticators: GenericAuthenticatorInterface[],
                                    gitHubAuthenticators: GenericAuthenticatorInterface[],
                                    facebookAuthenticators: GenericAuthenticatorInterface[]): void => {
+
+        eventPublisher.publish("application-sign-in-method-click-add", {
+            "method": loginFlow
+        });
 
         if (!loginFlow) {
             setModeratedAuthenticationSequence(authenticationSequence);
