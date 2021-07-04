@@ -19,10 +19,16 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
+    EmptyPlaceholder,
     GridLayout,
     PageLayout,
-    ResourceGrid
+    ResourceGrid,
+    SearchWithFilterLabels
 } from "@wso2is/react-components";
+import cloneDeep from "lodash-es/cloneDeep";
+import isEmpty from "lodash-es/isEmpty";
+import startCase from "lodash-es/startCase";
+import union from "lodash-es/union";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,6 +37,7 @@ import {
     AppConstants,
     AppState,
     ConfigReducerStateInterface,
+    getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
 import { AuthenticatorCreateWizardFactory } from "../components/wizards";
@@ -79,12 +86,33 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ templateType, setTemplateType ] = useState<string>(undefined);
-    const [ categorizedTemplates, setCategorizedTemplates ] = useState<IdentityProviderTemplateCategoryInterface[]>([]);
+    const [
+        originalCategorizedTemplates,
+        setOriginalCategorizedTemplates
+    ] = useState<IdentityProviderTemplateCategoryInterface[]>([]);
+    const [
+        filteredCategorizedTemplates,
+        setFilteredCategorizedTemplates
+    ] = useState<IdentityProviderTemplateCategoryInterface[]>([]);
     const [
         isIDPTemplateRequestLoading,
         setIDPTemplateRequestLoadingStatus
     ] = useState<boolean>(false);
     const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderTemplateInterface>(undefined);
+    const [ filterTags, setFilterTags ] = useState<string[]>([]);
+    const [ searchQuery, setSearchQuery ] = useState<string>("");
+
+    /**
+     * Update the internal filtered templates state when the original changes.
+     */
+    useEffect(() => {
+
+        if (!originalCategorizedTemplates) {
+            return;
+        }
+
+        setFilteredCategorizedTemplates(originalCategorizedTemplates);
+    }, [ originalCategorizedTemplates ]);
 
     /**
      *  Get IDP templates.
@@ -97,10 +125,10 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
 
         setIDPTemplateRequestLoadingStatus(true);
 
-        const useAPI: boolean = config.ui.identityProviderTemplateLoadingStrategy ?
-            config.ui.identityProviderTemplateLoadingStrategy === IdentityProviderTemplateLoadingStrategies.REMOTE :
-            IdentityProviderManagementConstants.DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY ===
-            IdentityProviderTemplateLoadingStrategies.REMOTE;
+        const useAPI: boolean = config.ui.identityProviderTemplateLoadingStrategy
+            ? config.ui.identityProviderTemplateLoadingStrategy === IdentityProviderTemplateLoadingStrategies.REMOTE
+            : (IdentityProviderManagementConstants.DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY ===
+            IdentityProviderTemplateLoadingStrategies.REMOTE);
 
         /**
          * With {@link skipGrouping} being {@code false} we say
@@ -127,10 +155,24 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
 
         IdentityProviderTemplateManagementUtils.categorizeTemplates(identityProviderTemplates)
             .then((response: IdentityProviderTemplateCategoryInterface[]) => {
-                setCategorizedTemplates(response);
+
+                let tags: string[] = [];
+
+                response.filter((category: IdentityProviderTemplateCategoryInterface) => {
+                    category.templates.filter((template: IdentityProviderTemplateInterface) => {
+                        if (!(template?.tags && Array.isArray(template.tags) && template.tags.length > 0)) {
+                            return;
+                        }
+
+                        tags = union(tags, template.tags);
+                    });
+                });
+
+                setFilterTags(tags);
+                setOriginalCategorizedTemplates(response);
             })
             .catch(() => {
-                setCategorizedTemplates([]);
+                setOriginalCategorizedTemplates([]);
             });
     }, [ identityProviderTemplates ]);
 
@@ -207,6 +249,128 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
         history.push(AppConstants.getPaths().get("IDP"));
     };
 
+    /**
+     * Get search results.
+     *
+     * @param {string} query - Search query.
+     * @param {string[]} filterLabels - Filter labels.
+     *
+     * @return {IdentityProviderTemplateCategoryInterface[]}
+     */
+    const getSearchResults = (query: string, filterLabels: string[]): IdentityProviderTemplateCategoryInterface[] => {
+
+        /**
+         * Checks if any of the filters are matching.
+         * @param {IdentityProviderTemplateInterface} template - Template object.
+         * @return {boolean}
+         */
+        const isFiltersMatched = (template: IdentityProviderTemplateInterface): boolean => {
+
+            if (isEmpty(filterLabels)) {
+                return true;
+            }
+
+            return template.tags
+                .some((selectedLabel) => filterLabels.includes(selectedLabel));
+        };
+        
+        const templatesClone: IdentityProviderTemplateCategoryInterface[] = cloneDeep(originalCategorizedTemplates);
+
+        templatesClone.map((category: IdentityProviderTemplateCategoryInterface) => {
+
+            category.templates = category.templates.filter((template: IdentityProviderTemplateInterface) => {
+                if (!query) {
+                    return isFiltersMatched(template);
+                }
+
+                const name: string = template.name.toLocaleLowerCase();
+
+                if (name.includes(query)
+                    || template.tags.some((tag) => tag.toLocaleLowerCase().includes(query)
+                        || startCase(tag).toLocaleLowerCase().includes(query))) {
+
+                    return isFiltersMatched(template);
+                }
+            });
+        });
+
+        return templatesClone;
+    };
+
+    /**
+     * Handles the Connection Search input onchange.
+     *
+     * @param {string} query - Search query.
+     * @param {string[]} selectedFilters - Selected filters.
+     */
+    const handleConnectionSearch = (query: string, selectedFilters: string[]): void => {
+
+        // Update the internal state to manage placeholders etc.
+        setSearchQuery(query);
+        // Filter out the templates.
+        setFilteredCategorizedTemplates(getSearchResults(query.toLocaleLowerCase(), selectedFilters));
+    };
+
+    /**
+     * Handles Connection filter.
+     *
+     * @param {string} query - Search query.
+     * @param {string[]} selectedFilters - Selected filters.
+     */
+    const handleConnectionFilter = (query: string, selectedFilters: string[]): void => {
+
+        // Update the internal state to manage placeholders etc.
+        setSearchQuery(query);
+        // Filter out the templates.
+        setFilteredCategorizedTemplates(getSearchResults(query, selectedFilters));
+    };
+
+    /**
+     * Resolve the relevant placeholder.
+     *
+     * @return {React.ReactElement}
+     */
+    const showPlaceholders = (list: any[]): ReactElement => {
+
+        // When the search returns empty.
+        if (searchQuery) {
+            return (
+                <EmptyPlaceholder
+                    image={ getEmptyPlaceholderIllustrations().emptySearch }
+                    imageSize="tiny"
+                    title={ t("console:develop.placeholders.emptySearchResult.title") }
+                    subtitle={ [
+                        t("console:develop.placeholders.emptySearchResult.subtitles.0", { query: searchQuery }),
+                        t("console:develop.placeholders.emptySearchResult.subtitles.1")
+                    ] }
+                    data-testid={ `${ testId }-empty-search-placeholder` }
+                />
+            );
+        }
+
+        // Edge case, templates will never be empty.
+        if (list.length === 0) {
+            return (
+                <EmptyPlaceholder
+                    image={ getEmptyPlaceholderIllustrations().newList }
+                    imageSize="tiny"
+                    title={
+                        t("console:develop.features.authenticationProvider.placeHolders.emptyConnectionTypeList.title")
+                    }
+                    subtitle={ [
+                        t("console:develop.features.authenticationProvider.placeHolders.emptyConnectionTypeList" +
+                            ".subtitles.0"),
+                        t("console:develop.features.authenticationProvider.placeHolders.emptyConnectionTypeList" +
+                            ".subtitles.1")
+                    ] }
+                    data-testid={ `${ testId }-empty-placeholder` }
+                />
+            );
+        }
+
+        return null;
+    };
+
     return (
         <PageLayout
             title={ t("console:develop.pages.authenticationProviderTemplate.title") }
@@ -222,38 +386,57 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
             data-testid={ `${ testId }-page-layout` }
             showBottomDivider
         >
-            <GridLayout>
+            <GridLayout
+                search={ (
+                    <SearchWithFilterLabels
+                        placeholder={ t("console:develop.pages.authenticationProviderTemplate.search.placeholder") }
+                        onSearch={ handleConnectionSearch }
+                        onFilter={ handleConnectionFilter }
+                        filterLabels={ filterTags }
+                    />
+                ) }
+            >
                 {
-                    (categorizedTemplates && !isIDPTemplateRequestLoading)
+                    (filteredCategorizedTemplates && !isIDPTemplateRequestLoading)
                         ? (
-                            categorizedTemplates
-                                .map((category: IdentityProviderTemplateCategoryInterface, index: number) => (
-                                    <ResourceGrid key={ index }>
-                                        {
-                                            category.templates.map((
-                                                template: IdentityProviderTemplateInterface,
-                                                templateIndex: number
-                                            ) => (
-                                                <ResourceGrid.Card
-                                                    key={ templateIndex }
-                                                    resourceName={ template.name }
-                                                    isResourceComingSoon={ template.disabled }
-                                                    comingSoonRibbonLabel={ t("common:comingSoon") }
-                                                    resourceDescription={ template.description }
-                                                    resourceImage={
-                                                        IdentityProviderManagementUtils
-                                                            .resolveTemplateImage(template.image, getIdPIcons())
-                                                    }
-                                                    tags={ template.tags }
-                                                    onClick={ (e: SyntheticEvent) => {
-                                                        handleTemplateSelection(e, template.id);
-                                                    } }
-                                                    data-testid={ `${ testId }-${ template.name }` }
-                                                />
-                                            ))
-                                        }
-                                    </ResourceGrid>
-                                ))
+                            filteredCategorizedTemplates
+                                .map((category: IdentityProviderTemplateCategoryInterface, index: number) => {
+
+                                    if (!(category?.templates
+                                        && Array.isArray(category.templates)
+                                        && category.templates.length > 0)) {
+
+                                        return showPlaceholders(category.templates);
+                                    }
+
+                                    return (
+                                        <ResourceGrid key={ index }>
+                                            {
+                                                category.templates.map((
+                                                    template: IdentityProviderTemplateInterface,
+                                                    templateIndex: number
+                                                ) => (
+                                                    <ResourceGrid.Card
+                                                        key={ templateIndex }
+                                                        resourceName={ template.name }
+                                                        isResourceComingSoon={ template.disabled }
+                                                        comingSoonRibbonLabel={ t("common:comingSoon") }
+                                                        resourceDescription={ template.description }
+                                                        resourceImage={
+                                                            IdentityProviderManagementUtils
+                                                                .resolveTemplateImage(template.image, getIdPIcons())
+                                                        }
+                                                        tags={ template.tags }
+                                                        onClick={ (e: SyntheticEvent) => {
+                                                            handleTemplateSelection(e, template.id);
+                                                        } }
+                                                        data-testid={ `${ testId }-${ template.name }` }
+                                                    />
+                                                ))
+                                            }
+                                        </ResourceGrid>
+                                    );
+                                })
                         )
                         : <ContentLoader dimmer/>
                 }
