@@ -23,6 +23,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import { store } from "../../core";
 import { IdentityProviderManagementConstants } from "../constants";
 import {
+    AuthenticatorInterface,
     ConnectedAppsInterface,
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorListResponseInterface,
@@ -732,13 +733,13 @@ export const getLocalAuthenticators = (): Promise<LocalAuthenticatorInterface[]>
 };
 
 /**
- * Get the details of a Multi-factor authenticator.
+ * Get all authenticators in the server. i.e LOCAL & FEDERATED both.
  *
- * @param {string} id - Authenticator ID.
+ * @param {string} filter - Search filter.
  *
- * @return {Promise<MultiFactorAuthenticatorInterface>} Response as a promise.
+ * @return {Promise<AuthenticatorInterface[]>} Response as a promise.
  */
-export const getMultiFactorAuthenticatorDetails = (id: string): Promise<MultiFactorAuthenticatorInterface> => {
+export const getAuthenticators = (filter?: string): Promise<AuthenticatorInterface[]> => {
 
     const requestConfig = {
         headers: {
@@ -747,14 +748,17 @@ export const getMultiFactorAuthenticatorDetails = (id: string): Promise<MultiFac
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${ store.getState().config.endpoints.multiFactorAuthenticators }/connectors/${ id }`
+        params: {
+            filter
+        },
+        url: store.getState().config.endpoints.authenticators
     };
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
-                    IdentityProviderManagementConstants.MULTI_FACTOR_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR,
+                    IdentityProviderManagementConstants.AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR,
                     null,
                     response.status,
                     response.request,
@@ -762,10 +766,51 @@ export const getMultiFactorAuthenticatorDetails = (id: string): Promise<MultiFac
                     response.config);
             }
 
-            return Promise.resolve(response.data as MultiFactorAuthenticatorInterface);
+            return Promise.resolve(response.data as AuthenticatorInterface[]);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                IdentityProviderManagementConstants.MULTI_FACTOR_AUTHENTICATOR_FETCH_ERROR,
+                IdentityProviderManagementConstants.AUTHENTICATORS_FETCH_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Get all authenticator tags
+ *
+ * @return {Promise<string[]>} Response as a promise.
+ */
+export const getAuthenticatorTags = (): Promise<string[]> => {
+
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.authenticatorTags
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    IdentityProviderManagementConstants.AUTHENTICATOR_TAGS_FETCH_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data as string[]);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                IdentityProviderManagementConstants.AUTHENTICATOR_TAGS_FETCH_ERROR,
                 error.stack,
                 error.code,
                 error.request,
