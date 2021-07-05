@@ -27,6 +27,8 @@ import { IDPResourceEndpointsInterface } from "../models";
  */
 export const getIDPResourceEndpoints = (serverHost: string): IDPResourceEndpointsInterface => {
     return {
+        authenticatorTags: `${ serverHost }/api/server/v1/authenticators/meta/tags`,
+        authenticators: `${ serverHost }/api/server/v1/authenticators`,
         identityProviders: `${ serverHost }/api/server/v1/identity-providers`,
         localAuthenticators: `${ serverHost }/api/server/v1/configs/authenticators`,
         multiFactorAuthenticators: getServerConfigurationsResourceEndpoints(serverHost).multiFactorAuthenticators

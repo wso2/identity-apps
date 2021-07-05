@@ -105,6 +105,15 @@ export class IdentityProviderManagementConstants {
     };
 
     /**
+     * Email OTP Authenticator Settings Form element constraints.
+     * @type {Record<string, string | number>}
+     */
+    public static readonly EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: Record<string, string | number> = {
+        EXPIRY_TIME_MAX_LENGTH: 1000,
+        EXPIRY_TIME_MIN_LENGTH: 1
+    };
+
+    /**
      * Google Scope mappings.
      * @type {Record<string, string>}
      */
