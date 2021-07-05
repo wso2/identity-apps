@@ -53,7 +53,7 @@ import {
 } from "./models";
 import { AppState } from "./store";
 import { initializeAuthentication } from "./store/actions";
-import { filterRoutes } from "./utils";
+import { EventPublisher, filterRoutes } from "./utils";
 
 /**
  * Main App component.
@@ -70,8 +70,11 @@ export const App = (): ReactElement => {
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const loginInit: boolean = useSelector((state: AppState) => state.authenticationInformation.loginInit);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
+    const UUID: string = useSelector((state: AppState) => state.authenticationInformation.profileInfo.id);
 
     const [ appRoutes, setAppRoutes ] = useState<RouteInterface[]>(getAppRoutes());
+    
+    const eventPublisher = EventPublisher.getInstance();
 
     /**
      * Set the deployment configs in redux state.
@@ -140,6 +143,17 @@ export const App = (): ReactElement => {
         }
 
     }, [ config?.deployment?.tenant, userName ]);
+    
+    /**
+    * Publish page visit when the UUID is set.
+    */
+    useEffect(() => {
+        if(!UUID) {
+            return;
+        }
+
+        eventPublisher.publish("page-visit-myaccount-landing-page");
+    }, [UUID]);
 
     /**
      * Handles session timeout abort.
