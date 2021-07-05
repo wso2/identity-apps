@@ -114,9 +114,14 @@ export interface UserDetailsInterface {
     name: NameInterface;
     userName: string;
     password: string;
-    [`scimClaimsMap.scim.enterpriseSchema`]?: {
+    /*
+     * This wildcard declaration is done due to the issue of
+     * property name in an interface must directly refer to a built-in literal in ts.
+     * issue - https://github.com/Microsoft/TypeScript/issues/21000
+     */
+    [key: string]: {
         askPassword: string;
-    };
+    } | any;
     profileUrl: string;
 }
 
