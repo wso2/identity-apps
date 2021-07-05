@@ -18,74 +18,71 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Divider, Header, Icon, Message } from "semantic-ui-react";
-import { SemanticShorthandContent, SemanticShorthandItem } from "semantic-ui-react/dist/commonjs/generic";
+import { Divider, Header, Icon, Message, MessageProps } from "semantic-ui-react";
 import { MessageHeaderProps } from "semantic-ui-react/dist/commonjs/collections/Message/MessageHeader";
+import { SemanticShorthandContent, SemanticShorthandItem } from "semantic-ui-react/dist/commonjs/generic";
 
 /**
  * Proptypes for the messageInfo component.
  */
-export interface MessageInfoProps extends TestableComponentInterface {
-    /**
-     * Shorthand for MessageHeader.
-     * */
-    header?: SemanticShorthandItem<MessageHeaderProps>;
-    /**
-     * Shorthand for primary content.
-     * */
-    content?: SemanticShorthandContent;
+export interface MessageComponentProps extends MessageProps, TestableComponentInterface {
 }
 
 /**
  * MessageInfo component.
- * @deprecated
+ *
  * @param {MessageInfoProps} props - Props injected in to the messageInfo component.
  *
  * @return {React.ReactElement}
  */
-export const MessageInfo: FunctionComponent<MessageInfoProps> = (props: MessageInfoProps): ReactElement => {
+
+export const MessageComponent: FunctionComponent<MessageComponentProps> = (props: MessageComponentProps): ReactElement => {
 
     const {
         header,
         content,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        ... rest
     } = props;
 
     const generateContent = () => {
 
-            return (
-                <>
-                    <Divider
-                        hidden
-                        className={ 'message-info-text' }/>
-                    <div>
-                        { (content) }
-                    </div>
-                </>
-            );
+        return (
+            <>
+                <div>
+                    { (content) }
+                </div>
+            </>
+        );
     };
 
     return (
-            <Message
-                info
-                header={ (
-                    <Header as="h4">
-                        <Header.Content>
-                            <Icon name="info circle"/>
-                            { (header) }
-                        </Header.Content>
-                    </Header>
-                ) }
-                content={ generateContent() }
-            />
+        <Message
+            { ...rest }
+            header={
+                header
+                    ? (
+                        <Header as="h4">
+                            <Header.Content>
+                                <Icon name="info circle"/>
+                                { (header) }
+                                <Divider
+                                    hidden
+                                    className={ "message-info-text" }/>
+                            </Header.Content>
+                        </Header>
+                    ) : undefined
+            }
+            content={ generateContent() }
+        />
     );
 };
 
 /**
  * Default proptypes for the message info component.
  */
-MessageInfo.defaultProps = {
-    header: null,
+MessageComponent.defaultProps = {
     content: null,
     "data-testid": "message-info",
+    header: null
 };
