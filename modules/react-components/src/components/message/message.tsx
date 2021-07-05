@@ -23,15 +23,15 @@ import { MessageHeaderProps } from "semantic-ui-react/dist/commonjs/collections/
 import { SemanticShorthandContent, SemanticShorthandItem } from "semantic-ui-react/dist/commonjs/generic";
 
 /**
- * Proptypes for the messageInfo component.
+ * Proptypes for the message component.
  */
 export interface MessageComponentProps extends MessageProps, TestableComponentInterface {
 }
 
 /**
- * MessageInfo component.
+ * Message component.
  *
- * @param {MessageInfoProps} props - Props injected in to the messageInfo component.
+ * @param {MessageComponentProps} props - Props injected in to the message component.
  *
  * @return {React.ReactElement}
  */
@@ -79,10 +79,10 @@ export const MessageComponent: FunctionComponent<MessageComponentProps> = (props
 };
 
 /**
- * Default proptypes for the message info component.
+ * Default proptypes for the message component.
  */
 MessageComponent.defaultProps = {
     content: null,
-    "data-testid": "message-info",
+    "data-testid": "message-component",
     header: null
 };
