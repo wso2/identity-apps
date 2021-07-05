@@ -311,6 +311,9 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             }
         }
 
+        // Use description from template.
+        identityProvider.description = template.description;
+
         createIdentityProvider(identityProvider)
             .then((response) => {
                 dispatch(addAlert({
