@@ -149,6 +149,13 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             removeElementFromProps(props, "scopes");
         }
 
+        /**
+         * `tags` were added to the IDP Rest API with https://github.com/wso2/product-is/issues/11985.
+         * But ATM, updating them is not allowed. So to avoid `400` errors in the PUT request, 
+         * `tags` has to be removed.
+         */
+        values?.tags && delete values.tags;
+
         updateFederatedAuthenticator(identityProvider.id, values)
             .then(() => {
                 dispatch(addAlert({
