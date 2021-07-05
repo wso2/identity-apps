@@ -78,10 +78,6 @@ interface EmailOTPAuthenticatorFormInitialValuesInterface {
      */
     EmailOTP_ExpiryTime: string;
     /**
-     * Enable authenticate with backup codes.
-     */
-    EmailOTP_EnableBackupCodes: string;
-    /**
      * Number of characters in the OTP token.
      */
     EmailOTP_OTPLength: string;
@@ -99,10 +95,6 @@ interface EmailOTPAuthenticatorFormFieldsInterface {
      * Email OTP expiry time field.
      */
     EmailOTP_ExpiryTime: CommonAuthenticatorFormFieldInterface;
-    /**
-     * Enable authenticate with backup codes
-     */
-    EmailOTP_EnableBackupCodes: CommonAuthenticatorFormFieldInterface;
     /**
      * Number of characters in the OTP token field.
      */
@@ -273,22 +265,6 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                 data-testid={ `${ testId }-email-otp-token-length` }
             />
             <Field.Checkbox
-                ariaLabel="Enable authenticate with backup codes"
-                name="EmailOTP_EnableBackupCodes"
-                required={ false }
-                label={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                        ".emailOTP.enableBackupCodes.label")
-                }
-                hint={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                        ".emailOTP.enableBackupCodes.hint")
-                }
-                readOnly={ readOnly }
-                width={ 16 }
-                data-testid={ `${ testId }-enable-authenticate-with-backup-codes` }
-            />
-            <Field.Checkbox
                 ariaLabel="Use numeric characters for OTP token"
                 name="EmailOTP_OtpRegex_UseNumericChars"
                 required={ false }
@@ -303,7 +279,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                             ".emailOTP.useNumericChars.hint"
                         }
                     >
-                        Allow OTP token to have <Code>0-9</Code> characters only.
+                        Only use <Code>0-9</Code> characters in the OTP token.
                     </Trans>
                 }
                 readOnly={ readOnly }

@@ -22,11 +22,11 @@ import { IdentityProviderManagementConstants } from "../../../constants";
 import { FederatedAuthenticatorListItemInterface, FederatedAuthenticatorMetaInterface } from "../../../models";
 import {
     CommonAuthenticatorForm,
+    EmailOTPAuthenticatorForm,
     FacebookAuthenticatorForm,
     GithubAuthenticatorForm,
     GoogleAuthenticatorForm
 } from "../authenticators";
-import { EmailOTPAuthenticatorForm } from "../authenticators/email-otp-authenticator-form";
 
 /**
  * Proptypes for the authenticator form factory component.
