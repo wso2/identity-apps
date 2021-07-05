@@ -33,7 +33,7 @@
     <jsp:param
             name="description"
             value="You have been idle in this page for too long. You need to try signing in again."/>
-    <jsp:param name="action_button_text" value="Start Over"/>
+    <jsp:param name="action_button_text" value="Got it"/>
     <jsp:param name="cancel_button_text" value="Dismiss"/>
 </jsp:include>
 
