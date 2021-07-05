@@ -58,6 +58,7 @@ export const MessageComponent: FunctionComponent<MessageComponentProps> = (props
 
     return (
         <Message
+            className={ props.onDismiss ? "with-close-button" : "" }
             { ...rest }
             header={
                 header

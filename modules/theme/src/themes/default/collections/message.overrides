@@ -24,6 +24,10 @@
         }
     }
 
+    &.with-close-button {
+        padding: 1em 2em 1em 1.5em;
+    }
+
     &.border-less {
         border: none !important;
         box-shadow: none;
