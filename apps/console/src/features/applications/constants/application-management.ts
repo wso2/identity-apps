@@ -330,7 +330,10 @@ export class ApplicationManagementConstants {
     // Second factor authenticators.
     public static readonly SECOND_FACTOR_AUTHENTICATORS = [
         IdentityProviderManagementConstants.FIDO_AUTHENTICATOR,
-        IdentityProviderManagementConstants.TOTP_AUTHENTICATOR
+        IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
+        IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID
     ];
 
     // Known social authenticators.
@@ -345,6 +348,11 @@ export class ApplicationManagementConstants {
 
     // Authenticators that can handle TOTP.
     public static readonly TOTP_HANDLERS = [
+        ...ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS
+    ];
+
+    // Authenticators that can handle Email OTP.
+    public static readonly EMAIL_OTP_HANDLERS = [
         ...ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS
     ];
 
