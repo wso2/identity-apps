@@ -36,6 +36,7 @@
             "authenticators": [
                 {
                     "authenticatorId": "R2l0aHViQXV0aGVudGljYXRvcg",
+                    "isEnabled": true,
                     "properties": [
                         {
                             "key": "AdditionalQueryParameters",

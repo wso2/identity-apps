@@ -22,6 +22,7 @@
             "authenticators": [
                 {
                     "authenticatorId": "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I",
+                    "isEnabled": true,
                     "properties": [
                         {
                             "key": "ClientId",

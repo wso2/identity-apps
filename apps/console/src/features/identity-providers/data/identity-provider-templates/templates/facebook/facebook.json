@@ -93,6 +93,7 @@
             "authenticators": [
                 {
                     "authenticatorId": "RmFjZWJvb2tBdXRoZW50aWNhdG9y",
+                    "isEnabled": true,
                     "properties": [
                         {
                             "key": "AuthnEndpoint",
