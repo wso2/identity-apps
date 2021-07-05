@@ -40,6 +40,26 @@ export interface IdentityProviderConfig {
     };
     utils: {
         isAuthenticatorAllowed: (name: string) => boolean;
+        /**
+         * Is authenticator configurable.
+         *
+         * Only these authenticators will be listed on the connections view.
+         * @remarks This configuration is not applicable if `identityProviderList.useLegacyListing` is set to true.
+         *
+         * @param {string} id - Authenticator ID.
+         * @return {boolean}
+         */
+        isConfigurableAuthenticator: (id: string) => boolean;
+        /**
+         * Is authenticator configurations are available.
+         *
+         * If configurations are not available, the authenticator will be listed as coming soon.
+         * @remarks This configuration is not applicable if `identityProviderList.useLegacyListing` is set to true.
+         *
+         * @param {string} id - Authenticator ID.
+         * @return {boolean}
+         */
+        isAuthenticatorConfigurationsAvailable: (id: string) => boolean;
         isProvisioningAttributesEnabled: (authenticatorId: string) => boolean;
         hideIdentityClaimAttributes?: (authenticatorId: string) => boolean;
     };

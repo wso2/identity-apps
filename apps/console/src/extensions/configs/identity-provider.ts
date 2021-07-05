@@ -63,6 +63,18 @@ export const identityProviderConfig: IdentityProviderConfig = {
                 IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR
             ].includes(name);
         },
+        isAuthenticatorConfigurationsAvailable: (id: string): boolean => {
+            return ![
+                IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID
+            ].includes(id);
+        },
+        isConfigurableAuthenticator: (id: string): boolean => {
+            return [
+                IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID,
+                IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID,
+                IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID
+            ].includes(id);
+        },
         /**
          * If the {@param authenticatorId} is not in the excluded set we
          * can say the provisioning attributes is enabled for authenticator.
