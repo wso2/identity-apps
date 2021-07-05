@@ -31,6 +31,13 @@ export interface IdentityProviderConfig {
     generalDetailsForm: {
         showCertificate: boolean;
     };
+    identityProviderList: {
+        /**
+         * Display IDPs only in the ordinary list view.
+         * If set to falls, local authenticators + federated will be shown in one grid view.
+         */
+        useLegacyListing: boolean;
+    };
     utils: {
         isAuthenticatorAllowed: (name: string) => boolean;
         isProvisioningAttributesEnabled: (authenticatorId: string) => boolean;

@@ -29,6 +29,9 @@ export const identityProviderConfig: IdentityProviderConfig = {
     generalDetailsForm: {
         showCertificate: true
     },
+    identityProviderList: {
+        useLegacyListing: true
+    },
     templates: {
         enterprise: true,
         facebook: true,
