@@ -841,7 +841,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                 data-testid={ testId }>
                                 { resolveWizardPages() }
                             </Wizard2>
-                            : <ContentLoader text="Loading identity providers"/>
+                            : <ContentLoader />
                         }
                     </ModalWithSidePanel.Content>
                 </React.Fragment>
