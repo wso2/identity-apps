@@ -43,7 +43,7 @@ import { AuthAction, authenticateActionTypes } from "./types";
 import { getProfileInfo, getUserReadOnlyStatus, switchAccount } from "../../api";
 import { Config } from "../../configs";
 import { AppConstants, CommonConstants } from "../../constants";
-import { SCIMConfigs } from "../../extensions/configs";
+import { SCIMConfigs } from "../../extensions/configs/scim";
 import { history } from "../../helpers";
 import {
     AlertLevels,

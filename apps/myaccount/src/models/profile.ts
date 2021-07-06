@@ -16,7 +16,7 @@
  * under the License.
  */
 
- import { SCIMConfigs } from "../extensions/configs";
+ import { SCIMConfigs } from "../extensions/configs/scim";
 
 /**
   * Multi-valued attribute model

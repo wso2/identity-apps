@@ -21,5 +21,6 @@ export * from "./application";
 export * from "./identity-provider";
 export * from "./common";
 export * from "./server-configuration";
-export * from "./userstores";
-export * from "./scim";
+export * from "./userstores"
+//Do not import scim here cause cyclic dependency
+// export * from "./scim";

@@ -17,7 +17,7 @@
  */
 
 import { LinkInterface, MultiValueAttributeInterface, NameInterface, RolesInterface } from "@wso2is/core/models";
-import { SCIMConfigs } from "../../../extensions/configs";
+import { SCIMConfigs } from "../../../extensions/configs/scim";
 
 /**
  * Captures meta details of the user.
