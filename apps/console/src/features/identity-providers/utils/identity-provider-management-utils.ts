@@ -33,8 +33,10 @@ import { AuthenticatorMeta } from "../meta";
 import {
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface,
+    IdentityProviderInterface,
     IdentityProviderListResponseInterface,
     LocalAuthenticatorInterface,
+    MultiFactorAuthenticatorInterface,
     StrictIdentityProviderInterface
 } from "../models";
 import { setAvailableAuthenticatorsMeta } from "../store/actions";
@@ -346,5 +348,39 @@ export class IdentityProviderManagementUtils {
         const match = Object.keys(icons).find(key => key.toString() === image);
 
         return match ? icons[ match ] : icons[ "default" ] ?? image;
+    }
+
+    /**
+     * Type-guard to check if the connector is an Identity Provider.
+     *
+     * @param {IdentityProviderInterface | MultiFactorAuthenticatorInterface} connector - Checking connector.
+     *
+     * @return {connector is IdentityProviderInterface}
+     */
+    public static isConnectorIdentityProvider(connector: IdentityProviderInterface
+        | MultiFactorAuthenticatorInterface): connector is IdentityProviderInterface {
+
+        return (connector as IdentityProviderInterface)?.federatedAuthenticators !== undefined;
+    }
+    
+    public static buildAuthenticatorsFilterQuery(searchQuery: string, filters: string[]): string {
+        
+        if (isEmpty(filters) || !Array.isArray(filters) || filters.length <= 0) {
+            return searchQuery;
+        }
+        
+        let query: string = searchQuery
+            ? `${ searchQuery } and (`
+            : "(";
+
+        if (filters.length > 1) {
+            filters.map((filter: string, index: number) => {
+                query = `${ query }tag eq ${ filter }${ (index === filters.length - 1) ? ")" : " or " }`;
+            });
+        } else {
+            query = `${ query }tag eq ${ filters[ 0 ] })`;
+        }
+
+        return query.trim();
     }
 }

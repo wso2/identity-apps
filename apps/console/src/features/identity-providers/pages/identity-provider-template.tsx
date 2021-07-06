@@ -33,6 +33,7 @@ import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useS
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
+import { identityProviderConfig } from "../../../extensions/configs";
 import {
     AppConstants,
     AppState,
@@ -101,6 +102,19 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderTemplateInterface>(undefined);
     const [ filterTags, setFilterTags ] = useState<string[]>([]);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
+    const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
+
+    /**
+     * Checks if the listing view defined in the config is the new connections view.
+     */
+    useEffect(() => {
+
+        if (useNewConnectionsView !== undefined) {
+            return;
+        }
+
+        setUseNewConnectionsView(identityProviderConfig.useNewConnectionsView);
+    }, [ identityProviderConfig ]);
 
     /**
      * Update the internal filtered templates state when the original changes.
@@ -298,12 +312,12 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     };
 
     /**
-     * Handles the Connection Search input onchange.
+     * Handles the Connection Type Search input onchange.
      *
      * @param {string} query - Search query.
      * @param {string[]} selectedFilters - Selected filters.
      */
-    const handleConnectionSearch = (query: string, selectedFilters: string[]): void => {
+    const handleConnectionTypeSearch = (query: string, selectedFilters: string[]): void => {
 
         // Update the internal state to manage placeholders etc.
         setSearchQuery(query);
@@ -312,12 +326,12 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     };
 
     /**
-     * Handles Connection filter.
+     * Handles Connection Type filter.
      *
      * @param {string} query - Search query.
      * @param {string[]} selectedFilters - Selected filters.
      */
-    const handleConnectionFilter = (query: string, selectedFilters: string[]): void => {
+    const handleConnectionTypeFilter = (query: string, selectedFilters: string[]): void => {
 
         // Update the internal state to manage placeholders etc.
         setSearchQuery(query);
@@ -373,13 +387,23 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
 
     return (
         <PageLayout
-            title={ t("console:develop.pages.authenticationProviderTemplate.title") }
+            title={
+                useNewConnectionsView
+                    ? t("console:develop.pages.authenticationProviderTemplate.title")
+                    : t("console:develop.pages.idpTemplate.title")
+            }
             contentTopMargin={ true }
-            description={ t("console:develop.pages.authenticationProviderTemplate.subTitle") }
+            description={
+                useNewConnectionsView
+                    ? t("console:develop.pages.authenticationProviderTemplate.subTitle")
+                    : t("console:develop.pages.idpTemplate.subTitle")
+            }
             backButton={ {
                 "data-testid": `${ testId }-page-back-button`,
                 onClick: handleBackButtonClick,
-                text: t("console:develop.pages.authenticationProviderTemplate.backButton")
+                text: useNewConnectionsView
+                    ? t("console:develop.pages.authenticationProviderTemplate.backButton")
+                    : t("console:develop.pages.idpTemplate.backButton")
             } }
             titleTextAlign="left"
             bottomMargin={ false }
@@ -390,8 +414,8 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                 search={ (
                     <SearchWithFilterLabels
                         placeholder={ t("console:develop.pages.authenticationProviderTemplate.search.placeholder") }
-                        onSearch={ handleConnectionSearch }
-                        onFilter={ handleConnectionFilter }
+                        onSearch={ handleConnectionTypeSearch }
+                        onFilter={ handleConnectionTypeFilter }
                         filterLabels={ filterTags }
                     />
                 ) }
@@ -400,43 +424,41 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                     (filteredCategorizedTemplates && !isIDPTemplateRequestLoading)
                         ? (
                             filteredCategorizedTemplates
-                                .map((category: IdentityProviderTemplateCategoryInterface, index: number) => {
-
-                                    if (!(category?.templates
-                                        && Array.isArray(category.templates)
-                                        && category.templates.length > 0)) {
-
-                                        return showPlaceholders(category.templates);
-                                    }
-
-                                    return (
-                                        <ResourceGrid key={ index }>
-                                            {
-                                                category.templates.map((
-                                                    template: IdentityProviderTemplateInterface,
-                                                    templateIndex: number
-                                                ) => (
-                                                    <ResourceGrid.Card
-                                                        key={ templateIndex }
-                                                        resourceName={ template.name }
-                                                        isResourceComingSoon={ template.disabled }
-                                                        comingSoonRibbonLabel={ t("common:comingSoon") }
-                                                        resourceDescription={ template.description }
-                                                        resourceImage={
-                                                            IdentityProviderManagementUtils
-                                                                .resolveTemplateImage(template.image, getIdPIcons())
-                                                        }
-                                                        tags={ template.tags }
-                                                        onClick={ (e: SyntheticEvent) => {
-                                                            handleTemplateSelection(e, template.id);
-                                                        } }
-                                                        data-testid={ `${ testId }-${ template.name }` }
-                                                    />
-                                                ))
-                                            }
-                                        </ResourceGrid>
-                                    );
-                                })
+                                .map((category: IdentityProviderTemplateCategoryInterface, index: number) => (
+                                    <ResourceGrid
+                                        key={ index }
+                                        isEmpty={
+                                            !(category?.templates
+                                                && Array.isArray(category.templates)
+                                                && category.templates.length > 0)
+                                        }
+                                        emptyPlaceholder={ showPlaceholders(category.templates) }
+                                    >
+                                        {
+                                            category.templates.map((
+                                                template: IdentityProviderTemplateInterface,
+                                                templateIndex: number
+                                            ) => (
+                                                <ResourceGrid.Card
+                                                    key={ templateIndex }
+                                                    resourceName={ template.name }
+                                                    isResourceComingSoon={ template.disabled }
+                                                    comingSoonRibbonLabel={ t("common:comingSoon") }
+                                                    resourceDescription={ template.description }
+                                                    resourceImage={
+                                                        IdentityProviderManagementUtils
+                                                            .resolveTemplateImage(template.image, getIdPIcons())
+                                                    }
+                                                    tags={ template.tags }
+                                                    onClick={ (e: SyntheticEvent) => {
+                                                        handleTemplateSelection(e, template.id);
+                                                    } }
+                                                    data-testid={ `${ testId }-${ template.name }` }
+                                                />
+                                            ))
+                                        }
+                                    </ResourceGrid>
+                                ))
                         )
                         : <ContentLoader dimmer/>
                 }

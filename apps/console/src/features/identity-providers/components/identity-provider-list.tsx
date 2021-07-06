@@ -205,11 +205,9 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
         deleteIdentityProvider(idpId)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.authenticationProvider." +
-                        "notifications.deleteIDP.success.description"),
+                    description: t("console:develop.features.idp.notifications.deleteIDP.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.authenticationProvider.notifications." +
-                        "deleteIDP.success.message")
+                    message: t("console:develop.features.idp.notifications.deleteIDP.success.message")
                 }));
             })
             .catch((error) => {
@@ -237,14 +235,11 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                     ) }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("console:develop.features.authenticationProvider.placeHolders." +
-                        "emptyIDPSearchResults.title") }
+                    title={ t("console:develop.features.idp.placeHolders.emptyIDPSearchResults.title") }
                     subtitle={ [
-                        t("console:develop.features.authenticationProvider.placeHolders." +
-                            "emptyIDPSearchResults.subtitles.0",
+                        t("console:develop.features.idp.placeHolders.emptyIDPSearchResults.subtitles.0",
                             { searchQuery: searchQuery }),
-                        t("console:develop.features.authenticationProvider.placeHolders." +
-                            "emptyIDPSearchResults.subtitles.1")
+                        t("console:develop.features.idp.placeHolders.emptyIDPSearchResults.subtitles.1")
                     ] }
                     data-testid={ `${ testId }-empty-search-placeholder` }
                 />
@@ -260,13 +255,13 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                             onClick={ onEmptyListPlaceholderActionClick }
                         >
                             <Icon name="add"/>
-                            { t("console:develop.features.authenticationProvider.buttons.addIDP") }
+                            { t("console:develop.features.idp.buttons.addIDP") }
                         </PrimaryButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     subtitle={ [
-                        t("console:develop.features.authenticationProvider.placeHolders.emptyIDPList.subtitles.0")
+                        t("console:develop.features.idp.placeHolders.emptyIDPList.subtitles.0")
                     ] }
                     data-testid={ `${ testId }-empty-placeholder` }
                 />
@@ -329,7 +324,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                         </Header.Content>
                     </Header>
                 ),
-                title: t("console:develop.features.authenticationProvider.list.name")
+                title: t("console:develop.features.idp.list.name")
             },
             {
                 allowToggleVisibility: false,
@@ -337,7 +332,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("console:develop.features.authenticationProvider.list.actions")
+                title: t("console:develop.features.idp.list.actions")
             }
         ];
     };
@@ -408,8 +403,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                         assertionHint={ (
                             <p>
                                 <Trans
-                                    i18nKey={ "console:develop.features.authenticationProvider."+
-                                    "confirmations.deleteIDP.assertionHint" }
+                                    i18nKey={ "console:develop.features.idp.confirmations.deleteIDP.assertionHint" }
                                     tOptions={ { name: deletingIDP?.name } }
                                 >
                                     Please type <strong>{ deletingIDP?.name }</strong> to confirm.
@@ -427,17 +421,17 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-testid={ `${ testId }-delete-confirmation-modal-header` }>
-                            { t("console:develop.features.authenticationProvider.confirmations.deleteIDP.header") }
+                            { t("console:develop.features.idp.confirmations.deleteIDP.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
                             warning
                             data-testid={ `${ testId }-delete-confirmation-modal-message` }
                         >
-                            { t("console:develop.features.authenticationProvider.confirmations.deleteIDP.message") }
+                            { t("console:develop.features.idp.confirmations.deleteIDP.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content data-testid={ `${ testId }-delete-confirmation-modal-content` }>
-                            { t("console:develop.features.authenticationProvider.confirmations.deleteIDP.content") }
+                            { t("console:develop.features.idp.confirmations.deleteIDP.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )
@@ -454,17 +448,17 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-testid={ `${ testId }-delete-idp-confirmation` }>
-                            { t("console:develop.features.authenticationProvider.confirmations." +
-                                "deleteIDPWithConnectedApps.header") }
+                            { t("console:develop.features.idp.confirmations.deleteIDPWithConnectedApps.header") }
                         </ConfirmationModal.Header>
-                        <ConfirmationModal.Message attached warning
-                                                   data-testid={ `${ testId }-delete-idp-confirmation` }>
-                            { t("console:develop.features.authenticationProvider." +
-                            "confirmations.deleteIDPWithConnectedApps.message") }
+                        <ConfirmationModal.Message
+                            attached
+                            warning
+                            data-testid={ `${ testId }-delete-idp-confirmation` }
+                        >
+                            { t("console:develop.features.idp.confirmations.deleteIDPWithConnectedApps.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content data-testid={ `${ testId }-delete-idp-confirmation` }>
-                            { t("console:develop.features.authenticationProvider.confirmations." +
-                                "deleteIDPWithConnectedApps.content") }
+                            { t("console:develop.features.idp.confirmations.deleteIDPWithConnectedApps.content") }
                             <Divider hidden />
                             <List ordered className="ml-6">
                                 {

@@ -220,6 +220,10 @@ export interface IdentityProviderTemplateItemInterface {
 export interface IdentityProviderTemplateInterface extends IdentityProviderTemplateItemInterface {
     services?: SupportedServicesInterface[];
     content?: TemplateContentInterface;
+    /**
+     * The list of tags that the IDP template can be categorized under.
+     */
+    tags?: string[];
 }
 
 /**
@@ -566,6 +570,58 @@ export interface LocalAuthenticatorInterface extends CommonPluggableComponentInt
 export type MultiFactorAuthenticatorInterface = GovernanceConnectorInterface;
 
 /**
+ * Interface to map response list item from Authenticators API.
+ */
+export interface AuthenticatorInterface {
+
+    /**
+     * Authenticator ID.
+     * @example QmFzaWNBdXRoZW50aWNhdG9y
+     */
+    id: string;
+    /**
+     * Authenticator Name.
+     * @example BasicAuthenticator
+     */
+    name: string;
+    /**
+     * Authenticator Description.
+     * @example Log in users with WSO2 Identity Server.
+     */
+    description?: string;
+    /**
+     * Authenticator Display Name.
+     * @example basic
+     */
+    displayName: string;
+    /**
+     * Is authenticator enabled.
+     * @example true
+     */
+    isEnabled: boolean;
+    /**
+     * Authenticator type.
+     * @example [ LOCAL, FEDERATED ]
+     */
+    type: AuthenticatorTypes;
+    /**
+     * Authenticator Image.
+     * @example basic-authenticator-logo-url
+     */
+    image: string;
+    /**
+     * Authenticator meta tags.
+     * @example [ "2FA", "MFA" ]
+     */
+    tags: string[];
+    /**
+     * Details endpoint.
+     * @ex: `/t/carbon.super/api/server/v1/configs/authenticators/eDUwOUNlcnRpZmljYXRlQXV0aGVudGljYXRvcg`
+     */
+    self: string;
+}
+
+/**
  * Generic interface for authenticators local/federated.
  */
 export interface GenericAuthenticatorInterface extends StrictGenericAuthenticatorInterface {
@@ -602,6 +658,10 @@ export interface GenericAuthenticatorInterface extends StrictGenericAuthenticato
      * Set of authenticators(federated).
      */
     authenticators: FederatedAuthenticatorInterface[];
+    /**
+     * The list of tags that the authenticator can be categorized under.
+     */
+    tags?: string[];
 }
 
 /**
@@ -674,7 +734,7 @@ export interface GenericIdentityProviderCreateWizardPropsInterface {
  * @enum {string}
  */
 export enum AuthenticatorLabels {
-    SOCIAL = "Social",
+    SOCIAL = "Social-Login",
     FIRST_FACTOR = "First Factor",
     SECOND_FACTOR = "2FA",
     MULTI_FACTOR = "MFA",
@@ -694,4 +754,14 @@ export enum AuthenticatorCategories {
     LOCAL = "LOCAL",
     SECOND_FACTOR = "SECOND_FACTOR",
     SOCIAL = "SOCIAL"
+}
+
+/**
+ * Enum for Authenticator Types.
+ * @readonly
+ * @enum {string}
+ */
+export enum AuthenticatorTypes {
+    FEDERATED = "FEDERATED",
+    LOCAL = "LOCAL"
 }

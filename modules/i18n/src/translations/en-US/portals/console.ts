@@ -2726,7 +2726,7 @@ export const console: ConsoleNS = {
                     addAuthenticator: "New Authenticator",
                     addCertificate: "New Certificate",
                     addConnector: "New Connector",
-                    addIDP: "New Identity Provider"
+                    addIDP: "New Connection"
                 },
                 confirmations: {
                     deleteAuthenticator: {
@@ -2745,16 +2745,16 @@ export const console: ConsoleNS = {
                     },
                     deleteIDP: {
                         assertionHint: "Please type <1>{{ name }}</1> to confirm.",
-                        content: "If you delete this identity provider, you will not be able to recover it. " +
+                        content: "If you delete this connection, you will not be able to recover it. " +
                             "Please proceed with caution.",
                         header: "Are you sure?",
-                        message: "This action is irreversible and will permanently delete the identity provider."
+                        message: "This action is irreversible and will permanently delete the connection."
                     },
                     deleteIDPWithConnectedApps: {
                         assertionHint: "",
                         content: "Remove the associations from these applications before deleting:",
                         header: "Unable to Delete",
-                        message: "There are applications using this identity provider."
+                        message: "There are applications using this connection."
                     }
                 },
                 dangerZoneGroup: {
@@ -2770,6 +2770,18 @@ export const console: ConsoleNS = {
                         subheader2: "Enable the identity provider to use it with your applications."
                     },
                     header: "Danger Zone"
+                },
+                edit: {
+                    common: {
+                        settings: {
+                            tabName: "Settings"
+                        }
+                    },
+                    emailOTP: {
+                        emailTemplate: {
+                            tabName: "Email Template <1>(Coming Soon)</1>"
+                        }
+                    }
                 },
                 forms: {
                     advancedConfigs: {
@@ -2851,14 +2863,15 @@ export const console: ConsoleNS = {
                     authenticatorSettings: {
                         emailOTP: {
                             enableBackupCodes: {
-                                hint: "Enable authenticate with backup codes.",
+                                hint: "Allow users to authenticate with backup codes.",
                                 label: "Enable authenticate with backup codes",
                                 validations: {
                                     required: "Enable authenticate with backup codes is a required field."
                                 }
                             },
                             expiryTime: {
-                                hint: "Define the time in seconds between two new passwords.",
+                                hint: "The generated passcode will be un-usable after this defined time period " +
+                                    "(in seconds).",
                                 label: "Email OTP expiry time",
                                 placeholder: "Enter Email OTP expiry time.",
                                 validations: {
@@ -2866,7 +2879,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             tokenLength: {
-                                hint: "Number of characters in the OTP token.",
+                                hint: "Number of allowed characters in the OTP token.",
                                 label: "Email OTP token length",
                                 placeholder: "Enter Email OTP token length.",
                                 validations: {
@@ -2874,10 +2887,10 @@ export const console: ConsoleNS = {
                                 }
                             },
                             useNumericChars: {
-                                hint: "Allow OTP token to have <1>0-9</1> characters only.",
-                                label: "Use numeric characters for OTP token",
+                                hint: "Only use <1>0-9</1> characters in the OTP token.",
+                                label: "Use only numeric characters for OTP token",
                                 validations: {
-                                    required: "Enable authenticate with backup codes is a required field."
+                                    required: "Use only numeric characters for OTP token is a required field."
                                 }
                             }
                         },
@@ -3318,6 +3331,20 @@ export const console: ConsoleNS = {
                             message: ""
                         }
                     },
+                    getConnectionDetails: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving connection details.",
+                            message: "Retrieval Error"
+                        },
+                        success: {
+                            description: "",
+                            message: ""
+                        }
+                    },
                     getFederatedAuthenticator: {
                         error: {
                             description: "{{ description }}",
@@ -3500,6 +3527,20 @@ export const console: ConsoleNS = {
                             message: "Update successful"
                         }
                     },
+                    updateEmailOTPAuthenticator: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Update error"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating Email OTP connector.",
+                            message: "Update error"
+                        },
+                        success: {
+                            description: "Successfully updated the Email OTP connector.",
+                            message: "Update successful"
+                        }
+                    },
                     updateFederatedAuthenticator: {
                         error: {
                             description: "{{ description }}",
@@ -3644,6 +3685,13 @@ export const console: ConsoleNS = {
                         },
                         title: "No certificates"
                     },
+                    emptyConnectionTypeList: {
+                        subtitles: {
+                            0: "There are currently no connection types available.",
+                            1: "for configuration."
+                        },
+                        title: "No connection types found"
+                    },
                     emptyConnectorList: {
                         subtitles: {
                             0: "This IDP has no outbound provisioning connectors configured.",
@@ -3653,9 +3701,9 @@ export const console: ConsoleNS = {
                     },
                     emptyIDPList: {
                         subtitles: {
-                            0: "There are no identity providers at the moment.",
-                            1: "You can add a new identity provider by following",
-                            2: "the steps in the identity provider creation wizard."
+                            0: "There are no connections available at the moment.",
+                            1: "You can add a new connection by following",
+                            2: "the steps in the creation wizard."
                         },
                         title: "Add a new Identity Provider"
                     },
@@ -4683,8 +4731,8 @@ export const console: ConsoleNS = {
                             subHeading: "Create applications using predefined templates and manage configurations."
                         },
                         authenticationProviders: {
-                            heading: "Identity Providers",
-                            subHeading: "Create and manage identity providers."
+                            heading: "Connections",
+                            subHeading: "Create and manage connections to authenticate users in your applications."
                         },
                         idps: {
                             heading: "Identity Providers",
@@ -4712,7 +4760,7 @@ export const console: ConsoleNS = {
                 customize: "Customize",
                 authenticationProviderEdit: "Identity Providers Edit",
                 authenticationProviderTemplates: "Identity Provider Templates",
-                authenticationProviders: "Identity Providers",
+                authenticationProviders: "Connections",
                 identityProviderEdit: "Identity Providers Edit",
                 identityProviderTemplates: "Identity Provider Templates",
                 identityProviders: "Identity Providers",
@@ -4791,17 +4839,20 @@ export const console: ConsoleNS = {
                 title: null
             },
             authenticationProvider: {
-                subTitle: "Manage identity providers to allow users to log in to your application through them.",
-                title: "Identity Providers"
+                subTitle: "Create and manage connections to authenticate users in your applications.",
+                title: "Connections"
             },
             authenticationProviderTemplate: {
-                backButton: "Go back to Identity Providers",
-                subTitle: "Choose one of the following identity providers.",
+                backButton: "Go back to Connections",
+                search: {
+                    placeholder: "Search by name"
+                },
+                subTitle: "Choose one of the following connection types.",
                 supportServices: {
                     authenticationDisplayName: "Authentication",
                     provisioningDisplayName: "Provisioning"
                 },
-                title: "Select Identity Provider"
+                title: "Create Connection"
             },
             idp: {
                 subTitle: "Manage identity providers to allow users to log in to your application through them.",

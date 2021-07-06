@@ -71,6 +71,12 @@ export class UIConstants {
     public static readonly DEFAULT_RESOURCE_LIST_ITEM_LIMIT: number = 10;
 
     /**
+     * Default list item size for resources such as applications, IdPs etc.
+     * @type {number}
+     */
+    public static readonly DEFAULT_RESOURCE_GRID_ITEM_LIMIT: number = 18;
+
+    /**
      * Default overview statistics insights list item limit.
      * @type {number}
      */

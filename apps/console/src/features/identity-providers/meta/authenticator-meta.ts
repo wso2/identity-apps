@@ -79,10 +79,10 @@ export class AuthenticatorMeta {
         return get({
             [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: [ AuthenticatorLabels.HANDLERS ],
             [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.PASSWORDLESS, AuthenticatorLabels.MULTI_FACTOR
+                AuthenticatorLabels.SECOND_FACTOR, AuthenticatorLabels.PASSWORDLESS, AuthenticatorLabels.MULTI_FACTOR
             ],
             [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.MULTI_FACTOR
+                AuthenticatorLabels.SECOND_FACTOR, AuthenticatorLabels.MULTI_FACTOR
             ],
             [ IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
@@ -177,5 +177,47 @@ export class AuthenticatorMeta {
         }, authenticatorId);
         
         return icon ?? getAuthenticatorIcons().default;
+    }
+
+    /**
+     * Get Authenticator Type display name.
+     *
+     * @param {string} authenticatorId - Authenticator ID.
+     *
+     * @return {string}
+     */
+    public static getAuthenticatorCategory(authenticatorId: string): string {
+
+        return get({
+            [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Predefined",
+            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "Predefined",
+            [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: "Predefined",
+            [ IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "Google",
+            [ IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID ]: "GitHub",
+            [ IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID ]: "Facebook",
+            [ IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID ]: "Twitter",
+            [ IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID ]: "Enterprise",
+            [ IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID ]: "Enterprise",
+            [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Predefined"
+        }, authenticatorId);
+    }
+
+    /**
+     * Get the list of allowed filter tags in the UI.
+     *
+     * `/authenticators/meta/tags` API gives out all the tags which includes `Request-Path` etc.
+     * Hence moderation has to be made.
+     *
+     * @return {string[]}
+     */
+    public static getAllowedFilterTags(): string[] {
+        
+        return [
+            AuthenticatorLabels.MULTI_FACTOR,
+            AuthenticatorLabels.PASSWORDLESS,
+            AuthenticatorLabels.OIDC,
+            AuthenticatorLabels.SOCIAL,
+            AuthenticatorLabels.SAML
+        ];
     }
 }

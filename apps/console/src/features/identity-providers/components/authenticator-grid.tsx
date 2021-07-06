@@ -19,62 +19,66 @@
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
-    AnimatedAvatar,
-    AppAvatar,
     ConfirmationModal,
     ContentLoader,
-    DataTable,
-    EmptyPlaceholder, GenericIcon,
+    EmptyPlaceholder,
     LinkButton,
-    PrimaryButton, ResourceGrid,
-    TableActionsInterface,
-    TableColumnInterface
+    PrimaryButton,
+    ResourceGrid
 } from "@wso2is/react-components";
-import React, { Fragment, FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState, MouseEvent } from "react";
+import get from "lodash-es/get";
+import isEmpty from "lodash-es/isEmpty";
+import React, {
+    Fragment,
+    FunctionComponent,
+    MouseEvent,
+    ReactElement,
+    SyntheticEvent,
+    useState
+} from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Divider, Header, Icon, List, SemanticICONS } from "semantic-ui-react";
+import { Divider, Icon, List } from "semantic-ui-react";
 import { handleIDPDeleteError } from "./utils";
-import { identityProviderConfig } from "../../../extensions/configs";
+import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "../../../extensions/configs";
 import { getApplicationDetails } from "../../applications/api";
 import { ApplicationBasicInterface } from "../../applications/models";
 import {
     AppConstants,
-    UIConstants,
     getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
 import { deleteIdentityProvider, getIDPConnectedApps } from "../api";
 import { IdentityProviderManagementConstants } from "../constants";
+import { AuthenticatorMeta } from "../meta";
 import {
+    AuthenticatorInterface,
     ConnectedAppInterface,
-    ConnectedAppsInterface, GenericAuthenticatorInterface,
+    ConnectedAppsInterface,
+    FederatedAuthenticatorListItemInterface,
+    FederatedAuthenticatorListResponseInterface,
     IdentityProviderInterface,
-    IdentityProviderListResponseInterface,
     StrictIdentityProviderInterface
 } from "../models";
-import isEmpty from "lodash-es/isEmpty";
-import { AuthenticatorMeta } from "../meta";
 import { IdentityProviderManagementUtils } from "../utils";
-import { getIdPIcons } from "../configs";
 
 /**
- * Proptypes for the identity provider list component.
+ * Proptypes for the Authenticators Grid component.
  */
-interface IdentityProviderGridPropsInterface extends LoadableComponentInterface, TestableComponentInterface {
+interface AuthenticatorGridPropsInterface extends LoadableComponentInterface, TestableComponentInterface {
 
     /**
-     * Advanced Search component.
+     * Is list filtering in progress.
      */
-    advancedSearch?: ReactNode;
+    isFiltering?: boolean;
     /**
-     * Default list item limit.
+     * Is Pagination in-progress.
      */
-    defaultListItemLimit?: number;
+    isPaginating?: boolean;
     /**
-     * IdP list.
+     * Authenticators list.
      */
-    list: IdentityProviderListResponseInterface;
+    authenticators: (IdentityProviderInterface | AuthenticatorInterface)[];
     /**
      * Callback to be fired when clicked on the empty list placeholder action.
      */
@@ -108,28 +112,25 @@ interface IdentityProviderGridPropsInterface extends LoadableComponentInterface,
 }
 
 /**
- * Identity Provider Grid component.
+ * Authenticators Grid component.
  *
- * @param {IdentityProviderGridPropsInterface} props - Props injected to the component.
+ * @param {AuthenticatorGridPropsInterface} props - Props injected to the component.
  *
  * @return {React.ReactElement}
  */
-export const IdentityProviderGrid: FunctionComponent<IdentityProviderGridPropsInterface> = (
-    props: IdentityProviderGridPropsInterface
+export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterface> = (
+    props: AuthenticatorGridPropsInterface
 ): ReactElement => {
 
     const {
-        advancedSearch,
-        defaultListItemLimit,
+        authenticators,
+        isFiltering,
         isLoading,
-        list,
         onEmptyListPlaceholderActionClick,
         onIdentityProviderDelete,
         onItemClick,
         onSearchQueryClear,
         searchQuery,
-        selection,
-        showListItemActions,
         [ "data-testid" ]: testId
     } = props;
 
@@ -144,31 +145,32 @@ export const IdentityProviderGrid: FunctionComponent<IdentityProviderGridPropsIn
         showDeleteErrorDueToConnectedAppsModal,
         setShowDeleteErrorDueToConnectedAppsModal
     ] = useState<boolean>(false);
-    const [ isAppsLoading, setIsAppsLoading ] = useState(true);
+    const [ isAppsLoading, setIsAppsLoading ] = useState<boolean>(true);
+    const [ showCustomEditView, setShowCustomEditView ] = useState<boolean>(false);
 
     /**
-     * Redirects to the identity provider edit page when the edit button is clicked.
+     * Redirects to the authenticator edit page when the edit button is clicked.
      *
-     * @param {string} idpId Identity provider id.
+     * @param {string} id - Authenticator ID.
      */
-    const handleIdentityProviderEdit = (idpId: string): void => {
+    const handleAuthenticatorEdit = (id: string): void => {
 
-        history.push(AppConstants.getPaths().get("IDP_EDIT").replace(":id", idpId));
+        history.push(AppConstants.getPaths().get("CONNECTION_EDIT").replace(":id", id));
     };
 
     /**
-     * Deletes an identity provider when the delete identity provider button is clicked.
+     * Initiates the deletes of an authenticator. This will check for connected apps.
      *
-     * @param {string} idpId Identity provider id.
+     * @param {string} idpId - Identity provider id.
      */
-    const handleIdentityProviderDeleteAction = (idpId: string): void => {
+    const handleAuthenticatorDeleteInitiation = (idpId: string): void => {
 
         setIsAppsLoading(true);
 
         getIDPConnectedApps(idpId)
             .then(async (response: ConnectedAppsInterface) => {
                 if (response.count === 0) {
-                    setDeletingIDP(list.identityProviders.find(idp => idp.id === idpId));
+                    setDeletingIDP(authenticators.find(idp => idp.id === idpId));
                     setShowDeleteConfirmationModal(true);
                 } else {
                     setShowDeleteErrorDueToConnectedAppsModal(true);
@@ -211,13 +213,14 @@ export const IdentityProviderGrid: FunctionComponent<IdentityProviderGridPropsIn
     };
 
     /**
-     * Deletes an identity provider when the delete identity provider button is clicked.
+     * Deletes an authenticator via the API.
+     * @remarks ATM, IDP delete is only supported.
      *
-     * @param {string} idpId Identity provider id.
+     * @param {string} id - Authenticator ID.
      */
-    const handleIdentityProviderDelete = (idpId: string): void => {
+    const handleAuthenticatorDelete = (id: string): void => {
 
-        deleteIdentityProvider(idpId)
+        deleteIdentityProvider(id)
             .then(() => {
                 dispatch(addAlert({
                     description: t("console:develop.features.authenticationProvider." +
@@ -244,8 +247,12 @@ export const IdentityProviderGrid: FunctionComponent<IdentityProviderGridPropsIn
      */
     const showPlaceholders = (): ReactElement => {
 
+        if (isLoading) {
+            return null;
+        }
+
         // When the search returns empty.
-        if (searchQuery) {
+        if (searchQuery || isFiltering) {
             return (
                 <EmptyPlaceholder
                     action={ (
@@ -267,7 +274,7 @@ export const IdentityProviderGrid: FunctionComponent<IdentityProviderGridPropsIn
             );
         }
 
-        if (list?.totalResults === 0) {
+        if (authenticators?.length === 0) {
             return (
                 <EmptyPlaceholder
                     className="list-placeholder"
@@ -291,95 +298,134 @@ export const IdentityProviderGrid: FunctionComponent<IdentityProviderGridPropsIn
 
         return null;
     };
-    
-    const handleGridItemOnClick = (e: SyntheticEvent, authenticator: IdentityProviderInterface
-        | GenericAuthenticatorInterface) => {
 
-        handleIdentityProviderEdit(authenticator.id);
+    /**
+     * Handles Grid Item click callback.
+     *
+     * @param {React.SyntheticEvent} e - Click event.
+     * @param {IdentityProviderInterface | AuthenticatorInterface} authenticator - Clicked authenticator.
+     */
+    const handleGridItemOnClick = (e: SyntheticEvent, authenticator: IdentityProviderInterface
+        | AuthenticatorInterface): void => {
+
+        handleAuthenticatorEdit(authenticator.id);
         onItemClick && onItemClick(e, authenticator);
+    };
+
+    /**
+     * Resolve tags for an IDP.
+     * `tags` appear inside the `federatedAuthenticators.authenticators` array. Hence, we need to iterate
+     * and find out the default authenticator and extract the tags.
+     *
+     * @param {FederatedAuthenticatorListResponseInterface} federatedAuthenticators - Federated authenticators.
+     *
+     * @return {string[]}
+     */
+    const resolveIDPTags = (federatedAuthenticators: FederatedAuthenticatorListResponseInterface): string[] => {
+        
+        if (!federatedAuthenticators?.defaultAuthenticatorId
+            || !Array.isArray(federatedAuthenticators.authenticators)) {
+
+            return [];
+        }
+        
+        const found: FederatedAuthenticatorListItemInterface = federatedAuthenticators.authenticators
+            .find((authenticator: FederatedAuthenticatorListItemInterface) => {
+                return authenticator.authenticatorId === federatedAuthenticators.defaultAuthenticatorId;
+            });
+
+        return Array.isArray(found.tags) ? found.tags : [];
     };
 
     return (
         <Fragment>
             <ResourceGrid
-                isLoading={ isLoading }
+                isLoading={ false }
+                isPaginating={ false }
                 isEmpty={
-                    (!list?.identityProviders
-                    || !Array.isArray(list.identityProviders)
-                    || list.identityProviders.length <= 0)
+                    (!authenticators
+                    || !Array.isArray(authenticators)
+                    || authenticators.length <= 0)
                 }
                 emptyPlaceholder={ showPlaceholders() }
             >
                 {
-                    list?.identityProviders?.map((authenticator: IdentityProviderInterface
-                        | GenericAuthenticatorInterface, index) => {
+                    authenticators?.map((authenticator: IdentityProviderInterface
+                        | AuthenticatorInterface, index) => {
 
-                        const isAuthenticatorConfigsNotAvailable: boolean = identityProviderConfig.utils
-                                .isConfigurableAuthenticator(authenticator.id)
-                            && !identityProviderConfig.utils
-                                .isAuthenticatorConfigurationsAvailable(authenticator.id);
+                        const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(identityProviderConfig
+                            .authenticators, authenticator.id);
 
                         const isIdP: boolean = IdentityProviderManagementUtils
                             .isConnectorIdentityProvider(authenticator);
 
                         return (
-                            <ResourceGrid.Card
-                                key={ index }
-                                editButtonLabel={ t("common:setup") }
-                                onEdit={ (e: MouseEvent<HTMLButtonElement>) => {
-                                    handleGridItemOnClick(e, authenticator);
-                                } }
-                                onDelete={ () => handleIdentityProviderDeleteAction(authenticator.id) }
-                                showActions={
-                                    authenticator.id !== IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID
-                                }
-                                showResourceEdit={ true }
-                                showResourceDelete={
-                                    isIdP && !IdentityProviderManagementConstants.DELETING_FORBIDDEN_IDPS
-                                        .includes(authenticator.name)
-                                }
-                                isResourceComingSoon={ isAuthenticatorConfigsNotAvailable }
-                                comingSoonRibbonLabel={ t("common:comingSoon") }
-                                resourceName={
-                                    isIdP
-                                        ? authenticator.name
-                                        : (authenticator as GenericAuthenticatorInterface).displayName
-                                            ?? authenticator.name
-                                }
-                                resourceCategory={
-                                    AuthenticatorMeta.getAuthenticatorCategory(
+                            <Fragment key={ index }>
+                                <ResourceGrid.Card
+                                    editButtonLabel={
+                                        authenticatorConfig?.editFlowOverrides?.editActionLabel
+                                            ?? t("common:setup")
+                                    }
+                                    onEdit={ (e: MouseEvent<HTMLButtonElement>) => {
+                                        // If edit flow override is defined, set the custom edit view flag to true.
+                                        if (authenticatorConfig?.editFlowOverrides) {
+                                            setShowCustomEditView(true);
+                                            return;
+                                        }
+
+                                        handleGridItemOnClick(e, authenticator);
+                                    } }
+                                    onDelete={ () => handleAuthenticatorDeleteInitiation(authenticator.id) }
+                                    showActions={ true }
+                                    showResourceEdit={ true }
+                                    showResourceDelete={
+                                        isIdP && !IdentityProviderManagementConstants.DELETING_FORBIDDEN_IDPS
+                                            .includes(authenticator.name)
+                                    }
+                                    isResourceComingSoon={ authenticatorConfig?.isComingSoon }
+                                    comingSoonRibbonLabel={ t("common:comingSoon") }
+                                    resourceName={
                                         isIdP
-                                            ? (authenticator as IdentityProviderInterface)
-                                                .federatedAuthenticators.defaultAuthenticatorId
-                                            : (authenticator as GenericAuthenticatorInterface)
-                                                .defaultAuthenticator.authenticatorId
-                                    )
-                                }
-                                resourceDescription={
-                                    !isEmpty(authenticator.description)
-                                        ? authenticator.description
-                                        : AuthenticatorMeta.getAuthenticatorDescription(
-                                        isIdP
-                                            ? (authenticator as IdentityProviderInterface)
-                                                .federatedAuthenticators.defaultAuthenticatorId
-                                            : (authenticator as GenericAuthenticatorInterface)
-                                                .defaultAuthenticator.authenticatorId
+                                            ? authenticator.name
+                                            : AuthenticatorMeta.getAuthenticatorDisplayName(authenticator.id)
+                                                ? AuthenticatorMeta.getAuthenticatorDisplayName(authenticator.id)
+                                                : (authenticator as AuthenticatorInterface).displayName
+                                                    || (authenticator as AuthenticatorInterface).name
+                                    }
+                                    resourceCategory={
+                                        AuthenticatorMeta.getAuthenticatorCategory(
+                                            isIdP
+                                                ? (authenticator as IdentityProviderInterface)
+                                                    .federatedAuthenticators?.defaultAuthenticatorId
+                                                : authenticator.id
                                         )
-                                }
-                                resourceImage={
-                                    authenticator.image ?? AuthenticatorMeta.getAuthenticatorIcon(authenticator.id)
-                                }
-                                tags={
-                                    AuthenticatorMeta.getAuthenticatorLabels(
+                                    }
+                                    resourceDescription={
+                                        !isEmpty(authenticator.description)
+                                            ? authenticator.description
+                                            : !isIdP
+                                                ? AuthenticatorMeta.getAuthenticatorDescription(authenticator.id)
+                                                : ""
+                                    }
+                                    resourceImage={
+                                        authenticator.image ?? AuthenticatorMeta.getAuthenticatorIcon(authenticator.id)
+                                    }
+                                    tags={
                                         isIdP
-                                            ? (authenticator as IdentityProviderInterface)
-                                                .federatedAuthenticators.defaultAuthenticatorId
-                                            : (authenticator as GenericAuthenticatorInterface)
-                                                .defaultAuthenticator.authenticatorId
-                                    )
+                                            ? resolveIDPTags((authenticator as IdentityProviderInterface)
+                                                .federatedAuthenticators)
+                                            : (authenticator as AuthenticatorInterface).tags
+                                    }
+                                    data-testid={ `${ testId }-${ authenticator.name }` }
+                                />
+                                {
+                                    // Engage the custom edit view from config.
+                                    authenticatorConfig?.editFlowOverrides?.getEditView(showCustomEditView,
+                                        () => setShowCustomEditView(false),
+                                        t,
+                                        testId)
                                 }
-                                data-testid={ `${ testId }-${ authenticator.name }` }
-                            />
+                            </Fragment>
                         );
                     })
                 }
@@ -407,7 +453,7 @@ export const IdentityProviderGrid: FunctionComponent<IdentityProviderGridPropsIn
                         secondaryAction={ t("common:cancel") }
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={
-                            (): void => handleIdentityProviderDelete(deletingIDP.id)
+                            (): void => handleAuthenticatorDelete(deletingIDP.id)
                         }
                         data-testid={ `${ testId }-delete-confirmation-modal` }
                         closeOnDimmerClick={ false }
@@ -473,10 +519,8 @@ export const IdentityProviderGrid: FunctionComponent<IdentityProviderGridPropsIn
 };
 
 /**
- * Default proptypes for the IDP list.
+ * Default proptypes for the component.
  */
-IdentityProviderGrid.defaultProps = {
-    "data-testid": "idp-grid",
-    selection: true,
-    showListItemActions: true
+AuthenticatorGrid.defaultProps = {
+    "data-testid": "authenticator-grid"
 };

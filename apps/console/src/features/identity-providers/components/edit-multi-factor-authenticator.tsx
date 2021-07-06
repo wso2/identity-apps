@@ -19,11 +19,17 @@
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, EmphasizedSegment, ResourceTab } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, ReactNode } from "react";
+import get from "lodash-es/get";
+import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Menu, SemanticShorthandItem, TabPaneProps } from "semantic-ui-react";
 import { AuthenticatorFormFactory } from "./forms/factories";
+import {
+    AuthenticatorExtensionsConfigInterface,
+    ComponentExtensionPlaceholder,
+    identityProviderConfig
+} from "../../../extensions";
 import { updateMultiFactorAuthenticatorDetails } from "../api";
 import { IdentityProviderManagementConstants } from "../constants";
 import { MultiFactorAuthenticatorInterface } from "../models";
@@ -50,6 +56,10 @@ interface EditMultiFactorAuthenticatorPropsInterface extends TestableComponentIn
      */
     defaultActiveIndex?: number;
     /**
+     * Callback to see if tab extensions are available
+     */
+    isTabExtensionsAvailable: (isAvailable: boolean) => void;
+    /**
      * Type of the authenticator.
      * @see {@link IdentityProviderManagementConstants } Use one of `IDP_TEMPLATE_IDS`. 
      */
@@ -71,6 +81,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
         authenticator,
         isLoading,
         defaultActiveIndex,
+        isTabExtensionsAvailable,
         onUpdate,
         type,
         [ "data-testid" ]: testId
@@ -79,6 +90,41 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
     const dispatch = useDispatch();
 
     const { t } = useTranslation();
+
+    const [ tabPaneExtensions, setTabPaneExtensions ] = useState<any>(undefined);
+
+    /**
+     * Check for tab extensions.
+     */
+    useEffect(() => {
+
+        if (tabPaneExtensions || !authenticator) {
+            return;
+        }
+
+        const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(identityProviderConfig.authenticators,
+            authenticator.id);
+
+        if (!authenticatorConfig?.content?.quickStart) {
+            return;
+        }
+
+        // Resolve the quick-start tab.
+        const extensions: any[] = ComponentExtensionPlaceholder({
+            component: "identityProvider",
+            props: {
+                content: authenticatorConfig.content.quickStart
+            },
+            subComponent: "edit",
+            type: "tab"
+        });
+
+        if (Array.isArray(extensions) && extensions.length > 0) {
+            isTabExtensionsAvailable(true);
+        }
+
+        setTabPaneExtensions(extensions);
+    }, [ authenticator, tabPaneExtensions ]);
 
     /**
      * Handles authenticator configurations submit action.
@@ -170,6 +216,10 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
             menuItem?: any;
             render?: () => ReactNode;
         }[] = [];
+
+        if (tabPaneExtensions && tabPaneExtensions.length > 0) {
+            panes.push(...tabPaneExtensions);
+        }
 
         panes.push({
             menuItem: t("console:develop.features.authenticationProvider.edit.common.settings.tabName"),
