@@ -25,7 +25,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Grid } from "semantic-ui-react";
-import { AttributeSelection, RoleMappingSettings, UriAttributesSettings } from "./attribute-management";
 import {
     IdentityProviderClaimInterface,
     IdentityProviderClaimMappingInterface,
@@ -45,6 +44,7 @@ import {
     isLocalIdentityClaim,
     updateAvailableLocalClaims
 } from "../utils";
+import { AttributeSelection, RoleMappingSettings, UriAttributesSettings } from "./attribute-management";
 
 export interface DropdownOptionsInterface {
     key: string;
@@ -283,13 +283,13 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     }, [roleMapping]);
 
     return (
-        !isLoading
+        !isLoading && (availableLocalClaims && availableLocalClaims.length && selectedClaimsWithMapping)
             ? (
                 <EmphasizedSegment padded="very">
                     <Grid className="attributes-settings">
+
                         { /* Select attributes for mapping. */ }
-                        { selectedClaimsWithMapping &&
-                        <AttributeSelection
+                        { selectedClaimsWithMapping && <AttributeSelection
                             attributeList={
                                 availableLocalClaims.filter(
                                     hideIdentityClaimAttributes
@@ -298,23 +298,9 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                 )
                             }
                             selectedAttributesWithMapping={ selectedClaimsWithMapping }
-                            setSelectedAttributesWithMapping={ setSelectedClaimsWithMapping }
-                            uiProps={ {
-                                attributeColumnHeader: t("console:develop.features.authenticationProvider." +
-                                    "forms.attributeSettings.attributeMapping.attributeColumnHeader"),
-                                attributeMapColumnHeader: t("console:develop.features.authenticationProvider." +
-                                    "forms.attributeSettings.attributeMapping.attributeMapColumnHeader"),
-                                attributeMapInputPlaceholderPrefix: t("console:develop.features." +
-                                    "authenticationProvider.forms" +
-                                    ".attributeSettings.attributeMapping.attributeMapInputPlaceholderPrefix"),
-                                componentHeading: t("console:develop.features.authenticationProvider." +
-                                    "forms.attributeSettings." +
-                                    "attributeMapping.componentHeading"),
-                                enablePrecedingDivider: false,
-                                hint: t("console:develop.features.authenticationProvider." +
-                                    "forms.attributeSettings.attributeMapping.hint")
+                            onAttributesSelection={ (allSelectedMappings) => {
+                                setSelectedClaimsWithMapping(allSelectedMappings);
                             } }
-                            data-testid={ `${ testId }-claim-attribute-selection` }
                         /> }
 
                         { selectedClaimsWithMapping &&
@@ -344,25 +330,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                 buildProvisioningClaimList(selectedClaimsWithMapping, availableLocalClaims)
                                     .filter(element => !isEmpty(element?.uri)) }
                             selectedAttributesWithMapping={ selectedProvisioningClaimsWithDefaultValue }
-                            setSelectedAttributesWithMapping={ setSelectedProvisioningClaimsWithDefaultValue }
-                            uiProps={ {
-                                attributeColumnHeader: isEmpty(selectedClaimsWithMapping) ?
-                                    t("console:develop.features.authenticationProvider.forms.attributeSettings." +
-                                        "attributeProvisioning.attributeColumnHeader.0") :
-                                    t("console:develop.features.authenticationProvider.forms.attributeSettings." +
-                                        "attributeProvisioning.attributeColumnHeader.1"),
-                                attributeMapColumnHeader: t("console:develop.features.authenticationProvider." +
-                                    "forms.attributeSettings." +
-                                    "attributeProvisioning.attributeMapColumnHeader"),
-                                attributeMapInputPlaceholderPrefix: t("console:develop.features." +
-                                    "authenticationProvider.forms" +
-                                    ".attributeSettings.attributeProvisioning.attributeMapInputPlaceholderPrefix"),
-                                componentHeading: t("console:develop.features.authenticationProvider." +
-                                    "forms.attributeSettings." +
-                                    "attributeProvisioning.componentHeading"),
-                                enablePrecedingDivider: false,
-                                hint: t("console:develop.features.authenticationProvider.forms.attributeSettings." +
-                                    "attributeProvisioning.hint")
+                            onAttributesSelection={ (mappings) => {
+                                setSelectedProvisioningClaimsWithDefaultValue(mappings);
                             } }
                             data-testid={ `${ testId }-provisioning-attribute-selection` }
                         /> }
