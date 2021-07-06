@@ -18,13 +18,73 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode } from "react";
+import { ButtonProps, Icon } from "semantic-ui-react";
+import { LinkButton } from "../../button";
 import { InfoCard, InfoCardPropsInterface } from "../../card";
+import { GenericIcon } from "../../icon";
 
 /**
  * Interface for the Resource Grid Card component.
  */
-export interface ResourceGridCardPropsInterface extends InfoCardPropsInterface, TestableComponentInterface { }
+export interface ResourceGridCardPropsInterface extends InfoCardPropsInterface, TestableComponentInterface {
+
+    /**
+     * Is resource disabled.
+     */
+    disabled?: boolean;
+    /**
+     * Edit button label.
+     */
+    editButtonLabel?: ReactNode;
+    /**
+     * On resource delete callback.
+     * @param {React.MouseEvent<HTMLDivElement>} e - Click event.
+     */
+    onDelete?: (e: MouseEvent<HTMLDivElement>) => void;
+    /**
+     * On resource edit callback.
+     * @param {React.MouseEvent<HTMLButtonElement>} e - Click event.
+     * @param {ButtonProps} data - Button data.
+     */
+    onEdit?: (e: MouseEvent<HTMLButtonElement>, data: ButtonProps) => void;
+    /**
+     * Name of the resource.
+     */
+    resourceCategory?: InfoCardPropsInterface[ "subHeader" ];
+    /**
+     * Description of the resource.
+     */
+    resourceDescription?: InfoCardPropsInterface[ "description" ];
+    /**
+     * Description of the resource.
+     */
+    resourceImage?: InfoCardPropsInterface[ "image" ];
+    /**
+     * Name of the resource.
+     */
+    resourceName?: InfoCardPropsInterface[ "header" ];
+    /**
+     * Should show actions panel.
+     */
+    showActions?: boolean;
+    /**
+     * Should show resource delete option.
+     */
+    showResourceDelete?: boolean;
+    /**
+     * Should show resource edit option.
+     */
+    showResourceEdit?: boolean;
+    /**
+     * Is resource a coming soon feature?.
+     */
+    isResourceComingSoon?: boolean;
+    /**
+     * Coming soon ribbon label.
+     */
+    comingSoonRibbonLabel?: ReactNode;
+}
 
 /**
  * Resource Grid Card component.
@@ -38,6 +98,20 @@ export const ResourceGridCard: FunctionComponent<ResourceGridCardPropsInterface>
 
     const {
         className,
+        comingSoonRibbonLabel,
+        disabled,
+        editButtonLabel,
+        onDelete,
+        onEdit,
+        isResourceComingSoon,
+        resourceCategory,
+        resourceDescription,
+        resourceImage,
+        resourceName,
+        showActions,
+        showResourceEdit,
+        showResourceDelete,
+        testId,
         ...rest
     } = props;
 
@@ -49,6 +123,46 @@ export const ResourceGridCard: FunctionComponent<ResourceGridCardPropsInterface>
     return (
         <InfoCard
             className={ classes }
+            ribbon={ isResourceComingSoon && comingSoonRibbonLabel }
+            header={ resourceName }
+            subHeader={ resourceCategory }
+            description={ resourceDescription }
+            image={ resourceImage }
+            disabled={ isResourceComingSoon || disabled }
+            action={
+                showActions && (
+                    <div className="actions">
+                        {
+                            showResourceEdit && onEdit && (
+                                <LinkButton
+                                    disabled={ isResourceComingSoon || disabled }
+                                    hoverType="underline"
+                                    className="info-card-inner-action"
+                                    onClick={ onEdit }
+                                    data-testid={ `${ testId }-item-edit-button` }
+                                >
+                                    { editButtonLabel }
+                                    <Icon name="caret right"/>
+                                </LinkButton>
+                            )
+                        }
+                        {
+                            showResourceDelete && onDelete && !(isResourceComingSoon || disabled) && (
+                                <GenericIcon
+                                    square
+                                    hoverable
+                                    transparent
+                                    floated="right"
+                                    className="delete-button"
+                                    icon={ <Icon name="trash alternate"/> }
+                                    data-testid={ `${ testId }-item-delete-button` }
+                                    onClick={ onDelete }
+                                />
+                            )
+                        }
+                    </div>
+                )
+            }
             { ...rest }
         />
     );
@@ -58,7 +172,9 @@ export const ResourceGridCard: FunctionComponent<ResourceGridCardPropsInterface>
  * Default props for the component.
  */
 ResourceGridCard.defaultProps = {
+    comingSoonRibbonLabel: "Coming Soon",
     "data-testid": "resource-grid-card",
+    editButtonLabel: "Configure",
     imageOptions: {
         floated: false,
         inline: true

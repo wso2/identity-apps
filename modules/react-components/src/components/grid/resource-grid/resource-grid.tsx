@@ -16,14 +16,17 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, {
-    FunctionComponent, PropsWithChildren,
-    ReactElement
+    FunctionComponent,
+    PropsWithChildren,
+    ReactElement,
+    ReactNode
 } from "react";
-import { Card, CardGroupProps } from "semantic-ui-react";
+import { Card, CardGroupProps, Loader } from "semantic-ui-react";
 import { ResourceGridCard } from "./resource-grid-card";
+import { ContentLoader } from "../../loader";
 
 /**
  * Interface for the Resource Grid sub components.
@@ -35,8 +38,21 @@ export interface ResourceGridSubComponentsInterface {
 /**
  * Interface for the Resource Grid component.
  */
-export interface ResourceGridPropsInterface extends CardGroupProps, TestableComponentInterface {
+export interface ResourceGridPropsInterface extends CardGroupProps, TestableComponentInterface,
+    LoadableComponentInterface {
 
+    /**
+     * Empty placeholder component.
+     */
+    emptyPlaceholder?: ReactNode;
+    /**
+     * Is the list empty.
+     */
+    isEmpty?: boolean;
+    /**
+     * Is pagination in progress.
+     */
+    isPaginating?: boolean;
     /**
      * CSS classes for the wrapper.
      */
@@ -58,8 +74,10 @@ export const ResourceGrid: FunctionComponent<
     const {
         children,
         className,
-        searchOptions,
-        showSearch,
+        emptyPlaceholder,
+        isEmpty,
+        isLoading,
+        isPaginating,
         testId,
         wrapperClassName,
         ...rest
@@ -69,7 +87,7 @@ export const ResourceGrid: FunctionComponent<
         "resource-grid",
         className
     );
-    
+
     const wrapperClasses = classNames(
         "resource-grid-wrapper",
         wrapperClassName
@@ -77,9 +95,21 @@ export const ResourceGrid: FunctionComponent<
 
     return (
         <div className={ wrapperClasses } data-testid={ testId }>
-            <Card.Group className={ classes } { ...rest }>
-                { children }
-            </Card.Group>
+            {
+                isEmpty
+                    ? emptyPlaceholder
+                    : (
+                        <Card.Group className={ classes } { ...rest }>
+                            {
+                                (isLoading && !isPaginating)
+                                    ? <ContentLoader />
+                                    : isPaginating
+                                        ? <Loader>Loading...</Loader>
+                                        : children
+                            }
+                        </Card.Group>
+                    )
+            }
         </div>
     );
 };
