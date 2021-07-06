@@ -194,6 +194,10 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
         setValidURL(urlValid);
         if (urlValid && (urlState === "" || urlState === undefined)) {
+
+            // Allow origin by default
+            allowOrigin(url);
+
             setURLState(url);
             setChangeUrl("");
 
@@ -208,6 +212,9 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
             urlValid && setDuplicateURL(duplicate);
 
             if (urlValid && !duplicate) {
+                // Allow origin by default
+                allowOrigin(url);
+
                 setURLState((url + "," + urlState));
                 setChangeUrl("");
                 return url + "," + urlState;
@@ -596,6 +603,14 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
             />
         );
     };
+
+    /**
+     * Allow origin by default.
+     */
+    const allowOrigin = (url: string) => {
+        handleAddAllowedOrigin(url);
+        allowedOrigins.push(url);
+    }
 
     const urlChipItemWidget = (url: string): ReactElement => {
         const { origin, href } = URLUtils.urlComponents(url);
