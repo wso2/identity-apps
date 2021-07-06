@@ -131,6 +131,10 @@ export interface FederatedAuthenticatorInterface extends CommonPluggableComponen
     name?: string;
     isEnabled?: boolean;
     isDefault?: boolean;
+    /**
+     * The list of tags that the authenticator can be categorized under.
+     */
+    tags?: string[];
 }
 
 export interface FederatedAuthenticatorWithMetaInterface {
