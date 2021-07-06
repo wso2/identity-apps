@@ -43,7 +43,7 @@ import { AuthAction, authenticateActionTypes } from "./types";
 import { getProfileInfo, getUserReadOnlyStatus, switchAccount } from "../../api";
 import { Config } from "../../configs";
 import { AppConstants, CommonConstants } from "../../constants";
-// keep statement as this to avoid cyclic dependency
+// Keep statement as this to avoid cyclic dependency. Do not import from config index.
 import { SCIMConfigs } from "../../extensions/configs/scim"; 
 import { history } from "../../helpers";
 import {
