@@ -77,6 +77,7 @@ export const attributeConfig: AttributeConfig = {
         hideDeleteIcon: (claim: ExternalClaim): boolean => {
             return false;
         },
+        isAttributeEditable: true,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         isEditActionClickable: (claim: ExternalClaim): boolean => {
             return true;
@@ -98,5 +99,28 @@ export const attributeConfig: AttributeConfig = {
     isRowSelectable: (claim: Claim | ExternalClaim | ClaimDialect): boolean => {
         return true;
     },
-    isSCIMEditable: true
+    isSCIMEditable: true,
+    localAttributes: {
+        createCustomDialect: false,
+        createWizard: {
+            addPrimaryUserStore: true,
+            checkOIDCAvailability: false,
+            checkSCIMAvailability: false,
+            customWIzard: false,
+            identifyAsCustomAttrib: false,
+            showAttributeMapping: true,
+            showDisplayOrder: true,
+            showReadOnlyAttribute: true,
+            showRegularExpression: true,
+            showSummary: true
+        },
+        customDialectURI: "",
+        getDialect: (dialectURI: string) => { return Promise.resolve(dialectURI); },
+        isOIDCAttributeAvailable: () =>  { return Promise.resolve(false); },
+        isSCIMAttributeAvailable: () =>  { return Promise.resolve(false); },
+        isSCIMCustomDialectAvailable: () =>  { return Promise.resolve(""); },
+        isUserStoresHidden: () =>  { return Promise.resolve([]); },
+        mapClaimToCustomDialect: false
+    }, 
+    showCustomDialectInSCIM: false
 };
