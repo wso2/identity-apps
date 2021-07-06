@@ -138,8 +138,6 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
         }
 
         if (isPortalAccessGranted<FeatureConfigInterface>(config?.ui?.features, allowedScopes)) {
-            eventPublisher.publish("page-visit-console-landing-page");
-
             return;
         }
 
