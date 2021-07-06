@@ -280,7 +280,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     { key: "RequestMethod", value: values.RequestMethod },
                     { key: "SPEntityId", value: values.SPEntityId },
                     { key: "SSOUrl", value: values.SSOUrl },
-                    { key: "selectMode", value: "Manual Configuration" },
+                    { key: "SelectMode", value: "Manual Configuration" },
                     { key: "IsUserIdInClaims", value: "true" },
                     { key: "IsSLORequestAccepted", value: "true" },
                     { key: "SignatureAlgorithm", value: "RSA with SHA1" },
@@ -290,7 +290,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 identityProvider.federatedAuthenticators.authenticators[ FIRST_ENTRY ].properties = [
                     { key: "SPEntityId", value: values.SPEntityId },
                     { key: "meta_data_saml", value: xmlBase64String ?? EMPTY_STRING },
-                    { key: "selectMode", value: "Metadata File Configuration" },
+                    { key: "SelectMode", value: "Metadata File Configuration" },
                     { key: "IsUserIdInClaims", value: "true" },
                     { key: "IsSLORequestAccepted", value: "true" }
                 ];
