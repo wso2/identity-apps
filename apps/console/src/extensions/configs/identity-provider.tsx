@@ -20,6 +20,7 @@ import { IdentityProviderConfig } from "./models";
 import { IdentityProviderManagementConstants } from "../../features/identity-providers";
 
 export const identityProviderConfig: IdentityProviderConfig = {
+    authenticators: {},
     editIdentityProvider: {
         attributesSettings: true,
         showAdvancedSettings: true,
@@ -40,6 +41,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
         oidc: true,
         saml: true
     },
+    useNewConnectionsView: false,
     utils: {
         /**
          * As an example you can implement this method like the
@@ -62,18 +64,6 @@ export const identityProviderConfig: IdentityProviderConfig = {
                 IdentityProviderManagementConstants.X509_AUTHENTICATOR,
                 IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR
             ].includes(name);
-        },
-        isAuthenticatorConfigurationsAvailable: (id: string): boolean => {
-            return ![
-                IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID
-            ].includes(id);
-        },
-        isConfigurableAuthenticator: (id: string): boolean => {
-            return [
-                IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID,
-                IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID,
-                IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID
-            ].includes(id);
         },
         /**
          * If the {@param authenticatorId} is not in the excluded set we
