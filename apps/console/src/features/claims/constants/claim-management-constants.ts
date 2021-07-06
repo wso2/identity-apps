@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-//keep the import statement as this in order to avoid cyclic dependency
+// Keep statement as this to avoid cyclic dependency. Do not import from config index.
 import { SCIMConfigs } from "../../../extensions/configs/scim";
 
 /**
