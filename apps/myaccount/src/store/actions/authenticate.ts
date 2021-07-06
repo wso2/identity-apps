@@ -43,6 +43,7 @@ import { AuthAction, authenticateActionTypes } from "./types";
 import { getProfileInfo, getUserReadOnlyStatus, switchAccount } from "../../api";
 import { Config } from "../../configs";
 import { AppConstants, CommonConstants } from "../../constants";
+import { SCIMConfigs } from "../../extensions/configs";
 import { history } from "../../helpers";
 import {
     AlertLevels,
@@ -149,7 +150,7 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                             setProfileInfo({
                                 ...infoResponse,
                                 isReadOnly:
-                                    response["urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"]
+                                    response[SCIMConfigs.scim.enterpriseSchema]
                                         ?.isReadOnlyUser
                             })
                         );
@@ -158,7 +159,7 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                         if (isEmpty(store.getState().authenticationInformation.profileSchemas)) {
                             isCompletionCalculated = true;
                             dispatch(getScimSchemas(infoResponse,
-                                response["urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"]?.isReadOnlyUser));
+                                response[SCIMConfigs.scim.enterpriseSchema]?.isReadOnlyUser));
                         }
 
                         // If `updateProfileCompletion` flag is enabled, update the profile completion.
@@ -167,7 +168,7 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                                 getProfileCompletion(
                                     infoResponse,
                                     store.getState().authenticationInformation.profileSchemas,
-                                    response["urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"]
+                                    response[SCIMConfigs.scim.enterpriseSchema]
                                         ?.isReadOnlyUser
                                 );
                             } catch (e) {

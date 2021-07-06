@@ -16,5 +16,23 @@
  * under the License.
  */
 
-export * from "./common";
-export * from "./scim";
+export interface SCIMConfigInterface {
+
+    oidc: string;
+
+    scim: {
+        core1Schema: string,
+        coreSchema: string,
+        enterpriseSchema: string,
+        userSchema: string
+    };
+
+    scimEnterpriseUserClaimUri: {
+        accountDisabled: string,
+        accountLocked: string,
+        askPassword: string,
+        isReadOnlyUser: string,
+        oneTimePassword: string,
+        profileUrl: string
+    };
+}

@@ -16,7 +16,9 @@
  * under the License.
  */
 
- /**
+ import { SCIMConfigs } from "../extensions/configs";
+
+/**
   * Multi-valued attribute model
   */
 export interface MultiValue {
@@ -167,7 +169,7 @@ export interface ProfileReducerStateInterface {
 export interface ReadOnlyUserStatus {
     id: string;
     schemas: string[];
-    "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
+     [ `SCIMConfigs.scim.enterpriseSchema` ]: {
         isReadOnlyUser: boolean;
     };
 }

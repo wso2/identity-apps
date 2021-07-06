@@ -29,6 +29,7 @@ import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { RolePermissions } from "./user-role-permissions";
 import { AddUserWizardSummary } from "./wizard-summary";
+import { SCIMConfigs } from "../../../../extensions/configs";
 import { AppConstants } from "../../../core/constants";
 import { history } from "../../../core/helpers";
 import { getGroupList, updateGroupDetails } from "../../../groups/api";
@@ -404,7 +405,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     },
                     password: userInfo.newPassword,
                     profileUrl: userInfo.profileUrl,
-                    "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
+                    [SCIMConfigs.scim.enterpriseSchema] : {
                         askPassword: "true"
                     },
                     userName

@@ -22,3 +22,4 @@ export * from "./identity-provider";
 export * from "./common";
 export * from "./server-configuration";
 export * from "./userstores";
+export * from "./scim";

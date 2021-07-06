@@ -17,6 +17,7 @@
  */
 
 import { LinkInterface, MultiValueAttributeInterface, NameInterface, RolesInterface } from "@wso2is/core/models";
+import { SCIMConfigs } from "../../../extensions/configs";
 
 /**
  * Captures meta details of the user.
@@ -113,9 +114,14 @@ export interface UserDetailsInterface {
     name: NameInterface;
     userName: string;
     password: string;
-    "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"?: {
+    /*
+     * This wildcard declaration is done due to the issue of
+     * property name in an interface must directly refer to a built-in literal in ts.
+     * issue - https://github.com/Microsoft/TypeScript/issues/21000
+     */
+    [key: string]: {
         askPassword: string;
-    };
+    } | any;
     profileUrl: string;
 }
 
@@ -133,7 +139,7 @@ export const createEmptyUserDetails = (): UserDetailsInterface => ({
     },
     password: "",
     profileUrl: "",
-    "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
+    [SCIMConfigs.scim.enterpriseSchema]: {
         askPassword: ""
     },
     userName: ""

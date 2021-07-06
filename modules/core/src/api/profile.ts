@@ -90,8 +90,6 @@ export const getProfileInfo = (endpoint: string,
                                clientOrigin: string,
                                onSCIMDisabled?: () => void): Promise<ProfileInfoInterface> => {
 
-    const orgKey = "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User";
-
     const requestConfig = {
         headers: HTTPRequestHeaders(clientOrigin, AcceptHeaderValues.APP_JSON,
             ContentTypeHeaderValues.APP_SCIM),
@@ -115,7 +113,6 @@ export const getProfileInfo = (endpoint: string,
             const profileResponse: ProfileInfoInterface = {
                 emails: response.data.emails || "",
                 name: response.data.name || { familyName: "", givenName: "" },
-                organisation: response.data[orgKey] ? response.data[orgKey].organization : "",
                 phoneNumbers: response.data.phoneNumbers || [],
                 profileUrl: response.data.profileUrl || "",
                 responseStatus: response.status || null,
