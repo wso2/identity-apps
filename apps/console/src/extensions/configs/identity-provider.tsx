@@ -41,6 +41,8 @@ export const identityProviderConfig: IdentityProviderConfig = {
         oidc: true,
         saml: true
     },
+    // Handles backward compatibility with the legacy IDP view & new connections view.
+    // TODO: Remove this usage once https://github.com/wso2/product-is/issues/12052 is addressed.
     useNewConnectionsView: false,
     utils: {
         /**

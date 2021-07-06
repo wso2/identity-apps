@@ -103,9 +103,7 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
                                 },
                                 id: "identityProviderTemplate",
                                 name: "Identity Provider Templates",
-                                path: identityProviderConfig?.useNewConnectionsView
-                                    ? AppConstants.getPaths().get("CONNECTION_TEMPLATES")
-                                    : AppConstants.getPaths().get("IDP_TEMPLATES"),
+                                path: AppConstants.getPaths().get("IDP_TEMPLATES"),
                                 protected: true,
                                 showOnSidePanel: false
                             },
@@ -117,9 +115,7 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
                                 },
                                 id: "identityProvidersEdit",
                                 name: "Identity Providers Edit",
-                                path: identityProviderConfig?.useNewConnectionsView
-                                    ? AppConstants.getPaths().get("CONNECTION_EDIT")
-                                    : AppConstants.getPaths().get("IDP_EDIT"),
+                                path: AppConstants.getPaths().get("IDP_EDIT"),
                                 protected: true,
                                 showOnSidePanel: false
                             }
@@ -136,9 +132,7 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
                             ? "console:develop.features.sidePanel.authenticationProviders"
                             : "console:develop.features.sidePanel.identityProviders",
                         order: 2,
-                        path: identityProviderConfig?.useNewConnectionsView
-                            ? AppConstants.getPaths().get("CONNECTIONS")
-                            : AppConstants.getPaths().get("IDP"),
+                        path: AppConstants.getPaths().get("IDP"),
                         protected: true,
                         showOnSidePanel: true
                     }

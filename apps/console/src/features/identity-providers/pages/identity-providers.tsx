@@ -403,12 +403,6 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                     || !(!searchQuery && idpList?.identityProviders?.length <= 0)) && (
                     <PrimaryButton
                         onClick={ (): void => {
-                            if (useNewConnectionsView) {
-                                history.push(AppConstants.getPaths().get("CONNECTION_TEMPLATES"));
-                                
-                                return;
-                            }
-
                             history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));
                         } }
                         data-testid={ `${ testId }-add-button` }
@@ -505,7 +499,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                                         : idpList?.identityProviders
                                 }
                                 onEmptyListPlaceholderActionClick={ () => {
-                                    history.push(AppConstants.getPaths().get("CONNECTION_TEMPLATES"));
+                                    history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));
                                 } }
                                 isFiltering={ showFilteredList }
                                 isPaginating={ isPaginating }

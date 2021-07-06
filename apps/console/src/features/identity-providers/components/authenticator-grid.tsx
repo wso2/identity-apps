@@ -155,7 +155,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
      */
     const handleAuthenticatorEdit = (id: string): void => {
 
-        history.push(AppConstants.getPaths().get("CONNECTION_EDIT").replace(":id", id));
+        history.push(AppConstants.getPaths().get("IDP_EDIT").replace(":id", id));
     };
 
     /**

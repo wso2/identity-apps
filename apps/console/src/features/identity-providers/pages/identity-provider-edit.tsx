@@ -308,12 +308,6 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
      */
     const handleBackButtonClick = (): void => {
 
-        if (useNewConnectionsView) {
-            history.push(AppConstants.getPaths().get("CONNECTIONS"));
-            
-            return;
-        }
-
         history.push(AppConstants.getPaths().get("IDP"));
     };
 
@@ -321,12 +315,6 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
      * Called when an idp is deleted.
      */
     const handleIdentityProviderDelete = (): void => {
-
-        if (useNewConnectionsView) {
-            history.push(AppConstants.getPaths().get("CONNECTIONS"));
-
-            return;
-        }
 
         history.push(AppConstants.getPaths().get("IDP"));
     };

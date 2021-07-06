@@ -18,6 +18,7 @@
 
 import { AppThemeConfigInterface } from "@wso2is/core/models";
 import { StringUtils } from "@wso2is/core/utils";
+import { identityProviderConfig } from "../../../extensions/configs";
 
 /**
  * Class containing app constants.
@@ -240,6 +241,8 @@ export class AppConstants {
      * @return {Map<string, string>}
      */
     public static getPaths(): Map<string, string> {
+        
+        const useNewConnectionsView: boolean = identityProviderConfig?.useNewConnectionsView;
 
         return new Map<string, string>()
             .set("ADMIN_OVERVIEW", `${ AppConstants.getAdminViewBasePath() }/overview`)
@@ -264,9 +267,21 @@ export class AppConstants {
             .set("EXTERNAL_DIALECT_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attribute-mappings/:id`)
             .set("GROUPS", `${ AppConstants.getAdminViewBasePath() }/groups`)
             .set("GROUP_EDIT", `${ AppConstants.getAdminViewBasePath() }/groups/:id`)
-            .set("IDP", `${ AppConstants.getDeveloperViewBasePath() }/identity-providers`)
-            .set("IDP_TEMPLATES", `${ AppConstants.getDeveloperViewBasePath() }/identity-providers/templates`)
-            .set("IDP_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/identity-providers/:id`)
+            .set("IDP",
+                useNewConnectionsView
+                    ? `${ AppConstants.getDeveloperViewBasePath() }/connections`
+                    : `${ AppConstants.getDeveloperViewBasePath() }/identity-providers`
+            )
+            .set("IDP_TEMPLATES",
+                useNewConnectionsView
+                    ? `${ AppConstants.getDeveloperViewBasePath() }/connections/templates`
+                    : `${ AppConstants.getDeveloperViewBasePath() }/identity-providers/templates`
+            )
+            .set("IDP_EDIT",
+                useNewConnectionsView
+                    ?`${ AppConstants.getDeveloperViewBasePath() }/identity-providers/:id`
+                    :`${ AppConstants.getDeveloperViewBasePath() }/connections/:id`
+            )
             .set("LOCAL_CLAIMS", `${ AppConstants.getAdminViewBasePath() }/attributes`)
             .set("LOCAL_CLAIMS_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attributes/:id`)
             .set("LOGIN",  window[ "AppUtils" ].getConfig().routes.login)
