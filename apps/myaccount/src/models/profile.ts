@@ -169,9 +169,9 @@ export interface ProfileReducerStateInterface {
 export interface ReadOnlyUserStatus {
     id: string;
     schemas: string[];
-     [ `SCIMConfigs.scim.enterpriseSchema` ]: {
+     [key: string]: {
         isReadOnlyUser: boolean;
-    };
+    } | any;
 }
 
 /**
