@@ -17,4 +17,3 @@
  */
 
 export * from "./common";
-export * from "./scim";
