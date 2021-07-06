@@ -49,7 +49,7 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "Provide secure and fast passwordless " +
             "login experience.",
             [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
-            "Time-Based One Time Password.",
+            "Time-Based One Time passcode.",
             [ IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "Login users with " +
             "existing Google accounts.",
             [ IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID ]: "Login users with " +
@@ -63,7 +63,7 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID ]: "Login users with " +
             "existing accounts in the Enterprise IdP.",
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
-            "Email one-time password."
+            "Email one-time passcode."
         }, authenticatorId);
     }
 
