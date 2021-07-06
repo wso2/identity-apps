@@ -140,6 +140,7 @@ export const AttributeSelection = (props: AttributeSelectionProps) => {
                     }).map((mapping) => {
                         return (
                             <AttributeMappingListItem
+                                key={ mapping.claim.uri }
                                 onAttributeMappingUpdate={ (newMappedValue: string) => {
                                     const newMapping = cloneDeep(mapping);
                                     newMapping.mappedValue = newMappedValue;
