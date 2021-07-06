@@ -16,15 +16,17 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from "react";
-import { Divider, Grid, PaginationProps } from "semantic-ui-react";
+import React, { Fragment, FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from "react";
+import { Divider, Grid, Visibility } from "semantic-ui-react";
+import { ContentLoader } from "../components/loader";
 
 /**
  * Grid layout component Prop types.
  */
-export interface GridLayoutPropsInterface extends PaginationProps, TestableComponentInterface {
+export interface GridLayoutPropsInterface extends TestableComponentInterface,
+    LoadableComponentInterface {
 
     /**
      * Search component.
@@ -42,6 +44,10 @@ export interface GridLayoutPropsInterface extends PaginationProps, TestableCompo
      * Left action panel component.
      */
     leftActionPanel?: ReactNode;
+    /**
+     * Enable/Disable Pagination.
+     */
+    paginate?: () => void;
     /**
      * Right action panel component.
      */
@@ -68,7 +74,9 @@ export const GridLayout: FunctionComponent<PropsWithChildren<GridLayoutPropsInte
         searchPosition,
         children,
         className,
+        isLoading,
         leftActionPanel,
+        paginate,
         rightActionPanel,
         showTopActionPanel,
         [ "data-testid" ]: testId
@@ -83,33 +91,56 @@ export const GridLayout: FunctionComponent<PropsWithChildren<GridLayoutPropsInte
     return (
         <div className={ classes } data-testid={ testId }>
             {
-                showTopActionPanel && (
-                    <>
-                        <div className="top-action-panel" data-testid={ `${ testId }-top-action-panel` }>
-                            <Grid>
-                                <Grid.Row>
-                                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 }>
-                                        <div className="left-aligned actions">
-                                            { searchPosition === "left" && search }
-                                            { leftActionPanel }
+                !isLoading
+                    ? (
+                        <Fragment>
+                            {
+                                showTopActionPanel && (
+                                    <Fragment>
+                                        <div
+                                            className="top-action-panel"
+                                            data-testid={ `${ testId }-top-action-panel` }
+                                        >
+                                            <Grid>
+                                                <Grid.Row>
+                                                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 }>
+                                                        <div className="left-aligned actions">
+                                                            { searchPosition === "left" && search }
+                                                            { leftActionPanel }
+                                                        </div>
+                                                    </Grid.Column>
+                                                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 }>
+                                                        <div className="actions right-aligned">
+                                                            { searchPosition === "right" && search }
+                                                            { rightActionPanel }
+                                                        </div>
+                                                    </Grid.Column>
+                                                </Grid.Row>
+                                            </Grid>
                                         </div>
-                                    </Grid.Column>
-                                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 }>
-                                        <div className="actions right-aligned">
-                                            { searchPosition === "right" && search }
-                                            { rightActionPanel }
+                                        <Divider hidden/>
+                                    </Fragment>
+                                )
+                            }
+                            {
+                                paginate
+                                    ? (
+                                        <Visibility once onBottomVisible={ () => paginate() }>
+                                            <div className="list-container">
+                                                { children }
+                                            </div>
+                                        </Visibility>
+                                    )
+                                    : (
+                                        <div className="list-container">
+                                            { children }
                                         </div>
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        </div>
-                        <Divider hidden/>
-                    </>
-                )
+                                    )
+                            }
+                        </Fragment>
+                    )
+                    : <ContentLoader />
             }
-            <div className="list-container">
-                { children }
-            </div>
         </div>
     );
 };
