@@ -41,16 +41,16 @@ export interface SearchWithFilterLabelsPropsInterface extends InputProps,
     filterLabels: string[];
     /**
      * Filter labels' on click callback.
-     * @param {string[]} selectedFilters - Set of already selected filters.
-     * @param {string} newFilter - Newly selected filter.
+     * @param {string} query - Search query.
+     * @param {string[]} selectedFilters - Set of selected filters.
      */
-    onFilter: (selectedFilters: string[], newFilter: string) => void;
+    onFilter?: (query: string, selectedFilters: string[]) => void;
     /**
      * Search query onchange callback.
      * @param {string} query - Search query.
      * @param {string[]} selectedFilters - Set of already selected filters.
      */
-    onSearch: (query: string, selectedFilters: string[]) => void;
+    onSearch?: (query: string, selectedFilters: string[]) => void;
     /**
      * Externally provided search input.
      */
@@ -84,7 +84,7 @@ export const SearchWithFilterLabels: FunctionComponent<PropsWithChildren<SearchW
     const [ searchQuery, setSearchQuery ] = useState<string>(null);
     const [ selectedFilterLabels, setSelectedFilterLabels ] = useState<string[]>([]);
 
-    const classes = classNames("search-with0filter-labels", className);
+    const classes = classNames("search-with-filter-labels", className);
 
     /**
      * Handles the Search input onchange.
@@ -94,11 +94,9 @@ export const SearchWithFilterLabels: FunctionComponent<PropsWithChildren<SearchW
      */
     const handleQuerySearch = (e: ChangeEvent<HTMLInputElement>, { value }: { value: string }): void => {
 
-        const query: string = value.toLocaleLowerCase();
-
-        setSearchQuery(query);
+        setSearchQuery(value);
         
-        onSearch(query, selectedFilterLabels);
+        onSearch(value, selectedFilterLabels);
     };
 
     /**
@@ -118,7 +116,7 @@ export const SearchWithFilterLabels: FunctionComponent<PropsWithChildren<SearchW
 
         setSelectedFilterLabels(selectedFilters);
 
-        onFilter(selectedFilters, newFilter);
+        onFilter(searchQuery, selectedFilters);
     };
 
     return (
@@ -128,19 +126,24 @@ export const SearchWithFilterLabels: FunctionComponent<PropsWithChildren<SearchW
         >
             {
                 searchInput
-                    ? searchInput
+                    ? (
+                        <div className="search-input-wrapper">
+                            { searchInput }
+                        </div>
+                    )
                     : (
-                        <Input
-                            fluid
-                            loading={ isLoading }
-                            className="mb-3"
-                            icon={ icon ?? <Icon name="search"/> }
-                            value={ searchQuery }
-                            iconPosition="left"
-                            onChange={ handleQuerySearch }
-                            placeholder={ placeholder }
-                            { ...rest }
-                        />
+                        <div className="search-input-wrapper">
+                            <Input
+                                fluid
+                                loading={ isLoading }
+                                icon={ icon ?? <Icon name="search"/> }
+                                value={ searchQuery }
+                                iconPosition="left"
+                                onChange={ handleQuerySearch }
+                                placeholder={ placeholder }
+                                { ...rest }
+                            />
+                        </div>
                     )
             }
             {
