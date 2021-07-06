@@ -17,6 +17,7 @@
  */
 
 import { LinkInterface, MultiValueAttributeInterface, NameInterface, RolesInterface } from "@wso2is/core/models";
+//keep the import statement as this in order to avoid cyclic dependency
 import { SCIMConfigs } from "../../../extensions/configs/scim";
 
 /**

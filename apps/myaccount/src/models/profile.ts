@@ -16,7 +16,8 @@
  * under the License.
  */
 
- import { SCIMConfigs } from "../extensions/configs/scim";
+//keep the import statement as this in order to avoid cyclic dependency
+import { SCIMConfigs } from "../extensions/configs/scim";
 
 /**
   * Multi-valued attribute model

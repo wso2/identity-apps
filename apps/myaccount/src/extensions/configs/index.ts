@@ -17,5 +17,3 @@
  */
 
 export * from "./common";
-//Do not import scim.ts here caused cyclic dependency
-// export * from "./scim";

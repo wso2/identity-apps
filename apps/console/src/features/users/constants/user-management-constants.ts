@@ -16,6 +16,7 @@
  * under the License.
  */
 
+//keep the import statement as this in order to avoid cyclic dependency
 import { SCIMConfigs } from "../../../extensions/configs/scim";
 
 /**

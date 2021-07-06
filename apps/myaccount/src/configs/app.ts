@@ -18,7 +18,7 @@
 
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { I18nConstants } from "../constants";
-import { SCIMConfigs } from "../extensions/configs/scim";
+import { SCIMConfigs } from "../extensions/configs/scim"; //keep statement as this in order to avoid cyclic dependency
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
 
 /**
