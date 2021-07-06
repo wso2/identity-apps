@@ -74,6 +74,10 @@ export interface InfoCardPropsInterface extends CardProps, TestableComponentInte
      */
     subHeader?: string;
     /**
+     * Show an attached label as a ribbon.
+     */
+    ribbon?: ReactNode;
+    /**
      * Set of tags.
      */
     tags?: string[];
@@ -130,6 +134,7 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
         onClick,
         selected,
         subHeader,
+        ribbon,
         tags,
         showTooltips,
         [ "data-testid" ]: testId,
@@ -160,6 +165,13 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
             { ...rest }
         >
             <Card.Content>
+                {
+                    ribbon && (
+                        <div className="ribbon">
+                            { ribbon }
+                        </div>
+                    )
+                }
                 {
                     image && (
                         <GenericIcon
@@ -326,12 +338,13 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
                 )
             }
             {
-                action && (
+                (action !== undefined) && (
                     <Card.Content className="action-container" data-testid={ `${ testId }-action-container` }>
                         {
                             typeof action === "string"
                                 ? (
                                     <LinkButton
+                                        disabled={ disabled }
                                         hoverType="underline"
                                         className="info-card-inner-action"
                                         onClick={ (e: MouseEvent<HTMLButtonElement>) => {

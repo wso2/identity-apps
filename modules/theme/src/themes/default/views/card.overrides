@@ -449,6 +449,37 @@
         .ui.card {
             &.info-card {
                 width: @resourceCardDefaultWidth;
+                
+                .content {
+                    &:not(:first-child) {
+                        padding-top: 0.4em;
+                        
+                        &:not(:last-child) {
+                            padding-bottom: 0.4em;
+                        }
+                    }
+                }
+                .action-container {
+                    min-height: 55px !important;
+
+                    .actions {
+                        display: flex;
+                        justify-content: space-between;
+
+                        .delete-button {
+                            visibility: hidden;
+                            color: @negativeColor;
+                        }
+                    }
+                }
+                
+                &:hover {
+                    .action-container {
+                        .delete-button {
+                            visibility: visible;
+                        }
+                    }
+                }
             }
         }
     }
@@ -684,6 +715,23 @@
             cursor: not-allowed;
             filter: grayscale(100%);
         }
+        .ribbon {
+            font-size: 0.8em;
+            font-weight: 500;
+            color: @white;
+            right: 0;
+            height: 24px;
+            position: absolute;
+            min-width: 100px;
+            background: linear-gradient(270deg, lighten(@primaryColor, 15) 0%, @primaryColor 100%);
+            display: flex;
+            flex-direction: row;
+            align-content: center;
+            align-items: center;
+            justify-content: space-around;
+            clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
+            -webkit-clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
+        }
         .content {
             border: none;
         }
@@ -700,8 +748,7 @@
             color: @lightFontColor;
         }
         .card-description-container {
-            padding-top: 0;
-            padding-bottom: 0;
+            padding-top: 0.5em;
         }
         .card-description {
             font-size: 0.9em;
