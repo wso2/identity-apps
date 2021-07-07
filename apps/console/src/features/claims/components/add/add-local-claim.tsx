@@ -21,13 +21,15 @@ import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
+import { attributeConfig } from "../../../../extensions";
+import { AppState } from "../../../core";
 import { AppConstants } from "../../../core/constants";
 import { history } from "../../../core/helpers";
-import { addLocalClaim } from "../../api";
+import { addDialect, addExternalClaim, addLocalClaim } from "../../api";
 import { getAddLocalClaimWizardStepIcons } from "../../configs";
 import { ClaimManagementConstants } from "../../constants";
 import { BasicDetailsLocalClaims, MappedAttributes, SummaryLocalClaims } from "../wizard";
@@ -78,6 +80,11 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     const [ basicDetailsData, setBasicDetailsData ] = useState<Map<string, FormValue>>(null);
     const [ mappedAttributesData, setMappedAttributesData ] = useState<Map<string, FormValue>>(null);
 
+    const [ scimCustomAttribute, setScimCustomAttribute ] = useState<string>();
+    const [ oidcCustomAttribute, setOidcCustomAttribute ] = useState<string>();
+    const [ showMapAttributes, setShowMapAttributes ] = useState<boolean>(false);
+    const hiddenUserStores: string[] = useSelector((state: AppState) => state.config.ui.hiddenUserStores);
+
     const [ firstStep, setFirstStep ] = useTrigger();
     const [ secondStep, setSecondStep ] = useTrigger();
 
@@ -88,9 +95,35 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
     /**
+     * Conditionally disable map attribute step
+     * if there are no secondary user stores.
+     */
+    useEffect(() => {
+        if ( hiddenUserStores.length > 0 ) {
+            attributeConfig.localAttributes.isUserStoresHidden(hiddenUserStores).then(state => {
+                setShowMapAttributes(state.length > 0);
+            });
+        } else {
+            setShowMapAttributes(true);
+        }
+        
+    }, [ hiddenUserStores ]);
+
+    /**
      * Submit handler that sends the API request to add the local claim
      */
-    const handleSubmit = () => {
+    const handleSubmit = async (data) => {
+
+        if ( attributeConfig.localAttributes.createCustomDialect ) {
+
+            attributeConfig.localAttributes.isSCIMCustomDialectAvailable().then(available => {
+                if (available === "") {
+                    addDialect(attributeConfig.localAttributes.customDialectURI);
+                }
+            });
+
+        }
+
         addLocalClaim(data)
             .then((response) => {
                 dispatch(addAlert(
@@ -102,6 +135,25 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                             "addLocalClaim.success.message")
                     }
                 ));
+
+                if ( attributeConfig.localAttributes.mapClaimToCustomDialect ) {
+
+                    attributeConfig.localAttributes.isSCIMCustomDialectAvailable().then(( claimId: string ) => {
+                        addExternalClaim(claimId, {
+                            claimURI: `${attributeConfig.localAttributes.
+                                customDialectURI}:${scimCustomAttribute}`,
+                            mappedLocalClaimURI: data.claimURI
+                        });
+                    });
+
+                    attributeConfig.localAttributes.getDialect(ClaimManagementConstants.OIDC_MAPPING[0]).then(
+                        response => {
+                            addExternalClaim(response.id, {
+                                claimURI: `${oidcCustomAttribute}`,
+                                mappedLocalClaimURI: data.claimURI
+                            });
+                    });
+                }
 
                 // The created resource's id is sent as a location header.
                 // If that's available, navigate to the edit page.
@@ -147,10 +199,41 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
      * @param {Map<string, FormValue>} values
      */
     const onSubmitBasicDetails = (dataFromForm: Claim, values: Map<string, FormValue>) => {
-        setCurrentWizardStep(1);
         const tempData = { ...data, ...dataFromForm };
         setData(tempData);
         setBasicDetailsData(values);
+
+        if (values.has("scim") && values.has("oidc")) {
+            setScimCustomAttribute(values.get("scim").toString());
+            setOidcCustomAttribute(values.get("oidc").toString());
+        }
+
+        if (attributeConfig.localAttributes.createWizard.identifyAsCustomAttrib) {
+            if (tempData.properties && tempData.properties.length > 0) {
+                tempData.properties.push( {
+                    key: "USER_CUSTOM_ATTRIBUTE",
+                    value: "TRUE"
+                } );
+            } else {
+                tempData.properties = [{
+                    key: "USER_CUSTOM_ATTRIBUTE",
+                    value: "TRUE"
+                }];
+            }
+            
+        }
+
+        if (!attributeConfig.localAttributes.createWizard.showAttributeMapping && !showMapAttributes) {
+            tempData.attributeMapping = [
+                {
+                    mappedAttribute: tempData.claimURI.split("/").pop(),
+                    userstore: "PRIMARY"
+                }
+            ];
+            handleSubmit(tempData);
+        } else {
+            setCurrentWizardStep(1);
+        }
     };
 
     /**
@@ -159,10 +242,15 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
      * @param {KeyValue[]} values
      */
     const onSubmitMappedAttributes = (dataFromForm: Claim, values: Map<string, FormValue>) => {
-        setCurrentWizardStep(2);
         const tempData = { ...data, ...dataFromForm };
         setData(tempData);
         setMappedAttributesData(values);
+
+        if (!attributeConfig.localAttributes.createWizard.showSummary) {
+            handleSubmit(tempData);
+        } else {
+            setCurrentWizardStep(2);
+        }
     };
 
     /**
@@ -182,35 +270,58 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
             icon: getAddLocalClaimWizardStepIcons().general,
             title: t("console:manage.features.claims.local.wizard.steps.general")
         },
-        {
-            content: (
-                <MappedAttributes
-                    submitState={ secondStep }
-                    onSubmit={ onSubmitMappedAttributes }
-                    values={ mappedAttributesData }
-                    data-testid={ `${ testId }-mapped-attributes` }
-                />
-            ),
-            icon: getAddLocalClaimWizardStepIcons().general,
-            title: t("console:manage.features.claims.local.wizard.steps.mapAttributes")
-        },
-        {
-            content: (
-                <SummaryLocalClaims
-                    data={ data }
-                    data-testid={ `${ testId }-local-claims-summary` }
-                />
-            ),
-            icon: getAddLocalClaimWizardStepIcons().general,
-            title: t("console:manage.features.claims.local.wizard.steps.summary")
-
-        }
-    ];
+        ( attributeConfig.localAttributes.createWizard.showAttributeMapping && showMapAttributes ?
+            {
+                content: (
+                    <MappedAttributes
+                        submitState={ secondStep }
+                        onSubmit={ onSubmitMappedAttributes }
+                        values={ mappedAttributesData }
+                        data-testid={ `${ testId }-mapped-attributes` }
+                    />
+                ),
+                icon: getAddLocalClaimWizardStepIcons().general,
+                title: t("console:manage.features.claims.local.wizard.steps.mapAttributes")
+            }
+            : undefined
+        ),
+        (
+            attributeConfig.localAttributes.createWizard.showSummary ?
+            {
+                content: (
+                    <SummaryLocalClaims
+                        data={ data }
+                        data-testid={ `${ testId }-local-claims-summary` }
+                    />
+                ),
+                icon: getAddLocalClaimWizardStepIcons().general,
+                title: t("console:manage.features.claims.local.wizard.steps.summary")
+    
+            }
+            : undefined
+        )
+    ].filter(el => el !== undefined);
 
     /**
      * Moves the wizard to the next step
      */
     const next = () => {
+        
+        if (STEPS.length === 1) {
+            setFirstStep();
+        }
+
+        if (STEPS.length === 2) {
+            switch (currentWizardStep) {
+                case 0:
+                    setFirstStep();
+                    break;
+                case 1:
+                    setSecondStep();
+                    break;
+            }
+        }
+
         switch (currentWizardStep) {
             case 0:
                 setFirstStep();
@@ -219,7 +330,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                 setSecondStep();
                 break;
             case 2:
-                handleSubmit();
+                handleSubmit(data);
                 break;
         }
     };
@@ -249,20 +360,22 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                         : ""
                 }
             </Modal.Header>
-            <Modal.Content className="steps-container" data-testid={ `${ testId }-steps` }>
-                <Steps.Group
-                    current={ currentWizardStep }
-                >
-                    { STEPS.map((step, index) => (
-                        <Steps.Step
-                            key={ index }
-                            icon={ step.icon }
-                            title={ step.title }
-                            data-testid={ `${ testId }-step-${ index }` }
-                        />
-                    )) }
-                </Steps.Group>
-            </Modal.Content >
+            { STEPS.length > 1 && 
+                <Modal.Content className="steps-container" data-testid={ `${ testId }-steps` }>
+                    <Steps.Group
+                        current={ currentWizardStep }
+                    >
+                        { STEPS.map((step, index) => (
+                            <Steps.Step
+                                key={ index }
+                                icon={ step.icon }
+                                title={ step.title }
+                                data-testid={ `${ testId }-step-${ index }` }
+                            />
+                        )) }
+                    </Steps.Group>
+                </Modal.Content >
+            }
             <Modal.Content className="content-container" scrolling>
                 { alert && alertComponent }
                 { STEPS[ currentWizardStep ].content }
