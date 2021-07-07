@@ -28,7 +28,6 @@ import { EditSection, SettingsSection } from "../shared";
  */
 const PasswordMeter = React.lazy(() => import("react-password-strength-bar"));
 
-
 /**
  * Prop types for the change password component.
  * Also see {@link CreatePassword.defaultProps}
