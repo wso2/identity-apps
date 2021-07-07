@@ -18,14 +18,14 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Divider, Header, Icon, Message, MessageProps } from "semantic-ui-react";
+import { Divider, Header, Icon, MessageProps, Message as SemanticMessage } from "semantic-ui-react";
 import { MessageHeaderProps } from "semantic-ui-react/dist/commonjs/collections/Message/MessageHeader";
 import { SemanticShorthandContent, SemanticShorthandItem } from "semantic-ui-react/dist/commonjs/generic";
 
 /**
  * Proptypes for the message component.
  */
-export interface MessageComponentProps extends MessageProps, TestableComponentInterface {
+export interface MessageComponentPropsInterface extends MessageProps, TestableComponentInterface {
 }
 
 /**
@@ -36,7 +36,8 @@ export interface MessageComponentProps extends MessageProps, TestableComponentIn
  * @return {React.ReactElement}
  */
 
-export const MessageComponent: FunctionComponent<MessageComponentProps> = (props: MessageComponentProps): ReactElement => {
+export const Message: FunctionComponent<MessageComponentPropsInterface> = (
+    props: MessageComponentPropsInterface): ReactElement => {
 
     const {
         header,
@@ -57,7 +58,7 @@ export const MessageComponent: FunctionComponent<MessageComponentProps> = (props
     };
 
     return (
-        <Message
+        <SemanticMessage
             className={ props.onDismiss ? "with-close-button" : "" }
             { ...rest }
             header={
@@ -68,8 +69,7 @@ export const MessageComponent: FunctionComponent<MessageComponentProps> = (props
                                 <Icon name="info circle"/>
                                 { (header) }
                                 <Divider
-                                    hidden
-                                    className={ "message-info-text" }/>
+                                    hidden/>
                             </Header.Content>
                         </Header>
                     ) : undefined
@@ -82,7 +82,7 @@ export const MessageComponent: FunctionComponent<MessageComponentProps> = (props
 /**
  * Default proptypes for the message component.
  */
-MessageComponent.defaultProps = {
+Message.defaultProps = {
     content: null,
     "data-testid": "message-component",
     header: null

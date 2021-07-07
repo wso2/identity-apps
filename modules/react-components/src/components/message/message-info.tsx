@@ -38,7 +38,7 @@ export interface MessageInfoProps extends TestableComponentInterface {
 
 /**
  * MessageInfo component.
- * @deprecated
+ * @deprecated Use the new `Message` component from `@wso2is/react-components` instead.
  * @param {MessageInfoProps} props - Props injected in to the messageInfo component.
  *
  * @return {React.ReactElement}
