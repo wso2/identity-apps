@@ -30,7 +30,7 @@ import { AppState } from "../../store";
  *
  * @return {JSX.Element}
  */
-export const FederatedUserOverview: FunctionComponent<{}> = (): JSX.Element => {
+export const FederatedUserOverview: FunctionComponent<FederatedUserOverviewPropsInterface> = (props: FederatedUserOverviewPropsInterface): JSX.Element => {
     const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
 
