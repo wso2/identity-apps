@@ -50,7 +50,6 @@ export const CreatePassword: FunctionComponent<CreatePasswordProps> = (props: Cr
 
     const { t } = useTranslation();
 
-
     return (
         <SettingsSection
             data-testid={ `${testId}-settings-section` }
