@@ -35,7 +35,6 @@ export interface MessageComponentPropsInterface extends MessageProps, TestableCo
  *
  * @return {React.ReactElement}
  */
-
 export const Message: FunctionComponent<MessageComponentPropsInterface> = (
     props: MessageComponentPropsInterface): ReactElement => {
 
@@ -68,11 +67,11 @@ export const Message: FunctionComponent<MessageComponentPropsInterface> = (
                             <Header.Content>
                                 <Icon name="info circle"/>
                                 { (header) }
-                                <Divider
-                                    hidden/>
+                                <Divider hidden/>
                             </Header.Content>
                         </Header>
-                    ) : undefined
+                    )
+                    : null
             }
             content={ generateContent() }
         />
