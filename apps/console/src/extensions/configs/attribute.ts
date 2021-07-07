@@ -101,6 +101,7 @@ export const attributeConfig: AttributeConfig = {
     },
     isSCIMEditable: true,
     localAttributes: {
+        checkAttributeNameAvailability: () => { return Promise.resolve(new Map()); },
         createCustomDialect: false,
         createWizard: {
             addPrimaryUserStore: true,
@@ -116,8 +117,6 @@ export const attributeConfig: AttributeConfig = {
         },
         customDialectURI: "",
         getDialect: (dialectURI: string) => { return Promise.resolve(dialectURI); },
-        isOIDCAttributeAvailable: () =>  { return Promise.resolve(false); },
-        isSCIMAttributeAvailable: () =>  { return Promise.resolve(false); },
         isSCIMCustomDialectAvailable: () =>  { return Promise.resolve(""); },
         isUserStoresHidden: () =>  { return Promise.resolve([]); },
         mapClaimToCustomDialect: false

@@ -98,6 +98,36 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
     }, [ values ]);
 
     /**
+     * Check the availability of custom OIDC attribute names.
+     * TODO: Move constants to extension constants file
+     */
+    useEffect(() => {
+        if (oidcMapping === "" || claimID === oidcMapping) {
+            return;
+        }
+
+        attributeConfig.localAttributes.checkAttributeNameAvailability(
+            oidcMapping, "OIDC").then(response => {
+                setNoUniqueOIDCAttrib(response.get("OIDC"));
+        });
+    }, [ oidcMapping ]);
+
+    /**
+     * Check the availability of custom SCIM attribute names.
+     * TODO: Move constants to extension constants file
+     */
+     useEffect(() => {
+        if (scimMapping === "" || claimID === scimMapping) {
+            return;
+        }
+
+        attributeConfig.localAttributes.checkAttributeNameAvailability(
+            scimMapping, "SCIM").then(response => {
+                setNoUniqueSCIMAttrib(response.get("SCIM"));
+        });
+    }, [ scimMapping ]);
+
+    /**
      * This shows a popup with a delay of 500 ms.
      * 
      * @param {React.Dispatch<React.SetStateAction<boolean>>} callback The state dispatch method.
@@ -184,18 +214,20 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                             setNoUniqueSCIMAttrib(true);
                                             return;
                                         }
-                                        
+
+                                        // TODO: Move constants to constants file
                                         if (attributeConfig.localAttributes.createWizard.checkOIDCAvailability) {
-                                            attributeConfig.localAttributes.isOIDCAttributeAvailable(
-                                                value).then(response => {
-                                                setNoUniqueOIDCAttrib(response);
-                                            });
-                                        }
-                                
-                                        if (attributeConfig.localAttributes.createWizard.checkOIDCAvailability) {
-                                            attributeConfig.localAttributes.isSCIMAttributeAvailable(
-                                                value).then(response => {
-                                                setNoUniqueSCIMAttrib(response);
+                                            attributeConfig.localAttributes.checkAttributeNameAvailability(
+                                                value,
+                                                "BOTH"
+                                            ).then(response => {
+                                                if (response.has("SCIM")) {
+                                                    setNoUniqueSCIMAttrib(response.get("SCIM"));
+                                                }
+
+                                                if (response.has("OIDC")) {
+                                                    setNoUniqueOIDCAttrib(response.get("OIDC"));
+                                                }
                                             });
                                         }
                                     } }
@@ -232,16 +264,32 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                     <Grid.Row columns={ 1 } >
                                                         <Grid.Column>
                                                             <Message color="orange" >
-                                                                The mapping names generated for 
-                                                                <b>
-                                                                    { !noUniqueOIDCAttrib && !noUniqueSCIMAttrib ? 
-                                                                        " OpenID Connect & SCIM " : "" }
-                                                                    { !noUniqueOIDCAttrib && noUniqueSCIMAttrib ? 
-                                                                        " OpenID Connect " : "" }
-                                                                    { noUniqueSCIMAttrib && !noUniqueSCIMAttrib? 
-                                                                        " SCIM " : "" }
-                                                                </b>
-                                                                protocol(s) is already available. 
+                                                                { (() => {
+                                                                    // TODO: Add to translations file
+                                                                    if (!noUniqueOIDCAttrib 
+                                                                        && !noUniqueSCIMAttrib) {
+                                                                        return (
+                                                                            <>The mapping names generated for 
+                                                                                <b> OpenID Connect & SCIM </b> 
+                                                                                protocol(s) is already available.</>
+                                                                        );
+                                                                    } else if ( noUniqueOIDCAttrib 
+                                                                        && !noUniqueSCIMAttrib ) {
+                                                                        return (
+                                                                            <>The mapping names generated for 
+                                                                                <b> SCIM </b> 
+                                                                                protocol(s) is already available.</>
+                                                                        );
+                                                                    } else if ( !noUniqueOIDCAttrib 
+                                                                        && noUniqueSCIMAttrib) {
+                                                                        return (
+                                                                            <>The mapping names generated for 
+                                                                                <b> OpenID Connect </b> 
+                                                                                protocol(s) is already available.</>
+                                                                        );
+                                                                        
+                                                                    }
+                                                                })() }
                                                             </Message>
                                                         </Grid.Column>
                                                     </Grid.Row> : <></>
