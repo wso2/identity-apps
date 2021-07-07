@@ -153,6 +153,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
         >
             <Grid>
                 { attributeConfig.localAttributes.createWizard.customWIzard &&
+                    // TODO: Move custom wizard to extensions
                     <>
                         <Grid.Row columns={ 1 } >
                             <Grid.Column width={ 8 } >
