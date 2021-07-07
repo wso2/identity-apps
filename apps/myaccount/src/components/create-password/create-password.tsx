@@ -59,7 +59,7 @@ export const CreatePassword: FunctionComponent<CreatePasswordProps> = (props: Cr
             primaryActionIcon="key"
             showActionBar={ true }
             disabled={ true }
-        >
+        />
         </SettingsSection>
     );
 };
