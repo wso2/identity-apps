@@ -73,8 +73,7 @@ export interface AttributeConfig {
         customDialectURI: string;
         createCustomDialect: boolean;
         mapClaimToCustomDialect: boolean;
-        isSCIMAttributeAvailable: (attributeName: string) => Promise<boolean>;
-        isOIDCAttributeAvailable: (attributeName: string) => Promise<boolean>;
+        checkAttributeNameAvailability: (attributeName: string, protocol: string) => Promise<Map<string, boolean>>;
         getDialect: (dialectURI: string) => Promise<any>;
         isSCIMCustomDialectAvailable: () => Promise<string>;
         isUserStoresHidden: (hiddenUserStores: string[]) => Promise<any[]>;
