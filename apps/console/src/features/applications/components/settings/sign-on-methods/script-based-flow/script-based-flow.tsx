@@ -615,7 +615,6 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                     <div className="code-editor-wrapper">
                                         <CodeEditor
                                             lint
-                                            height={ "100%" }
                                             language="javascript"
                                             sourceCode={ sourceCode }
                                             options={ {
