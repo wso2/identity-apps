@@ -5484,9 +5484,9 @@ export const console: ConsoleNS = {
                         attributeHint: "A unique ID for the attribute."
                             + " The ID will be appended to the attribute mapping to create a attribute",
                         attributeID: {
-                            label: "Attribute ID",
-                            placeholder: "Enter an attribute ID",
-                            requiredErrorMessage: "Attribute ID is required"
+                            label: "Attribute Name",
+                            placeholder: "Enter an attribute name",
+                            requiredErrorMessage: "Attribute name is required"
                         },
                         description: {
                             label: "Description",
@@ -5501,7 +5501,7 @@ export const console: ConsoleNS = {
                         displayOrderHint: "This determines the position at which this attribute is "
                             + "displayed in the user profile and the user registration page",
                         name: {
-                            label: "Name",
+                            label: "Attribute Display Name",
                             placeholder: "Enter a name for the attribute",
                             requiredErrorMessage: "Name is required",
                             validationErrorMessages: {
@@ -5520,7 +5520,7 @@ export const console: ConsoleNS = {
                         },
                         regExHint: "Use a regex pattern to validate the attribute input value.",
                         required: {
-                            label: "Make this attribute required during user registration"
+                            label: "Make this attribute required on the user's profile"
                         },
                         supportedByDefault: {
                             label: "Display this attribute on the user's profile"

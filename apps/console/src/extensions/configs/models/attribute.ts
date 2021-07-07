@@ -47,6 +47,7 @@ export interface AttributeConfig {
         showRequiredCheckBox: boolean;
     };
     externalAttributes: {
+        isAttributeEditable: boolean,
         editAttribute: (claim: ExternalClaim, editClaimID: string, callback: (claimID: string) => void) => void;
         getEditIcon: (claim: ExternalClaim, editClaimID: string) => SemanticICONS;
         getEditPopupText: (claim: ExternalClaim, editClaimID: string) => string;
@@ -56,6 +57,29 @@ export interface AttributeConfig {
         showActions: (dialectID: string) => boolean;
         showDeleteIcon: (dialectID: string) => boolean;
     };
+    localAttributes: {
+        createWizard: {
+            addPrimaryUserStore: boolean;
+            customWIzard: boolean;
+            checkOIDCAvailability: boolean;
+            checkSCIMAvailability: boolean;
+            showDisplayOrder: boolean;
+            showRegularExpression: boolean;
+            showReadOnlyAttribute: boolean;
+            showAttributeMapping: boolean;
+            showSummary: boolean;
+            identifyAsCustomAttrib: boolean;
+        }
+        customDialectURI: string;
+        createCustomDialect: boolean;
+        mapClaimToCustomDialect: boolean;
+        isSCIMAttributeAvailable: (attributeName: string) => Promise<boolean>;
+        isOIDCAttributeAvailable: (attributeName: string) => Promise<boolean>;
+        getDialect: (dialectURI: string) => Promise<any>;
+        isSCIMCustomDialectAvailable: () => Promise<string>;
+        isUserStoresHidden: (hiddenUserStores: string[]) => Promise<any[]>;
+    }
+    showCustomDialectInSCIM: boolean;
     isRowSelectable: (claim: Claim | ExternalClaim | ClaimDialect) => boolean;
     isSCIMEditable: boolean;
 }

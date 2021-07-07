@@ -196,6 +196,15 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                         }
                     });
 
+                    if (type === ClaimManagementConstants.SCIM) {
+                        if (attributeConfig.showCustomDialectInSCIM 
+                            && filteredDialect.filter(e => e.dialectURI 
+                                === attributeConfig.localAttributes.customDialectURI).length > 0  ) {
+                            attributeMappings.push(filteredDialect.filter(e => e.dialectURI 
+                                === attributeConfig.localAttributes.customDialectURI)[0]);
+                        }
+                    }
+
                     setDialects(attributeMappings);
                 })
                 .catch((error) => {
@@ -237,6 +246,22 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                             )
                         });
                 });
+
+                if (attributeConfig.showCustomDialectInSCIM) {
+                    const dialect = dialects?.find((dialect: ClaimDialect) => 
+                        dialect.dialectURI === attributeConfig.localAttributes.customDialectURI
+                    );
+                    if (dialect) {
+                        panes.push({
+                            menuItem: "Custom Schema",
+                            render: () => (
+                                <ResourceTab.Pane controlledSegmentation attached={ false }>
+                                    <ExternalDialectEditPage id={ dialect.id } attributeType={ type }/>
+                                </ResourceTab.Pane>
+                            )
+                        });
+                    }
+                }
 
                 return panes;
             }

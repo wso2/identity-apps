@@ -914,8 +914,14 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     renderer: "semantic-icon"
                 },
                 attributeConfig.externalAttributes.showActions(dialectID) && {
-                    hidden: (): boolean => !hasRequiredScopes(featureConfig?.attributeDialects,
-                        featureConfig?.attributeDialects?.scopes?.create, allowedScopes),
+                    hidden: (): boolean => {
+                        if (attributeConfig.externalAttributes.isAttributeEditable) {
+                            return !hasRequiredScopes(featureConfig?.attributeDialects,
+                                featureConfig?.attributeDialects?.scopes?.create, allowedScopes);
+                        } else {
+                            return !attributeConfig.externalAttributes.isAttributeEditable;
+                        }
+                    },
                     icon: (claim: ExternalClaim): SemanticICONS => attributeConfig.externalAttributes
                         .getEditIcon(claim, editClaim),
 
@@ -987,7 +993,9 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         } else if (isDialect(list)) {
             history.push(AppConstants.getPaths().get("EXTERNAL_DIALECT_EDIT").replace(":id", item.id));
         } else if (isExternalClaim(list) && attributeConfig.externalAttributes.isRowClickable(dialectID, ItemHeader)) {
-            setEditClaim(editClaim ? "" : item.id);
+            if (attributeConfig.externalAttributes.isAttributeEditable) {
+                setEditClaim(editClaim ? "" : item.id);
+            }
         } else {
             setEditExternalClaim(item);
         }
