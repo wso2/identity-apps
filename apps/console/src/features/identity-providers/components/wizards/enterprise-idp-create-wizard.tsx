@@ -31,8 +31,8 @@ import {
     SelectionCard,
     Steps,
     Switcher,
-    XMLFileStrategy,
-    useWizardAlert
+    useWizardAlert,
+    XMLFileStrategy
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -52,9 +52,9 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dimmer, Divider, Grid, Icon } from "semantic-ui-react";
-import { AppConstants, ModalWithSidePanel, getCertificateIllustrations, store } from "../../../core";
+import { AppConstants, getCertificateIllustrations, ModalWithSidePanel, store } from "../../../core";
 import { createIdentityProvider, getIdentityProviderList } from "../../api";
-import { getIdPIcons, getIdentityProviderWizardStepIcons } from "../../configs";
+import { getIdentityProviderWizardStepIcons, getIdPIcons } from "../../configs";
 import { IdentityProviderManagementConstants } from "../../constants";
 import {
     GenericIdentityProviderCreateWizardPropsInterface,
@@ -478,6 +478,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                         <p><b>Mode of configuration</b></p>
                         <Switcher
+                            compact
                             data-testid={ `${ testId }-form-wizard-saml-config-switcher` }
                             className={ "mt-1" }
                             defaultOptionValue="file"
@@ -548,6 +549,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 : (
                     <FilePicker
                         key={ 1 }
+                        hidePasteOption={ true }
                         fileStrategy={ XML_FILE_PROCESSING_STRATEGY }
                         file={ selectedMetadataFile }
                         pastedContent={ pastedMetadataContent }
@@ -780,11 +782,13 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             );
         }));
 
-        if (!subTemplate?.content?.wizardHelp) {
-            return null;
-        }
+        if (!subTemplate?.content?.wizardHelp) return null;
 
-        const { wizardHelp: WizardHelp } = subTemplate?.content;
+        let { wizardHelp: WizardHelp } = subTemplate?.content;
+
+        if (selectedProtocol === "saml" && selectedSamlConfigMode === "file") {
+            WizardHelp = subTemplate.content.fileBasedHelpPanel;
+        }
 
         return (
             <ModalWithSidePanel.SidePanel>
