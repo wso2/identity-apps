@@ -98,4 +98,4 @@ export const DISABLED = "Disabled";
  * @constant
  * @type {string}
  */
-export const CONSUMER_USERSTORE = "CONSUMER";
+export const CONSUMER_USERSTORE = "INTERNAL-CONSUMER-US";
