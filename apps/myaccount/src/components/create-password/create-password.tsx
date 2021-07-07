@@ -32,7 +32,7 @@ const PasswordMeter = React.lazy(() => import("react-password-strength-bar"));
  * Prop types for the change password component.
  * Also see {@link CreatePassword.defaultProps}
  */
-interface CreatePasswordProps extends TestableComponentInterface {
+interface CreatePasswordPropsInterface extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
 }
 
