@@ -17,6 +17,7 @@
  */
 
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent } from "react";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
@@ -26,11 +27,25 @@ import { FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
 
 /**
+ * Proptypes for the user sessions edit component.
+ * Also see {@link UserSessionsEdit.defaultProps}
+ */
+interface FederatedUserOverviewPropsInterface extends TestableComponentInterface {
+    userSource?: string;
+}
+
+/**
  * Overview component.
  *
  * @return {JSX.Element}
  */
-export const FederatedUserOverview: FunctionComponent<FederatedUserOverviewPropsInterface> = (props: FederatedUserOverviewPropsInterface): JSX.Element => {
+export const FederatedUserOverview: FunctionComponent<FederatedUserOverviewPropsInterface> = (
+    props: FederatedUserOverviewPropsInterface
+): JSX.Element => {
+
+    const {
+        userSource
+    } = props;
     const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
 
