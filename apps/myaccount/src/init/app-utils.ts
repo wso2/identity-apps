@@ -176,6 +176,7 @@ export const AppUtils = (function() {
                 clientOrigin: _config.clientOrigin,
                 clientOriginWithTenant: _config.clientOrigin + this.getTenantPath(true),
                 debug: _config.debug,
+                extensions: _config.extensions,
                 idpConfigs: this.resolveIdpConfigs(),
                 isSaas: this.isSaas(),
                 loginCallbackURL: this.constructRedirectURLs(_config.loginCallbackPath),
