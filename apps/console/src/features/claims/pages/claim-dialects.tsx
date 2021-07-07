@@ -113,7 +113,10 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                     } else if (ClaimManagementConstants.SCIM_MAPPING.includes(attributeMapping.dialectURI)) {
                         scim.push(attributeMapping);
                     } else {
-                        others.push(attributeMapping);
+                        if (attributeConfig.showCustomDialectInSCIM 
+                            && attributeMapping.dialectURI !== attributeConfig.localAttributes.customDialectURI ){
+                                others.push(attributeMapping);
+                        }
                     }
                 });
 
