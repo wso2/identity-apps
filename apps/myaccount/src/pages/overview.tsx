@@ -18,7 +18,6 @@
 
 import { ProfileConstants } from "@wso2is/core/constants";
 import React, { ReactElement, useEffect, useState } from "react";
-import { Simulate } from "react-dom/test-utils";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { FederatedUserOverview, Overview } from "../components";
