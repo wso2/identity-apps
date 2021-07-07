@@ -42,7 +42,7 @@ interface CreatePasswordProps extends TestableComponentInterface {
  * @param {CreatePasswordProps} props - Props injected to the change password component.
  * @return {JSX.Element}
  */
-export const CreatePassword: FunctionComponent<CreatePasswordProps> = (props: CreatePasswordProps): JSX.Element => {
+export const CreatePassword: FunctionComponent<CreatePasswordProps> = (props: CreatePasswordProps): ReactElement => {
 
     const {
         ["data-testid"]: testId
