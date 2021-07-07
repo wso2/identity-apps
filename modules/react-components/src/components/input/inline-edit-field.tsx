@@ -24,7 +24,6 @@ export interface InlineEditInputPropsInterface extends TestableComponentInterfac
     text: string;
     textPrefix?: string;
     textPostfix?: string;
-
     inputPlaceholderText?: string;
     onChangesSaved: (changedValue: string) => void;
 }

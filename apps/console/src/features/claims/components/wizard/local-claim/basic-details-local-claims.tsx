@@ -18,8 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
-import { GenericIcon, Hint } from "@wso2is/react-components";
-import { InlineEditInput } from "@wso2is/react-components/src";
+import { GenericIcon, Hint, InlineEditInput } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, Grid, Label, Message, Popup } from "semantic-ui-react";
