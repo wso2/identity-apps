@@ -528,6 +528,13 @@
                 {% endfor %}
             {% endif %}
         ],
+        "hiddenUserStores": [
+            {% if console.ui.hidden_user_stores is defined %}
+                {% for value in console.ui.hidden_user_stores %}
+                "{{ value }}"{{ "," if not loop.last }}
+                {% endfor %}
+            {% endif %}
+        ],
         "i18nConfigs": {
             {% if console.i18n_configs.items() is defined %}
             {% for key, value in console.i18n_configs.items() %}

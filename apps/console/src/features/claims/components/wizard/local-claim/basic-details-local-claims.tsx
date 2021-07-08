@@ -73,8 +73,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
 
     const [ noUniqueOIDCAttrib, setNoUniqueOIDCAttrib ] = useState<boolean>(true);
     const [ noUniqueSCIMAttrib, setNoUniqueSCIMAttrib ] = useState<boolean>(true);
-    const [ oidcMapping, setOidcMapping ] = useState<string>("");
-    const [ scimMapping, setScimMapping ] = useState<string>("");
+    const [ oidcMapping, setOidcMapping ] = useState<string>(values?.get("oidc").toString());
+    const [ scimMapping, setScimMapping ] = useState<string>(values?.get("scim").toString());
 
     const nameField = useRef<HTMLElement>(null);
     const claimField = useRef<HTMLElement>(null);
