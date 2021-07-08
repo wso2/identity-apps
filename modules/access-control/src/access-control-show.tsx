@@ -18,10 +18,10 @@
 
 import React, {
     Children,
-    FunctionComponent, 
-    PropsWithChildren, 
-    ReactElement, 
-    cloneElement, 
+    FunctionComponent,
+    PropsWithChildren,
+    ReactElement,
+    cloneElement,
     isValidElement
 } from "react";
 import { useAccess } from "react-access-control";
@@ -49,8 +49,8 @@ export interface AccessControlShowInterface {
 }
 
 /**
- * Show component which will render child elements based on the permissions recieved.
- * 
+ * Show component which will render child elements based on the permissions received.
+ *
  * @param props props required for permissions based rendering.
  * @returns permission matched child elements
  */
@@ -90,7 +90,7 @@ export const Show: FunctionComponent<PropsWithChildren<AccessControlShowInterfac
             }
             </>);
         }
-        
+
     }
 
     return fallback || null;
