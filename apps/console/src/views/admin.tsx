@@ -48,6 +48,7 @@ import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
+import { commonConfig } from "../extensions";
 import { getProfileInformation } from "../features/authentication/store";
 import {
 
@@ -188,7 +189,8 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
             CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
                 getAdminViewRoutes(),
                 featureConfig,
-                allowedScopes)
+                allowedScopes,
+                commonConfig.checkForUIResourceScopes)
         );
 
         if (!isEmpty(profileInfo)) {
@@ -225,7 +227,8 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
             const filteredRoutesClone: RouteInterface[] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
                 getAdminViewRoutes(),
                 featureConfig,
-                allowedScopes);
+                allowedScopes,
+                commonConfig.checkForUIResourceScopes);
 
             governanceConnectorCategories.map((category: GovernanceConnectorCategoryInterface, index: number) => {
                 let subCategoryExists = false;
