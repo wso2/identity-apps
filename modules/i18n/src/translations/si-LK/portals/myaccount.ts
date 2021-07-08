@@ -728,6 +728,11 @@ export const myAccount: MyAccountNS = {
                     description: "ඔබගේ ගිණුම ආරක්ෂිතව තබා ගැනීමට ඔබට උදව් කිරීමට සැකසීම් සහ නිර්දේශ",
                     header: "ගිණුම් ආරක්ෂාව"
                 },
+                profileStatus: {
+                    completionPercentage: "ඔබගේ ගිණුම සම්පුර්ණ කිරීමේ ප්‍රතිශතය {{percentage}}%",
+                    userSourceText: "({{source} හරහා පුරනය වී ඇත)",
+                    header: "ඔබගේ  {{productName}} ගිණුම"
+                },
                 accountStatus: {
                     complete: "ඔබගේ ගිණුම සම්පූර්ණයි",
                     completedFields: "සම්පුර්ණ කළ ක්ෂේත්‍ර",

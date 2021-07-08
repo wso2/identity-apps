@@ -420,6 +420,11 @@ export interface MyAccountNS {
                     description: string;
                     header: string;
                 };
+                profileStatus: {
+                    completionPercentage: string;
+                    userSourceText: string;
+                    header: string;
+                };
                 accountStatus: {
                     complete: string;
                     completedFields: string;

@@ -731,6 +731,11 @@ export const myAccount: MyAccountNS = {
                     description: "Configurações e recomendações para ajudar você a manter sua conta segura",
                     header: "Segurança da Conta"
                 },
+                profileStatus: {
+                    completionPercentage: "A conclusão do seu perfil está em {{percentage}}%",
+                    userSourceText: "(Conectado via {{source}})",
+                    header: "Seu perfil do {{productName}}"
+                },
                 accountStatus: {
                     complete: "Seu perfil está completo",
                     completedFields: "Campos preenchidos",

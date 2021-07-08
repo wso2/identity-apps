@@ -740,6 +740,11 @@ export const myAccount: MyAccountNS = {
                     description: "உங்களின் கணக்கினை பாதுகாப்பாக வைத்திருப்பதற்கான அமைப்புக்களும் பரிந்துரைகளும்",
                     header: "கணக்கின் பாதுகாப்பு"
                 },
+                profileStatus: {
+                    completionPercentage: "உங்கள் சுயவிவர நிறைவு {{percentage}}%",
+                    userSourceText: "(உடன் கையொப்பமிடப்பட்டுள்ளது {{source}})",
+                    header: "உங்கள் {{productName}} சுயவிவரம்"
+                },
                 accountStatus: {
                     complete: "உங்கள் சுயவிவரம் முடிந்தது",
                     completedFields: "பூர்த்தி செய்யப்பட்ட புலங்கள்",
