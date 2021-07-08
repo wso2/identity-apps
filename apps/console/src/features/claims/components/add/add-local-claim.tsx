@@ -99,7 +99,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
      * if there are no secondary user stores.
      */
     useEffect(() => {
-        if ( hiddenUserStores.length > 0 ) {
+        if ( hiddenUserStores && hiddenUserStores.length > 0 ) {
             attributeConfig.localAttributes.isUserStoresHidden(hiddenUserStores).then(state => {
                 setShowMapAttributes(state.length > 0);
             });
