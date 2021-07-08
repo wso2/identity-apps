@@ -1015,8 +1015,8 @@ export const myAccount: MyAccountNS = {
                             placeholder: "Enter your email address",
                             validations: {
                                 empty: "Email address is a required field",
-                                invalidFormat: "Please enter a valid email address. You can use alphanumeric characters," +
-                                    " underscores (_), dashes (-), periods (.), and an at sign (@)."
+                                invalidFormat: "Please enter a valid email address. You can use alphanumeric characters,"
+                                + " unicode characters, underscores (_), dashes (-), periods (.), and an at sign (@)."
                             }
                         }
                     }
