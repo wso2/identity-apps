@@ -17,8 +17,8 @@
  */
 
 /**
- * This class will contain front end permissions which is required to 
- * be passed on to the permission context and also while checking the 
+ * This class will contain front end permissions which is required to
+ * be passed on to the permission context and also while checking the
  * relvant permission is available when the show component is evaluvating.
  */
 export class AccessControlConstants {
@@ -83,7 +83,7 @@ export class AccessControlConstants {
     public static readonly IDP_DELETE: string = "identity_provider:delete";
 
     /**
-     * Users feature permissiom
+     * Users feature permission
      */
     public static readonly USER: string = "user";
 
@@ -161,7 +161,7 @@ export class AccessControlConstants {
      * Scope feature permission
      */
     public static readonly SCOPE: string = "scope";
-    
+
     /**
      * Scope read permission
      */
