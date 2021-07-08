@@ -72,7 +72,12 @@
                         "internal_application_mgt_create"
                     ],
                     "read": [
-                        "internal_application_mgt_view"
+                        "internal_cors_origins_view",
+                        "internal_application_mgt_view",
+                        "internal_claim_meta_view",
+                        "internal_role_mgt_view",
+                        "internal_userstore_view",
+                        "internal_idp_view"
                     ],
                     "update": [
                         "internal_application_mgt_update"
@@ -111,6 +116,7 @@
                         "internal_claim_meta_create"
                     ],
                     "read": [
+                        "internal_userstore_view",
                         "internal_claim_meta_view"
                     ],
                     "update": [
@@ -182,7 +188,9 @@
                         "internal_role_mgt_create"
                     ],
                     "read": [
-                        "internal_role_mgt_view"
+                        "internal_user_mgt_view",
+                        "internal_role_mgt_view",
+                        "internal_userstore_view"
                     ],
                     "update": [
                         "internal_role_mgt_update"
@@ -200,7 +208,10 @@
                         "console:idps"
                     ],
                     "create": [
-                        "internal_idp_create"
+                        "internal_userstore_view",
+                        "internal_idp_view",
+                        "internal_role_mgt_view",
+                        "internal_claim_meta_view"
                     ],
                     "read": [
                         "internal_idp_view"
@@ -224,7 +235,8 @@
                         "internal_application_mgt_create"
                     ],
                     "read": [
-                        "internal_application_mgt_view"
+                        "internal_application_mgt_view",
+                        "internal_claim_meta_view"
                     ],
                     "update": [
                         "internal_application_mgt_update"
@@ -275,7 +287,9 @@
                         "internal_role_mgt_create"
                     ],
                     "read": [
-                        "internal_role_mgt_view"
+                        "internal_user_mgt_view",
+                        "internal_role_mgt_view",
+                        "internal_userstore_view"
                     ],
                     "update": [
                         "internal_role_mgt_update"
@@ -314,8 +328,12 @@
                         "internal_user_mgt_create"
                     ],
                     "read": [
-                        "internal_user_mgt_list",
-                        "internal_userstore_view"
+                        "internal_userstore_view",
+                        "internal_role_mgt_view",
+                        "internal_idp_view",
+                        "internal_login",
+                        "internal_user_mgt_view",
+                        "internal_user_mgt_list"
                     ],
                     "update": [
                         "internal_user_mgt_update"
