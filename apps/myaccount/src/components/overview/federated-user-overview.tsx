@@ -22,6 +22,7 @@ import React, { FunctionComponent } from "react";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { AccountSecurityWidget, AccountStatusWidget, ConsentManagementWidget, UserSessionsWidget } from "./widgets";
+import { ProfileWidget } from "./widgets/profile-widget";
 import { AppConstants } from "../../constants";
 import { FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
@@ -56,30 +57,22 @@ export const FederatedUserOverview: FunctionComponent<FederatedUserOverviewProps
                 {
                     hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read, allowedScopes)
                     && isFeatureEnabled(accessConfig?.overview,
+                        AppConstants.FEATURE_DICTIONARY.get("OVERVIEW_ACCOUNT_STATUS"))
+                    && (
+                        <Grid.Column computer={ 8 } mobile={ 16 }>
+                            <ProfileWidget
+                                userSource={ userSource }
+                            />
+                        </Grid.Column>
+                    )
+                }
+                {
+                    hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read, allowedScopes)
+                    && isFeatureEnabled(accessConfig?.overview,
                         AppConstants.FEATURE_DICTIONARY.get("OVERVIEW_ACCOUNT_SECURITY"))
                     && (
                         <Grid.Column computer={ 8 } mobile={ 16 }>
                             <AccountSecurityWidget/>
-                        </Grid.Column>
-                    )
-                }
-                {
-                    hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read, allowedScopes)
-                    && isFeatureEnabled(accessConfig?.overview,
-                        AppConstants.FEATURE_DICTIONARY.get("OVERVIEW_CONSENTS"))
-                    && (
-                        <Grid.Column computer={ 8 } mobile={ 16 }>
-                            <ConsentManagementWidget/>
-                        </Grid.Column>
-                    )
-                }
-                {
-                    hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read, allowedScopes)
-                    && isFeatureEnabled(accessConfig?.overview,
-                        AppConstants.FEATURE_DICTIONARY.get("OVERVIEW_ACCOUNT_ACTIVITY"))
-                    && (
-                        <Grid.Column computer={ 16 } mobile={ 16 }>
-                            <UserSessionsWidget/>
                         </Grid.Column>
                     )
                 }
