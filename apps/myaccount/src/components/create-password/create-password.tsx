@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, Suspense, useState } from "react";
+import React, { FunctionComponent, ReactElement, Suspense, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { AlertInterface } from "../../models";
@@ -42,7 +42,9 @@ interface CreatePasswordPropsInterface extends TestableComponentInterface {
  * @param {CreatePasswordProps} props - Props injected to the change password component.
  * @return {JSX.Element}
  */
-export const CreatePassword: FunctionComponent<CreatePasswordProps> = (props: CreatePasswordProps): ReactElement => {
+export const CreatePassword: FunctionComponent<CreatePasswordPropsInterface> = (
+    props: CreatePasswordPropsInterface
+): ReactElement => {
 
     const {
         ["data-testid"]: testId
@@ -59,7 +61,7 @@ export const CreatePassword: FunctionComponent<CreatePasswordProps> = (props: Cr
             primaryActionIcon="key"
             showActionBar={ true }
             disabled={ true }
-        />
+        >
         </SettingsSection>
     );
 };

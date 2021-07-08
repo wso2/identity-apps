@@ -74,13 +74,6 @@ const OverviewPage = (): ReactElement => {
                             { firstName: userProfileName }
                         )
                     }
-                    { userSource && isFederatedUser &&
-                        <div className="overview-page-header">
-                            {
-                                "(Signed up via " + userSource + ")"
-                            }
-                        </div>
-                    }
                 </div>
 
             ) : null }
@@ -94,7 +87,7 @@ const OverviewPage = (): ReactElement => {
                     <Overview/>
                 ) :
                 (
-                    <FederatedUserOverview/>
+                    <FederatedUserOverview userSource={ userSource }/>
                 )
             }
         </InnerPageLayout>

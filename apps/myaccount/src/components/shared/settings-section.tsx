@@ -31,7 +31,7 @@ import { ThemeIconSizes } from "./icon";
 interface SettingsSectionProps extends TestableComponentInterface {
     className?: string;
     contentPadding?: boolean;
-    description?: string;
+    description?: React.ReactNode;
     header: string;
     icon?: any;
     iconMini?: any;
