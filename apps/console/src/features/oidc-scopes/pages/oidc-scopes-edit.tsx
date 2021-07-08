@@ -413,6 +413,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                             <Grid.Column width={ 6 }>
                                 { !isScopeRequestLoading && !isAttributeRequestLoading ? (
                                     <Form
+                                        uncontrolledForm={ false }
                                         onSubmit={ (values): void => {
                                             onSubmit(values);
                                         } }

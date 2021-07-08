@@ -117,6 +117,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
     return (
         <Form
+            uncontrolledForm={ false }
             onSubmit={ (values, form) => {
                 updateConfigurations(values);
             } }

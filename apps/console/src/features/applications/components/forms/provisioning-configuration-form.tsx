@@ -101,6 +101,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
 
     return (
         <Form
+            uncontrolledForm={ false }
             onSubmit={ (values, form) => {
                 updateConfiguration(values);
             } }
