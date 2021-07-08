@@ -297,7 +297,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                         : (_) => true
                                 )
                             }
-                            selectedAttributesWithMapping={ selectedClaimsWithMapping }
+                            selectedAttributesWithMapping={ [...selectedClaimsWithMapping] }
                             onAttributesSelection={ (allSelectedMappings) => {
                                 setSelectedClaimsWithMapping(allSelectedMappings);
                             } }

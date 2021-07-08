@@ -17,14 +17,14 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import React, { ChangeEvent, FC, ReactElement, useEffect, useState } from "react";
-import { Button, Divider, Grid, Icon, Input, Label, Popup, Segment, Table } from "semantic-ui-react";
-import { IdentityProviderClaimInterface, IdentityProviderCommonClaimMappingInterface } from "../../../models";
-import { useTranslation } from "react-i18next";
 import { Code, EmptyPlaceholder, Heading, Hint, PrimaryButton } from "@wso2is/react-components";
-import { getEmptyPlaceholderIllustrations } from "../../../../core";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
+import React, { ChangeEvent, FC, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Button, Divider, Grid, Icon, Input, Label, Popup, Segment, Table } from "semantic-ui-react";
+import { getEmptyPlaceholderIllustrations } from "../../../../core";
+import { IdentityProviderClaimInterface, IdentityProviderCommonClaimMappingInterface } from "../../../models";
 import { AttributeSelectionWizard } from "./attribute-selection-wizard";
 
 type OnAttributesSelectionCallback = (selectedOnes: IdentityProviderCommonClaimMappingInterface[]) => void;
@@ -41,11 +41,11 @@ export const AttributeSelection = (props: AttributeSelectionProps) => {
         attributeList,
         selectedAttributesWithMapping,
         onAttributesSelection,
-        [ "data-testid" ]: testId
+        ["data-testid"]: testId
     } = props;
 
-    const [ showSelectionModal, setShowSelectionModal ] = useState<boolean>(false);
-    const [ attrSearchQuery, setAttrSearchQuery ] = useState<string>("");
+    const [showSelectionModal, setShowSelectionModal] = useState<boolean>(false);
+    const [attrSearchQuery, setAttrSearchQuery] = useState<string>("");
 
     const onSearchInputValueChange = ({ target }: ChangeEvent<HTMLInputElement>): void => {
         setAttrSearchQuery(target.value ?? "");
@@ -73,7 +73,7 @@ export const AttributeSelection = (props: AttributeSelectionProps) => {
         const everyClaimExceptRemovingOne = selectedAttributesWithMapping.filter(
             element => element.claim.uri !== mapping.claim.uri
         );
-        onAttributesSelection([ ...everyClaimExceptRemovingOne ]);
+        onAttributesSelection([...everyClaimExceptRemovingOne]);
     };
 
     const hasAttributesSelected = (): boolean => {
@@ -88,12 +88,12 @@ export const AttributeSelection = (props: AttributeSelectionProps) => {
                     <Table.Row>
                         <Table.Cell>
                             <Input
-                                icon={ <Icon name="search"/> }
+                                icon={ <Icon name="search" /> }
                                 onChange={ onSearchInputValueChange }
                                 placeholder={ "Search attribute" }
                                 floated="left"
                                 size="small"
-                                data-testid={ `${ testId }-search` }
+                                data-testid={ `${testId}-search` }
                             />
                         </Table.Cell>
                         <Table.Cell textAlign="right">
@@ -102,7 +102,7 @@ export const AttributeSelection = (props: AttributeSelectionProps) => {
                                 icon="pencil"
                                 floated="right"
                                 onClick={ onEditIconButtonClicked }
-                                data-testid={ `${ testId }-edit-button` }
+                                data-testid={ `${testId}-edit-button` }
                             />
                         </Table.Cell>
                     </Table.Row>
@@ -127,7 +127,7 @@ export const AttributeSelection = (props: AttributeSelectionProps) => {
                                 instead of the default attribute.
                             </Hint>
                         </Table.HeaderCell>
-                        <Table.HeaderCell width={ 2 }/>
+                        <Table.HeaderCell width={ 2 } />
 
                     </Table.Row>
                 </Table.Header>
@@ -144,7 +144,7 @@ export const AttributeSelection = (props: AttributeSelectionProps) => {
                                 onAttributeMappingUpdate={ (newMappedValue: string) => {
                                     const newMapping = cloneDeep(mapping);
                                     newMapping.mappedValue = newMappedValue;
-                                    updateAttributeClaimMapping(newMapping)
+                                    updateAttributeClaimMapping(newMapping);
                                 } }
                                 onAttributeMappingRemoveClicked={ () => {
                                     removeAttributeClaimMapping(mapping);
@@ -186,10 +186,10 @@ export const AttributeSelection = (props: AttributeSelectionProps) => {
                     }
                     image={ getEmptyPlaceholderIllustrations().emptyList }
                     imageSize="tiny"
-                    data-testid={ `${ testId }-empty-placeholder` }
+                    data-testid={ `${testId}-empty-placeholder` }
                 />
             </Segment>
-        )
+        );
     };
 
     return (
@@ -197,12 +197,12 @@ export const AttributeSelection = (props: AttributeSelectionProps) => {
             <Grid.Row>
                 <Grid.Column computer={ 16 } tablet={ 16 } largeScreen={ 12 } widescreen={ 12 }>
                     <Heading as="h4">
-                        IdP Attribute Selection
+                        Attribute Selection
                     </Heading>
                     <Hint compact>
                         Add and map the supported attributes from external IdP.
                     </Hint>
-                    <Divider hidden/>
+                    <Divider hidden />
                     { hasAttributesSelected() ? _mappingSegment() : _placeholder() }
                 </Grid.Column>
             </Grid.Row>
@@ -211,7 +211,10 @@ export const AttributeSelection = (props: AttributeSelectionProps) => {
                 selectedAttributeMappings={ selectedAttributesWithMapping }
                 show={ showSelectionModal }
                 onAttributesSelected={ (selectedMappings) => {
-                    onAttributesSelection(selectedMappings);
+                    onAttributesSelection([
+                        ...selectedMappings,
+                        ...selectedAttributesWithMapping
+                    ]);
                 } }
                 onClose={ () => setShowSelectionModal(false) }
             />
@@ -249,12 +252,12 @@ const AttributeMappingListItem: FC<AttributeMappingListItemProps> = (
         onAttributeMappingUpdate,
         showMappingInput,
         onAttributeMappingRemoveClicked,
-        [ "data-testid" ]: testId
+        ["data-testid"]: testId
     } = props;
 
     const { t } = useTranslation();
-    const [ mappedAttributeValue, setMappedAttributeValue ] = useState<string>();
-    const [ mappingEditInputHasError, setMappingEditInputHasError ] = useState<boolean>();
+    const [mappedAttributeValue, setMappedAttributeValue] = useState<string>();
+    const [mappingEditInputHasError, setMappingEditInputHasError] = useState<boolean>();
 
     /**
      * This effect is added to set the {@link attribute}'s mapped
@@ -278,7 +281,7 @@ const AttributeMappingListItem: FC<AttributeMappingListItemProps> = (
         }
         onAttributeMappingUpdate(mappedAttributeValue);
         setMappingEditInputHasError(false);
-    }, [ mappedAttributeValue ]);
+    }, [mappedAttributeValue]);
 
     return (
         <Table.Row>
@@ -291,10 +294,10 @@ const AttributeMappingListItem: FC<AttributeMappingListItemProps> = (
                 <Table.Cell error={ showMappingInput && isEmpty(mappedAttributeValue) }>
                     <Input
                         required
-                        placeholder={ `Attribute ${ attribute.claim.displayName }` }
+                        placeholder={ `Attribute ${attribute.claim.displayName}` }
                         value={ mappedAttributeValue }
                         onChange={ ({ target }) => setMappedAttributeValue(target.value) }
-                        data-testid={ `${ testId }-input` }
+                        data-testid={ `${testId}-input` }
                     />
                     { (showMappingInput && mappingEditInputHasError) && (
                         <Label
@@ -331,4 +334,4 @@ const AttributeMappingListItem: FC<AttributeMappingListItemProps> = (
 
 AttributeMappingListItem.defaultProps = {
     showMappingInput: true
-}
+};
