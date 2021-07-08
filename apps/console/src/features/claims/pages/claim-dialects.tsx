@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { getDialects } from "@wso2is/core/api";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, ClaimDialect, TestableComponentInterface } from "@wso2is/core/models";
@@ -113,7 +114,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                     } else if (ClaimManagementConstants.SCIM_MAPPING.includes(attributeMapping.dialectURI)) {
                         scim.push(attributeMapping);
                     } else {
-                        if (attributeConfig.showCustomDialectInSCIM 
+                        if (attributeConfig.showCustomDialectInSCIM
                             && attributeMapping.dialectURI !== attributeConfig.localAttributes.customDialectURI ){
                                 others.push(attributeMapping);
                         }
@@ -166,15 +167,18 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
             ) }
             <PageLayout
                 action={
-                    attributeConfig.addAttributeMapping && <PrimaryButton
-                        onClick={ () => {
-                            setAddEditClaim(true);
-                        } }
-                        data-testid={ `${ testId }-list-layout-add-button` }
-                    >
-                        <Icon name="add" />
-                        { t("console:manage.features.claims.dialects.pageLayout.list.primaryAction") }
-                    </PrimaryButton>
+                    attributeConfig.addAttributeMapping &&
+                    <Show when={ AccessControlConstants.ATTRIBUTE_READ }>
+                        <PrimaryButton
+                            onClick={ () => {
+                                setAddEditClaim(true);
+                            } }
+                            data-testid={ `${ testId }-list-layout-add-button` }
+                        >
+                            <Icon name="add" />
+                            { t("console:manage.features.claims.dialects.pageLayout.list.primaryAction") }
+                        </PrimaryButton>
+                    </Show>
                 }
                 isLoading={ isLoading }
                 title={ t("console:manage.features.claims.dialects.pageLayout.list.title") }
@@ -229,12 +233,12 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                 </Grid.Column>
                                                 <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
                                                     <Popup
-                                                        content={ 
+                                                        content={
                                                             hasRequiredScopes(
                                                                 featureConfig?.attributeDialects,
                                                                 featureConfig?.attributeDialects?.scopes?.create,
                                                                 allowedScopes
-                                                            ) ? 
+                                                            ) ?
                                                             t("common:edit") :
                                                             t("common:view")
                                                         }
@@ -243,7 +247,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                 featureConfig?.attributeDialects,
                                                                 featureConfig?.attributeDialects?.scopes?.create,
                                                                 allowedScopes
-                                                            ) ? 
+                                                            ) ?
                                                             <Icon color="grey" name="pencil" /> :
                                                             <Icon color="grey" name="eye" />
                                                         }
@@ -305,12 +309,12 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                             </Grid.Column>
                                             <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
                                                 <Popup
-                                                    content={ 
+                                                    content={
                                                         hasRequiredScopes(
                                                             featureConfig?.attributeDialects,
                                                             featureConfig?.attributeDialects?.scopes?.create,
                                                             allowedScopes
-                                                        ) ? 
+                                                        ) ?
                                                         t("common:edit") :
                                                         t("common:view")
                                                     }
@@ -319,7 +323,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                             featureConfig?.attributeDialects,
                                                             featureConfig?.attributeDialects?.scopes?.create,
                                                             allowedScopes
-                                                        ) ? 
+                                                        ) ?
                                                         <Icon color="grey" name="pencil" /> :
                                                         <Icon color="grey" name="eye" />
                                                     }
