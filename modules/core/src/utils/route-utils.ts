@@ -42,11 +42,14 @@ export class RouteUtils {
      * @param {RouteInterface[]} routes - Routes to evaluate.
      * @param {T} featureConfig - Feature config.
      * @param {string} allowedScopes - Set of allowed scopes.
+     * @param {boolean} checkForUIResourceScopes - Sets if UI Resource Scopes should be considered for filtering.
+     *
      * @return {RouteInterface[]} Filtered routes.
      */
     public static filterEnabledRoutes<T>(routes: RouteInterface[],
                                          featureConfig: T,
-                                         allowedScopes: string): RouteInterface[] { 
+                                         allowedScopes: string,
+                                         checkForUIResourceScopes?: boolean): RouteInterface[] {
 
         // Filters features based on scope requirements.
         const filter = (routeArr: RouteInterface[] | ChildRouteInterface[], allowedScopes: string) => {
@@ -69,7 +72,15 @@ export class RouteUtils {
                     return true;
                 }
 
-                return hasRequiredScopes(feature, feature?.scopes?.read, allowedScopes);
+                if (checkForUIResourceScopes) {
+                    if (!hasRequiredScopes(feature, feature?.scopes?.feature, allowedScopes)){
+                        return false;
+                    }
+                }
+
+                const scopes = hasRequiredScopes(feature, feature?.scopes?.read, allowedScopes);
+
+                return scopes;
             });
         };
 
