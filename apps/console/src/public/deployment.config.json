@@ -208,13 +208,13 @@
                         "console:idps"
                     ],
                     "create": [
+                        "internal_idp_create"
+                    ],
+                    "read": [
                         "internal_userstore_view",
                         "internal_idp_view",
                         "internal_role_mgt_view",
                         "internal_claim_meta_view"
-                    ],
-                    "read": [
-                        "internal_idp_view"
                     ],
                     "update": [
                         "internal_idp_update"
