@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -252,10 +253,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         <PageLayout
             action={
                 (isApplicationListRequestLoading || !(!searchQuery && appList?.totalResults <= 0))
-                && (hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.create,
-                    allowedScopes))
                 && (
-                    <>
+                    <Show when={ AccessControlConstants.APPLICATION_WRITE }>
                         <PrimaryButton
                             onClick={ (): void => {
                                 eventPublisher.publish("application-click-new-application-button");
@@ -267,7 +266,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                             <Icon name="add"/>
                             { t("console:develop.features.applications.list.actions.add") }
                         </PrimaryButton>
-                    </>
+                    </Show>
                 )
             }
             title={ t("console:develop.pages.applications.title") }
