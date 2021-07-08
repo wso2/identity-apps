@@ -50,7 +50,7 @@ import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
 import { getProfileInformation } from "../features/authentication/store";
 import {
-    
+
     AppConstants,
     AppState,
     AppUtils,
@@ -417,7 +417,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                         mobileSidePanelVisibility={ mobileSidePanelVisibility }
                         onSidePanelItemClick={ handleSidePanelItemClick }
                         onSidePanelPusherClick={ handleSidePanelPusherClick }
-                        routes={ CommonRouteUtils.sanitizeForUI(cloneDeep(accessControlledRoutes), 
+                        routes={ CommonRouteUtils.sanitizeForUI(cloneDeep(filteredRoutes),
                             AppUtils.getHiddenRoutes()) }
                         selected={ selectedRoute }
                         translationHook={ t }
