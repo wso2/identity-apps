@@ -29,6 +29,9 @@ type SamlIdPListItemOption = {
     value: string;
 };
 
+/**
+ * Returns the available nameid formats with the correct urn scheme.
+ */
 export const getAvailableNameIDFormats = (): Array<SamlIdPListItemOption> => {
     const schemes: string[] = [
         "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
@@ -46,6 +49,9 @@ export const getAvailableNameIDFormats = (): Array<SamlIdPListItemOption> => {
     }));
 };
 
+/**
+ * Returns the supported protocol binding types.
+ */
 export const getAvailableProtocolBindingTypes = (): Array<SamlIdPListItemOption> => {
     return [
         { key: 1, text: "HTTP Redirect", value: "redirect" },
@@ -69,6 +75,10 @@ export const getAvailableProtocolBindingTypes = (): Array<SamlIdPListItemOption>
  * FIXME: https://github.com/wso2-enterprise/asgardeo-product/issues/4288
  */
 
+/**
+ * Returns the mapped signature algorithm value with readable string.
+ * @param {FederatedAuthenticatorMetaInterface} metadata
+ */
 export const getSignatureAlgorithmOptionsMapped = (
     metadata: FederatedAuthenticatorMetaInterface
 ): Array<SamlIdPListItemOption> => {
@@ -115,6 +125,10 @@ export const getSignatureAlgorithmOptionsMapped = (
 
 };
 
+/**
+ * Returns the mapped digest algorithm values with readable string.
+ * @param {FederatedAuthenticatorMetaInterface} metadata
+ */
 export const getDigestAlgorithmOptionsMapped = (
     metadata: FederatedAuthenticatorMetaInterface
 ): Array<SamlIdPListItemOption> => {
@@ -161,6 +175,22 @@ type FindPropValFunction = <Type>(args: FindPropValArgs<Type>) => Type;
 type FindMetaArgs = { key: string };
 type FindMetaFunction = (args: FindMetaArgs) => CommonPluggableComponentMetaPropertyInterface;
 
+/**
+ * tldr: Pre computes idp metadata and data properties to find
+ * and return values in constant time.
+ *
+ * Why? to do a faster search we need a constant access time data structure to
+ * find the current value by key. This is because `data.properties` is a array of
+ * object { key, value } pairs which makes find operation exhaustive (looping)
+ * when dealing with larger objects.
+ *
+ * Usage:
+ *      const [ findPropVal, findMetaVal ] = fastSearch(authenticator);
+ *      i.e., findPropVal<string>({ defaultValue: "SHA1", key: "DigestAlgorithm" }),
+ *      i.e., findMetaVal<number>({ key: "displayOrder" }),
+ *
+ * @param authenticator
+ */
 export const fastSearch = (
     authenticator: FederatedAuthenticatorWithMetaInterface
 ): [ FindPropValFunction, FindMetaFunction ] => {
@@ -192,12 +222,25 @@ export const fastSearch = (
 
 };
 
+/**
+ * For some reason the metadata API returns strings instead
+ * booleans for boolean default values. ¯\_(ツ)_/¯ Its good
+ * if we can address them in the API with issue #4288
+ * but it is highly unlikey to get resolved because they are
+ * legacy codes.
+ *
+ * @param value {string}
+ */
 export const castToBool = (value: string): boolean => {
     if (!value) return false;
     if ("true" === value.toLowerCase()) return true;
     if ("false" === value.toLowerCase()) return false;
 };
 
+/**
+ * Test for boolean toString value.
+ * @param value {string | any}
+ */
 export const booleanSentAsAStringValue = (value: any): boolean => {
     if (typeof value === "string") {
         return /true|false/g.test(value);
@@ -214,6 +257,15 @@ export const LOGOUT_URL_LENGTH: MinMaxLength = { max: 2048, min: 10 };
 export const IDENTITY_PROVIDER_ENTITY_ID_LENGTH: MinMaxLength = { max: 2048, min: 5 };
 export const IDENTITY_PROVIDER_NAME_LENGTH: MinMaxLength = { max: 120, min: 3 };
 
+/**
+ * Given a {@link FormErrors} object, it will check whether
+ * every key has a assigned truthy value. {@link Array.every}
+ * will return {@code true} if one of the object member has
+ * a truthy value. In other words, it will check a field has
+ * a error message attached to it or not.
+ *
+ * @param errors {FormErrors}
+ */
 export const ifFieldsHave = (errors: FormErrors): boolean => {
     return !Object.keys(errors).every((k) => !errors[ k ]);
 };

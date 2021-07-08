@@ -42,21 +42,28 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
     const { label, name, value, onChange } = props;
 
     const QUERY_PARAMETER_SEPARATOR = ",";
-    const SPECIAL_CHARACTERS = [",", "&", "=", "?"];
+    const SPECIAL_CHARACTERS = [ ",", "&", "=", "?" ];
 
-    const [queryParamName, setQueryParamName] = useState<string>("");
-    const [queryParamValue, setQueryParamValue] = useState<string>("");
-    const [errorMessage, setErrorMessage] = useState<string>("");
-    const [queryParams, setQueryParams] = useState<QueryParameter[]>([]);
+    const [ queryParamName, setQueryParamName ] = useState<string>("");
+    const [ queryParamValue, setQueryParamValue ] = useState<string>("");
+    const [ errorMessage, setErrorMessage ] = useState<string>("");
+    const [ queryParams, setQueryParams ] = useState<QueryParameter[]>([]);
 
+    /**
+     * Called when `queryParams` is changed.
+     */
+    useEffect(() => {
+        fireOnChangeEvent(queryParams, onChange);
+    }, [ queryParams ]);
+    
     /**
      * Build query parameter object from the given string form.
      * @param queryParameter Query parameter in the string form.
      */
     const buildQueryParameter = (queryParameter: string): QueryParameter => {
         return {
-            name: queryParameter?.split("=")[0],
-            value: queryParameter?.split("=")[1]
+            name: queryParameter?.split("=")[ 0 ],
+            value: queryParameter?.split("=")[ 1 ]
         };
     };
 
@@ -105,13 +112,6 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
         if (isEmpty(value)) return;
         setQueryParams(value.split(QUERY_PARAMETER_SEPARATOR)?.map(buildQueryParameter));
     }, [value]);
-
-    /**
-     * Called when `queryParams` is changed.
-     */
-    useEffect(() => {
-        fireOnChangeEvent(queryParams, onChange);
-    }, [queryParams]);
 
     /**
      * Enter button option.
@@ -212,7 +212,7 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
             <Message visible={ errorMessage !== "" } error content={ errorMessage } />
             {
                 queryParams && queryParams?.map((eachQueryParam, index) => {
-                    const queryParameter = eachQueryParam.name + "=" + eachQueryParam.value;
+                    const queryParameter: string = eachQueryParam.name + "=" + eachQueryParam.value;
                     return (
                         <Label key={ index }>
                             { queryParameter }
