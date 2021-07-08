@@ -529,7 +529,7 @@
             {% endif %}
         ],
         "hiddenUserStores": [
-            {% if console.ui.hiddenUserStores is defined %}
+            {% if console.ui.hidden_user_stores is defined %}
                 {% for value in console.ui.hiddenUserStores %}
                 "{{ value }}"{{ "," if not loop.last }}
                 {% endfor %}
