@@ -270,7 +270,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
             icon: getAddLocalClaimWizardStepIcons().general,
             title: t("console:manage.features.claims.local.wizard.steps.general")
         },
-        ( attributeConfig.localAttributes.createWizard.showAttributeMapping && showMapAttributes ?
+        ( showMapAttributes ?
             {
                 content: (
                     <MappedAttributes
