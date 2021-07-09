@@ -18,9 +18,10 @@
 
 import React, { ReactElement } from "react";
 import { Divider, Grid, Header } from "semantic-ui-react";
+import { ServerConfigurationConfig } from "./models/server-configuration";
 import { GovernanceConnectorInterface } from "../../features/server-configurations";
 
-export const serverConfigurationConfig = {
+export const serverConfigurationConfig: ServerConfigurationConfig = {
     autoEnableConnectorToggleProperty: false,
     connectorPropertiesToShow: [
         "all"
@@ -65,6 +66,7 @@ export const serverConfigurationConfig = {
         );
     },
     renderConnectorWithinEmphasizedSegment: true,
+    showConnectorsOnTheSidePanel: true,
     showGovernanceConnectorCategories: true,
     showPageHeading: true
 };
