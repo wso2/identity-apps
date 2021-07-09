@@ -131,7 +131,6 @@ export const Overview: FunctionComponent<OverviewPropsInterface> = (
                                 { accountSecurity(7, 16) }
                                 { accountActivity(16, 16) }
                             </>
-
                         ) :
                         (
                             <>
