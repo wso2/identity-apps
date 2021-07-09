@@ -224,20 +224,21 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
     };
 
     return (
-        <SettingsSection
-            data-testid={ `${testId}-settings-section` }
-            description={ t("myAccount:sections.federatedAssociations.description") }
-            header={ t("myAccount:sections.federatedAssociations.heading") }
-            icon={ getSettingsSectionIcons().federatedAssociations }
-            iconMini={ getSettingsSectionIcons().federatedAssociationsMini }
-            iconSize="auto"
-            iconStyle="colored"
-            iconFloated="right"
-            showActionBar={ true }
-        >
-            { deleteConfirmation() }
-            { federatedAssociationsList() }
-        </SettingsSection>
+        federatedAssociations.length > 0 &&
+            <SettingsSection
+                data-testid={ `${testId}-settings-section` }
+                description={ t("myAccount:sections.federatedAssociations.description") }
+                header={ t("myAccount:sections.federatedAssociations.heading") }
+                icon={ getSettingsSectionIcons().federatedAssociations }
+                iconMini={ getSettingsSectionIcons().federatedAssociationsMini }
+                iconSize="auto"
+                iconStyle="colored"
+                iconFloated="right"
+                showActionBar={ true }
+            >
+                { deleteConfirmation() }
+                { federatedAssociationsList() }
+            </SettingsSection>
     );
 };
 
