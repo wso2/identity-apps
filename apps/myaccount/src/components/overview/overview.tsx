@@ -46,6 +46,7 @@ export const Overview: FunctionComponent<OverviewPropsInterface> = (
     const {
         enableThreeWidgetLayout
     } = props;
+
     const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
 
@@ -129,7 +130,6 @@ export const Overview: FunctionComponent<OverviewPropsInterface> = (
                                 { accountSecurity(7, 16) }
                                 { accountActivity(16, 16) }
                             </>
-
                         ) :
                         (
                             <>
