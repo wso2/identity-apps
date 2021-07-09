@@ -217,6 +217,19 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
         }
 
         if (!(governanceConnectorCategories !== undefined && governanceConnectorCategories.length > 0)) {
+            if (
+                !(
+                    serverConfigurationConfig.showConnectorsOnTheSidePanel &&
+                    hasRequiredScopes(
+                        featureConfig.generalConfigurations,
+                        featureConfig.generalConfigurations.scopes.read,
+                        allowedScopes
+                    )
+                )
+            ) {
+                return;
+            }
+
             GovernanceConnectorUtils.getGovernanceConnectors();
 
             return;
