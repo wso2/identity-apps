@@ -109,7 +109,6 @@ export const attributeConfig: AttributeConfig = {
             checkSCIMAvailability: false,
             customWIzard: false,
             identifyAsCustomAttrib: false,
-            showAttributeMapping: true,
             showDisplayOrder: true,
             showReadOnlyAttribute: true,
             showRegularExpression: true,

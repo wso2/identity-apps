@@ -66,7 +66,6 @@ export interface AttributeConfig {
             showDisplayOrder: boolean;
             showRegularExpression: boolean;
             showReadOnlyAttribute: boolean;
-            showAttributeMapping: boolean;
             showSummary: boolean;
             identifyAsCustomAttrib: boolean;
         }
