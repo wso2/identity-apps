@@ -1021,8 +1021,8 @@ export const myAccount: MyAccountNS = {
                             validations: {
                                 empty: "L'adresse e-mail est obligatoire",
                                 invalidFormat: "Format de l'adresse e-mail saisie invalide. Vous pouvez utiliser des " +
-                                    "caractères alphanumériques, caractères Unicode, des traits de soulignement (_), " +
-                                    "des tirets (-), des points (.) Et un signe arobase (@)."
+                                    "caractères alphanumériques, des traits de soulignement (_), des tirets (-), des " +
+                                    "points (.) Et un signe arobase (@)."
                             }
                         }
                     }
