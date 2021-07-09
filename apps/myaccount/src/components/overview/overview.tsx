@@ -36,9 +36,9 @@ interface OverviewPropsInterface extends TestableComponentInterface {
 }
 
 /**
- * Overview component.
- *
- * @return {JSX.Element}
+ * Overview Component
+ * @param props
+ * @constructor
  */
 export const Overview: FunctionComponent<OverviewPropsInterface> = (
     props: OverviewPropsInterface
