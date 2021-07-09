@@ -48,7 +48,7 @@ import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
-import { commonConfig } from "../extensions";
+import { commonConfig, serverConfigurationConfig } from "../extensions";
 import { getProfileInformation } from "../features/authentication/store";
 import {
 
@@ -230,7 +230,9 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                 allowedScopes,
                 commonConfig.checkForUIResourceScopes);
 
-            governanceConnectorCategories.map((category: GovernanceConnectorCategoryInterface, index: number) => {
+            serverConfigurationConfig.showConnectorsOnTheSidePanel
+                && governanceConnectorCategories.map(
+                    (category: GovernanceConnectorCategoryInterface, index: number) => {
                 let subCategoryExists = false;
                 category.connectors?.map(connector => {
                     if (connector.subCategory !== "DEFAULT") {
