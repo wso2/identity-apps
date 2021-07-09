@@ -23,4 +23,8 @@ export interface CommonConfig {
     OverviewPage: {
         enableThreeWidgetLayout: boolean;
     };
+    // FederatedUser: {
+    //     enableFederatedUser: boolean;
+    // }
+
 }

@@ -20,7 +20,7 @@ import { ProfileConstants } from "@wso2is/core/constants";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { FederatedUserOverview, Overview } from "../components";
+import { Overview } from "../components";
 import { resolveUserProfileName } from "../helpers";
 import { InnerPageLayout } from "../layouts";
 import { AuthStateInterface } from "../models";
@@ -83,12 +83,7 @@ const OverviewPage = (): ReactElement => {
             { /* Loads overview component only when user info is loaded.
                 Loads overview component based on user credential type (local/non-local).*/ }
             { isProfileInfoLoading == false &&
-                !isFederatedUser ? (
-                    <Overview/>
-                ) :
-                (
-                    <FederatedUserOverview userSource={ userSource }/>
-                )
+                <Overview isFederatedUser={ isFederatedUser }/>
             }
         </InnerPageLayout>
     );

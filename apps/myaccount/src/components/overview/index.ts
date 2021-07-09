@@ -17,4 +17,3 @@
  */
 
 export * from "./overview";
-export * from "./federated-user-overview";

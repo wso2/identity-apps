@@ -22,10 +22,21 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { Divider, Grid, SemanticWIDTHS } from "semantic-ui-react";
 import { AccountSecurityWidget, AccountStatusWidget, ConsentManagementWidget, UserSessionsWidget } from "./widgets";
+import { ProfileWidget } from "./widgets/profile-widget";
 import { AppConstants } from "../../constants";
 import { commonConfig } from "../../extensions";
 import { FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
+import { AdvancedSearchWithBasicFilters } from "../shared";
+
+/**
+ * Prop types for the overview edit component.
+ */
+interface OverviewPropsInterface extends TestableComponentInterface {
+    userSource?: string;
+    isFederatedUser?: boolean;
+    enableThreeWidgetLayout?: boolean;
+}
 
 /**
  * Prop types for the overview edit component.
@@ -139,6 +150,62 @@ export const Overview: FunctionComponent<OverviewPropsInterface> = (
                                 { consents(8, 16) }
                             </>
                         )
+                }
+
+            </>
+        );
+    };
+
+    const profileStatus = (widthComputer, widthMobile): React.ReactElement => {
+        return (
+            <>
+                {
+                    hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read, allowedScopes)
+                    && isFeatureEnabled(accessConfig?.overview,
+                        AppConstants.FEATURE_DICTIONARY.get("OVERVIEW_ACCOUNT_STATUS"))
+                    && (
+                        <Grid.Column computer={ widthComputer } mobile={ widthMobile }>
+                            <ProfileWidget
+                                userSource={ userSource }
+                            />
+                        </Grid.Column>
+                    )
+                }
+            </>
+        );
+    };
+
+
+    return (
+        <Grid className="overview-page">
+            <Divider hidden />
+            <Grid.Row>
+                {
+                    !isFederatedUser ? (
+                        enableThreeWidgetLayout ? (
+                            <>
+                                { accountStatus(9,16) }
+                                { accountSecurity(7, 16) }
+                                { accountActivity(16, 16) }
+                            </>
+
+                        ) :
+                        (
+                            <>
+                                { accountStatus(9,16) }
+                                { accountActivity(7, 16) }
+                                { accountSecurity(8, 16) }
+                                { consents(8, 16) }
+                            </>
+                        )
+                    ) :
+                    (
+                        <>
+                            { profileStatus(8, 16) }
+                            { accountSecurity(8, 16) }
+                        </>
+                    )
+
                 }
 
             </Grid.Row>
