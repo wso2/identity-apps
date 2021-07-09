@@ -18,7 +18,7 @@
 
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { Divider, Grid, SemanticWIDTHS } from "semantic-ui-react";
 import { AccountSecurityWidget, AccountStatusWidget, ConsentManagementWidget, UserSessionsWidget } from "./widgets";
@@ -42,7 +42,7 @@ interface OverviewPropsInterface extends TestableComponentInterface {
  */
 export const Overview: FunctionComponent<OverviewPropsInterface> = (
     props: OverviewPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         enableThreeWidgetLayout
