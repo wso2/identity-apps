@@ -28,8 +28,7 @@ import { FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
 
 /**
- * Proptypes for the user sessions edit component.
- * Also see {@link UserSessionsEdit.defaultProps}
+ * Prop types for the overview edit component.
  */
 interface OverviewPropsInterface extends TestableComponentInterface {
     enableThreeWidgetLayout?: boolean;
