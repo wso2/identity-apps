@@ -223,7 +223,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
             
         }
 
-        if (!attributeConfig.localAttributes.createWizard.showAttributeMapping && !showMapAttributes) {
+        if (!showMapAttributes) {
             tempData.attributeMapping = [
                 {
                     mappedAttribute: tempData.claimURI.split("/").pop(),
@@ -270,7 +270,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
             icon: getAddLocalClaimWizardStepIcons().general,
             title: t("console:manage.features.claims.local.wizard.steps.general")
         },
-        ( attributeConfig.localAttributes.createWizard.showAttributeMapping && showMapAttributes ?
+        ( showMapAttributes ?
             {
                 content: (
                     <MappedAttributes
