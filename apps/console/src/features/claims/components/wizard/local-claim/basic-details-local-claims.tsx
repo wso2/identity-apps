@@ -102,7 +102,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
      * TODO: Move constants to extension constants file
      */
     useEffect(() => {
-        if (oidcMapping === "" || claimID === oidcMapping) {
+        if (!oidcMapping && !( oidcMapping === "" || claimID === oidcMapping ) ) {
             return;
         }
 
@@ -117,7 +117,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
      * TODO: Move constants to extension constants file
      */
      useEffect(() => {
-        if (scimMapping === "" || claimID === scimMapping) {
+        if (!scimMapping && !( scimMapping === "" || claimID === scimMapping ) ) {
             return;
         }
 

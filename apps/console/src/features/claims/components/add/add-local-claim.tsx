@@ -79,9 +79,8 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     const [ data, setData ] = useState<Claim>(null);
     const [ basicDetailsData, setBasicDetailsData ] = useState<Map<string, FormValue>>(null);
     const [ mappedAttributesData, setMappedAttributesData ] = useState<Map<string, FormValue>>(null);
+    const [ mappedCustomAttribues, setMappedCustomAttribues ] = useState<Map<string, string>>(null);
 
-    const [ scimCustomAttribute, setScimCustomAttribute ] = useState<string>();
-    const [ oidcCustomAttribute, setOidcCustomAttribute ] = useState<string>();
     const [ showMapAttributes, setShowMapAttributes ] = useState<boolean>(false);
     const hiddenUserStores: string[] = useSelector((state: AppState) => state.config.ui.hiddenUserStores);
 
@@ -112,7 +111,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     /**
      * Submit handler that sends the API request to add the local claim
      */
-    const handleSubmit = async (data) => {
+    const handleSubmit = async (data, customMappings?) => {
 
         if ( attributeConfig.localAttributes.createCustomDialect ) {
 
@@ -136,12 +135,12 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                     }
                 ));
 
-                if ( attributeConfig.localAttributes.mapClaimToCustomDialect ) {
+                if ( attributeConfig.localAttributes.mapClaimToCustomDialect && customMappings ) {
 
                     attributeConfig.localAttributes.isSCIMCustomDialectAvailable().then(( claimId: string ) => {
                         addExternalClaim(claimId, {
                             claimURI: `${attributeConfig.localAttributes.
-                                customDialectURI}:${scimCustomAttribute}`,
+                                customDialectURI}:${customMappings.get("scim")}`,
                             mappedLocalClaimURI: data.claimURI
                         });
                     });
@@ -149,7 +148,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                     attributeConfig.localAttributes.getDialect(ClaimManagementConstants.OIDC_MAPPING[0]).then(
                         response => {
                             addExternalClaim(response.id, {
-                                claimURI: `${oidcCustomAttribute}`,
+                                claimURI: `${customMappings.get("oidc")}`,
                                 mappedLocalClaimURI: data.claimURI
                             });
                     });
@@ -200,12 +199,14 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
      */
     const onSubmitBasicDetails = (dataFromForm: Claim, values: Map<string, FormValue>) => {
         const tempData = { ...data, ...dataFromForm };
+        const customMappings: Map<string, string> = new Map();
         setData(tempData);
         setBasicDetailsData(values);
 
         if (values.has("scim") && values.has("oidc")) {
-            setScimCustomAttribute(values.get("scim").toString());
-            setOidcCustomAttribute(values.get("oidc").toString());
+            customMappings.set("scim", values.get("scim").toString());
+            customMappings.set("oidc", values.get("oidc").toString());
+            setMappedCustomAttribues(customMappings);
         }
 
         if (attributeConfig.localAttributes.createWizard.identifyAsCustomAttrib) {
@@ -230,7 +231,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                     userstore: "PRIMARY"
                 }
             ];
-            handleSubmit(tempData);
+            handleSubmit(tempData, customMappings);
         } else {
             setCurrentWizardStep(1);
         }
@@ -247,7 +248,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
         setMappedAttributesData(values);
 
         if (!attributeConfig.localAttributes.createWizard.showSummary) {
-            handleSubmit(tempData);
+            handleSubmit(tempData, mappedCustomAttribues);
         } else {
             setCurrentWizardStep(2);
         }
