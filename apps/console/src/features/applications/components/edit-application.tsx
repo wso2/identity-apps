@@ -161,7 +161,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(undefined);
     const [ totalTabs, setTotalTabs ] = useState<number>(undefined);
 
-    const eventPublisher = EventPublisher.getInstance();
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     /**
      * Called when an application updates.

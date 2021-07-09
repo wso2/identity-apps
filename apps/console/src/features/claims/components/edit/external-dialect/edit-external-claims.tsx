@@ -120,7 +120,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
 
     const { dialectID, claims, update, isLoading } = props;
 
-    const eventPublisher = EventPublisher.getInstance();
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     useEffect(() => {
         if (claims) {

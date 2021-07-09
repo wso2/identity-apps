@@ -136,7 +136,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     const initValue = useRef(false);
 
-    const eventPublisher = EventPublisher.getInstance();
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     useEffect(() => {
         const tempFilterSelectedExternalClaims = [ ...filterSelectedExternalClaims ];

@@ -128,7 +128,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
-    const eventPublisher = EventPublisher.getInstance();
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     /**
      * Called on every `listOffset` & `listItemLimit` change.

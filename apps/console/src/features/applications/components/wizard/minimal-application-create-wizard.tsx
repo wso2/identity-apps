@@ -137,7 +137,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
     const [ alert, setAlert, notification ] = useWizardAlert();
 
-    const eventPublisher = EventPublisher.getInstance();
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     useEffect(() => {
         // Stop fetching CORS origins if the selected template is `Expert Mode`.

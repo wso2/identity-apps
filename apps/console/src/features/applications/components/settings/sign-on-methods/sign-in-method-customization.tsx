@@ -115,7 +115,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
     const [ isDefaultScript, setIsDefaultScript ] = useState<boolean>(true);
     const [ isButtonDisabled, setIsButtonDisabled ] = useState<boolean>(false);
 
-    const eventPublisher = EventPublisher.getInstance();
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     /**
      * Toggles the update trigger.

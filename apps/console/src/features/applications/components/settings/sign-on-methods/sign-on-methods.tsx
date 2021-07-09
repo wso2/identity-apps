@@ -130,7 +130,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         setIDPCreateWizardTriggerOrigin
     ] = useState<"INTERNAL"|"EXTERNAL">(undefined);
 
-    const eventPublisher = EventPublisher.getInstance();
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     /**
      * Loads federated authenticators and local authenticators on component load.

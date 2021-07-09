@@ -181,7 +181,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
         className
     );
 
-    const eventPublisher = EventPublisher.getInstance();
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     /**
      * Update the internal filtered authenticators state when the prop changes.

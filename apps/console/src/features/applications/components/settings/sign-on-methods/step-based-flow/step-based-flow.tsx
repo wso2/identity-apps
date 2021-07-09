@@ -150,7 +150,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
     const authenticationStepsDivRef = useRef<HTMLDivElement>(null);
 
-    const eventPublisher = EventPublisher.getInstance();
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     /**
      * Separates out the different authenticators to their relevant categories.

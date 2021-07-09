@@ -74,7 +74,7 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
 
     const [ baseRoutes, setBaseRoutes ] = useState<RouteInterface[]>(getBaseRoutes());
 
-    const eventPublisher = EventPublisher.getInstance();
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     /**
      * Set the deployment configs in redux state.

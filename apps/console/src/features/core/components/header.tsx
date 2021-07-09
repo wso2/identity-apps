@@ -96,7 +96,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>(undefined);
 
-    const eventPublisher = EventPublisher.getInstance();
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     useEffect(() => {
         if (isEmpty(config)) {

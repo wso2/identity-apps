@@ -207,7 +207,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
-    const eventPublisher = EventPublisher.getInstance();
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const getClaims = () => {
         setIsClaimLoading(true);
