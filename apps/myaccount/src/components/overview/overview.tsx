@@ -32,8 +32,6 @@ import { AppState } from "../../store";
  * Also see {@link UserSessionsEdit.defaultProps}
  */
 interface OverviewPropsInterface extends TestableComponentInterface {
-    userSource?: string;
-    isFederatedUser?: boolean;
     enableThreeWidgetLayout?: boolean;
 }
 
