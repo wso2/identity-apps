@@ -59,6 +59,9 @@ export const attributeConfig: AttributeConfig = {
         showRequiredCheckBox: true
     },
     externalAttributes: {
+        deleteCustomExternalDialect: () => {
+            return Promise.resolve(true);
+        },
         editAttribute: (claim: ExternalClaim, editClaimID: string, callback: (claimID: string) => void): void => {
             callback(editClaimID ? "" : claim?.id);
         },
@@ -91,7 +94,7 @@ export const attributeConfig: AttributeConfig = {
             return true;
         },
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        showDeleteIcon: (dialectID: string): boolean => {
+        showDeleteIcon: (dialectID: string, claimsList: ExternalClaim[]): boolean => {
             return true;
         }
     },

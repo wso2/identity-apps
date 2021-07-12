@@ -934,7 +934,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                         .getEditPopupText(claim, editClaim),
                     renderer: "semantic-icon"
                 },
-                attributeConfig.externalAttributes.showDeleteIcon(dialectID) && {
+                attributeConfig.externalAttributes.showDeleteIcon(dialectID, list) && {
                     hidden: (claim: ExternalClaim): boolean => !hasRequiredScopes(featureConfig?.attributeDialects,
                         featureConfig?.attributeDialects?.scopes?.delete, allowedScopes)
                         || attributeConfig.externalAttributes.hideDeleteIcon(claim),

@@ -55,7 +55,8 @@ export interface AttributeConfig {
         isEditActionClickable: (claim: ExternalClaim) => boolean;
         isRowClickable: (dialectID: string, item: any) => boolean;
         showActions: (dialectID: string) => boolean;
-        showDeleteIcon: (dialectID: string) => boolean;
+        showDeleteIcon: (dialectID: string, claimsList: ExternalClaim[]) => boolean;
+        deleteCustomExternalDialect: () => Promise<boolean>;
     };
     localAttributes: {
         createWizard: {
