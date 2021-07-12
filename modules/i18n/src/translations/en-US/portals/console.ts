@@ -3077,73 +3077,80 @@ export const console: ConsoleNS = {
                             SPEntityId: {
                                 placeholder: "Enter service provider entity ID",
                                 ariaLabel: "Service provider entity ID",
-                                label: "Service provider <1>ENTITY_ID</1>",
-                                hint: "Enter identity provider <1>ENTITY_ID</1> value."
+                                label: "Service provider entity ID",
+                                hint: "A globally unique name for identity providers under Asgardeo." +
+                                    " This can be any value but" +
+                                    " when you configure a service provider in the external identity provider (IdP)" +
+                                    " you should give the same value as the service provider <1>entityId</1>."
                             },
                             SSOUrl: {
                                 placeholder: "https://ENTERPRISE_IDP/samlsso",
                                 ariaLabel: "Single Sign-On URL",
-                                label: "Single Sign-On <1>SSO_URL</1>",
-                                hint: "Enter identity provider's SAML2 Web Single Sign-On URL value."
+                                label: "Single Sign-On URL",
+                                hint: "Single sign-on URL of the external IdP. This is " +
+                                    "where {{productName}} will send its authentication requests."
                             },
                             IdPEntityId: {
                                 placeholder: "Enter identity provider entity ID",
                                 ariaLabel: "Identity provider entity ID",
-                                label: "Identity provider <1>entityID</1>",
-                                hint: "Enter identity provider's entity identifier value." +
-                                    " This should be a valid <1>URI</1>/<2>URL</2>."
+                                label: "Identity provider entity ID",
+                                hint: "The <1>Issuer</1> value of the SAML2 response from the identity provider you " +
+                                    "are configuring. This value must be a unique string among IdPs" +
+                                    " inside the same tenant. This information should be taken from the" +
+                                    " external IdP."
                             },
                             NameIDType: {
                                 placeholder: "Select identity provider NameIDFormat",
                                 ariaLabel: "Choose NameIDFormat for SAML 2.0 assertion",
-                                label: "Identity provider <1>NameIDFormat</1>",
-                                hint: "Specify the name identifier formats supported by the identity " +
-                                    "provider. Name identifiers are a way for providers to communicate " +
-                                    "with each other regarding a user."
+                                label: "Identity provider NameID format",
+                                hint: "Name ID defines the name identifier formats supported by the external " +
+                                    "IdP. Name identifier is how {{productName}} communicates with" +
+                                    " external IdP regarding a user."
                             },
                             RequestMethod: {
                                 placeholder: "Select HTTP protocol binding",
                                 ariaLabel: "HTTP protocol for SAML 2.0 bindings",
                                 label: "HTTP protocol binding",
-                                hint: "Choose the HTTP binding or decide from incoming request."
+                                hint: "Protocol binding to use when sending requests. HTTP redirect for simple" +
+                                    " requests or HTTP POST if requests are signed, which is recommended."
                             },
                             IsSLORequestAccepted: {
                                 ariaLabel: "Specify whether logout is enabled for IdP",
                                 label: "Accept identity provider logout request",
-                                hint: `Specify whether single logout request from the identity 
-                                provider must be accepted by {{productName}}`
+                                hint: "Specify whether single logout request from the" +
+                                    " IdP must be accepted by {{productName}}."
                             },
                             IsLogoutEnabled: {
                                 ariaLabel: "Specify whether logout is enabled for IdP",
                                 label: "Identity provider logout enabled",
                                 hint: "Specify whether logout is supported by the external "
-                                    + "identity provider."
+                                    + "IdP."
                             },
                             LogoutReqUrl: {
                                 placeholder: "Enter logout URL",
                                 ariaLabel: "Specify SAML 2.0 IdP Logout URL",
-                                label: "IdP logout <1>URL</1>",
-                                hint: "Enter the identity provider's logout URL value" +
-                                    " if it is different from the SSO URL (<1>SSO_URL</1>)"
+                                label: "IdP logout URL",
+                                hint: "Enter the IdP's logout" +
+                                    " URL value if it's different from above."
                             },
                             IsAuthnRespSigned: {
                                 ariaLabel: "Authentication response must be signed always?",
-                                label: "Strictly verify authentication response signature",
+                                label: "Strictly verify authentication response signature info",
                                 hint: "Specifies if SAML2 authentication response from the external" +
-                                    " identity provider must be signed or not."
+                                    " IdP must be signed or not."
                             },
                             IsLogoutReqSigned: {
                                 placeholder: "",
                                 ariaLabel: "Specify whether logout is enabled for IdP",
-                                label: "Enable logout request signing",
-                                hint: "Specify whether SAML logout request to the external identity" +
-                                    " provider must be signed or not."
+                                label: "Logout request signing",
+                                hint: "When enabled {{productName}} will sign the SAML2 logout" +
+                                    " request sent to the external IdP."
                             },
                             ISAuthnReqSigned: {
                                 ariaLabel: "Is authentication request signed?",
-                                label: "Enable authentication request signing",
-                                hint: "Specify whether the SAML authentication request to the external" +
-                                    " identity provider must be signed or not."
+                                label: "Authentication request signing",
+                                hint: "When enabled {{productName}} will sign the SAML2 authentication" +
+                                    " request to the external IdP."
                             },
                             SignatureAlgorithm: {
                                 placeholder: "Select signature algorithm.",
@@ -3158,22 +3165,17 @@ export const console: ConsoleNS = {
                             IncludeProtocolBinding: {
                                 ariaLabel: "Include protocol binding in the request",
                                 label: "Include protocol binding in the request",
-                                hint: "Specifies whether the transport mechanism should " +
-                                    "be included in the SAML request assertion."
+                                hint: "Specifies whether the transport mechanism should be included in the" +
+                                    " small authentication request."
                             },
                             IsUserIdInClaims: {
                                 ariaLabel: "Use Name ID as the user identifier.",
-                                label: {
-                                    option1: "User identifier found among <1>claims</1>",
-                                    option2: "Use <1>NameID</1> as the user identifier"
-                                },
-                                hint: "If you need to specify an attribute from the SAML" +
-                                    " assertion as the User Identifier, " +
-                                    "you can uncheck this option and configure the <1>subject</1> from " +
-                                    "the Attributes section."
+                                label: "Find user ID from attributes",
+                                hint: "To specify an attribute from the SAML 2.0 assertion as the user" +
+                                    " identifier, configure the subject attribute from the attributes section."
                             },
                             commonAuthQueryParams: {
-                                ariaLabel: "SAML request additional query paramters",
+                                ariaLabel: "SAML request additional query parameters",
                                 label: "Additional query parameters"
                             }
                         }
