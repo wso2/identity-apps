@@ -19,6 +19,7 @@
 
 import { FeatureAccessConfigInterface, RouteInterface } from "@wso2is/core/models";
 import { AuthenticateUtils } from "@wso2is/core/utils";
+import { AccessControlConstants } from "../access-control-constants";
 
 /**
  * A class to contain util functions related to access control
@@ -56,12 +57,13 @@ export class AccessControlUtils {
 
             if (feature && feature.enabled) {
                 let shouldShowRoute: boolean = false;
-                for (const [ , value ] of Object.entries(feature?.scopes)) {
-                    if (value && value instanceof Array) {
-                        if (AuthenticateUtils.hasScopes(value, allowedScopes)) {
-                            shouldShowRoute = true;
-                        }
-                    }
+                if (
+                    AuthenticateUtils.hasScopes(feature?.scopes.read, allowedScopes) &&
+                    ((feature?.scopes?.feature &&
+                        AuthenticateUtils.hasScopes(feature?.scopes.feature, allowedScopes)) ||
+                        AuthenticateUtils.hasScopes([AccessControlConstants.FULL_UI_SCOPE], allowedScopes))
+                ) {
+                    shouldShowRoute = true;
                 }
 
                 if (route.showOnSidePanel && shouldShowRoute) {
@@ -69,10 +71,6 @@ export class AccessControlUtils {
 
                     return;
                 }
-            }
-
-            if (route.showOnSidePanel) {
-                authenticatedRoutes.push(route);
             }
 
         });
