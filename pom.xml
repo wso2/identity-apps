@@ -524,6 +524,11 @@
                 <version>${project.version}</version>
                 <type>zip</type>
             </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.extension.identity.authenticator.outbound.totp</groupId>
+                <artifactId>org.wso2.carbon.extension.identity.authenticator.totp.connector</artifactId>
+                <version>${totp.authenticator.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -630,6 +635,7 @@
         <carbon.commons.version>4.7.22</carbon.commons.version>
         <carbon.commons.imp.pkg.version.range>[4.7.0, 5.0.0)</carbon.commons.imp.pkg.version.range>
         <carbon.logging.version>4.4.39</carbon.logging.version>
+        <totp.authenticator.version>2.2.10</totp.authenticator.version>
 
         <carbon.base.imp.pkg.version.range>[1.0.0, 2.0.0)</carbon.base.imp.pkg.version.range>
         <org.wso2.carbon.identity.outbound.auth.oidc>5.1.20</org.wso2.carbon.identity.outbound.auth.oidc>
