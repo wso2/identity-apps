@@ -151,7 +151,6 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
     const backButtonClasses = classNames(
         "back-button",
         {
-            [ "display-flex" ]: action !== undefined,
             "fluid": isLoading
         }
     );
