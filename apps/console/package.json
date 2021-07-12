@@ -18,7 +18,7 @@
         "clean:themes:src": "rimraf src/themes",
         "copy:themes:src": "node scripts/copy-themes-to-source.js",
         "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
-        "postinstall": "node scripts/post-install.js && node src/extensions/scripts/post-install.js",
+        "postinstall": "node scripts/post-install.js",
         "prebuild": "node scripts/pre-build.js",
         "start": "npx run-script-os",
         "start:win32": "..\\..\\node_modules\\.bin\\webpack serve --mode development --inline --hot --open --env NODE_ENV=development",
