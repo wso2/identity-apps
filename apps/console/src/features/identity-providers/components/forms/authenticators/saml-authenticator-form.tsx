@@ -313,7 +313,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 <Grid>
                     <SectionRow>
                         <Field.Checkbox
-                            toggle
                             name="IsSLORequestAccepted"
                             value={ isSLORequestAccepted }
                             ariaLabel={ t(`${ I18N_TARTGET_KEY }.IsSLORequestAccepted.ariaLabel`) }
@@ -338,7 +337,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             value={ isLogoutEnabled }
                             ariaLabel={ t(`${ I18N_TARTGET_KEY }.IsLogoutEnabled.ariaLabel`) }
                             data-testid={ `${ testId }-IsLogoutEnabled-field` }
-                            toggle
                             label={ (
                                 <FormInputLabel htmlFor="IsLogoutEnabled">
                                     { t(`${ I18N_TARTGET_KEY }.IsLogoutEnabled.label`) }
@@ -389,7 +387,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 <Grid>
                     <SectionRow>
                         <Field.Checkbox
-                            toggle
                             required={ false }
                             disabled={ true }
                             name="IsAuthnRespSigned"
@@ -405,7 +402,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                     </SectionRow>
                     <SectionRow>
                         <Field.Checkbox
-                            toggle
                             required={ false }
                             name="IsLogoutReqSigned"
                             value={ isLogoutReqSigned }
@@ -422,7 +418,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                     </SectionRow>
                     <SectionRow>
                         <Field.Checkbox
-                            toggle
                             required={ false }
                             name="ISAuthnReqSigned"
                             value={ isAuthnReqSigned }
@@ -482,7 +477,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 <Grid>
                     <SectionRow>
                         <Field.Checkbox
-                            toggle
                             required={ false }
                             name="IncludeProtocolBinding"
                             value={ includeProtocolBinding }
@@ -499,7 +493,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                     </SectionRow>
                     <SectionRow>
                         <Field.Checkbox
-                            toggle
                             required={ false }
                             name="IsUserIdInClaims"
                             value={ isUserIdInClaims }
