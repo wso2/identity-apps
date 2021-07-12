@@ -182,4 +182,9 @@ export class AccessControlConstants {
      */
     public static readonly SCOPE_DELETE: string = "scope:delete";
 
+    /**
+     * Full console scope
+     */
+    public static readonly FULL_UI_SCOPE: string = "console:full";
+
 }

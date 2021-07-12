@@ -78,4 +78,12 @@ export class AppConstants {
      * @default
      */
     public static readonly CHUNK_LOAD_ERROR_EVENT: string = "chunk_load_error_event";
+
+    /**
+     * The name of the event dispatched when a network error occurs.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly FULL_UI_SCOPE: string = "console:full";
 }
