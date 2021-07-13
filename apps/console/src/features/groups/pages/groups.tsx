@@ -45,6 +45,7 @@ import { deleteGroupById, getGroupList, searchGroupList } from "../api";
 import { GroupList } from "../components";
 import { CreateGroupWizard } from "../components/wizard";
 import { GroupsInterface, SearchGroupInterface } from "../models";
+import { Show, AccessControlConstants } from "@wso2is/access-control";
 
 const GROUPS_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -351,13 +352,15 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             action={
                 (isGroupsListRequestLoading || !(!searchQuery && paginatedGroups?.length <= 0))
                 && (
-                    <PrimaryButton
-                        data-testid="group-mgt-groups-list-add-button"
-                        onClick={ () => setShowWizard(true) }
-                    >
-                        <Icon name="add"/>
-                        { t("console:manage.features.roles.list.buttons.addButton", { type: "Group" }) }
-                    </PrimaryButton>
+                    <Show when={ AccessControlConstants.GROUP_WRITE }>
+                        <PrimaryButton
+                            data-testid="group-mgt-groups-list-add-button"
+                            onClick={ () => setShowWizard(true) }
+                        >
+                            <Icon name="add"/>
+                            { t("console:manage.features.roles.list.buttons.addButton", { type: "Group" }) }
+                        </PrimaryButton>
+                    </Show>
                 )
             }
             title={ t("console:manage.pages.groups.title") }
