@@ -321,16 +321,16 @@ const RolesPage = (): ReactElement => {
             action={
                 (isRoleListFetchRequestLoading || !(!searchQuery && paginatedRoles?.Resources?.length <= 0))
                 && (
-                    <Show when={ AccessControlConstants.GROUP_WRITE }>
-                    <PrimaryButton
-                        data-testid="role-mgt-roles-list-add-button"
-                        onClick={ () => setShowWizard(true) }
-                    >
-                        <Icon
-                            data-testid="role-mgt-roles-list-add-button-icon"
-                            name="add"
-                        />
-                        { t("console:manage.features.roles.list.buttons.addButton", { type: "Role" }) }
+                    <Show when={ AccessControlConstants.ROLE_WRITE }>
+                        <PrimaryButton
+                            data-testid="role-mgt-roles-list-add-button"
+                            onClick={ () => setShowWizard(true) }
+                        >
+                            <Icon
+                                data-testid="role-mgt-roles-list-add-button-icon"
+                                name="add"
+                            />
+                            { t("console:manage.features.roles.list.buttons.addButton", { type: "Role" }) }
                         </PrimaryButton>
                     </Show>
                 )
