@@ -3688,12 +3688,11 @@ export const console: ConsoleNS = {
                                 heading: "Name"
                             },
                             preRequisites: {
-                                configureOAuthApps: "See GitHub's guide on configuring OAuth Apps.",
                                 configureHomePageURL: "Use the following as the <1>HomePage URL</1>.",
+                                configureOAuthApps: "See GitHub's guide on configuring OAuth Apps.",
                                 configureRedirectURL: "Add the following URL as the <1>Authorization callback URL</1>.",
                                 getCredentials: "Before you begin, create an <1>OAuth application</1> " +
-                                    "<3>on GitHub</3>, and obtain a <5>client ID & secret</5>. Use the following " +
-                                    "URL as the <7>Homepage URL</7> & <9>Authorization callback URL</9>.",
+                                    "<3>on GitHub</3>, and obtain a <5>client ID & secret</5>.",
                                 heading: "Prerequisite"
                             },
                             subHeading: "Use the guide below"
@@ -3720,8 +3719,7 @@ export const console: ConsoleNS = {
                                 configureOAuthApps: "See Google's guide on configuring OAuth Apps.",
                                 configureRedirectURL: "Add the following URL as the <1>Authorized Redirect URI</1>.",
                                 getCredentials: "Before you begin, create an <1>OAuth application</1> " +
-                                    "<3>on Google</3>, and obtain a <5>client ID & secret</5>. Use the following " +
-                                    "URL as the <9>Authorized Redirect URI</9>.",
+                                    "<3>on Google</3>, and obtain a <5>client ID & secret</5>.",
                                 heading: "Prerequisite"
                             },
                             subHeading: "Use the guide below"
