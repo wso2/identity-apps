@@ -2875,7 +2875,8 @@ export const console: ConsoleNS = {
                                 label: "Email OTP expiry time",
                                 placeholder: "Enter Email OTP expiry time.",
                                 validations: {
-                                    range: "Email OTP expiry time should be greater than 1 second",
+                                    invalid: "Email OTP expiry time should be an integer.",
+                                    range: "Email OTP expiry time should be between 1 second & 86400 seconds(1 day).",
                                     required: "Email OTP expiry time is a required field."
                                 }
                             },
@@ -2884,6 +2885,7 @@ export const console: ConsoleNS = {
                                 label: "Email OTP token length",
                                 placeholder: "Enter Email OTP token length.",
                                 validations: {
+                                    invalid: "Email OTP token length should be an integer.",
                                     range: "Email OTP token length should be between 4 & 10 characters.",
                                     required: "Email OTP token length is a required field."
                                 }

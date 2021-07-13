@@ -110,6 +110,7 @@ export class IdentityProviderManagementConstants {
      */
     public static readonly EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: {
         EXPIRY_TIME_MAX_LENGTH: number;
+        EXPIRY_TIME_MAX_VALUE: number;
         EXPIRY_TIME_MIN_LENGTH: number;
         EXPIRY_TIME_MIN_VALUE: number;
         OTP_LENGTH_MAX_LENGTH: number;
@@ -119,6 +120,7 @@ export class IdentityProviderManagementConstants {
     } = {
 
         EXPIRY_TIME_MAX_LENGTH: 10000,
+        EXPIRY_TIME_MAX_VALUE: 86400,
         EXPIRY_TIME_MIN_LENGTH: 1,
         EXPIRY_TIME_MIN_VALUE: 1,
         OTP_LENGTH_MAX_LENGTH: 2,

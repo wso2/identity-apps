@@ -19,6 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { Code } from "@wso2is/react-components";
+import { FormValidation } from "@wso2is/validation";
 import isBoolean from "lodash-es/isBoolean";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -236,31 +237,37 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
         };
 
         if (!values.EmailOTP_ExpiryTime) {
+            // Check for required error.
             errors.EmailOTP_ExpiryTime = t("console:develop.features.authenticationProvider.forms" +
                 ".authenticatorSettings.emailOTP.expiryTime.validations.required");
-        } else {
-            // Check if value is within the min & max.
-            if (parseInt(values.EmailOTP_ExpiryTime, 10) < IdentityProviderManagementConstants
-                .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_VALUE) {
-
-                errors.EmailOTP_ExpiryTime = t("console:develop.features.authenticationProvider.forms" +
-                    ".authenticatorSettings.emailOTP.expiryTime.validations.range");
-            }
+        } else if (!FormValidation.isInteger(values.EmailOTP_ExpiryTime as unknown as number)) {
+            // Check for invalid input.
+            errors.EmailOTP_ExpiryTime = t("console:develop.features.authenticationProvider.forms" +
+                ".authenticatorSettings.emailOTP.expiryTime.validations.invalid");
+        } else if ((parseInt(values.EmailOTP_ExpiryTime, 10) < IdentityProviderManagementConstants
+            .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_VALUE)
+        || (parseInt(values.EmailOTP_ExpiryTime, 10) > IdentityProviderManagementConstants
+                .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_VALUE)) {
+            // Check for invalid range.
+            errors.EmailOTP_ExpiryTime = t("console:develop.features.authenticationProvider.forms" +
+                ".authenticatorSettings.emailOTP.expiryTime.validations.range");
         }
 
         if (!values.EmailOTP_OTPLength) {
+            // Check for required error.
             errors.EmailOTP_OTPLength = t("console:develop.features.authenticationProvider.forms" +
                 ".authenticatorSettings.emailOTP.tokenLength.validations.required");
-        } else {
-            // Check if value is within the min & max.
-            if ((parseInt(values.EmailOTP_OTPLength, 10) < IdentityProviderManagementConstants
-                .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.OTP_LENGTH_MIN_LENGTH)
+        } else if (!FormValidation.isInteger(values.EmailOTP_OTPLength as unknown as number)) {
+            // Check for invalid input.
+            errors.EmailOTP_OTPLength = t("console:develop.features.authenticationProvider.forms" +
+                ".authenticatorSettings.emailOTP.tokenLength.validations.invalid");
+        } else if ((parseInt(values.EmailOTP_OTPLength, 10) < IdentityProviderManagementConstants
+                .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.OTP_LENGTH_MIN_VALUE)
             || (parseInt(values.EmailOTP_OTPLength, 10) > IdentityProviderManagementConstants
-                    .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.OTP_LENGTH_MAX_LENGTH)) {
-
-                errors.EmailOTP_OTPLength = t("console:develop.features.authenticationProvider.forms" +
-                    ".authenticatorSettings.emailOTP.tokenLength.validations.range");
-            }
+                .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.OTP_LENGTH_MAX_VALUE)) {
+            // Check for invalid range.
+            errors.EmailOTP_OTPLength = t("console:develop.features.authenticationProvider.forms" +
+                ".authenticatorSettings.emailOTP.tokenLength.validations.range");
         }
 
         return errors;
