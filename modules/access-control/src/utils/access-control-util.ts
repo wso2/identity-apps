@@ -26,9 +26,6 @@ import { AccessControlConstants } from "../access-control-constants";
  */
 export class AccessControlUtils {
 
-    public static readonly MANAGE_GETTING_STARTED_ID: string = "manageGettingStarted";
-    public static readonly DEVELOP_GETTING_STARTED_ID: string = "developerGettingStarted";
-
     /**
      * Util method to filter base routes based on user scopes retrieved via the token call.
      *
@@ -48,19 +45,13 @@ export class AccessControlUtils {
         routeArray.map((route: RouteInterface) => {
             const feature: FeatureAccessConfigInterface = featureConfig[route.id];
 
-            if (!feature
-                && (route.id === this.MANAGE_GETTING_STARTED_ID || route.id === this.DEVELOP_GETTING_STARTED_ID)) {
-                    authenticatedRoutes.push(route);
-
-                    return;
-            }
-
             if (feature && feature.enabled) {
                 let shouldShowRoute: boolean = false;
                 if (
                     AuthenticateUtils.hasScopes(feature?.scopes.read, allowedScopes) &&
-                    ((feature?.scopes?.feature &&
-                        AuthenticateUtils.hasScopes(feature?.scopes.feature, allowedScopes)) ||
+                    (!feature?.scopes?.feature ||
+                        (feature?.scopes?.feature &&
+                            AuthenticateUtils.hasScopes(feature?.scopes.feature, allowedScopes)) ||
                         AuthenticateUtils.hasScopes([AccessControlConstants.FULL_UI_SCOPE], allowedScopes))
                 ) {
                     shouldShowRoute = true;
