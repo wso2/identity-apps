@@ -333,6 +333,7 @@ export class ApplicationManagementConstants {
         IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID,
         IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
         IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
         IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID
     ];
 

@@ -264,6 +264,7 @@ export class IdentityProviderManagementConstants {
     public static readonly X509_AUTHENTICATOR: string = "x509CertificateAuthenticator";
     public static readonly SESSION_EXECUTOR_AUTHENTICATOR: string = "SessionExecutor";
     public static readonly TOTP_AUTHENTICATOR: string = "totp";
+    public static readonly EMAIL_OTP_AUTHENTICATOR: string = "email-otp-authenticator";
     public static readonly FIDO_AUTHENTICATOR: string = "FIDOAuthenticator";
     public static readonly BASIC_AUTHENTICATOR = "BasicAuthenticator";
     public static readonly IDENTIFIER_FIRST_AUTHENTICATOR = "IdentifierExecutor";
