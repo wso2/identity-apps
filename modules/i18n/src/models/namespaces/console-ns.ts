@@ -1112,6 +1112,7 @@ export interface ConsoleNS {
                                 label: string;
                                 placeholder: string;
                                 validations: {
+                                    range: string;
                                     required: string;
                                 };
                             };
@@ -1120,6 +1121,7 @@ export interface ConsoleNS {
                                 label: string;
                                 placeholder: string;
                                 validations: {
+                                    range: string;
                                     required: string;
                                 };
                             };
