@@ -26,6 +26,9 @@ import { AccessControlConstants } from "../access-control-constants";
  */
 export class AccessControlUtils {
 
+    public static readonly MANAGE_GETTING_STARTED_ID: string = "manageGettingStarted";
+    public static readonly DEVELOP_GETTING_STARTED_ID: string = "developerGettingStarted";
+
     /**
      * Util method to filter base routes based on user scopes retrieved via the token call.
      *
