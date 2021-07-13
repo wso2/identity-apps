@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { getUserStoreList } from "@wso2is/core/api";
 import { AlertInterface, AlertLevels, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -45,7 +46,6 @@ import { deleteGroupById, getGroupList, searchGroupList } from "../api";
 import { GroupList } from "../components";
 import { CreateGroupWizard } from "../components/wizard";
 import { GroupsInterface, SearchGroupInterface } from "../models";
-import { Show, AccessControlConstants } from "@wso2is/access-control";
 
 const GROUPS_SORTING_OPTIONS: DropdownItemProps[] = [
     {
