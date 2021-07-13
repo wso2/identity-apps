@@ -173,8 +173,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                     .map((key) => ({ key, value: manualOverride[key] })) as any
             ]
         });
-        // FIXME: IsSLORequestAccepted is not updating from the API. Even though
-        //        we send the value to false or true.
         onSubmit(authn);
     };
 
