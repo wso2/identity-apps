@@ -261,12 +261,12 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                     hasLength(IDENTITY_PROVIDER_ENTITY_ID_LENGTH)
                 ) }
                 hint={ (
-                    <Trans i18nKey={ `${ I18N_TARGET_KEY }.IdPEntityId.hint` }>
+                    <>
                         This is the <Code>&lt;saml2:Issuer&gt;</Code> value specified in
                         the SAML responses issued by the external IdP. Also, this needs to
                         be a unique value to identify the external IdP within your
                         organization.
-                    </Trans>
+                    </>
                 ) }
             />
 
