@@ -164,16 +164,16 @@
                     ]
                 }
             },
-            "generalConfigurations": {
+            "governanceConnectors": {
                 "enabled": true,
                 "disabledFeatures": [],
                 "scopes": {
                     "create": [],
                     "read": [
-                        "internal_idp_view"
+                        "internal_governance_view"
                     ],
                     "update": [
-                        "internal_idp_update"
+                        "internal_governance_update"
                     ],
                     "delete": []
                 }

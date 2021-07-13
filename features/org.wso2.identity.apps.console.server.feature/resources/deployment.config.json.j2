@@ -277,18 +277,18 @@
                     {% endif %}
                 }
             },
-            "generalConfigurations": {
+            "governanceConnectors": {
                 "disabledFeatures": [
-                    {% if console.general_configurations.disabled_features is defined %}
-                    {% for feature in console.general_configurations.disabled_features %}
+                    {% if console.governance_connectors.disabled_features is defined %}
+                    {% for feature in console.governance_connectors.disabled_features %}
                     "{{ feature }}"{{ "," if not loop.last }}
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {{ console.general_configurations.enabled }},
+                "enabled": {{ console.governance_connectors.enabled }},
                 "scopes": {
-                    {% if console.general_configurations.scopes is defined %}
-                    {% for operation, scopes in console.general_configurations.scopes.items() %}
+                    {% if console.governance_connectors.scopes is defined %}
+                    {% for operation, scopes in console.governance_connectors.scopes.items() %}
                     "{{ operation }}": [
                         {% for scope in scopes %}
                             "{{ scope }}"{{ "," if not loop.last }}
