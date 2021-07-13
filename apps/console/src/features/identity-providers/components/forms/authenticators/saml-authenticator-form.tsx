@@ -22,7 +22,7 @@ import { Code, FormInputLabel, FormSection } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Grid, SemanticWIDTHS } from "semantic-ui-react";
+import { Divider, Grid, SemanticWIDTHS } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface } from "../../../../core";
 import {
     CommonAuthenticatorFormInitialValuesInterface,
@@ -304,6 +304,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 validate={ required }
                 hint={ t(`${ I18N_TARGET_KEY }.RequestMethod.hint`) }
             />
+            <div />
 
             <FormSection heading="Single Logout">
                 <Grid>
@@ -370,6 +371,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                         />
                     </SectionRow>
                 </Grid>
+                <Divider hidden/>
             </FormSection>
 
             <FormSection heading="Request & Response Signing">
@@ -464,6 +466,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                         />
                     </SectionRow>
                 </Grid>
+                <Divider hidden/>
             </FormSection>
 
             <FormSection heading="Advanced">
@@ -509,6 +512,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                         />
                     </SectionRow>
                 </Grid>
+                <Divider hidden/>
             </FormSection>
 
             <Field.Button
