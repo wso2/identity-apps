@@ -17,6 +17,7 @@
  */
 
 import { RoleConstants } from "@wso2is/core/constants";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     LoadableComponentInterface,
     RoleListInterface,
@@ -38,8 +39,16 @@ import {
 } from "@wso2is/react-components";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import { AppConstants, UIConstants, getEmptyPlaceholderIllustrations, history } from "../../core";
+import {
+    AppConstants,
+    AppState,
+    FeatureConfigInterface,
+    UIConstants,
+    getEmptyPlaceholderIllustrations,
+    history
+} from "../../core";
 import { APPLICATION_DOMAIN } from "../constants";
 
 interface RoleListProps extends LoadableComponentInterface, TestableComponentInterface {
@@ -128,6 +137,9 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
     } = props;
 
     const { t } = useTranslation();
+
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ currentDeletedRole, setCurrentDeletedRole ] = useState<RolesInterface>();
@@ -319,6 +331,8 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
 
         return [
             {
+                hidden: () =>
+                    !hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes),
                 icon: (): SemanticICONS => "pencil alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void =>
                     handleRoleEdit(role?.id),
@@ -328,7 +342,8 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
             },
             {
                 hidden: (role: RolesInterface) => (role?.displayName === RoleConstants.ADMIN_ROLE ||
-                    role?.displayName === RoleConstants.ADMIN_GROUP),
+                    role?.displayName === RoleConstants.ADMIN_GROUP)
+                    || !hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.delete, allowedScopes),
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void => {
                     setCurrentDeletedRole(role);
