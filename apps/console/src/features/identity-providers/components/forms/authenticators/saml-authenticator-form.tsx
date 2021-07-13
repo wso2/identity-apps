@@ -207,11 +207,12 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                     hasLength(SERVICE_PROVIDER_ENTITY_ID_LENGTH)
                 ) }
                 hint={ (
-                    <Trans i18nKey={ `${ I18N_TARGET_KEY }.SPEntityId.hint` }>
-                        A globally unique name for identity providers under Asgardeo. This can be any value but
-                        when you configure a service provider in the external identity provider (IdP)
-                        you should give the same value as the service provider <Code>entityId</Code>
-                    </Trans>
+                    <>
+                        This value will be used as the <Code>&lt;saml2:Issuer&gt;</Code> in
+                        the SAML requests initiated from { config.ui.productName } to external
+                        Identity Provider (IdP). You need to provide a unique value
+                        as the service provider <Code>entityId</Code>.
+                    </>
                 ) }
             />
 
@@ -261,10 +262,10 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 ) }
                 hint={ (
                     <Trans i18nKey={ `${ I18N_TARGET_KEY }.IdPEntityId.hint` }>
-                        The <Code>&lt;Issuer&gt;</Code> value of the SAML2 response from the
-                        identity provider you are configuring. This value must be a unique string
-                        among IdPs inside the same tenant. This information should be
-                        taken from the external IdP.
+                        This is the <Code>&lt;saml2:Issuer&gt;</Code> value specified in
+                        the SAML responses issued by the external IdP. Also, this needs to
+                        be a unique value to identify the external IdP within your
+                        organization.
                     </Trans>
                 ) }
             />

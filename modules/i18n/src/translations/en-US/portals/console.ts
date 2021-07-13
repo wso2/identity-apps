@@ -3078,10 +3078,10 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter service provider entity ID",
                                 ariaLabel: "Service provider entity ID",
                                 label: "Service provider entity ID",
-                                hint: "A globally unique name for identity providers under Asgardeo." +
-                                    " This can be any value but" +
-                                    " when you configure a service provider in the external identity provider (IdP)" +
-                                    " you should give the same value as the service provider <1>entityId</1>."
+                                hint: "This value will be used as the <1><saml2:Issuer></1> in the" +
+                                    " SAML requests initiated from {{productName}} to" +
+                                    " external Identity Provider (IdP). You need to provide" +
+                                    " a unique value as the Service Provider (SP) entity ID."
                             },
                             SSOUrl: {
                                 placeholder: "https://ENTERPRISE_IDP/samlsso",
@@ -3094,10 +3094,9 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter identity provider entity ID",
                                 ariaLabel: "Identity provider entity ID",
                                 label: "Identity provider entity ID",
-                                hint: "The <1>Issuer</1> value of the SAML2 response from the identity provider you " +
-                                    "are configuring. This value must be a unique string among IdPs" +
-                                    " inside the same tenant. This information should be taken from the" +
-                                    " external IdP."
+                                hint: "This is the <1>&lt;saml2:Issuer&gt;</1> value specified in" +
+                                    " the SAML responses issued by the external IdP. Also, this needs to" +
+                                    " be a unique value to identify the external IdP within your organization."
                             },
                             NameIDType: {
                                 placeholder: "Select identity provider NameIDFormat",
