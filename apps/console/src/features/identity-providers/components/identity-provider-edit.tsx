@@ -130,6 +130,13 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
     const GeneralIdentityProviderSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <GeneralSettings
+                hideIdPLogoEditField={
+                    identityProviderConfig
+                        .utils
+                        .hideLogoInputFieldInIdPGeneralSettingsForm(
+                            identityProvider.federatedAuthenticators.defaultAuthenticatorId
+                        )
+                }
                 editingIDP={ identityProvider }
                 description={ identityProvider.description }
                 isEnabled={ identityProvider.isEnabled }

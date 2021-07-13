@@ -82,6 +82,10 @@ interface GeneralSettingsInterface extends TestableComponentInterface {
      * Specifies if the component should only be read-only.
      */
     isReadOnly: boolean;
+    /**
+     * @see {@link GeneralDetailsFormPopsInterface}
+     */
+    hideIdPLogoEditField?: boolean;
 }
 
 /**
@@ -104,6 +108,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         onDelete,
         onUpdate,
         isReadOnly,
+        hideIdPLogoEditField,
         [ "data-testid" ]: testId
     } = props;
 
@@ -266,6 +271,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
             ? (
                 <>
                     <GeneralDetailsForm
+                        hideIdPLogoEditField={ hideIdPLogoEditField }
                         name={ name }
                         editingIDP={ editingIDP }
                         description={ description }
@@ -412,5 +418,6 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
  * Default proptypes for the IDP general settings component.
  */
 GeneralSettings.defaultProps = {
-    "data-testid": "idp-edit-general-settings"
+    "data-testid": "idp-edit-general-settings",
+    hideIdPLogoEditField: false
 };
