@@ -27,7 +27,6 @@ import { AppConstants } from "../../constants";
 import { commonConfig } from "../../extensions";
 import { FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
-import { AdvancedSearchWithBasicFilters } from "../shared";
 
 /**
  * Prop types for the overview edit component.
@@ -35,13 +34,6 @@ import { AdvancedSearchWithBasicFilters } from "../shared";
 interface OverviewPropsInterface extends TestableComponentInterface {
     userSource?: string;
     isFederatedUser?: boolean;
-    enableThreeWidgetLayout?: boolean;
-}
-
-/**
- * Prop types for the overview edit component.
- */
-interface OverviewPropsInterface extends TestableComponentInterface {
     enableThreeWidgetLayout?: boolean;
 }
 
@@ -55,7 +47,9 @@ export const Overview: FunctionComponent<OverviewPropsInterface> = (
 ): ReactElement => {
 
     const {
-        enableThreeWidgetLayout
+        enableThreeWidgetLayout,
+        isFederatedUser,
+        userSource
     } = props;
 
     const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
@@ -129,33 +123,6 @@ export const Overview: FunctionComponent<OverviewPropsInterface> = (
         );
     };
 
-
-    return (
-        <Grid className="overview-page">
-            <Divider hidden />
-            <Grid.Row>
-                {
-                    enableThreeWidgetLayout ? (
-                            <>
-                                { accountStatus(9,16) }
-                                { accountSecurity(7, 16) }
-                                { accountActivity(16, 16) }
-                            </>
-                        ) :
-                        (
-                            <>
-                                { accountStatus(9,16) }
-                                { accountActivity(7, 16) }
-                                { accountSecurity(8, 16) }
-                                { consents(8, 16) }
-                            </>
-                        )
-                }
-
-            </>
-        );
-    };
-
     const profileStatus = (widthComputer, widthMobile): React.ReactElement => {
         return (
             <>
@@ -175,7 +142,6 @@ export const Overview: FunctionComponent<OverviewPropsInterface> = (
         );
     };
 
-
     return (
         <Grid className="overview-page">
             <Divider hidden />
@@ -183,21 +149,20 @@ export const Overview: FunctionComponent<OverviewPropsInterface> = (
                 {
                     !isFederatedUser ? (
                         enableThreeWidgetLayout ? (
-                            <>
-                                { accountStatus(9,16) }
-                                { accountSecurity(7, 16) }
-                                { accountActivity(16, 16) }
-                            </>
-
-                        ) :
-                        (
-                            <>
-                                { accountStatus(9,16) }
-                                { accountActivity(7, 16) }
-                                { accountSecurity(8, 16) }
-                                { consents(8, 16) }
-                            </>
-                        )
+                                <>
+                                    { accountStatus(9,16) }
+                                    { accountSecurity(7, 16) }
+                                    { accountActivity(16, 16) }
+                                </>
+                            ) :
+                            (
+                                <>
+                                    { accountStatus(9,16) }
+                                    { accountActivity(7, 16) }
+                                    { accountSecurity(8, 16) }
+                                    { consents(8, 16) }
+                                </>
+                            )
                     ) :
                     (
                         <>

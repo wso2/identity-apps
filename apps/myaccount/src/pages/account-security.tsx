@@ -18,7 +18,9 @@
 
 import { ProfileConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, {
+    FunctionComponent,
     ReactElement,
     useEffect,
     useRef, useState
@@ -35,19 +37,32 @@ import {
     MultiFactorAuthentication,
     UserSessionsComponent
 } from "../components";
-import { CreatePassword } from "../components/create-password/create-password";
 import { AppConstants, CommonConstants } from "../constants";
+import { commonConfig } from "../extensions";
 import { InnerPageLayout } from "../layouts";
 import { AlertInterface, AuthStateInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 import { addAlert } from "../store/actions";
 
 /**
+ * Prop types for the Account Security page.
+ */
+interface AccountSecurityPagePropsInterface extends TestableComponentInterface, RouteProps {
+    enableNonLocalCredentialUserView?: boolean;
+}
+/**
  * Account security page.
  *
  * @return {React.ReactElement}
  */
-const AccountSecurityPage = (props: RouteProps): ReactElement => {
+const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>= (
+    props: AccountSecurityPagePropsInterface
+): ReactElement => {
+
+    const {
+        enableNonLocalCredentialUserView
+    } = props;
+
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
@@ -55,7 +70,7 @@ const AccountSecurityPage = (props: RouteProps): ReactElement => {
     const disableMFAforSuperTenantUser: boolean = useSelector((state: AppState) => state?.config?.ui?.disableMFAforSuperTenantUser);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
-    const [ isFederatedUser, setIsFederatedUser ] = useState<boolean>(false);
+    const [ isNonLocalCredentialUser, setIsNonLocalCredentialUser ] = useState<boolean>(false);
 
     const consentControl = useRef<HTMLDivElement>(null);
     const accountSecurity = useRef<HTMLDivElement>(null);
@@ -91,9 +106,13 @@ const AccountSecurityPage = (props: RouteProps): ReactElement => {
      * Checks if the user is a user without local credentials.
      */
     useEffect(() => {
+        if (!enableNonLocalCredentialUserView) {
+            return;
+        }
+
         if (profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
-            [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_ACCOUNT_TYPE")]) {
-            setIsFederatedUser(true);
+            [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_ACCOUNT_TYPE")] === "FEDERATED") {
+            setIsNonLocalCredentialUser(true);
         }
     }, [profileDetails?.profileInfo]);
 
@@ -111,7 +130,7 @@ const AccountSecurityPage = (props: RouteProps): ReactElement => {
             pageDescription={ t("myAccount:pages.security.subTitle") }
         >
             <Grid>
-                { !isReadOnlyUser && !isFederatedUser &&
+                { !isReadOnlyUser && !isNonLocalCredentialUser &&
                     hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
                     isFeatureEnabled(
                         accessConfig?.security,
@@ -124,7 +143,7 @@ const AccountSecurityPage = (props: RouteProps): ReactElement => {
                         </Grid.Row>
                     ) : null }
                 { /* Create password section temporarily commented until feature is planned. */ }
-                { /*{ !isReadOnlyUser && isFederatedUser &&*/ }
+                { /*{ !isReadOnlyUser && isNonLocalCredentialUser &&*/ }
                 { /*    hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&*/ }
                 { /*    isFeatureEnabled(*/ }
                 { /*        accessConfig?.security,*/ }
@@ -136,7 +155,7 @@ const AccountSecurityPage = (props: RouteProps): ReactElement => {
                 { /*            </Grid.Column>*/ }
                 { /*        </Grid.Row>*/ }
                 { /*    ) : null }*/ }
-                { !isReadOnlyUser && !isFederatedUser &&
+                { !isReadOnlyUser && !isNonLocalCredentialUser &&
                     hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
                     isFeatureEnabled(
                         accessConfig?.security,
@@ -217,6 +236,13 @@ const AccountSecurityPage = (props: RouteProps): ReactElement => {
             </Grid>
         </InnerPageLayout>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+AccountSecurityPage.defaultProps = {
+    enableNonLocalCredentialUserView: commonConfig.NonLocalCredentialUser.enableNonLocalCredentialUserView
 };
 
 /**

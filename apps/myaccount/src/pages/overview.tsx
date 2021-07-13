@@ -17,21 +17,36 @@
  */
 
 import { ProfileConstants } from "@wso2is/core/constants";
-import React, { ReactElement, useEffect, useState } from "react";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Overview } from "../components";
+import { commonConfig } from "../extensions";
 import { resolveUserProfileName } from "../helpers";
 import { InnerPageLayout } from "../layouts";
 import { AuthStateInterface } from "../models";
 import { AppState } from "../store";
 
 /**
+ * Prop types for the overview page.
+ */
+interface OverviewPagePropsInterface extends TestableComponentInterface {
+    enableNonLocalCredentialUserView?: boolean;
+}
+
+/**
  * Overview page.
  *
  * @return {React.ReactElement}
  */
-const OverviewPage = (): ReactElement => {
+const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
+    props: OverviewPagePropsInterface
+): ReactElement => {
+
+    const {
+        enableNonLocalCredentialUserView
+    } = props;
     const { t } = useTranslation();
     const isProfileInfoLoading: boolean = useSelector( (state: AppState) => state.loaders.isProfileInfoLoading);
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
@@ -51,8 +66,12 @@ const OverviewPage = (): ReactElement => {
      * Checks if the user is a user without local credentials.
      */
     useEffect(() => {
+        if (!enableNonLocalCredentialUserView) {
+            return;
+        }
+
         if (profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
-            [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_ACCOUNT_TYPE")]) {
+            [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_ACCOUNT_TYPE")] === "FEDERATED") {
             setIsFederatedUser(true);
         }
 
@@ -61,7 +80,6 @@ const OverviewPage = (): ReactElement => {
             setUserSource(profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
                 [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_SOURCE")]);
         }
-
     }, [profileDetails?.profileInfo]);
 
     return (
@@ -83,11 +101,24 @@ const OverviewPage = (): ReactElement => {
             { /* Loads overview component only when user info is loaded.
                 Loads overview component based on user credential type (local/non-local).*/ }
             { isProfileInfoLoading == false &&
-                <Overview isFederatedUser={ isFederatedUser }/>
+                <Overview
+                    isFederatedUser={ isFederatedUser }
+                    userSource={ userSource }
+
+                />
             }
         </InnerPageLayout>
     );
 };
+
+/**
+ * Default properties for the {@link OverviewPage} component.
+ * See type definitions in {@link OverviewPage}
+ */
+OverviewPage.defaultProps = {
+    enableNonLocalCredentialUserView: commonConfig.NonLocalCredentialUser.enableNonLocalCredentialUserView
+};
+
 
 /**
  * A default export was added to support React.lazy.

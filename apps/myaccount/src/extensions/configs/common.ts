@@ -24,5 +24,20 @@ export const commonConfig: CommonConfig = {
     },
     OverviewPage: {
         enableThreeWidgetLayout: false
+    },
+    NonLocalCredentialUser: {
+        enableNonLocalCredentialUserView: false
+    },
+    AccountSecurityPage: {
+        AccountRecovery: {
+            EmailRecovery: {
+                enableEditEmail: true
+            }
+        }
+    },
+    PersonalInfoPage: {
+        ExternalLogins: {
+            disableExternalLoginsOnEmpty: true
+        }
     }
 };
