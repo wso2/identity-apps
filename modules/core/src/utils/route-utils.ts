@@ -91,6 +91,7 @@ export class RouteUtils {
                     return false;
                 }
 
+                // Ideally, the read scope should be available if the UI resource scope is available.
                 if (hasRequiredScopes(feature, feature?.scopes?.read, allowedScopes)) {
                     return handleRouteEnabled();
                 }
