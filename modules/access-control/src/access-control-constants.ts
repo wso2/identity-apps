@@ -133,6 +133,31 @@ export class AccessControlConstants {
     public static readonly GROUP_DELETE: string = "group:delete";
 
     /**
+     * Role feature permission
+     */
+    public static readonly ROLE: string = "role";
+
+    /**
+     * Role read permission
+     */
+    public static readonly ROLE_READ: string = "role:read";
+
+    /**
+     * Role write permission
+     */
+    public static readonly ROLE_WRITE: string = "role:write";
+
+    /**
+     * Role edit permission
+     */
+    public static readonly ROLE_EDIT: string = "role:edit";
+
+    /**
+     * Role delete permission
+     */
+    public static readonly ROLE_DELETE: string = "role:delete";
+
+    /**
      * Attribute feature permission
      */
     public static readonly ATTRIBUTE: string = "attribute";
