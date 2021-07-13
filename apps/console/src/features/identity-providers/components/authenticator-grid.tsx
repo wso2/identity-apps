@@ -312,31 +312,6 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
         onItemClick && onItemClick(e, authenticator);
     };
 
-    /**
-     * Resolve tags for an IDP.
-     * `tags` appear inside the `federatedAuthenticators.authenticators` array. Hence, we need to iterate
-     * and find out the default authenticator and extract the tags.
-     *
-     * @param {FederatedAuthenticatorListResponseInterface} federatedAuthenticators - Federated authenticators.
-     *
-     * @return {string[]}
-     */
-    const resolveIDPTags = (federatedAuthenticators: FederatedAuthenticatorListResponseInterface): string[] => {
-        
-        if (!federatedAuthenticators?.defaultAuthenticatorId
-            || !Array.isArray(federatedAuthenticators.authenticators)) {
-
-            return [];
-        }
-        
-        const found: FederatedAuthenticatorListItemInterface = federatedAuthenticators.authenticators
-            .find((authenticator: FederatedAuthenticatorListItemInterface) => {
-                return authenticator.authenticatorId === federatedAuthenticators.defaultAuthenticatorId;
-            });
-
-        return Array.isArray(found.tags) ? found.tags : [];
-    };
-
     return (
         <Fragment>
             <ResourceGrid
@@ -412,8 +387,8 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                     }
                                     tags={
                                         isIdP
-                                            ? resolveIDPTags((authenticator as IdentityProviderInterface)
-                                                .federatedAuthenticators)
+                                            ? IdentityProviderManagementUtils.resolveIDPTags(
+                                                (authenticator as IdentityProviderInterface).federatedAuthenticators)
                                             : (authenticator as AuthenticatorInterface).tags
                                     }
                                     data-testid={ `${ testId }-${ authenticator.name }` }

@@ -32,6 +32,8 @@ import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorMeta } from "../meta";
 import {
     FederatedAuthenticatorInterface,
+    FederatedAuthenticatorListItemInterface,
+    FederatedAuthenticatorListResponseInterface,
     GenericAuthenticatorInterface,
     IdentityProviderInterface,
     IdentityProviderListResponseInterface,
@@ -382,5 +384,30 @@ export class IdentityProviderManagementUtils {
         }
 
         return query.trim();
+    }
+
+    /**
+     * Resolve tags for an IDP.
+     * `tags` appear inside the `federatedAuthenticators.authenticators` array. Hence, we need to iterate
+     * and find out the default authenticator and extract the tags.
+     *
+     * @param {FederatedAuthenticatorListResponseInterface} federatedAuthenticators - Federated authenticators.
+     *
+     * @return {string[]}
+     */
+    public static resolveIDPTags(federatedAuthenticators: FederatedAuthenticatorListResponseInterface): string[] {
+
+        if (!federatedAuthenticators?.defaultAuthenticatorId
+            || !Array.isArray(federatedAuthenticators.authenticators)) {
+
+            return [];
+        }
+
+        const found: FederatedAuthenticatorListItemInterface = federatedAuthenticators.authenticators
+            .find((authenticator: FederatedAuthenticatorListItemInterface) => {
+                return authenticator.authenticatorId === federatedAuthenticators.defaultAuthenticatorId;
+            });
+
+        return Array.isArray(found.tags) ? found.tags : [];
     }
 }
