@@ -87,6 +87,7 @@ export interface MyAccountNS {
                 descriptions: {
                     add: string;
                     update: string;
+                    view: string;
                 };
                 forms: {
                     emailResetForm: {
@@ -417,6 +418,11 @@ export interface MyAccountNS {
                         update: string;
                     };
                     description: string;
+                    header: string;
+                };
+                profileStatus: {
+                    completionPercentage: string;
+                    userSourceText: string;
                     header: string;
                 };
                 accountStatus: {
@@ -810,6 +816,13 @@ export interface MyAccountNS {
         changePassword: {
             actionTitles: {
                 change: string;
+            };
+            description: string;
+            heading: string;
+        };
+        createPassword: {
+            actionTitles: {
+                create: string;
             };
             description: string;
             heading: string;

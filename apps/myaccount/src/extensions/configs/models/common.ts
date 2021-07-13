@@ -23,4 +23,22 @@ export interface CommonConfig {
     OverviewPage: {
         enableThreeWidgetLayout: boolean;
     };
+    NonLocalCredentialUser: {
+        enableNonLocalCredentialUserView: boolean;
+    };
+    AccountSecurityPage: {
+        AccountRecovery: {
+            EmailRecovery: {
+                enableEditEmail: boolean;
+            };
+        }
+    };
+    PersonalInfoPage: {
+        ExternalLogins: {
+            disableExternalLoginsOnEmpty: boolean;
+        }
+    }
+
+
+
 }

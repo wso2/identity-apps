@@ -38,7 +38,7 @@ import { AppState } from "../store";
  */
 interface InnerPageLayoutProps {
     children?: React.ReactNode;
-    pageTitle: string;
+    pageTitle: React.ReactNode;
     pageDescription?: string;
     pageTitleTextAlign?: "left" | "center" | "right" | "justified";
 }

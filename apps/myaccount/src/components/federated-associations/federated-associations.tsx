@@ -16,17 +16,21 @@
  * under the License.
  */
 
+import { ProfileConstants } from "@wso2is/core/constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Button, Grid, Icon, List, Modal, Popup } from "semantic-ui-react";
 import { deleteFederatedAssociation, getFederatedAssociations } from "../../api/federated-associations";
 import { getSettingsSectionIcons } from "../../configs";
 import {
     AlertInterface,
-    AlertLevels
+    AlertLevels, AuthStateInterface
 } from "../../models";
 import { FederatedAssociation } from "../../models/federated-associations";
+import { AppState } from "../../store";
 import { SettingsSection, UserAvatar } from "../shared";
 
 /**
@@ -35,6 +39,8 @@ import { SettingsSection, UserAvatar } from "../shared";
  */
 interface FederatedAssociationsPropsInterface extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
+    disableExternalLoginsOnEmpty?: boolean;
+    enableNonLocalCredentialUserView?: boolean;
 }
 
 /**
@@ -45,12 +51,33 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
     props: FederatedAssociationsPropsInterface
 ): React.ReactElement => {
 
-    const { onAlertFired, ["data-testid"]: testId } = props;
+    const {
+        onAlertFired,
+        disableExternalLoginsOnEmpty,
+        enableNonLocalCredentialUserView,
+        ["data-testid"]: testId
+    } = props;
 
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [id, setId] = useState(null);
     const { t } = useTranslation();
     const [federatedAssociations, setFederatedAssociations] = useState<FederatedAssociation[]>([]);
+    const [showExternalLogins, setShowExternalLogins] = useState<boolean>(true);
+    const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
+    const [ isNonLocalCredentialUser, setIsNonLocalCredentialUser ] = useState<boolean>(false);
+
+    /**
+     * Checks if the user is a user without local credentials.
+     */
+    useEffect(() => {
+        if (!enableNonLocalCredentialUserView) {
+            return;
+        }
+        if (profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
+            [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_ACCOUNT_TYPE")]) {
+            setIsNonLocalCredentialUser(true);
+        }
+    }, [profileDetails?.profileInfo]);
 
     /**
      * This calls the `getFederatedAssociations` api call
@@ -83,6 +110,17 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
     useEffect(() => {
         getFederatedAssociationsList();
     }, []);
+
+    /**
+     *
+     */
+    useEffect(() => {
+        if (disableExternalLoginsOnEmpty) {
+            if (!federatedAssociations) {
+                setShowExternalLogins(false);
+            }
+        }
+    }, [federatedAssociations]);
 
     /**
      * This function calls the `deleteFederatedAssociation` api call
@@ -190,28 +228,30 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
                                                     }
                                                 </List.Description>
                                             </Grid.Column>
-                                            <Grid.Column width={ 5 } className="last-column">
-                                                <List.Content floated="right">
-                                                    <Popup
-                                                        trigger={ (
-                                                            <Icon
-                                                                link
-                                                                className="list-icon"
-                                                                size="small"
-                                                                color="red"
-                                                                name="trash alternate outline"
-                                                                onClick={ () => {
-                                                                    setId(federatedAssociation.id);
-                                                                    setConfirmDelete(true);
-                                                                } }
-                                                            />
-                                                        ) }
-                                                        inverted
-                                                        position="top center"
-                                                        content={ t("common:remove") }
-                                                    />
-                                                </List.Content>
-                                            </Grid.Column>
+                                            { !enableNonLocalCredentialUserView &&
+                                                <Grid.Column width={ 5 } className="last-column">
+                                                    <List.Content floated="right">
+                                                        <Popup
+                                                            trigger={ (
+                                                                <Icon
+                                                                    link
+                                                                    className="list-icon"
+                                                                    size="small"
+                                                                    color="red"
+                                                                    name="trash alternate outline"
+                                                                    onClick={ () => {
+                                                                        setId(federatedAssociation.id);
+                                                                        setConfirmDelete(true);
+                                                                    } }
+                                                                />
+                                                            ) }
+                                                            inverted
+                                                            position="top center"
+                                                            content={ t("common:remove") }
+                                                        />
+                                                    </List.Content>
+                                                </Grid.Column>
+                                            }
                                         </Grid.Row>
                                     </Grid>
                                 </List.Item>
@@ -224,7 +264,7 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
     };
 
     return (
-        federatedAssociations.length > 0 &&
+        showExternalLogins &&
             <SettingsSection
                 data-testid={ `${testId}-settings-section` }
                 description={ t("myAccount:sections.federatedAssociations.description") }

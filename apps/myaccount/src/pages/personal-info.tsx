@@ -17,23 +17,38 @@
  */
 
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
-import React, { ReactElement } from "react";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { FederatedAssociations, LinkedAccounts, Profile, ProfileExport } from "../components";
 import { AppConstants } from "../constants";
+import { commonConfig } from "../extensions";
 import { InnerPageLayout } from "../layouts";
 import { AlertInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 import { addAlert } from "../store/actions";
 
 /**
+ * Prop types for the basic details component.
+ * Also see {@link PersonalInfoPage.defaultProps}
+ */
+interface PersonalInfoPagePropsInterface extends TestableComponentInterface {
+    enableNonLocalCredentialUserView?: boolean;
+}
+
+/**
  * Personal Info page.
  *
  * @return {React.ReactElement}
  */
-const PersonalInfoPage = (): ReactElement => {
+const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
+    props: PersonalInfoPagePropsInterface
+): ReactElement => {
+    const {
+        enableNonLocalCredentialUserView
+    } = props;
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
@@ -69,8 +84,8 @@ const PersonalInfoPage = (): ReactElement => {
                     && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 }>
-
                                 <Profile
+                                    enableNonLocalCredentialUserView={ enableNonLocalCredentialUserView }
                                     featureConfig={ accessConfig }
                                     onAlertFired={ handleAlerts }
                                 />
@@ -99,7 +114,10 @@ const PersonalInfoPage = (): ReactElement => {
                     && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 }>
-                                <FederatedAssociations onAlertFired={ handleAlerts }/>
+                                <FederatedAssociations
+                                    enableNonLocalCredentialUserView={ enableNonLocalCredentialUserView }
+                                    onAlertFired={ handleAlerts }
+                                />
                             </Grid.Column>
                         </Grid.Row>
                     )
@@ -120,6 +138,14 @@ const PersonalInfoPage = (): ReactElement => {
             </Grid>
         </InnerPageLayout>
     );
+};
+
+/**
+ * Default properties for the {@link PersonalInfoPage} component.
+ * See type definitions in {@link PersonalInfoPage}
+ */
+PersonalInfoPage.defaultProps = {
+    enableNonLocalCredentialUserView: commonConfig.NonLocalCredentialUser.enableNonLocalCredentialUserView
 };
 
 /**
