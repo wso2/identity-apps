@@ -18,7 +18,7 @@
 
 import { Button, CopyInputField, DangerButton, LinkButton, Password, PrimaryButton } from "@wso2is/react-components";
 import omit from "lodash-es/omit";
-import React, { ReactElement } from "react";
+import React, { ClipboardEvent, KeyboardEvent, ReactElement } from "react";
 import { Checkbox, Form, Input, Select } from "semantic-ui-react";
 import { CheckboxAdapterPropsInterface, FieldButtonTypes } from "../models";
 
@@ -66,6 +66,45 @@ export const TextFieldAdapter = (props): ReactElement => {
                 (meta.error && meta.touched)
                     ? meta.error
                     : null
+            }
+            onKeyDown={
+                // Restrict typing non-numeric characters in the "number" input fields.
+                // Setting `type=number` is not sufficient to support firefox & IE.
+                // Port fix from https://github.com/wso2/identity-apps/pull/2035
+                childFieldProps.inputType === "number"
+                    ? ((event: KeyboardEvent) => {
+                        const isNumber: boolean = /^[0-9]$/i.test(event.key);
+                        const isAllowed: boolean = (
+                            (event.key === "a"
+                                || event.key === "v"
+                                || event.key === "c"
+                                || event.key === "x")
+                            && (event.ctrlKey === true
+                                || event.metaKey === true)
+                            )
+                            || (
+                                event.key === "ArrowRight"
+                                || event.key == "ArrowLeft")
+                            || (
+                                event.key === "Delete"
+                                || event.key === "Backspace");
+
+                        !isNumber && !isAllowed && event.preventDefault();
+                    })
+                    : (): void => { return; }
+            }
+            onPaste={
+                // Restrict pasting non-numeric characters in the "number" input fields
+                // Setting `type=number` is not sufficient to support firefox & IE.
+                // Port fix from https://github.com/wso2/identity-apps/pull/2035
+                childFieldProps.inputType === "number"
+                    ? ((event: ClipboardEvent) => {
+                        const data: string = event.clipboardData.getData("Text") ;
+                        const isNumber: boolean = /^[0-9]+$/i.test(data);
+                        
+                        !isNumber && event.preventDefault();
+                    })
+                    : (): void => { return; }
             }
         />
     );
