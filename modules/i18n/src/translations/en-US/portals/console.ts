@@ -2182,6 +2182,12 @@ export const console: ConsoleNS = {
                             message: "Creation successful"
                         }
                     },
+                    apiLimitReachedError: {
+                        error: {
+                            description: "This organisation reached the maximum limit of 200 applications allowed.",
+                            message: "Failed to create the application"
+                        }
+                    },
                     authenticationStepDeleteErrorDueToSecondFactors: {
                         genericError: {
                             description: "Second factor authenticators require having a basic or identifier-first " +
@@ -4195,6 +4201,13 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Successfully created the identity provider.",
                             message: "Create successful"
+                        }
+                    },
+                    apiLimitReachedError: {
+                        error: {
+                            description: "This organisation reached the maximum limit of 200 identity providers " +
+                                "allowed.",
+                            message: "Failed to create the identity provider"
                         }
                     },
                     changeCertType: {
@@ -8056,6 +8069,12 @@ export const console: ConsoleNS = {
                         success: {
                             description: "The userstore has been added successfully!",
                             message: "Userstore added successfully!"
+                        }
+                    },
+                    apiLimitReachedError: {
+                        error: {
+                            description: "This organisation reached the maximum limit of 15 user stores allowed.",
+                            message: "Failed to create the user store"
                         }
                     },
                     delay: {

@@ -2195,6 +2195,13 @@ export const console: ConsoleNS = {
                             message: "Création réussie"
                         }
                     },
+                    apiLimitReachedError: {
+                        error: {
+                            description: "Cette organisation a atteint la limite maximale de 200 candidatures " +
+                                "autorisées.",
+                            message: "Échec de la création de l'application"
+                        }
+                    },
                     authenticationStepDeleteErrorDueToSecondFactors: {
                         genericError: {
                             description: "Les authentificateurs de second facteur nécessitent d'avoir" +
@@ -3031,6 +3038,13 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Création réussie du fournisseur d'identité.",
                             message: "Créer avec succès"
+                        }
+                    },
+                    apiLimitReachedError: {
+                        error: {
+                            description: "Cette organisation a atteint la limite maximale de 200 fournisseurs " +
+                                "d'identité autorisés.",
+                            message: "Échec de la création du fournisseur d'identité"
                         }
                     },
                     changeCertType: {
@@ -6905,9 +6919,17 @@ export const console: ConsoleNS = {
                             message: "Annuaire ajouté avec succès !"
                         }
                     },
+                    apiLimitReachedError: {
+                        error: {
+                            description: "Cette organisation a atteint la limite maximale de 15 magasins " +
+                                "d'utilisateurs autorisés..",
+                            message: "Échec de la création du magasin d'utilisateurs"
+                        }
+                    },
                     delay: {
                     description: "La mise à jour de la liste des annuaires peut prendre un peu de temps. "
-                            + "Veuillez rafraîchir dans quelques instants pour afficher la liste des annuaires mis à jour.",
+                            + "Veuillez rafraîchir dans quelques instants pour afficher la liste des annuaires mis à " +
+                        "jour.",
                         message: "Mise à jour différée de la liste des annuaires"
                     },
                     deleteUserstore: {

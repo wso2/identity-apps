@@ -2152,6 +2152,12 @@ export const console: ConsoleNS = {
                             message: "නිර්මාණය සාර්ථකයි"
                         }
                     },
+                    apiLimitReachedError: {
+                        error: {
+                            description: "මෙම සංවිධානය අවසර දී ඇති අයදුම්පත් 200 ක උපරිම සීමාවට ළඟා විය.",
+                            message: "යෙදුම නිර්මාණය කිරීමට අපොහොසත් විය"
+                        }
+                    },
                     authenticationStepDeleteErrorDueToSecondFactors: {
                         genericError: {
                             description: "Second factor authenticators need basic authenticator or identifier " +
@@ -2982,6 +2988,12 @@ export const console: ConsoleNS = {
                         success: {
                             description: "අනන්‍යතා සැපයුම්කරු සාර්ථකව නිර්මාණය කළේය.",
                             message: "සාර්ථක ලෙස නිර්මාණය කරන්න"
+                        }
+                    },
+                    apiLimitReachedError: {
+                        error: {
+                            description: "මෙම සංවිධානය අවසර දී ඇති අනන්‍යතා සැපයුම්කරුවන් 200 ක උපරිම සීමාවට ළඟා විය.",
+                            message: "අනන්‍යතා සැපයුම්කරු නිර්මාණය කිරීමට අපොහොසත් විය"
                         }
                     },
                     changeCertType: {
@@ -6827,7 +6839,13 @@ export const console: ConsoleNS = {
                         },
                         success: {
                             description: "පරිශීලක වෙළඳසැල සාර්ථකව එකතු කර ඇත!",
-                            message: "පරිශීලක වෙළඳසැල සාර්ථකව එකතු කරන ලදි!"
+                            message: "පරිශීලක ගබඩාව සාර්ථකව එකතු කරන ලදි!"
+                        }
+                    },
+                    apiLimitReachedError: {
+                        error: {
+                            description: "මෙම සංවිධානය අවසර දී ඇති පරිශීලක ගබඩා 15 ක උපරිම සීමාවට ළඟා විය.",
+                            message: "පරිශීලක ගබඩාව නිර්මාණය කිරීමට අපොහොසත් විය"
                         }
                     },
                     delay: {
