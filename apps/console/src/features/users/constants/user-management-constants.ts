@@ -16,6 +16,9 @@
  * under the License.
  */
 
+// Keep statement as this to avoid cyclic dependency. Do not import from config index.
+import { SCIMConfigs } from "../../../extensions/configs/scim";
+
 /**
  * Class containing app constants which can be used across several applications.
  */
@@ -83,7 +86,7 @@ export class UserManagementConstants {
         "due to some error.";
 
     /**
-     * Set of SCIM2 schema names.
+     * Set of SCIM2 schema names.apps/myaccount/src/store/actions/authenticate.ts
      * @constant
      * @type {Map<string, string>}
      * @default
@@ -101,7 +104,7 @@ export class UserManagementConstants {
      * @default
      */
     public static readonly SCIM2_ATTRIBUTES_DICTIONARY: Map<string, string> = new Map<string, string>()
-        .set("ACCOUNT_LOCKED", "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.accountLocked")
-        .set("ACCOUNT_DISABLED", "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.accountDisabled")
-        .set("ONETIME_PASSWORD", "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.oneTimePassword");
+        .set("ACCOUNT_LOCKED", SCIMConfigs.scimEnterpriseUserClaimUri.accountLocked)
+        .set("ACCOUNT_DISABLED", SCIMConfigs.scimEnterpriseUserClaimUri.accountDisabled)
+        .set("ONETIME_PASSWORD", SCIMConfigs.scimEnterpriseUserClaimUri.oneTimePassword);
 }

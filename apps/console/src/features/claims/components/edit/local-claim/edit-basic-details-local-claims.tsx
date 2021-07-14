@@ -252,8 +252,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     </Grid.Row>
                 </Grid>
                 <Form
+                    uncontrolledForm={ false }
                     onSubmit={ (values): void => {
-                        onSubmit(values);
+                        onSubmit(values as any);
                     } }
                     data-testid={ testId }
                 >

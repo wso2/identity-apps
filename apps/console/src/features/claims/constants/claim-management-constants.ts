@@ -16,6 +16,9 @@
  * under the License.
  */
 
+// Keep statement as this to avoid cyclic dependency. Do not import from config index.
+import { SCIMConfigs } from "../../../extensions/configs/scim";
+
 /**
  * Class containing claim constants.
  */
@@ -110,14 +113,14 @@ export class ClaimManagementConstants {
     ]
 
     public static readonly OIDC_MAPPING: string[] = [
-        "http://wso2.org/oidc/claim"
+        SCIMConfigs.oidc
     ];
 
     public static readonly SCIM_MAPPING: string[] = [
-        "urn:ietf:params:scim:schemas:core:2.0:User",
-        "urn:scim:schemas:core:1.0",
-        "urn:ietf:params:scim:schemas:core:2.0",
-        "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
+        SCIMConfigs.scim.userSchema,
+        SCIMConfigs.scim.core1Schema,
+        SCIMConfigs.scim.coreSchema,
+        SCIMConfigs.scim.enterpriseSchema
     ]
 
     public static readonly OIDC: string = "oidc";
@@ -125,10 +128,10 @@ export class ClaimManagementConstants {
     public static readonly OTHERS: string = "others";
 
     public static readonly SCIM_TABS = [
-        { name: "Enterprise Schema", uri: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User" },
-        { name: "User Schema", uri: "urn:ietf:params:scim:schemas:core:2.0:User" },
-        { name: "Core Schema", uri: "urn:ietf:params:scim:schemas:core:2.0" },
-        { name: "Core 1.0 Schema", uri: "urn:scim:schemas:core:1.0" }
+        { name: "Enterprise Schema", uri: SCIMConfigs.scim.enterpriseSchema },
+        { name: "User Schema", uri: SCIMConfigs.scim.userSchema },
+        { name: "Core Schema", uri: SCIMConfigs.scim.coreSchema },
+        { name: "Core 1.0 Schema", uri: SCIMConfigs.scim.core1Schema }
     ]
 
 }

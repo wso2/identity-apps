@@ -38,7 +38,7 @@ export interface MessageInfoProps extends TestableComponentInterface {
 
 /**
  * MessageInfo component.
- *
+ * @deprecated Use the new `Message` component from `@wso2is/react-components` instead.
  * @param {MessageInfoProps} props - Props injected in to the messageInfo component.
  *
  * @return {React.ReactElement}
@@ -69,9 +69,9 @@ export const MessageInfo: FunctionComponent<MessageInfoProps> = (props: MessageI
             <Message
                 info
                 header={ (
-                    <Header as='h4'>
+                    <Header as="h4">
                         <Header.Content>
-                            <Icon name='info circle'/>
+                            <Icon name="info circle"/>
                             { (header) }
                         </Header.Content>
                     </Header>

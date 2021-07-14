@@ -113,8 +113,7 @@
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                     "Enter.your.username.here")%>
                             </label>
-                            <input id="usernameUserInput" name="usernameUserInput" type="text" required>
-                            <input id="username" name="username" type="hidden"
+                            <input id="username" name="username" type="text" required
                                 <% if(skipSignUpEnableCheck) {%> value="<%=Encode.forHtmlAttribute(username)%>" <%}%>>
                         </div>
 
@@ -210,11 +209,7 @@
                         e.preventDefault();
 
                         var userName = document.getElementById("username");
-                        var usernameUserInput = document.getElementById("usernameUserInput");
-
-                        if (usernameUserInput) {
-                            userName.value = usernameUserInput.value.trim();
-                        }
+                        userName.value = userName.value.trim();
 
                         // Mark it so that the next submit can be ignored.
                         $form.data("submitted", true);

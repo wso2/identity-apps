@@ -66,11 +66,7 @@
                     e.preventDefault();
 
                     var userName = document.getElementById("username");
-                    var usernameUserInput = document.getElementById("usernameUserInput");
-
-                    if (usernameUserInput) {
-                        userName.value = usernameUserInput.value.trim();
-                    }
+                    userName.value = userName.value.trim();
 
                     if (userName.value) {
                         $.ajax({
@@ -239,15 +235,14 @@
             <div class="ui fluid left icon input">
                 <input
                     type="text"
-                    id="usernameUserInput"
+                    id="username"
                     value=""
-                    name="usernameUserInput"
+                    name="username"
                     tabindex="1"
                     placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, usernameLabel)%>"
                     data-testid="login-page-username-input"
                     required>
                 <i aria-hidden="true" class="user icon"></i>
-                <input id="username" name="username" type="hidden" value="<%=username%>">
             </div>
         </div>
     <% } else { %>

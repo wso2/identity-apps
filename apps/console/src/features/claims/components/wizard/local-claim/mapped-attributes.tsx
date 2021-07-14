@@ -21,7 +21,10 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
+import { attributeConfig } from "../../../../../extensions";
+import { AppState } from "../../../../core";
 import { UserStoreListItem } from "../../../../userstores";
 
 /**
@@ -61,20 +64,31 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
     } = props;
 
     const [ userStore, setUserStore ] = useState<UserStoreListItem[]>([]);
+    const hiddenUserStores: string[] = useSelector((state: AppState) => state.config.ui.hiddenUserStores);
 
     const { t } = useTranslation();
 
     useEffect(() => {
         const userstore: UserStoreListItem[] = [];
-        userstore.push({
-            description: "",
-            enabled: true,
-            id: "PRIMARY",
-            name: "PRIMARY",
-            self: ""
-        });
+        if (attributeConfig.localAttributes.createWizard.addPrimaryUserStore) {
+            userstore.push({
+                description: "",
+                enabled: true,
+                id: "PRIMARY",
+                name: "PRIMARY",
+                self: ""
+            });
+        }
         getUserStoreList().then((response) => {
-            userstore.push(...response.data);
+            if (hiddenUserStores && hiddenUserStores.length > 0) {
+                response.data.map((store: UserStoreListItem) => {
+                    if (hiddenUserStores.length > 0 && !hiddenUserStores.includes(store.name)) {
+                        userstore.push(store);
+                    }
+                });
+            } else {
+                userstore.push(...response.data);
+            }
             setUserStore(userstore);
         }).catch(() => {
             setUserStore(userstore);

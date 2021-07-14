@@ -326,6 +326,7 @@
                 }
             }
         },
+        "hiddenUserStores": [ ],
         "identityProviderTemplates": {
             "enterpriseOIDC": {
                 "enabled": true

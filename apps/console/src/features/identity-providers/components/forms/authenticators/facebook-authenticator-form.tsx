@@ -263,7 +263,8 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
 
     return (
         <Form
-            onSubmit={ (values) => onSubmit(getUpdatedConfigurations(values)) }
+            uncontrolledForm={ false }
+            onSubmit={ (values) => onSubmit(getUpdatedConfigurations(values as any)) }
             initialValues={ initialValues }
         >
             <Field.Input

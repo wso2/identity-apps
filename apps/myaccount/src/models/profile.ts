@@ -16,7 +16,10 @@
  * under the License.
  */
 
- /**
+// Keep statement as this to avoid cyclic dependency. Do not import from config index.
+import { SCIMConfigs } from "../extensions/configs/scim";
+
+/**
   * Multi-valued attribute model
   */
 export interface MultiValue {
@@ -167,9 +170,9 @@ export interface ProfileReducerStateInterface {
 export interface ReadOnlyUserStatus {
     id: string;
     schemas: string[];
-    "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
+     [key: string]: {
         isReadOnlyUser: boolean;
-    };
+    } | any;
 }
 
 /**

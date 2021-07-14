@@ -33,7 +33,7 @@
     <jsp:param
             name="description"
             value="You have been idle in this page for too long. You need to try signing in again."/>
-    <jsp:param name="action_button_text" value="Start Over"/>
+    <jsp:param name="action_button_text" value="Got it"/>
     <jsp:param name="cancel_button_text" value="Dismiss"/>
 </jsp:include>
 
@@ -97,8 +97,8 @@
      * It's serves a default value for the description in the modal. Check the method
      * {@code modal.changeDescriptionAsHTML} in script.
      */
-    int totalTimeoutMinutes = parseRequestAttributeToANumber(request.getAttribute("totalTimeoutMinutes"), 10);
-    int notifyOnMinute = parseRequestAttributeToANumber(request.getAttribute("notifyOnMinute"), 1);
+    int totalTimeoutMinutes = parseRequestAttributeToANumber(request.getAttribute("totalTimeoutMinutes"), 35);
+    int notifyOnMinute = parseRequestAttributeToANumber(request.getAttribute("notifyOnMinute"), 2);
     String pageName = parseRequestAttributeToAString(request.getAttribute("pageName"), "this");
 
     /*

@@ -216,7 +216,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Show App Switch button in the Header.
      */
     showAppSwitchButton?: boolean;
-    
+    /**
+     * Hidden userstores
+     */
+    hiddenUserStores: string[];
 }
 
 /**

@@ -24,3 +24,4 @@ export * from "./http-utils";
 export * from "./route-utils";
 export * from "./sort-list";
 export * from "./user-store-utils";
+export * from "./event-publisher";

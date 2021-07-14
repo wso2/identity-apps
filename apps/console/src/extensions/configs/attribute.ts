@@ -59,6 +59,9 @@ export const attributeConfig: AttributeConfig = {
         showRequiredCheckBox: true
     },
     externalAttributes: {
+        deleteCustomExternalDialect: () => {
+            return Promise.resolve(true);
+        },
         editAttribute: (claim: ExternalClaim, editClaimID: string, callback: (claimID: string) => void): void => {
             callback(editClaimID ? "" : claim?.id);
         },
@@ -77,6 +80,7 @@ export const attributeConfig: AttributeConfig = {
         hideDeleteIcon: (claim: ExternalClaim): boolean => {
             return false;
         },
+        isAttributeEditable: true,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         isEditActionClickable: (claim: ExternalClaim): boolean => {
             return true;
@@ -90,7 +94,7 @@ export const attributeConfig: AttributeConfig = {
             return true;
         },
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        showDeleteIcon: (dialectID: string): boolean => {
+        showDeleteIcon: (dialectID: string, claimsList: ExternalClaim[]): boolean => {
             return true;
         }
     },
@@ -98,5 +102,26 @@ export const attributeConfig: AttributeConfig = {
     isRowSelectable: (claim: Claim | ExternalClaim | ClaimDialect): boolean => {
         return true;
     },
-    isSCIMEditable: true
+    isSCIMEditable: true,
+    localAttributes: {
+        checkAttributeNameAvailability: () => { return Promise.resolve(new Map()); },
+        createCustomDialect: false,
+        createWizard: {
+            addPrimaryUserStore: true,
+            checkOIDCAvailability: false,
+            checkSCIMAvailability: false,
+            customWIzard: false,
+            identifyAsCustomAttrib: false,
+            showDisplayOrder: true,
+            showReadOnlyAttribute: true,
+            showRegularExpression: true,
+            showSummary: true
+        },
+        customDialectURI: "",
+        getDialect: (dialectURI: string) => { return Promise.resolve(dialectURI); },
+        isSCIMCustomDialectAvailable: () =>  { return Promise.resolve(""); },
+        isUserStoresHidden: () =>  { return Promise.resolve([]); },
+        mapClaimToCustomDialect: false
+    }, 
+    showCustomDialectInSCIM: false
 };

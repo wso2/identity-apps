@@ -164,6 +164,7 @@ export class Config {
             features: window["AppUtils"].getConfig().ui.features,
             gravatarConfig: window["AppUtils"].getConfig().ui.gravatarConfig,
             hiddenAuthenticators: window["AppUtils"].getConfig().ui.hiddenAuthenticators,
+            hiddenUserStores: window["AppUtils"].getConfig().ui.hiddenUserStores,
             i18nConfigs: window["AppUtils"].getConfig().ui.i18nConfigs,
             identityProviderTemplates: window["AppUtils"].getConfig().ui.identityProviderTemplates,
             isCookieConsentBannerEnabled: window["AppUtils"].getConfig().ui.isCookieConsentBannerEnabled,

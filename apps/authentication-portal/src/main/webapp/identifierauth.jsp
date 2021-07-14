@@ -56,11 +56,7 @@
     function submitIdentifier (e) {
         e.preventDefault();
         var userName = document.getElementById("username");
-        var usernameUserInput = document.getElementById("usernameUserInput");
-
-        if (usernameUserInput) {
-            userName.value = usernameUserInput.value.trim();
-        }
+        userName.value = userName.value.trim();
 
         if (username.value) {
             $.ajax({
@@ -104,16 +100,15 @@
         <div class="ui fluid left icon input">
             <input
                 type="text"
-                id="usernameUserInput"
+                id="username"
                 value=""
-                name="usernameUserInput"
+                name="username"
                 maxlength="50"
                 tabindex="0"
                 placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, usernameLabel)%>"
                 required />
             <i aria-hidden="true" class="user icon"></i>
         </div>
-        <input id="username" name="username" type="hidden" value="">
         <input id="authType" name="authType" type="hidden" value="idf">
     </div>
     <%

@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.wso2.identity.apps</groupId>
         <artifactId>identity-apps</artifactId>
-        <version>1.2.320-SNAPSHOT</version>
+        <version>1.2.341-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -87,6 +87,7 @@
                                         <include>p2.inf</include>
                                         <include>build.properties</include>
                                         <include>accountrecoveryendpoint.war</include>
+                                        <include>**/*.j2</include>
                                     </includes>
                                 </resource>
                             </resources>

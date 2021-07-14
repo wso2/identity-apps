@@ -21,5 +21,8 @@ import { CommonConfig } from "./models";
 export const commonConfig: CommonConfig = {
     AdvancedSearchWithBasicFilters: {
         enableQuerySearch: false
+    },
+    OverviewPage: {
+        enableThreeWidgetLayout: false
     }
 };

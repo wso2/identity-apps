@@ -18,9 +18,12 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
+import { GenericIcon, Hint, InlineEditInput } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid, Label, Popup } from "semantic-ui-react";
+import { Card, Grid, Label, Message, Popup } from "semantic-ui-react";
+import { attributeConfig } from "../../../../../extensions";
+import { getTechnologyLogos } from "../../../../core";
 
 /**
  * Prop types of `BasicDetailsLocalClaims` component
@@ -61,12 +64,17 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
         [ "data-testid" ]: testId
     } = props;
 
-    const [ claimID, setClaimID ] = useState<string>(null);
+    const [ claimID, setClaimID ] = useState<string>("");
     const [ isShow, setIsShow ] = useState(false);
     const [ isShowNameHint, setIsShowNameHint ] = useState(false);
     const [ isShowClaimIDHint, setIsShowClaimIDHint ] = useState(false);
     const [ isShowRegExHint, setIsShowRegExHint ] = useState(false);
     const [ isShowDisplayOrderHint, setIsShowDisplayOrderHint ] = useState(false);
+
+    const [ noUniqueOIDCAttrib, setNoUniqueOIDCAttrib ] = useState<boolean>(true);
+    const [ noUniqueSCIMAttrib, setNoUniqueSCIMAttrib ] = useState<boolean>(true);
+    const [ oidcMapping, setOidcMapping ] = useState<string>(values?.get("oidc").toString());
+    const [ scimMapping, setScimMapping ] = useState<string>(values?.get("scim").toString());
 
     const nameField = useRef<HTMLElement>(null);
     const claimField = useRef<HTMLElement>(null);
@@ -88,6 +96,36 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
         setIsShow(values?.get("supportedByDefault").length > 0);
         setClaimID(values?.get("claimURI").toString());
     }, [ values ]);
+
+    /**
+     * Check the availability of custom OIDC attribute names.
+     * TODO: Move constants to extension constants file
+     */
+    useEffect(() => {
+        if (!oidcMapping && !( oidcMapping === "" || claimID === oidcMapping ) ) {
+            return;
+        }
+
+        attributeConfig.localAttributes.checkAttributeNameAvailability(
+            oidcMapping, "OIDC").then(response => {
+                setNoUniqueOIDCAttrib(response.get("OIDC"));
+        });
+    }, [ oidcMapping ]);
+
+    /**
+     * Check the availability of custom SCIM attribute names.
+     * TODO: Move constants to extension constants file
+     */
+     useEffect(() => {
+        if (!scimMapping && !( scimMapping === "" || claimID === scimMapping ) ) {
+            return;
+        }
+
+        attributeConfig.localAttributes.checkAttributeNameAvailability(
+            scimMapping, "SCIM").then(response => {
+                setNoUniqueSCIMAttrib(response.get("SCIM"));
+        });
+    }, [ scimMapping ]);
 
     /**
      * This shows a popup with a delay of 500 ms.
@@ -123,18 +161,200 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                     claimURI: claimURIBase + "/" + values.get("claimURI").toString(),
                     description: values.get("description").toString(),
                     displayName: values.get("name").toString(),
-                    displayOrder: values.get("displayOrder") ? parseInt(values.get("displayOrder").toString()) : "0",
-                    readOnly: values.get("readOnly").length > 0,
-                    regEx: values.get("regularExpression").toString(),
+                    displayOrder: values.get("displayOrder") ? parseInt(values.get("displayOrder")?.toString()) : "0",
+                    readOnly: values.get("readOnly")?.length > 0,
+                    regEx: values.get("regularExpression")?.toString(),
                     required: values.get("required").length > 0,
                     supportedByDefault: values.get("supportedByDefault").length > 0
                 };
-                onSubmit(data, values);
+
+                if (attributeConfig.localAttributes.createWizard.customWIzard) {
+                    values.set("oidc", oidcMapping);
+                    values.set("scim", scimMapping);
+                }
+
+                if (noUniqueOIDCAttrib && noUniqueSCIMAttrib) {
+                    onSubmit(data, values);
+                }
+                
             } }
             submitState={ submitState }
         >
             <Grid>
-                <Grid.Row columns={ 2 }>
+                { attributeConfig.localAttributes.createWizard.customWIzard &&
+                    // TODO: Move custom wizard to extensions
+                    <>
+                        <Grid.Row columns={ 1 } >
+                            <Grid.Column width={ 8 } >
+                                <Field
+                                    type="text"
+                                    name="claimURI"
+                                    label={ t("console:manage.features.claims.local.forms.attributeID.label") }
+                                    className="mb-1"
+                                    required={ true }
+                                    requiredErrorMessage={ t("console:manage.features.claims.local.forms." +
+                                        "attributeID.requiredErrorMessage") }
+                                    placeholder={ t("console:manage.features.claims.local." +
+                                        "forms.attributeID.placeholder") }
+                                    value={ values?.get("claimURI")?.toString() }
+                                    listen={ (values: Map<string, FormValue>) => {
+                                        setClaimID(values.get("claimURI").toString());
+                                        setOidcMapping(values.get("claimURI").toString());
+                                        setScimMapping(values.get("claimURI").toString());
+                                    } }
+                                    onMouseOver={ () => {
+                                        delayPopup(setIsShowClaimIDHint, claimTimer);
+                                    } }
+                                    onMouseOut={ () => {
+                                        closePopup(setIsShowClaimIDHint, claimTimer);
+                                    } }
+                                    validation={ (value: string) => {
+                                        if (value === "") {
+                                            setNoUniqueOIDCAttrib(true);
+                                            setNoUniqueSCIMAttrib(true);
+                                            return;
+                                        }
+
+                                        // TODO: Move constants to constants file
+                                        if (attributeConfig.localAttributes.createWizard.checkOIDCAvailability) {
+                                            attributeConfig.localAttributes.checkAttributeNameAvailability(
+                                                value,
+                                                "BOTH"
+                                            ).then(response => {
+                                                if (response.has("SCIM")) {
+                                                    setNoUniqueSCIMAttrib(response.get("SCIM"));
+                                                }
+
+                                                if (response.has("OIDC")) {
+                                                    setNoUniqueOIDCAttrib(response.get("OIDC"));
+                                                }
+                                            });
+                                        }
+                                    } }
+                                    ref={ claimField }
+                                    data-testid={ `${ testId }-form-claim-uri-input` }
+                                />
+                                <Popup
+                                    content={ t("console:manage.features.claims.local.forms.attributeHint") }
+                                    inverted
+                                    open={ isShowClaimIDHint }
+                                    onClose={ () => {
+                                        closePopup(setIsShowClaimIDHint, claimTimer);
+                                    } }
+                                    position="bottom left"
+                                    context={ claimField }
+                                />
+                                <Label className="mb-3 ml-0">
+                                    <em>Attribute URI</em>:&nbsp;
+                                        { `${claimURIBase}/${ claimID ? claimID : "" }` }
+                                </Label>
+                            </Grid.Column>
+                            <Grid.Column width={ 16 }>
+                                <Card fluid >
+                                    <Card.Content>
+                                        <Card.Header>
+                                            { t("extensions:manage.attributes.generatedAttributeMapping.title") }
+                                        </Card.Header>
+                                        <Card.Meta className="mb-5">
+                                            { t("extensions:manage.attributes.generatedAttributeMapping.description") }
+                                        </Card.Meta>
+                                        <Card.Description className="mt-1 mb-1">
+                                            <Grid verticalAlign="middle">
+                                                { !noUniqueOIDCAttrib || !noUniqueSCIMAttrib ?
+                                                    <Grid.Row columns={ 1 } >
+                                                        <Grid.Column>
+                                                            <Message color="orange" >
+                                                                { (() => {
+                                                                    // TODO: Add to translations file
+                                                                    if (!noUniqueOIDCAttrib 
+                                                                        && !noUniqueSCIMAttrib) {
+                                                                        return (
+                                                                            <>The mapping names generated for 
+                                                                                <b> OpenID Connect & SCIM </b> 
+                                                                                protocol(s) is already available.</>
+                                                                        );
+                                                                    } else if ( noUniqueOIDCAttrib 
+                                                                        && !noUniqueSCIMAttrib ) {
+                                                                        return (
+                                                                            <>The mapping names generated for 
+                                                                                <b> SCIM </b> 
+                                                                                protocol(s) is already available.</>
+                                                                        );
+                                                                    } else if ( !noUniqueOIDCAttrib 
+                                                                        && noUniqueSCIMAttrib) {
+                                                                        return (
+                                                                            <>The mapping names generated for 
+                                                                                <b> OpenID Connect </b> 
+                                                                                protocol(s) is already available.</>
+                                                                        );
+                                                                        
+                                                                    }
+                                                                })() }
+                                                            </Message>
+                                                        </Grid.Column>
+                                                    </Grid.Row> : <></>
+                                                }
+                                                <Grid.Row columns={ 2 } >
+                                                    <Grid.Column width={ 5 }>
+                                                        <GenericIcon
+                                                            transparent
+                                                            verticalAlign="middle"
+                                                            rounded
+                                                            icon={ getTechnologyLogos().oidc }
+                                                            spaced="right"
+                                                            size="micro"
+                                                            floated="left"
+                                                        />
+                                                        <span>
+                                                            { t("extensions:manage.attributes." 
+                                                                +"generatedAttributeMapping.OIDCProtocol") }
+                                                        </span>
+                                                    </Grid.Column>
+                                                    <Grid.Column width={ 11 }>
+                                                        <InlineEditInput
+                                                            text={ oidcMapping } 
+                                                            onChangesSaved={ (value: string) => {
+                                                                setOidcMapping(value);
+                                                            } }
+                                                        />
+                                                    </Grid.Column>
+                                                </Grid.Row>
+                                                <Grid.Row columns={ 2 } >
+                                                    <Grid.Column width={ 5 }>
+                                                        <GenericIcon
+                                                            transparent
+                                                            verticalAlign="middle"
+                                                            rounded
+                                                            icon={ getTechnologyLogos().scim }
+                                                            spaced="right"
+                                                            size="micro"
+                                                            floated="left"
+                                                        />
+                                                        <span>
+                                                            { t("extensions:manage.attributes." 
+                                                                +"generatedAttributeMapping.SCIMProtocol") }
+                                                        </span>
+                                                    </Grid.Column>
+                                                    <Grid.Column width={ 11 }>
+                                                        <InlineEditInput
+                                                            textPrefix="urn:scim:custom:schema:"
+                                                            onChangesSaved={ (value: string) => {
+                                                                setScimMapping(value);
+                                                            } }
+                                                            text={ scimMapping } 
+                                                        />
+                                                    </Grid.Column>
+                                                </Grid.Row>
+                                                
+                                            </Grid>
+                                        </Card.Description>
+                                    </Card.Content>
+                                </Card>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </>
+                }
+                <Grid.Row columns={ attributeConfig.localAttributes.createWizard.customWIzard ? 1 : 2 }>
                     <Grid.Column width={ 8 }>
                         <Field
                             onMouseOver={ () => {
@@ -165,54 +385,62 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             position="bottom left"
                             context={ nameField }
                         />
-                    </Grid.Column>
-                    <Grid.Column width={ 8 }>
-                        <Field
-                            type="text"
-                            name="claimURI"
-                            label={ t("console:manage.features.claims.local.forms.attributeID.label") }
-                            required={ true }
-                            requiredErrorMessage={ t("console:manage.features.claims.local.forms." +
-                                "attributeID.requiredErrorMessage") }
-                            placeholder={ t("console:manage.features.claims.local.forms.attributeID.placeholder") }
-                            value={ values?.get("claimURI")?.toString() }
-                            listen={ (values: Map<string, FormValue>) => {
-                                setClaimID(values.get("claimURI").toString());
-                            } }
-                            onMouseOver={ () => {
-                                delayPopup(setIsShowClaimIDHint, claimTimer);
-                            } }
-                            onMouseOut={ () => {
-                                closePopup(setIsShowClaimIDHint, claimTimer);
-                            } }
-                            ref={ claimField }
-                            data-testid={ `${ testId }-form-claim-uri-input` }
-                        />
-                        <Popup
-                            content={ t("console:manage.features.claims.local.forms.attributeHint") }
-                            inverted
-                            open={ isShowClaimIDHint }
-                            trigger={ <p></p> }
-                            onClose={ () => {
-                                closePopup(setIsShowClaimIDHint, claimTimer);
-                            } }
-                            position="bottom left"
-                            context={ claimField }
-                        />
                         {
-                            claimID
-                                ? <Label>
-                                    <em>Attribute URI</em>:&nbsp;
-                                        { claimURIBase + "/" + claimID }
-                                </Label>
-                                : null
+                            attributeConfig.localAttributes.createWizard.customWIzard &&
+                            <Hint>
+                                { t("extensions:manage.attributes.displayNameHint") }
+                            </Hint>
                         }
                     </Grid.Column>
+                    { !attributeConfig.localAttributes.createWizard.customWIzard &&
+                        <Grid.Column width={ 8 }>
+                            <Field
+                                type="text"
+                                name="claimURI"
+                                label={ t("console:manage.features.claims.local.forms.attributeID.label") }
+                                required={ true }
+                                requiredErrorMessage={ t("console:manage.features.claims.local.forms." +
+                                    "attributeID.requiredErrorMessage") }
+                                placeholder={ t("console:manage.features.claims.local.forms.attributeID.placeholder") }
+                                value={ values?.get("claimURI")?.toString() }
+                                listen={ (values: Map<string, FormValue>) => {
+                                    setClaimID(values.get("claimURI").toString());
+                                } }
+                                onMouseOver={ () => {
+                                    delayPopup(setIsShowClaimIDHint, claimTimer);
+                                } }
+                                onMouseOut={ () => {
+                                    closePopup(setIsShowClaimIDHint, claimTimer);
+                                } }
+                                ref={ claimField }
+                                data-testid={ `${ testId }-form-claim-uri-input` }
+                            />
+                            <Popup
+                                content={ t("console:manage.features.claims.local.forms.attributeHint") }
+                                inverted
+                                open={ isShowClaimIDHint }
+                                trigger={ <p></p> }
+                                onClose={ () => {
+                                    closePopup(setIsShowClaimIDHint, claimTimer);
+                                } }
+                                position="bottom left"
+                                context={ claimField }
+                            />
+                            {
+                                claimID
+                                    ? <Label>
+                                        <em>Attribute URI</em>:&nbsp;
+                                            { claimURIBase + "/" + claimID }
+                                    </Label>
+                                    : null
+                            }
+                        </Grid.Column>
+                    }
                 </Grid.Row>
                 <Grid.Row columns={ 2 }>
                     <Grid.Column width={ 8 }>
                         <Field
-                            type="text"
+                            type="textarea"
                             name="description"
                             label={ t("console:manage.features.claims.local.forms.description.label") }
                             required={ true }
@@ -223,36 +451,38 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             data-testid={ `${ testId }-form-description-input` }
                         />
                     </Grid.Column>
-                    <Grid.Column width={ 8 }>
-                        <Field
-                            type="text"
-                            name="regularExpression"
-                            label={ t("console:manage.features.claims.local.forms.regEx.label") }
-                            required={ false }
-                            requiredErrorMessage=""
-                            placeholder={ t("console:manage.features.claims.local.forms.regEx.placeholder") }
-                            value={ values?.get("regularExpression")?.toString() }
-                            onMouseOver={ () => {
-                                delayPopup(setIsShowRegExHint, regExTimer);
-                            } }
-                            onMouseOut={ () => {
-                                closePopup(setIsShowRegExHint, regExTimer);
-                            } }
-                            ref={ regExField }
-                            data-testid={ `${ testId }-form-regex-input` }
-                        />
-                        <Popup
-                            content={ t("console:manage.features.claims.local.forms.regExHint") }
-                            inverted
-                            open={ isShowRegExHint }
-                            trigger={ <span></span> }
-                            onClose={ () => {
-                                closePopup(setIsShowRegExHint, regExTimer);
-                            } }
-                            position="bottom left"
-                            context={ regExField }
-                        />
-                    </Grid.Column>
+                    { attributeConfig.localAttributes.createWizard.showRegularExpression && 
+                        <Grid.Column width={ 8 }>
+                            <Field
+                                type="text"
+                                name="regularExpression"
+                                label={ t("console:manage.features.claims.local.forms.regEx.label") }
+                                required={ false }
+                                requiredErrorMessage=""
+                                placeholder={ t("console:manage.features.claims.local.forms.regEx.placeholder") }
+                                value={ values?.get("regularExpression")?.toString() }
+                                onMouseOver={ () => {
+                                    delayPopup(setIsShowRegExHint, regExTimer);
+                                } }
+                                onMouseOut={ () => {
+                                    closePopup(setIsShowRegExHint, regExTimer);
+                                } }
+                                ref={ regExField }
+                                data-testid={ `${ testId }-form-regex-input` }
+                            />
+                            <Popup
+                                content={ t("console:manage.features.claims.local.forms.regExHint") }
+                                inverted
+                                open={ isShowRegExHint }
+                                trigger={ <span></span> }
+                                onClose={ () => {
+                                    closePopup(setIsShowRegExHint, regExTimer);
+                                } }
+                                position="bottom left"
+                                context={ regExField }
+                            />
+                        </Grid.Column>
+                    }
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
@@ -275,7 +505,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                     </Grid.Column>
                 </Grid.Row>
                 {
-                    isShow && (
+                    isShow && attributeConfig.localAttributes.createWizard.showDisplayOrder && (
                         <Grid.Row columns={ 16 }>
                             <Grid.Column width={ 8 }>
                                 <Field
@@ -330,22 +560,25 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                         />
                     </Grid.Column>
                 </Grid.Row>
-                <Grid.Row column={ 1 }>
-                    <Grid.Column>
-                        <Field
-                            type="checkbox"
-                            name="readOnly"
-                            required={ false }
-                            requiredErrorMessage=""
-                            children={ [ {
-                                label: t("console:manage.features.claims.local.forms.readOnly.label"),
-                                value: "ReadOnly"
-                            } ] }
-                            value={ values?.get("readOnly") as string[] }
-                            data-testid={ `${ testId }-form-readonly-checkbox` }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
+                { attributeConfig.localAttributes.createWizard.showReadOnlyAttribute && 
+                    // TODO: Track this as an issue for future implementations
+                    <Grid.Row column={ 1 }>
+                        <Grid.Column>
+                            <Field
+                                type="checkbox"
+                                name="readOnly"
+                                required={ false }
+                                requiredErrorMessage=""
+                                children={ [ {
+                                    label: t("console:manage.features.claims.local.forms.readOnly.label"),
+                                    value: "ReadOnly"
+                                } ] }
+                                value={ values?.get("readOnly") as string[] }
+                                data-testid={ `${ testId }-form-readonly-checkbox` }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                }
             </Grid >
         </Forms >
     );
