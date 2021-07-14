@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentityAppsAPIError } from "@wso2is/core/errors";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
@@ -281,6 +282,33 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 history.push(AppConstants.getPaths().get("APPLICATIONS"));
             })
             .catch((error) => {
+
+                if (error.response.status === 403 &&
+                    error?.response?.data?.code === ApplicationManagementConstants.APPLICATION_MGT_API_ERROR_CODES.get(
+                        "ERROR_CREATE_LIMIT_REACHED"
+                    )) {
+
+                    const apiError = new IdentityAppsAPIError(
+                        ApplicationManagementConstants.APPLICATION_MGT_API_ERROR_CODES.get(
+                            "ERROR_CREATE_LIMIT_REACHED"
+                        ),
+                        t(
+                            "console:develop.features.applications.notifications.apiLimitReachedError" +
+                            ".error.description"
+                        ),
+                        t(
+                            "console:develop.features.applications.notifications.apiLimitReachedError" +
+                            ".error.message"
+                        )
+                    );
+
+                    setAlert({
+                        description: apiError.getErrorDescription(),
+                        level: AlertLevels.ERROR,
+                        message: apiError.getErrorMessage()
+                    });
+                }
+
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
                         description: error.response.data.description,

@@ -301,4 +301,13 @@ export class IdentityProviderManagementConstants {
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME: string = "Google";
     public static readonly FACEBOOK_AUTHENTICATOR_DISPLAY_NAME: string = "Facebook";
     public static readonly GITHUB_AUTHENTICATOR_DISPLAY_NAME: string = "GitHub";
+
+    /**
+     * Identity provider management API error codes.
+     * @constant
+     * @type {Map<string, string>}
+     * @default
+     */
+    public static readonly IDP_MGT_API_ERROR_CODES: Map<string, string> = new Map<string, string>()
+        .set("ERROR_CREATE_LIMIT_REACHED", "IDP-60035");
 }

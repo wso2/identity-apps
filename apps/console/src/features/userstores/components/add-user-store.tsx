@@ -16,6 +16,7 @@
 * under the License.
 */
 
+import {IdentityAppsAPIError} from "@wso2is/core/errors";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
@@ -28,7 +29,7 @@ import { GeneralDetailsUserstore, GroupDetails, SummaryUserStores, UserDetails }
 import { AppConstants, history } from "../../core";
 import { addUserStore } from "../api";
 import { getAddUserstoreWizardStepIcons } from "../configs";
-import { USERSTORE_TYPE_DISPLAY_NAMES } from "../constants";
+import {USER_STORE_MGT_API_ERROR_CODES, USERSTORE_TYPE_DISPLAY_NAMES} from "../constants";
 import {
     CategorizedProperties,
     TypeProperty,
@@ -37,6 +38,7 @@ import {
     UserstoreType
 } from "../models";
 import { reOrganizeProperties } from "../utils";
+import { IdentityProviderManagementConstants } from "../../identity-providers";
 
 /**
  * Prop types of the `AddUserStore` component
@@ -121,6 +123,25 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
 
             history.push(AppConstants.getPaths().get("USERSTORES"));
         }).catch(error => {
+
+            if (error.response.status === 403 &&
+                error?.response?.data?.code === USER_STORE_MGT_API_ERROR_CODES.get(
+                    "ERROR_CREATE_LIMIT_REACHED"
+                )) {
+
+                const apiError = new IdentityAppsAPIError(
+                    USER_STORE_MGT_API_ERROR_CODES.get("ERROR_CREATE_LIMIT_REACHED"),
+                    t("console:manage.features.userstores.notifications.apiLimitReachedError.error.description"),
+                    t("console:manage.features.userstores.notifications.apiLimitReachedError.error.message")
+                );
+
+                setAlert({
+                    description: apiError.getErrorDescription(),
+                    level: AlertLevels.ERROR,
+                    message: apiError.getErrorMessage()
+                });
+            }
+
             setAlert({
                 description: error?.description ?? t("console:manage.features.userstores.notifications.addUserstore" +
                     ".genericError.description"),

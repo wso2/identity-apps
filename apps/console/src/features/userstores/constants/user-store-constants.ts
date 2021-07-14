@@ -99,3 +99,12 @@ export const DISABLED = "Disabled";
  * @type {string}
  */
 export const CONSUMER_USERSTORE = "CUSTOMER-DEFAULT";
+
+/**
+ * User store management API error codes.
+ * @constant
+ * @type {Map<string, string>}
+ * @default
+ */
+export const USER_STORE_MGT_API_ERROR_CODES: Map<string, string> = new Map<string, string>()
+    .set("ERROR_CREATE_LIMIT_REACHED", "SUS-60011");

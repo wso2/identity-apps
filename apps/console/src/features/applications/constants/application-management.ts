@@ -17,7 +17,7 @@
  */
 
 import { DocumentationConstants } from "./documentation-constants";
-import { IdentityProviderManagementConstants } from "../../identity-providers/constants";
+import { IdentityProviderManagementConstants } from "../../identity-providers";
 import { ApplicationTemplateCategories, ApplicationTemplateLoadingStrategies } from "../models";
 
 /**
@@ -389,4 +389,13 @@ export class ApplicationManagementConstants {
             [ "saml", 1 ],
             [  "passive-sts", 2 ]
         ])
+
+    /**
+     * Application management API error codes.
+     * @constant
+     * @type {Map<string, string>}
+     * @default
+     */
+    public static readonly APPLICATION_MGT_API_ERROR_CODES: Map<string, string> = new Map<string, string>()
+        .set("ERROR_CREATE_LIMIT_REACHED", "APP-60503");
 }

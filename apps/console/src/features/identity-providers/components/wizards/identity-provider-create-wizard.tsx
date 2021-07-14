@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentityAppsAPIError } from "@wso2is/core/errors";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
@@ -51,6 +52,7 @@ import {
     handleGetFederatedAuthenticatorMetadataAPICallError,
     handleGetOutboundProvisioningConnectorMetadataError
 } from "../utils";
+import {ApplicationManagementConstants} from "../../../applications";
 
 /**
  * Proptypes for the identity provider creation wizard component.
@@ -175,6 +177,27 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                 onIDPCreate();
             })
             .catch((error) => {
+
+                if (error.response.status === 403 &&
+                    error?.response?.data?.code === IdentityProviderManagementConstants.IDP_MGT_API_ERROR_CODES.get(
+                        "ERROR_CREATE_LIMIT_REACHED"
+                    )) {
+
+                    const apiError = new IdentityAppsAPIError(
+                        IdentityProviderManagementConstants.IDP_MGT_API_ERROR_CODES.get("ERROR_CREATE_LIMIT_REACHED"),
+                        t("console:develop.features.authenticationProvider.notifications." +
+                            "apiLimitReachedError.error.description"),
+                        t("console:develop.features.authenticationProvider.notifications." +
+                            "apiLimitReachedError.error.message")
+                    );
+
+                    setAlert({
+                        description: apiError.getErrorDescription(),
+                        level: AlertLevels.ERROR,
+                        message: apiError.getErrorMessage()
+                    });
+                }
+
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
                         description: t("console:develop.features.authenticationProvider.notifications." +
