@@ -16,7 +16,7 @@
 * under the License.
 */
 
-import {IdentityAppsAPIError} from "@wso2is/core/errors";
+import { IdentityAppsAPIError } from "@wso2is/core/errors";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
@@ -29,7 +29,7 @@ import { GeneralDetailsUserstore, GroupDetails, SummaryUserStores, UserDetails }
 import { AppConstants, history } from "../../core";
 import { addUserStore } from "../api";
 import { getAddUserstoreWizardStepIcons } from "../configs";
-import {USER_STORE_MGT_API_ERROR_CODES, USERSTORE_TYPE_DISPLAY_NAMES} from "../constants";
+import { USERSTORE_TYPE_DISPLAY_NAMES, USER_STORE_MGT_API_ERROR_CODES } from "../constants";
 import {
     CategorizedProperties,
     TypeProperty,
@@ -38,7 +38,6 @@ import {
     UserstoreType
 } from "../models";
 import { reOrganizeProperties } from "../utils";
-import { IdentityProviderManagementConstants } from "../../identity-providers";
 
 /**
  * Prop types of the `AddUserStore` component

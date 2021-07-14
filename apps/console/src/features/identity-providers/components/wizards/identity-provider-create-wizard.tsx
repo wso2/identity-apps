@@ -52,7 +52,6 @@ import {
     handleGetFederatedAuthenticatorMetadataAPICallError,
     handleGetOutboundProvisioningConnectorMetadataError
 } from "../utils";
-import {ApplicationManagementConstants} from "../../../applications";
 
 /**
  * Proptypes for the identity provider creation wizard component.
