@@ -63,19 +63,21 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
     }, [ isProfileInfoLoading ]);
 
     /**
-     * Checks if the user is a user without local credentials.
+     * Verifies whether a user is a federated user (user without local credentials).
      */
     useEffect(() => {
         if (!enableNonLocalCredentialUserView) {
             return;
         }
 
+        // Verifies if the user is a user without local credentials.
         if (profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
             [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_ACCOUNT_TYPE")] === "FEDERATED") {
             setIsFederatedUser(true);
         }
 
-        if (profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
+        // Sets user's source of sign up if the user is a federated user.
+        if (isFederatedUser && profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
             [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_SOURCE")]) {
             setUserSource(profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
                 [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_SOURCE")]);
@@ -102,9 +104,7 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
                 Loads overview component based on user credential type (local/non-local).*/ }
             { isProfileInfoLoading == false &&
                 <Overview
-                    isFederatedUser={ isFederatedUser }
                     userSource={ userSource }
-
                 />
             }
         </InnerPageLayout>
