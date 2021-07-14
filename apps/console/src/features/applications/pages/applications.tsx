@@ -50,6 +50,7 @@ import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
     AppState,
+    EventPublisher,
     FeatureConfigInterface,
     UIConstants,
     history,
@@ -126,6 +127,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     /**
      * Called on every `listOffset` & `listItemLimit` change.
@@ -261,6 +264,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     <>
                         <PrimaryButton
                             onClick={ (): void => {
+                                eventPublisher.publish("application-click-new-application-button");
+
                                 history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
                             } }
                             data-testid={ `${ testId }-list-layout-add-button` }
@@ -355,7 +360,11 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     list={ appList }
                     onApplicationDelete={ handleApplicationDelete }
                     onEmptyListPlaceholderActionClick={
-                        () => history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"))
+                        () => {
+                            eventPublisher.publish("application-click-new-application-button");
+                            
+                            history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
+                        }
                     }
                     onSearchQueryClear={ handleSearchQueryClear }
                     searchQuery={ searchQuery }

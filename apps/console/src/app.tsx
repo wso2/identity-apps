@@ -40,7 +40,7 @@ import { I18nextProvider, Trans } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { initializeAuthentication } from "./features/authentication";
-import { PreLoader } from "./features/core";
+import { EventPublisher, PreLoader } from "./features/core";
 import { ProtectedRoute } from "./features/core/components";
 import { Config, getBaseRoutes } from "./features/core/configs";
 import { AppConstants } from "./features/core/constants";
@@ -70,8 +70,11 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
     const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
+    const UUID: string = useSelector((state: AppState) => state.profile.profileInfo.id);
 
     const [ baseRoutes, setBaseRoutes ] = useState<RouteInterface[]>(getBaseRoutes());
+
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     /**
      * Set the deployment configs in redux state.
@@ -143,6 +146,17 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
             search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
         });
     }, [ config, loginInit ]);
+    
+    /**
+    * Publish page visit when the UUID is set.
+    */
+    useEffect(() => {
+        if(!UUID) {
+            return;
+        }
+        
+        eventPublisher.publish("page-visit-console-landing-page");
+    }, [UUID]);
 
     /**
      * Handles session timeout abort.

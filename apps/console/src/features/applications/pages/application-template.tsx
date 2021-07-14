@@ -37,6 +37,7 @@ import {
     AppConstants,
     AppState,
     ConfigReducerStateInterface,
+    EventPublisher,
     getEmptyPlaceholderIllustrations,
     getTechnologyLogos,
     history
@@ -109,6 +110,8 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
     ] = useState<ApplicationTemplateListItemInterface[]>(undefined);
     const [ searchTriggered, setSearchTriggered ] = useState<boolean>(false);
     const [ templateFilterTypes, setTemplateFilterTypes ] = useState<DropdownItemProps[]>(TEMPLATE_FILTER_TYPES);
+
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     /**
      *  Get Application templates.
@@ -215,6 +218,10 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
         if (!selected) {
             return;
         }
+
+        eventPublisher.publish("application-click-create-new", {
+            "type": selected.name
+        });
 
         setSelectedTemplate(selected);
         setShowWizard(true);
@@ -402,6 +409,10 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                             basic
                             primary
                             onClick={ () =>  {
+                                eventPublisher.publish("application-click-create-new", {
+                                    "type": "Custom Application"
+                                });
+                                
                                 setSelectedTemplate(CustomApplicationTemplate);
                                 setShowWizard(true);
                             }

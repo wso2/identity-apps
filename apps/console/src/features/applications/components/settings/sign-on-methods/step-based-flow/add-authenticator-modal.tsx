@@ -65,6 +65,7 @@ import {
 } from "../../../../../identity-providers";
 import { getGeneralIcons } from "../../../../configs";
 import { AuthenticationStepInterface } from "../../../../models";
+import { EventPublisher } from "../../../../../core/utils";
 
 /**
  * Proptypes for the Add authenticator modal component.
@@ -180,6 +181,8 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
         className
     );
 
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
     /**
      * Update the internal filtered authenticators state when the prop changes.
      */
@@ -248,6 +251,12 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
      * Handles modal submit.
      */
     const handleModalSubmit = (): void => {
+
+        selectedAuthenticators.forEach(element => {
+            eventPublisher.publish("application-sign-in-method-add-new-authenticator", {
+                "authenticator": element["defaultAuthenticator"]["name"]
+            });
+        });
 
         onModalSubmit(selectedAuthenticators, authenticatorAddStep);
     };

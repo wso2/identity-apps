@@ -40,7 +40,7 @@ import { useDispatch } from "react-redux";
 import { Checkbox, Icon, Menu, Sidebar } from "semantic-ui-react";
 import { stripSlashes } from "slashes";
 import { ScriptTemplatesSidePanel } from "./script-templates-side-panel";
-import { AppUtils } from "../../../../../core/utils";
+import { AppUtils, EventPublisher } from "../../../../../core/utils";
 import { getAdaptiveAuthTemplates } from "../../../../api";
 import { ApplicationManagementConstants } from "../../../../constants";
 import {
@@ -135,6 +135,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const [ isNewlyAddedScriptTemplate, setIsNewlyAddedScriptTemplate ] = useState<boolean>(false);
     const [ showScriptResetWarning, setShowScriptResetWarning ] = useState<boolean>(false);
     const [ showConditionalAuthContent, setShowConditionalAuthContent ] = useState<boolean>(isMinimized);
+
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     useEffect(() => {
         getAdaptiveAuthTemplates()
@@ -314,6 +316,10 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      * @param {AdaptiveAuthTemplateInterface} template - Adaptive authentication template.
      */
     const handleTemplateSelection = (template: AdaptiveAuthTemplateInterface) => {
+        eventPublisher.publish("application-sign-in-method-conditional-authentication-template", {
+            "template": template["name"]
+        });
+
         setIsNewlyAddedScriptTemplate(true);
         onTemplateSelect(template);
     };
@@ -334,6 +340,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             setShowScriptResetWarning(true);
             return;
         }
+
+        eventPublisher.publish("application-sign-in-method-enable-conditional-authentication");
 
         setShowConditionalAuthContent(true);
     };
