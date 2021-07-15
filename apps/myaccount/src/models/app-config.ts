@@ -143,11 +143,6 @@ export interface UIConfigInterface extends CommonUIConfigInterface {
      */
     isProfileUsernameReadonly: boolean;
     /**
-     * Title text.
-     * ex: `WSO2 Identity Server`
-     */
-    titleText?: string;
-    /**
      * TOTP authenticator apps.
      */
     authenticatorApp?: AuthenticatorAppInterface[];

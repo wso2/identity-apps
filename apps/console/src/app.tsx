@@ -30,11 +30,10 @@ import {
     Code,
     NetworkErrorModal,
     SessionManagementProvider,
-    SessionTimeoutModalTypes,
-    ThemeContext
+    SessionTimeoutModalTypes
 } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, Suspense, useContext, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { I18nextProvider, Trans } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -60,8 +59,6 @@ import { AppState } from "./features/core/store";
  * @return {React.ReactElement}
  */
 export const App: FunctionComponent<{}> = (): ReactElement => {
-
-    const { state } = useContext(ThemeContext);
 
     const dispatch = useDispatch();
 
@@ -255,22 +252,6 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
                                             <>
                                                 <Helmet>
                                                     <title>{ appTitle }</title>
-                                                    <link
-                                                        rel="shortcut icon"
-                                                        href={ `${ window["AppUtils"].getConfig().clientOrigin }/` +
-                                                        `${ window["AppUtils"].getConfig().appBase }/libs/themes/` +
-                                                        `${ state.theme }/assets/images/branding/favicon.ico` }
-                                                    />
-                                                    <link
-                                                        href={ `${ window["AppUtils"].getConfig().clientOrigin }/` +
-                                                        `${ window["AppUtils"].getConfig().appBase }/libs/themes/` +
-                                                        `${ state.theme }/theme.min.css` }
-                                                        rel="stylesheet"
-                                                        type="text/css"
-                                                    />
-                                                    <style type="text/css">
-                                                        { state.css }
-                                                    </style>
                                                 </Helmet>
                                                 <NetworkErrorModal
                                                     heading={ I18n.instance.t("common:networkErrorMessage.heading") }

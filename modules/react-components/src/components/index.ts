@@ -55,6 +55,5 @@ export * from "./switcher";
 export * from "./tab";
 export * from "./table";
 export * from "./typography";
-export * from "./theme";
 export * from "./transfer";
 export * from "./redux-forms";

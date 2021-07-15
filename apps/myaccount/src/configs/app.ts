@@ -126,6 +126,7 @@ export class Config {
         return {
             announcements: window["AppUtils"].getConfig().ui.announcements,
             appName: window["AppUtils"].getConfig().ui.appName,
+            appTitle: window["AppUtils"].getConfig().ui.appTitle,
             authenticatorApp: window["AppUtils"].getConfig().ui.authenticatorApp,
             copyrightText: window["AppUtils"].getConfig().ui.appCopyright
                 .replace("${copyright}", "\u00A9")
@@ -139,7 +140,6 @@ export class Config {
             productName: window["AppUtils"].getConfig().ui.productName,
             productVersionConfig: window["AppUtils"].getConfig().ui.productVersionConfig,
             theme: window["AppUtils"].getConfig().ui.theme,
-            titleText: window["AppUtils"].getConfig().appTitle,
             disableMFAforSuperTenantUser: window["AppUtils"].getConfig().ui.disableMFAforSuperTenantUser,
             showAppSwitchButton: window["AppUtils"].getConfig().ui.showAppSwitchButton
         };

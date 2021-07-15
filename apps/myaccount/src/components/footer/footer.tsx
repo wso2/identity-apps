@@ -18,8 +18,8 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
-import { Footer, FooterLinkInterface, ThemeContext } from "@wso2is/react-components";
-import React, { ReactElement, useContext } from "react";
+import { Footer, FooterLinkInterface } from "@wso2is/react-components";
+import React, { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { AppConstants } from "../../constants";
@@ -45,7 +45,6 @@ export const AppFooter: React.FunctionComponent<AppFooterProps> = (props: AppFoo
     const { ["data-testid"]: testId } = props;
     const { t } = useTranslation();
 
-    const { state } = useContext(ThemeContext);
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
@@ -87,9 +86,7 @@ export const AppFooter: React.FunctionComponent<AppFooterProps> = (props: AppFoo
             currentLanguage={ I18n.instance?.language }
             supportedLanguages={ supportedI18nLanguages }
             onLanguageChange={ handleLanguageSwitch }
-            copyright={ state.copyrightText && state.copyrightText !== "" ?
-                state.copyrightText
-                :
+            copyright={
                 config.ui.copyrightText
                     ? config.ui.copyrightText
                     : null

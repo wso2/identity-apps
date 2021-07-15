@@ -86,7 +86,6 @@ module.exports = (env) => {
 
     // Build configurations.
     const distFolder = path.resolve(__dirname, OUTPUT_PATH);
-    const titleText = deploymentConfig.ui.appTitle;
 
     // Paths to configs & other required files.
     const PATHS = {
@@ -433,7 +432,6 @@ module.exports = (env) => {
                     tenantPrefix: !isDeployedOnExternalServer
                         ? "<%=TENANT_AWARE_URL_PREFIX%>"
                         : "",
-                    title: titleText,
                     vwoScriptVariable: "<%= vwo_ac_id %>",
                     vwoSystemVariable: "<% String vwo_ac_id = System.getenv(\"vwo_account_id\"); %>"
                 })
@@ -444,8 +442,7 @@ module.exports = (env) => {
                     publicPath: !isRootContext
                         ? publicPath
                         : "/",
-                    template: path.join(__dirname, "src", "index.html"),
-                    title: titleText
+                    template: path.join(__dirname, "src", "index.html")
                 }),
             new HtmlWebpackPlugin({
                 excludeChunks: [ "main", "init" ],

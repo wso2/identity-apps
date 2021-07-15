@@ -34,8 +34,7 @@
         <meta name="referrer" content="no-referrer" />
 
         <link href="<%= htmlWebpackPlugin.options.publicPath %>/libs/themes/default/theme.min.css" rel="stylesheet" type="text/css"/>
-
-        <title><%= htmlWebpackPlugin.options.title %></title>
+        <link rel="shortcut icon" href="<%= htmlWebpackPlugin.options.publicPath %>/libs/themes/default/assets/images/branding/favicon.ico" />
 
         <script>
             var contextPathGlobal = "<%= htmlWebpackPlugin.options.publicPath %>";

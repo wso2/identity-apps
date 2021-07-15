@@ -354,17 +354,6 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         showOnSidePanel: true
                     },
                     {
-                        component: lazy(() => import("../pages/customize")),
-                        icon: {
-                            icon: getSidePanelIcons().overview
-                        },
-                        id: "customize",
-                        name: "Customize",
-                        path: AppConstants.getPaths().get("CUSTOMIZE"),
-                        protected: true,
-                        showOnSidePanel: false
-                    },
-                    {
                         category: "console:manage.features.sidePanel.categories.userstores",
                         children: [
                             {
