@@ -107,12 +107,12 @@ export const attributeConfig: AttributeConfig = {
         checkAttributeNameAvailability: () => { return Promise.resolve(new Map()); },
         createCustomDialect: false,
         createWizard: {
-            addPrimaryUserStore: true,
             checkOIDCAvailability: false,
             checkSCIMAvailability: false,
             customWIzard: false,
             identifyAsCustomAttrib: false,
             showDisplayOrder: true,
+            showPrimaryUserStore: true,
             showReadOnlyAttribute: true,
             showRegularExpression: true,
             showSummary: true
