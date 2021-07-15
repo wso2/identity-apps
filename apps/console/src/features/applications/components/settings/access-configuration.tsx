@@ -231,7 +231,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
      * @param {SupportedAuthProtocolTypes} protocol - The protocol to be deleted.
      */
     const handleInboundConfigSwitch = (protocol: string): void => {
-        setRequestLoading(true);
+
         deleteProtocol(appId, protocol)
             .then(() => {
                 onUpdate(appId);
@@ -256,7 +256,6 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                         ".genericError.message")
                 }));
             }).finally(() => {
-            setRequestLoading(false);
             setSelectedProtocol(undefined);
         });
     };
