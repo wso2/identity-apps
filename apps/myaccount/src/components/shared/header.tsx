@@ -26,20 +26,18 @@ import {
     Logo,
     ProductBrand,
     Header as ReusableHeader,
-    HeaderPropsInterface as ReusableHeaderPropsInterface,
-    ThemeContext
+    HeaderPropsInterface as ReusableHeaderPropsInterface
 } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
     ReactElement,
-    useContext,
     useEffect,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Image, Menu } from "semantic-ui-react";
+import { Menu } from "semantic-ui-react";
 import { AppSwitcherIcons } from "../../configs";
 import { AppConstants } from "../../constants";
 import { history } from "../../helpers";
@@ -70,8 +68,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     } = props;
 
     const dispatch = useDispatch();
-
-    const { state } = useContext(ThemeContext);
 
     const { t } = useTranslation();
 
@@ -230,27 +226,19 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             ) }
             brand={ (
                 <ProductBrand
-                    appName={
-                        (state.appName && state.appName !== "")
-                            ? state.appName
-                            : config.ui.appName
-                    }
+                    appName={ config.ui.appName }
                     style={ { marginTop: 0 } }
-                    logo={
-                        (state.logo && state.logo !== "")
-                            ? <Image src={ state.logo } style={ { maxHeight: 25 } }/>
-                            : (
-                                <Logo
-                                    className="portal-logo"
-                                    image={
-                                        resolveAppLogoFilePath(window[ "AppUtils" ].getConfig().ui.appLogoPath,
-                                            `${ window[ "AppUtils" ].getConfig().clientOrigin }/` +
-                                            `${ window[ "AppUtils" ].getConfig().appBase }/libs/themes/` +
-                                            state.theme)
-                                    }
-                                />
-                            )
-                    }
+                    logo={ (
+                        <Logo
+                            className="portal-logo"
+                            image={
+                                resolveAppLogoFilePath(window[ "AppUtils" ].getConfig().ui.appLogoPath,
+                                    `${ window[ "AppUtils" ].getConfig().clientOrigin }/` +
+                                    `${ window[ "AppUtils" ].getConfig().appBase }/libs/themes/` +
+                                    config.ui.theme.name)
+                            }
+                        />
+                    ) }
                     version={ config.ui.productVersionConfig?.versionOverride ?? config.deployment.productVersion }
                     versionUISettings={ {
                         allowSnapshot: config.ui.productVersionConfig?.allowSnapshot,

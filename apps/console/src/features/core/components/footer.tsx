@@ -20,10 +20,9 @@ import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i
 import {
     FooterLinkInterface,
     Footer as ReusableFooter,
-    FooterPropsInterface as ReusableFooterPropsInterface,
-    ThemeContext
+    FooterPropsInterface as ReusableFooterPropsInterface
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useContext } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { AppConstants } from "../constants";
@@ -50,8 +49,6 @@ export const Footer: FunctionComponent<FooterPropsInterface> = (
         showLanguageSwitcher,
         ...rest
     } = props;
-
-    const { state } = useContext(ThemeContext);
 
     const { t } = useTranslation();
 
@@ -96,11 +93,9 @@ export const Footer: FunctionComponent<FooterPropsInterface> = (
             supportedLanguages={ supportedI18nLanguages }
             onLanguageChange={ handleLanguageSwitch }
             copyright={
-                (state.copyrightText && state.copyrightText !== "")
-                    ? state.copyrightText
-                    : config.ui.appCopyright
-                        ? config.ui.appCopyright
-                        : null
+                config.ui.appCopyright
+                    ? config.ui.appCopyright
+                    : null
             }
             links={ generateFooterLinks() }
             showLanguageSwitcher={ config.ui.i18nConfigs?.showLanguageSwitcher ?? showLanguageSwitcher }

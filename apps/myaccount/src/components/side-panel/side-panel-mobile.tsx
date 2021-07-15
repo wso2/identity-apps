@@ -17,10 +17,10 @@
  */
 
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
-import { Logo, ProductBrand, ThemeContext } from "@wso2is/react-components";
-import React, { useContext } from "react";
+import { Logo, ProductBrand } from "@wso2is/react-components";
+import React from "react";
 import { useSelector } from "react-redux";
-import { Container, Divider, Image, Responsive, Sidebar } from "semantic-ui-react";
+import { Container, Divider, Responsive, Sidebar } from "semantic-ui-react";
 import { SidePanelProps } from "./side-panel";
 import { SidePanelItems } from "./side-panel-items";
 import { ConfigReducerStateInterface } from "../../models";
@@ -55,7 +55,6 @@ export const SidePanelMobile: React.FunctionComponent<SidePanelMobileProps> = (
         ["data-testid"]: testId
     } = props;
 
-    const { state } = useContext(ThemeContext);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     return (
@@ -67,32 +66,20 @@ export const SidePanelMobile: React.FunctionComponent<SidePanelMobileProps> = (
                 <Container className="mt-2">
                     <ProductBrand
                         mobile
-                        appName={
-                            (state.appName && state.appName !== "")
-                                ? state.appName
-                                : config.ui.appName
-                        }
+                        appName={ config.ui.appName }
                         style={ { marginTop: 0 } }
-                        logo={
-                            (state.logo && state.logo !== "")
-                                ? <Image src={ state.logo } style={ { maxHeight: 25 } }/>
-                                : (
-                                    <Logo
-                                        className="portal-logo"
-                                        image={
-                                            resolveAppLogoFilePath(window[ "AppUtils" ].getConfig().ui.appLogoPath,
-                                                `${ window[ "AppUtils" ].getConfig().clientOrigin }/` +
-                                                `${ window[ "AppUtils" ].getConfig().appBase }/libs/themes/` +
-                                                state.theme)
-                                        }
-                                    />
-                                )
-                        }
-                        productName={
-                            (state.productName && state.productName !== "")
-                                ? state.productName
-                                : config.ui.productName
-                        }
+                        logo={ (
+                            <Logo
+                                className="portal-logo"
+                                image={
+                                    resolveAppLogoFilePath(window[ "AppUtils" ].getConfig().ui.appLogoPath,
+                                        `${ window[ "AppUtils" ].getConfig().clientOrigin }/` +
+                                        `${ window[ "AppUtils" ].getConfig().appBase }/libs/themes/` +
+                                        config.ui.theme.name)
+                                }
+                            />
+                        ) }
+                        productName={ config.ui.productName }
                         version={ config.ui.productVersionConfig?.versionOverride ?? config.deployment.productVersion }
                         versionUISettings={ {
                             allowSnapshot: config.ui.productVersionConfig?.allowSnapshot,

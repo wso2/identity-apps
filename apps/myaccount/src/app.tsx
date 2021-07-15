@@ -31,11 +31,10 @@ import {
     ContentLoader,
     NetworkErrorModal,
     SessionManagementProvider,
-    SessionTimeoutModalTypes,
-    ThemeContext
+    SessionTimeoutModalTypes
 } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { ReactElement, Suspense, useContext, useEffect, useState } from "react";
+import React, { ReactElement, Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { I18nextProvider, Trans } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -62,14 +61,13 @@ import { EventPublisher, filterRoutes } from "./utils";
  */
 export const App = (): ReactElement => {
 
-    const { state } = useContext(ThemeContext);
-
     const dispatch = useDispatch();
 
     const userName: string = useSelector((state: AppState) => state.authenticationInformation.username);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const loginInit: boolean = useSelector((state: AppState) => state.authenticationInformation.loginInit);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
+    const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
     const UUID: string = useSelector((state: AppState) => state.authenticationInformation.profileInfo.id);
 
     const [ appRoutes, setAppRoutes ] = useState<RouteInterface[]>(getAppRoutes());
@@ -251,22 +249,7 @@ export const App = (): ReactElement => {
                                         >
                                             <>
                                                 <Helmet>
-                                                    <link
-                                                        rel="shortcut icon"
-                                                        href={ `${ window[ "AppUtils" ].getConfig().clientOrigin }/` +
-                                                        `${ window[ "AppUtils" ].getConfig().appBase }/libs/themes/` +
-                                                        `${ state.theme }/assets/images/branding/favicon.ico` }
-                                                    />
-                                                    <link
-                                                        href={ `${ window[ "AppUtils" ].getConfig().clientOrigin }/` +
-                                                        `${ window[ "AppUtils" ].getConfig().appBase }/libs/themes/` +
-                                                        `${ state.theme }/theme.min.css` }
-                                                        rel="stylesheet"
-                                                        type="text/css"
-                                                    />
-                                                    <style type="text/css">
-                                                        { state.css }
-                                                    </style>
+                                                    <title>{ appTitle }</title>
                                                 </Helmet>
                                                 <NetworkErrorModal
                                                     heading={ I18n.instance.t("common:networkErrorMessage.heading") }

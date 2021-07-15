@@ -24,7 +24,6 @@ import {
     LanguageChangeException,
     isLanguageSupported
 } from "@wso2is/i18n";
-import { ThemeProvider } from "@wso2is/react-components";
 import axios from "axios";
 import * as React from "react";
 // tslint:disable:no-submodule-imports
@@ -37,7 +36,6 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { App } from "./app";
 import { Config } from "./configs";
-import { UIConstants } from "./constants";
 import { store } from "./store";
 import { setSupportedI18nLanguages } from "./store/actions";
 import "core-js/stable";
@@ -94,15 +92,9 @@ I18n.init({
 ReactDOM.render(
     (
         <Provider store={ store }>
-            <ThemeProvider
-                initialState={ {
-                    theme: window["AppUtils"].getConfig().ui?.theme?.name ?? UIConstants.DEFAULT_THEME
-                } }
-            >
-                <BrowserRouter>
-                    <App />
-                </BrowserRouter>
-            </ThemeProvider>
+            <BrowserRouter>
+                <App/>
+            </BrowserRouter>
         </Provider>
     ),
     document.getElementById("root")
