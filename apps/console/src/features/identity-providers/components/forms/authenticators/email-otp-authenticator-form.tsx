@@ -275,7 +275,10 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
 
     return (
         <Form
-            onSubmit={ (values) => onSubmit(getUpdatedConfigurations(values)) }
+            uncontrolledForm={ false }
+            onSubmit={ (values) => {
+                onSubmit(getUpdatedConfigurations(values as EmailOTPAuthenticatorFormInitialValuesInterface));
+            } }
             initialValues={ initialValues }
             validate={ validateForm }
         >
