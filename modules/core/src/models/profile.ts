@@ -187,6 +187,10 @@ export interface ProfileSchemaInterface {
      */
     extended?: boolean;
     /**
+     * Store ID to identify schema of the attribute
+     */
+    schemaId?: string;
+    /**
      * Regular expression to validate field.
      */
     regEx?: string;
