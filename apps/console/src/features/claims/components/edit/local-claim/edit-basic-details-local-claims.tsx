@@ -42,6 +42,7 @@ import { useDispatch } from "react-redux";
 import { Divider, Grid , Form as SemanticForm } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
 import { AppConstants, history } from "../../../../core";
+import { ClaimManagementConstants } from "../../../constants";
 import { deleteAClaim, updateAClaim } from "../../../api";
 
 /**
@@ -316,8 +317,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         />
                     }
                     {
-                        claim &&
-                        <Field.CheckboxLegacy
+                        claim && claim.displayName !== ClaimManagementConstants.USER_ID &&
+                        <Field.Checkbox
                             ariaLabel="supportedByDefault"
                             name="supportedByDefault"
                             label={ t("console:manage.features.claims.local.forms.supportedByDefault.label") } 
@@ -365,8 +366,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             />
                     }
                     {
-                        claim &&
-                        <Field.CheckboxLegacy
+                        claim && claim.displayName !== ClaimManagementConstants.USER_ID &&
+                        <Field.Checkbox
                             ariaLabel="readOnly"
                             name="readOnly"
                             required={ false }
