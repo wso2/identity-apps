@@ -70,7 +70,7 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
 
     useEffect(() => {
         const userstore: UserStoreListItem[] = [];
-        if (attributeConfig.localAttributes.createWizard.addPrimaryUserStore) {
+        if (attributeConfig.localAttributes.createWizard.showPrimaryUserStore) {
             userstore.push({
                 description: "",
                 enabled: true,
