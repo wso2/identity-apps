@@ -298,21 +298,23 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         data-testid={ `${ testId }-form-description-input` }
                         hint={ t("console:manage.features.claims.local.forms.descriptionHint") }
                     />
-                    <Field.Input
-                        ariaLabel="regularExpression"
-                        inputType="resourceName"
-                        name="regularExpression"
-                        label={ t("console:manage.features.claims.local.forms.regEx.label") }
-                        required={ false }
-                        requiredErrorMessage=""
-                        placeholder={ t("console:manage.features.claims.local.forms.regEx.placeholder") }
-                        value={ claim?.regEx }
-                        ref={ regExField }
-                        data-testid={ `${ testId }-form-regex-input` }
-                        maxLength={ 50 }
-                        minLength={ 3 }
-                        hint={ t("console:manage.features.claims.local.forms.regExHint") }
-                    />
+                    { attributeConfig.localAttributes.createWizard.showRegularExpression && 
+                        <Field.Input
+                            ariaLabel="regularExpression"
+                            inputType="resourceName"
+                            name="regularExpression"
+                            label={ t("console:manage.features.claims.local.forms.regEx.label") }
+                            required={ false }
+                            requiredErrorMessage=""
+                            placeholder={ t("console:manage.features.claims.local.forms.regEx.placeholder") }
+                            value={ claim?.regEx }
+                            ref={ regExField }
+                            data-testid={ `${ testId }-form-regex-input` }
+                            maxLength={ 50 }
+                            minLength={ 3 }
+                            hint={ t("console:manage.features.claims.local.forms.regExHint") }
+                        />
+                    }
                     {
                         claim &&
                         <Field.Checkbox

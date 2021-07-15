@@ -250,10 +250,10 @@ export const getProfileSchemas = (): Promise<ProfileSchemaInterface[]> => {
                             attribute.subAttributes.map((subAttribute) => {
                                 modifiedSubAttributes.push({ ...subAttribute,  extended: true});
                             }
-                        )
+                        );
                         attribute.subAttributes = modifiedSubAttributes;
                         }
-                        schemaAttributes.push({ ...attribute, extended: true });
+                        schemaAttributes.push({ ...attribute, extended: true, schemaId: schema.id });
                         return;
                     }
                     schemaAttributes.push(attribute);

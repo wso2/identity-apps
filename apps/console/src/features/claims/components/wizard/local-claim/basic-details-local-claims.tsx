@@ -97,35 +97,6 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
         setClaimID(values?.get("claimURI").toString());
     }, [ values ]);
 
-    /**
-     * Check the availability of custom OIDC attribute names.
-     * TODO: Move constants to extension constants file
-     */
-    useEffect(() => {
-        if (!oidcMapping && !( oidcMapping === "" || claimID === oidcMapping ) ) {
-            return;
-        }
-
-        attributeConfig.localAttributes.checkAttributeNameAvailability(
-            oidcMapping, "OIDC").then(response => {
-                setNoUniqueOIDCAttrib(response.get("OIDC"));
-        });
-    }, [ oidcMapping ]);
-
-    /**
-     * Check the availability of custom SCIM attribute names.
-     * TODO: Move constants to extension constants file
-     */
-     useEffect(() => {
-        if (!scimMapping && !( scimMapping === "" || claimID === scimMapping ) ) {
-            return;
-        }
-
-        attributeConfig.localAttributes.checkAttributeNameAvailability(
-            scimMapping, "SCIM").then(response => {
-                setNoUniqueSCIMAttrib(response.get("SCIM"));
-        });
-    }, [ scimMapping ]);
 
     /**
      * This shows a popup with a delay of 500 ms.
@@ -314,6 +285,11 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                         <InlineEditInput
                                                             text={ oidcMapping } 
                                                             onChangesSaved={ (value: string) => {
+                                                                attributeConfig.localAttributes
+                                                                    .checkAttributeNameAvailability(
+                                                                        oidcMapping, "OIDC").then(response => {
+                                                                        setNoUniqueOIDCAttrib(response.get("OIDC"));
+                                                                });
                                                                 setOidcMapping(value);
                                                             } }
                                                         />
@@ -339,6 +315,11 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                         <InlineEditInput
                                                             textPrefix="urn:scim:custom:schema:"
                                                             onChangesSaved={ (value: string) => {
+                                                                attributeConfig.localAttributes
+                                                                    .checkAttributeNameAvailability(
+                                                                        scimMapping, "SCIM").then(response => {
+                                                                        setNoUniqueSCIMAttrib(response.get("SCIM"));
+                                                                });
                                                                 setScimMapping(value);
                                                             } }
                                                             text={ scimMapping } 
