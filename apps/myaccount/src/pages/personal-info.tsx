@@ -145,7 +145,7 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
  * See type definitions in {@link PersonalInfoPage}
  */
 PersonalInfoPage.defaultProps = {
-    enableNonLocalCredentialUserView: commonConfig.NonLocalCredentialUser.enableNonLocalCredentialUserView
+    enableNonLocalCredentialUserView: commonConfig.nonLocalCredentialUser.enableNonLocalCredentialUserView
 };
 
 /**

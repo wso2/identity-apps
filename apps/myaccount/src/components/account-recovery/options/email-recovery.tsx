@@ -453,5 +453,5 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
  */
 EmailRecovery.defaultProps = {
     "data-testid": "email-recovery",
-    enableEditEmail: commonConfig.AccountSecurityPage.AccountRecovery.EmailRecovery.enableEditEmail
+    enableEditEmail: commonConfig.accountSecurityPage.accountRecovery.emailRecovery.enableEditEmail
 };

@@ -243,7 +243,7 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
  * Default props for the component.
  */
 AccountSecurityPage.defaultProps = {
-    enableNonLocalCredentialUserView: commonConfig.NonLocalCredentialUser.enableNonLocalCredentialUserView
+    enableNonLocalCredentialUserView: commonConfig.nonLocalCredentialUser.enableNonLocalCredentialUserView
 };
 
 /**

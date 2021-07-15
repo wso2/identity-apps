@@ -69,6 +69,7 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
         if (!enableNonLocalCredentialUserView) {
             return;
         }
+        debugger;
 
         // Verifies if the user is a user without local credentials.
         if (profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
@@ -77,7 +78,8 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
         }
 
         // Sets user's source of sign up if the user is a federated user.
-        if (isFederatedUser && profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
+        //TODO
+        if (profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
             [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_SOURCE")]) {
             setUserSource(profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
                 [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_SOURCE")]);
@@ -116,7 +118,7 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
  * See type definitions in {@link OverviewPage}
  */
 OverviewPage.defaultProps = {
-    enableNonLocalCredentialUserView: commonConfig.NonLocalCredentialUser.enableNonLocalCredentialUserView
+    enableNonLocalCredentialUserView: commonConfig.nonLocalCredentialUser.enableNonLocalCredentialUserView
 };
 
 
