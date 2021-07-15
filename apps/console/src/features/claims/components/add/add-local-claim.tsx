@@ -247,6 +247,13 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
         setData(tempData);
         setMappedAttributesData(values);
 
+        if (!attributeConfig.localAttributes.createWizard.showPrimaryUserStore) {
+            tempData.attributeMapping.push({
+                mappedAttribute: tempData.claimURI.split("/").pop(),
+                userstore: "PRIMARY"
+            });
+        }
+
         if (!attributeConfig.localAttributes.createWizard.showSummary) {
             handleSubmit(tempData, mappedCustomAttribues);
         } else {

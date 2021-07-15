@@ -60,7 +60,7 @@ export interface AttributeConfig {
     };
     localAttributes: {
         createWizard: {
-            addPrimaryUserStore: boolean;
+            showPrimaryUserStore: boolean;
             customWIzard: boolean;
             checkOIDCAvailability: boolean;
             checkSCIMAvailability: boolean;
