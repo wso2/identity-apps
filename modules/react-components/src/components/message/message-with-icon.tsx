@@ -49,6 +49,10 @@ export interface MessageWithIconProps extends TestableComponentInterface {
      * Header of the message.
      * */
     header?: SemanticShorthandItem<MessageHeaderProps>;
+    /**
+     * Change the visibility of the message.
+     * */
+    visible?: boolean;
 
 }
 
@@ -66,6 +70,7 @@ export const MessageWithIcon: FunctionComponent<MessageWithIconProps> = (props: 
         type,
         header,
         content,
+        visible,
         [ "data-testid" ]: testId
     } = props;
 
@@ -92,34 +97,36 @@ export const MessageWithIcon: FunctionComponent<MessageWithIconProps> = (props: 
             case "info":
                 return (
                     <Message className={ classes }
-                        info
-                        header={
-                            header
-                                ? (
-                                    <Header as="h4">
-                                        <Header.Content>
-                                            <Icon name="info circle"/>
-                                            { (header) }
-                                        </Header.Content>
-                                    </Header>
-                                ) : undefined
-                        }
-                        content={
-                            header
-                                ? generateContent()
-                                : (
-                                    <div>
-                                        <Icon name="info circle"/>
-                                        { content }
-                                    </div>
-                                )
-                        }
+                             info
+                             visible={ visible }
+                             header={
+                                 header
+                                     ? (
+                                         <Header as="h4">
+                                             <Header.Content>
+                                                 <Icon name="info circle"/>
+                                                 { (header) }
+                                             </Header.Content>
+                                         </Header>
+                                     ) : undefined
+                             }
+                             content={
+                                 header
+                                     ? generateContent()
+                                     : (
+                                         <div>
+                                             <Icon name="info circle"/>
+                                             { content }
+                                         </div>
+                                     )
+                             }
                     />
                 );
             case "error":
                 return (
                     <Message
                         error
+                        visible={ visible }
                         header={
                             header
                                 ? (
@@ -147,6 +154,7 @@ export const MessageWithIcon: FunctionComponent<MessageWithIconProps> = (props: 
                 return (
                     <Message
                         success
+                        visible={ visible }
                         header={
                             header
                                 ? (
@@ -174,6 +182,7 @@ export const MessageWithIcon: FunctionComponent<MessageWithIconProps> = (props: 
                 return (
                     <Message
                         warning
+                        visible={ visible }
                         header={
                             header
                                 ? (
@@ -200,6 +209,7 @@ export const MessageWithIcon: FunctionComponent<MessageWithIconProps> = (props: 
             default:
                 return (
                     <Message
+                        visible={ visible }
                         content={ generateContent() }
                         header={ header }
                     />
@@ -218,5 +228,6 @@ export const MessageWithIcon: FunctionComponent<MessageWithIconProps> = (props: 
  * Default proptypes for the message with icon component.
  */
 MessageWithIcon.defaultProps = {
-    "data-testid": "message-info"
+    "data-testid": "message-info",
+    visible: true
 };

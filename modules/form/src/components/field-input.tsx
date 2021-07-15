@@ -128,6 +128,22 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
                         header={ props.message.header }
                     />
                 );
+            case "warning":
+                return (
+                    <MessageWithIcon
+                        type={ props.message.type }
+                        content={ props.message.content }
+                        header={ props.message.header }
+                    />
+                );
+            case "error":
+                return (
+                    <MessageWithIcon
+                        type={ props.message.type }
+                        content={ props.message.content }
+                        header={ props.message.header }
+                    />
+                );
         }
     };
 
