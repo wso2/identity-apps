@@ -322,7 +322,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
      * @param values - Form values.
      */
     const handleSubmit = (values: any): void => {
-        setRequestLoading(true);
+
         updateApplicationDetails({ id: appId, ...values.general })
             .then(() => {
                 handleInboundConfigFormSubmit(values.inbound, selectedProtocol);
@@ -346,9 +346,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     message: t("console:develop.features.applications.notifications.updateApplication.genericError" +
                         ".message")
                 }));
-            }).finally(() => {
-            setRequestLoading(false);
-        });
+            });
     };
 
     /**
