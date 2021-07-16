@@ -317,18 +317,19 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         />
                     }
                     {
-                        claim && claim.displayName !== ClaimManagementConstants.USER_ID &&
-                        <Field.Checkbox
-                            ariaLabel="supportedByDefault"
-                            name="supportedByDefault"
-                            label={ t("console:manage.features.claims.local.forms.supportedByDefault.label") } 
-                            required={ false }
-                            value={ claim?.supportedByDefault ? ["supportedByDefault"] : [] }
-                            listen={ (values) => {
-                                setIsShowDisplayOrder(!!values?.supportedByDefault);
-                            } }
-                            data-testid={ `${testId}-form-supported-by-default-input` }
-                        />
+                        claim && claim.displayName !== ClaimManagementConstants.USER_ID && (
+                            <Field.Checkbox
+                                ariaLabel="supportedByDefault"
+                                name="supportedByDefault"
+                                label={ t("console:manage.features.claims.local.forms.supportedByDefault.label") }
+                                required={ false }
+                                value={ claim?.supportedByDefault ? ["supportedByDefault"] : [] }
+                                listen={ (values) => {
+                                    setIsShowDisplayOrder(!!values?.supportedByDefault);
+                                } }
+                                data-testid={ `${testId}-form-supported-by-default-input` }
+                            />
+                        )
                     }
                     {
                         attributeConfig.editAttributes.showDisplayOrderInput && isShowDisplayOrder
@@ -366,16 +367,17 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             />
                     }
                     {
-                        claim && claim.displayName !== ClaimManagementConstants.USER_ID &&
-                        <Field.Checkbox
-                            ariaLabel="readOnly"
-                            name="readOnly"
-                            required={ false }
-                            label={ t("console:manage.features.claims.local.forms.readOnly.label") }
-                            requiredErrorMessage=""
-                            value={ claim?.readOnly ? [ "readOnly" ] : [] }
-                            data-testid={ `${ testId }-form-readonly-checkbox` }
-                        />
+                        claim && claim.displayName !== ClaimManagementConstants.USER_ID && (
+                            <Field.Checkbox
+                                ariaLabel="readOnly"
+                                name="readOnly"
+                                required={ false }
+                                label={ t("console:manage.features.claims.local.forms.readOnly.label") }
+                                requiredErrorMessage=""
+                                value={ claim?.readOnly ? [ "readOnly" ] : [] }
+                                data-testid={ `${ testId }-form-readonly-checkbox` }
+                            />
+                        )
                     }
                     <Field.Button
                         ariaLabel="submit"

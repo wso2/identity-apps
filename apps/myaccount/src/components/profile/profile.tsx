@@ -1028,7 +1028,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                   data-testid={ `${testId}-schema-list` }>
                 {
                     isProfileInfoLoading || profileSchemaLoader
-                        ? null : (
+                        ? null
+                        : (
                             <List.Item key={profileSchema.length} className="inner-list-item"
                                        data-testid={`${testId}-schema-list-item`}>
                                 <Grid padded={true}>

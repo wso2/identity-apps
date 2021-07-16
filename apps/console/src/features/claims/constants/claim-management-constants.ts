@@ -134,5 +134,5 @@ export class ClaimManagementConstants {
         { name: "Core 1.0 Schema", uri: SCIMConfigs.scim.core1Schema }
     ]
 
-    public static readonly USER_ID = "User ID";
+    public static readonly USER_ID: string = "User ID";
 }
