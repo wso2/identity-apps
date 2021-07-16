@@ -16,6 +16,8 @@
  * under the License.
  */
 
+export * from "./authenticator-grid";
+export * from "./edit-multi-factor-authenticator";
 export * from "./identity-provider-list";
 export * from "./meta";
 export * from "./identity-provider-edit";

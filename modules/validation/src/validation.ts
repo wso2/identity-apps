@@ -18,7 +18,7 @@
  */
 
 import Axios from "axios";
-import Joi from "joi";
+import Joi, { ValidationResult } from "joi";
 
 type ValidationFunction = (value: string) => boolean;
 
@@ -120,4 +120,29 @@ export const resourceName: ValidationFunction = (value: string): boolean => {
         return false;
     }
     return true;
+};
+
+/**
+ * Checks if the passed in value is an integer.
+ *
+ * @example
+ * // returns false
+ * FormValidation.isInteger(5.443);
+ * @example
+ * // returns true
+ * FormValidation.isInteger(5);
+ *
+ * @see {@link https://joi.dev/api/?v=17.4.1#numberinteger}
+ *
+ * @param {number} value - Value to check.
+ *
+ * @return {boolean}
+ */
+export const isInteger = (value: number): boolean => {
+
+    const result: ValidationResult = Joi.number()
+        .integer()
+        .validate(value);
+    
+    return !result.error;
 };

@@ -17,31 +17,24 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import {
-    ListLayout,
-    PageLayout,
-    PrimaryButton
-} from "@wso2is/react-components";
-import find from "lodash-es/find";
+import { GridLayout, ListLayout, PageLayout, PrimaryButton, SearchWithFilterLabels } from "@wso2is/react-components";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "../../../extensions/configs";
+import { AdvancedSearchWithBasicFilters, AppConstants, UIConstants, history } from "../../core";
+import { getAuthenticatorTags, getAuthenticators, getIdentityProviderList } from "../api";
+import { AuthenticatorGrid, IdentityProviderList, handleGetIDPListCallError } from "../components";
+import { AuthenticatorMeta } from "../meta";
 import {
-    AdvancedSearchWithBasicFilters,
-    AppConstants,
-    AppState,
-    PortalDocumentationStructureInterface,
-    UIConstants,
-    history,
-    setHelpPanelDocsContentURL
-} from "../../core";
-import { getIdentityProviderList } from "../api";
-import { IdentityProviderList, handleGetIDPListCallError } from "../components";
-import { IdentityProviderManagementConstants } from "../constants";
-import { IdentityProviderListResponseInterface } from "../models";
+    AuthenticatorInterface,
+    AuthenticatorTypes,
+    IdentityProviderInterface,
+    IdentityProviderListResponseInterface
+} from "../models";
+import { IdentityProviderManagementUtils } from "../utils";
 
 /**
  * Proptypes for the IDP edit page component.
@@ -72,7 +65,9 @@ const IDENTITY_PROVIDER_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
 ];
 
 /**
- * Overview page.
+ * Identity Providers listing page component.
+ *
+ * @param {IDPPropsInterface} props - Props injected to the component.
  *
  * @return {React.ReactElement}
  */
@@ -84,38 +79,165 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
         [ "data-testid" ]: testId
     } = props;
 
-    const dispatch = useDispatch();
     const { t } = useTranslation();
-
-    const helpPanelDocStructure: PortalDocumentationStructureInterface = useSelector(
-        (state: AppState) => state.helpPanel.docStructure);
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
         IDENTITY_PROVIDER_LIST_SORTING_OPTIONS[ 0 ]
     );
+    const [ hasNextPage, setHasNextPage ] = useState<boolean>(undefined);
     const [ idpList, setIdPList ] = useState<IdentityProviderListResponseInterface>({});
+    const [ authenticators, setAuthenticators ] = useState<AuthenticatorInterface[]>([]);
+    const [ localAuthenticators, setLocalAuthenticators ] = useState<AuthenticatorInterface[]>([]);
     const [ listOffset, setListOffset ] = useState<number>(0);
-    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
-    const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(false);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(undefined);
+    const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(undefined);
+    const [
+        isAuthenticatorFetchRequestRequestLoading,
+        setIsAuthenticatorFetchRequestRequestLoading
+    ] = useState<boolean>(undefined);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
+    const [ filterTags, setFilterTags ] = useState<string[]>([]);
+    const [ showFilteredList, setShowFilteredList ] = useState<boolean>(false);
+    const [ isPaginating, setIsPaginating ] = useState<boolean>(false);
+    const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
 
     /**
-     * Set the default doc content URL for the tab.
+     * Checks if the listing view defined in the config is the new connections view.
      */
     useEffect(() => {
-        if (isEmpty(helpPanelDocStructure)) {
+
+        if (useNewConnectionsView !== undefined) {
             return;
         }
 
-        const overviewDocs = get(helpPanelDocStructure, IdentityProviderManagementConstants.IDP_OVERVIEW_DOCS_KEY);
+        // Set the list item limit if legacy view is used.
+        if (!identityProviderConfig.useNewConnectionsView) {
+            setListItemLimit(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
+        }
 
-        if (!overviewDocs) {
+        setUseNewConnectionsView(identityProviderConfig.useNewConnectionsView);
+    }, [ identityProviderConfig ]);
+
+    /**
+     * Fetches the local authenticators and stores them in the internal state.
+     */
+    useEffect(() => {
+
+        // If the listing view is legacy (list) view, no need to fetch local authenticators.
+        if (useNewConnectionsView !== true) {
             return;
         }
 
-        dispatch(setHelpPanelDocsContentURL(overviewDocs));
-    }, [ helpPanelDocStructure, dispatch ]);
+        setIsAuthenticatorFetchRequestRequestLoading(true);
+
+        getAuthenticators(null, AuthenticatorTypes.LOCAL)
+            .then((response: AuthenticatorInterface[]) => {
+
+                const moderated: AuthenticatorInterface[] = [];
+
+                response.forEach((authenticator: AuthenticatorInterface) => {
+                    
+                    // If type is not local return.
+                    if (authenticator.type !== AuthenticatorTypes.LOCAL) {
+                        return;
+                    }
+
+                    const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(identityProviderConfig
+                        .authenticators, authenticator.id);
+
+                    // If authenticator is configurable, evaluate...
+                    if (authenticatorConfig && authenticatorConfig.isEnabled) {
+
+                        // If configurations are not available for the moment, push to the end of the array.
+                        if (authenticatorConfig.isComingSoon) {
+                            moderated.push(authenticator);
+
+                            return;
+                        }
+
+                        // If configs are available, keep at the beginning of array.
+                        moderated.unshift(authenticator);
+                    }
+                });
+
+                setLocalAuthenticators(moderated);
+                setListItemLimit(UIConstants.DEFAULT_RESOURCE_GRID_ITEM_LIMIT - moderated.length);
+            })
+            .catch((error) => {
+                handleGetIDPListCallError(error);
+            })
+            .finally(() => {
+                setIsAuthenticatorFetchRequestRequestLoading(false);
+            });
+    }, [ useNewConnectionsView ]);
+
+    /**
+     * Fetches the available filter tags from the authenticators meta API.
+     */
+    useEffect(() => {
+        
+        // If the listing view is legacy (list) view, no need to fetch filter tags.
+        if (useNewConnectionsView !== true || !isEmpty(filterTags)) {
+            return;
+        }
+
+        getAuthenticatorTags()
+            .then((response: string[]) => {
+                setFilterTags(response.filter((tag: string) => AuthenticatorMeta.getAllowedFilterTags().includes(tag)));
+            })
+            .catch(() => {
+                // No need to show UI errors here.
+                // Add debug logs here one a logger is added.
+                // Tracked here https://github.com/wso2/product-is/issues/11650.
+            });
+    }, [ useNewConnectionsView ]);
+
+    /**
+     * Called on every `listOffset` & `listItemLimit` change.
+     */
+    useEffect(() => {
+
+        if (!listItemLimit) {
+            return;
+        }
+
+        getIdPList(listItemLimit, listOffset, null, false);
+    }, [ listOffset, listItemLimit ]);
+
+    /**
+     * Get all authenticators in the server from `Authenticators API`.
+     *
+     * @param {string} filter - Search filter.
+     */
+    const getAllAuthenticators = (filter?: string): void => {
+
+        setIsAuthenticatorFetchRequestRequestLoading(true);
+
+        getAuthenticators(filter)
+            .then((response: AuthenticatorInterface[]) => {
+                setAuthenticators(
+                    response.filter((authenticator: AuthenticatorInterface) => {
+
+                        if (authenticator.type === AuthenticatorTypes.LOCAL) {
+                            const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(
+                                identityProviderConfig.authenticators, authenticator.id);
+
+                            if (!authenticatorConfig) {
+                                return false;
+                            }
+
+                            return authenticatorConfig.isEnabled;
+                        }
+
+                        return true;
+                    })
+                );
+            })
+            .finally(() => {
+                setIsAuthenticatorFetchRequestRequestLoading(false);
+            });
+    };
 
     /**
      * Retrieves the list of identity providers.
@@ -123,12 +245,46 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
      * @param {number} limit - List limit.
      * @param {number} offset - List offset.
      * @param {string} filter - Search query.
+     * @param {boolean} append - Should append items to the end?.
      */
-    const getIdPList = (limit: number, offset: number, filter: string): void => {
-        setIdPListRequestLoading(true);
+    const getIdPList = (limit: number, offset: number, filter: string, append: boolean): void => {
 
-        getIdentityProviderList(limit, offset, filter)
-            .then((response) => {
+        setIdPListRequestLoading(true);
+        
+        if (append) {
+            setIsPaginating(true);
+        }
+
+        getIdentityProviderList(limit, offset, filter, "federatedAuthenticators")
+            .then((response: IdentityProviderListResponseInterface) => {
+
+                setHasNextPage(response?.links
+                    && Array.isArray(response.links)
+                    && response.links[ 0 ]
+                    && response.links[ 0 ].rel === "next");
+
+                const oldIdPList: IdentityProviderInterface[] = (idpList?.identityProviders
+                    && Array.isArray(idpList.identityProviders)
+                    && idpList.identityProviders.length > 0)
+                    ? idpList.identityProviders
+                    : [];
+                
+                const idpListFromResponse: IdentityProviderInterface[] = response?.identityProviders
+                    ? response.identityProviders
+                    : [];
+
+                if (append) {
+                    response.identityProviders = [
+                        ...oldIdPList,
+                        ...idpListFromResponse
+                    ];
+                } else {
+                    response.identityProviders = [
+                        ...localAuthenticators,
+                        ...idpListFromResponse
+                    ];
+                }
+
                 setIdPList(response);
             })
             .catch((error) => {
@@ -136,15 +292,61 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
             })
             .finally(() => {
                 setIdPListRequestLoading(false);
+                setIsPaginating(false);
             });
     };
 
     /**
-     * Called on every `listOffset` & `listItemLimit` change.
+     * Handles identity provider delete action.
      */
-    useEffect(() => {
-        getIdPList(listItemLimit, listOffset, null);
-    }, [ listOffset, listItemLimit ]);
+    const handleIdentityProviderDelete = (): void => {
+
+        getIdPList(listItemLimit, listOffset, null, false);
+    };
+
+    /**
+     * Handles the `onSearchQueryClear` callback action.
+     */
+    const handleSearchQueryClear = (): void => {
+
+        setSearchQuery("");
+        setFilterTags([]);
+        getIdPList(listItemLimit, listOffset, null, false);
+        setTriggerClearQuery(!triggerClearQuery);
+        setShowFilteredList(false);
+    };
+
+    /**
+     * Handles Connection grid filter.
+     *
+     * @param {string} query - Search query.
+     * @param {string[]} selectedFilters - Selected filters.
+     */
+    const handleConnectionGridFilter = (query: string, selectedFilters: string[]): void => {
+
+        // Update the internal state to manage placeholders etc.
+        setSearchQuery(query);
+        // Filter out the templates.
+        getAllAuthenticators(IdentityProviderManagementUtils.buildAuthenticatorsFilterQuery(query, selectedFilters));
+        
+        if (isEmpty(query) && isEmpty(selectedFilters)) {
+            setShowFilteredList(false);
+        } else {
+            setShowFilteredList(true);
+        }
+    };
+
+    /**
+     * Handles Grid pagination.
+     */
+    const handlePagination = (): void => {
+
+        if (!hasNextPage) {
+            return;
+        }
+
+        getIdPList(UIConstants.DEFAULT_RESOURCE_GRID_ITEM_LIMIT, listItemLimit, null, true);
+    };
 
     /**
      * Sets the list sorting strategy.
@@ -153,21 +355,11 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
      * @param {DropdownProps} data - Dropdown data.
      */
     const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>,
-        data: DropdownProps): void => {
-        setListSortingStrategy(find(IDENTITY_PROVIDER_LIST_SORTING_OPTIONS, (option) => {
+                                               data: DropdownProps): void => {
+
+        setListSortingStrategy(IDENTITY_PROVIDER_LIST_SORTING_OPTIONS.find((option) => {
             return data.value === option.value;
         }));
-    };
-
-    /**
-     * Handles the `onFilter` callback action from the
-     * identity provider search component.
-     *
-     * @param {string} query - Search query.
-     */
-    const handleIdentityProviderFilter = (query: string): void => {
-        setSearchQuery(query);
-        getIdPList(listItemLimit, listOffset, query);
     };
 
     /**
@@ -187,133 +379,233 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
      * @param {DropdownProps} data - Dropdown data.
      */
     const handleItemsPerPageDropdownChange = (event: MouseEvent<HTMLAnchorElement>,
-        data: DropdownProps): void => {
+                                              data: DropdownProps): void => {
         setListItemLimit(data.value as number);
     };
 
     /**
-     * Handles identity provider delete action.
+     * Handles the `onFilter` callback action from the
+     * identity provider search component.
+     *
+     * @param {string} query - Search query.
      */
-    const handleIdentityProviderDelete = (): void => {
-        getIdPList(listItemLimit, listOffset, null);
-    };
+    const handleIdentityProviderListFilter = (query: string): void => {
 
-    /**
-     * Handles the `onSearchQueryClear` callback action.
-     */
-    const handleSearchQueryClear = (): void => {
-        setSearchQuery("");
-        getIdPList(listItemLimit, listOffset, null);
-        setTriggerClearQuery(!triggerClearQuery);
+        setSearchQuery(query);
+        getIdPList(listItemLimit, listOffset, query, false);
     };
 
     return (
         <PageLayout
             action={
-                (isIdPListRequestLoading || !(!searchQuery && idpList?.totalResults <= 0))
-                && (
+                (isIdPListRequestLoading
+                    || isAuthenticatorFetchRequestRequestLoading
+                    || !(!searchQuery && idpList?.identityProviders?.length <= 0)) && (
                     <PrimaryButton
                         onClick={ (): void => {
                             history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));
                         } }
                         data-testid={ `${ testId }-add-button` }
                     >
-                        <Icon name="add" />{ t("console:develop.features.authenticationProvider.buttons.addIDP") }
+                        <Icon name="add"/>
+                        {
+                            useNewConnectionsView
+                                ? t("console:develop.features.authenticationProvider.buttons.addIDP")
+                                : t("console:develop.features.idp.buttons.addIDP")
+                        }
                     </PrimaryButton>
                 )
             }
-            title={ t("console:develop.pages.authenticationProvider.title") }
-            description={ t("console:develop.pages.authenticationProvider.subTitle") }
+            title={
+                useNewConnectionsView
+                    ? t("console:develop.pages.authenticationProvider.title")
+                    : t("console:develop.pages.idp.title")
+            }
+            description={
+                useNewConnectionsView
+                    ? t("console:develop.pages.authenticationProvider.subTitle")
+                    : t("console:develop.pages.idp.subTitle")
+            }
             data-testid={ `${ testId }-page-layout` }
         >
-            <ListLayout
-                advancedSearch={
-                    <AdvancedSearchWithBasicFilters
-                        onFilter={ handleIdentityProviderFilter }
-                        filterAttributeOptions={ [
-                            {
-                                key: 0,
-                                text: t("common:name"),
-                                value: "name"
-                            }
-                        ] }
-                        filterAttributePlaceholder={
-                            t("console:develop.features.authenticationProvider.advancedSearch.form.inputs." +
-                                "filterAttribute.placeholder")
-                        }
-                        filterConditionsPlaceholder={
-                            t("console:develop.features.authenticationProvider.advancedSearch.form.inputs." +
-                                "filterCondition.placeholder")
-                        }
-                        filterValuePlaceholder={
-                            t("console:develop.features.authenticationProvider.advancedSearch.form.inputs." +
-                                "filterValue.placeholder")
-                        }
-                        placeholder={ t("console:develop.features.authenticationProvider.advancedSearch.placeholder") }
-                        defaultSearchAttribute="name"
-                        defaultSearchOperator="co"
-                        triggerClearQuery={ triggerClearQuery }
-                        data-testid={ `${ testId }-advance-search` }
-                    />
-                }
-                currentListSize={ idpList.count }
-                listItemLimit={ listItemLimit }
-                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                onPageChange={ handlePaginationChange }
-                onSortStrategyChange={ handleListSortingStrategyOnChange }
-                showPagination={ true }
-                showTopActionPanel={ isIdPListRequestLoading || !(!searchQuery && idpList?.totalResults <= 0) }
-                sortOptions={ IDENTITY_PROVIDER_LIST_SORTING_OPTIONS }
-                sortStrategy={ listSortingStrategy }
-                totalPages={ Math.ceil(idpList.totalResults / listItemLimit) }
-                totalListSize={ idpList.totalResults }
-                data-testid={ `${ testId }-list-layout` }
-            >
-                <IdentityProviderList
-                    advancedSearch={
-                        <AdvancedSearchWithBasicFilters
-                            onFilter={ handleIdentityProviderFilter }
-                            filterAttributeOptions={ [
-                                {
-                                    key: 0,
-                                    text: t("common:name"),
-                                    value: "name"
+            {
+                useNewConnectionsView
+                    ? (
+                        <GridLayout
+                            search={ (
+                                <SearchWithFilterLabels
+                                    searchInput={ (
+                                        <AdvancedSearchWithBasicFilters
+                                            fill="white"
+                                            onFilter={ (query: string) => {
+                                                handleConnectionGridFilter(query, []);
+                                            } }
+                                            filterAttributeOptions={ [
+                                                {
+                                                    key: 0,
+                                                    text: t("common:name"),
+                                                    value: "name"
+                                                }
+                                            ] }
+                                            // Only 'eq' and 'sw operations are supported in Authenticators API.
+                                            filterConditionOptions={ [
+                                                {
+                                                    key: 0,
+                                                    text: t("common:startsWith"),
+                                                    value: "sw"
+                                                },
+                                                {
+                                                    key: 1,
+                                                    text: t("common:equals"),
+                                                    value: "eq"
+                                                }
+                                            ] }
+                                            filterAttributePlaceholder={
+                                                t("console:develop.features.authenticationProvider" +
+                                                    ".advancedSearch.form.inputs.filterAttribute.placeholder")
+                                            }
+                                            filterConditionsPlaceholder={
+                                                t("console:develop.features.authenticationProvider" +
+                                                    ".advancedSearch.form.inputs.filterCondition.placeholder")
+                                            }
+                                            filterValuePlaceholder={
+                                                t("console:develop.features.authenticationProvider" +
+                                                    ".advancedSearch.form.inputs.filterValue.placeholder")
+                                            }
+                                            placeholder={
+                                                t("console:develop.features.authenticationProvider" +
+                                                    ".advancedSearch.placeholder")
+                                            }
+                                            defaultSearchAttribute="name"
+                                            defaultSearchOperator="sw"
+                                            triggerClearQuery={ triggerClearQuery }
+                                            data-testid={ `${ testId }-advance-search` }
+                                        />
+                                    ) }
+                                    filterLabels={ filterTags }
+                                    onFilter={ (_, selectedFilters: string[]) => {
+                                        handleConnectionGridFilter(searchQuery, selectedFilters);
+                                    } }
+                                    data-testid={ `${ testId }-search` }
+                                />
+                            ) }
+                            paginate={ () => handlePagination() }
+                        >
+                            <AuthenticatorGrid
+                                isLoading={ isAuthenticatorFetchRequestRequestLoading || isIdPListRequestLoading }
+                                authenticators={
+                                    showFilteredList
+                                        ? authenticators
+                                        : idpList?.identityProviders
                                 }
-                            ] }
-                            filterAttributePlaceholder={
-                                t("console:develop.features.authenticationProvider.advancedSearch." +
-                                    "form.inputs.filterAttribute" +
-                                    ".placeholder")
+                                onEmptyListPlaceholderActionClick={ () => {
+                                    history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));
+                                } }
+                                isFiltering={ showFilteredList }
+                                isPaginating={ isPaginating }
+                                onIdentityProviderDelete={ handleIdentityProviderDelete }
+                                onSearchQueryClear={ handleSearchQueryClear }
+                                searchQuery={ searchQuery }
+                                data-testid={ `${ testId }-list` }
+                            />
+                        </GridLayout>
+                    )
+                    : (
+                        <ListLayout
+                            advancedSearch={
+                                <AdvancedSearchWithBasicFilters
+                                    onFilter={ handleIdentityProviderListFilter }
+                                    filterAttributeOptions={ [
+                                        {
+                                            key: 0,
+                                            text: t("common:name"),
+                                            value: "name"
+                                        }
+                                    ] }
+                                    filterAttributePlaceholder={
+                                        t("console:develop.features.authenticationProvider" +
+                                            ".advancedSearch.form.inputs.filterAttribute.placeholder")
+                                    }
+                                    filterConditionsPlaceholder={
+                                        t("console:develop.features.authenticationProvider" +
+                                            ".advancedSearch.form.inputs.filterCondition.placeholder")
+                                    }
+                                    filterValuePlaceholder={
+                                        t("console:develop.features.authenticationProvider" +
+                                            ".advancedSearch.form.inputs.filterValue.placeholder")
+                                    }
+                                    placeholder={
+                                        t("console:develop.features.authenticationProvider" +
+                                            ".advancedSearch.placeholder")
+                                    }
+                                    defaultSearchAttribute="name"
+                                    defaultSearchOperator="co"
+                                    triggerClearQuery={ triggerClearQuery }
+                                    data-testid={ `${ testId }-advance-search` }
+                                />
                             }
-                            filterConditionsPlaceholder={
-                                t("console:develop.features.authenticationProvider.advancedSearch." +
-                                    "form.inputs.filterCondition" +
-                                    ".placeholder")
+                            currentListSize={ idpList.count }
+                            listItemLimit={ listItemLimit }
+                            onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                            onPageChange={ handlePaginationChange }
+                            onSortStrategyChange={ handleListSortingStrategyOnChange }
+                            showPagination={ true }
+                            showTopActionPanel={
+                                isIdPListRequestLoading || !(!searchQuery && idpList?.totalResults <= 0)
                             }
-                            filterValuePlaceholder={
-                                t("console:develop.features.authenticationProvider.advancedSearch." +
-                                    "form.inputs.filterValue" +
-                                    ".placeholder")
-                            }
-                            placeholder={ t("console:develop.features.authenticationProvider." +
-                                "advancedSearch.placeholder") }
-                            defaultSearchAttribute="name"
-                            defaultSearchOperator="co"
-                            triggerClearQuery={ triggerClearQuery }
-                            data-testid={ `${ testId }-advance-search` }
-                        />
-                    }
-                    isLoading={ isIdPListRequestLoading }
-                    list={ idpList }
-                    onEmptyListPlaceholderActionClick={
-                        () => history.push(AppConstants.getPaths().get("IDP_TEMPLATES"))
-                    }
-                    onIdentityProviderDelete={ handleIdentityProviderDelete }
-                    onSearchQueryClear={ handleSearchQueryClear }
-                    searchQuery={ searchQuery }
-                    data-testid={ `${ testId }-list` }
-                />
-            </ListLayout>
+                            sortOptions={ IDENTITY_PROVIDER_LIST_SORTING_OPTIONS }
+                            sortStrategy={ listSortingStrategy }
+                            totalPages={ Math.ceil(idpList.totalResults / listItemLimit) }
+                            totalListSize={ idpList.totalResults }
+                            data-testid={ `${ testId }-list-layout` }
+                        >
+                            <IdentityProviderList
+                                advancedSearch={
+                                    <AdvancedSearchWithBasicFilters
+                                        onFilter={ handleIdentityProviderListFilter }
+                                        filterAttributeOptions={ [
+                                            {
+                                                key: 0,
+                                                text: t("common:name"),
+                                                value: "name"
+                                            }
+                                        ] }
+                                        filterAttributePlaceholder={
+                                            t("console:develop.features.authenticationProvider.advancedSearch." +
+                                                "form.inputs.filterAttribute" +
+                                                ".placeholder")
+                                        }
+                                        filterConditionsPlaceholder={
+                                            t("console:develop.features.authenticationProvider.advancedSearch." +
+                                                "form.inputs.filterCondition" +
+                                                ".placeholder")
+                                        }
+                                        filterValuePlaceholder={
+                                            t("console:develop.features.authenticationProvider.advancedSearch." +
+                                                "form.inputs.filterValue" +
+                                                ".placeholder")
+                                        }
+                                        placeholder={ t("console:develop.features.authenticationProvider." +
+                                            "advancedSearch.placeholder") }
+                                        defaultSearchAttribute="name"
+                                        defaultSearchOperator="co"
+                                        triggerClearQuery={ triggerClearQuery }
+                                        data-testid={ `${ testId }-advance-search` }
+                                    />
+                                }
+                                isLoading={ isIdPListRequestLoading }
+                                list={ idpList }
+                                onEmptyListPlaceholderActionClick={
+                                    () => history.push(AppConstants.getPaths().get("IDP_TEMPLATES"))
+                                }
+                                onIdentityProviderDelete={ handleIdentityProviderDelete }
+                                onSearchQueryClear={ handleSearchQueryClear }
+                                searchQuery={ searchQuery }
+                                data-testid={ `${ testId }-list` }
+                            />
+                        </ListLayout>
+                    )
+            }
         </PageLayout>
     );
 };

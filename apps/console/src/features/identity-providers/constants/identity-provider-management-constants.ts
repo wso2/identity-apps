@@ -105,6 +105,31 @@ export class IdentityProviderManagementConstants {
     };
 
     /**
+     * Email OTP Authenticator Settings Form element constraints.
+     * @type {Record<string, string | number>}
+     */
+    public static readonly EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: {
+        EXPIRY_TIME_MAX_LENGTH: number;
+        EXPIRY_TIME_MAX_VALUE: number;
+        EXPIRY_TIME_MIN_LENGTH: number;
+        EXPIRY_TIME_MIN_VALUE: number;
+        OTP_LENGTH_MAX_LENGTH: number;
+        OTP_LENGTH_MAX_VALUE: number;
+        OTP_LENGTH_MIN_LENGTH: number;
+        OTP_LENGTH_MIN_VALUE: number;
+    } = {
+
+        EXPIRY_TIME_MAX_LENGTH: 10000,
+        EXPIRY_TIME_MAX_VALUE: 86400,
+        EXPIRY_TIME_MIN_LENGTH: 1,
+        EXPIRY_TIME_MIN_VALUE: 1,
+        OTP_LENGTH_MAX_LENGTH: 2,
+        OTP_LENGTH_MAX_VALUE: 10,
+        OTP_LENGTH_MIN_LENGTH: 1,
+        OTP_LENGTH_MIN_VALUE: 4
+    };
+
+    /**
      * Google Scope mappings.
      * @type {Record<string, string>}
      */
@@ -206,10 +231,26 @@ export class IdentityProviderManagementConstants {
         "the required identity provider templates list.";
     public static readonly IDENTITY_PROVIDER_JIT_PROVISIONING_UPDATE_ERROR: string = "An error occurred while" +
         " updating the JIT provisioning configurations of the identity provider.";
-    public static readonly LOCAL_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
+    public static readonly LOCAL_AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while fetching local authenticators.";
-    public static readonly LOCAL_AUTHENTICATOR_FETCH_ERROR: string = "An error occurred while fetching the local" +
+    public static readonly LOCAL_AUTHENTICATORS_FETCH_ERROR: string = "An error occurred while fetching the local" +
         "authenticators.";
+    public static readonly AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
+        "status code while fetching the authenticators.";
+    public static readonly AUTHENTICATORS_FETCH_ERROR: string = "An error occurred while fetching the " +
+        "authenticators.";
+    public static readonly AUTHENTICATOR_TAGS_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
+        "status code while fetching the authenticator tags.";
+    public static readonly AUTHENTICATOR_TAGS_FETCH_ERROR: string = "An error occurred while fetching the " +
+        "authenticator tags.";
+    public static readonly MULTI_FACTOR_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
+        "status code while fetching the multi-factor authenticator.";
+    public static readonly MULTI_FACTOR_AUTHENTICATOR_FETCH_ERROR: string = "An error occurred while fetching the " +
+        "multi-factor authenticator.";
+    public static readonly MULTI_FACTOR_AUTHENTICATOR_UPDATE_INVALID_STATUS_CODE_ERROR: string = "Received an " +
+        "invalid status code while updating the multi-factor authenticator.";
+    public static readonly MULTI_FACTOR_AUTHENTICATOR_UPDATE_ERROR: string = "An error occurred while updating the " +
+        "multi-factor authenticator.";
     public static readonly COMBINED_AUTHENTICATOR_FETCH_ERROR: string = "An error occurred while fetching the local" +
         "and federated authenticators.";
     public static readonly IDENTITY_PROVIDER_CLAIMS_UPDATE_ERROR: string = "An error occurred while updating claims " +
@@ -223,6 +264,7 @@ export class IdentityProviderManagementConstants {
     public static readonly X509_AUTHENTICATOR: string = "x509CertificateAuthenticator";
     public static readonly SESSION_EXECUTOR_AUTHENTICATOR: string = "SessionExecutor";
     public static readonly TOTP_AUTHENTICATOR: string = "totp";
+    public static readonly EMAIL_OTP_AUTHENTICATOR: string = "email-otp-authenticator";
     public static readonly FIDO_AUTHENTICATOR: string = "FIDOAuthenticator";
     public static readonly BASIC_AUTHENTICATOR = "BasicAuthenticator";
     public static readonly IDENTIFIER_FIRST_AUTHENTICATOR = "IdentifierExecutor";
@@ -241,6 +283,7 @@ export class IdentityProviderManagementConstants {
     public static readonly X509_CERTIFICATE_AUTHENTICATOR_ID: string = "eDUwOUNlcnRpZmljYXRlQXV0aGVudGljYXRvcg";
     public static readonly BASIC_AUTH_AUTHENTICATOR_ID: string = "QmFzaWNBdXRoUmVxdWVzdFBhdGhBdXRoZW50aWNhdG9y";
     public static readonly OAUTH_BEARER_AUTHENTICATOR_ID: string = "T0F1dGhSZXF1ZXN0UGF0aEF1dGhlbnRpY2F0b3I";
+    public static readonly EMAIL_OTP_AUTHENTICATOR_ID: string = "ZW1haWwtb3RwLWF1dGhlbnRpY2F0b3I";
 
     // Known Social authenticator IDs.
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_ID: string = "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I";

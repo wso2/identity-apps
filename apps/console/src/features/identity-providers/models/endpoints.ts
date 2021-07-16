@@ -20,6 +20,9 @@
  * Interface for the IDP Management feature resource endpoints.
  */
 export interface IDPResourceEndpointsInterface {
+    authenticators: string;
+    authenticatorTags: string;
     identityProviders: string;
     localAuthenticators: string;
+    multiFactorAuthenticators: string;
 }

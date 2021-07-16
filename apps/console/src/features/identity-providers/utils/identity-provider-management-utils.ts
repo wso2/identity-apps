@@ -28,16 +28,17 @@ import isEmpty from "lodash-es/isEmpty";
 import { identityProviderConfig } from "../../../extensions";
 import { DocPanelUICardInterface, store } from "../../core";
 import { getFederatedAuthenticatorsList, getIdentityProviderList, getLocalAuthenticators } from "../api";
-import { getSelectedFederatedAuthenticators, getSelectedLocalAuthenticators } from "../components";
-import { getAuthenticatorIcons } from "../configs";
 import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorMeta } from "../meta";
 import {
     FederatedAuthenticatorInterface,
+    FederatedAuthenticatorListItemInterface,
+    FederatedAuthenticatorListResponseInterface,
     GenericAuthenticatorInterface,
+    IdentityProviderInterface,
     IdentityProviderListResponseInterface,
     LocalAuthenticatorInterface,
-    StrictGenericAuthenticatorInterface,
+    MultiFactorAuthenticatorInterface,
     StrictIdentityProviderInterface
 } from "../models";
 import { setAvailableAuthenticatorsMeta } from "../store/actions";
@@ -106,9 +107,11 @@ export class IdentityProviderManagementUtils {
      * Modifies the federated and local authenticators to convert them to a more
      * generic model which will be easier to handle.
      *
+     * @param {boolean} skipFederated - Should skip loading federated authenticators.
+     *
      * @return {Promise<GenericAuthenticatorInterface[][]>} Combined response as a Promise.
      */
-    public static getAllAuthenticators(): Promise<GenericAuthenticatorInterface[][]> {
+    public static getAllAuthenticators(skipFederated?: boolean): Promise<GenericAuthenticatorInterface[][]> {
 
         // Loads the federated authenticators. ATM, the IDP listing API has a default pagination
         // limit of 15. Until there is a proper solution from the backend, we are continuously
@@ -150,11 +153,28 @@ export class IdentityProviderManagementUtils {
             return getIdPs();
         };
 
+        /**
+         * Loads the set of Local authenticators in the system.
+         * @return {Promise<LocalAuthenticatorInterface[]> | any}
+         */
         const loadLocalAuthenticators = (): Promise<LocalAuthenticatorInterface[]> | any => {
             return getLocalAuthenticators();
         };
 
-        return axios.all([ loadLocalAuthenticators(), loadFederatedAuthenticators() ])
+        /**
+         * Combine the two promises.
+         * @return {(Promise<LocalAuthenticatorInterface[]> | any)[]}
+         */
+        const getPromises = (): (Promise<LocalAuthenticatorInterface[]> | any)[] => {
+
+            if (skipFederated) {
+                return [ loadLocalAuthenticators() ];
+            }
+
+            return [ loadLocalAuthenticators(), loadFederatedAuthenticators() ];
+        };
+
+        return axios.all(getPromises())
             .then(axios.spread((local: LocalAuthenticatorInterface[],
                                           federated: IdentityProviderListResponseInterface) => {
 
@@ -183,11 +203,11 @@ export class IdentityProviderManagementUtils {
                             name: authenticator.name
                         },
                         description: AuthenticatorMeta.getAuthenticatorDescription(authenticator.id),
-                        displayName: authenticator.displayName,
-                        id: `${ IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER }-${ authenticator.id }`,
+                        displayName: AuthenticatorMeta.getAuthenticatorDisplayName(authenticator.id)
+                            ?? authenticator.displayName,
+                        id: authenticator.id,
                         idp: IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER,
-                        image: this.findAuthenticatorIcon(getSelectedLocalAuthenticators(), authenticator.id,
-                            authenticator.name),
+                        image: AuthenticatorMeta.getAuthenticatorIcon(authenticator.id),
                         isEnabled: authenticator.isEnabled,
                         name: authenticator.name
                     });
@@ -227,8 +247,7 @@ export class IdentityProviderManagementUtils {
                             idp: authenticator.name,
                             image: authenticator.image
                                 ? authenticator.image
-                                : this.findAuthenticatorIcon(getSelectedFederatedAuthenticators(), authenticator.id,
-                                    authenticator.name),
+                                : AuthenticatorMeta.getAuthenticatorIcon(authenticator.id),
                             isEnabled: authenticator.isEnabled,
                             name: authenticator.name
                         });
@@ -247,38 +266,6 @@ export class IdentityProviderManagementUtils {
                     error.response,
                     error.config);
             });
-    }
-
-    /**
-     * Resolves the icon for an authenticator.
-     *
-     * @param {StrictGenericAuthenticatorInterface[]} meta - Internal metadata.
-     * @param {string} id - Id of the authenticator.
-     * @param {string} name - Name of the authenticator.
-     *
-     * @return {any} Resolved image.
-     */
-    public static findAuthenticatorIcon(meta: StrictGenericAuthenticatorInterface[], id: string, name: string): any {
-
-        if (!(id || name)) {
-            return getAuthenticatorIcons().default;
-        }
-
-        const found: StrictGenericAuthenticatorInterface = meta.find((item) => {
-            if (item.id === id) {
-                return true;
-            }
-
-            if (item.name === name) {
-                return true;
-            }
-        });
-
-        if (found && found.image) {
-            return found.image;
-        }
-
-        return getAuthenticatorIcons().default;
     }
 
     /**
@@ -363,5 +350,64 @@ export class IdentityProviderManagementUtils {
         const match = Object.keys(icons).find(key => key.toString() === image);
 
         return match ? icons[ match ] : icons[ "default" ] ?? image;
+    }
+
+    /**
+     * Type-guard to check if the connector is an Identity Provider.
+     *
+     * @param {IdentityProviderInterface | MultiFactorAuthenticatorInterface} connector - Checking connector.
+     *
+     * @return {connector is IdentityProviderInterface}
+     */
+    public static isConnectorIdentityProvider(connector: IdentityProviderInterface
+        | MultiFactorAuthenticatorInterface): connector is IdentityProviderInterface {
+
+        return (connector as IdentityProviderInterface)?.federatedAuthenticators !== undefined;
+    }
+    
+    public static buildAuthenticatorsFilterQuery(searchQuery: string, filters: string[]): string {
+        
+        if (isEmpty(filters) || !Array.isArray(filters) || filters.length <= 0) {
+            return searchQuery;
+        }
+        
+        let query: string = searchQuery
+            ? `${ searchQuery } and (`
+            : "(";
+
+        if (filters.length > 1) {
+            filters.map((filter: string, index: number) => {
+                query = `${ query }tag eq ${ filter }${ (index === filters.length - 1) ? ")" : " or " }`;
+            });
+        } else {
+            query = `${ query }tag eq ${ filters[ 0 ] })`;
+        }
+
+        return query.trim();
+    }
+
+    /**
+     * Resolve tags for an IDP.
+     * `tags` appear inside the `federatedAuthenticators.authenticators` array. Hence, we need to iterate
+     * and find out the default authenticator and extract the tags.
+     *
+     * @param {FederatedAuthenticatorListResponseInterface} federatedAuthenticators - Federated authenticators.
+     *
+     * @return {string[]}
+     */
+    public static resolveIDPTags(federatedAuthenticators: FederatedAuthenticatorListResponseInterface): string[] {
+
+        if (!federatedAuthenticators?.defaultAuthenticatorId
+            || !Array.isArray(federatedAuthenticators.authenticators)) {
+
+            return [];
+        }
+
+        const found: FederatedAuthenticatorListItemInterface = federatedAuthenticators.authenticators
+            .find((authenticator: FederatedAuthenticatorListItemInterface) => {
+                return authenticator.authenticatorId === federatedAuthenticators.defaultAuthenticatorId;
+            });
+
+        return Array.isArray(found.tags) ? found.tags : [];
     }
 }

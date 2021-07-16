@@ -317,7 +317,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     }
                     {
                         claim &&
-                        <Field.Checkbox
+                        <Field.CheckboxLegacy
                             ariaLabel="supportedByDefault"
                             name="supportedByDefault"
                             label={ t("console:manage.features.claims.local.forms.supportedByDefault.label") } 
@@ -354,7 +354,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     }
                     {
                         claim && attributeConfig.editAttributes.showRequiredCheckBox &&
-                            <Field.Checkbox
+                            <Field.CheckboxLegacy
                                 ariaLabel="required"
                                 name="required"
                                 required={ false }
@@ -366,7 +366,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     }
                     {
                         claim &&
-                        <Field.Checkbox
+                        <Field.CheckboxLegacy
                             ariaLabel="readOnly"
                             name="readOnly"
                             required={ false }

@@ -1035,6 +1035,18 @@ export interface ConsoleNS {
                     disableIDP: DangerZone;
                     deleteIDP: DangerZone;
                 };
+                edit: {
+                    common: {
+                        settings: {
+                            tabName: string;
+                        };
+                    };
+                    emailOTP: {
+                        emailTemplate: {
+                            tabName: string;
+                        };
+                    };
+                };
                 forms: {
                     advancedConfigs: {
                         federationHub: FormAttributes;
@@ -1087,6 +1099,42 @@ export interface ConsoleNS {
                         };
                     };
                     authenticatorSettings: {
+                        emailOTP: {
+                            enableBackupCodes: {
+                                hint: string;
+                                label: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            expiryTime: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    invalid: string;
+                                    range: string;
+                                    required: string;
+                                };
+                            };
+                            tokenLength: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    invalid: string;
+                                    range: string;
+                                    required: string;
+                                };
+                            };
+                            useNumericChars: {
+                                hint: string;
+                                label: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                        };
                         facebook: {
                             callbackUrl: FormAttributes;
                             clientId: FormAttributes;
@@ -1384,6 +1432,7 @@ export interface ConsoleNS {
                     getFederatedAuthenticator: Notification;
                     getFederatedAuthenticatorsList: Notification;
                     getFederatedAuthenticatorMetadata: Notification;
+                    getConnectionDetails: Notification;
                     getOutboundProvisioningConnector: Notification;
                     getOutboundProvisioningConnectorsList: Notification;
                     getOutboundProvisioningConnectorMetadata: Notification;
@@ -1395,6 +1444,7 @@ export interface ConsoleNS {
                     updateClaimsConfigs: Notification;
                     updateFederatedAuthenticator: Notification;
                     updateFederatedAuthenticators: Notification;
+                    updateEmailOTPAuthenticator: Notification;
                     updateIDP: Notification;
                     updateIDPCertificate: Notification;
                     updateIDPRoleMappings: Notification;
@@ -1413,6 +1463,13 @@ export interface ConsoleNS {
                     emptyIDPList: Placeholder;
                     emptyIDPSearchResults: Placeholder;
                     emptyAuthenticatorList: Placeholder;
+                    emptyConnectionTypeList: {
+                        subtitles: {
+                            0: string;
+                            1: string;
+                        },
+                        title: string;
+                    };
                     emptyConnectorList: Placeholder;
                     noAttributes: Placeholder;
                 };
@@ -1881,6 +1938,9 @@ export interface ConsoleNS {
                 title: string;
                 subTitle: string;
                 backButton: string;
+                search: {
+                    placeholder: string;
+                };
                 supportServices: {
                     authenticationDisplayName: string;
                     provisioningDisplayName: string;

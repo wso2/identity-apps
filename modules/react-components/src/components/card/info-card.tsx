@@ -18,15 +18,21 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode } from "react";
 import { Card, CardProps, Icon, Label, Popup } from "semantic-ui-react";
-import { GenericIcon, GenericIconSizes } from "../icon";
+import { LinkButton } from "../button";
+import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
 import { Tooltip } from "../typography";
 
 /**
  * Proptypes for the info card component.
  */
 export interface InfoCardPropsInterface extends CardProps, TestableComponentInterface {
+
+    /**
+     * Action for the card
+     */
+    action?: ReactNode;
     /**
      * Is card disabled.
      */
@@ -52,6 +58,10 @@ export interface InfoCardPropsInterface extends CardProps, TestableComponentInte
      */
     imageSize?: GenericIconSizes;
     /**
+     * Extra options for the card image.
+     */
+    imageOptions?: Omit<GenericIconProps, "icon" | "size">;
+    /**
      * Github repo metadata.
      */
     githubRepoMetaInfo?: GithubHubRepoMetaInfoInterface;
@@ -63,6 +73,10 @@ export interface InfoCardPropsInterface extends CardProps, TestableComponentInte
      * Card sub header.
      */
     subHeader?: string;
+    /**
+     * Show an attached label as a ribbon.
+     */
+    ribbon?: ReactNode;
     /**
      * Set of tags.
      */
@@ -104,22 +118,24 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
 ): ReactElement => {
 
     const {
+        action,
         className,
         description,
         disabled,
         fluid,
-        fluidImageSize,
         githubRepoCard,
         githubRepoMetaInfo,
         header,
         id,
         inline,
         image,
+        imageOptions,
         imageSize,
+        onClick,
         selected,
         subHeader,
+        ribbon,
         tags,
-        textAlign,
         showTooltips,
         [ "data-testid" ]: testId,
         ...rest
@@ -131,6 +147,7 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
             disabled,
             fluid,
             inline,
+            [ "no-hover" ]: action,
             selected,
             ["with-image"]: image
         },
@@ -144,12 +161,22 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
             link={ false }
             as="div"
             data-testid={ testId }
+            onClick={ !action && onClick }
             { ...rest }
         >
             <Card.Content>
                 {
+                    ribbon && (
+                        <div className="ribbon">
+                            { ribbon }
+                        </div>
+                    )
+                }
+                {
                     image && (
                         <GenericIcon
+                            square
+                            transparent
                             data-testid={ `${ testId }-image` }
                             className="card-image"
                             size={
@@ -159,8 +186,7 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
                             }
                             icon={ image }
                             floated="left"
-                            square
-                            transparent
+                            { ...imageOptions }
                         />
                     )
                 }
@@ -258,7 +284,7 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
                 </Card.Content>
             ) }
             {
-                tags && tags instanceof Array && tags.length > 0
+                (tags && tags instanceof Array)
                     ? (
                         <Card.Content className="card-tags" data-testid={ `${ testId }-tags` }>
                             <Label.Group size="mini">
@@ -308,6 +334,29 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
                                 <Icon name="eye" /> { githubRepoMetaInfo.watchers }
                             </Label>
                         </Label.Group>
+                    </Card.Content>
+                )
+            }
+            {
+                (action !== undefined) && (
+                    <Card.Content className="action-container" data-testid={ `${ testId }-action-container` }>
+                        {
+                            typeof action === "string"
+                                ? (
+                                    <LinkButton
+                                        disabled={ disabled }
+                                        hoverType="underline"
+                                        className="info-card-inner-action"
+                                        onClick={ (e: MouseEvent<HTMLButtonElement>) => {
+                                            onClick(e as unknown as MouseEvent<HTMLAnchorElement>, null);
+                                        } }
+                                    >
+                                        { action }
+                                        <Icon name="caret right" />
+                                    </LinkButton>
+                                )
+                                : action
+                        }
                     </Card.Content>
                 )
             }

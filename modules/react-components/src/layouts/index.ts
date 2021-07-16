@@ -22,6 +22,7 @@ export * from "./auth";
 export * from "./default";
 export * from "./error";
 export * from "./full-screen";
+export * from "./grid";
 export * from "./help-panel";
 export * from "./dashboard";
 export * from "./list";

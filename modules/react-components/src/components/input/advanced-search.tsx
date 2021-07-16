@@ -217,7 +217,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
      * Wrapper `div` style classes.
      */
     const wrapperClasses = classNames({
-        [ "search-hint-active" ]: showSearchFieldHint,
+        [ "search-hint-active" ]: enableQuerySearch && showSearchFieldHint,
         [ `aligned-${ aligned }` ]: aligned,
         [ `fill-${ fill }` ]: fill
     }, className);

@@ -16,138 +16,158 @@
  * under the License.
  */
 
-import { getRawDocumentation } from "@wso2is/core/api";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { StringUtils } from "@wso2is/core/utils";
 import {
     AnimatedAvatar,
     AppAvatar,
-    ContentLoader,
-    HelpPanelLayout,
-    HelpPanelTabInterface,
     LabelWithPopup,
-    Markdown,
     PageLayout
 } from "@wso2is/react-components";
 import get from "lodash-es/get";
-import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { Fragment, FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { RouteComponentProps } from "react-router";
 import { Label } from "semantic-ui-react";
+import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "../../../extensions/configs";
 import {
     AppConstants,
     AppState,
     ConfigReducerStateInterface,
-    HelpPanelUtils,
-    PortalDocumentationStructureInterface,
-    getHelpPanelActionIcons,
-    history, setHelpPanelDocsContentURL
+    history
 } from "../../core";
-import { getIdentityProviderDetail } from "../api";
-import { EditIdentityProvider } from "../components";
-import { getHelpPanelIcons } from "../configs";
+import { getIdentityProviderDetail, getMultiFactorAuthenticatorDetails } from "../api";
+import { EditIdentityProvider, EditMultiFactorAuthenticator } from "../components";
 import { IdentityProviderManagementConstants } from "../constants";
+import { AuthenticatorMeta } from "../meta";
 import {
     IdentityProviderInterface,
     IdentityProviderTemplateItemInterface,
     IdentityProviderTemplateLoadingStrategies,
-    SupportedQuickStartTemplateTypes,
-    emptyIdentityProvider
+    MultiFactorAuthenticatorInterface,
+    SupportedQuickStartTemplateTypes
 } from "../models";
-import { IdentityProviderTemplateManagementUtils } from "../utils";
+import { IdentityProviderManagementUtils, IdentityProviderTemplateManagementUtils } from "../utils";
 
 /**
  * Proptypes for the IDP edit page component.
  */
-type IDPEditPagePropsInterface = TestableComponentInterface
+type IDPEditPagePropsInterface = TestableComponentInterface;
 
 /**
  * Identity Provider Edit page.
  *
  * @param {IDPEditPagePropsInterface} props - Props injected to the component.
+ *
  * @return {React.ReactElement}
  */
 const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
-    props: IDPEditPagePropsInterface
+    props: IDPEditPagePropsInterface & RouteComponentProps
 ): ReactElement => {
 
     const {
+        location,
         [ "data-testid" ]: testId
     } = props;
 
     const dispatch = useDispatch();
+
     const { t } = useTranslation();
+
     const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const helpPanelDocURL: string = useSelector((state: AppState) => state.helpPanel.docURL);
-    const helpPanelDocStructure: PortalDocumentationStructureInterface = useSelector(
-        (state: AppState) => state.helpPanel.docStructure);
     const identityProviderTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
-        (state: AppState) => state?.identityProvider?.templates);
-    const [ identityProviderTemplate, setIdentityProviderTemplate ]
-        = useState<IdentityProviderTemplateItemInterface>(undefined);
-    const [ identityProvider, setIdentityProvider ] = useState<IdentityProviderInterface>(emptyIdentityProvider);
-    const [ isIdentityProviderRequestLoading, setIdentityProviderRequestLoading ] = useState<boolean>(undefined);
-    const [ helpPanelDocContent, setHelpPanelDocContent ] = useState<string>(undefined);
+        (state: AppState) => state.identityProvider.templates);
+
     const [
-        isHelpPanelDocContentRequestLoading,
-        setHelpPanelDocContentRequestLoadingStatus
-    ] = useState<boolean>(false);
+        identityProviderTemplate,
+        setIdentityProviderTemplate
+    ] = useState<IdentityProviderTemplateItemInterface>(undefined);
+    const [
+        connector,
+        setConnector
+    ] = useState<IdentityProviderInterface | MultiFactorAuthenticatorInterface>(undefined);
+    const [
+        isConnectorDetailsFetchRequestLoading,
+        setConnectorDetailFetchRequestLoading
+    ] = useState<boolean>(undefined);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(0);
     const [ isExtensionsAvailable, setIsExtensionsAvailable ] = useState<boolean>(false);
+    const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
 
     /**
-     * Set the default doc content URL for the tab.
+     * Use effect for the initial component load.
      */
     useEffect(() => {
-        if (isEmpty(helpPanelDocStructure)) {
+        
+        if (!identityProviderConfig) {
             return;
         }
 
-        const overviewDocs = get(helpPanelDocStructure,
-            IdentityProviderManagementConstants.IDP_EDIT_OVERVIEW_DOCS_KEY);
+        const path: string[] = location.pathname.split("/");
+        const id: string = path[ path.length - 1 ];
 
-        if (!overviewDocs) {
+        const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(identityProviderConfig
+            .authenticators, id);
+
+        if (authenticatorConfig?.isEnabled) {
+            getMultiFactorAuthenticator(id);
+
             return;
         }
 
-        dispatch(setHelpPanelDocsContentURL(overviewDocs));
-    }, [ helpPanelDocStructure, dispatch ]);
+        getIdentityProvider(id);
+    }, [ identityProviderConfig ]);
+
+    /**
+     * Checks if the listing view defined in the config is the new connections view.
+     */
+    useEffect(() => {
+
+        if (useNewConnectionsView !== undefined) {
+            return;
+        }
+
+        setUseNewConnectionsView(identityProviderConfig.useNewConnectionsView);
+    }, [ identityProviderConfig ]);
 
     /**
      * Triggered when the IDP state search param in the URL changes.
      */
     useEffect(() => {
+
         if (!urlSearchParams.get(IdentityProviderManagementConstants.IDP_STATE_URL_SEARCH_PARAM_KEY)) {
             if (isExtensionsAvailable) {
                 setDefaultActiveIndex(1);
             }
             return;
         }
-
-    }, [ urlSearchParams.get(IdentityProviderManagementConstants.IDP_STATE_URL_SEARCH_PARAM_KEY),
-        isExtensionsAvailable ]);
+    }, [
+        urlSearchParams.get(IdentityProviderManagementConstants.IDP_STATE_URL_SEARCH_PARAM_KEY),
+        isExtensionsAvailable
+    ]);
 
     /**
      *  Get IDP templates.
      */
     useEffect(() => {
+
         if (identityProviderTemplates !== undefined) {
             return;
         }
 
-        setIdentityProviderRequestLoading(true);
+        setConnectorDetailFetchRequestLoading(true);
 
-        const useAPI: boolean = config.ui.identityProviderTemplateLoadingStrategy ?
-            config.ui.identityProviderTemplateLoadingStrategy === IdentityProviderTemplateLoadingStrategies.REMOTE :
-            IdentityProviderManagementConstants.
+        const useAPI: boolean = config.ui.identityProviderTemplateLoadingStrategy
+            ? config.ui.identityProviderTemplateLoadingStrategy === IdentityProviderTemplateLoadingStrategies.REMOTE
+            : IdentityProviderManagementConstants.
                 DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY === IdentityProviderTemplateLoadingStrategies.REMOTE;
+
         IdentityProviderTemplateManagementUtils.getIdentityProviderTemplates(useAPI)
             .finally(() => {
-                setIdentityProviderRequestLoading(false);
+                setConnectorDetailFetchRequestLoading(false);
             });
     }, [ identityProviderTemplates ]);
 
@@ -156,8 +176,17 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
      */
     useEffect(() => {
 
-        if (!identityProvider
-            || !(identityProviderTemplates
+        // Return if connector is not defined.
+        if (!connector) {
+            return;
+        }
+
+        // Return if connector is not an IdP.
+        if (!IdentityProviderManagementUtils.isConnectorIdentityProvider(connector)) {
+            return;
+        }
+
+        if (!(identityProviderTemplates
                 && identityProviderTemplates instanceof Array
                 && identityProviderTemplates.length > 0)) {
 
@@ -189,39 +218,11 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
         const template: IdentityProviderTemplateItemInterface = identityProviderTemplates
             .find((template: IdentityProviderTemplateItemInterface) => {
                 return template.id === resolveTemplateId(
-                    identityProvider.federatedAuthenticators?.defaultAuthenticatorId);
+                    connector.federatedAuthenticators?.defaultAuthenticatorId);
             });
 
         setIdentityProviderTemplate(template);
-    }, [ identityProviderTemplates, identityProvider ]);
-
-    /**
-     * Called when help panel doc URL status changes.
-     */
-    useEffect(() => {
-        if (!helpPanelDocURL) {
-            return;
-        }
-
-        setHelpPanelDocContentRequestLoadingStatus(true);
-
-        getRawDocumentation<string>(
-            config.endpoints.documentationContent,
-            helpPanelDocURL,
-            config.deployment.documentation.provider,
-            config.deployment.documentation.githubOptions.branch)
-            .then((response) => {
-                setHelpPanelDocContent(response);
-            })
-            .finally(() => {
-                setHelpPanelDocContentRequestLoadingStatus(false);
-            });
-    }, [
-        helpPanelDocURL,
-        config.deployment.documentation.githubOptions.branch,
-        config.deployment.documentation.provider,
-        config.endpoints.documentationContent
-    ]);
+    }, [ identityProviderTemplates, connector ]);
 
     /**
      * Retrieves idp details from the API.
@@ -229,11 +230,11 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
      * @param {string} id - IDP id.
      */
     const getIdentityProvider = (id: string): void => {
-        setIdentityProviderRequestLoading(true);
+        setConnectorDetailFetchRequestLoading(true);
 
         getIdentityProviderDetail(id)
             .then((response) => {
-                setIdentityProvider(response);
+                setConnector(response);
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -258,7 +259,47 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                 }));
             })
             .finally(() => {
-                setIdentityProviderRequestLoading(false);
+                setConnectorDetailFetchRequestLoading(false);
+            });
+    };
+
+    /**
+     * Retrieves the local authenticator details from the API.
+     *
+     * @param {string} id - Authenticator id.
+     */
+    const getMultiFactorAuthenticator = (id: string): void => {
+
+        setConnectorDetailFetchRequestLoading(true);
+
+        getMultiFactorAuthenticatorDetails(id)
+            .then((response) => {
+                setConnector(response);
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: t("console:develop.features.authenticationProvider." +
+                            "notifications.getConnectionDetails.error.description",
+                            { description: error.response.data.description }),
+                        level: AlertLevels.ERROR,
+                        message: t("console:develop.features.authenticationProvider." +
+                            "notifications.getConnectionDetails.error.message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("console:develop.features.authenticationProvider." +
+                        "notifications.getConnectionDetails.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:develop.features.authenticationProvider." +
+                        "notifications.getConnectionDetails.genericError.message")
+                }));
+            })
+            .finally(() => {
+                setConnectorDetailFetchRequestLoading(false);
             });
     };
 
@@ -266,6 +307,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
      * Handles the back button click event.
      */
     const handleBackButtonClick = (): void => {
+
         history.push(AppConstants.getPaths().get("IDP"));
     };
 
@@ -273,6 +315,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
      * Called when an idp is deleted.
      */
     const handleIdentityProviderDelete = (): void => {
+
         history.push(AppConstants.getPaths().get("IDP"));
     };
 
@@ -282,57 +325,41 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
      * @param {string} id - IDP id.
      */
     const handleIdentityProviderUpdate = (id: string): void => {
+
         getIdentityProvider(id);
     };
 
     /**
-     * Use effect for the initial component load.
+     * Called when an Multi-factor authenticator updates.
+     *
+     * @param {string} id - Authenticator id.
      */
-    useEffect(() => {
-        const path = history.location.pathname.split("/");
-        const id = path[ path.length - 1 ];
+    const handleMultiFactorAuthenticatorUpdate = (id: string): void => {
 
-        getIdentityProvider(id);
-    }, []);
-
-    const helpPanelTabs: HelpPanelTabInterface[] = [
-        {
-            content: (
-                isHelpPanelDocContentRequestLoading
-                    ? <ContentLoader dimmer/>
-                    : (
-                        <Markdown
-                            source={ helpPanelDocContent }
-                            transformImageUri={ (uri) =>
-                                uri.startsWith("http" || "https")
-                                    ? uri
-                                    : config.deployment.documentation?.imagePrefixURL + "/"
-                                        + StringUtils.removeDotsAndSlashesFromRelativePath(uri)
-                            }
-                            data-testid={ `${ testId }-help-panel-docs-tab-markdown-renderer` }
-                        />
-                    )
-            ),
-            heading: t("common:docs"),
-            hidden: !helpPanelDocURL,
-            icon: {
-                icon: getHelpPanelIcons().tabs.docs
-            }
-        }
-    ];
+        getMultiFactorAuthenticator(id);
+    };
 
     /**
-     * Resolves the authentication provider status label.
+     * Resolves the connector status label.
      *
-     * @return {ReactElement}
+     * @param {IdentityProviderInterface | MultiFactorAuthenticatorInterface} connector - Evaluating connector.
+     *
+     * @return {React.ReactElement}
      */
-    const resolveStatusLabel = (): ReactElement => {
+    const resolveStatusLabel = (connector: IdentityProviderInterface
+        | MultiFactorAuthenticatorInterface): ReactElement => {
 
-        if (!identityProvider) {
+        // Return `null` if connector is not defined.
+        if (!connector) {
             return null;
         }
 
-        if (identityProvider?.isEnabled) {
+        // Return `null` if connector is not an IdP.
+        if (!IdentityProviderManagementUtils.isConnectorIdentityProvider(connector)) {
+            return null;
+        }
+
+        if (connector?.isEnabled) {
             return (
                 <LabelWithPopup
                     popupHeader={ t("console:develop.features.authenticationProvider.popups.appStatus.enabled.header") }
@@ -354,98 +381,181 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
         }
     };
 
-    return (
-        <HelpPanelLayout
-            enabled={ false }
-            visible={ false }
-            sidebarDirection="right"
-            sidebarMiniEnabled={ false }
-            tabs={ helpPanelTabs }
-            onHelpPanelPinToggle={ () => HelpPanelUtils.togglePanelPin() }
-            isPinned={ HelpPanelUtils.isPanelPinned() }
-            icons={ {
-                close: getHelpPanelActionIcons().close,
-                pin: getHelpPanelActionIcons().pin,
-                unpin: getHelpPanelActionIcons().unpin
-            } }
-            sidebarToggleTooltip={ t("console:develop.features.helpPanel.actions.open") }
-            pinButtonTooltip={ t("console:develop.features.helpPanel.actions.pin") }
-            unpinButtonTooltip={ t("console:develop.features.helpPanel.actions.unPin") }
-        >
-            <PageLayout
-                isLoading={ isIdentityProviderRequestLoading }
-                title={ (
-                    <>
-                        { identityProvider.name }
-                        { isIdentityProviderRequestLoading === false && resolveStatusLabel() }
-                    </>
-                ) }
-                contentTopMargin={ true }
-                description={ (
-                    <div className="with-label ellipsis">
-                        {
-                            identityProviderTemplate?.name &&
-                            <Label size="small">{ identityProviderTemplate.name }</Label>
-                        }
-                        { identityProvider.description }
-                    </div>
-                ) }
-                image={
-                    identityProvider.image
-                        ? (
-                            <AppAvatar
-                                name={ identityProvider.name }
-                                image={ identityProvider.image }
-                                size="tiny"
-                            />
-                        )
-                        : (
-                            <AnimatedAvatar
-                                name={ identityProvider.name }
-                                size="tiny"
-                                floated="left"
-                            />
-                        )
-                }
-                backButton={ {
-                    "data-testid": `${ testId }-page-back-button`,
-                    onClick: handleBackButtonClick,
-                    text: t("console:develop.pages.authenticationProviderTemplate.backButton")
-                } }
-                titleTextAlign="left"
-                bottomMargin={ false }
-                data-testid={ `${ testId }-page-layout` }
-            >
-                <EditIdentityProvider
-                    identityProvider={ identityProvider }
-                    isLoading={ isIdentityProviderRequestLoading }
-                    onDelete={ handleIdentityProviderDelete }
-                    onUpdate={ handleIdentityProviderUpdate }
-                    isGoogle={
-                        (identityProviderTemplate?.name === undefined)
-                            ? undefined
-                            : identityProviderTemplate.name === SupportedQuickStartTemplateTypes.GOOGLE
-                    }
-                    isSaml={
-                        (identityProvider?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
-                            ? undefined
-                            :(identityProvider.federatedAuthenticators.defaultAuthenticatorId
-                                === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID)
-                    }
-                    isOidc={
-                        (identityProvider?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
-                            ? undefined
-                            :(identityProvider.federatedAuthenticators.defaultAuthenticatorId
-                            === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID)
-                    }
-                    data-testid={ testId }
-                    template={ identityProviderTemplate }
-                    defaultActiveIndex={ defaultActiveIndex }
-                    isTabExtensionsAvailable={ (isAvailable) => setIsExtensionsAvailable(isAvailable) }
-                    type={ identityProviderTemplate?.id }
+    /**
+     * Resolves the connector image.
+     *
+     * @param {IdentityProviderInterface | MultiFactorAuthenticatorInterface} connector - Evaluating connector.
+     *
+     * @return {React.ReactElement}
+     */
+    const resolveConnectorImage = (connector: IdentityProviderInterface
+        | MultiFactorAuthenticatorInterface): ReactElement => {
+
+        if (!connector) {
+            return (
+                <AppAvatar
+                    isLoading={ true }
+                    size="tiny"
                 />
-            </PageLayout>
-        </HelpPanelLayout>
+            );
+        }
+
+        if (IdentityProviderManagementUtils.isConnectorIdentityProvider(connector)) {
+            if (connector.image) {
+                return (
+                    <AppAvatar
+                        name={ connector.name }
+                        image={ connector.image }
+                        size="tiny"
+                    />
+                );
+            }
+
+            return (
+                <AnimatedAvatar
+                    name={ connector.name }
+                    size="tiny"
+                    floated="left"
+                />
+            );
+        }
+
+        return (
+            <AppAvatar
+                name={ connector.name }
+                image={ AuthenticatorMeta.getAuthenticatorIcon(connector.id) }
+                size="tiny"
+            />
+        );
+    };
+
+    /**
+     * Resolves the connector name.
+     *
+     * @param {IdentityProviderInterface | MultiFactorAuthenticatorInterface} connector - Evaluating connector.
+     *
+     * @return {React.ReactElement}
+     */
+    const resolveConnectorName = (connector: IdentityProviderInterface
+        | MultiFactorAuthenticatorInterface): ReactNode => {
+
+        if (!connector) {
+            return null;
+        }
+
+        if (IdentityProviderManagementUtils.isConnectorIdentityProvider(connector)) {
+            
+            return (
+                <Fragment>
+                    { connector.name }
+                    {
+                        (isConnectorDetailsFetchRequestLoading === false
+                            && connector.name) &&  resolveStatusLabel(connector)
+                    }
+                </Fragment>
+            );
+        }
+        
+        return AuthenticatorMeta.getAuthenticatorDisplayName(connector.id)
+            ?? (connector.friendlyName || connector.name);
+    };
+
+    /**
+     * Resolves the connector description.
+     *
+     * @param {IdentityProviderInterface | MultiFactorAuthenticatorInterface} connector - Evaluating connector.
+     *
+     * @return {React.ReactElement}
+     */
+    const resolveConnectorDescription = (connector: IdentityProviderInterface
+        | MultiFactorAuthenticatorInterface): ReactNode => {
+
+        if (!connector) {
+            return null;
+        }
+
+        if (IdentityProviderManagementUtils.isConnectorIdentityProvider(connector)) {
+
+            return (
+                <div className="with-label ellipsis">
+                    {
+                        identityProviderTemplate?.name &&
+                        <Label size="small">{ identityProviderTemplate.name }</Label>
+                    }
+                    { connector.description }
+                </div>
+            );
+        }
+
+        return (
+            <div className="with-label ellipsis">
+                { connector.description || AuthenticatorMeta.getAuthenticatorDescription(connector.id) }
+            </div>
+        );
+    };
+
+    return (
+        <PageLayout
+            isLoading={ isConnectorDetailsFetchRequestLoading }
+            title={ resolveConnectorName(connector) }
+            contentTopMargin={ true }
+            description={ resolveConnectorDescription(connector) }
+            image={ resolveConnectorImage(connector) }
+            backButton={ {
+                "data-testid": `${ testId }-page-back-button`,
+                onClick: handleBackButtonClick,
+                text: useNewConnectionsView
+                    ? t("console:develop.pages.authenticationProviderTemplate.backButton")
+                    : t("console:develop.pages.idpTemplate.backButton")
+            } }
+            titleTextAlign="left"
+            bottomMargin={ false }
+            data-testid={ `${ testId }-page-layout` }
+        >
+            {
+                IdentityProviderManagementUtils.isConnectorIdentityProvider(connector)
+                    ? (
+                        <EditIdentityProvider
+                            identityProvider={ connector }
+                            isLoading={ isConnectorDetailsFetchRequestLoading }
+                            onDelete={ handleIdentityProviderDelete }
+                            onUpdate={ handleIdentityProviderUpdate }
+                            isGoogle={
+                                (identityProviderTemplate?.name === undefined)
+                                    ? undefined
+                                    : identityProviderTemplate.name === SupportedQuickStartTemplateTypes.GOOGLE
+                            }
+                            isSaml={
+                                (connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
+                                    ? undefined
+                                    :(connector.federatedAuthenticators.defaultAuthenticatorId
+                                    === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID)
+                            }
+                            isOidc={
+                                (connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
+                                    ? undefined
+                                    :(connector.federatedAuthenticators.defaultAuthenticatorId
+                                    === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID)
+                            }
+                            data-testid={ testId }
+                            template={ identityProviderTemplate }
+                            defaultActiveIndex={ defaultActiveIndex }
+                            isTabExtensionsAvailable={ (isAvailable) => setIsExtensionsAvailable(isAvailable) }
+                            type={ identityProviderTemplate?.id }
+                        />
+                    )
+                    : (
+                        <EditMultiFactorAuthenticator
+                            authenticator={ connector }
+                            isLoading={ isConnectorDetailsFetchRequestLoading }
+                            onDelete={ handleIdentityProviderDelete }
+                            onUpdate={ handleMultiFactorAuthenticatorUpdate }
+                            isTabExtensionsAvailable={ (isAvailable) => setIsExtensionsAvailable(isAvailable) }
+                            type={ connector?.id }
+                        />
+                    )
+            }
+        </PageLayout>
     );
 };
 

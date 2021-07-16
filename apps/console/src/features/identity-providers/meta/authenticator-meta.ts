@@ -17,6 +17,8 @@
  */
 
 import get from "lodash-es/get";
+import { ReactNode } from "react";
+import { getAuthenticatorIcons } from "../configs";
 import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorCategories, AuthenticatorLabels } from "../models";
 
@@ -47,7 +49,7 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "Provide secure and fast passwordless " +
             "login experience.",
             [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
-            "Time-Based One Time Password.",
+            "Time-Based One Time passcode.",
             [ IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "Login users with " +
             "existing Google accounts.",
             [ IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID ]: "Login users with " +
@@ -60,6 +62,8 @@ export class AuthenticatorMeta {
             "existing accounts in the Enterprise IdP.",
             [ IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID ]: "Login users with " +
             "existing accounts in the Enterprise IdP.",
+            [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
+            "Email one-time passcode."
         }, authenticatorId);
     }
 
@@ -97,6 +101,9 @@ export class AuthenticatorMeta {
             ],
             [ IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.SAML
+            ],
+            [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.MULTI_FACTOR
             ]
         }, authenticatorId);
     }
@@ -137,7 +144,80 @@ export class AuthenticatorMeta {
         
         return get({
             [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR ]: "Username & Password",
-            [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ]: "Username & Password"
+            [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ]: "Username & Password",
+            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "FIDO",
+            [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: "TOTP",
+            [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Email OTP",
+            [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Identifier First"
         }, authenticatorId);
+    }
+
+    /**
+     * Get Authenticator Icon.
+     *
+     * @param {string} authenticatorId - Authenticator ID.
+     *
+     * @return {string}
+     */
+    public static getAuthenticatorIcon(authenticatorId: string): any {
+
+        const icon: ReactNode = get({
+            [
+                IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID
+                ]: getAuthenticatorIcons()?.identifierFirst,
+            [ IdentityProviderManagementConstants.JWT_BASIC_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.jwtBasic,
+            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.fido,
+            [ IdentityProviderManagementConstants.X509_CERTIFICATE_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.x509,
+            [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.totp,
+            [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.basic,
+            [
+                IdentityProviderManagementConstants.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
+                ]: getAuthenticatorIcons()?.sessionExecutor,
+            [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.emailOTP
+        }, authenticatorId);
+        
+        return icon ?? getAuthenticatorIcons().default;
+    }
+
+    /**
+     * Get Authenticator Type display name.
+     *
+     * @param {string} authenticatorId - Authenticator ID.
+     *
+     * @return {string}
+     */
+    public static getAuthenticatorCategory(authenticatorId: string): string {
+
+        return get({
+            [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Predefined",
+            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "Predefined",
+            [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: "Predefined",
+            [ IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "Google",
+            [ IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID ]: "GitHub",
+            [ IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID ]: "Facebook",
+            [ IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID ]: "Twitter",
+            [ IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID ]: "Enterprise",
+            [ IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID ]: "Enterprise",
+            [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Predefined"
+        }, authenticatorId);
+    }
+
+    /**
+     * Get the list of allowed filter tags in the UI.
+     *
+     * `/authenticators/meta/tags` API gives out all the tags which includes `Request-Path` etc.
+     * Hence moderation has to be made.
+     *
+     * @return {string[]}
+     */
+    public static getAllowedFilterTags(): string[] {
+        
+        return [
+            AuthenticatorLabels.MULTI_FACTOR,
+            AuthenticatorLabels.PASSWORDLESS,
+            AuthenticatorLabels.OIDC,
+            AuthenticatorLabels.SOCIAL,
+            AuthenticatorLabels.SAML
+        ];
     }
 }

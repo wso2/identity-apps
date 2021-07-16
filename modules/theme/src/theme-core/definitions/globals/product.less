@@ -619,6 +619,12 @@ body {
             }
         }
     }
+    
+    &.grid-layout {
+        .search-input-wrapper {
+            max-width: @advancedSearchWidth;
+        }
+    }
 }
 
 /*****************************************
@@ -1129,6 +1135,7 @@ body {
 
         &:hover {
             background: @iconHoverBgColor;
+            cursor: pointer;
             
             &.inverted {
                 background: @defaultInvertedHoverBackground;
@@ -1324,6 +1331,16 @@ body {
         .search-query-hint {
             width: @mobileAdvancedSearchActiveSearchQueryWidth;
         }
+    }
+}
+
+/*----------------------------------------
+   Search component with filter labels
+-----------------------------------------*/
+
+.search-with-filter-labels {
+    .search-input-wrapper {
+        margin-bottom: 1em;
     }
 }
 

@@ -213,6 +213,9 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
                 ];
         }
 
+        // Use description from template.
+        identityProvider.description = template.description;
+
         createNewIdentityProvider(identityProvider);
     };
 

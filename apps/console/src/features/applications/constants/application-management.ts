@@ -312,10 +312,6 @@ export class ApplicationManagementConstants {
         "request path authenticators.";
     public static readonly IDENTIFIER_FIRST_AUTHENTICATOR_ID = IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER
         + "-" + "SWRlbnRpZmllckV4ZWN1dG9y";
-    // TODO: Remove this and use the raw authenticator ID instead.
-    public static readonly TOTP_AUTHENTICATOR_ID = "LOCAL-dG90cA";
-    // TODO: Remove this and use the raw authenticator ID instead.
-    public static readonly FIDO_AUTHENTICATOR_ID = "LOCAL-RklET0F1dGhlbnRpY2F0b3I";
     public static readonly SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID = "second-factor-authenticators";
     public static readonly EXTERNAL_AUTHENTICATORS_DROPPABLE_ID = "external-authenticators";
     public static readonly SOCIAL_LOGIN_HEADER: string = "Social Login";
@@ -334,9 +330,11 @@ export class ApplicationManagementConstants {
     // Second factor authenticators.
     public static readonly SECOND_FACTOR_AUTHENTICATORS = [
         IdentityProviderManagementConstants.FIDO_AUTHENTICATOR,
+        IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID,
         IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
-        ApplicationManagementConstants.TOTP_AUTHENTICATOR_ID,
-        ApplicationManagementConstants.FIDO_AUTHENTICATOR_ID
+        IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
+        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID
     ];
 
     // Known social authenticators.
@@ -351,6 +349,11 @@ export class ApplicationManagementConstants {
 
     // Authenticators that can handle TOTP.
     public static readonly TOTP_HANDLERS = [
+        ...ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS
+    ];
+
+    // Authenticators that can handle Email OTP.
+    public static readonly EMAIL_OTP_HANDLERS = [
         ...ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS
     ];
 

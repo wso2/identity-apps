@@ -22,6 +22,7 @@ import { IdentityProviderManagementConstants } from "../../../constants";
 import { FederatedAuthenticatorListItemInterface, FederatedAuthenticatorMetaInterface } from "../../../models";
 import {
     CommonAuthenticatorForm,
+    EmailOTPAuthenticatorForm,
     FacebookAuthenticatorForm,
     GithubAuthenticatorForm,
     GoogleAuthenticatorForm
@@ -92,6 +93,18 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
         case IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID:
             return (
                 <GithubAuthenticatorForm
+                    initialValues={ initialValues }
+                    metadata={ metadata }
+                    onSubmit={ onSubmit }
+                    triggerSubmit={ triggerSubmit }
+                    enableSubmitButton={ enableSubmitButton }
+                    data-testid={ testId }
+                    showCustomProperties={ showCustomProperties }
+                />
+            );
+        case IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID:
+            return (
+                <EmailOTPAuthenticatorForm
                     initialValues={ initialValues }
                     metadata={ metadata }
                     onSubmit={ onSubmit }

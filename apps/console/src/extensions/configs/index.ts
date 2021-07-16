@@ -20,5 +20,6 @@ export * from "./attribute";
 export * from "./application";
 export * from "./identity-provider";
 export * from "./common";
+export * from "./models";
 export * from "./server-configuration";
 export * from "./userstores";

@@ -28,7 +28,15 @@ export interface FieldInputPropsInterface extends FormFieldPropsInterface {
     /**
      * Type of the input field.
      */
-    inputType: "default" | "identifier" | "name" | "resourceName" | "email" | "url" | "copy_input" | "password"
+    inputType: "default"
+        | "identifier"
+        | "name"
+        | "number"
+        | "resourceName"
+        | "email"
+        | "url"
+        | "copy_input"
+        | "password"
         | "phoneNumber";
     /**
      * Hint of the form field.
@@ -95,6 +103,20 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
                     name={ props.name }
                     parse={ value => value }
                     component={ CopyFieldAdapter }
+                    validate={ (value, allValues, meta) =>
+                        getValidation(value, meta, "text", props.required, inputType, validation)
+                    }
+                    { ...rest }
+                />
+            );
+        } else if (inputType == FieldInputTypes.INPUT_NUMBER) {
+            return (
+                <FinalFormField
+                    key={ testId }
+                    type="number"
+                    name={ props.name }
+                    parse={ value => value }
+                    component={ TextFieldAdapter }
                     validate={ (value, allValues, meta) =>
                         getValidation(value, meta, "text", props.required, inputType, validation)
                     }

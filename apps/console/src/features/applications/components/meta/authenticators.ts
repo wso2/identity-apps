@@ -19,46 +19,6 @@
 import { StrictGenericAuthenticatorInterface } from "../../../identity-providers";
 import { getAuthenticatorIcons } from "../../configs";
 
-export const getSelectedLocalAuthenticators = (): StrictGenericAuthenticatorInterface[] => {
-    return [
-        {
-            id: "SWRlbnRpZmllckV4ZWN1dG9y",
-            image: getAuthenticatorIcons()?.identifierFirst,
-            name: "IdentifierExecutor"
-        },
-        {
-            id: "SldUQmFzaWNBdXRoZW50aWNhdG9y",
-            image: getAuthenticatorIcons()?.jwtBasic,
-            name: "JWTBasicAuthenticator"
-        },
-        {
-            id: "RklET0F1dGhlbnRpY2F0b3I",
-            image: getAuthenticatorIcons()?.fido,
-            name: "FIDOAuthenticator"
-        },
-        {
-            id: "eDUwOUNlcnRpZmljYXRlQXV0aGVudGljYXRvcg",
-            image: getAuthenticatorIcons()?.x509,
-            name: "x509CertificateAuthenticator"
-        },
-        {
-            id: "dG90cA",
-            image: getAuthenticatorIcons()?.totp,
-            name: "totp"
-        },
-        {
-            id: "QmFzaWNBdXRoZW50aWNhdG9y",
-            image: getAuthenticatorIcons()?.basic,
-            name: "BasicAuthenticator"
-        },
-        {
-            id: "U2Vzc2lvbkV4ZWN1dG9y",
-            image: getAuthenticatorIcons()?.sessionExecutor,
-            name: "SessionExecutor"
-        }
-    ];
-};
-
 export const getSelectedFederatedAuthenticators = (): StrictGenericAuthenticatorInterface[] => {
     return [
         {

@@ -16,7 +16,12 @@
  * under the License.
  */
 
+import { ReactNode } from "react";
+
 export interface IdentityProviderConfig {
+    authenticators: {
+        [ key: string ]: AuthenticatorExtensionsConfigInterface;
+    };
     editIdentityProvider: {
         showAdvancedSettings: boolean;
         showJitProvisioning: boolean;
@@ -31,11 +36,23 @@ export interface IdentityProviderConfig {
     generalDetailsForm: {
         showCertificate: boolean;
     };
+    identityProviderList: {
+        /**
+         * Display IDPs only in the ordinary list view.
+         * If set to falls, local authenticators + federated will be shown in one grid view.
+         */
+        useLegacyListing: boolean;
+    };
     utils: {
         isAuthenticatorAllowed: (name: string) => boolean;
         isProvisioningAttributesEnabled: (authenticatorId: string) => boolean;
         hideIdentityClaimAttributes?: (authenticatorId: string) => boolean;
     };
+    /**
+     * Local authenticators + Federated authenticators will be shown in one grid view as connections.
+     * If set to falls, the generic list view with only IDPs will be displayed.
+     */
+    useNewConnectionsView: boolean;
     templates: {
         facebook: boolean;
         google: boolean;
@@ -48,4 +65,27 @@ export interface IdentityProviderConfig {
         saml: boolean;
         oidc: boolean;
     }
+}
+
+/**
+ * Interface for Authenticator extensions config.
+ */
+export interface AuthenticatorExtensionsConfigInterface {
+    editFlowOverrides?: {
+        editActionLabel: string;
+        getEditView: (...args: any) => ReactNode;
+    };
+    content?: {
+        quickStart: ReactNode;
+    };
+    /**
+     * Show authenticator as a coming soon feature.
+     * @remarks This configuration is not applicable if `identityProviderList.useLegacyListing` is set to true.
+     */
+    isComingSoon: boolean;
+    /**
+     * Is authenticator enabled. Only these authenticators will be shown on the grid.
+     * @remarks This configuration is not applicable if `identityProviderList.useLegacyListing` is set to true.
+     */
+    isEnabled: boolean;
 }

@@ -20,6 +20,7 @@ import { IdentityProviderConfig } from "./models";
 import { IdentityProviderManagementConstants } from "../../features/identity-providers";
 
 export const identityProviderConfig: IdentityProviderConfig = {
+    authenticators: {},
     editIdentityProvider: {
         attributesSettings: true,
         showAdvancedSettings: true,
@@ -29,14 +30,20 @@ export const identityProviderConfig: IdentityProviderConfig = {
     generalDetailsForm: {
         showCertificate: true
     },
+    identityProviderList: {
+        useLegacyListing: true
+    },
     templates: {
         enterprise: true,
-        facebook: false,
+        facebook: true,
         github: true,
         google: true,
         oidc: true,
         saml: true
     },
+    // Handles backward compatibility with the legacy IDP view & new connections view.
+    // TODO: Remove this usage once https://github.com/wso2/product-is/issues/12052 is addressed.
+    useNewConnectionsView: false,
     utils: {
         /**
          * As an example you can implement this method like the

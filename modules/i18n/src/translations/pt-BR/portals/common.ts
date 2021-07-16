@@ -130,6 +130,7 @@ export const common: CommonNS = {
     search: "Procurar",
     security: "Segurança",
     services: "Serviços",
+    setup: "Configurar",
     show: "exposição",
     showAll: "Mostre tudo",
     showLess: "Mostre menos",

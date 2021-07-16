@@ -258,7 +258,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         enableReinitialize={ true }
                         hint={ resolveSubjectAttributeHint() }
                     />
-                    <Field.Checkbox
+                    <Field.CheckboxLegacy
                         ariaLabel="Subject include user domain"
                         name="subjectIncludeUserDomain"
                         label={ t("console:develop.features.applications.forms.advancedAttributeSettings." +
@@ -276,7 +276,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                 "subject.fields.subjectIncludeUserDomain.hint")
                         }
                     />
-                    <Field.Checkbox
+                    <Field.CheckboxLegacy
                         ariaLabel="Subject include tenant domain"
                         name="subjectIncludeTenantDomain"
                         label={
@@ -295,7 +295,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             "subject.fields.subjectIncludeTenantDomain.hint")
                         }
                     />
-                    <Field.Checkbox
+                    <Field.CheckboxLegacy
                         ariaLabel="Subject use mapped local subject"
                         name="subjectUseMappedLocalSubject"
                         label={
@@ -346,7 +346,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                 "role.fields.roleAttribute.hint")
                         }
                     />
-                    <Field.Checkbox
+                    <Field.CheckboxLegacy
                         ariaLabel="Role"
                         name="role"
                         label={

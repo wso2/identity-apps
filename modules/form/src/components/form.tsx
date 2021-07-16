@@ -17,17 +17,22 @@
  */
 
 import React, {
-    cloneElement,
-    forwardRef,
     ForwardRefExoticComponent,
     ReactElement,
+    cloneElement,
+    forwardRef,
     useImperativeHandle,
     useRef
 } from "react";
 import { Form as FinalForm, FormProps, FormRenderProps } from "react-final-form";
-import { Form as SemanticForm, Grid } from "semantic-ui-react";
+import { Grid, Form as SemanticForm } from "semantic-ui-react";
 
 export interface FormPropsInterface extends FormProps {
+
+    /**
+     * Turn on/off native form validations.
+     */
+    noValidate?: boolean;
     /**
      * Function to trigger form submit externally.
      */
@@ -45,7 +50,7 @@ export interface FormPropsInterface extends FormProps {
 export const Form: ForwardRefExoticComponent<FormPropsInterface> =
     forwardRef((props: FormProps, ref): ReactElement => {
 
-    let { triggerSubmit, ...other } = props;
+    let { noValidate, triggerSubmit, ...other } = props;
     const { children, onSubmit, uncontrolledForm, ...rest } = other;
 
     const formRef = useRef(null);
@@ -171,9 +176,11 @@ export const Form: ForwardRefExoticComponent<FormPropsInterface> =
 
                 return (
                     <form
+                        noValidate={ noValidate }
                         onSubmit={ handleSubmit }
-                        ref={ formRef }>
-                        <SemanticForm>
+                        ref={ formRef }
+                    >
+                        <SemanticForm noValidate={ noValidate }>
                             <Grid className="form-container with-max-width">
                                 { renderComponents(
                                     childNodes,
@@ -193,4 +200,6 @@ export const Form: ForwardRefExoticComponent<FormPropsInterface> =
 /**
  * Default props for the component.
  */
-Form.defaultProps = { };
+Form.defaultProps = {
+    noValidate: true,
+};

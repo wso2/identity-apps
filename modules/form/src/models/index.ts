@@ -16,6 +16,7 @@
  * under the License.
  */
 
+export * from "./adapters";
 export * from "./fields";
 export * from "./form";
 export * from "./validation";

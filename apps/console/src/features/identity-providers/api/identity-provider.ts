@@ -23,6 +23,8 @@ import { AxiosError, AxiosResponse } from "axios";
 import { store } from "../../core";
 import { IdentityProviderManagementConstants } from "../constants";
 import {
+    AuthenticatorInterface,
+    AuthenticatorTypes,
     ConnectedAppsInterface,
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorListResponseInterface,
@@ -36,6 +38,7 @@ import {
     IdentityProviderTemplateListResponseInterface,
     JITProvisioningResponseInterface,
     LocalAuthenticatorInterface,
+    MultiFactorAuthenticatorInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorListItemInterface,
     OutboundProvisioningConnectorMetaInterface
@@ -707,10 +710,10 @@ export const getLocalAuthenticators = (): Promise<LocalAuthenticatorInterface[]>
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
+        .then((response: AxiosResponse<LocalAuthenticatorInterface[]>) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
-                    IdentityProviderManagementConstants.LOCAL_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR,
+                    IdentityProviderManagementConstants.LOCAL_AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR,
                     null,
                     response.status,
                     response.request,
@@ -718,10 +721,198 @@ export const getLocalAuthenticators = (): Promise<LocalAuthenticatorInterface[]>
                     response.config);
             }
 
-            return Promise.resolve(response.data as LocalAuthenticatorInterface[]);
+            return Promise.resolve(response.data);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                IdentityProviderManagementConstants.LOCAL_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR,
+                IdentityProviderManagementConstants.LOCAL_AUTHENTICATORS_FETCH_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Get all authenticators in the server. i.e LOCAL & FEDERATED both.
+ *
+ * @param {string} filter - Search filter.
+ *
+ * @return {Promise<AuthenticatorInterface[]>} Response as a promise.
+ */
+export const getAuthenticators = (filter?: string, type?: AuthenticatorTypes): Promise<AuthenticatorInterface[]> => {
+
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        params: {
+            filter
+        },
+        url: store.getState().config.endpoints.authenticators
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse<AuthenticatorInterface[]>) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    IdentityProviderManagementConstants.AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            // If `type` is defined, only return authenticators of that type.
+            if (type) {
+                return Promise.resolve(response.data.filter((authenticator: AuthenticatorInterface) => {
+                    return authenticator.type === type;
+                }));
+            }
+
+            return Promise.resolve(response.data);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                IdentityProviderManagementConstants.AUTHENTICATORS_FETCH_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Get all authenticator tags
+ *
+ * @return {Promise<string[]>} Response as a promise.
+ */
+export const getAuthenticatorTags = (): Promise<string[]> => {
+
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.authenticatorTags
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse<string[]>) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    IdentityProviderManagementConstants.AUTHENTICATOR_TAGS_FETCH_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                IdentityProviderManagementConstants.AUTHENTICATOR_TAGS_FETCH_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Get the details of a Multi-factor authenticator.
+ *
+ * @param {string} id - Authenticator ID.
+ *
+ * @return {Promise<MultiFactorAuthenticatorInterface>} Response as a promise.
+ */
+export const getMultiFactorAuthenticatorDetails = (id: string): Promise<MultiFactorAuthenticatorInterface> => {
+
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${ store.getState().config.endpoints.multiFactorAuthenticators }/connectors/${ id }`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse<MultiFactorAuthenticatorInterface>) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    IdentityProviderManagementConstants.MULTI_FACTOR_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                IdentityProviderManagementConstants.MULTI_FACTOR_AUTHENTICATOR_FETCH_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Update a Multi-factor authenticator.
+ *
+ * @param {string} id - Authenticator ID.
+ * @param {MultiFactorAuthenticatorInterface} payload - Request payload.
+ *
+ * @return {Promise<MultiFactorAuthenticatorInterface>} Response as a promise.
+ */
+export const updateMultiFactorAuthenticatorDetails = (
+    id: string,
+    payload: MultiFactorAuthenticatorInterface
+): Promise<MultiFactorAuthenticatorInterface> => {
+
+    const requestConfig = {
+        data: {
+            operation: "UPDATE",
+            properties: payload.properties
+        },
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: `${ store.getState().config.endpoints.multiFactorAuthenticators }/connectors/${ id }`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse<MultiFactorAuthenticatorInterface>) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    IdentityProviderManagementConstants.MULTI_FACTOR_AUTHENTICATOR_UPDATE_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                IdentityProviderManagementConstants.MULTI_FACTOR_AUTHENTICATOR_UPDATE_ERROR,
                 error.stack,
                 error.code,
                 error.request,

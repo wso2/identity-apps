@@ -26,6 +26,7 @@ export interface ServerConfigurationsResourceEndpointsInterface {
     captchaForSSOLogin: string;
     governanceConnectorCategories: string;
     loginPolicies: string;
+    multiFactorAuthenticators: string;
     passwordHistory: string;
     passwordPolicies: string;
     passwordPolicy: string;

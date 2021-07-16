@@ -440,6 +440,51 @@
     }
 }
 
+/*-----------------------------
+     Resource Cards Grid
+------------------------------*/
+
+.ui.cards {
+    &.resource-grid {
+        .ui.card {
+            &.info-card {
+                width: @resourceCardDefaultWidth;
+                
+                .content {
+                    &:not(:first-child) {
+                        padding-top: 0.4em;
+                        
+                        &:not(:last-child) {
+                            padding-bottom: 0.4em;
+                        }
+                    }
+                }
+                .action-container {
+                    min-height: 55px !important;
+
+                    .actions {
+                        display: flex;
+                        justify-content: space-between;
+
+                        .delete-button {
+                            visibility: hidden;
+                            color: @negativeColor;
+                        }
+                    }
+                }
+                
+                &:hover {
+                    .action-container {
+                        .delete-button {
+                            visibility: visible;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 /*********************************************
              Template Card Variation
 *********************************************/
@@ -657,8 +702,11 @@
         &:hover {
             transform: none;
             text-decoration: none;
-            cursor: pointer;
-            box-shadow: @infoCardHoverBoxShadow;
+
+            &:not(.no-hover) {
+                cursor: pointer;
+                box-shadow: @infoCardHoverBoxShadow;
+            }
         }
         &.selected {
             border-color: @infoCardSelectedBorder;
@@ -666,6 +714,23 @@
         &.disabled {
             cursor: not-allowed;
             filter: grayscale(100%);
+        }
+        .ribbon {
+            font-size: 0.8em;
+            font-weight: 500;
+            color: @white;
+            right: 0;
+            height: 24px;
+            position: absolute;
+            min-width: 100px;
+            background: linear-gradient(270deg, lighten(@primaryColor, 15) 0%, @primaryColor 100%);
+            display: flex;
+            flex-direction: row;
+            align-content: center;
+            align-items: center;
+            justify-content: space-around;
+            clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
+            -webkit-clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
         }
         .content {
             border: none;
@@ -675,7 +740,7 @@
         }
         .card-header-section {
             .card-header {
-                font-weight: 600;
+                font-weight: 500;
             }
         }
         .card-subheader {
@@ -734,6 +799,16 @@
             }
             &.inline {
                 display: inline-block;
+            }
+        }
+        .action-container {
+            .info-card-inner-action {
+                padding-left: 0;
+
+                .icon {
+                    margin-left: 0 !important;
+                    text-decoration: auto;
+                }
             }
         }
     }

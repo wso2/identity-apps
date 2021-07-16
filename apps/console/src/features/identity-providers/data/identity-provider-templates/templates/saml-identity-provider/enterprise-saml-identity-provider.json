@@ -4,6 +4,7 @@
     "description": "Configure a new enterprise identity provider with SAML 2.0",
     "displayOrder": 5,
     "id": "saml-idp",
+    "tags": [ "SAML" ],
     "idp": {
         "certificate": {},
         "claims": {
@@ -21,6 +22,7 @@
             "authenticators": [
                 {
                     "authenticatorId": "U0FNTFNTT0F1dGhlbnRpY2F0b3I",
+                    "isEnabled": true,
                     "properties": [
                         {
                             "key": "RequestMethod",

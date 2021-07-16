@@ -170,7 +170,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         const secondFactorAuth: GenericAuthenticatorInterface[] = [];
 
         localAuthenticators.forEach((authenticator: GenericAuthenticatorInterface) => {
-            if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticator.name)) {
+            if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticator.id)) {
                 secondFactorAuth.push(authenticator);
             } else {
                 moderatedLocalAuthenticators.push(authenticator);

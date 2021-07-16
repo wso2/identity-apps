@@ -1,11 +1,12 @@
 {
     "id": "github-idp",
     "name": "GitHub",
-    "description": "Login with Github",
+    "description": "Login users with existing GitHub accounts.",
     "image": "github",
     "category": "DEFAULT",
     "displayOrder": 3,
     "services": [],
+    "tags": [ "Social-Login" ],
     "idp": {
         "name": "GitHub",
         "description": "",
@@ -35,6 +36,7 @@
             "authenticators": [
                 {
                     "authenticatorId": "R2l0aHViQXV0aGVudGljYXRvcg",
+                    "isEnabled": true,
                     "properties": [
                         {
                             "key": "AdditionalQueryParameters",

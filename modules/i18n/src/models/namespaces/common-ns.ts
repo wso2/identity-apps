@@ -118,6 +118,7 @@ export interface CommonNS {
     sdks: string;
     search: string;
     security: string;
+    setup: string;
     show: string;
     showAll: string;
     showLess: string;

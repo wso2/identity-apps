@@ -16,14 +16,19 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Hint, MessageWithIcon } from "@wso2is/react-components";
-import React, { ReactElement, useState } from "react";
+import React, { Fragment, FunctionComponent, ReactElement } from "react";
 import { Field as FinalFormField } from "react-final-form";
-import { ToggleAdapter } from "./adapters";
+import { CheckboxAdapter } from "./adapters";
 import { FormFieldPropsInterface } from "./field";
 import { FormFieldMessage } from "../models";
 
-export interface FieldCheckboxPropsInterface extends FormFieldPropsInterface {
+/**
+ * Interface for the Checkbox field component.
+ */
+export interface FieldCheckboxPropsInterface extends FormFieldPropsInterface, TestableComponentInterface {
+
     /**
      * Hint of the form field.
      */
@@ -40,13 +45,19 @@ export interface FieldCheckboxPropsInterface extends FormFieldPropsInterface {
 
 /**
  * Implementation of the Checkbox Field component.
- * @param props
+ *
+ * @param {FieldCheckboxPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
-export const FieldCheckbox = (props: FieldCheckboxPropsInterface): ReactElement => {
+export const FieldCheckbox: FunctionComponent<FieldCheckboxPropsInterface> = (
+    props: FieldCheckboxPropsInterface
+): ReactElement => {
 
-    const { [ "data-testid" ]: testId, ...rest } = props;
-
-    const [ checkboxValue, setCheckboxValue ] = useState<boolean>(!(props?.childFieldProps?.value?.length == 0));
+    const {
+        [ "data-testid" ]: testId,
+        ...rest
+    } = props;
 
     const resolveInputFieldMessage = () => {
         switch (props.message.type) {
@@ -78,15 +89,12 @@ export const FieldCheckbox = (props: FieldCheckboxPropsInterface): ReactElement 
     };
 
     return (
-        <>
+        <Fragment>
             <FinalFormField
                 key={ testId }
-                parse={ value => value === undefined
-                    ? setCheckboxValue(!(props?.childFieldProps?.value?.length == 0)) : setCheckboxValue(value) }
                 type="checkbox"
                 name={ props.name }
-                defaultValue={ checkboxValue }
-                component={ ToggleAdapter }
+                component={ CheckboxAdapter }
                 { ...rest }
             />
             {
@@ -101,6 +109,13 @@ export const FieldCheckbox = (props: FieldCheckboxPropsInterface): ReactElement 
                     resolveInputFieldMessage()
                 )
             }
-        </>
+        </Fragment>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+FieldCheckbox.defaultProps = {
+    "data-testid": "checkbox-field"
 };

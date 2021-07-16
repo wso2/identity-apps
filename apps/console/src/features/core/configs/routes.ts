@@ -22,7 +22,7 @@ import merge from "lodash-es/merge";
 import values from "lodash-es/values";
 import { lazy } from "react";
 import { getSidePanelIcons } from "./ui";
-import { EXTENSION_ROUTES } from "../../../extensions";
+import { EXTENSION_ROUTES, identityProviderConfig } from "../../../extensions";
 import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout } from "../../../layouts";
 import { AdminView, DeveloperView, FullScreenView } from "../../../views";
 import { AppConstants } from "../constants";
@@ -123,10 +123,14 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
                         component: lazy(() => import("../../identity-providers/pages/identity-providers")),
                         exact: true,
                         icon: {
-                            icon: getSidePanelIcons().identityProviders
+                            icon: identityProviderConfig?.useNewConnectionsView
+                                ? getSidePanelIcons().connections
+                                : getSidePanelIcons().identityProviders
                         },
                         id: "identityProviders",
-                        name: "common:identityProviders",
+                        name: identityProviderConfig?.useNewConnectionsView
+                            ? "console:develop.features.sidePanel.authenticationProviders"
+                            : "console:develop.features.sidePanel.identityProviders",
                         order: 2,
                         path: AppConstants.getPaths().get("IDP"),
                         protected: true,

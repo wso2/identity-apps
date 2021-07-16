@@ -1,11 +1,12 @@
 {
     "id": "8ea23303-49c0-4253-b81f-82c0fe6fb4a0",
     "name": "Google",
-    "description": "Login with Google",
+    "description": "Login users with existing Google accounts.",
     "image": "google",
     "category": "DEFAULT",
     "displayOrder": 1,
     "services": [],
+    "tags": [ "Social-Login" ],
     "idp": {
         "name": "Google",
         "description": "",
@@ -35,6 +36,7 @@
             "authenticators": [
                 {
                     "authenticatorId": "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I",
+                    "isEnabled": true,
                     "properties": [
                         {
                             "key": "AdditionalQueryParameters",

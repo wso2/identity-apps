@@ -28,6 +28,7 @@ import React, {
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Label, Popup } from "semantic-ui-react";
+import { applicationConfig } from "../../../../../../extensions/configs";
 import {
     AuthenticatorCategories,
     AuthenticatorMeta,
@@ -36,7 +37,6 @@ import {
 } from "../../../../../identity-providers";
 import { AuthenticationStepInterface } from "../../../../models";
 import { SignInMethodUtils } from "../../../../utils";
-import { applicationConfig } from "../../../../../../extensions/configs";
 
 /**
  * Proptypes for the authenticators component.
@@ -276,6 +276,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                         trigger={ (
                             <InfoCard
                                 showTooltips
+                                imageSize="micro"
                                 className={ authenticatorCardClasses }
                                 header={
                                     AuthenticatorMeta.getAuthenticatorDisplayName(
@@ -296,6 +297,10 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                 tags={ showLabels && resolveAuthenticatorLabels((authenticator?.defaultAuthenticator)) }
                                 onClick={ () => {
                                     isFactorEnabled(authenticator) && handleAuthenticatorSelect(authenticator);
+                                } }
+                                imageOptions={ {
+                                    floated: false,
+                                    inline: true
                                 } }
                                 data-testid={ `${ testId }-authenticator-${ authenticator.name }` }
                             />

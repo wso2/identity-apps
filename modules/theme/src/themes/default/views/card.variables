@@ -92,6 +92,12 @@ Recent Application Card
 @selectionCardWithRadioSelectedSubheaderColor: #4d4d4d;
 
 /*-------------------------------
+         Resource Card
+--------------------------------*/
+
+@resourceCardDefaultWidth: 220px;
+
+/*-------------------------------
           Template Card
 --------------------------------*/
 
@@ -140,7 +146,7 @@ Recent Application Card
 @infoCardTransition: @defaultCardTransition;
 @infoCardBorder: @defaultCardBorder;
 @infoCardHoverBoxShadow: @defaultCardHoverBoxShadow;
-@infoCardSubHeaderFontSize: 0.9em;
+@infoCardSubHeaderFontSize: 0.8em;
 @infoCardSelectedBorder: @primaryColor;
 
 /*-------------------------------

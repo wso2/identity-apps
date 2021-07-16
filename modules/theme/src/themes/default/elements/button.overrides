@@ -24,6 +24,12 @@
 
         &:hover {
             background: transparent;
+
+            &.hover {
+                &-underline {
+                    text-decoration: underline;
+                }
+            }
         }
         &.compact {
             padding: 0;

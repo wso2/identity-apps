@@ -18,9 +18,9 @@
 
 import { Button, CopyInputField, DangerButton, LinkButton, Password, PrimaryButton } from "@wso2is/react-components";
 import omit from "lodash-es/omit";
-import React, { ReactElement } from "react";
+import React, { ClipboardEvent, KeyboardEvent, ReactElement } from "react";
 import { Checkbox, Form, Input, Select } from "semantic-ui-react";
-import { FieldButtonTypes } from "../models";
+import { CheckboxAdapterPropsInterface, FieldButtonTypes } from "../models";
 
 /**
  * The enter key.
@@ -53,15 +53,58 @@ export const TextFieldAdapter = (props): ReactElement => {
             onBlur={ (event) => input.onBlur(event) }
             control={ Input }
             autoFocus={ childFieldProps.autoFocus || false }
-            type="text"
             value={ meta.modified ? input.value
                 : (childFieldProps?.value ? childFieldProps?.value
                     : (parentFormProps?.values[ childFieldProps?.name ] ? parentFormProps?.values[ childFieldProps?.name ] : "")) }
             { ...omit(childFieldProps, [ "value", "listen" ]) }
+            type={
+                childFieldProps.inputType === "number"
+                    ? "number"
+                    : "text"
+            }
             error={
                 (meta.error && meta.touched)
                     ? meta.error
                     : null
+            }
+            onKeyDown={
+                // Restrict typing non-numeric characters in the "number" input fields.
+                // Setting `type=number` is not sufficient to support firefox & IE.
+                // Port fix from https://github.com/wso2/identity-apps/pull/2035
+                childFieldProps.inputType === "number"
+                    ? ((event: KeyboardEvent) => {
+                        const isNumber: boolean = /^[0-9]$/i.test(event.key);
+                        const isAllowed: boolean = (
+                            (event.key === "a"
+                                || event.key === "v"
+                                || event.key === "c"
+                                || event.key === "x")
+                            && (event.ctrlKey === true
+                                || event.metaKey === true)
+                            )
+                            || (
+                                event.key === "ArrowRight"
+                                || event.key == "ArrowLeft")
+                            || (
+                                event.key === "Delete"
+                                || event.key === "Backspace");
+
+                        !isNumber && !isAllowed && event.preventDefault();
+                    })
+                    : (): void => { return; }
+            }
+            onPaste={
+                // Restrict pasting non-numeric characters in the "number" input fields
+                // Setting `type=number` is not sufficient to support firefox & IE.
+                // Port fix from https://github.com/wso2/identity-apps/pull/2035
+                childFieldProps.inputType === "number"
+                    ? ((event: ClipboardEvent) => {
+                        const data: string = event.clipboardData.getData("Text") ;
+                        const isNumber: boolean = /^[0-9]+$/i.test(data);
+                        
+                        !isNumber && event.preventDefault();
+                    })
+                    : (): void => { return; }
             }
         />
     );
@@ -173,6 +216,14 @@ export const TextAreaAdapter = (props): ReactElement => {
     );
 };
 
+/**
+ * Toggle adapter.
+ * @deprecated Use `CheckboxAdapter` instead.
+ *
+ * @param props - Props injected to the component. props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
+ */
 export const ToggleAdapter = (props): ReactElement => {
 
     const { childFieldProps, input, meta } = props;
@@ -195,6 +246,47 @@ export const ToggleAdapter = (props): ReactElement => {
             defaultChecked={ !(childFieldProps.value.length == 0) }
             autoFocus={ childFieldProps.autoFocus || false }
             { ...childFieldProps }
+        />
+    );
+};
+
+/**
+ * Semantic Checkbox adapter.
+ * @see {@link https://codesandbox.io/s/react-final-form-simple-example-3we74?fontsize=14&file=/index.js}
+ *
+ * @param {CheckboxAdapterPropsInterface} props - Props injected to the component.
+ * 
+ * @return {React.ReactElement}
+ */
+export const CheckboxAdapter = (props: CheckboxAdapterPropsInterface): ReactElement => {
+
+    const {
+        childFieldProps,
+        input: { value, ...input },
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        type, // unused, just don't pass it along with the ...rest
+        ...rest
+    } = props;
+
+    return (
+        <Form.Checkbox
+            { ...input }
+            { ...rest }
+            label={ childFieldProps?.label }
+            name={ childFieldProps?.name }
+            onChange={ (event, { checked }) => {
+                if (childFieldProps?.listen && typeof childFieldProps.listen === "function") {
+                    childFieldProps.listen(checked);
+                }
+
+                input.onChange({
+                    target: {
+                        checked,
+                        type: "checkbox",
+                        value
+                    }
+                });
+            } }
         />
     );
 };

@@ -1,11 +1,12 @@
 {
     "id": "facebook-idp",
     "name": "Facebook",
-    "description": "Login with Facebook",
+    "description": "Login users with existing Facebook accounts.",
     "image": "facebook",
     "category": "DEFAULT",
     "displayOrder": 2,
     "services": [],
+    "tags": [ "Social-Login" ],
     "idp": {
         "name": "Facebook",
         "description": "",
@@ -92,6 +93,7 @@
             "authenticators": [
                 {
                     "authenticatorId": "RmFjZWJvb2tBdXRoZW50aWNhdG9y",
+                    "isEnabled": true,
                     "properties": [
                         {
                             "key": "AuthnEndpoint",

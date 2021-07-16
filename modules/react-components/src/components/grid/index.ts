@@ -16,4 +16,5 @@
  * under the License.
  */
 
+export * from "./resource-grid";
 export * from "./template-grid";

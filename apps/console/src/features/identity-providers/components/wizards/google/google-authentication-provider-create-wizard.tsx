@@ -178,6 +178,9 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
                 ];
         }
 
+        // Use description from template.
+        identityProvider.description = template.description;
+
         createNewIdentityProvider(identityProvider);
     };
 
