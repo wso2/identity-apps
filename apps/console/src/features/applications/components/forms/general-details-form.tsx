@@ -67,6 +67,16 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
 }
 
 /**
+ * Proptypes for the applications general details form error messages.
+ */
+export interface GeneralDetailsFormErrorValidationsInterface {
+    /**
+     *  Error message for the Application access URL.
+     */
+    accessUrl?: string;
+}
+
+/**
  * Form to edit general details of the application.
  *
  * @param {GeneralDetailsFormPopsInterface} props - Props injected to the component.
@@ -115,12 +125,40 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         });
     };
 
+    /**
+     * Validates the Form.
+     *
+     * @param values - Form Values.
+     *
+     * @return {GeneralDetailsFormErrorValidationsInterface}
+     */
+    const validateForm = (values):
+        GeneralDetailsFormErrorValidationsInterface => {
+
+        const errors: GeneralDetailsFormErrorValidationsInterface = {
+            accessUrl: undefined
+        };
+
+        if (isDiscoverable && !values.accessUrl) {
+            errors.accessUrl = t("console:develop.features.applications.forms.generalDetails.fields.accessUrl" +
+                ".validations.empty");
+        }
+
+        return errors;
+    };
+
     return (
         <Form
             uncontrolledForm={ false }
             onSubmit={ (values, form) => {
                 updateConfigurations(values);
             } }
+            initialValues={ {
+                accessUrl: accessUrl,
+                description: description,
+                name: name
+            } }
+            validate={ validateForm }
         >
             { !UIConfig.systemAppsIdentifiers.includes(name) && (
                 <Field.Input
