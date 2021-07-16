@@ -182,7 +182,8 @@ export const AppUtils = (function() {
                     path: skipTenant ?
                         _config.accountAppOrigin + _config.accountApp.path:
                         _config.accountAppOrigin + this.getTenantPath(true) + _config.accountApp.path,
-                    commonPostLogoutUrl : commonPostLogoutUrl
+                    commonPostLogoutUrl : commonPostLogoutUrl,
+                    tenantQualifiedPath: this.getConsumerAccountAppPath()
                 },
                 adminApp: {
                     basePath: this.constructAppPaths(_config.adminApp.basePath),
@@ -228,6 +229,16 @@ export const AppUtils = (function() {
                 tenantPrefix: this.getTenantPrefix(),
                 ui: _config.ui
             };
+        },
+
+        /**
+         * Get the URL for the Consumer MyAccount in customer and worker accounts.
+         *
+         * @return {string}
+         */
+        getConsumerAccountAppPath: function() {
+            return ((this.getTenantPrefix() !== "") && (this.getTenantName() !== "")) ?
+                _config.accountAppOrigin + "/" + this.getTenantPrefix() + "/" + this.getTenantName() + "/myaccount" : "";
         },
 
         /**
