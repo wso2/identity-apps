@@ -26,7 +26,9 @@ import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState }
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { FacebookAuthenticationProviderCreateWizardContent } from "./facebook-authentication-provider-create-wizard-content";
+import {
+    FacebookAuthenticationProviderCreateWizardContent
+} from "./facebook-authentication-provider-create-wizard-content";
 import {
     AppConstants,
     AppState,
@@ -167,6 +169,27 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
                 onIDPCreate();
             })
             .catch((error) => {
+
+                if (error.response.status === 403 &&
+                    error?.response?.data?.code === IdentityProviderManagementConstants.IDP_MGT_API_ERROR_CODES.get(
+                        "ERROR_CREATE_LIMIT_REACHED"
+                    )) {
+
+                    setAlert({
+                        code: IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode(),
+                        description: t(
+                            IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorDescription()
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorMessage()
+                        ),
+                        traceId: IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorTraceId()
+                    });
+
+                    return;
+                }
+
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
                         description: t("console:develop.features.authenticationProvider.notifications." +

@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { IdentityAppsAPIError } from "@wso2is/core/errors";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
@@ -118,15 +117,15 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
         [ "data-testid" ]: testId
     } = props;
 
-    const [initWizard, setInitWizard] = useState<boolean>(false);
-    const [wizardSteps, setWizardSteps] = useState<WizardStepInterface[]>(undefined);
-    const [isSelectionHidden, setIsSelectionHidden] = useState<boolean>(false);
-    const [wizardState, setWizardState] = useState<WizardStateInterface>(undefined);
-    const [partiallyCompletedStep, setPartiallyCompletedStep] = useState<number>(undefined);
-    const [currentWizardStep, setCurrentWizardStep] = useState<number>(currentStep);
-    const [defaultAuthenticatorMetadata, setDefaultAuthenticatorMetadata] =
+    const [ initWizard, setInitWizard ] = useState<boolean>(false);
+    const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>(undefined);
+    const [ isSelectionHidden, setIsSelectionHidden ] = useState<boolean>(false);
+    const [ wizardState, setWizardState] = useState<WizardStateInterface>(undefined);
+    const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
+    const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
+    const [ defaultAuthenticatorMetadata, setDefaultAuthenticatorMetadata ] =
         useState<FederatedAuthenticatorMetaInterface>(undefined);
-    const [defaultOutboundProvisioningConnectorMetadata, setDefaultOutboundProvisioningConnectorMetadata] =
+    const [ defaultOutboundProvisioningConnectorMetadata, setDefaultOutboundProvisioningConnectorMetadata ] =
         useState<OutboundProvisioningConnectorMetaInterface>(undefined);
 
     const dispatch = useDispatch();
@@ -136,9 +135,9 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
         state.identityProvider.meta.authenticators);
 
     // Triggers for each wizard step.
-    const [submitGeneralSettings, setSubmitGeneralSettings] = useTrigger();
-    const [submitAuthenticator, setSubmitAuthenticator] = useTrigger();
-    const [submitOutboundProvisioningSettings, setSubmitOutboundProvisioningSettings] = useTrigger();
+    const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
+    const [ submitAuthenticator, setSubmitAuthenticator ] = useTrigger();
+    const [ submitOutboundProvisioningSettings, setSubmitOutboundProvisioningSettings ] = useTrigger();
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
@@ -182,19 +181,19 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                         "ERROR_CREATE_LIMIT_REACHED"
                     )) {
 
-                    const apiError = new IdentityAppsAPIError(
-                        IdentityProviderManagementConstants.IDP_MGT_API_ERROR_CODES.get("ERROR_CREATE_LIMIT_REACHED"),
-                        t("console:develop.features.authenticationProvider.notifications." +
-                            "apiLimitReachedError.error.description"),
-                        t("console:develop.features.authenticationProvider.notifications." +
-                            "apiLimitReachedError.error.message")
-                    );
-
                     setAlert({
-                        description: apiError.getErrorDescription(),
+                        code: IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode(),
+                        description: t(
+                            IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorDescription()
+                        ),
                         level: AlertLevels.ERROR,
-                        message: apiError.getErrorMessage()
+                        message: t(
+                            IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorMessage()
+                        ),
+                        traceId: IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorTraceId()
                     });
+
+                    return;
                 }
 
                 if (error.response && error.response.data && error.response.data.description) {

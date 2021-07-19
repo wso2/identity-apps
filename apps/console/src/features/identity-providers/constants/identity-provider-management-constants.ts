@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentityAppsError } from "@wso2is/core/errors";
 import { DocumentationConstants } from "./documentation-constants";
 import { IdentityProviderTemplateLoadingStrategies } from "../models";
 
@@ -310,4 +311,17 @@ export class IdentityProviderManagementConstants {
      */
     public static readonly IDP_MGT_API_ERROR_CODES: Map<string, string> = new Map<string, string>()
         .set("ERROR_CREATE_LIMIT_REACHED", "IDP-60035");
+
+    /**
+     * Identity provider create limit reached error.
+     * @constant
+     * @type IdentityAppsError
+     * @default
+     */
+    public static readonly ERROR_CREATE_LIMIT_REACHED = new IdentityAppsError(
+        "IDP-60035",
+        "console:develop.features.authenticationProvider.notifications.apiLimitReachedError.error.description",
+        "console:develop.features.authenticationProvider.notifications.apiLimitReachedError.error.message",
+        "cec1f247-32fd-4624-9915-f469195a53ac"
+    )
 }
