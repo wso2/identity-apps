@@ -306,7 +306,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
      */
     useEffect(() => {
 
-        if (gravatarURLs) {
+        if (gravatarURLs && imageUrl) {
             for (const [ key, value ] of gravatarURLs) {
                 if (imageUrl.localeCompare(value) == 0) {
                     setIsGravatarUrl(true);
