@@ -16,5 +16,4 @@
  * under the License.
  */
 
-export * from "./identity-apps-api-error";
 export * from "./identity-apps-error";
