@@ -749,6 +749,7 @@
         }
         .card-description-container {
             padding-top: 0.5em;
+            min-height: 45px;
         }
         .card-description {
             font-size: 0.9em;

@@ -264,5 +264,6 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
  * Default proptypes for the component.
  */
 EditMultiFactorAuthenticator.defaultProps = {
-    "data-testid": "multi-factor-authenticator-edit"
+    "data-testid": "multi-factor-authenticator-edit",
+    defaultActiveIndex: 1
 };

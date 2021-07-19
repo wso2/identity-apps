@@ -210,7 +210,7 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
                         </Card.Header>
                     ) }
                     {
-                        description && fluid && (
+                        description !== undefined && fluid && (
                             <Tooltip
                                 compact
                                 size="mini"
@@ -268,7 +268,7 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
                     }
                 </div>
             </Card.Content>
-            { description && !fluid && (
+            { description !== undefined && !fluid && (
                 <Card.Content className="card-description-container">
                     <Tooltip
                         compact

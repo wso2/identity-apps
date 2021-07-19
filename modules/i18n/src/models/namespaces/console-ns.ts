@@ -1116,6 +1116,7 @@ export interface ConsoleNS {
                                     range: string;
                                     required: string;
                                 };
+                                unit: string;
                             };
                             tokenLength: {
                                 hint: string;
