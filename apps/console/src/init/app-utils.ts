@@ -179,21 +179,21 @@ export const AppUtils = (function() {
 
             return {
                 accountApp: {
+                    commonPostLogoutUrl : commonPostLogoutUrl,
                     path: skipTenant ?
                         _config.accountAppOrigin + _config.accountApp.path:
                         _config.accountAppOrigin + this.getTenantPath(true) + _config.accountApp.path,
-                    commonPostLogoutUrl : commonPostLogoutUrl,
-                    tenantQualifiedPath: this.getConsumerAccountAppPath()
+                    tenantQualifiedPath: this.getTenantQualifiedAccountAppPath()
                 },
                 adminApp: {
                     basePath: this.constructAppPaths(_config.adminApp.basePath),
                     displayName: _config.adminApp.displayName,
                     path: this.constructAppPaths(_config.adminApp.path)
                 },
+                allowMultipleAppProtocols: allowMultipleAppProtocol,
                 appBase: _config.appBaseName,
                 appBaseNameForHistoryAPI: this.constructAppBaseNameForHistoryAPI(),
                 appBaseWithTenant: this.getAppBaseWithTenant(),
-                allowMultipleAppProtocols: allowMultipleAppProtocol,
                 clientID: (this.isSaas() || this.isSuperTenant())
                     ? _config.clientID
                     : _config.clientID + "_" + this.getTenantName(),
@@ -229,16 +229,6 @@ export const AppUtils = (function() {
                 tenantPrefix: this.getTenantPrefix(),
                 ui: _config.ui
             };
-        },
-
-        /**
-         * Get the URL for the Consumer MyAccount in customer and worker accounts.
-         *
-         * @return {string}
-         */
-        getConsumerAccountAppPath: function() {
-            return ((this.getTenantPrefix() !== "") && (this.getTenantName() !== "")) ?
-                _config.accountAppOrigin + "/" + this.getTenantPrefix() + "/" + this.getTenantName() + "/myaccount" : "";
         },
 
         /**
@@ -322,6 +312,19 @@ export const AppUtils = (function() {
          */
         getTenantPrefix: function() {
             return _args.tenantPrefix || tenantPrefixFallback;
+        },
+
+        /**
+         * Get the URL for the tenanted Myaccount.
+         *
+         * @return {string}
+         */
+        getTenantQualifiedAccountAppPath: function() {
+            return ((this.getTenantPrefix() !== "") && (this.getTenantName() !== "")) ?
+                _config.accountAppOrigin + 
+                "/" + this.getTenantPrefix() + 
+                "/" + this.getTenantName() + 
+                "/myaccount" : "";
         },
 
         /**
