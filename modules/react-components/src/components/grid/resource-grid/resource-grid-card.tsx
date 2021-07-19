@@ -111,6 +111,7 @@ export const ResourceGridCard: FunctionComponent<ResourceGridCardPropsInterface>
         showActions,
         showResourceEdit,
         showResourceDelete,
+        showTooltips,
         testId,
         ...rest
     } = props;
@@ -129,6 +130,7 @@ export const ResourceGridCard: FunctionComponent<ResourceGridCardPropsInterface>
             description={ resourceDescription }
             image={ resourceImage }
             disabled={ isResourceComingSoon || disabled }
+            showTooltips={ !(isResourceComingSoon || disabled) && showTooltips }
             action={
                 showActions && (
                     <div className="actions">
