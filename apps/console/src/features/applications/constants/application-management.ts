@@ -16,8 +16,9 @@
  * under the License.
  */
 
+import { IdentityAppsError } from "@wso2is/core/errors";
 import { DocumentationConstants } from "./documentation-constants";
-import { IdentityProviderManagementConstants } from "../../identity-providers";
+import { IdentityProviderManagementConstants } from "../../identity-providers/constants";
 import { ApplicationTemplateCategories, ApplicationTemplateLoadingStrategies } from "../models";
 
 /**
@@ -398,4 +399,17 @@ export class ApplicationManagementConstants {
      */
     public static readonly APPLICATION_MGT_API_ERROR_CODES: Map<string, string> = new Map<string, string>()
         .set("ERROR_CREATE_LIMIT_REACHED", "APP-60503");
+
+    /**
+     * Application create limit reached error.
+     * @constant
+     * @type IdentityAppsError
+     * @default
+     */
+    public static readonly ERROR_CREATE_LIMIT_REACHED = new IdentityAppsError(
+        "APP-60503",
+        "console:develop.features.applications.notifications.apiLimitReachedError.error.description",
+        "console:develop.features.applications.notifications.apiLimitReachedError.error.message",
+        "cdaefcee-ecdb-47af-8538-174ec13292db"
+    )
 }

@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { IdentityAppsAPIError } from "@wso2is/core/errors";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
@@ -106,7 +105,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         title,
         closeWizard,
         template,
-        showHelpPanel,
         subTemplates,
         subTemplatesSectionTitle,
         subTitle,
@@ -288,25 +286,16 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         "ERROR_CREATE_LIMIT_REACHED"
                     )) {
 
-                    const apiError = new IdentityAppsAPIError(
-                        ApplicationManagementConstants.APPLICATION_MGT_API_ERROR_CODES.get(
-                            "ERROR_CREATE_LIMIT_REACHED"
-                        ),
-                        t(
-                            "console:develop.features.applications.notifications.apiLimitReachedError" +
-                            ".error.description"
-                        ),
-                        t(
-                            "console:develop.features.applications.notifications.apiLimitReachedError" +
-                            ".error.message"
-                        )
-                    );
-
                     setAlert({
-                        description: apiError.getErrorDescription(),
+                        code: ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode(),
+                        description: t(ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorDescription()),
                         level: AlertLevels.ERROR,
-                        message: apiError.getErrorMessage()
+                        message: t(ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorMessage()),
+                        traceId: ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorTraceId()
                     });
+                    scrollToNotification();
+
+                    return;
                 }
 
                 if (error.response && error.response.data && error.response.data.description) {
