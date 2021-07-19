@@ -317,7 +317,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         />
                     }
                     {
-                        claim && (
+                        claim &&
                             <Field.CheckboxLegacy
                                 ariaLabel="supportedByDefault"
                                 name="supportedByDefault"
@@ -329,7 +329,6 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 } }
                                 data-testid={ `${testId}-form-supported-by-default-input` }
                             />
-                        )
                     }
                     {
                         attributeConfig.editAttributes.showDisplayOrderInput && isShowDisplayOrder
@@ -367,7 +366,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             />
                     }
                     {
-                        claim && (
+                        claim &&
                             <Field.CheckboxLegacy
                                 ariaLabel="readOnly"
                                 name="readOnly"
@@ -377,7 +376,6 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 value={ claim?.readOnly ? [ "readOnly" ] : [] }
                                 data-testid={ `${ testId }-form-readonly-checkbox` }
                             />
-                        )
                     }
                     <Field.Button
                         ariaLabel="submit"
