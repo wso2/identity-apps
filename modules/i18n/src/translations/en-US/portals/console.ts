@@ -2870,10 +2870,11 @@ export const console: ConsoleNS = {
                                 }
                             },
                             expiryTime: {
-                                hint: "The generated passcode will be un-usable after this defined time period " +
-                                    "(in seconds).",
+                                hint: "The generated passcode will be un-usable after this defined time period. " +
+                                    "Please pick a value between <1>1 second</1> & <3>86400 seconds(1 day)</3>.",
                                 label: "Email OTP expiry time",
                                 placeholder: "Enter Email OTP expiry time.",
+                                unit: "seconds",
                                 validations: {
                                     invalid: "Email OTP expiry time should be an integer.",
                                     range: "Email OTP expiry time should be between 1 second & 86400 seconds(1 day).",
@@ -2881,7 +2882,8 @@ export const console: ConsoleNS = {
                                 }
                             },
                             tokenLength: {
-                                hint: "Number of allowed characters in the OTP token.",
+                                hint: "The number of allowed characters in the OTP token. Please, " +
+                                    "pick a value between <1>4-10</1>.",
                                 label: "Email OTP token length",
                                 placeholder: "Enter Email OTP token length.",
                                 validations: {

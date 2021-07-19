@@ -24,6 +24,7 @@ import isBoolean from "lodash-es/isBoolean";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { Label } from "semantic-ui-react";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     CommonAuthenticatorFormFieldInterface,
@@ -290,13 +291,21 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".emailOTP.expiryTime.label")
                 }
+                labelPosition="right"
                 placeholder={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".emailOTP.expiryTime.placeholder")
                 }
                 hint={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                        ".emailOTP.expiryTime.hint")
+                    <Trans
+                        i18nKey={
+                            "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                            ".emailOTP.expiryTime.hint"
+                        }
+                    >
+                        The generated passcode will be un-usable after this defined time period. Please pick a
+                        value between <Code>1 second</Code> & <Code>86400 seconds(1 day)</Code>.
+                    </Trans>
                 }
                 required={ true }
                 readOnly={ readOnly }
@@ -314,7 +323,15 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                 }
                 width={ 16 }
                 data-testid={ `${ testId }-email-otp-expiry-time` }
-            />
+            >
+                <input />
+                <Label>
+                    {
+                        t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                            ".emailOTP.expiryTime.unit")
+                    }
+                </Label>
+            </Field.Input>
             <Field.Input
                 ariaLabel="Email OTP token length"
                 inputType="number"
@@ -328,8 +345,15 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                         ".emailOTP.tokenLength.placeholder")
                 }
                 hint={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                        ".emailOTP.tokenLength.hint")
+                    <Trans
+                        i18nKey={
+                            "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                            ".emailOTP.tokenLength.hint"
+                        }
+                    >
+                        The number of allowed characters in the OTP token. Please, pick a value between 
+                        <Code>4-10</Code>.
+                    </Trans>
                 }
                 required={ true }
                 readOnly={ readOnly }
