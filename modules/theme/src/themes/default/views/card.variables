@@ -96,6 +96,7 @@ Recent Application Card
 --------------------------------*/
 
 @resourceCardDefaultWidth: 220px;
+@resourceCardDisabledOpacity: 0.6;
 
 /*-------------------------------
           Template Card
