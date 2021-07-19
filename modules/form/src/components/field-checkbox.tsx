@@ -95,6 +95,7 @@ export const FieldCheckbox: FunctionComponent<FieldCheckboxPropsInterface> = (
                 type="checkbox"
                 name={ props.name }
                 component={ CheckboxAdapter }
+                data-testid={ testId }
                 { ...rest }
             />
             {

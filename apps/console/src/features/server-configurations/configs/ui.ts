@@ -44,6 +44,9 @@ import {
     default as LiteUserRegistrationConnectorIllustration
 } from "../../../themes/default/assets/images/illustrations/governance-connectors/lite-user-registration.svg";
 import {
+    default as LockRecoverIcon
+} from "../../../themes/default/assets/images/icons/lock-recover-icon.svg";
+import {
     default as idleAccountSuspendConnectorIllustration
 } from "../../../themes/default/assets/images/illustrations/governance-connectors/lock-idle-accounts-illustration.svg";
 import {
@@ -56,11 +59,17 @@ import {
     default as PasswordResetConnectorIllustration
 } from "../../../themes/default/assets/images/illustrations/governance-connectors/password-reset-illustration.svg";
 import {
+    default as RobotIcon
+} from "../../../themes/default/assets/images/icons/robot-icon.svg";
+import {
     default as SelfRegConnectorIllustration
 } from "../../../themes/default/assets/images/illustrations/governance-connectors/self-registration-illustration.svg";
 import {
     default as UserClaimUpdateConnectorIllustration
 } from "../../../themes/default/assets/images/illustrations/governance-connectors/user-claim-update-illustration.svg";
+import {
+    default as WarningWithNumberIcon
+} from "../../../themes/default/assets/images/icons/warning-with-number.svg";
 import { ServerConfigurationsConstants } from "../constants";
 
 export const getGovernanceConnectorIllustrations = () => {
@@ -82,5 +91,14 @@ export const getGovernanceConnectorIllustrations = () => {
         [ ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID ]: AnalyticsEngineConnectorIllustration,
         [ ServerConfigurationsConstants.USER_CLAIM_UPDATE_CONNECTOR_ID ]: UserClaimUpdateConnectorIllustration,
         default: DefaultConnectorIllustration
+    };
+};
+
+export const getSettingsSectionIcons = () => {
+
+    return {
+        accountLock: WarningWithNumberIcon,
+        botDetection: RobotIcon,
+        accountRecovery: LockRecoverIcon
     };
 };

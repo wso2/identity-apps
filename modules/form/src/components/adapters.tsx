@@ -101,7 +101,7 @@ export const TextFieldAdapter = (props): ReactElement => {
                     ? ((event: ClipboardEvent) => {
                         const data: string = event.clipboardData.getData("Text") ;
                         const isNumber: boolean = /^[0-9]+$/i.test(data);
-                        
+
                         !isNumber && event.preventDefault();
                     })
                     : (): void => { return; }
@@ -255,7 +255,7 @@ export const ToggleAdapter = (props): ReactElement => {
  * @see {@link https://codesandbox.io/s/react-final-form-simple-example-3we74?fontsize=14&file=/index.js}
  *
  * @param {CheckboxAdapterPropsInterface} props - Props injected to the component.
- * 
+ *
  * @return {React.ReactElement}
  */
 export const CheckboxAdapter = (props: CheckboxAdapterPropsInterface): ReactElement => {
@@ -263,15 +263,27 @@ export const CheckboxAdapter = (props: CheckboxAdapterPropsInterface): ReactElem
     const {
         childFieldProps,
         input: { value, ...input },
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        type, // unused, just don't pass it along with the ...rest
         ...rest
     } = props;
+
+    // unused, just don't pass it along with the ...rest
+    const {
+        /* eslint-disable @typescript-eslint/no-unused-vars */
+        type,
+        meta,
+        hint,
+        children,
+        parentFormProps,
+        render,
+        width,
+        /* eslint-enable @typescript-eslint/no-unused-vars */
+        ...filteredRest
+    } = rest;
 
     return (
         <Form.Checkbox
             { ...input }
-            { ...rest }
+            { ...filteredRest }
             label={ childFieldProps?.label }
             name={ childFieldProps?.name }
             onChange={ (event, { checked }) => {
