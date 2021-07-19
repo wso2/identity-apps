@@ -70,4 +70,13 @@ export class AppConstants {
      * @default
      */
     public static readonly NETWORK_ERROR_EVENT: string = "network_error_event";
+
+    /**
+     * The name of the event dispatched when a network error occurs.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly FULL_UI_SCOPE: string = "console:full";
+
 }

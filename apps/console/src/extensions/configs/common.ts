@@ -21,5 +21,6 @@ import { CommonConfig } from "./models";
 export const commonConfig: CommonConfig = {
     AdvancedSearchWithBasicFilters: {
         enableQuerySearch: true
-    }
+    },
+    checkForUIResourceScopes: false
 };

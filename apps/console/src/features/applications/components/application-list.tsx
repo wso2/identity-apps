@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -407,10 +408,12 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 <EmptyPlaceholder
                     className={ !isRenderedOnPortal ? "list-placeholder" : "" }
                     action={ onEmptyListPlaceholderActionClick && (
-                        <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
-                            <Icon name="add"/>
-                            { t("console:develop.features.applications.placeholders.emptyList.action") }
-                        </PrimaryButton>
+                        <Show when={ AccessControlConstants.APPLICATION_WRITE }>
+                            <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
+                                <Icon name="add"/>
+                                { t("console:develop.features.applications.placeholders.emptyList.action") }
+                            </PrimaryButton>
+                        </Show>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"

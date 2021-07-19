@@ -19,14 +19,15 @@
 
 import { FeatureAccessConfigInterface, RouteInterface } from "@wso2is/core/models";
 import { AuthenticateUtils } from "@wso2is/core/utils";
+import { AccessControlConstants } from "../access-control-constants";
 
 /**
  * A class to contain util functions related to access control
  */
 export class AccessControlUtils {
 
-    public static readonly MANAGE_GETTING_STARTED_ID: string = "manage-getting-started";
-    public static readonly DEVELOP_GETTING_STARTED_ID: string = "developer-getting-started";
+    public static readonly MANAGE_GETTING_STARTED_ID: string = "manageGettingStarted";
+    public static readonly DEVELOP_GETTING_STARTED_ID: string = "developerGettingStarted";
 
     /**
      * Util method to filter base routes based on user scopes retrieved via the token call.
@@ -47,21 +48,16 @@ export class AccessControlUtils {
         routeArray.map((route: RouteInterface) => {
             const feature: FeatureAccessConfigInterface = featureConfig[route.id];
 
-            if (!feature
-                && (route.id === this.MANAGE_GETTING_STARTED_ID || route.id === this.DEVELOP_GETTING_STARTED_ID)) {
-                    authenticatedRoutes.push(route);
-
-                    return;
-            }
-
             if (feature && feature.enabled) {
                 let shouldShowRoute: boolean = false;
-                for (const [ , value ] of Object.entries(feature?.scopes)) {
-                    if (value && value instanceof Array) {
-                        if (AuthenticateUtils.hasScopes(value, allowedScopes)) {
-                            shouldShowRoute = true;
-                        }
-                    }
+                if (
+                    AuthenticateUtils.hasScopes(feature?.scopes.read, allowedScopes) &&
+                    (!feature?.scopes?.feature ||
+                        (feature?.scopes?.feature &&
+                            AuthenticateUtils.hasScopes(feature?.scopes.feature, allowedScopes)) ||
+                        AuthenticateUtils.hasScopes([AccessControlConstants.FULL_UI_SCOPE], allowedScopes))
+                ) {
+                    shouldShowRoute = true;
                 }
 
                 if (route.showOnSidePanel && shouldShowRoute) {
@@ -69,10 +65,6 @@ export class AccessControlUtils {
 
                     return;
                 }
-            }
-
-            if (route.showOnSidePanel) {
-                authenticatedRoutes.push(route);
             }
 
         });

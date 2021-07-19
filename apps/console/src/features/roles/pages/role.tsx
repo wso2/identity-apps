@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { getRolesList, getUserStoreList } from "@wso2is/core/api";
 import { AlertInterface, AlertLevels, RoleListInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -320,16 +321,18 @@ const RolesPage = (): ReactElement => {
             action={
                 (isRoleListFetchRequestLoading || !(!searchQuery && paginatedRoles?.Resources?.length <= 0))
                 && (
-                    <PrimaryButton
-                        data-testid="role-mgt-roles-list-add-button"
-                        onClick={ () => setShowWizard(true) }
-                    >
-                        <Icon
-                            data-testid="role-mgt-roles-list-add-button-icon"
-                            name="add"
-                        />
-                        { t("console:manage.features.roles.list.buttons.addButton", { type: "Role" }) }
-                    </PrimaryButton>
+                    <Show when={ AccessControlConstants.ROLE_WRITE }>
+                        <PrimaryButton
+                            data-testid="role-mgt-roles-list-add-button"
+                            onClick={ () => setShowWizard(true) }
+                        >
+                            <Icon
+                                data-testid="role-mgt-roles-list-add-button-icon"
+                                name="add"
+                            />
+                            { t("console:manage.features.roles.list.buttons.addButton", { type: "Role" }) }
+                        </PrimaryButton>
+                    </Show>
                 )
             }
             title={ t("console:manage.pages.roles.title") }
