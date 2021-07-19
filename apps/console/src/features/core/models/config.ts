@@ -150,6 +150,10 @@ interface ExternalAppConfigInterface {
      * Access path/URL for the app.
      */
     path: string;
+    /**
+     * Access path/URL for the consumer account app.
+     */
+    tenantQualifiedPath: string;
 }
 
 /**
