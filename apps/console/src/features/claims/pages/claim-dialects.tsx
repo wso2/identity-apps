@@ -168,8 +168,6 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
             <PageLayout
                 action={
                     attributeConfig.addAttributeMapping && (
-                        ...
-                    ) }    
                     <Show when={ AccessControlConstants.ATTRIBUTE_READ }>
                         <PrimaryButton
                             onClick={ () => {
@@ -181,7 +179,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                             { t("console:manage.features.claims.dialects.pageLayout.list.primaryAction") }
                         </PrimaryButton>
                     </Show>
-                }
+                ) }
                 isLoading={ isLoading }
                 title={ t("console:manage.features.claims.dialects.pageLayout.list.title") }
                 description={ t("console:manage.features.claims.dialects.pageLayout.list.description") }
