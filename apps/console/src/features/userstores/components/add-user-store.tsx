@@ -16,7 +16,6 @@
 * under the License.
 */
 
-import { IdentityAppsAPIError } from "@wso2is/core/errors";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
@@ -29,7 +28,7 @@ import { GeneralDetailsUserstore, GroupDetails, SummaryUserStores, UserDetails }
 import { AppConstants, history } from "../../core";
 import { addUserStore } from "../api";
 import { getAddUserstoreWizardStepIcons } from "../configs";
-import { USERSTORE_TYPE_DISPLAY_NAMES, USER_STORE_MGT_API_ERROR_CODES } from "../constants";
+import { USERSTORE_TYPE_DISPLAY_NAMES, UserStoreManagementConstants } from "../constants";
 import {
     CategorizedProperties,
     TypeProperty,
@@ -124,20 +123,16 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
         }).catch(error => {
 
             if (error.response.status === 403 &&
-                error?.response?.data?.code === USER_STORE_MGT_API_ERROR_CODES.get(
+                error?.response?.data?.code === UserStoreManagementConstants.USER_STORE_MGT_API_ERROR_CODES.get(
                     "ERROR_CREATE_LIMIT_REACHED"
                 )) {
 
-                const apiError = new IdentityAppsAPIError(
-                    USER_STORE_MGT_API_ERROR_CODES.get("ERROR_CREATE_LIMIT_REACHED"),
-                    t("console:manage.features.userstores.notifications.apiLimitReachedError.error.description"),
-                    t("console:manage.features.userstores.notifications.apiLimitReachedError.error.message")
-                );
-
                 setAlert({
-                    description: apiError.getErrorDescription(),
+                    code: UserStoreManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode(),
+                    description: t(UserStoreManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorDescription()),
                     level: AlertLevels.ERROR,
-                    message: apiError.getErrorMessage()
+                    message: t(UserStoreManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorMessage()),
+                    traceId: UserStoreManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorTraceId()
                 });
             }
 

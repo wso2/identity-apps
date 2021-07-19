@@ -16,6 +16,45 @@
  * under the License.
  */
 
+import { IdentityAppsError } from "@wso2is/core/errors";
+
+/**
+ * Class containing user store management constants.
+ */
+export class UserStoreManagementConstants {
+
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+     * @hideconstructor
+     */
+    /* eslint-disable @typescript-eslint/no-empty-function */
+    private constructor() { }
+
+    /**
+     * User store management API error codes.
+     * @constant
+     * @type {Map<string, string>}
+     * @default
+     */
+    public static readonly USER_STORE_MGT_API_ERROR_CODES: Map<string, string> = new Map<string, string>()
+        .set("ERROR_CREATE_LIMIT_REACHED", "SUS-60011");
+
+    /**
+     * User store create limit reached error.
+     * @constant
+     * @type IdentityAppsError
+     * @default
+     */
+    public static readonly ERROR_CREATE_LIMIT_REACHED = new IdentityAppsError(
+        "SUS-60011",
+        "console:manage.features.userstores.notifications.apiLimitReachedError.error.description",
+        "console:manage.features.userstores.notifications.apiLimitReachedError.error.message",
+        "165d6b4b-d384-4335-9706-19ab034a5397"
+    );
+}
+
 /**
  * The ID of the userstore type JDBC.
  *
@@ -99,12 +138,3 @@ export const DISABLED = "Disabled";
  * @type {string}
  */
 export const CONSUMER_USERSTORE = "CUSTOMER-DEFAULT";
-
-/**
- * User store management API error codes.
- * @constant
- * @type {Map<string, string>}
- * @default
- */
-export const USER_STORE_MGT_API_ERROR_CODES: Map<string, string> = new Map<string, string>()
-    .set("ERROR_CREATE_LIMIT_REACHED", "SUS-60011");
