@@ -167,7 +167,9 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
             ) }
             <PageLayout
                 action={
-                    attributeConfig.addAttributeMapping &&
+                    attributeConfig.addAttributeMapping && (
+                        ...
+                    ) }    
                     <Show when={ AccessControlConstants.ATTRIBUTE_READ }>
                         <PrimaryButton
                             onClick={ () => {
