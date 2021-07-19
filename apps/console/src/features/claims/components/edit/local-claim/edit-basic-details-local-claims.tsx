@@ -317,8 +317,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         />
                     }
                     {
-                        claim && claim.displayName !== ClaimManagementConstants.USER_ID && (
-                            <Field.Checkbox
+                        claim && (
+                            <Field.CheckboxLegacy
                                 ariaLabel="supportedByDefault"
                                 name="supportedByDefault"
                                 label={ t("console:manage.features.claims.local.forms.supportedByDefault.label") }
@@ -367,8 +367,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             />
                     }
                     {
-                        claim && claim.displayName !== ClaimManagementConstants.USER_ID && (
-                            <Field.Checkbox
+                        claim && (
+                            <Field.CheckboxLegacy
                                 ariaLabel="readOnly"
                                 name="readOnly"
                                 required={ false }
