@@ -5487,7 +5487,7 @@ export const console: ConsoleNS = {
                             name: "{{type}} attribute"
                         },
                         header: "Are you sure?",
-                        hint: "Please type <1>{{assertion}}</1> to confirm.",
+                        hint: "Please confirm your action.",
                         local: {
                             message: "If you delete this attribute, the user data belonging "
                                 + "to this attribute will also be deleted.",
@@ -5552,7 +5552,7 @@ export const console: ConsoleNS = {
                         content: "If you delete this attribute, the user data belonging to this attribute "
                             + "will also be deleted. Please proceed with caution.",
                         header: "Are you sure?",
-                        hint: "Please type <1>{{name}}</1> to confirm.",
+                        hint: "Please confirm your action.",
                         message: "This action is irreversible and will permanently delete the selected " +
                             "attribute.",
                         primaryAction: "Confirm"

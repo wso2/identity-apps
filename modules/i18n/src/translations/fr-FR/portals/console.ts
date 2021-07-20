@@ -4299,7 +4299,7 @@ export const console: ConsoleNS = {
                             name: "attribut {{type}}"
                         },
                         header: "Êtes-vous sûr ?",
-                        hint: "Veuillez saisir <1>{{assertion}}</1> pour confirmer.",
+                        hint: "Veuillez confirmer votre action.",
                         local: {
                             message: "Si vous supprimez cet attribut local, les données de l'utilisateur appartenant "
                                 + "à cet attribut seront également supprimés.",
@@ -4364,7 +4364,7 @@ export const console: ConsoleNS = {
                         content: "Si vous supprimez cet attribut local, les données utilisateur appartenant à cet attribut "
                             + "seront également supprimés. Veuillez procéder avec prudence.",
                         header: "Êtes-vous sûr ?",
-                        hint: "Veuillez saisir <1>{{nom}}</1> pour confirmer.",
+                        hint: "Veuillez confirmer votre action.",
                         message: "Cette action est irréversible et supprimera définitivement l'attribut local sélectionné.",
                         primaryAction: "Confirmer"
                     },
