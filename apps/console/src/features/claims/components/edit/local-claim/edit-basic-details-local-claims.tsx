@@ -18,6 +18,7 @@
 
 import { getProfileSchemas } from "@wso2is/core/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -36,13 +37,14 @@ import {
     Hint,
     PrimaryButton
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid , Form as SemanticForm } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
-import { AppConstants, history } from "../../../../core";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../core";
 import { deleteAClaim, updateAClaim } from "../../../api";
+import { Show, AccessControlConstants } from "@wso2is/access-control";
 
 /**
  * Prop types for `EditBasicDetailsLocalClaims` component
@@ -85,6 +87,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const displayOrderField = useRef<HTMLElement>(null);
     const descriptionField = useRef<HTMLElement>(null);
 
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
+
     const { t } = useTranslation();
 
     useEffect(() => {
@@ -92,6 +98,11 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             setIsShowDisplayOrder(true);
         }
     }, [ claim ]);
+
+    const isReadOnly = useMemo(() => (
+        !hasRequiredScopes(
+            featureConfig?.attributeDialects, featureConfig?.attributeDialects?.scopes?.update, allowedScopes)
+    ), [ featureConfig, allowedScopes ]);
 
     const deleteConfirmation = (): ReactElement => (
         <ConfirmationModal
@@ -203,7 +214,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             readOnly: values?.readOnly !== undefined ? !!values.readOnly : claim?.readOnly,
             regEx:  values?.regularExpression !== undefined ? values.regularExpression?.toString() : claim?.regEx,
             required: values?.required !== undefined ? !!values.required : claim?.required,
-            supportedByDefault: values?.supportedByDefault !== undefined ? !!values.supportedByDefault : claim?.supportedByDefault
+            supportedByDefault: values?.supportedByDefault !== undefined
+                ? !!values.supportedByDefault : claim?.supportedByDefault
         };
         updateAClaim(claim.id, data).then(() => {
             dispatch(addAlert(
@@ -279,6 +291,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         maxLength={ 30 }
                         minLength={ 1 }
                         hint={ t("console:manage.features.claims.local.forms.nameHint") }
+                        readOnly={ isReadOnly }
+
                     />
                     <Field.Textarea
                         ariaLabel="description"
@@ -297,8 +311,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         minLength={ 3 }
                         data-testid={ `${ testId }-form-description-input` }
                         hint={ t("console:manage.features.claims.local.forms.descriptionHint") }
+                        readOnly={ isReadOnly }
                     />
-                    { attributeConfig.localAttributes.createWizard.showRegularExpression && 
+                    { attributeConfig.localAttributes.createWizard.showRegularExpression &&
                         <Field.Input
                             ariaLabel="regularExpression"
                             inputType="resourceName"
@@ -313,6 +328,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             maxLength={ 50 }
                             minLength={ 3 }
                             hint={ t("console:manage.features.claims.local.forms.regExHint") }
+                            readOnly={ isReadOnly }
                         />
                     }
                     {
@@ -320,13 +336,14 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         <Field.CheckboxLegacy
                             ariaLabel="supportedByDefault"
                             name="supportedByDefault"
-                            label={ t("console:manage.features.claims.local.forms.supportedByDefault.label") } 
+                            label={ t("console:manage.features.claims.local.forms.supportedByDefault.label") }
                             required={ false }
                             value={ claim?.supportedByDefault ? ["supportedByDefault"] : [] }
                             listen={ (values) => {
                                 setIsShowDisplayOrder(!!values?.supportedByDefault);
                             } }
-                            data-testid={ `${testId}-form-supported-by-default-input` }
+                            data-testid={ `${ testId }-form-supported-by-default-input` }
+                            readOnly={ isReadOnly }
                         />
                     }
                     {
@@ -349,6 +366,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 ref={ displayOrderField }
                                 data-testid={ `${ testId }-form-display-order-input` }
                                 hint={ t("console:manage.features.claims.local.forms.displayOrderHint") }
+                                readOnly={ isReadOnly }
                             />
                         )
                     }
@@ -362,6 +380,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 label={ t("console:manage.features.claims.local.forms.required.label") }
                                 value={ claim?.required ? [ "required" ] : [] }
                                 data-testid={ `${ testId }-form-required-checkbox` }
+                                readOnly={ isReadOnly }
                             />
                     }
                     {
@@ -374,32 +393,37 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             requiredErrorMessage=""
                             value={ claim?.readOnly ? [ "readOnly" ] : [] }
                             data-testid={ `${ testId }-form-readonly-checkbox` }
+                            readOnly={ isReadOnly }
                         />
                     }
-                    <Field.Button
-                        ariaLabel="submit"
-                        size="small"
-                        buttonType="primary_btn"
-                        label={ t("common:update") }
-                        name="submit"
-                    />
+                    <Show when={ AccessControlConstants.ATTRIBUTE_EDIT }>
+                        <Field.Button
+                            ariaLabel="submit"
+                            size="small"
+                            buttonType="primary_btn"
+                            label={ t("common:update") }
+                            name="submit"
+                        />
+                    </Show>
                 </Form>
             </EmphasizedSegment>
             <Divider hidden />
             {
                 attributeConfig.editAttributes.showDangerZone &&
-                <DangerZoneGroup
-                    sectionHeader={ t("common:dangerZone") }
-                    data-testid={ `${ testId }-danger-zone-group` }
-                >
-                    <DangerZone
-                        actionTitle={ t("console:manage.features.claims.local.dangerZone.actionTitle") }
-                        header={ t("console:manage.features.claims.local.dangerZone.header") }
-                        subheader={ t("console:manage.features.claims.local.dangerZone.subheader") }
-                        onActionClick={ () => setConfirmDelete(true) }
-                        data-testid={ `${ testId }-local-claim-delete-danger-zone` }
-                    />
-                </DangerZoneGroup>
+                <Show when={ AccessControlConstants.ATTRIBUTE_DELETE }>
+                    <DangerZoneGroup
+                        sectionHeader={ t("common:dangerZone") }
+                        data-testid={ `${ testId }-danger-zone-group` }
+                    >
+                        <DangerZone
+                            actionTitle={ t("console:manage.features.claims.local.dangerZone.actionTitle") }
+                            header={ t("console:manage.features.claims.local.dangerZone.header") }
+                            subheader={ t("console:manage.features.claims.local.dangerZone.subheader") }
+                            onActionClick={ () => setConfirmDelete(true) }
+                            data-testid={ `${ testId }-local-claim-delete-danger-zone` }
+                        />
+                    </DangerZoneGroup>
+                </Show>
             }
         </>
     );
