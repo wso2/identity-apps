@@ -117,15 +117,15 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
         [ "data-testid" ]: testId
     } = props;
 
-    const [initWizard, setInitWizard] = useState<boolean>(false);
-    const [wizardSteps, setWizardSteps] = useState<WizardStepInterface[]>(undefined);
-    const [isSelectionHidden, setIsSelectionHidden] = useState<boolean>(false);
-    const [wizardState, setWizardState] = useState<WizardStateInterface>(undefined);
-    const [partiallyCompletedStep, setPartiallyCompletedStep] = useState<number>(undefined);
-    const [currentWizardStep, setCurrentWizardStep] = useState<number>(currentStep);
-    const [defaultAuthenticatorMetadata, setDefaultAuthenticatorMetadata] =
+    const [ initWizard, setInitWizard ] = useState<boolean>(false);
+    const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>(undefined);
+    const [ isSelectionHidden, setIsSelectionHidden ] = useState<boolean>(false);
+    const [ wizardState, setWizardState] = useState<WizardStateInterface>(undefined);
+    const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
+    const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
+    const [ defaultAuthenticatorMetadata, setDefaultAuthenticatorMetadata ] =
         useState<FederatedAuthenticatorMetaInterface>(undefined);
-    const [defaultOutboundProvisioningConnectorMetadata, setDefaultOutboundProvisioningConnectorMetadata] =
+    const [ defaultOutboundProvisioningConnectorMetadata, setDefaultOutboundProvisioningConnectorMetadata ] =
         useState<OutboundProvisioningConnectorMetaInterface>(undefined);
 
     const dispatch = useDispatch();
@@ -135,9 +135,9 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
         state.identityProvider.meta.authenticators);
 
     // Triggers for each wizard step.
-    const [submitGeneralSettings, setSubmitGeneralSettings] = useTrigger();
-    const [submitAuthenticator, setSubmitAuthenticator] = useTrigger();
-    const [submitOutboundProvisioningSettings, setSubmitOutboundProvisioningSettings] = useTrigger();
+    const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
+    const [ submitAuthenticator, setSubmitAuthenticator ] = useTrigger();
+    const [ submitOutboundProvisioningSettings, setSubmitOutboundProvisioningSettings ] = useTrigger();
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
@@ -175,6 +175,26 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                 onIDPCreate();
             })
             .catch((error) => {
+
+                if (error.response.status === 403 &&
+                    error?.response?.data?.code ===
+                    IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
+
+                    setAlert({
+                        code: IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode(),
+                        description: t(
+                            IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorDescription()
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorMessage()
+                        ),
+                        traceId: IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorTraceId()
+                    });
+
+                    return;
+                }
+
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
                         description: t("console:develop.features.authenticationProvider.notifications." +
