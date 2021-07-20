@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentityAppsError } from "@wso2is/core/errors";
 import { DocumentationConstants } from "./documentation-constants";
 import { IdentityProviderTemplateLoadingStrategies } from "../models";
 
@@ -301,4 +302,17 @@ export class IdentityProviderManagementConstants {
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME: string = "Google";
     public static readonly FACEBOOK_AUTHENTICATOR_DISPLAY_NAME: string = "Facebook";
     public static readonly GITHUB_AUTHENTICATOR_DISPLAY_NAME: string = "GitHub";
+
+    /**
+     * Identity provider create limit reached error.
+     * @constant
+     * @type IdentityAppsError
+     * @default
+     */
+    public static readonly ERROR_CREATE_LIMIT_REACHED = new IdentityAppsError(
+        "IDP-60035",
+        "console:develop.features.idp.notifications.apiLimitReachedError.error.description",
+        "console:develop.features.idp.notifications.apiLimitReachedError.error.message",
+        "cec1f247-32fd-4624-9915-f469195a53ac"
+    )
 }

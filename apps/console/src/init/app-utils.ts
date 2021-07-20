@@ -323,8 +323,7 @@ export const AppUtils = (function() {
             return ((this.getTenantPrefix() !== "") && (this.getTenantName() !== "")) ?
                 _config.accountAppOrigin + 
                 "/" + this.getTenantPrefix() + 
-                "/" + this.getTenantName() + 
-                "/myaccount" : "";
+                "/" + this.getTenantName() : "";
         },
 
         /**

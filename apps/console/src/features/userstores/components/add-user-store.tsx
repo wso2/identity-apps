@@ -28,7 +28,7 @@ import { GeneralDetailsUserstore, GroupDetails, SummaryUserStores, UserDetails }
 import { AppConstants, history } from "../../core";
 import { addUserStore } from "../api";
 import { getAddUserstoreWizardStepIcons } from "../configs";
-import { USERSTORE_TYPE_DISPLAY_NAMES } from "../constants";
+import { USERSTORE_TYPE_DISPLAY_NAMES, UserStoreManagementConstants } from "../constants";
 import {
     CategorizedProperties,
     TypeProperty,
@@ -121,6 +121,19 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
 
             history.push(AppConstants.getPaths().get("USERSTORES"));
         }).catch(error => {
+
+            if (error.response?.status === 403 &&
+                error.response.data?.code === UserStoreManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
+
+                setAlert({
+                    code: UserStoreManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode(),
+                    description: t(UserStoreManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorDescription()),
+                    level: AlertLevels.ERROR,
+                    message: t(UserStoreManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorMessage()),
+                    traceId: UserStoreManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorTraceId()
+                });
+            }
+
             setAlert({
                 description: error?.description ?? t("console:manage.features.userstores.notifications.addUserstore" +
                     ".genericError.description"),

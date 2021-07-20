@@ -105,7 +105,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         title,
         closeWizard,
         template,
-        showHelpPanel,
         subTemplates,
         subTemplatesSectionTitle,
         subTitle,
@@ -281,6 +280,23 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 history.push(AppConstants.getPaths().get("APPLICATIONS"));
             })
             .catch((error) => {
+
+                if (error.response.status === 403 &&
+                    error?.response?.data?.code ===
+                    ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
+
+                    setAlert({
+                        code: ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode(),
+                        description: t(ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorDescription()),
+                        level: AlertLevels.ERROR,
+                        message: t(ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorMessage()),
+                        traceId: ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorTraceId()
+                    });
+                    scrollToNotification();
+
+                    return;
+                }
+
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
                         description: error.response.data.description,

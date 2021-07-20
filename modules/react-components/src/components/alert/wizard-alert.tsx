@@ -27,6 +27,8 @@ import { Message } from "semantic-ui-react";
 interface WizardAlert {
     message: string;
     description: string;
+    code?: string | number;
+    traceId?: string | number;
     level: AlertLevels;
 }
 
