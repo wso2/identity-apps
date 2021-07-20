@@ -7616,6 +7616,13 @@ export const console: ConsoleNS = {
                             subHeading: "Add new roles or remove existing roles assigned to the user."
                         },
                         editRoles: {
+                            confirmationModal: {
+                                assertionHint: "Please confirm your action.",
+                                content: "If a role is not selected, the user will not be able to log in to Console. " +
+                                    "Please proceed with caution.",
+                                header: "Are you sure?",
+                                message: "This action will remove all the roles associated with this user."
+                            },
                             heading: "Assigned Roles",
                             popups: {
                                 viewPermissions: "View Permissions"
