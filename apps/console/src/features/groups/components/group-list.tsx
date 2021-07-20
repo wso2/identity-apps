@@ -44,6 +44,7 @@ import {
 } from "../../core";
 import { GroupConstants } from "../constants";
 import { GroupsInterface } from "../models";
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 
 interface GroupListProps extends SBACInterface<FeatureConfigInterface>,
     LoadableComponentInterface, TestableComponentInterface {
@@ -208,14 +209,16 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                 <EmptyPlaceholder
                     data-testid={ `${ testId }-empty-list-empty-placeholder` }
                     action={ (
-                        <PrimaryButton
-                            data-testid={ `${ testId }-empty-list-empty-placeholder-add-button` }
-                            onClick={ onEmptyListPlaceholderActionClick }
-                        >
-                            <Icon name="add"/>
-                            { t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.action",
-                                { type: "Group" }) }
-                        </PrimaryButton>
+                        <Show when={ AccessControlConstants.GROUP_WRITE }>
+                            <PrimaryButton
+                                data-testid={ `${ testId }-empty-list-empty-placeholder-add-button` }
+                                onClick={ onEmptyListPlaceholderActionClick }
+                            >
+                                <Icon name="add"/>
+                                { t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.action",
+                                    { type: "Group" }) }
+                            </PrimaryButton>
+                        </Show>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
@@ -315,9 +318,10 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
 
                     return !isFeatureEnabled(featureConfig?.groups,
                         GroupConstants.FEATURE_DICTIONARY.get("GROUP_UPDATE"))
-                    || readOnlyUserStores?.includes(userStore.toString())
-                        ? "eye"
-                        : "pencil alternate";
+                        || hasRequiredScopes(featureConfig?.groups, featureConfig?.groups?.scopes?.read, allowedScopes)
+                        || readOnlyUserStores?.includes(userStore.toString())
+                            ? "eye"
+                            : "pencil alternate";
                 },
                 onClick: (e: SyntheticEvent, group: GroupsInterface): void =>
                     handleGroupEdit(group.id),
@@ -328,9 +332,10 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
 
                     return !isFeatureEnabled(featureConfig?.groups,
                         GroupConstants.FEATURE_DICTIONARY.get("GROUP_UPDATE"))
-                    || readOnlyUserStores?.includes(userStore.toString())
-                        ? t("common:view")
-                        : t("common:edit");
+                        || hasRequiredScopes(featureConfig?.groups, featureConfig?.groups?.scopes?.read, allowedScopes)
+                        || readOnlyUserStores?.includes(userStore.toString())
+                            ? t("common:view")
+                            : t("common:edit");
                 },
                 renderer: "semantic-icon"
             }
