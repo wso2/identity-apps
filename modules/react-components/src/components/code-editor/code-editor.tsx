@@ -25,6 +25,7 @@ import { JSHINT } from "jshint/dist/jshint";
 import React, {
     FunctionComponent,
     ReactElement,
+    ReactNode,
     SVGProps,
     useEffect,
     useState
@@ -151,9 +152,9 @@ export interface CodeEditorProps extends IUnControlledCodeMirror, TestableCompon
  * Interface for the i18n string of the component.
  */
 export interface CodeEditorContentI18nInterface {
-    copyCode: string;
-    exitFullScreen: string;
-    goFullScreen: string;
+    copyCode: ReactNode;
+    exitFullScreen: ReactNode;
+    goFullScreen: ReactNode;
 }
 
 /**
