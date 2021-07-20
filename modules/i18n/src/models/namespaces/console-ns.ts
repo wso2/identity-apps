@@ -3544,6 +3544,7 @@ export interface ConsoleNS {
                             subHeading: string;
                         };
                         editRoles: {
+                            confirmationModal: Confirmation;
                             roleList: {
                                 emptyListPlaceholder: {
                                     subTitle: {
