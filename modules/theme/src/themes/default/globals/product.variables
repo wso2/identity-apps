@@ -203,7 +203,12 @@
 @codeEditorOneLinerPadding: 1em;
 @codeEditorActionWidth: 25px;
 @codeEditorActionHeight: 25px;
-@codeEditorActionsPaddingTop: 4px;
+@codeEditorActionMarginBottom: 8px;
+
+@codeEditorActionsPaddingRight: 15px;
+@codeEditorActionsPaddingTop: 10px;
+
+@codeEditorFullScreenWrapperHeight: 90vh;
 
 /*-------------------------------
         Inline Code Block

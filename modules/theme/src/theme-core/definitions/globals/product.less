@@ -624,6 +624,14 @@ body {
         .search-input-wrapper {
             max-width: @advancedSearchWidth;
         }
+
+        .pagination-loader-container {
+            margin-top: 25px;
+
+            .ui.loader {
+                z-index: 9;
+            }
+        }
     }
 }
 
@@ -1921,7 +1929,7 @@ code {
     .editor-actions {
         display: none;
         position: absolute;
-        right: 10px;
+        right: @codeEditorActionsPaddingRight;
         padding-top: @codeEditorActionsPaddingTop;
         z-index: 9;
 
@@ -1931,22 +1939,56 @@ code {
             height: @codeEditorActionHeight;
             text-align: center;
 
-            .icon {
+            i.icon {
                 cursor: pointer;
-                color: darken(@whiteSmoke, 20);
+                color: @whiteSmoke;
                 height: 100%;
                 width: 100%;
+                
+                &:hover {
+                    color: @whiteSmoke;
+                }
+            }
+
+            .theme-icon {
+                cursor: pointer;
+                padding: 5px;
+
+                path {
+                    fill: @whiteSmoke;
+                }
+            }
+
+            &:hover {
+                .theme-icon {
+                    path {
+                        fill: @black; 
+                    }
+                }
+            }
+
+            &:not(:last-child) {
+                margin-bottom: @codeEditorActionMarginBottom;
             }
         }
-
-        &:hover {
+    }
+    
+    &.light {
+        .editor-actions {
             .editor-action {
-                .icon {
-                    color: @whiteSmoke;
+                i.icon {
+                    color: @doveGray;
+                }
+
+                .theme-icon {
+                    path {
+                        fill: @doveGray;
+                    }
                 }
             }
         }
     }
+
     &.with-actions {
         position: relative;
 
@@ -1954,9 +1996,25 @@ code {
             display: block;
         }
     }
+
     &.one-liner {
         .CodeMirror {
             padding: @codeEditorOneLinerPadding;
+        }
+    }
+}
+
+// Fullscreen Code Editor
+.ui.modal {
+    &.code-editor-fullscreen-wrapper {
+        .editor-content {
+            max-height: @codeEditorFullScreenWrapperHeight;
+            min-height: @codeEditorFullScreenWrapperHeight;
+            padding: 0;
+            
+            .CodeMirror {
+                height: @codeEditorFullScreenWrapperHeight;
+            }
         }
     }
 }

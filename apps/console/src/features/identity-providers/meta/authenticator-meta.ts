@@ -63,7 +63,7 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID ]: "Login users with " +
             "existing accounts in the Enterprise IdP.",
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
-            "Email one-time passcode."
+            "one-time passcode sent via email."
         }, authenticatorId);
     }
 

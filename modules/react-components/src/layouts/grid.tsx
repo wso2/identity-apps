@@ -19,7 +19,7 @@
 import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from "react";
-import { Divider, Grid, Visibility } from "semantic-ui-react";
+import { Divider, Grid, Loader, Visibility } from "semantic-ui-react";
 import { ContentLoader } from "../components/loader";
 
 /**
@@ -28,6 +28,10 @@ import { ContentLoader } from "../components/loader";
 export interface GridLayoutPropsInterface extends TestableComponentInterface,
     LoadableComponentInterface {
 
+    /**
+     * Is Pagination in-progress.
+     */
+    isPaginating?: boolean;
     /**
      * Search component.
      */
@@ -56,6 +60,17 @@ export interface GridLayoutPropsInterface extends TestableComponentInterface,
      * Flag to toggle top action panel visibility.
      */
     showTopActionPanel?: boolean;
+    /**
+     * i18n translations for content.
+     */
+    translations?: GridLayoutContentI18nInterface;
+}
+
+/**
+ * Interface for the i18n string of the component.
+ */
+export interface GridLayoutContentI18nInterface {
+    loading: ReactNode;
 }
 
 /**
@@ -70,6 +85,7 @@ export const GridLayout: FunctionComponent<PropsWithChildren<GridLayoutPropsInte
 ): ReactElement => {
 
     const {
+        isPaginating,
         search,
         searchPosition,
         children,
@@ -79,6 +95,7 @@ export const GridLayout: FunctionComponent<PropsWithChildren<GridLayoutPropsInte
         paginate,
         rightActionPanel,
         showTopActionPanel,
+        translations,
         [ "data-testid" ]: testId
     } = props;
 
@@ -129,6 +146,13 @@ export const GridLayout: FunctionComponent<PropsWithChildren<GridLayoutPropsInte
                                             <div className="list-container">
                                                 { children }
                                             </div>
+                                            { isPaginating && (
+                                                <div className="pagination-loader-container">
+                                                    <Loader active indeterminate size="small" inline="centered">
+                                                        { translations?.loading || "Loading..." }
+                                                    </Loader>
+                                                </div>
+                                            ) }
                                         </Visibility>
                                     )
                                     : (
@@ -139,7 +163,7 @@ export const GridLayout: FunctionComponent<PropsWithChildren<GridLayoutPropsInte
                             }
                         </Fragment>
                     )
-                    : <ContentLoader />
+                    : <Loader active inline="centered" />
             }
         </div>
     );

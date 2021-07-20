@@ -388,7 +388,7 @@
                 vertical-align: middle;
                 line-height: 1;
 
-                .path {
+                path, .path {
                     fill: @sidePanelDefaultFontColor;
                 }
             }

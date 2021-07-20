@@ -2876,7 +2876,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             expiryTime: {
-                                hint: "The generated passcode will be un-usable after this defined time period. " +
+                                hint: "The generated passcode will be expired after this defined time period. " +
                                     "Please pick a value between <1>1 second</1> & <3>86400 seconds(1 day)</3>.",
                                 label: "Email OTP expiry time",
                                 placeholder: "Enter Email OTP expiry time.",

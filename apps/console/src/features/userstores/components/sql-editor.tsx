@@ -17,10 +17,11 @@
 */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { CodeEditor, Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { CodeEditor, GenericIcon, Heading, LinkButton, PrimaryButton, Tooltip } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Accordion, Checkbox, Icon, Menu, Popup, Segment, Sidebar } from "semantic-ui-react";
+import { Accordion, Icon, Menu, Popup, Segment, Sidebar } from "semantic-ui-react";
+import { getOperationIcons } from "../../core/configs";
 import { RequiredBinary } from "../models";
 
 interface SqlEditorPropsInterface extends TestableComponentInterface {
@@ -293,21 +294,39 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                     onClick={
                                         () => setSideBarVisible(!sideBarVisible)
                                     }
-                                    className="action"
+                                    className="action hamburger ml-3"
                                     data-testid={ `${ testId }-sidebar-toggle` }
                                 >
                                     <Icon name="bars"/>
                                 </Menu.Item>
                             </Menu.Menu>
-                            <Menu.Item position="right">
-                                <Checkbox
-                                    label={ t("console:manage.features.userstores.sqlEditor.darkMode") }
-                                    checked={ isEditorDarkMode }
-                                    onChange={ () => {
-                                        setIsEditorDarkMode(!isEditorDarkMode);
-                                    } }
-                                    slider
-                                    data-testid={ `${ testId }-code-editor-theme-toggle` }
+                            <Menu.Item className="action mr-3" position="right">
+                                <Tooltip
+                                    compact
+                                    trigger={ (
+                                        <div>
+                                            <GenericIcon
+                                                hoverable
+                                                defaultIcon
+                                                transparent
+                                                size="micro"
+                                                hoverType="rounded"
+                                                icon={
+                                                    isEditorDarkMode
+                                                        ? getOperationIcons().lightMode
+                                                        : getOperationIcons().darkMode
+                                                }
+                                                onClick={ () => setIsEditorDarkMode(!isEditorDarkMode) }
+                                                data-testid={ `${ testId }-code-editor-theme-toggle` }
+                                            />
+                                        </div>
+                                    ) }
+                                    content={
+                                        isEditorDarkMode
+                                            ? t("common:lightMode")
+                                            : t("common:darkMode")
+                                    }
+                                    size="mini"
                                 />
                             </Menu.Item>
                         </Menu>

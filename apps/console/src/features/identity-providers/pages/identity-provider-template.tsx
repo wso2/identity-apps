@@ -387,6 +387,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
 
     return (
         <PageLayout
+            isLoading={ useNewConnectionsView === undefined }
             title={
                 useNewConnectionsView
                     ? t("console:develop.pages.authenticationProviderTemplate.title")
@@ -419,6 +420,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                         filterLabels={ filterTags }
                     />
                 ) }
+                isLoading={ useNewConnectionsView === undefined || isIDPTemplateRequestLoading }
             >
                 {
                     (filteredCategorizedTemplates && !isIDPTemplateRequestLoading)

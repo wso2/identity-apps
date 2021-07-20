@@ -49,9 +49,11 @@ export interface CommonNS {
     confirm: string;
     contains: string;
     continue: string;
+    copyToClipboard: string;
     createdOn: string;
     create: string;
     dangerZone: string;
+    darkMode: string;
     delete: string;
     description: string;
     deviceModel: string;
@@ -64,12 +66,14 @@ export interface CommonNS {
     edit: string;
     endsWith: string;
     equals: string;
+    exitFullScreen: string;
     explore: string;
     export: string;
     featureAvailable: string;
     filter: string;
     finish: string;
     goBackHome: string;
+    goFullScreen: string;
     help: string;
     hide: string;
     hidePassword: string;
@@ -81,6 +85,8 @@ export interface CommonNS {
     lastModified: string;
     lastSeen: string;
     lastUpdatedOn: string;
+    lightMode: string;
+    loading: string;
     loginTime: string;
     logout: string;
     maximize: string;

@@ -303,7 +303,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                             ".emailOTP.expiryTime.hint"
                         }
                     >
-                        The generated passcode will be un-usable after this defined time period. Please pick a
+                        The generated passcode will be expired after this defined time period. Please pick a
                         value between <Code>1 second</Code> & <Code>86400 seconds(1 day)</Code>.
                     </Trans>
                 }
@@ -351,7 +351,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                             ".emailOTP.tokenLength.hint"
                         }
                     >
-                        The number of allowed characters in the OTP token. Please, pick a value between 
+                        The number of allowed characters in the OTP token. Please pick a value between 
                         <Code>4-10</Code>.
                     </Trans>
                 }

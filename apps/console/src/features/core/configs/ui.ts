@@ -31,7 +31,7 @@ import { ReactComponent as CertificateIcon } from "../../../themes/default/asset
 import { ReactComponent as ClaimsIcon } from "../../../themes/default/assets/images/icons/claims-icon.svg";
 import { ReactComponent as CloseIcon } from "../../../themes/default/assets/images/icons/close-icon.svg";
 import { ReactComponent as CodeForkIcon } from "../../../themes/default/assets/images/icons/code-fork.svg";
-import ConnectionIcon from "../../../themes/default/assets/images/icons/connection.svg";
+import { ReactComponent as ConnectionIcon } from "../../../themes/default/assets/images/icons/connection.svg";
 import ConsoleIcon from "../../../themes/default/assets/images/icons/console-icon.svg";
 import { ReactComponent as CrossIcon } from "../../../themes/default/assets/images/icons/cross-icon.svg";
 import { ReactComponent as DashboardIcon } from "../../../themes/default/assets/images/icons/dashboard-icon.svg";
@@ -74,6 +74,12 @@ import { ReactComponent as PaperRocketIcon } from "../../../themes/default/asset
 import { ReactComponent as PinIcon } from "../../../themes/default/assets/images/icons/pin-icon.svg";
 import { ReactComponent as PlugIcon } from "../../../themes/default/assets/images/icons/plug-icon.svg";
 import { ReactComponent as ScopeIcon } from "../../../themes/default/assets/images/icons/scope.svg";
+import {
+    ReactComponent as DarkModeIcon
+} from "../../../themes/default/assets/images/icons/solid-icons/crescent-icon.svg";
+import {
+    ReactComponent as LightModeIcon
+} from "../../../themes/default/assets/images/icons/solid-icons/light-icon.svg";
 import { ReactComponent as UnPinIcon } from "../../../themes/default/assets/images/icons/unpin-icon.svg";
 import { ReactComponent as FileUploadIllustration } from "../../../themes/default/assets/images/icons/upload.svg";
 import { ReactComponent as UserGroupIcon } from "../../../themes/default/assets/images/icons/user-group-icon.svg";
@@ -207,7 +213,9 @@ export const getEmptyPlaceholderIllustrations = () => {
 export const getOperationIcons = () => {
 
     return {
+        darkMode: DarkModeIcon,
         drag: DragSquaresIcon,
+        lightMode: LightModeIcon,
         maximize: MaximizeIcon,
         minimize: MinimizeIcon
     };
