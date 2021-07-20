@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { resolveUserDisplayName, resolveUserEmails } from "@wso2is/core/helpers";
+import { resolveUserDisplayName, resolveUserEmails, hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -50,6 +50,7 @@ const UserEditPage = (): ReactElement => {
     const dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
 
     const [ user, setUserProfile ] = useState<ProfileInfoInterface>(emptyProfileInfo);
@@ -220,11 +221,16 @@ const UserEditPage = (): ReactElement => {
                 user.userName) }
             image={ (
                 <UserAvatar
-                    editable
+                    editable={
+                        hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
+                    }
                     name={ resolveUserDisplayName(user) }
                     size="tiny"
                     image={ user?.profileUrl }
-                    onClick={ () => setShowEditAvatarModal(true) }
+                    onClick={ () =>
+                        hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
+                        && setShowEditAvatarModal(true)
+                    }
                 />
             ) }
             backButton={ {
