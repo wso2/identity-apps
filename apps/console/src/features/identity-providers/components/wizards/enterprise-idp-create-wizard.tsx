@@ -338,9 +338,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             .catch((error) => {
 
                 if (error.response.status === 403 &&
-                    error?.response?.data?.code === IdentityProviderManagementConstants.IDP_MGT_API_ERROR_CODES.get(
-                        "ERROR_CREATE_LIMIT_REACHED"
-                    )) {
+                    error?.response?.data?.code ===
+                    IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
 
                     setAlert({
                         code: IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode(),
