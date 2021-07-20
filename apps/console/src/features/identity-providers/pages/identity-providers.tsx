@@ -492,12 +492,21 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                             ) }
                             isPaginating={ isPaginating }
                             paginate={ () => handlePagination() }
+                            isLoading={
+                                (isAuthenticatorFetchRequestRequestLoading === undefined
+                                    || isIdPListRequestLoading === undefined)
+                            }
                             translations={ {
                                 loading: t("common:loading")
                             } }
                         >
                             <AuthenticatorGrid
-                                isLoading={ isAuthenticatorFetchRequestRequestLoading || isIdPListRequestLoading }
+                                isLoading={
+                                    !isPaginating && (
+                                        isAuthenticatorFetchRequestRequestLoading
+                                        || isIdPListRequestLoading
+                                    )
+                                }
                                 authenticators={
                                     showFilteredList
                                         ? authenticators
@@ -556,7 +565,9 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                             onSortStrategyChange={ handleListSortingStrategyOnChange }
                             showPagination={ true }
                             showTopActionPanel={
-                                isIdPListRequestLoading || !(!searchQuery && idpList?.totalResults <= 0)
+                                useNewConnectionsView !== undefined && (
+                                    isIdPListRequestLoading || !(!searchQuery && idpList?.totalResults <= 0)
+                                )
                             }
                             sortOptions={ IDENTITY_PROVIDER_LIST_SORTING_OPTIONS }
                             sortStrategy={ listSortingStrategy }
@@ -598,7 +609,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                                         data-testid={ `${ testId }-advance-search` }
                                     />
                                 }
-                                isLoading={ isIdPListRequestLoading }
+                                isLoading={ useNewConnectionsView === undefined && isIdPListRequestLoading }
                                 list={ idpList }
                                 onEmptyListPlaceholderActionClick={
                                     () => history.push(AppConstants.getPaths().get("IDP_TEMPLATES"))

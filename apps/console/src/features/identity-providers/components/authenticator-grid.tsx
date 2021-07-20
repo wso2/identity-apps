@@ -315,7 +315,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     return (
         <Fragment>
             <ResourceGrid
-                isLoading={ false }
+                isLoading={ isLoading }
                 isPaginating={ false }
                 isEmpty={
                     (!authenticators

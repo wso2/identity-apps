@@ -420,6 +420,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                         filterLabels={ filterTags }
                     />
                 ) }
+                isLoading={ useNewConnectionsView === undefined || isIDPTemplateRequestLoading }
             >
                 {
                     (filteredCategorizedTemplates && !isIDPTemplateRequestLoading)

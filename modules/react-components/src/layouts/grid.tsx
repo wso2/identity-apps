@@ -163,7 +163,7 @@ export const GridLayout: FunctionComponent<PropsWithChildren<GridLayoutPropsInte
                             }
                         </Fragment>
                     )
-                    : <ContentLoader />
+                    : <Loader active inline="centered" />
             }
         </div>
     );

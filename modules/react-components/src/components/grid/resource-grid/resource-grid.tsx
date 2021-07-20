@@ -102,7 +102,7 @@ export const ResourceGrid: FunctionComponent<
                         <Card.Group className={ classes } { ...rest }>
                             {
                                 (isLoading && !isPaginating)
-                                    ? <ContentLoader />
+                                    ? <Loader active inline="centered" />
                                     : isPaginating
                                         ? <Loader>Loading...</Loader>
                                         : children
