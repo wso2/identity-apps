@@ -28,6 +28,7 @@ import { LocalStorageUtils } from "@wso2is/core/utils";
 import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
 import {
     Code,
+    ChunkErrorModal,
     NetworkErrorModal,
     SessionManagementProvider,
     SessionTimeoutModalTypes
@@ -257,6 +258,12 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
                                                     heading={ I18n.instance.t("common:networkErrorMessage.heading") }
                                                     description={ I18n.instance.t("common:networkErrorMessage" +
                                                         ".description") }
+                                                    primaryActionText={ I18n.instance.t("common:networkErrorMessage" +
+                                                        ".primaryActionText") }
+                                                />
+                                                <ChunkErrorModal
+                                                    heading={ I18n.instance.t("common:networkErrorMessage.heading") }
+                                                    description="An error occurred in serving the requested application. Please try reloading the app."
                                                     primaryActionText={ I18n.instance.t("common:networkErrorMessage" +
                                                         ".primaryActionText") }
                                                 />

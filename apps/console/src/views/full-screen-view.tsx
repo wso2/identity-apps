@@ -45,7 +45,7 @@ import {
     ProtectedRoute,
     RouteUtils,
     getEmptyPlaceholderIllustrations,
-    getFullScreenViewRoutes
+    getFullScreenViewRoutes, AppUtils
 } from "../features/core";
 
 /**
@@ -164,6 +164,7 @@ export const FullScreenView: FunctionComponent<FullScreenViewPropsInterface> = (
     return (
         <FullScreenLayoutSkeleton>
             <ErrorBoundary
+                onChunkLoadError={ AppUtils.onChunkLoadError }
                 fallback={ (
                     <EmptyPlaceholder
                         action={ (
