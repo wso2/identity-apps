@@ -317,7 +317,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         />
                     }
                     {
-                        claim && claim.displayName !== ClaimManagementConstants.USER_ID &&
+                        //Hides on user_id and username claims
+                        claim && claim.displayName !== ClaimManagementConstants.USER_ID 
+                            && claim.displayName !== ClaimManagementConstants.USER_NAME &&
                         (
                             <Field.CheckboxLegacy
                                 ariaLabel="supportedByDefault"
@@ -368,7 +370,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             />
                     }
                     {
-                        claim && claim.displayName !== ClaimManagementConstants.USER_ID &&
+                        //Hides on user_id and username claims
+                        claim && claim.displayName !== ClaimManagementConstants.USER_ID 
+                            && claim.displayName !== ClaimManagementConstants.USER_NAME &&
                         (
                             <Field.CheckboxLegacy
                                 ariaLabel="readOnly"

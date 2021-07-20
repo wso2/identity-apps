@@ -134,5 +134,10 @@ export class ClaimManagementConstants {
         { name: "Core 1.0 Schema", uri: SCIMConfigs.scim.core1Schema }
     ]
 
+    /**
+     * Display names of User Id & Username to 
+     * identify.
+     */
     public static readonly USER_ID: string = "User ID";
+    public static readonly USER_NAME: string = "Username";
 }
