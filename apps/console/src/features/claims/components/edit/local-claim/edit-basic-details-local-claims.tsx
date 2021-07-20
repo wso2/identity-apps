@@ -16,6 +16,7 @@
 * under the License.
 */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { getProfileSchemas } from "@wso2is/core/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
@@ -34,8 +35,7 @@ import {
     DangerZone,
     DangerZoneGroup,
     EmphasizedSegment,
-    Hint,
-    PrimaryButton
+    Hint
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -45,7 +45,6 @@ import { attributeConfig } from "../../../../../extensions";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../core";
 import { ClaimManagementConstants } from "../../../constants";
 import { deleteAClaim, updateAClaim } from "../../../api";
-import { Show, AccessControlConstants } from "@wso2is/access-control";
 
 /**
  * Prop types for `EditBasicDetailsLocalClaims` component
