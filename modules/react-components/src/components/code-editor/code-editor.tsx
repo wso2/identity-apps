@@ -76,6 +76,10 @@ export interface CodeEditorProps extends IUnControlledCodeMirror, TestableCompon
      */
     allowFullScreen?: boolean;
     /**
+     * Allow to control the fullscreen mode from outside.
+     */
+    controlledFullScreenMode?: boolean;
+    /**
      * Whether to format the code.
      */
     beautify?: boolean;
@@ -170,6 +174,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
         allowFullScreen,
         beautify,
         className,
+        controlledFullScreenMode,
         getThemeFromEnvironment,
         height,
         language,
@@ -375,7 +380,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
         <div className={ classes }>
             <div className="editor-actions">
                 {
-                    allowFullScreen && (
+                    allowFullScreen && !controlledFullScreenMode && (
                         <div className="editor-action" onClick={ handleFullScreenToggle }>
                             <Tooltip
                                 compact
