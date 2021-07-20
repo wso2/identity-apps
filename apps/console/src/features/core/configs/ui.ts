@@ -31,7 +31,7 @@ import { ReactComponent as CertificateIcon } from "../../../themes/default/asset
 import { ReactComponent as ClaimsIcon } from "../../../themes/default/assets/images/icons/claims-icon.svg";
 import { ReactComponent as CloseIcon } from "../../../themes/default/assets/images/icons/close-icon.svg";
 import { ReactComponent as CodeForkIcon } from "../../../themes/default/assets/images/icons/code-fork.svg";
-import ConnectionIcon from "../../../themes/default/assets/images/icons/connection.svg";
+import { ReactComponent as ConnectionIcon } from "../../../themes/default/assets/images/icons/connection.svg";
 import ConsoleIcon from "../../../themes/default/assets/images/icons/console-icon.svg";
 import { ReactComponent as CrossIcon } from "../../../themes/default/assets/images/icons/cross-icon.svg";
 import { ReactComponent as DashboardIcon } from "../../../themes/default/assets/images/icons/dashboard-icon.svg";
