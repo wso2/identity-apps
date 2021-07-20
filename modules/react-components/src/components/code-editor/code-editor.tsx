@@ -22,11 +22,24 @@ import classNames from "classnames";
 import * as codemirror from "codemirror";
 import JSBeautify from "js-beautify";
 import { JSHINT } from "jshint/dist/jshint";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { ReactComponent as MaximizeIcon } from "../../assets/images/icons/maximize-icon.svg";
+import { ReactComponent as CopyIcon } from "../../assets/images/icons/copy-icon.svg";
+import { ReactComponent as CheckIcon } from "../../assets/images/icons/check-icon.svg";
+import { ReactComponent as MinimizeIcon } from "../../assets/images/icons/minimize-icon.svg";
+import React, {
+    FunctionComponent,
+    PropsWithChildren,
+    ReactElement,
+    ReactNode, SVGProps,
+    useEffect,
+    useMemo,
+    useState
+} from "react";
 import { UnControlled as CodeMirror, IUnControlledCodeMirror } from "react-codemirror2";
 import "codemirror/addon/lint/lint";
 import "codemirror/addon/lint/javascript-lint";
 import "codemirror/addon/hint/sql-hint";
+import "codemirror/addon/display/fullscreen";
 import "codemirror/mode/javascript/javascript";
 import "codemirror/mode/sql/sql";
 import "codemirror/mode/xml/xml";
@@ -39,7 +52,10 @@ import "codemirror/lib/codemirror.css";
 import "codemirror/theme/material.css";
 import "codemirror/addon/lint/lint.css";
 import "codemirror/addon/hint/show-hint.css";
-import { Icon, SemanticICONS } from "semantic-ui-react";
+import "codemirror/addon/display/fullscreen.css";
+import { Icon, Modal, SemanticICONS } from "semantic-ui-react";
+import { GenericIcon } from "../icon";
+import { Tooltip } from "../typography";
 
 // Putting the `JSHINT` in the window object. To handle,
 // Property 'JSHINT' does not exist on type 'Window & typeof globalThis'.
@@ -54,10 +70,19 @@ interface CustomWindow extends Window {
  * Code editor component Prop types.
  */
 export interface CodeEditorProps extends IUnControlledCodeMirror, TestableComponentInterface {
+
+    /**
+     * Allow going full screen.
+     */
+    allowFullScreen?: boolean;
     /**
      * Whether to format the code.
      */
     beautify?: boolean;
+    /**
+     * Trigger the fullscreen mode.
+     */
+    triggerFullScreen?: boolean;
     /**
      * Language the code is written in.
      */
@@ -74,6 +99,10 @@ export interface CodeEditorProps extends IUnControlledCodeMirror, TestableCompon
      * Should the editor be formatted for a one line command.
      */
     oneLiner?: boolean;
+    /**
+     * Callback to be triggered on fullscreen toggle.
+     */
+    onFullScreenToggle?: (isFullScreen: boolean) => void;
     /**
      * If the editor is read only or not.
      */
@@ -108,9 +137,22 @@ export interface CodeEditorProps extends IUnControlledCodeMirror, TestableCompon
      */
     getThemeFromEnvironment?: boolean;
     /**
+     * i18n translations for content.
+     */
+    translations?: CodeEditorContentI18nInterface;
+    /**
      * Enable clipboard copy option.
      */
     withClipboardCopy?: boolean;
+}
+
+/**
+ * Interface for the i18n string of the component.
+ */
+export interface CodeEditorContentI18nInterface {
+    copyCode: string;
+    exitFullScreen: string;
+    goFullScreen: string;
 }
 
 /**
@@ -125,6 +167,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
 ): ReactElement => {
 
     const {
+        allowFullScreen,
         beautify,
         className,
         getThemeFromEnvironment,
@@ -132,6 +175,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
         language,
         lineWrapping,
         lint,
+        onFullScreenToggle,
         options,
         oneLiner,
         readOnly,
@@ -140,23 +184,40 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
         sourceCode,
         tabSize,
         theme,
+        translations,
+        triggerFullScreen,
         withClipboardCopy,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
 
     const [ editorInstance, setEditorInstance ] = useState<codemirror.Editor>(undefined);
-    const [ copyToClipboardIcon, setCopyToClipboardIcon ] = useState<SemanticICONS>("copy outline");
-
-    const classes = classNames(
-        "code-editor",
-        {
-            "one-liner": oneLiner,
-            "with-actions": withClipboardCopy
-        }
-        , className);
-
+    const [
+        copyToClipboardIcon,
+        setCopyToClipboardIcon
+    ] = useState<FunctionComponent<SVGProps<SVGSVGElement>>>(CopyIcon);
+    const [
+        fullScreenToggleIcon,
+        setFullScreenToggleIcon
+    ] = useState<FunctionComponent<SVGProps<SVGSVGElement>>>(MaximizeIcon);
+    const [ showFullScreen, setShowFullScreen ] = useState<boolean>(false);
     const [ dark, setDark ] = useState(false);
+
+    useEffect(() => {
+
+        if (triggerFullScreen === undefined) {
+            return;
+        }
+        
+        if (triggerFullScreen) {
+            setFullScreenToggleIcon(MinimizeIcon);
+        } else {
+            setFullScreenToggleIcon(MaximizeIcon);
+        }
+
+        setShowFullScreen(triggerFullScreen);
+        onFullScreenToggle(triggerFullScreen);
+    }, [ triggerFullScreen ]);
 
     /**
      * Gets the browser color scheme so that the color scheme of the textarea can be decided.
@@ -235,9 +296,9 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
     /**
      * Resolves the editor theme.
      *
-     * @return {object} Resolved mode.
+     * @return {"material" | "default"} Resolved mode.
      */
-    const resolveTheme = (): string => {
+    const resolveTheme = (): "material" | "default" => {
         if (getThemeFromEnvironment) {
             return (dark ? "material" : "default");
         }
@@ -275,21 +336,87 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
 
         CommonUtils.copyTextToClipboard(editorInstance.doc.getValue())
             .then(() => {
-                setCopyToClipboardIcon("check");
+                setCopyToClipboardIcon(CheckIcon);
 
                 setTimeout(() => {
-                    setCopyToClipboardIcon("copy outline");
+                    setCopyToClipboardIcon(CopyIcon);
                 }, 1000);
             });
     };
 
-    return (
+    /**
+     * Handles Full Screen mode toggle event event.
+     */
+    const handleFullScreenToggle = (): void => {
+
+        if (!showFullScreen) {
+            setFullScreenToggleIcon(MinimizeIcon);
+        } else {
+            setFullScreenToggleIcon(MaximizeIcon);
+        }
+
+        onFullScreenToggle(!showFullScreen);
+        setShowFullScreen(!showFullScreen);
+    };
+
+    const classes = classNames(
+        "code-editor",
+        {
+            "dark": resolveTheme() === "material",
+            "light": resolveTheme() === "default",
+            "one-liner": oneLiner,
+            "with-actions": withClipboardCopy || allowFullScreen
+        }
+        , className);
+
+    const fullScreenWrapperClasses = classNames("code-editor-fullscreen-wrapper", { theme });
+
+    const renderContent = (): ReactElement => (
         <div className={ classes }>
             <div className="editor-actions">
                 {
+                    allowFullScreen && (
+                        <div className="editor-action" onClick={ handleFullScreenToggle }>
+                            <Tooltip
+                                compact
+                                trigger={ (
+                                    <div>
+                                        <GenericIcon
+                                            hoverable
+                                            size="mini"
+                                            transparent
+                                            icon={ fullScreenToggleIcon }
+                                        />
+                                    </div>
+                                ) }
+                                content={
+                                    showFullScreen
+                                        ? translations?.exitFullScreen || "Exit full-Screen"
+                                        : translations?.goFullScreen || "Go full-Screen"
+                                }
+                                size="mini"
+                            />
+                        </div> 
+                    )
+                }
+                {
                     withClipboardCopy && (
                         <div className="editor-action" onClick={ handleCopyToClipboard }>
-                            <Icon name={ copyToClipboardIcon }/>
+                            <Tooltip
+                                compact
+                                trigger={ (
+                                    <div>
+                                        <GenericIcon
+                                            hoverable
+                                            size="mini"
+                                            transparent
+                                            icon={ copyToClipboardIcon }
+                                        />
+                                    </div>
+                                ) }
+                                content={ translations?.copyCode || "Copy to clipboard" }
+                                size="mini"
+                            />
                         </div>
                     )
                 }
@@ -335,12 +462,25 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
             />
         </div>
     );
+
+    return (
+        (allowFullScreen && showFullScreen)
+            ? (
+                <Modal open={ true } size="fullscreen" className={ fullScreenWrapperClasses }>
+                    <Modal.Content className="editor-content" scrolling>
+                        { renderContent() }
+                    </Modal.Content>
+                </Modal>
+            )
+            : renderContent()
+    );
 };
 
 /**
  * Default props for the code editor component.
  */
 CodeEditor.defaultProps = {
+    allowFullScreen: false,
     "data-testid": "code-editor",
     language: "javascript",
     lineWrapping: true,

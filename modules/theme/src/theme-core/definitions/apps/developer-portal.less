@@ -378,10 +378,27 @@
             border: none !important;
 
             .action {
-                padding: 8px;
+                .theme-icon {
+                    padding: 8px;
+                }
 
-                i {
-                    margin-right: 0;
+                &:hover {
+                    .theme-icon {
+                        background: @subtleTransparentBlack;
+                    }
+                }
+
+                &.hamburger {
+                    padding: 10px 9px;
+
+                    i {
+                        margin-right: 0;
+                    }
+                }
+                
+                &:not(.hamburger) {
+                    padding-left: 2px;
+                    padding-right: 2px;
                 }
             }
         }
