@@ -168,7 +168,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
             <PageLayout
                 action={
                     attributeConfig.addAttributeMapping && (
-                    <Show when={ AccessControlConstants.ATTRIBUTE_READ }>
+                    <Show when={ AccessControlConstants.ATTRIBUTE_WRITE }>
                         <PrimaryButton
                             onClick={ () => {
                                 setAddEditClaim(true);
@@ -386,13 +386,23 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                             <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
                                                 <Popup
                                                     content={ attributeConfig.isSCIMEditable
-                                                        ? t("common:edit")
-                                                        : t("common:view") }
+                                                        && hasRequiredScopes(
+                                                            featureConfig?.attributeDialects,
+                                                            featureConfig?.attributeDialects?.scopes?.create,
+                                                            allowedScopes
+                                                        )
+                                                            ? t("common:edit")
+                                                            : t("common:view") }
                                                     trigger={
                                                         <Icon color="grey" name={
                                                             attributeConfig.isSCIMEditable
-                                                                ? "pencil"
-                                                                : "eye"
+                                                                && hasRequiredScopes(
+                                                                    featureConfig?.attributeDialects,
+                                                                    featureConfig?.attributeDialects?.scopes?.create,
+                                                                    allowedScopes
+                                                                )
+                                                                    ? "pencil"
+                                                                    : "eye"
                                                         } />
                                                     }
                                                     inverted
@@ -455,9 +465,23 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                             </Grid.Column>
                                             <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
                                                 <Popup
-                                                    content={ t("common:edit") }
+                                                    content={ hasRequiredScopes(
+                                                        featureConfig?.attributeDialects,
+                                                        featureConfig?.attributeDialects?.scopes?.create,
+                                                        allowedScopes
+                                                    )
+                                                        ? t("common:edit")
+                                                        : t("common:view") }
                                                     trigger={
-                                                        <Icon color="grey" name="pencil" />
+                                                        <Icon color="grey" name={
+                                                            hasRequiredScopes(
+                                                                featureConfig?.attributeDialects,
+                                                                featureConfig?.attributeDialects?.scopes?.create,
+                                                                allowedScopes
+                                                            )
+                                                                ? "pencil"
+                                                                : "eye"
+                                                        } />
                                                     }
                                                     inverted
                                                 />

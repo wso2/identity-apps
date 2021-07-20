@@ -16,14 +16,17 @@
 * under the License.
 */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { DynamicField, EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
+import { AppState, FeatureConfigInterface } from "../../../../core";
 import { updateAClaim } from "../../../api";
 
 /**
@@ -61,7 +64,16 @@ export const EditAdditionalPropertiesLocalClaims: FunctionComponent<
 
     const dispatch = useDispatch();
 
-    const { t } = useTranslation();
+        const { t } = useTranslation();
+
+        const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+        const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
+
+        const isReadOnly = useMemo(() => (
+            !hasRequiredScopes(
+                featureConfig?.attributeDialects, featureConfig?.attributeDialects?.scopes?.update, allowedScopes)
+        ), [ featureConfig, allowedScopes ]);
 
     return (
         <EmphasizedSegment>
@@ -88,7 +100,7 @@ export const EditAdditionalPropertiesLocalClaims: FunctionComponent<
                                     ...claimData,
                                     properties: [ ...data ]
                                 };
-    
+
                                 updateAClaim(claim.id, submitData).then(() => {
                                     dispatch(addAlert(
                                         {
@@ -115,19 +127,22 @@ export const EditAdditionalPropertiesLocalClaims: FunctionComponent<
                                 });
                             } }
                             data-testid={ `${ testId }-form-properties-dynamic-field` }
+                            readOnly={ isReadOnly }
                         />
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 6 }>
-                        <PrimaryButton
-                            onClick={ () => {
-                                setSubmit();
-                            } }
-                            data-testid={ `${ testId }-submit-button` }
-                        >
-                            { t("common:update") }
-                        </PrimaryButton>
+                        <Show when={ AccessControlConstants.ATTRIBUTE_EDIT }>
+                            <PrimaryButton
+                                onClick={ () => {
+                                    setSubmit();
+                                } }
+                                data-testid={ `${ testId }-submit-button` }
+                            >
+                                { t("common:update") }
+                                </PrimaryButton>
+                        </Show>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
