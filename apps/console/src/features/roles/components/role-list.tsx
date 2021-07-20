@@ -373,21 +373,8 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                     onClose={ (): void => setShowDeleteConfirmationModal(false) }
                     type="warning"
                     open={ showRoleDeleteConfirmation }
-                    assertion={ currentDeletedRole.displayName }
-                    assertionHint={
-                        (
-                            <p>
-                                <Trans
-                                    i18nKey={ "console:manage.features.roles.list.confirmations.deleteItem." +
-                                    "assertionHint" }
-                                    tOptions={ { roleName: currentDeletedRole.displayName } }
-                                >
-                                    Please type <strong>{ currentDeletedRole.displayName }</strong> to confirm.
-                                </Trans>
-                            </p>
-                        )
-                    }
-                    assertionType="input"
+                    assertionHint={ t("console:manage.features.roles.list.confirmations.deleteItem.assertionHint") }
+                    assertionType="checkbox"
                     primaryAction="Confirm"
                     secondaryAction="Cancel"
                     onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }

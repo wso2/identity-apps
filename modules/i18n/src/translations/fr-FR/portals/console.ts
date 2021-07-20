@@ -5633,7 +5633,7 @@ export const console: ConsoleNS = {
                             update: "Mettre à jour"
                         },
                         confirmation: {
-                            assertionHint: "Veuillez taper <1>{{ roleName }}</1> pour confirmer.",
+                            assertionHint: "Veuillez confirmer votre action.",
                             content: "Si vous supprimez ce {{type}}, les permissions qui lui sont attachées seront supprimées et " +
                                 "les utilisateurs qui y sont rattachés ne pourront plus effectuer les actions prévues qui étaient " +
                                 "précédemment autorisées. Veuillez procéder avec prudence.",
@@ -5698,7 +5698,7 @@ export const console: ConsoleNS = {
                     },
                     confirmations: {
                         deleteItem: {
-                            assertionHint: "Veuillez taper <1>{{ roleName }}</1> pour confirmer.",
+                            assertionHint: "Veuillez confirmer votre action.",
                             content: "Si vous supprimez ce {{type}}, les permissions qui y sont attachées seront supprimées et " +
                                 "les utilisateurs qui y sont rattachés ne pourront plus effectuer les actions prévues qui étaient " +
                                 "précédemment autorisées. Veuillez procéder avec prudence.",

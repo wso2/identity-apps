@@ -6811,7 +6811,7 @@ export const console: ConsoleNS = {
                             update: "Update"
                         },
                         confirmation: {
-                            assertionHint: "Please type <1>{{ roleName }}</1> to confirm.",
+                            assertionHint: "Please confirm your action.",
                             content: "If you delete this {{type}}, the permissions attached to it will be " +
                                 "deleted and the users attached to it will no longer be able to perform intended " +
                                 "actions which were previously allowed. Please proceed with caution",
@@ -6875,7 +6875,7 @@ export const console: ConsoleNS = {
                     },
                     confirmations: {
                         deleteItem: {
-                            assertionHint: "Please type <1>{{ roleName }}</1> to confirm.",
+                            assertionHint: "Please confirm your action.",
                             content: "If you delete this {{type}}, the permissions attached to it will be " +
                                 "deleted and the users attached to it will no longer be able to perform " +
                                 "intended actions which were previously allowed. Please proceed with caution.",
