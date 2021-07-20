@@ -40,7 +40,8 @@ export class AccessControlUtils {
     public static getAuthenticatedRoutes(
         routeArray: RouteInterface[],
         allowedScopes: string,
-        featureConfig: any // TODO : Properly map FeatureConfigInterface type
+        featureConfig: any, // TODO : Properly map FeatureConfigInterface type
+        checkForUIResourceScopes?: boolean
     ): RouteInterface[] {
 
         const authenticatedRoutes: RouteInterface[] = new Array<RouteInterface>();
@@ -52,7 +53,8 @@ export class AccessControlUtils {
                 let shouldShowRoute: boolean = false;
                 if (
                     AuthenticateUtils.hasScopes(feature?.scopes.read, allowedScopes) &&
-                    (!feature?.scopes?.feature ||
+                    (!checkForUIResourceScopes ||
+                        !feature?.scopes?.feature ||
                         (feature?.scopes?.feature &&
                             AuthenticateUtils.hasScopes(feature?.scopes.feature, allowedScopes)) ||
                         AuthenticateUtils.hasScopes([AccessControlConstants.FULL_UI_SCOPE], allowedScopes))
@@ -92,15 +94,11 @@ export class AccessControlUtils {
         const authenticatedManageRoutes = this.getAuthenticatedRoutes(manageRoutes, allowedScopes, featureConfig);
         const authenticatedDevelopRoutes = this.getAuthenticatedRoutes(developRoutes, allowedScopes, featureConfig);
 
-        if (authenticatedManageRoutes.length < 2
-            || (authenticatedManageRoutes.length === 1
-                && authenticatedManageRoutes[0].id !== this.MANAGE_GETTING_STARTED_ID)) {
+        if (authenticatedManageRoutes.length < 1) {
             isManageTabDisabled = true;
         }
 
-        if (authenticatedDevelopRoutes.length < 2
-            || (authenticatedDevelopRoutes.length === 1
-                && authenticatedDevelopRoutes[0].id !== this.DEVELOP_GETTING_STARTED_ID)) {
+        if (authenticatedDevelopRoutes.length < 1) {
             isDevelopTabDisabled = true;
         }
 
