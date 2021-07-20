@@ -622,7 +622,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                     ) }
                                                     content={ () => {
                                                         // Need to delay the `Exit Full Screen` text a bit.
-                                                        let content = t("common:goFullScreen");
+                                                        let content: string = t("common:goFullScreen");
 
                                                         if (isEditorFullScreen) {
                                                             setTimeout(() => {

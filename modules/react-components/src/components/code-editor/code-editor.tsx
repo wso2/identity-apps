@@ -22,17 +22,11 @@ import classNames from "classnames";
 import * as codemirror from "codemirror";
 import JSBeautify from "js-beautify";
 import { JSHINT } from "jshint/dist/jshint";
-import { ReactComponent as MaximizeIcon } from "../../assets/images/icons/maximize-icon.svg";
-import { ReactComponent as CopyIcon } from "../../assets/images/icons/copy-icon.svg";
-import { ReactComponent as CheckIcon } from "../../assets/images/icons/check-icon.svg";
-import { ReactComponent as MinimizeIcon } from "../../assets/images/icons/minimize-icon.svg";
 import React, {
     FunctionComponent,
-    PropsWithChildren,
     ReactElement,
-    ReactNode, SVGProps,
+    SVGProps,
     useEffect,
-    useMemo,
     useState
 } from "react";
 import { UnControlled as CodeMirror, IUnControlledCodeMirror } from "react-codemirror2";
@@ -52,8 +46,11 @@ import "codemirror/lib/codemirror.css";
 import "codemirror/theme/material.css";
 import "codemirror/addon/lint/lint.css";
 import "codemirror/addon/hint/show-hint.css";
-import "codemirror/addon/display/fullscreen.css";
-import { Icon, Modal, SemanticICONS } from "semantic-ui-react";
+import { Modal } from "semantic-ui-react";
+import { ReactComponent as CheckIcon } from "../../assets/images/icons/check-icon.svg";
+import { ReactComponent as CopyIcon } from "../../assets/images/icons/copy-icon.svg";
+import { ReactComponent as MaximizeIcon } from "../../assets/images/icons/maximize-icon.svg";
+import { ReactComponent as MinimizeIcon } from "../../assets/images/icons/minimize-icon.svg";
 import { GenericIcon } from "../icon";
 import { Tooltip } from "../typography";
 
@@ -205,9 +202,12 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
         fullScreenToggleIcon,
         setFullScreenToggleIcon
     ] = useState<FunctionComponent<SVGProps<SVGSVGElement>>>(MaximizeIcon);
-    const [ showFullScreen, setShowFullScreen ] = useState<boolean>(false);
-    const [ dark, setDark ] = useState(false);
+    const [ isEditorFullScreen, setIsEditorFullScreen ] = useState<boolean>(false);
+    const [ darkMode, setDarkMode ] = useState<boolean>(false);
 
+    /**
+     * Set the internal full screen state based on the externally provided state.
+     */
     useEffect(() => {
 
         if (triggerFullScreen === undefined) {
@@ -220,7 +220,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
             setFullScreenToggleIcon(MaximizeIcon);
         }
 
-        setShowFullScreen(triggerFullScreen);
+        setIsEditorFullScreen(triggerFullScreen);
         onFullScreenToggle(triggerFullScreen);
     }, [ triggerFullScreen ]);
 
@@ -231,21 +231,21 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
 
         // If `getThemeFromEnvironment` is false or `matchMedia` is not supported, fallback to dark theme.
         if (!getThemeFromEnvironment || !window.matchMedia) {
-            setDark(true);
+            setDarkMode(true);
             return;
         }
 
         if (window.matchMedia("(prefers-color-scheme:dark)").matches) {
-            setDark(true);
+            setDarkMode(true);
         }
 
         const callback = (e: MediaQueryListEvent): void => {
             if (e.matches) {
-                setDark(true);
+                setDarkMode(true);
                 return;
             }
 
-            setDark(false);
+            setDarkMode(false);
         };
 
         try {
@@ -258,7 +258,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
                     .addListener((e: MediaQueryListEvent) => callback(e));
             } catch (error) {
                 // Fallback to dark if everything fails.
-                setDark(true);
+                setDarkMode(true);
             }
         }
 
@@ -305,7 +305,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
      */
     const resolveTheme = (): "material" | "default" => {
         if (getThemeFromEnvironment) {
-            return (dark ? "material" : "default");
+            return (darkMode ? "material" : "default");
         }
 
         if (!(theme === "dark" || theme === "light")) {
@@ -354,14 +354,14 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
      */
     const handleFullScreenToggle = (): void => {
 
-        if (!showFullScreen) {
+        if (!isEditorFullScreen) {
             setFullScreenToggleIcon(MinimizeIcon);
         } else {
             setFullScreenToggleIcon(MaximizeIcon);
         }
 
-        onFullScreenToggle(!showFullScreen);
-        setShowFullScreen(!showFullScreen);
+        onFullScreenToggle(!isEditorFullScreen);
+        setIsEditorFullScreen(!isEditorFullScreen);
     };
 
     const classes = classNames(
@@ -376,6 +376,11 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
 
     const fullScreenWrapperClasses = classNames("code-editor-fullscreen-wrapper", { theme });
 
+    /**
+     * Render inner content.
+     *
+     * @return {React.ReactElement}
+     */
     const renderContent = (): ReactElement => (
         <div className={ classes }>
             <div className="editor-actions">
@@ -395,7 +400,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
                                     </div>
                                 ) }
                                 content={
-                                    showFullScreen
+                                    isEditorFullScreen
                                         ? translations?.exitFullScreen || "Exit full-Screen"
                                         : translations?.goFullScreen || "Go full-Screen"
                                 }
@@ -444,7 +449,6 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
                 } }
                 options={
                     {
-                        lineWrapping,
                         autoCloseBrackets: smart,
                         autoCloseTags: smart,
                         extraKeys: smart ? { "Ctrl-Space": "autocomplete" } : {},
@@ -453,6 +457,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
                         lineNumbers: !oneLiner
                             ? showLineNumbers
                             : false,
+                        lineWrapping,
                         lint,
                         matchBrackets: smart,
                         matchTags: smart,
@@ -469,7 +474,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
     );
 
     return (
-        (allowFullScreen && showFullScreen)
+        (allowFullScreen && isEditorFullScreen)
             ? (
                 <Modal open={ true } size="fullscreen" className={ fullScreenWrapperClasses }>
                     <Modal.Content className="editor-content" scrolling>
