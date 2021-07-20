@@ -24,9 +24,11 @@ import {
     Code,
     CodeEditor,
     ConfirmationModal,
+    GenericIcon,
     Heading,
     SegmentedAccordion,
-    Text
+    Text,
+    Tooltip
 } from "@wso2is/react-components";
 import beautify from "js-beautify";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -40,6 +42,7 @@ import { useDispatch } from "react-redux";
 import { Checkbox, Icon, Menu, Sidebar } from "semantic-ui-react";
 import { stripSlashes } from "slashes";
 import { ScriptTemplatesSidePanel } from "./script-templates-side-panel";
+import { getOperationIcons } from "../../../../../core/configs";
 import { AppUtils, EventPublisher } from "../../../../../core/utils";
 import { getAdaptiveAuthTemplates } from "../../../../api";
 import { ApplicationManagementConstants } from "../../../../constants";
@@ -135,6 +138,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const [ isNewlyAddedScriptTemplate, setIsNewlyAddedScriptTemplate ] = useState<boolean>(false);
     const [ showScriptResetWarning, setShowScriptResetWarning ] = useState<boolean>(false);
     const [ showConditionalAuthContent, setShowConditionalAuthContent ] = useState<boolean>(isMinimized);
+    const [ isEditorFullScreen, setIsEditorFullScreen ] = useState<boolean>(false);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -594,35 +598,90 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                             <Sidebar.Pusher>
                                 <div className="script-editor-container" ref={ scriptEditorSectionRef }>
                                     <Menu attached="top" className="action-panel" secondary>
-                                            <Menu.Menu position="right">
-                                                <Menu.Item>
-                                                    <Checkbox
-                                                        label={
-                                                            t("console:develop.features.applications.edit.sections" +
-                                                                ".signOnMethod.sections.authenticationFlow.sections" +
-                                                                ".scriptBased.editor.templates.darkMode")
+                                        <Menu.Menu position="right">
+                                            <Menu.Item className="action">
+                                                <Tooltip
+                                                    compact
+                                                    trigger={ (
+                                                        <div>
+                                                            <GenericIcon
+                                                                hoverable
+                                                                transparent
+                                                                defaultIcon
+                                                                size="micro"
+                                                                hoverType="rounded"
+                                                                icon={ getOperationIcons().maximize }
+                                                                onClick={ () => {
+                                                                    setIsEditorFullScreen(!isEditorFullScreen)
+                                                                } }
+                                                                data-testid={
+                                                                    `${ testId }-code-editor-fullscreen-toggle`
+                                                                }
+                                                            />
+                                                        </div>
+                                                    ) }
+                                                    content={ () => {
+                                                        // Need to delay the `Exit Full Screen` text a bit.
+                                                        let content = t("common:goFullScreen");
+
+                                                        if (isEditorFullScreen) {
+                                                            setTimeout(() => {
+                                                                content = t("common:exitFullScreen");
+                                                            }, 500);
                                                         }
-                                                        checked={ isEditorDarkMode }
-                                                        onChange={ handleEditorDarkModeToggle }
-                                                        data-testid={ `${ testId }-code-editor-mode-toggle` }
-                                                        slider
-                                                    />
+
+                                                        return content;
+                                                    } }
+                                                    size="mini"
+                                                />
+                                            </Menu.Item>
+                                            <Menu.Item className="action">
+                                                <Tooltip
+                                                    compact
+                                                    trigger={ (
+                                                        <div>
+                                                            <GenericIcon
+                                                                hoverable
+                                                                defaultIcon
+                                                                transparent
+                                                                size="micro"
+                                                                hoverType="rounded"
+                                                                icon={
+                                                                    isEditorDarkMode
+                                                                        ? getOperationIcons().lightMode
+                                                                        : getOperationIcons().darkMode
+                                                                }
+                                                                onClick={ handleEditorDarkModeToggle }
+                                                                data-testid={ `${ testId }-code-editor-mode-toggle` }
+                                                            />
+                                                        </div>
+                                                    ) }
+                                                    content={
+                                                        isEditorDarkMode
+                                                            ? t("common:lightMode")
+                                                            : t("common:darkMode")
+                                                    }
+                                                    size="mini"
+                                                />
+                                            </Menu.Item>
+                                            { !readOnly && (
+                                                <Menu.Item
+                                                    onClick={ handleScriptTemplateSidebarToggle }
+                                                    className="action hamburger"
+                                                    data-testid={ `${ testId }-script-template-sidebar-toggle` }
+                                                >
+                                                    <Icon name="bars"/>
                                                 </Menu.Item>
-                                                { !readOnly && (
-                                                    <Menu.Item
-                                                        onClick={ handleScriptTemplateSidebarToggle }
-                                                        className="action"
-                                                        data-testid={ `${ testId }-script-template-sidebar-toggle` }
-                                                    >
-                                                        <Icon name="bars"/>
-                                                    </Menu.Item>
-                                                ) }
-                                            </Menu.Menu>
+                                            ) }
+                                        </Menu.Menu>
                                     </Menu>
 
                                     <div className="code-editor-wrapper">
                                         <CodeEditor
                                             lint
+                                            allowFullScreen
+                                            withClipboardCopy
+                                            triggerFullScreen={ isEditorFullScreen }
                                             language="javascript"
                                             sourceCode={ sourceCode }
                                             options={ {
@@ -632,8 +691,16 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                 setInternalScript(value);
                                                 onScriptChange(value);
                                             } }
+                                            onFullScreenToggle={ (isFullScreen: boolean) => {
+                                                setIsEditorFullScreen(isFullScreen);
+                                            } }
                                             theme={ isEditorDarkMode ? "dark" : "light" }
                                             readOnly={ readOnly }
+                                            translations={ {
+                                                copyCode: t("common:copyToClipboard"),
+                                                exitFullScreen: t("common:exitFullScreen"),
+                                                goFullScreen: t("common:goFullScreen")
+                                            } }
                                             data-testid={ `${ testId }-code-editor` }
                                         />
                                     </div>
