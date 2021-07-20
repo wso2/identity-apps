@@ -51,7 +51,7 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
     const isProfileInfoLoading: boolean = useSelector( (state: AppState) => state.loaders.isProfileInfoLoading);
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const [ userProfileName, setUserProfileName ] = useState<string>(null);
-    const [ isFederatedUser, setIsFederatedUser ] = useState<boolean>(undefined);
+    const [ isNonLocalCredentialUser, setIsNonLocalCredentialUser ] = useState<boolean>(false);
     const [ userSource, setUserSource ] = useState<string>(null);
 
     useEffect(() => {
@@ -69,22 +69,26 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
         if (!enableNonLocalCredentialUserView) {
             return;
         }
-        debugger;
-
         // Verifies if the user is a user without local credentials.
-        if (profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
-            [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_ACCOUNT_TYPE")] === "FEDERATED") {
-            setIsFederatedUser(true);
+        if (!profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
+            [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("LOCAL_CREDENTIAL_EXISTS")]) {
+            setIsNonLocalCredentialUser(true);
         }
 
-        // Sets user's source of sign up if the user is a federated user.
-        //TODO
-        if (profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
-            [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_SOURCE")]) {
-            setUserSource(profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
-                [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_SOURCE")]);
-        }
     }, [profileDetails?.profileInfo]);
+
+    /**
+     * Sets the source of the user.
+     */
+    useEffect(() => {
+        // Sets user's source of sign up if the user is a federated user.
+        const userSourceId = profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
+            ["userSourceId"];
+
+        if (isNonLocalCredentialUser && userSourceId) {
+            setUserSource(userSourceId);
+        }
+    }, [profileDetails?.profileInfo, isNonLocalCredentialUser]);
 
     return (
         <InnerPageLayout

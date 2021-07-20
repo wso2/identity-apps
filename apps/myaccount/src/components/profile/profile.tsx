@@ -31,14 +31,13 @@ import { Field, Forms, Validation } from "@wso2is/forms";
 import { EditAvatarModal, LinkButton, PrimaryButton, UserAvatar } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, MouseEvent, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, Form, Grid, Icon, List, Placeholder, Popup, Responsive } from "semantic-ui-react";
 import { updateProfileInfo } from "../../api";
 import { AppConstants, CommonConstants } from "../../constants";
 import * as UIConstants from "../../constants/ui-constants";
-import { commonConfig } from "../../extensions";
 import { AlertInterface, AlertLevels, AuthStateInterface, FeatureConfigInterface, ProfileSchema } from "../../models";
 import { AppState } from "../../store";
 import { getProfileInformation, setActiveForm } from "../../store/actions";
@@ -50,20 +49,20 @@ import { MobileUpdateWizard } from "../shared/mobile-update-wizard";
  * Also see {@link Profile.defaultProps}
  */
 interface ProfileProps extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
-    enableNonLocalCredentialUserView?: boolean;
     onAlertFired: (alert: AlertInterface) => void;
+    isNonLocalCredentialUser?: boolean;
 }
 
 /**
  * Basic details component.
  *
  * @param {ProfileProps} props - Props injected to the basic details component.
- * @return {JSX.Element}
+ * @return {ReactElement}
  */
-export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): JSX.Element => {
+export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): ReactElement => {
 
     const {
-        enableNonLocalCredentialUserView,
+        isNonLocalCredentialUser,
         onAlertFired,
         featureConfig,
         ["data-testid"]: testId
@@ -88,7 +87,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const [ showMobileUpdateWizard, setShowMobileUpdateWizard ] = useState<boolean>(false);
     const [ countryList, setCountryList ] = useState<DropdownItemProps[]>([]);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
-    const [ isNonLocalCredentialUser, setIsNonLocalCredentialUser ] = useState<boolean>(false);
 
     /**
      * Set the userId.
@@ -106,19 +104,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             setEmailPending(true);
         }
     }, [ profileDetails?.profileInfo?.pendingEmails ]);
-
-    /**
-     * Checks if the user is a user without local credentials.
-     */
-    useEffect(() => {
-        if (!enableNonLocalCredentialUserView) {
-            return;
-        }
-        if (profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
-            [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_ACCOUNT_TYPE")] === "FEDERATED") {
-            setIsNonLocalCredentialUser(true);
-        }
-    }, [profileDetails?.profileInfo]);
 
     /**
      * dispatch getProfileInformation action if the profileDetails object is empty
@@ -1100,8 +1085,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_DISABLED")
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ONETIME_PASSWORD")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_SOURCE")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_ACCOUNT_TYPE"))) {
+                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_SOURCE_ID")
+                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("LOCAL_CREDENTIAL_EXISTS"))) {
                             return (
                                 <>
                                     {

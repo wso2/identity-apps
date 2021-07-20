@@ -63,21 +63,6 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
     const { t } = useTranslation();
     const [federatedAssociations, setFederatedAssociations] = useState<FederatedAssociation[]>([]);
     const [showExternalLogins, setShowExternalLogins] = useState<boolean>(true);
-    const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
-    const [ isNonLocalCredentialUser, setIsNonLocalCredentialUser ] = useState<boolean>(false);
-
-    /**
-     * Checks if the user is a user without local credentials.
-     */
-    useEffect(() => {
-        if (!enableNonLocalCredentialUserView) {
-            return;
-        }
-        if (profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
-            [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_ACCOUNT_TYPE")]) {
-            setIsNonLocalCredentialUser(true);
-        }
-    }, [profileDetails?.profileInfo]);
 
     /**
      * This calls the `getFederatedAssociations` api call

@@ -38,14 +38,14 @@ interface AsgardeoProfileWidgetProps extends TestableComponentInterface {
 }
 
 /**
- * Asgardeo profile widget.
+ * Profile widget.
  * Also see {@link ProfileWidget.defaultProps}
  *
- * @return {JSX.Element}
+ * @return {ReactElement}
  */
 export const ProfileWidget: FunctionComponent<AsgardeoProfileWidgetProps> = (
     props
-): JSX.Element => {
+): ReactElement => {
 
     const {
         userSource,
@@ -91,7 +91,7 @@ export const ProfileWidget: FunctionComponent<AsgardeoProfileWidgetProps> = (
 
     /**
      * Generates the profile completion progress bar .
-     * @return {JSX.Element}
+     * @return {ReactElement}
      */
     const generateCompletionProgress = (): ReactElement => (
         <Progress

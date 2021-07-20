@@ -37,9 +37,9 @@ import {
     MultiFactorAuthentication,
     UserSessionsComponent
 } from "../components";
-import { CreatePassword } from "../components/create-password/create-password";
 import { AppConstants, CommonConstants } from "../constants";
 import { commonConfig } from "../extensions";
+import { resolveUserStoreFromEmbeddedUsername, resolveUsername } from "../helpers";
 import { InnerPageLayout } from "../layouts";
 import { AlertInterface, AuthStateInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
@@ -72,6 +72,7 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
     const [ isNonLocalCredentialUser, setIsNonLocalCredentialUser ] = useState<boolean>(false);
+    const [ userstore, setUserstore ] = useState<string>(null);
 
     const consentControl = useRef<HTMLDivElement>(null);
     const accountSecurity = useRef<HTMLDivElement>(null);
@@ -111,9 +112,20 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
             return;
         }
 
-        if (profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
-            [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_ACCOUNT_TYPE")] === "FEDERATED") {
+        // Verifies if the user is a user without local credentials.
+        if (!profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
+            [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("LOCAL_CREDENTIAL_EXISTS")]) {
             setIsNonLocalCredentialUser(true);
+        }
+    }, [profileDetails?.profileInfo]);
+
+    /**
+     * Sets userstore of the user.
+     */
+    useEffect(() => {
+        if (profileDetails?.profileInfo?.userName) {
+            const userstore: string = resolveUserStoreFromEmbeddedUsername(profileDetails.profileInfo.userName);
+            setUserstore(userstore);
         }
     }, [profileDetails?.profileInfo]);
 
@@ -223,7 +235,8 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
                     isFeatureEnabled(
                         accessConfig?.security,
                         AppConstants.FEATURE_DICTIONARY.get("SECURITY_CONSENTS")
-                    ) ? (
+                    ) && commonConfig.utils.isManageConsentAllowedForUser(userstore)
+                    ? (
 
                         <Grid.Row>
                             <Grid.Column width={ 16 }>

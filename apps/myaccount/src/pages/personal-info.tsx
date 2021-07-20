@@ -16,9 +16,10 @@
  * under the License.
  */
 
+import { ProfileConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
@@ -26,7 +27,7 @@ import { FederatedAssociations, LinkedAccounts, Profile, ProfileExport } from ".
 import { AppConstants } from "../constants";
 import { commonConfig } from "../extensions";
 import { InnerPageLayout } from "../layouts";
-import { AlertInterface, FeatureConfigInterface } from "../models";
+import { AlertInterface, AuthStateInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 import { addAlert } from "../store/actions";
 
@@ -53,6 +54,9 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
     const dispatch = useDispatch();
     const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
+    const [ isNonLocalCredentialUser, setIsNonLocalCredentialUser ] = useState<boolean>(false);
+    const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
+
     /**
      * Dispatches the alert object to the redux store.
      * @param {AlertInterface} alert - Alert object.
@@ -60,6 +64,20 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
     const handleAlerts = (alert: AlertInterface) => {
         dispatch(addAlert(alert));
     };
+
+    /**
+     * Checks if the user is a user without local credentials.
+     */
+    useEffect(() => {
+        if (!enableNonLocalCredentialUserView) {
+            return;
+        }
+        // Verifies if the user is a user without local credentials.
+        if (!profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
+            [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("LOCAL_CREDENTIAL_EXISTS")]) {
+            setIsNonLocalCredentialUser(true);
+        }
+    }, [profileDetails?.profileInfo]);
 
     return (
         <InnerPageLayout
@@ -85,7 +103,7 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 }>
                                 <Profile
-                                    enableNonLocalCredentialUserView={ enableNonLocalCredentialUserView }
+                                    isNonLocalCredentialUser={ isNonLocalCredentialUser }
                                     featureConfig={ accessConfig }
                                     onAlertFired={ handleAlerts }
                                 />
