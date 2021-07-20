@@ -381,97 +381,111 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
      *
      * @return {React.ReactElement}
      */
-    const renderContent = (): ReactElement => (
-        <div className={ classes }>
-            <div className="editor-actions">
-                {
-                    allowFullScreen && controlledFullScreenMode && (
-                        <div className="editor-action" onClick={ handleFullScreenToggle }>
-                            <Tooltip
-                                compact
-                                trigger={ (
-                                    <div>
-                                        <GenericIcon
-                                            hoverable
-                                            size="mini"
-                                            transparent
-                                            icon={ fullScreenToggleIcon }
-                                        />
-                                    </div>
-                                ) }
-                                content={
-                                    isEditorFullScreen
-                                        ? translations?.exitFullScreen || "Exit full-Screen"
-                                        : translations?.goFullScreen || "Go full-Screen"
-                                }
+    const renderContent = (): ReactElement => {
+
+        // Renders the full screen toggle.
+        const renderFullScreenToggle = (): ReactElement => (
+            <div className="editor-action" onClick={ handleFullScreenToggle }>
+                <Tooltip
+                    compact
+                    trigger={ (
+                        <div>
+                            <GenericIcon
+                                hoverable
                                 size="mini"
-                            />
-                        </div> 
-                    )
-                }
-                {
-                    withClipboardCopy && (
-                        <div className="editor-action" onClick={ handleCopyToClipboard }>
-                            <Tooltip
-                                compact
-                                trigger={ (
-                                    <div>
-                                        <GenericIcon
-                                            hoverable
-                                            size="mini"
-                                            transparent
-                                            icon={ copyToClipboardIcon }
-                                        />
-                                    </div>
-                                ) }
-                                content={ translations?.copyCode || "Copy to clipboard" }
-                                size="mini"
+                                transparent
+                                icon={ fullScreenToggleIcon }
                             />
                         </div>
-                    )
-                }
+                    ) }
+                    content={
+                        isEditorFullScreen
+                            ? translations?.exitFullScreen || "Exit full-Screen"
+                            : translations?.goFullScreen || "Go full-Screen"
+                    }
+                    size="mini"
+                />
             </div>
-            <CodeMirror
-                { ...rest }
-                value={ beautify ? beautifyCode() : sourceCode }
-                editorDidMount={ (editor: codemirror.Editor, ...args) => {
-                    if (height) {
-                        editor.setSize("", height);
-                    }
+        );
 
-                    if (oneLiner) {
-                        editor.setSize("", "100%");
-                    }
-
-                    setEditorInstance(editor);
-
-                    rest.editorDidMount && rest.editorDidMount(editor, ...args);
-                } }
-                options={
+        return (
+            <div className={ classes }>
+                <div className="editor-actions">
                     {
-                        autoCloseBrackets: smart,
-                        autoCloseTags: smart,
-                        extraKeys: smart ? { "Ctrl-Space": "autocomplete" } : {},
-                        gutters: [ "note-gutter", "CodeMirror-linenumbers", "CodeMirror-lint-markers" ],
-                        indentUnit: tabSize,
-                        lineNumbers: !oneLiner
-                            ? showLineNumbers
-                            : false,
-                        lineWrapping,
-                        lint,
-                        matchBrackets: smart,
-                        matchTags: smart,
-                        mode: options?.mode ? options.mode : resolveMode(language),
-                        readOnly,
-                        tabSize,
-                        theme: resolveTheme(),
-                        ...options
+                        allowFullScreen && (
+                            // If the full screen mode trigger is handled from outside, we don't need to show the
+                            // embedded `Go full-screen` button.
+                            !controlledFullScreenMode
+                                ? isEditorFullScreen
+                                    ? renderFullScreenToggle()
+                                    : null
+                                : renderFullScreenToggle()
+                        )
                     }
-                }
-                data-testid={ testId }
-            />
-        </div>
-    );
+                    {
+                        withClipboardCopy && (
+                            <div className="editor-action" onClick={ handleCopyToClipboard }>
+                                <Tooltip
+                                    compact
+                                    trigger={ (
+                                        <div>
+                                            <GenericIcon
+                                                hoverable
+                                                size="mini"
+                                                transparent
+                                                icon={ copyToClipboardIcon }
+                                            />
+                                        </div>
+                                    ) }
+                                    content={ translations?.copyCode || "Copy to clipboard" }
+                                    size="mini"
+                                />
+                            </div>
+                        )
+                    }
+                </div>
+                <CodeMirror
+                    { ...rest }
+                    value={ beautify ? beautifyCode() : sourceCode }
+                    editorDidMount={ (editor: codemirror.Editor, ...args) => {
+                        if (height) {
+                            editor.setSize("", height);
+                        }
+
+                        if (oneLiner) {
+                            editor.setSize("", "100%");
+                        }
+
+                        setEditorInstance(editor);
+
+                        rest.editorDidMount && rest.editorDidMount(editor, ...args);
+                    } }
+                    options={
+                        {
+                            autoCloseBrackets: smart,
+                            autoCloseTags: smart,
+                            extraKeys: smart ? { "Ctrl-Space": "autocomplete" } : {},
+                            gutters: [ "note-gutter", "CodeMirror-linenumbers", "CodeMirror-lint-markers" ],
+                            indentUnit: tabSize,
+                            lineNumbers: !oneLiner
+                                ? showLineNumbers
+                                : false,
+                            lineWrapping,
+                            lint,
+                            matchBrackets: smart,
+                            matchTags: smart,
+                            mode: options?.mode ? options.mode : resolveMode(language),
+                            readOnly,
+                            tabSize,
+                            theme: resolveTheme(),
+                            ...options
+                        }
+                    }
+                    data-testid={ testId }
+                />
+            </div>
+        );
+    };
 
     return (
         (allowFullScreen && isEditorFullScreen)

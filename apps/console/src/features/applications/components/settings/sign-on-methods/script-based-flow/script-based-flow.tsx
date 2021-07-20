@@ -612,7 +612,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                                 hoverType="rounded"
                                                                 icon={ getOperationIcons().maximize }
                                                                 onClick={ () => {
-                                                                    setIsEditorFullScreen(!isEditorFullScreen)
+                                                                    setIsEditorFullScreen(!isEditorFullScreen);
                                                                 } }
                                                                 data-testid={
                                                                     `${ testId }-code-editor-fullscreen-toggle`
