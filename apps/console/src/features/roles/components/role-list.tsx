@@ -50,6 +50,7 @@ import {
     history
 } from "../../core";
 import { APPLICATION_DOMAIN } from "../constants";
+import { Show, AccessControlConstants } from "@wso2is/access-control";
 
 interface RoleListProps extends LoadableComponentInterface, TestableComponentInterface {
     /**
@@ -233,14 +234,16 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 <EmptyPlaceholder
                     data-testid={ `${ testId }-empty-list-empty-placeholder` }
                     action={ (
-                        <PrimaryButton
-                            data-testid={ `${ testId }-empty-list-empty-placeholder-add-button` }
-                            onClick={ onEmptyListPlaceholderActionClick }
-                        >
-                            <Icon name="add"/>
-                            { t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.action",
-                                { type: "Role" }) }
-                        </PrimaryButton>
+                        <Show when={ AccessControlConstants.ROLE_WRITE }>
+                            <PrimaryButton
+                                data-testid={ `${ testId }-empty-list-empty-placeholder-add-button` }
+                                onClick={ onEmptyListPlaceholderActionClick }
+                            >
+                                <Icon name="add"/>
+                                { t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.action",
+                                    { type: "Role" }) }
+                            </PrimaryButton>
+                        </Show>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
@@ -331,13 +334,18 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
 
         return [
             {
-                hidden: () =>
-                    !hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes),
-                icon: (): SemanticICONS => "pencil alternate",
+                icon: (): SemanticICONS =>
+                    hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes)
+                        ? "pencil alternate"
+                        : "eye",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void =>
-                    handleRoleEdit(role?.id),
-                popupText: (): string => t("console:manage.features.roles.list.popups.edit",
-                    { type: "Role" }),
+                    hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes)
+                        && handleRoleEdit(role?.id),
+                popupText: (): string =>
+                    hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes)
+                        ? t("console:manage.features.roles.list.popups.edit",
+                            { type: "Role" })
+                        : t("common:view"),
                 renderer: "semantic-icon"
             },
             {
