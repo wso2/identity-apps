@@ -122,10 +122,8 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
             history.push(AppConstants.getPaths().get("USERSTORES"));
         }).catch(error => {
 
-            if (error.response.status === 403 &&
-                error?.response?.data?.code === UserStoreManagementConstants.USER_STORE_MGT_API_ERROR_CODES.get(
-                    "ERROR_CREATE_LIMIT_REACHED"
-                )) {
+            if (error.response?.status === 403 &&
+                error.response.data?.code === UserStoreManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
 
                 setAlert({
                     code: UserStoreManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode(),

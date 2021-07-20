@@ -33,15 +33,6 @@ export class UserStoreManagementConstants {
     private constructor() { }
 
     /**
-     * User store management API error codes.
-     * @constant
-     * @type {Map<string, string>}
-     * @default
-     */
-    public static readonly USER_STORE_MGT_API_ERROR_CODES: Map<string, string> = new Map<string, string>()
-        .set("ERROR_CREATE_LIMIT_REACHED", "SUS-60011");
-
-    /**
      * User store create limit reached error.
      * @constant
      * @type IdentityAppsError

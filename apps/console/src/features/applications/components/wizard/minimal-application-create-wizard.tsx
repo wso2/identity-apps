@@ -282,9 +282,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             .catch((error) => {
 
                 if (error.response.status === 403 &&
-                    error?.response?.data?.code === ApplicationManagementConstants.APPLICATION_MGT_API_ERROR_CODES.get(
-                        "ERROR_CREATE_LIMIT_REACHED"
-                    )) {
+                    error?.response?.data?.code ===
+                    ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
 
                     setAlert({
                         code: ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode(),
