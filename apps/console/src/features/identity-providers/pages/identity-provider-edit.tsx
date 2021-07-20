@@ -496,7 +496,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
 
     return (
         <PageLayout
-            isLoading={ isConnectorDetailsFetchRequestLoading }
+            isLoading={ isConnectorDetailsFetchRequestLoading || useNewConnectionsView === undefined }
             title={ resolveConnectorName(connector) }
             contentTopMargin={ true }
             description={ resolveConnectorDescription(connector) }

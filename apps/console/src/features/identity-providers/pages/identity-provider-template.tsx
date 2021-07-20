@@ -387,6 +387,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
 
     return (
         <PageLayout
+            isLoading={ useNewConnectionsView === undefined }
             title={
                 useNewConnectionsView
                     ? t("console:develop.pages.authenticationProviderTemplate.title")
