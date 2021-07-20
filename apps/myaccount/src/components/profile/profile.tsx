@@ -1030,6 +1030,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                     isProfileInfoLoading || profileSchemaLoader
                         ? null
                         : (
+                        profileSchema && (
                             <List.Item key={profileSchema.length} className="inner-list-item"
                                        data-testid={`${testId}-schema-list-item`}>
                                 <Grid padded={true}>
@@ -1048,6 +1049,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                 </Grid>
                             </List.Item>
                         )
+                    )
                 }
                 {
                     profileSchema && profileSchema.map((schema: ProfileSchema, index: number) => {
