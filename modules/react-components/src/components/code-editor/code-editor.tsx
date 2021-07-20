@@ -34,7 +34,6 @@ import { UnControlled as CodeMirror, IUnControlledCodeMirror } from "react-codem
 import "codemirror/addon/lint/lint";
 import "codemirror/addon/lint/javascript-lint";
 import "codemirror/addon/hint/sql-hint";
-import "codemirror/addon/display/fullscreen";
 import "codemirror/mode/javascript/javascript";
 import "codemirror/mode/sql/sql";
 import "codemirror/mode/xml/xml";
