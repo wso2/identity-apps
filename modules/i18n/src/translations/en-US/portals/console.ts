@@ -613,7 +613,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     deleteApplication: {
-                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        assertionHint: "Please confirm your action.",
                         content: "This action is irreversible and will permanently delete the application.",
                         header: "Are you sure?",
                         message: "If you delete this application, authentication flows for this application will " +

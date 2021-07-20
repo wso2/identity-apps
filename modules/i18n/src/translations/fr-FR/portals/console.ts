@@ -612,7 +612,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     deleteApplication: {
-                        assertionHint: "Veuillez taper <1>{{ name }}</1> pour confirmer.",
+                        assertionHint: "Veuillez confirmer votre action.",
                         content: "Toutes les applications qui en dépendent risquent également " +
                             "de ne plus fonctionner. Veuillez procéder avec prudence.",
                         header: "Etes-vous sûr ?",
