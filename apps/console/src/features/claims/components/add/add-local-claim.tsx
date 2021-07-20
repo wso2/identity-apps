@@ -115,7 +115,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 
         if ( attributeConfig.localAttributes.createCustomDialect ) {
 
-            attributeConfig.localAttributes.isSCIMCustomDialectAvailable().then(available => {
+            await attributeConfig.localAttributes.isSCIMCustomDialectAvailable().then(available => {
                 if (available === "") {
                     addDialect(attributeConfig.localAttributes.customDialectURI);
                 }
