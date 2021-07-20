@@ -380,7 +380,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
         <div className={ classes }>
             <div className="editor-actions">
                 {
-                    allowFullScreen && !controlledFullScreenMode && (
+                    allowFullScreen && controlledFullScreenMode && (
                         <div className="editor-action" onClick={ handleFullScreenToggle }>
                             <Tooltip
                                 compact
@@ -486,6 +486,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
  */
 CodeEditor.defaultProps = {
     allowFullScreen: false,
+    controlledFullScreenMode: true,
     "data-testid": "code-editor",
     language: "javascript",
     lineWrapping: true,

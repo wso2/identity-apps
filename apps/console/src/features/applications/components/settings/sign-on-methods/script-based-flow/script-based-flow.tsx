@@ -680,7 +680,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                         <CodeEditor
                                             lint
                                             allowFullScreen
-                                            controlledFullScreenMode
+                                            controlledFullScreenMode={ false }
                                             triggerFullScreen={ isEditorFullScreen }
                                             language="javascript"
                                             sourceCode={ sourceCode }
