@@ -490,7 +490,11 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                                     data-testid={ `${ testId }-search` }
                                 />
                             ) }
+                            isPaginating={ isPaginating }
                             paginate={ () => handlePagination() }
+                            translations={ {
+                                loading: t("common:loading")
+                            } }
                         >
                             <AuthenticatorGrid
                                 isLoading={ isAuthenticatorFetchRequestRequestLoading || isIdPListRequestLoading }

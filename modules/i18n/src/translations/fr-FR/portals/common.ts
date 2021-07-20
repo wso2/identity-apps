@@ -92,6 +92,7 @@ export const common: CommonNS = {
     lastSeen: "Dernier vu",
     lastUpdatedOn: "Dernière mise à jour le",
     lightMode: "Mode lumière",
+    loading: "Chargement",
     loginTime: "Heure de connexion",
     logout: "Déconnexion",
     maximize: "Maximiser",

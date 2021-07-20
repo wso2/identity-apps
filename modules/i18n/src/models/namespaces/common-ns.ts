@@ -86,6 +86,7 @@ export interface CommonNS {
     lastSeen: string;
     lastUpdatedOn: string;
     lightMode: string;
+    loading: string;
     loginTime: string;
     logout: string;
     maximize: string;
