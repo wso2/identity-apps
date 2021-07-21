@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
@@ -23,7 +24,6 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid } from "semantic-ui-react";
 import { IdentityProviderAdvanceInterface } from "../../models";
-import { AccessControlConstants, Show } from "@wso2is/access-control";
 
 /**
  *  Advance Configurations for the Identity Provider.
