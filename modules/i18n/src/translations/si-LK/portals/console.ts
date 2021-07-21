@@ -4010,6 +4010,14 @@ export const console: ConsoleNS = {
                             placeholder: "යූආර්අයි උපභාෂාවක් ඇතුළත් කරන්න",
                             requiredErrorMessage: "යූආර්අයි උපභාෂාවක් ඇතුළත් කරන්න"
                         },
+                        fields: {
+                            attributeName: {
+                                validation: {
+                                    invalid: "ගුණාංග නාමයේ අඩංගු විය හැක්කේ අක්ෂර සංඛ්‍යා, -, සහ _ පමණි. " 
+                                        + "අක්ෂර 3 ත් 30 ත් අතර දිගකින් යුක්ත විය යුතුය."
+                                }
+                            },
+                        },
                         submit: "යාවත්කාලීන කරන්න"
                     },
                     notifications: {

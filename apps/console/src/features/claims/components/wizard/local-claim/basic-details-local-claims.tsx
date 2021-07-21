@@ -17,7 +17,7 @@
 */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, FormValue, Forms } from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { GenericIcon, Hint, InlineEditInput } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -179,11 +179,22 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     onMouseOut={ () => {
                                         closePopup(setIsShowClaimIDHint, claimTimer);
                                     } }
-                                    validation={ (value: string) => {
+                                    validation={ (value: string, validation: Validation )=> {
                                         if (value === "") {
                                             setNoUniqueOIDCAttrib(true);
                                             setNoUniqueSCIMAttrib(true);
                                             return;
+                                        }
+                                        let isAttributeValid: boolean = true;
+
+                                        if (!value.match(/^\w+$/)) {
+                                            isAttributeValid = false;
+                                        }
+
+                                        if (!isAttributeValid) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(t("console:manage.features.claims." 
+                                                +"dialects.forms.fields.attributeName.validation.invalid"));
                                         }
 
                                         // TODO: Move constants to constants file
@@ -223,7 +234,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             <Grid.Column width={ 16 }>
                                 <Card fluid >
                                     <Card.Content>
-                                        <Card.Header className="mb-2">
+                                        <Card.Header className="mb-3">
                                             { t("extensions:manage.attributes.generatedAttributeMapping.title") }
                                         </Card.Header>
                                         <Card.Meta className="mb-5">
