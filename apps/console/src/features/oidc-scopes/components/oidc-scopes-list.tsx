@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -267,10 +268,17 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                 hidden: (): boolean => !isFeatureEnabled(
                     featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
-                icon: (): SemanticICONS => "pencil alternate",
+                icon: (): SemanticICONS =>
+                    hasRequiredScopes(
+                        featureConfig?.oidcScopes, featureConfig?.oidcScopes?.scopes?.update, allowedScopes)
+                        ? "pencil alternate"
+                        : "eye",
                 onClick: (e: SyntheticEvent, scope: OIDCScopesListInterface): void =>
                     handleOIDCScopesEdit(scope?.name),
-                popupText: (): string => t("common:edit"),
+                popupText: (): string => hasRequiredScopes(
+                    featureConfig?.oidcScopes, featureConfig?.oidcScopes?.scopes?.update, allowedScopes)
+                    ? t("common:edit")
+                    : t("common:view"),
                 renderer: "semantic-icon"
             }
         ];
@@ -325,10 +333,12 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
             return (
                 <EmptyPlaceholder
                     action={ onEmptyListPlaceholderActionClick && (
-                        <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
-                            <Icon name="add"/>
-                            { t("console:manage.features.oidcScopes.placeholders.emptyList.action") }
-                        </PrimaryButton>
+                        <Show when={ AccessControlConstants.SCOPE_WRITE }>
+                            <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
+                                <Icon name="add"/>
+                                { t("console:manage.features.oidcScopes.placeholders.emptyList.action") }
+                            </PrimaryButton>
+                        </Show>
                     ) }
                     image={ getEmptyPlaceholderIllustrations()?.newList }
                     imageSize="tiny"

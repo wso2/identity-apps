@@ -16,24 +16,35 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, ExternalClaim, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     DataTable,
     EmptyPlaceholder,
     LinkButton,
+    PrimaryButton,
     TableActionsInterface,
     TableColumnInterface,
-    TableDataInterface,
-    PrimaryButton
+    TableDataInterface
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useRef, useState } from "react";
+import React, {
+    FunctionComponent,
+    ReactElement,
+    ReactNode,
+    SyntheticEvent,
+    useEffect,
+    useMemo,
+    useRef,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
 import { AttributeSelectionWizardOtherDialect }
     from "../../applications/components/settings/attribute-management/attirbute-selection-wizard-other-dialect";
-import { FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "../../core";
+import { AppState, FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "../../core";
 import { updateOIDCScopeDetails } from "../api";
 import { OIDCScopesManagementConstants } from "../constants";
 import { OIDCScopesListInterface } from "../models";
@@ -99,16 +110,24 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
         isRequestLoading,
         triggerAddAttributeModal,
         clearSearchedAttributes,
-        ["data-testid"]: testId
+        [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
 
     const dispatch = useDispatch();
 
-    const [showSelectionModal, setShowSelectionModal] = useState<boolean>(false);
+    const [ showSelectionModal, setShowSelectionModal ] = useState<boolean>(false);
 
     const init = useRef(true);
+
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
+    const isReadOnly = useMemo(
+        () => !hasRequiredScopes(featureConfig?.oidcScopes, featureConfig?.oidcScopes?.scopes?.update, allowedScopes),
+        [ featureConfig, allowedScopes ]
+    );
 
     useEffect(() => {
         if (init.current) {
@@ -116,7 +135,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
         } else {
             handleOpenSelectionModal();
         }
-    }, [triggerAddAttributeModal]);
+    }, [ triggerAddAttributeModal ]);
 
     const updateOIDCScope = (attributes: string[]): void => {
         const data: OIDCScopesListInterface = {
@@ -159,7 +178,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                     addAlert({
                         description: t(
                             "console:manage.features.oidcScopes.notifications.updateOIDCScope" +
-                                ".genericError.description"
+                            ".genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
@@ -176,9 +195,9 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                 availableExternalClaims={ unselectedAttributes }
                 selectedExternalClaims={ selectedAttributes }
                 showAddModal={ showSelectionModal }
-                data-testid={ `${testId}-add-attributes` }
+                data-testid={ `${ testId }-add-attributes` }
                 setShowAddModal={ setShowSelectionModal }
-                setAvailableExternalClaims={ ()=> null }
+                setAvailableExternalClaims={ () => null }
                 setInitialSelectedExternalClaims={ (response: ExternalClaim[]) => {
                     const claimURIs: string[] = response?.map((claim: ExternalClaim) => claim.claimURI);
                     updateOIDCScope(claimURIs);
@@ -214,7 +233,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                 id: "name",
                 key: "name",
                 render: (claim: ExternalClaim): ReactNode => (
-                    <Header image as="h6" className="header-with-icon" data-testid={ `${testId}-item-heading` }>
+                    <Header image as="h6" className="header-with-icon" data-testid={ `${ testId }-item-heading` }>
                         <Header.Content>
                             { claim.localClaimDisplayName }
                             <Header.Subheader>
@@ -245,7 +264,10 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
         const actions: TableActionsInterface[] = [
             {
                 hidden: (item: TableDataInterface<ExternalClaim>) => {
-                    return item.claimURI === "sub" && scope.name === OIDCScopesManagementConstants.OPEN_ID_SCOPE;
+                    return (
+                        (item.claimURI === "sub" && scope.name === OIDCScopesManagementConstants.OPEN_ID_SCOPE) ||
+                        isReadOnly
+                    );
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, claim: ExternalClaim): void => {
@@ -260,47 +282,47 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
     };
 
     const showPlaceholders = (): ReactElement => {
-        return selectedAttributes?.length === 0 ?
+        return selectedAttributes?.length === 0 ? (
             <EmptyPlaceholder
                 data-testid="scope-mgt-empty-actual-claims-list"
-                subtitle={ [
-                    t("console:manage.features.oidcScopes.editScope.claimList.emptyPlaceholder.subtitles.0")
-                ] }
-                action={ (
-                    <PrimaryButton
-                        data-testid="user-mgt-roles-list-add-button"
-                        size="medium"
-                        icon={ <Icon name="add" /> }
-                        onClick={ () => {
-                            handleOpenSelectionModal();
-                            showAttributeSelectionModal();
-                        } }
-                    >
-                        <Icon name="add" />
+                subtitle={ [ t("console:manage.features.oidcScopes.editScope." +
+                    "claimList.emptyPlaceholder.subtitles.0") ] }
+                action={
+                    <Show when={ AccessControlConstants.SCOPE_WRITE }>
+                        <PrimaryButton
+                            data-testid="user-mgt-roles-list-add-button"
+                            size="medium"
+                            icon={ <Icon name="add" /> }
+                            onClick={ () => {
+                                handleOpenSelectionModal();
+                                showAttributeSelectionModal();
+                            } }
+                        >
+                            <Icon name="add" />
                             { t("console:manage.features.oidcScopes.editScope.claimList.addClaim") }
-                    </PrimaryButton>
-                ) }
+                        </PrimaryButton>
+                    </Show>
+                }
                 image={ getEmptyPlaceholderIllustrations().newList }
                 imageSize="tiny"
             />
-            : (
-            tempSelectedAttributes?.length === 0 ?
-                <EmptyPlaceholder
-                    data-testid="scope-mgt-empty-claims-list"
-                    title={ t("console:manage.features.oidcScopes.editScope.claimList.emptySearch.title") }
-                    subtitle={ [
-                        t("console:manage.features.oidcScopes.editScope.claimList.emptySearch.subtitles.0"),
-                        t("console:manage.features.oidcScopes.editScope.claimList.emptySearch.subtitles.1")
-                    ] }
-                    action={ (
-                        <LinkButton onClick={ clearSearchedAttributes }>
-                            { t("console:manage.features.oidcScopes.editScope.claimList.emptySearch.action") }
-                        </LinkButton>
-                    ) }
-                    image={ getEmptyPlaceholderIllustrations().emptySearch }
-                    imageSize="tiny"
-                />
-            : null);
+        ) : tempSelectedAttributes?.length === 0 ? (
+            <EmptyPlaceholder
+                data-testid="scope-mgt-empty-claims-list"
+                title={ t("console:manage.features.oidcScopes.editScope.claimList.emptySearch.title") }
+                subtitle={ [
+                    t("console:manage.features.oidcScopes.editScope.claimList.emptySearch.subtitles.0"),
+                    t("console:manage.features.oidcScopes.editScope.claimList.emptySearch.subtitles.1")
+                ] }
+                action={
+                    <LinkButton onClick={ clearSearchedAttributes }>
+                        { t("console:manage.features.oidcScopes.editScope.claimList.emptySearch.action") }
+                    </LinkButton>
+                }
+                image={ getEmptyPlaceholderIllustrations().emptySearch }
+                imageSize="tiny"
+            />
+        ) : null;
     };
 
     return (

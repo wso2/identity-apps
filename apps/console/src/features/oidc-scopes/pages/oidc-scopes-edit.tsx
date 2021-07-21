@@ -16,17 +16,19 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { getAllExternalClaims, getAllLocalClaims } from "@wso2is/core/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, Claim, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { useTrigger } from "@wso2is/forms";
 import { AnimatedAvatar, EmphasizedSegment, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import sortBy from "lodash-es/sortBy";
-import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import {
     Divider,
@@ -39,7 +41,7 @@ import {
     Label,
     Placeholder
 } from "semantic-ui-react";
-import { AppConstants, UIConstants, history, sortList } from "../../core";
+import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history, sortList } from "../../core";
 import { getOIDCScopeDetails, updateOIDCScopeDetails } from "../api";
 import { EditOIDCScope } from "../components";
 import { OIDCScopesManagementConstants } from "../constants";
@@ -110,6 +112,14 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
         const [ attributeSearchQuery, setAttributeSearchQuery ] = useState<string>("");
 
         const initialRender = useRef(true);
+
+        const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+        const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
+        const isReadOnly = useMemo(() => (
+            !hasRequiredScopes(
+                featureConfig?.oidcScopes, featureConfig?.oidcScopes?.scopes?.update, allowedScopes)
+        ), [ featureConfig, allowedScopes ]);
 
         useEffect(() => {
             if (initialRender.current) {
@@ -381,9 +391,9 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                         })
                     );
                 });
-        }; 
+        };
 
-        
+
         return (
             <PageLayout
                 isLoading={ isScopeRequestLoading || isAttributeRequestLoading }
@@ -417,11 +427,11 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                         onSubmit={ (values): void => {
                                             onSubmit(values);
                                         } }
-                                        data-testid={ testId } 
+                                        data-testid={ testId }
                                     >
                                         <Field.Input
-                                            ariaLabel="displayName" 
-                                            inputType="name" 
+                                            ariaLabel="displayName"
+                                            inputType="name"
                                             name="displayName"
                                             label={ t(
                                                 "console:manage.features.oidcScopes.forms.addScopeForm." +
@@ -440,10 +450,11 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                             ) }
                                             maxLength={ 40 }
                                             minLength={ 3 }
+                                            readOnly={ isReadOnly }
                                         />
                                         <Field.Input
-                                            ariaLabel="description" 
-                                            inputType="resourceName" 
+                                            ariaLabel="description"
+                                            inputType="resourceName"
                                             name="description"
                                             label={ t(
                                                 "console:manage.features.oidcScopes.forms.addScopeForm." +
@@ -458,14 +469,17 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                             required={ false }
                                             maxLength={ 300 }
                                             minLength={ 3 }
+                                            readOnly={ isReadOnly }
                                         />
-                                        <Field.Button
-                                            ariaLabel="submit"
-                                            size="small"
-                                            buttonType="primary_btn"
-                                            label={ t("common:update") }
-                                            name="submit"
-                                        />
+                                        <Show when={ AccessControlConstants.SCOPE_EDIT }>
+                                            <Field.Button
+                                                ariaLabel="submit"
+                                                size="small"
+                                                buttonType="primary_btn"
+                                                label={ t("common:update") }
+                                                name="submit"
+                                            />
+                                        </Show>
                                     </Form>
                                 ) : (
                                         <Placeholder>
@@ -480,16 +494,18 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                 <Divider hidden />
                 <ListLayout
                     rightActionPanel={
-                        <PrimaryButton
-                            data-testid="user-mgt-roles-list-update-button"
-                            size="medium"
-                            icon={ <Icon name="add" /> }
-                            floated="right"
-                            onClick={ () => setTriggerAttributeModal() }
-                        >
-                            <Icon name="add" />
-                            { t("console:manage.features.oidcScopes.editScope." + "claimList.addClaim") }
-                        </PrimaryButton>
+                        <Show when={ AccessControlConstants.SCOPE_WRITE }>
+                            <PrimaryButton
+                                data-testid="user-mgt-roles-list-update-button"
+                                size="medium"
+                                icon={ <Icon name="add" /> }
+                                floated="right"
+                                onClick={ () => setTriggerAttributeModal() }
+                            >
+                                <Icon name="add" />
+                                { t("console:manage.features.oidcScopes.editScope." + "claimList.addClaim") }
+                            </PrimaryButton>
+                        </Show>
                     }
                     showTopActionPanel={ isScopeRequestLoading || !(scope.claims?.length == 0) }
                     listItemLimit={ listItemLimit }
