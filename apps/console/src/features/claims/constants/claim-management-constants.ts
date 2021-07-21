@@ -117,10 +117,10 @@ export class ClaimManagementConstants {
     ];
 
     public static readonly SCIM_MAPPING: string[] = [
-        SCIMConfigs.scim.userSchema,
-        SCIMConfigs.scim.core1Schema,
-        SCIMConfigs.scim.coreSchema,
-        SCIMConfigs.scim.enterpriseSchema
+        "urn:ietf:params:scim:schemas:core:2.0:User",
+        "urn:scim:schemas:core:1.0",
+        "urn:ietf:params:scim:schemas:core:2.0",
+        "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
     ]
 
     public static readonly OIDC: string = "oidc";
@@ -128,10 +128,10 @@ export class ClaimManagementConstants {
     public static readonly OTHERS: string = "others";
 
     public static readonly SCIM_TABS = [
-        { name: "Enterprise Schema", uri: SCIMConfigs.scim.enterpriseSchema },
-        { name: "User Schema", uri: SCIMConfigs.scim.userSchema },
-        { name: "Core Schema", uri: SCIMConfigs.scim.coreSchema },
-        { name: "Core 1.0 Schema", uri: SCIMConfigs.scim.core1Schema }
+        { name: "Enterprise Schema", uri: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User" },
+        { name: "User Schema", uri: "urn:ietf:params:scim:schemas:core:2.0:User" },
+        { name: "Core Schema", uri: "urn:ietf:params:scim:schemas:core:2.0" },
+        { name: "Core 1.0 Schema", uri: "urn:scim:schemas:core:1.0" }
     ]
 
     /**
