@@ -346,12 +346,20 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 hidden: (): boolean => !isFeatureEnabled(featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
                 icon: (app: ApplicationListItemInterface): SemanticICONS => {
-                    return app?.access === ApplicationAccessTypes.READ && "eye" || "pencil alternate";
+                    return app?.access === ApplicationAccessTypes.READ
+                        || !hasRequiredScopes(featureConfig?.applications,
+                            featureConfig?.applications?.scopes?.update, allowedScopes)
+                            ? "eye"
+                            : "pencil alternate";
                 },
                 onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void =>
                     handleApplicationEdit(app.id, app.access),
                 popupText: (app: ApplicationListItemInterface): string => {
-                    return app?.access === ApplicationAccessTypes.READ && t("common:view") || t("common:edit");
+                    return app?.access === ApplicationAccessTypes.READ
+                        || !hasRequiredScopes(featureConfig?.applications,
+                            featureConfig?.applications?.scopes?.update, allowedScopes)
+                                ? t("common:view")
+                                : t("common:edit");
                 },
                 renderer: "semantic-icon"
             },
