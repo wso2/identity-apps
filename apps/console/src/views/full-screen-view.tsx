@@ -45,7 +45,8 @@ import {
     ProtectedRoute,
     RouteUtils,
     getEmptyPlaceholderIllustrations,
-    getFullScreenViewRoutes, AppUtils
+    getFullScreenViewRoutes,
+    AppUtils
 } from "../features/core";
 
 /**

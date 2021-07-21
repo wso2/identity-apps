@@ -32,7 +32,7 @@ import {
 } from "../components";
 import { getEmptyPlaceholderIllustrations } from "../configs";
 import { AppState } from "../store";
-import {AppUtils} from "../utils";
+import { AppUtils } from "../utils";
 
 /**
  * Inner page layout component Prop types.
