@@ -80,8 +80,7 @@
                         "internal_idp_view"
                     ],
                     "update": [
-                        "internal_application_mgt_update",
-                        "internal_claim_meta_update"
+                        "internal_application_mgt_update"
                     ],
                     "delete": [
                         "internal_application_mgt_delete"
