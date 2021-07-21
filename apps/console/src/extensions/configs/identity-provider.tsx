@@ -79,6 +79,13 @@ export const identityProviderConfig: IdentityProviderConfig = {
          */
         isProvisioningAttributesEnabled(authenticatorId: string): boolean {
             return true;
-        }
+        },
+        /**
+         * Just like above utils, this method will either show or hide logo edit field.
+         * @param {string} authenticatorId
+         */
+        hideLogoInputFieldInIdPGeneralSettingsForm(authenticatorId: string): boolean {
+            return false;
+        },
     }
 };

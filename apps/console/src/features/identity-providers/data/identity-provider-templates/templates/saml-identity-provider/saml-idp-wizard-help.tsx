@@ -46,13 +46,14 @@ const SamlIDPWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement
                 external IdP. Also, this needs to be a unique value to identify the external IdP within your
                 organization.
             </p>
+            <p>E.g., https://ENTERPRISE_DOMAIN</p>
             <Divider/>
             <Heading as="h5">SSO URL</Heading>
             <p>
                 Single sign-on URL of the external IdP. { config.ui.productName } will send SAML authentication
                 requests to this endpoint.
             </p>
-            <p>E.g., https://ENTERPRISE_DOMAIN/token</p>
+            <p>E.g., https://ENTERPRISE_DOMAIN/samlsso</p>
             <Divider/>
             <Heading as="h5">Protocol binding</Heading>
             <p>

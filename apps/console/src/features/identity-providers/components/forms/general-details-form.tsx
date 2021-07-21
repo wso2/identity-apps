@@ -72,7 +72,14 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
     /**
      * List of available Idps.
      */
-    idpList?:IdentityProviderListResponseInterface
+    idpList?:IdentityProviderListResponseInterface;
+    /**
+     * Why? to hide or show the IdP logo edit input field.
+     * Introduced this for SAML and OIDC enterprise protocols.
+     * By default the icon/logo for this is readonly from
+     * extensions.
+     */
+    hideIdPLogoEditField?: boolean;
 }
 
 const IDP_NAME_MAX_LENGTH: number = 50;
@@ -97,6 +104,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         enableWizardMode,
         editingIDP,
         idpList,
+        hideIdPLogoEditField,
         [ "data-testid" ]: testId
     } = props;
 
@@ -210,7 +218,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         hint={ t("console:develop.features.authenticationProvider.forms." +
                         "generalDetails.description.hint") }
                     />
-                    <Field.Input
+                    { !hideIdPLogoEditField && <Field.Input
                         name="image"
                         ariaLabel= "image"
                         inputType="url"
@@ -226,7 +234,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         minLength={ 3 }
                         hint={ t("console:develop.features.authenticationProvider.forms." +
                         "generalDetails.image.hint") }
-                    />
+                    /> }
                     <Field.Button
                         ariaLabel= "submit"
                         size="small"
@@ -268,5 +276,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 GeneralDetailsForm.defaultProps = {
     "data-testid": "idp-edit-general-settings-form",
     enableWizardMode: false,
-    triggerSubmit: false
+    triggerSubmit: false,
+    hideIdPLogoEditField: false
 };

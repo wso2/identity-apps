@@ -17,3 +17,4 @@
  */
 
 export * from "./label-with-popup";
+export * from "./form-input-label";

@@ -19,7 +19,11 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { IdentityProviderManagementConstants } from "../../../constants";
-import { FederatedAuthenticatorListItemInterface, FederatedAuthenticatorMetaInterface } from "../../../models";
+import {
+    FederatedAuthenticatorListItemInterface,
+    FederatedAuthenticatorMetaInterface,
+    FederatedAuthenticatorWithMetaInterface
+} from "../../../models";
 import {
     CommonAuthenticatorForm,
     EmailOTPAuthenticatorForm,
@@ -27,6 +31,7 @@ import {
     GithubAuthenticatorForm,
     GoogleAuthenticatorForm
 } from "../authenticators";
+import { SamlAuthenticatorSettingsForm } from "../authenticators/saml-authenticator-form";
 
 /**
  * Proptypes for the authenticator form factory component.
@@ -42,6 +47,7 @@ interface AuthenticatorFormFactoryInterface extends TestableComponentInterface {
      * Show/Hide Custom Properties.
      */
     showCustomProperties?: boolean;
+    authenticator?: FederatedAuthenticatorWithMetaInterface;
 }
 
 /**
@@ -55,6 +61,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
 ): ReactElement => {
 
     const {
+        authenticator,
         metadata,
         initialValues,
         onSubmit,
@@ -112,6 +119,13 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     enableSubmitButton={ enableSubmitButton }
                     data-testid={ testId }
                     showCustomProperties={ showCustomProperties }
+                />
+            );
+        case IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID:
+            return (
+                <SamlAuthenticatorSettingsForm
+                    onSubmit={ onSubmit }
+                    authenticator={ authenticator }
                 />
             );
         default:

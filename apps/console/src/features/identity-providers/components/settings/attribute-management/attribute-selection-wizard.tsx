@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,8 +16,13 @@
  * under the License.
  */
 
+import React, { FC, useState } from "react";
+import { IdentityProviderClaimInterface, IdentityProviderCommonClaimMappingInterface } from "../../../models";
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { useTranslation } from "react-i18next";
+import { CheckboxProps, InputOnChangeData, Modal } from "semantic-ui-react";
 import {
+    Code,
     Heading,
     LinkButton,
     PrimaryButton,
@@ -25,319 +30,153 @@ import {
     TransferList,
     TransferListItem
 } from "@wso2is/react-components";
-import find from "lodash-es/find";
 import isEmpty from "lodash-es/isEmpty";
-import sortBy from "lodash-es/sortBy";
-import union from "lodash-es/union";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Modal } from "semantic-ui-react";
-import { IdentityProviderClaimInterface, IdentityProviderCommonClaimMappingInterface } from "../../../models";
+import lowerCase from "lodash-es/lowerCase";
 
-interface AttributeSelectionWizardPropsInterface extends TestableComponentInterface {
+interface AttributeSelectionWizardProps extends TestableComponentInterface {
+    /**
+     * This property contains the attributes which are available
+     * both checked or unchecked.
+     */
     attributesList: IdentityProviderClaimInterface[];
-    selectedAttributes: IdentityProviderCommonClaimMappingInterface[];
-    setSelectedAttributes: (mapping: IdentityProviderCommonClaimMappingInterface[]) => void;
-    showAddModal: boolean;
-    setShowAddModal: (showModal: boolean) => void;
+    /**
+     * Contains only the selected attributes it will have both the
+     * {@link IdentityProviderClaimInterface} and mapping {@link string}
+     */
+    selectedAttributeMappings: IdentityProviderCommonClaimMappingInterface[];
+    onAttributesSelected?: (mappings: IdentityProviderCommonClaimMappingInterface[]) => void;
+    show: boolean;
+    onClose: () => void;
 }
 
-export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizardPropsInterface> = (
-    props
-): ReactElement => {
+export const AttributeSelectionWizard: FC<AttributeSelectionWizardProps> = (
+    props: AttributeSelectionWizardProps
+) => {
 
     const {
-        selectedAttributes,
-        setSelectedAttributes,
-        showAddModal,
-        setShowAddModal,
         attributesList,
-        [ "data-testid" ]: testId
+        selectedAttributeMappings,
+        onAttributesSelected,
+        show,
+        onClose
     } = props;
 
     const { t } = useTranslation();
+    const [ selectAllClaimsCheckboxChecked, setSelectAllClaimsCheckboxChecked ] = useState(false);
+    const [ tempSelectedMappings, setTempSelectedMappings ] = useState<IdentityProviderCommonClaimMappingInterface[]>([]);
+    const [ searchQuery, setSearchQuery ] = useState<string>("");
 
-    const [tempAvailableClaims, setTempAvailableClaims] = useState<IdentityProviderClaimInterface[]>([]);
-    const [filterTempAvailableClaims, setFilterTempAvailableClaims] = useState<IdentityProviderClaimInterface[]>([]);
-
-    const [tempSelectedAttributes, setTempSelectedClaims] = useState<IdentityProviderClaimInterface[]>([]);
-    const [filterTempSelectedClaims, setFilterTempSelectedClaims] = useState<IdentityProviderClaimInterface[]>([]);
-
-    const [checkedUnassignedListItems, setCheckedUnassignedListItems] = useState<IdentityProviderClaimInterface[]>([]);
-    const [checkedAssignedListItems, setCheckedAssignedListItems] = useState<IdentityProviderClaimInterface[]>([]);
-
-    const [isSelectUnassignedClaimsAllClaimsChecked, setSelectUnassignedClaimsAllClaimsChecked] = useState(false);
-    const [isSelectAssignedAllClaimsChecked, setIsSelectAssignedAllClaimsChecked] = useState(false);
-
-    const handleAttributeModal = () => {
-        setShowAddModal(false);
+    const onSelectAllClaimsCheckboxChanged = (
+        event: React.FormEvent<HTMLInputElement>,
+        { checked }: CheckboxProps
+    ): void => {
+        setSelectAllClaimsCheckboxChecked(checked);
     };
 
-    // Search operation for available claims.
-    const searchTempAvailable = (event) => {
-        const changeValue = event.target.value;
-        if (changeValue.length > 0) {
-            const displayNameFilterClaims = tempAvailableClaims.filter((item) =>
-                item.displayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
-            const uriFilterClaims = tempAvailableClaims.filter((item) =>
-                item.uri.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
-            setFilterTempAvailableClaims(sortBy(union(displayNameFilterClaims, uriFilterClaims), "displayName"));
-        } else {
-            setFilterTempAvailableClaims(tempAvailableClaims);
-        }
+    const onSearchInputChanged = (
+        event: React.ChangeEvent<HTMLInputElement>,
+        { value }: InputOnChangeData
+    ): void => {
+        setSearchQuery(value);
     };
 
-    // search operation for selected claims.
-    const searchTempSelected = (event) => {
-        const changeValue = event.target.value;
-        if (changeValue.length > 0) {
-            setFilterTempSelectedClaims(filterTempSelectedClaims.filter((item) =>
-                item.uri.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
-        } else {
-            setFilterTempSelectedClaims(tempSelectedAttributes);
-        }
+    const onUpdateSelectedAttributes = (): void => {
+        onAttributesSelected(tempSelectedMappings);
+        onClose();
     };
 
-    const addAttributes = () => {
-        const addedClaims = [...tempSelectedAttributes];
-        if (checkedUnassignedListItems?.length > 0) {
-            checkedUnassignedListItems.map((claim) => {
-                if (!(addedClaims?.includes(claim))) {
-                    addedClaims.push(claim);
-                }
-            });
-        }
-        setTempSelectedClaims(addedClaims);
-        setFilterTempSelectedClaims(addedClaims);
-        setTempAvailableClaims(tempAvailableClaims.filter(x => !addedClaims?.includes(x)));
-        setFilterTempAvailableClaims(filterTempAvailableClaims.filter(x => !addedClaims?.includes(x)));
-        setCheckedUnassignedListItems(checkedUnassignedListItems.filter(x => !addedClaims?.includes(x)));
-        setSelectUnassignedClaimsAllClaimsChecked(false);
-    };
-
-    const removeAttributes = () => {
-        const removedRoles = [...tempAvailableClaims];
-        if (checkedAssignedListItems?.length > 0) {
-            checkedAssignedListItems.map((claim) => {
-                if (!(removedRoles?.includes(claim))) {
-                    removedRoles.push(claim);
-                }
-            });
-        }
-        setTempAvailableClaims(removedRoles);
-        setFilterTempAvailableClaims(removedRoles);
-        setTempSelectedClaims(tempSelectedAttributes?.filter(x => !removedRoles?.includes(x)));
-        setFilterTempSelectedClaims(filterTempSelectedClaims?.filter(x => !removedRoles?.includes(x)));
-        setCheckedAssignedListItems(checkedAssignedListItems.filter(x => !removedRoles?.includes(x)));
-        setIsSelectAssignedAllClaimsChecked(false);
-    };
-
-
-    /**
-     * The following method handles the onChange event of the
-     * checkbox field of an unassigned item.
-     */
-    const handleUnassignedItemCheckboxChange = (claim) => {
-        const checkedRoles = [...checkedUnassignedListItems];
-
-        if (checkedRoles?.includes(claim)) {
-            checkedRoles.splice(checkedRoles.indexOf(claim), 1);
-            setCheckedUnassignedListItems(checkedRoles);
-        } else {
-            checkedRoles.push(claim);
-            setCheckedUnassignedListItems(checkedRoles);
-        }
-    };
-
-    /**
-     * The following method handles the onChange event of the
-     * checkbox field of an assigned item.
-     */
-    const handleAssignedItemCheckboxChange = (role) => {
-        const checkedRoles = [...checkedAssignedListItems];
-
-        if (checkedRoles?.includes(role)) {
-            checkedRoles.splice(checkedRoles.indexOf(role), 1);
-            setCheckedAssignedListItems(checkedRoles);
-        } else {
-            checkedRoles.push(role);
-            setCheckedAssignedListItems(checkedRoles);
-        }
-    };
-
-    /**
-     * The following function enables the user to select all the roles at once.
-     */
-    const selectAllUnAssignedList = () => {
-        setSelectUnassignedClaimsAllClaimsChecked(!isSelectUnassignedClaimsAllClaimsChecked);
-    };
-
-    /**
-     * The following function enables the user to deselect all the roles at once.
-     */
-    const selectAllAssignedList = () => {
-        setIsSelectAssignedAllClaimsChecked(!isSelectAssignedAllClaimsChecked);
-    };
-
-    /**
-     *  Select all selected claims
-     */
-    useEffect(() => {
-        if (isSelectAssignedAllClaimsChecked) {
-            setCheckedAssignedListItems(tempSelectedAttributes);
-        } else {
-            setCheckedAssignedListItems([]);
-        }
-    }, [isSelectAssignedAllClaimsChecked]);
-
-    /**
-     * Select all available claims.
-     */
-    useEffect(() => {
-        if (isSelectUnassignedClaimsAllClaimsChecked) {
-            setCheckedUnassignedListItems(tempAvailableClaims);
-        } else {
-            setCheckedUnassignedListItems([]);
-        }
-    }, [isSelectUnassignedClaimsAllClaimsChecked]);
-
-    /**
-     *  Set initial values for modal.
-     */
-    useEffect(() => {
-        if (showAddModal) {
-            const attributesListWithoutSelectedElements = attributesList.filter(element => isEmpty(
-                find(selectedAttributes, value => (value.claim.uri === element.uri)))
+    const getMatchingAttributesSorted = () => {
+        return attributesList
+            ?.filter((mapping) =>
+                isEmpty(searchQuery)
+                    ? true
+                    : lowerCase(mapping.displayName)?.startsWith(lowerCase(searchQuery))
+            )
+            ?.sort(
+                (a, b) =>
+                    lowerCase(a.displayName)?.localeCompare(lowerCase(b.displayName))
             );
-            setTempAvailableClaims(attributesListWithoutSelectedElements);
-            setFilterTempAvailableClaims(attributesListWithoutSelectedElements);
-
-            setTempSelectedClaims(selectedAttributes.map(element => element.claim));
-            setFilterTempSelectedClaims(selectedAttributes.map(element => element.claim));
-        } else {
-            setTempAvailableClaims([]);
-            setFilterTempAvailableClaims([]);
-
-            setTempSelectedClaims([]);
-            setFilterTempSelectedClaims([]);
-        }
-        setCheckedAssignedListItems([]);
-        setCheckedUnassignedListItems([]);
-
-        setIsSelectAssignedAllClaimsChecked(false);
-        setSelectUnassignedClaimsAllClaimsChecked(false);
-    }, [showAddModal]);
-
-    /**
-     *  Save the selected claims
-     */
-    const updateSelectedClaims = (() => {
-
-        setSelectedAttributes(tempSelectedAttributes.map(element => {
-            const existingMapping = selectedAttributes.find(mapping => mapping.claim.uri === element.uri);
-            return isEmpty(existingMapping) ? {
-                claim: element,
-                mappedValue: ""
-            } as IdentityProviderCommonClaimMappingInterface : existingMapping;
-        }));
-        setShowAddModal(false);
-    });
+    };
 
     return (
-        <Modal open={ showAddModal } size="small" className="user-attributes" data-testid={ `${ testId }-modal` }>
-            <Modal.Header data-testid={ `${ testId }-modal-header` }>
-                { t("console:develop.features.authenticationProvider.modals.attributeSelection.title") }
+        <Modal open={ show } size="large" className="user-roles attribute-modal">
+
+            <Modal.Header>
+                Update attribute selection
                 <Heading subHeading ellipsis as="h6">
-                    { t("console:develop.features.authenticationProvider.modals.attributeSelection.subTitle") }
+                    Add new attributes or remove existing attributes.
                 </Heading>
             </Modal.Header>
-            <Modal.Content image data-testid={ `${ testId }-modal-content` }>
+
+            <Modal.Content image>
                 <TransferComponent
-                    searchPlaceholder={ t("console:develop.features.authenticationProvider.modals.attributeSelection." +
-                        "content.searchPlaceholder") }
-                    addItems={ addAttributes }
-                    removeItems={ removeAttributes }
-                    handleUnelectedListSearch={ searchTempAvailable }
-                    handleSelectedListSearch={ searchTempSelected }
-                    data-testid={ `${ testId }-modal-content` }
+                    selectionComponent
+                    searchPlaceholder={ "Search attributes" }
+                    handleHeaderCheckboxChange={ onSelectAllClaimsCheckboxChanged as any }
+                    isHeaderCheckboxChecked={ selectAllClaimsCheckboxChecked }
+                    handleUnelectedListSearch={ onSearchInputChanged }
                 >
                     <TransferList
-                        isListEmpty={ !(filterTempAvailableClaims.length > 0) }
+                        selectionComponent
+                        isListEmpty={ attributesList.length === 0 }
                         listType="unselected"
-                        listHeaders={ ["Attribute"] }
-                        handleHeaderCheckboxChange={ selectAllUnAssignedList }
-                        isHeaderCheckboxChecked={ isSelectUnassignedClaimsAllClaimsChecked }
-                        data-testid={ `${ testId }-modal-content-unselected-list` }
                     >
                         {
-                            filterTempAvailableClaims?.map((claim: IdentityProviderClaimInterface) => {
-                                return (
-                                    <TransferListItem
-                                        handleItemChange={ () => handleUnassignedItemCheckboxChange(claim) }
-                                        key={ claim.uri }
-                                        listItem={ claim.displayName }
-                                        listItemId={ claim.id }
-                                        listItemIndex={ claim.uri }
-                                        isItemChecked={ checkedUnassignedListItems.includes(claim) }
-                                        showSecondaryActions={ false }
-                                        showListSubItem={ true }
-                                        listSubItem={ claim.uri === claim.displayName ? "" : claim.uri }
-                                        data-testid={ `${ testId }-modal-content-unselected-list-item-${ claim.id }` }
-                                    />
-                                );
-                            })
-                        }
-                    </TransferList>
-                    <TransferList
-                        isListEmpty={ !(filterTempSelectedClaims.length > 0) }
-                        listType="selected"
-                        listHeaders={ ["Attribute"] }
-                        handleHeaderCheckboxChange={ selectAllAssignedList }
-                        isHeaderCheckboxChecked={ isSelectAssignedAllClaimsChecked }
-                        data-testid={ `${ testId }-modal-content-selected-list` }
-                    >
-                        {
-                            filterTempSelectedClaims?.map((mapping) => {
-                                return (
-                                    <TransferListItem
-                                        handleItemChange={ () => handleAssignedItemCheckboxChange(mapping) }
-                                        key={ mapping.uri }
-                                        listItem={ mapping.displayName }
-                                        listItemId={ mapping.id }
-                                        listItemIndex={ mapping.uri }
-                                        isItemChecked={ checkedAssignedListItems.includes(mapping) }
-                                        showSecondaryActions={ false }
-                                        showListSubItem={ true }
-                                        listSubItem={ mapping.uri === mapping.displayName ? "" : mapping.uri }
-                                        data-testid={ `${ testId }-modal-content-selected-list-item-${ mapping.id }` }
-                                    />
-                                );
-                            })
+                            /** If theres any search query. */
+                            (searchQuery?.trim() ? getMatchingAttributesSorted() : attributesList)
+                                ?.map((claim, index) => {
+                                    return (
+                                        <TransferListItem
+                                            handleItemChange={ ((
+                                                event: React.FormEvent<HTMLInputElement>,
+                                                { checked }: CheckboxProps
+                                            ) => {
+                                                let newState;
+                                                if (checked) {
+                                                    newState = [
+                                                        ...tempSelectedMappings,
+                                                        { claim, mappedValue: claim.uri }
+                                                    ];
+                                                } else {
+                                                    newState = [
+                                                        ...tempSelectedMappings.filter(({ claim: c }) => {
+                                                            return c.uri !== claim.uri;
+                                                        }),
+                                                    ];
+                                                }
+                                                setTempSelectedMappings(newState);
+                                            }) as any }
+                                            key={ index }
+                                            listItem={ claim.displayName }
+                                            listItemId={ claim.id }
+                                            listItemIndex={ claim.uri }
+                                            isItemChecked={
+                                                tempSelectedMappings.map(({ claim }) => claim.uri).includes(claim.uri) ||
+                                                selectedAttributeMappings.map(({ claim }) => claim.uri).includes(claim.uri)
+                                            }
+                                            showSecondaryActions={ false }
+                                            showListSubItem={ true }
+                                            listSubItem={ (
+                                                <Code compact withBackground={ false }>{ claim.uri }</Code>
+                                            ) }
+                                        />
+                                    );
+                                })
                         }
                     </TransferList>
                 </TransferComponent>
             </Modal.Content>
-            <Modal.Actions data-testid={ `${ testId }-modal-actions` }>
-                <LinkButton
-                    onClick={ handleAttributeModal }
-                    data-testid={ `${ testId }-modal-cancel-button` }
-                >
+
+            <Modal.Actions>
+                <LinkButton onClick={ onClose }>
                     { t("common:cancel") }
                 </LinkButton>
-                <PrimaryButton
-                    onClick={ updateSelectedClaims }
-                    data-testid={ `${ testId }-modal-save-button` }
-                >
+                <PrimaryButton onClick={ onUpdateSelectedAttributes }>
                     { t("common:save") }
                 </PrimaryButton>
             </Modal.Actions>
+
         </Modal>
     );
-};
 
-/**
- * Default proptypes for the IDP attribute selection wizard component.
- */
-AttributeSelectionWizard.defaultProps = {
-    "data-testid": "idp-edit-attribute-settings-attribute-selection-wizard"
 };

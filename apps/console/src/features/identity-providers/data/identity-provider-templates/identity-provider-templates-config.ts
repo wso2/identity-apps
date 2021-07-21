@@ -152,6 +152,9 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                             content: {
                                 wizardHelp: lazy(() => (
                                     import("./templates/saml-identity-provider/saml-idp-wizard-help")
+                                )),
+                                fileBasedHelpPanel: lazy(() => (
+                                    import("./templates/saml-identity-provider/saml-idp-wizard-file-based-help")
                                 ))
                             },
                             enabled: window["AppUtils"].getConfig()

@@ -47,6 +47,7 @@ export interface IdentityProviderConfig {
         isAuthenticatorAllowed: (name: string) => boolean;
         isProvisioningAttributesEnabled: (authenticatorId: string) => boolean;
         hideIdentityClaimAttributes?: (authenticatorId: string) => boolean;
+        hideLogoInputFieldInIdPGeneralSettingsForm?: (authenticatorId: string) => boolean;
     };
     /**
      * Local authenticators + Federated authenticators will be shown in one grid view as connections.
