@@ -40,6 +40,12 @@ export const common: CommonNS = {
     cancel: "Annuler",
     challengeQuestionNumber: "Question de sécurité {{number}}",
     change: "Modifier",
+    chunkLoadErrorMessage: {
+        description: "Une erreur s'est produite lors de la diffusion de l'application demandée. Veuillez essayer " +
+            "de recharger l'application.",
+        heading: "Quelque chose s'est mal passé",
+        primaryActionText: "Recharger l'application"
+    },
     claim: "Claim",
     clear: "Effacer",
     close: "Fermer",
