@@ -186,7 +186,7 @@
                         "console:groups"
                     ],
                     "create": [
-                        "internal_role_mgt_create"
+                        "internal_group_mgt_create"
                     ],
                     "read": [
                         "internal_user_mgt_view",
@@ -195,10 +195,10 @@
                         "internal_userstore_view"
                     ],
                     "update": [
-                        "internal_role_mgt_update"
+                        "internal_group_mgt_update"
                     ],
                     "delete": [
-                        "internal_role_mgt_delete"
+                        "internal_group_mgt_delete"
                     ]
                 }
             },
