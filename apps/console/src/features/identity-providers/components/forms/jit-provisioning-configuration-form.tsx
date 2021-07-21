@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
@@ -36,6 +37,7 @@ interface JITProvisioningConfigurationFormPropsInterface extends TestableCompone
     onSubmit: (values: IdentityProviderInterface) => void;
     initialValues: JITProvisioningResponseInterface;
     useStoreList: SimpleUserStoreListItemInterface[];
+    isReadOnly?: boolean;
 }
 
 enum JITProvisioningConstants {
@@ -58,6 +60,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         initialValues,
         onSubmit,
         useStoreList,
+        isReadOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -138,6 +141,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                             ] }
                             toggle
                             data-testid={ `${ testId }-is-enable` }
+                            readOnly={ isReadOnly }
                         />
                         <Hint>
                             { t("console:develop.features.authenticationProvider.forms.jitProvisioning." +
@@ -159,6 +163,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                             children={ getUserStoreOption() }
                             disabled={ !isJITProvisioningEnabled }
                             data-testid={ `${ testId }-user-store-domain` }
+                            readOnly={ isReadOnly }
                         />
                         <Hint>
                             { t("console:develop.features.authenticationProvider.forms.jitProvisioning." +
@@ -200,6 +205,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                             ] }
                             disabled={ !isJITProvisioningEnabled }
                             data-testid={ `${ testId }-scheme` }
+                            readOnly={ isReadOnly }
                         />
                         <Hint>
                             { t("console:develop.features.authenticationProvider.forms.jitProvisioning." +
@@ -210,14 +216,16 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
 
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Button
-                            primary type="submit"
-                            size="small"
-                            className="form-button"
-                            data-testid={ `${ testId }-update-button` }
-                        >
-                            { t("common:update") }
-                        </Button>
+                        <Show when={ AccessControlConstants.IDP_EDIT }>
+                            <Button
+                                primary type="submit"
+                                size="small"
+                                className="form-button"
+                                data-testid={ `${ testId }-update-button` }
+                            >
+                                { t("common:update") }
+                            </Button>
+                        </Show>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

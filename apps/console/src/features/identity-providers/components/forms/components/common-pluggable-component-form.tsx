@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -47,6 +48,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         triggerSubmit,
         enableSubmitButton,
         showCustomProperties,
+        readOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -133,7 +135,8 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
      *
      * @param propertyMetadata Metadata of the property.
      */
-    const isRadioButtonWithSubProperties = (propertyMetadata: CommonPluggableComponentMetaPropertyInterface): boolean => {
+    const isRadioButtonWithSubProperties = (propertyMetadata
+        : CommonPluggableComponentMetaPropertyInterface): boolean => {
         return propertyMetadata?.subProperties?.length > 0 && getFieldType(propertyMetadata) === FieldType.RADIO;
     };
 
@@ -361,10 +364,12 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         return (
             <Grid.Row columns={ 1 }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                    <Button primary type="submit" size="small" className="form-button"
-                            data-testid={ `${ testId }-submit-button` }>
-                        { content }
-                    </Button>
+                    <Show when={ AccessControlConstants.IDP_EDIT }>
+                        <Button primary type="submit" size="small" className="form-button"
+                                data-testid={ `${ testId }-submit-button` }>
+                            { content }
+                        </Button>
+                    </Show>
                 </Grid.Column>
             </Grid.Row>
         );
@@ -374,9 +379,9 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
         setDynamicValues(initialValues);
 
-        const initialFormValues = initialValues.properties.reduce((values, {  key, value }) => {
+        const initialFormValues = initialValues.properties.reduce((values, { key, value }) => {
             return values.set(key, value);
-        }, new Map<string, FormValue>())
+        }, new Map<string, FormValue>());
 
         triggerAlgorithmSelectionDropdowns("IsLogoutReqSigned", initialFormValues);
         triggerAlgorithmSelectionDropdowns("ISAuthnReqSigned", initialFormValues);
@@ -425,6 +430,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                                 type="queryParams"
                                 value={ customProperties }
                                 data-testid={ `${ testId }-${ "customProperties" }` }
+                                readOnly={ readOnly }
                             />
                         </Grid.Column>
                     </Grid.Row>

@@ -292,7 +292,7 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                     </Trans>
                 }
                 required={ formFields?.ClientId?.meta?.isMandatory }
-                readOnly={ formFields?.ClientId?.meta?.readOnly }
+                readOnly={ readOnly || formFields?.ClientId?.meta?.readOnly }
                 value={ formFields?.ClientId?.value }
                 maxLength={ formFields?.ClientId?.meta?.maxLength }
                 minLength={
@@ -326,7 +326,7 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                     </Trans>
                 }
                 required={ formFields?.ClientSecret?.meta?.isMandatory }
-                readOnly={ formFields?.ClientSecret?.meta?.readOnly }
+                readOnly={ readOnly || formFields?.ClientSecret?.meta?.readOnly }
                 value={ formFields?.ClientSecret?.value }
                 maxLength={ formFields?.ClientSecret?.meta?.maxLength }
                 minLength={
@@ -354,7 +354,7 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                 }
                 required={ formFields?.callbackUrl?.meta?.isMandatory }
                 value={ formFields?.callbackUrl?.value }
-                readOnly={ formFields?.callbackUrl?.meta?.readOnly }
+                readOnly={ readOnly || formFields?.callbackUrl?.meta?.readOnly }
                 maxLength={ formFields?.callbackUrl?.meta?.maxLength }
                 minLength={
                     IdentityProviderManagementConstants

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -25,7 +26,7 @@ import {
     PageLayout
 } from "@wso2is/react-components";
 import get from "lodash-es/get";
-import React, { Fragment, FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
+import React, { Fragment, FunctionComponent, ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -35,6 +36,7 @@ import {
     AppConstants,
     AppState,
     ConfigReducerStateInterface,
+    FeatureConfigInterface,
     history
 } from "../../core";
 import { getIdentityProviderDetail, getMultiFactorAuthenticatorDetails } from "../api";
@@ -96,12 +98,19 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(0);
     const [ isExtensionsAvailable, setIsExtensionsAvailable ] = useState<boolean>(false);
     const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+
+    const isReadOnly = useMemo(() => (
+        !hasRequiredScopes(
+            featureConfig?.attributeDialects, featureConfig?.attributeDialects?.scopes?.update, allowedScopes)
+    ), [ featureConfig, allowedScopes ]);
 
     /**
      * Use effect for the initial component load.
      */
     useEffect(() => {
-        
+
         if (!identityProviderConfig) {
             return;
         }
@@ -444,7 +453,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
         }
 
         if (IdentityProviderManagementUtils.isConnectorIdentityProvider(connector)) {
-            
+
             return (
                 <Fragment>
                     { connector.name }
@@ -455,7 +464,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                 </Fragment>
             );
         }
-        
+
         return AuthenticatorMeta.getAuthenticatorDisplayName(connector.id)
             ?? (connector.friendlyName || connector.name);
     };
@@ -542,6 +551,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                             defaultActiveIndex={ defaultActiveIndex }
                             isTabExtensionsAvailable={ (isAvailable) => setIsExtensionsAvailable(isAvailable) }
                             type={ identityProviderTemplate?.id }
+                            isReadOnly={ isReadOnly }
                         />
                     )
                     : (
@@ -552,6 +562,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                             onUpdate={ handleMultiFactorAuthenticatorUpdate }
                             isTabExtensionsAvailable={ (isAvailable) => setIsExtensionsAvailable(isAvailable) }
                             type={ connector?.id }
+                            isReadOnly={ isReadOnly }
                         />
                     )
             }

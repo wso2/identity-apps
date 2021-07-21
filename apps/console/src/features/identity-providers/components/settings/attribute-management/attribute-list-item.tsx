@@ -28,6 +28,10 @@ interface AttributeListItemPropInterface extends TestableComponentInterface {
     placeholder: string;
     updateMapping?: (mapping: IdentityProviderCommonClaimMappingInterface) => void;
     mapping?: string;
+    /**
+     * Specifies if the component should only be read-only.
+     */
+    isReadOnly: boolean;
 }
 
 /**
@@ -44,6 +48,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         updateMapping,
         mapping,
         placeholder,
+        isReadOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -71,6 +76,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                             onChange={ handleClaimMapping }
                             required
                             data-testid={ `${ testId }-input` }
+                            readOnly={ isReadOnly }
                         />
                         { isEmpty(mapping) &&
                         (

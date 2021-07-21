@@ -33,10 +33,14 @@ interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterf
     updateSubject: (subjectUri: string) => void;
     roleError?: boolean;
     subjectError?: boolean;
+    /**
+     * Specifies if the component should only be read-only.
+     */
+    isReadOnly: boolean;
 }
 
 export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPropsInterface> = (
-    props
+    props: AdvanceAttributeSettingsPropsInterface
 ): ReactElement => {
 
     const {
@@ -48,6 +52,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
         updateSubject,
         roleError,
         subjectError,
+        isReadOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -91,6 +96,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                     "validation.empty"),
                                 pointing: "above"
                             } }
+                            readOnly={ isReadOnly }
                         />
                     </Form>
                     <Hint>
@@ -132,6 +138,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                         "role.validation.empty"),
                                     pointing: "above"
                                 } }
+                                readOnly={ isReadOnly }
                             />
                         </Form>
                         <Hint>

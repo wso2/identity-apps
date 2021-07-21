@@ -41,6 +41,10 @@ interface IdpCertificatesPropsInterface extends TestableComponentInterface {
      * Callback to update the idp details.
      */
     onUpdate: (id: string) => void;
+    /**
+     * Specifies if the component should only be read-only.
+     */
+    isReadOnly: boolean;
 }
 
 /**
@@ -57,6 +61,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesPropsInterface> =
     const {
         editingIDP,
         onUpdate,
+        isReadOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -173,6 +178,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesPropsInterface> =
                             ] }
                             value={ editingIDP?.certificate?.certificates ? "PEM" : "JWKS" }
                             data-testid={ `${ testId }-certificate-type-radio-group` }
+                            readOnly={ isReadOnly }
                         />
                         <Hint>
                             { t("console:develop.features.authenticationProvider.forms.advancedConfigs." +
@@ -188,6 +194,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesPropsInterface> =
                                         <IdpCertificatesListComponent
                                             editingIDP={ editingIDP }
                                             onUpdate={ onUpdate }
+                                            isReadOnly={ isReadOnly }
                                         />
                                     </Grid.Column>
                                 ) : (
@@ -196,6 +203,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesPropsInterface> =
                                             initialUri={ editingIDP?.certificate?.jwksUri
                                                 ? editingIDP?.certificate?.jwksUri : "" }
                                             onSubmit={ updateJWKEndpoint }
+                                            isReadOnly={ isReadOnly }
                                         />
                                     </Grid.Column>
                                 )

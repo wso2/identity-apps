@@ -42,6 +42,10 @@ interface AuthenticatorFormFactoryInterface extends TestableComponentInterface {
      * Show/Hide Custom Properties.
      */
     showCustomProperties?: boolean;
+    /**
+     * Specifies if the component should only be read-only.
+     */
+    isReadOnly: boolean;
 }
 
 /**
@@ -62,6 +66,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
         triggerSubmit,
         enableSubmitButton,
         showCustomProperties,
+        isReadOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -76,6 +81,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     enableSubmitButton={ enableSubmitButton }
                     data-testid={ testId }
                     showCustomProperties={ showCustomProperties }
+                    readOnly={ isReadOnly }
                 />
             );
         case IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID:
@@ -88,6 +94,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     enableSubmitButton={ enableSubmitButton }
                     data-testid={ testId }
                     showCustomProperties={ showCustomProperties }
+                    readOnly={ isReadOnly }
                 />
             );
         case IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID:
@@ -100,6 +107,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     enableSubmitButton={ enableSubmitButton }
                     data-testid={ testId }
                     showCustomProperties={ showCustomProperties }
+                    readOnly={ isReadOnly }
                 />
             );
         case IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID:
@@ -112,6 +120,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     enableSubmitButton={ enableSubmitButton }
                     data-testid={ testId }
                     showCustomProperties={ showCustomProperties }
+                    readOnly={ isReadOnly }
                 />
             );
         default:
@@ -124,6 +133,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     enableSubmitButton={ enableSubmitButton }
                     data-testid={ testId }
                     showCustomProperties={ showCustomProperties }
+                    readOnly={ isReadOnly }
                 />
             );
     }

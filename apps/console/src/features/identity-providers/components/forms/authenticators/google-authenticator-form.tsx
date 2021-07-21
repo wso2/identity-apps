@@ -272,10 +272,10 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
 
     /**
      * Extracts scopes as an array.
-     * 
+     *
      * Input - "scope=openid email profile"
      * Output - [ "openid", "email", "profile" ]
-     * 
+     *
      * @param {string} rawScopes - Raw String.
      *
      * @return {string[]}
@@ -324,7 +324,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                     </Trans>
                 ) }
                 required={ formFields?.ClientId?.meta?.isMandatory }
-                readOnly={ formFields?.ClientId?.meta?.readOnly }
+                readOnly={ readOnly || formFields?.ClientId?.meta?.readOnly }
                 value={ formFields?.ClientId?.value }
                 maxLength={ formFields?.ClientId?.meta?.maxLength }
                 minLength={
@@ -358,7 +358,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                     </Trans>
                 }
                 required={ formFields?.ClientSecret?.meta?.isMandatory }
-                readOnly={ formFields?.ClientSecret?.meta?.readOnly }
+                readOnly={ readOnly || formFields?.ClientSecret?.meta?.readOnly }
                 value={ formFields?.ClientSecret?.value }
                 maxLength={ formFields?.ClientSecret?.meta?.maxLength }
                 minLength={
@@ -386,7 +386,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                 }
                 required={ formFields?.callbackUrl?.meta?.isMandatory }
                 value={ formFields?.callbackUrl?.value }
-                readOnly={ formFields?.callbackUrl?.meta?.readOnly }
+                readOnly={ readOnly || formFields?.callbackUrl?.meta?.readOnly }
                 maxLength={ formFields?.callbackUrl?.meta?.maxLength }
                 minLength={
                     IdentityProviderManagementConstants

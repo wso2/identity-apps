@@ -62,6 +62,7 @@ import {
 } from "../utils";
 import { AuthenticatorCreateWizard } from "../wizards/authenticator-create-wizard";
 import { IdpCertificates } from "./idp-certificates";
+import { Show, AccessControlConstants } from "@wso2is/access-control";
 
 /**
  * Proptypes for the identity providers settings component.
@@ -79,6 +80,10 @@ interface IdentityProviderSettingsPropsInterface extends TestableComponentInterf
      * Callback to update the idp details.
      */
     onUpdate: (id: string) => void;
+    /**
+     * Specifies if the component should only be read-only.
+     */
+    isReadOnly: boolean;
 }
 
 const GOOGLE_CLIENT_ID_SECRET_MAX_LENGTH = 100;
@@ -100,6 +105,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         identityProvider,
         isLoading,
         onUpdate,
+        isReadOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -151,7 +157,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
         /**
          * `tags` were added to the IDP Rest API with https://github.com/wso2/product-is/issues/11985.
-         * But ATM, updating them is not allowed. So to avoid `400` errors in the PUT request, 
+         * But ATM, updating them is not allowed. So to avoid `400` errors in the PUT request,
          * `tags` has to be removed.
          */
         values?.tags && delete values.tags;
@@ -561,6 +567,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                         <IdpCertificates
                                             editingIDP={ identityProvider }
                                             onUpdate={ onUpdate }
+                                            isReadOnly={ isReadOnly }
                                         />
                                     </Grid.Column>
                                 </Grid.Row>
@@ -787,17 +794,20 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     onSubmit={ handleAuthenticatorConfigFormSubmit }
                     type={ authenticator.meta?.authenticatorId }
                     data-testid={ `${ testId }-${ authenticator.meta?.name }-content` }
+                    isReadOnly={ isReadOnly }
                 />
             );
         } else {
             return (
                 <EmptyPlaceholder
                     action={ (
-                        <PrimaryButton onClick={ handleAddAuthenticator } loading={ isTemplatesLoading }
-                            data-testid={ `${ testId }-add-authenticator-button` }>
-                            <Icon name="add" />
-                            { t("console:develop.features.authenticationProvider.buttons.addAuthenticator") }
-                        </PrimaryButton>
+                        <Show when={ AccessControlConstants.IDP_EDIT }>
+                            <PrimaryButton onClick={ handleAddAuthenticator } loading={ isTemplatesLoading }
+                                data-testid={ `${ testId }-add-authenticator-button` }>
+                                <Icon name="add" />
+                                { t("console:develop.features.authenticationProvider.buttons.addAuthenticator") }
+                            </PrimaryButton>
+                        </Show>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"

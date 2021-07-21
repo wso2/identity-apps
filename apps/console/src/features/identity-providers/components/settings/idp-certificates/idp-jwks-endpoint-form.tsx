@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
@@ -30,6 +31,10 @@ import { Grid } from "semantic-ui-react";
 interface AddIDPJWKSUriFormPropsInterface extends TestableComponentInterface {
     initialUri: string;
     onSubmit: (values: any) => void;
+    /**
+     * Specifies if the component should only be read-only.
+     */
+    isReadOnly: boolean;
 }
 
 /**
@@ -46,6 +51,7 @@ export const AddIDPJWKSUriFormComponent: FunctionComponent<AddIDPJWKSUriFormProp
     const {
         initialUri,
         onSubmit,
+        isReadOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -82,17 +88,20 @@ export const AddIDPJWKSUriFormComponent: FunctionComponent<AddIDPJWKSUriFormProp
                                 } }
                                 value={ initialUri && initialUri }
                                 data-testid={ `${ testId }-certificate-jwks` }
+                                readOnly={ isReadOnly }
                             />
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
                         <Grid.Column>
-                            <PrimaryButton
-                                type="submit"
-                                data-testid={ `${ testId }-save-button` }
-                            >
-                                { t("common:update") }
-                            </PrimaryButton>
+                            <Show when={ AccessControlConstants.IDP_EDIT }>
+                                <PrimaryButton
+                                    type="submit"
+                                    data-testid={ `${ testId }-save-button` }
+                                >
+                                    { t("common:update") }
+                                </PrimaryButton>
+                            </Show>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>

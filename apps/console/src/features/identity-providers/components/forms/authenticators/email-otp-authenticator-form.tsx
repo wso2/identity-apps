@@ -351,7 +351,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                             ".emailOTP.tokenLength.hint"
                         }
                     >
-                        The number of allowed characters in the OTP token. Please, pick a value between 
+                        The number of allowed characters in the OTP token. Please, pick a value between
                         <Code>4-10</Code>.
                     </Trans>
                 }

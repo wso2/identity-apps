@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { getRolesList } from "@wso2is/core/api";
 import { RoleListInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { DynamicField, Heading, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -45,6 +44,10 @@ interface RoleMappingSettingsPropsInterface extends TestableComponentInterface {
      * Roles of the IDP
      */
     initialRoleMappings?: IdentityProviderRoleMappingInterface[];
+    /**
+     * Specifies if the component should only be read-only.
+     */
+    isReadOnly: boolean;
 }
 
 /**
@@ -63,6 +66,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
         onSubmit,
         triggerSubmit,
         initialRoleMappings,
+        isReadOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -141,6 +145,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
                             }
                         } }
                         data-testid={ testId }
+                        readOnly={ isReadOnly }
                     />
                     <Hint>{ t("console:develop.features.authenticationProvider.forms.roleMapping.hint") }</Hint>
                 </Grid.Column>

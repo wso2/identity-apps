@@ -36,6 +36,7 @@ export const CommonOutboundProvisioningConnectorForm: FunctionComponent<
         onSubmit,
         triggerSubmit,
         enableSubmitButton,
+        readOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -47,6 +48,7 @@ export const CommonOutboundProvisioningConnectorForm: FunctionComponent<
             triggerSubmit={ triggerSubmit }
             metadata={ metadata }
             data-testid={ testId }
+            readOnly={ readOnly }
         />
     );
 };
