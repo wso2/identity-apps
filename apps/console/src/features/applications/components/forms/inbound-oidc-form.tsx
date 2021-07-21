@@ -477,7 +477,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         label: "Opaque",
                         value: ele
                     });
-                } else if ((isSPAApplication) && isBinding && ele === "cookie") {
+                } else if (isBinding && ele === "cookie") {
                     return false;
                 } else {
                     allowedList.push({
