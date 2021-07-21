@@ -2405,6 +2405,13 @@ export interface ConsoleNS {
                         };
                     };
                     forms: {
+                        fields: {
+                            attributeName: {
+                                validation: {
+                                    invalid: string;
+                                };
+                            };
+                        };
                         dialectURI: FormField;
                         submit: string;
                     };

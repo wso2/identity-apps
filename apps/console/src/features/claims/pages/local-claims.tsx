@@ -101,13 +101,13 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
 
 
     /**
-    * Fetches all the local claims.
-    *
-    * @param {number} limit.
-    * @param {number} offset.
-    * @param {string} sort.
-    * @param {string} filter.
-    */
+ * Fetches all the local claims.
+ *
+ * @param {number} limit.
+ * @param {number} offset.
+ * @param {string} sort.
+ * @param {string} filter.
+ */
     const getLocalClaims = (limit?: number, sort?: string, offset?: number, filter?: string,
         excludeIdentity?: boolean) => {
         setIsLoading(true);
@@ -162,53 +162,53 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
     }, []);
 
     /**
-    * This slices a portion of the list to display.
+ * This slices a portion of the list to display.
      *
-    * @param {ClaimDialect[]} list.
-    * @param {number} limit.
-    * @param {number} offset.
+ * @param {ClaimDialect[]} list.
+ * @param {number} limit.
+ * @param {number} offset.
      *
-    * @return {ClaimDialect[]} Paginated List.
-    */
+ * @return {ClaimDialect[]} Paginated List.
+ */
     const paginate = (list: Claim[], limit: number, offset: number): Claim[] => {
         return list?.slice(offset, offset + limit);
     };
 
     /**
-    * Handles change in the number of items to show.
+ * Handles change in the number of items to show.
      *
-    * @param {React.MouseEvent<HTMLAnchorElement>} event.
-    * @param {data} data.
-    */
+ * @param {React.MouseEvent<HTMLAnchorElement>} event.
+ * @param {data} data.
+ */
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setListItemLimit(data.value as number);
     };
 
     /**
-    * Paginates.
-    *
-    * @param {React.MouseEvent<HTMLAnchorElement>} event.
-    * @param {PaginationProps} data.
-    */
+ * Paginates.
+ *
+ * @param {React.MouseEvent<HTMLAnchorElement>} event.
+ * @param {PaginationProps} data.
+ */
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
         setOffset((data.activePage as number - 1) * listItemLimit);
     };
 
     /**
-    * Handle sort strategy change.
+ * Handle sort strategy change.
      *
-    * @param {React.SyntheticEvent<HTMLElement>} event.
-    * @param {DropdownProps} data.
-    */
+ * @param {React.SyntheticEvent<HTMLElement>} event.
+ * @param {DropdownProps} data.
+ */
     const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
         setSortBy(SORT_BY.filter(option => option.value === data.value)[ 0 ]);
     };
 
     /**
-    * Handles sort order change.
-    *
-    * @param {boolean} isAscending.
-    */
+ * Handles sort order change.
+ *
+ * @param {boolean} isAscending.
+ */
     const handleSortOrderChange = (isAscending: boolean) => {
         setSortOrder(isAscending);
     };
@@ -222,9 +222,41 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
     const handleLocalClaimsFilter = (query: string): void => {
         const filteredClaims = filterList(claims, query, sortBy.value as string, sortOrder);
         setFilteredClaims(filteredClaims);
-        setSearchQuery(query);
+        setSearchQuery(buildSearchQuery(query));
         setOffset(0);
         setResetPagination();
+    };
+
+    /**
+     * A util function to build a user friendly seach query 
+     * for display purpose.
+     * 
+     * @param defaultQuery - generated 
+     * @returns 
+     */
+    const buildSearchQuery = (defaultQuery: string): string => {
+        const queryElements: string[] = defaultQuery.split(" ");
+        let UserFriendlyQuery: string = "";
+
+        switch (queryElements[1]) {
+            case "eq":
+                UserFriendlyQuery = `${queryElements[0]} equals to ${queryElements[2]}`;
+                break;
+            case "co":
+                UserFriendlyQuery = `${queryElements[0]} containing ${queryElements[2]}`;
+                break;
+            case "sw":
+                UserFriendlyQuery = `${queryElements[0]} starting with ${queryElements[2]}`;
+                break;
+            case "ew":
+                UserFriendlyQuery = `${queryElements[0]} ending with ${queryElements[2]}`;
+                break;
+        
+            default:
+                break;
+        }
+
+        return UserFriendlyQuery;
     };
 
     /**

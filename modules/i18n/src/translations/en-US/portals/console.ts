@@ -5250,6 +5250,14 @@ export const console: ConsoleNS = {
                             placeholder: "Enter an attribute mapping",
                             requiredErrorMessage: "Enter an attribute mapping"
                         },
+                        fields: {
+                            attributeName: {
+                                validation: {
+                                    invalid: "Attribute name can only contain alphanumeric characters " 
+                                        +"and _. And must be of length between 3 to 30 characters."
+                                }
+                            }
+                        },
                         submit: "Update"
                     },
                     notifications: {
