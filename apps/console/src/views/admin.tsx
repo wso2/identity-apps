@@ -207,9 +207,9 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
             return;
         }
 
-        if (!featureConfig?.generalConfigurations?.enabled
-            || !hasRequiredScopes(featureConfig?.generalConfigurations,
-                featureConfig?.generalConfigurations?.scopes?.read,
+        if (!featureConfig?.governanceConnectors?.enabled
+            || !hasRequiredScopes(featureConfig?.governanceConnectors,
+                featureConfig?.governanceConnectors?.scopes?.read,
                 allowedScopes)) {
 
             setGovernanceConnectorsEvaluated(true);
@@ -221,8 +221,8 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                 !(
                     serverConfigurationConfig.showConnectorsOnTheSidePanel &&
                     hasRequiredScopes(
-                        featureConfig.generalConfigurations,
-                        featureConfig.generalConfigurations.scopes.read,
+                        featureConfig.governanceConnectors,
+                        featureConfig.governanceConnectors.scopes.read,
                         allowedScopes
                     )
                 )

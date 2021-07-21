@@ -72,8 +72,8 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
     useEffect(() => {
 
         // If Governance Connector read permission is not available, prevent from trying to load the connectors.
-        if (!hasRequiredScopes(featureConfig?.generalConfigurations,
-            featureConfig?.generalConfigurations?.scopes?.read,
+        if (!hasRequiredScopes(featureConfig?.governanceConnectors,
+            featureConfig?.governanceConnectors?.scopes?.read,
             allowedScopes)) {
 
             return;
