@@ -337,10 +337,12 @@
                         "internal_governance_view",
                         "internal_login",
                         "internal_user_mgt_view",
-                        "internal_user_mgt_list"
+                        "internal_user_mgt_list",
+                        "internal_session_view"
                     ],
                     "update": [
-                        "internal_user_mgt_update"
+                        "internal_user_mgt_update",
+                        "internal_session_delete"
                     ],
                     "delete": [
                         "internal_user_mgt_delete"
