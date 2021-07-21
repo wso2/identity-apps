@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -32,6 +33,7 @@ import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffec
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { CheckboxProps, Grid, Icon } from "semantic-ui-react";
+import { IdpCertificates } from "./idp-certificates";
 import { AppState, ConfigReducerStateInterface, getEmptyPlaceholderIllustrations } from "../../../core";
 import {
     getFederatedAuthenticatorDetails,
@@ -61,8 +63,6 @@ import {
     handleGetIDPTemplateListError
 } from "../utils";
 import { AuthenticatorCreateWizard } from "../wizards/authenticator-create-wizard";
-import { IdpCertificates } from "./idp-certificates";
-import { Show, AccessControlConstants } from "@wso2is/access-control";
 
 /**
  * Proptypes for the identity providers settings component.
@@ -643,7 +643,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 });
 
                 //Temporarily removed until sub attributes are available
-                removeElementFromProps(authenticator.meta.properties, "IsUserIdInClaims" )
+                removeElementFromProps(authenticator.meta.properties, "IsUserIdInClaims" );
 
                 // Inject logout url
                 const logoutUrlData = {
@@ -672,15 +672,15 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 // Remove additional query params
                 authenticator.meta.properties.map(prop => {
                     if (prop.key === "SPEntityId") {
-                        prop.displayName = "Service provider entity ID"
+                        prop.displayName = "Service provider entity ID";
                     } else if (prop.key === "IdPEntityId") {
-                        prop.displayName = "Identity provider entity ID"
+                        prop.displayName = "Identity provider entity ID";
                     } else if (prop.key === "ISAuthnReqSigned") {
                         prop.displayName = "Enable authentication request signing";
                         prop.description = "Specify whether the SAML authentication request to" +
                             " the external identity provider must be signed or not.";
                     } else if (prop.key === "IsLogoutEnabled") {
-                        prop.displayName = "Identity provider logout enabled"
+                        prop.displayName = "Identity provider logout enabled";
                         prop.description = "Specify whether logout is supported by the external identity provider.";
                     } else if (prop.key === "IsSLORequestAccepted") {
                         prop.displayName = "Accept identity provider logout request";
@@ -691,17 +691,17 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                         // TODO: once we refactor out the SAML authenticator setting to a
                         //       separate component. We need to format the SSO URL to a
                         //       code block.
-                        prop.description = `Enter the identity provider's logout URL value` +
+                        prop.description = "Enter the identity provider's logout URL value" +
                             ` if it is different from the SSO URL${ssoUrl?.value ? " (" + ssoUrl.value + ")" : ""}`;
                     } else if (prop.key === "IsLogoutReqSigned") {
-                        prop.displayName = "Enable logout request signing"
+                        prop.displayName = "Enable logout request signing";
                     } else if (prop.key === "IsAuthnRespSigned") {
                         prop.displayName = "Verify response signature";
                     } else if (prop.key === "SignatureAlgorithm") {
                         prop.displayName = "Signature algorithm";
                         prop.description = undefined;
                     } else if (prop.key === "DigestAlgorithm") {
-                        prop.displayName = "Digest algorithm"
+                        prop.displayName = "Digest algorithm";
                         prop.description = undefined;
                     } else if (prop.key === "IncludeProtocolBinding") {
                         prop.displayName = "Include ProtocolBinding in the request";
@@ -716,7 +716,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                             "as the User Identifier, you can uncheck this option " +
                             "and configure the subject from the Attributes section.";
                     } else if (prop.key === "RequestMethod") {
-                        prop.displayName = "HTTP binding"
+                        prop.displayName = "HTTP binding";
                     } else if (prop.key === "commonAuthQueryParams") {
                         prop.displayName = "Additional query parameters";
                         prop.description = "These will be sent to external IdP as query parameters" +

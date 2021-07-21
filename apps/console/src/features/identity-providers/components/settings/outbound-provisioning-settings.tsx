@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -27,7 +28,7 @@ import {
     PrimaryButton,
     SegmentedAccordionTitleActionInterface
 } from "@wso2is/react-components";
-import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
+import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { CheckboxProps, Divider, Grid, Icon, Segment } from "semantic-ui-react";
@@ -51,7 +52,6 @@ import {
     handleUpdateOutboundProvisioningConnectorError
 } from "../utils";
 import { OutboundProvisioningConnectorCreateWizard } from "../wizards";
-import { AccessControlConstants, Show } from "@wso2is/access-control";
 
 /**
  * Proptypes for the provisioning settings component.

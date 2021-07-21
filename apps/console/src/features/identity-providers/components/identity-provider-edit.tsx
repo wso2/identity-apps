@@ -16,17 +16,14 @@
  * under the License.
  */
 
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { ResourceTab } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     ReactElement,
     useEffect,
-    useMemo,
     useState
 } from "react";
-import { useSelector } from "react-redux";
 import {
     AdvanceSettings,
     AttributeSettings,
@@ -36,7 +33,6 @@ import {
 } from "./settings";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
 import { ComponentExtensionPlaceholder, identityProviderConfig } from "../../../extensions";
-import { AppState, FeatureConfigInterface } from "../../core";
 import { IdentityProviderManagementConstants } from "../constants";
 import {
     IdentityProviderAdvanceInterface,
@@ -111,9 +107,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
     const {
         identityProvider,
         isLoading,
-        isGoogle,
         isSaml,
-        isOidc,
         onDelete,
         onUpdate,
         template,

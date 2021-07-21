@@ -18,16 +18,13 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
-import { EmphasizedSegment, Heading, Hint } from "@wso2is/react-components";
-import { FormValidation } from "@wso2is/validation";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { EmphasizedSegment, Heading } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Divider, Grid } from "semantic-ui-react";
+import { Divider, Grid } from "semantic-ui-react";
 import { identityProviderConfig } from "../../../../extensions";
-import { getIdentityProviderList } from "../../api";
 import { IdentityProviderInterface, IdentityProviderListResponseInterface } from "../../models";
 import { IdpCertificates } from "../settings";
-import { handleGetIDPListCallError } from "../utils";
 
 /**
  * Proptypes for the identity provider general details form component.
@@ -89,7 +86,8 @@ const IDP_IMAGE_URL_MAX_LENGTH: number = 2000;
  * @param props GeneralDetailsFormPopsInterface.
  * @return {React.ReactElement}.
  */
-export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterface> = (props): ReactElement => {
+export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterface> = (
+    props: GeneralDetailsFormPopsInterface): ReactElement => {
 
     const {
         name,
@@ -97,16 +95,13 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         imageUrl,
         onSubmit,
         onUpdate,
-        triggerSubmit,
-        enableWizardMode,
         editingIDP,
         idpList,
         isReadOnly,
         [ "data-testid" ]: testId
     } = props;
 
-    const [ isNameValid, setIsNameValid ] = useState<boolean>(true);
-    const [ modifiedName, setModifiedName ] = useState<string>(name);
+    // const [ modifiedName, setModifiedName ] = useState<string>(name);
 
     const { t } = useTranslation();
 

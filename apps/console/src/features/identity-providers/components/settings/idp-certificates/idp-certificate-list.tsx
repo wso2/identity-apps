@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { AlertLevels, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
@@ -38,7 +39,6 @@ import { UIConstants, getCertificateIllustrations, getEmptyPlaceholderIllustrati
 import { updateIDPCertificate } from "../../../api";
 import { IdentityProviderInterface } from "../../../models";
 import { AddIDPCertificateWizard } from "../../wizards";
-import { Show, AccessControlConstants } from "@wso2is/access-control";
 
 /**
  * Proptypes for the IDP certificate list component.

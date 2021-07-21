@@ -40,7 +40,7 @@ interface AttributeListItemPropInterface extends TestableComponentInterface {
  * @param props AttributeListItemPropInterface
  */
 export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface> = (
-    props
+    props: AttributeListItemPropInterface
 ): ReactElement => {
 
     const {
