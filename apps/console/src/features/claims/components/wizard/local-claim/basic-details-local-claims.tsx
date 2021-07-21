@@ -223,7 +223,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             <Grid.Column width={ 16 }>
                                 <Card fluid >
                                     <Card.Content>
-                                        <Card.Header>
+                                        <Card.Header className="mb-2">
                                             { t("extensions:manage.attributes.generatedAttributeMapping.title") }
                                         </Card.Header>
                                         <Card.Meta className="mb-5">
