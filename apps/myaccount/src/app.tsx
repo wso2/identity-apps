@@ -260,10 +260,10 @@ export const App = (): ReactElement => {
                                                         ".primaryActionText") }
                                                 />
                                                 <ChunkErrorModal
-                                                    heading={ I18n.instance.t("common:networkErrorMessage.heading") }
-                                                    description={ I18n.instance.t("common:networkErrorMessage" +
+                                                    heading={ I18n.instance.t("common:chunkLoadErrorMessage.heading") }
+                                                    description={ I18n.instance.t("common:chunkLoadErrorMessage" +
                                                         ".description") }
-                                                    primaryActionText={ I18n.instance.t("common:networkErrorMessage" +
+                                                    primaryActionText={ I18n.instance.t("common:chunkLoadErrorMessage" +
                                                         ".primaryActionText") }
                                                 />
                                                 <Switch>

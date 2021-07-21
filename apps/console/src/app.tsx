@@ -262,9 +262,10 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
                                                         ".primaryActionText") }
                                                 />
                                                 <ChunkErrorModal
-                                                    heading={ I18n.instance.t("common:networkErrorMessage.heading") }
-                                                    description="An error occurred in serving the requested application. Please try reloading the app."
-                                                    primaryActionText={ I18n.instance.t("common:networkErrorMessage" +
+                                                    heading={ I18n.instance.t("common:chunkLoadErrorMessage.heading") }
+                                                    description={ I18n.instance.t("common:chunkLoadErrorMessage" +
+                                                        ".description") }
+                                                    primaryActionText={ I18n.instance.t("common:chunkLoadErrorMessage" +
                                                         ".primaryActionText") }
                                                 />
                                                 <Switch>
