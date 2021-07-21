@@ -72,7 +72,11 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
     /**
      * List of available Idps.
      */
-    idpList?:IdentityProviderListResponseInterface
+    idpList?: IdentityProviderListResponseInterface
+    /**
+     * Specifies if the component should only be read-only.
+     */
+    isReadOnly: boolean;
 }
 
 const IDP_NAME_MAX_LENGTH: number = 50;
@@ -97,6 +101,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         enableWizardMode,
         editingIDP,
         idpList,
+        isReadOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -124,7 +129,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             "authenticationProvider.forms.generalDetails.name." +
             "validations.duplicate");
         }
-    }; 
+    };
 
     // Temporarily comment out Idp name valiation logic per name.
     // /**
@@ -174,11 +179,11 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     onSubmit={ (values): void => {
                         updateConfigurations(values);
                     } }
-                    data-testid={ testId }           
-                >  
+                    data-testid={ testId }
+                >
                     <Field.Input
-                        ariaLabel= "name" 
-                        inputType= "name" 
+                        ariaLabel= "name"
+                        inputType= "name"
                         name="name"
                         label={ t("console:develop.features.authenticationProvider.forms." +
                             "generalDetails.name.label") }
@@ -192,12 +197,13 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         minLength={ 3 }
                         data-testid={ `${ testId }-idp-name` }
                         hint={ t("console:develop.features.authenticationProvider.forms." +
-                        "generalDetails.name.hint") }
+                            "generalDetails.name.hint") }
+                        readOnly={ isReadOnly }
                     />
                     <Field.Textarea
                         name="description"
-                        ariaLabel= "description" 
-                        fieldType= "resourceName" 
+                        ariaLabel= "description"
+                        fieldType= "resourceName"
                         label={ t("console:develop.features.authenticationProvider.forms." +
                             "generalDetails.description.label") }
                         required={ false }
@@ -208,7 +214,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         maxLength={ IDP_DESCRIPTION_MAX_LENGTH }
                         minLength={ 3 }
                         hint={ t("console:develop.features.authenticationProvider.forms." +
-                        "generalDetails.description.hint") }
+                            "generalDetails.description.hint") }
+                        readOnly={ isReadOnly }
                     />
                     <Field.Input
                         name="image"
@@ -225,16 +232,19 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         maxLength={ IDP_IMAGE_URL_MAX_LENGTH }
                         minLength={ 3 }
                         hint={ t("console:develop.features.authenticationProvider.forms." +
-                        "generalDetails.image.hint") }
+                            "generalDetails.image.hint") }
+                        readOnly={ isReadOnly }
                     />
-                    <Field.Button
-                        ariaLabel= "submit"
-                        size="small"
-                        buttonType="primary_btn"
-                        label="submit"
-                        name= "submit"
-                        disabled={ false }
-                    /> 
+                    { !isReadOnly &&
+                        <Field.Button
+                            ariaLabel= "submit"
+                            size="small"
+                            buttonType="primary_btn"
+                            label="submit"
+                            name= "submit"
+                            disabled={ false }
+                        />
+                    }
                 </Form>
             </EmphasizedSegment>
             { identityProviderConfig.generalDetailsForm.showCertificate
@@ -254,6 +264,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     <IdpCertificates
                                         editingIDP={ editingIDP }
                                         onUpdate={ onUpdate }
+                                        isReadOnly={ isReadOnly }
                                     />
                                 </Grid.Column>
                             </Grid.Row>

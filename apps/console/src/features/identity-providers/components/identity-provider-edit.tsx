@@ -16,14 +16,17 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { ResourceTab } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     ReactElement,
     useEffect,
+    useMemo,
     useState
 } from "react";
+import { useSelector } from "react-redux";
 import {
     AdvanceSettings,
     AttributeSettings,
@@ -33,6 +36,7 @@ import {
 } from "./settings";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
 import { ComponentExtensionPlaceholder, identityProviderConfig } from "../../../extensions";
+import { AppState, FeatureConfigInterface } from "../../core";
 import { IdentityProviderManagementConstants } from "../constants";
 import {
     IdentityProviderAdvanceInterface,
@@ -85,9 +89,13 @@ interface EditIdentityProviderPropsInterface extends TestableComponentInterface 
     isTabExtensionsAvailable: (isAvailable: boolean) => void;
     /**
      * Type of IDP.
-     * @see {@link IdentityProviderManagementConstants } Use one of `IDP_TEMPLATE_IDS`. 
+     * @see {@link IdentityProviderManagementConstants } Use one of `IDP_TEMPLATE_IDS`.
      */
     type: string;
+    /**
+    * Specifies if the component should only be read-only.
+    */
+    isReadOnly: boolean;
 }
 
 /**
@@ -112,6 +120,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         defaultActiveIndex,
         isTabExtensionsAvailable,
         type,
+        isReadOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -136,6 +145,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 onDelete={ onDelete }
                 onUpdate={ onUpdate }
                 data-testid={ `${ testId }-general-settings` }
+                isReadOnly = { isReadOnly }
             />
         </ResourceTab.Pane>
     );
@@ -160,6 +170,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                         identityProvider.federatedAuthenticators.defaultAuthenticatorId
                     )
                 }
+                isReadOnly={ isReadOnly }
             />
         </ResourceTab.Pane>
     );
@@ -171,6 +182,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
                 data-testid={ `${ testId }-authenticator-settings` }
+                isReadOnly={ isReadOnly }
             />
         </ResourceTab.Pane>
     );
@@ -183,6 +195,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
                 data-testid={ `${ testId }-outbound-provisioning-settings` }
+                isReadOnly={ isReadOnly }
             />
         </ResourceTab.Pane>
     );
@@ -195,6 +208,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
                 data-testid={ `${ testId }-jit-provisioning-settings` }
+                isReadOnly={ isReadOnly }
             />
         </ResourceTab.Pane>
     );
@@ -206,6 +220,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 advancedConfigurations={ idpAdvanceConfig }
                 onUpdate={ onUpdate }
                 data-testid={ `${ testId }-advance-settings` }
+                isReadOnly={ isReadOnly }
             />
         </ResourceTab.Pane>
     );

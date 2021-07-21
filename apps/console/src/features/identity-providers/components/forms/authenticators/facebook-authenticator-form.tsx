@@ -284,7 +284,7 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
                         ".facebook.clientId.hint")
                 }
                 required={ formFields?.ClientId?.meta?.isMandatory }
-                readOnly={ formFields?.ClientId?.meta?.readOnly }
+                readOnly={ readOnly || formFields?.ClientId?.meta?.readOnly }
                 value={ formFields?.ClientId?.value }
                 maxLength={ formFields?.ClientId?.meta?.maxLength }
                 minLength={
@@ -318,7 +318,7 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
                     </Trans>
                 }
                 required={ formFields?.ClientSecret?.meta?.isMandatory }
-                readOnly={ formFields?.ClientSecret?.meta?.readOnly }
+                readOnly={ readOnly || formFields?.ClientSecret?.meta?.readOnly }
                 value={ formFields?.ClientSecret?.value }
                 maxLength={ formFields?.ClientSecret?.meta?.maxLength }
                 minLength={
@@ -346,7 +346,7 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
                 }
                 required={ formFields?.callBackUrl?.meta?.isMandatory }
                 value={ formFields?.callBackUrl?.value }
-                readOnly={ formFields?.callBackUrl?.meta?.readOnly }
+                readOnly={ readOnly || formFields?.callBackUrl?.meta?.readOnly }
                 maxLength={ formFields?.callBackUrl?.meta?.maxLength }
                 minLength={
                     IdentityProviderManagementConstants

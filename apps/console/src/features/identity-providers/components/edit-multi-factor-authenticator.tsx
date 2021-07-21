@@ -61,9 +61,13 @@ interface EditMultiFactorAuthenticatorPropsInterface extends TestableComponentIn
     isTabExtensionsAvailable: (isAvailable: boolean) => void;
     /**
      * Type of the authenticator.
-     * @see {@link IdentityProviderManagementConstants } Use one of `IDP_TEMPLATE_IDS`. 
+     * @see {@link IdentityProviderManagementConstants } Use one of `IDP_TEMPLATE_IDS`.
      */
     type: string;
+    /**
+     * Specifies if the component should only be read-only.
+     */
+    isReadOnly: boolean;
 }
 
 /**
@@ -84,6 +88,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
         isTabExtensionsAvailable,
         onUpdate,
         type,
+        isReadOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -189,6 +194,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
                                                 onSubmit={ handleAuthenticatorConfigFormSubmit }
                                                 type={ type }
                                                 data-testid={ `${ testId }-${ authenticator.name }-content` }
+                                                isReadOnly={ isReadOnly }
                                             />
                                         </EmphasizedSegment>
                                     </Grid.Column>
