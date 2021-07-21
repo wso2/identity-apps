@@ -7106,7 +7106,7 @@ export const console: ConsoleNS = {
             user: {
                 deleteUser: {
                     confirmationModal: {
-                        assertionHint: "Please type <1>{{ userName }}</1> to confirm.",
+                        assertionHint: "Please confirm your action.",
                         content: "If you delete this user, the user will not be able to log in to My Account or " +
                             "any other application the user was subscribed to before. Please proceed with caution.",
                         header: "Are you sure?",
