@@ -5253,7 +5253,7 @@ export const console: ConsoleNS = {
                         fields: {
                             attributeName: {
                                 validation: {
-                                    invalid: "Attribute name can only contain alphanumeric characters, -, " 
+                                    invalid: "Attribute name can only contain alphanumeric characters " 
                                         +"and _. And must be of length between 3 to 30 characters."
                                 }
                             }
