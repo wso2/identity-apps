@@ -1,20 +1,20 @@
 /**
-* Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
-*
-* WSO2 Inc. licenses this file to you under the Apache License,
-* Version 2.0 (the 'License'); you may not use this file except
-* in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied. See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the 'License'); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
@@ -50,30 +50,30 @@ interface EditAdditionalPropertiesLocalClaimsPropsInterface extends TestableComp
  *
  * @return {React.ReactElement}
  */
-export const EditAdditionalPropertiesLocalClaims: FunctionComponent<
-    EditAdditionalPropertiesLocalClaimsPropsInterface
-    > = (props: EditAdditionalPropertiesLocalClaimsPropsInterface): ReactElement => {
-
-    const {
-        claim,
-        update,
-        [ "data-testid" ]: testId
-    } = props;
+export const EditAdditionalPropertiesLocalClaims:
+    FunctionComponent<EditAdditionalPropertiesLocalClaimsPropsInterface> = (
+    props: EditAdditionalPropertiesLocalClaimsPropsInterface
+): ReactElement => {
+    const { claim, update, [ "data-testid" ]: testId } = props;
 
     const [ submit, setSubmit ] = useTrigger();
 
     const dispatch = useDispatch();
 
-        const { t } = useTranslation();
+    const { t } = useTranslation();
 
-        const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
-        const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
-
-        const isReadOnly = useMemo(() => (
+    const isReadOnly = useMemo(
+        () =>
             !hasRequiredScopes(
-                featureConfig?.attributeDialects, featureConfig?.attributeDialects?.scopes?.update, allowedScopes)
-        ), [ featureConfig, allowedScopes ]);
+                featureConfig?.attributeDialects,
+                featureConfig?.attributeDialects?.scopes?.update,
+                allowedScopes
+            ),
+        [ featureConfig, allowedScopes ]
+    );
 
     return (
         <EmphasizedSegment>
@@ -87,10 +87,13 @@ export const EditAdditionalPropertiesLocalClaims: FunctionComponent<
                             keyName={ t("console:manage.features.claims.local.additionalProperties.key") }
                             valueName={ t("console:manage.features.claims.local.additionalProperties.value") }
                             submit={ submit }
-                            keyRequiredMessage={ t("console:manage.features.claims.local.additionalProperties." +
-                                "keyRequiredErrorMessage") }
-                            valueRequiredErrorMessage={ t("console:manage.features.claims.local.additionalProperties." +
-                                "valueRequiredErrorMessage") }
+                            keyRequiredMessage={ t(
+                                "console:manage.features.claims.local.additionalProperties." + "keyRequiredErrorMessage"
+                            ) }
+                            valueRequiredErrorMessage={ t(
+                                "console:manage.features.claims.local.additionalProperties." +
+                                "valueRequiredErrorMessage"
+                            ) }
                             requiredField={ true }
                             update={ (data) => {
                                 const claimData = { ...claim };
@@ -101,30 +104,42 @@ export const EditAdditionalPropertiesLocalClaims: FunctionComponent<
                                     properties: [ ...data ]
                                 };
 
-                                updateAClaim(claim.id, submitData).then(() => {
-                                    dispatch(addAlert(
-                                        {
-                                            description: t("console:manage.features.claims.local.notifications." +
-                                                "updateClaim.success.description"),
-                                            level: AlertLevels.SUCCESS,
-                                            message: t("console:manage.features.claims.local.notifications." +
-                                                "updateClaim.success.message")
-                                        }
-                                    ));
-                                    update();
-                                }).catch(error => {
-                                    dispatch(addAlert(
-                                        {
-                                            description: error?.description
-                                                || t("console:manage.features.claims.local.notifications." +
-                                                    "updateClaim.genericError.description"),
-                                            level: AlertLevels.ERROR,
-                                            message: error?.message
-                                                || t("console:manage.features.claims.local.notifications." +
-                                                    "updateClaim.genericError.message")
-                                        }
-                                    ));
-                                });
+                                updateAClaim(claim.id, submitData)
+                                    .then(() => {
+                                        dispatch(
+                                            addAlert({
+                                                description: t(
+                                                    "console:manage.features.claims.local.notifications." +
+                                                    "updateClaim.success.description"
+                                                ),
+                                                level: AlertLevels.SUCCESS,
+                                                message: t(
+                                                    "console:manage.features.claims.local.notifications." +
+                                                    "updateClaim.success.message"
+                                                )
+                                            })
+                                        );
+                                        update();
+                                    })
+                                    .catch((error) => {
+                                        dispatch(
+                                            addAlert({
+                                                description:
+                                                    error?.description ||
+                                                    t(
+                                                        "console:manage.features.claims.local.notifications." +
+                                                        "updateClaim.genericError.description"
+                                                    ),
+                                                level: AlertLevels.ERROR,
+                                                message:
+                                                    error?.message ||
+                                                    t(
+                                                        "console:manage.features.claims.local.notifications." +
+                                                        "updateClaim.genericError.message"
+                                                    )
+                                            })
+                                        );
+                                    });
                             } }
                             data-testid={ `${ testId }-form-properties-dynamic-field` }
                             readOnly={ isReadOnly }
@@ -141,7 +156,7 @@ export const EditAdditionalPropertiesLocalClaims: FunctionComponent<
                                 data-testid={ `${ testId }-submit-button` }
                             >
                                 { t("common:update") }
-                                </PrimaryButton>
+                            </PrimaryButton>
                         </Show>
                     </Grid.Column>
                 </Grid.Row>
