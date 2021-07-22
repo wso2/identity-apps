@@ -957,19 +957,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="warning"
                         open={ showDeleteConfirmationModal }
-                        assertion={ deletingUser.userName }
-                        assertionHint={ (
-                            <p>
-                                <Trans
-                                    i18nKey={ "console:manage.features.user.deleteUser.confirmationModal." +
-                                    "assertionHint" }
-                                    tOptions={ { userName: deletingUser.userName } }
-                                >
-                                    Please type <strong>{ deletingUser.userName }</strong> to confirm.
-                                </Trans>
-                            </p>
-                        ) }
-                        assertionType="input"
+                        assertionHint={ t("console:manage.features.user.deleteUser.confirmationModal." +
+                            "assertionHint") }
+                        assertionType="checkbox"
                         primaryAction={ t("common:confirm") }
                         secondaryAction={ t("common:cancel") }
                         onSecondaryActionClick={ (): void => {

@@ -333,22 +333,8 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="warning"
                         open={ showRoleDeleteConfirmation }
-                        assertion={ roleObject.displayName }
-                        assertionHint={
-                            (
-                                <p>
-                                    <Trans
-                                        i18nKey={
-                                            "console:manage.features.roles.edit.basics.confirmation.assertionHint"
-                                        }
-                                        tOptions={ { roleName: roleObject.displayName } }
-                                    >
-                                        Please type <strong>{ roleObject.displayName }</strong> to confirm.
-                                    </Trans>
-                                </p>
-                            )
-                        }
-                        assertionType="input"
+                        assertionHint={ t("console:manage.features.roles.edit.basics.confirmation.assertionHint") }
+                        assertionType="checkbox"
                         primaryAction="Confirm"
                         secondaryAction="Cancel"
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }

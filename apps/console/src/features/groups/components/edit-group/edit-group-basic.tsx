@@ -364,22 +364,8 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                     onClose={ (): void => setShowDeleteConfirmationModal(false) }
                     type="warning"
                     open={ showGroupDeleteConfirmation }
-                    assertion={ groupObject.displayName }
-                    assertionHint={
-                        (
-                            <p>
-                                <Trans
-                                    i18nKey={
-                                        "console:manage.features.roles.edit.basics.confirmation.assertionHint"
-                                    }
-                                    tOptions={ { roleName: groupObject.displayName } }
-                                >
-                                    Please type <strong>{ groupObject.displayName }</strong> to confirm.
-                                </Trans>
-                            </p>
-                        )
-                    }
-                    assertionType="input"
+                    assertionHint={ t("console:manage.features.roles.edit.basics.confirmation.assertionHint") }
+                    assertionType="checkbox"
                     primaryAction="Confirm"
                     secondaryAction="Cancel"
                     onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }

@@ -284,25 +284,9 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="warning"
                         open={ showDeleteConfirmationModal }
-                        assertion={ name }
-                        assertionHint={ (
-                            <p>
-                                <Trans
-                                    i18nKey={
-                                        "console:develop.features.applications.confirmations.deleteApplication" +
-                                        ".assertionHint"
-                                    }
-                                    tOptions={ { name: name } }
-                                >
-                                    Please type 
-                                    <strong data-testid="application-name-assertion">
-                                        { name }
-                                    </strong>
-                                    to confirm.
-                                </Trans>
-                            </p>
-                        ) }
-                        assertionType="input"
+                        assertionHint={ t("console:develop.features.applications.confirmations.deleteApplication." +
+                            "assertionHint") }
+                        assertionType="checkbox"
                         primaryAction={ t("common:confirm") }
                         secondaryAction={ t("common:cancel") }
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }

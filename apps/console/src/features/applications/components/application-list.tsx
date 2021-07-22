@@ -454,21 +454,9 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="warning"
                         open={ showDeleteConfirmationModal }
-                        assertion={ deletingApplication.name }
-                        assertionHint={ (
-                            <p>
-                                <Trans
-                                    i18nKey={
-                                        "console:develop.features.applications.confirmations.deleteApplication" +
-                                        ".assertionHint"
-                                    }
-                                    tOptions={ { name: deletingApplication.name } }
-                                >
-                                    Please type <strong>{ deletingApplication.name }</strong> to confirm.
-                                </Trans>
-                            </p>
-                        ) }
-                        assertionType="input"
+                        assertionHint={ t("console:develop.features.applications.confirmations.deleteApplication." +
+                            "assertionHint") }
+                        assertionType="checkbox"
                         primaryAction={ t("common:confirm") }
                         secondaryAction={ t("common:cancel") }
                         onSecondaryActionClick={ (): void => {
