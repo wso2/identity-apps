@@ -2119,6 +2119,7 @@ export const console: ConsoleNS = {
                                         keystore: "Key Set",
                                         jwks: "JWKS",
                                         token: "Token",
+                                        revoke: "Revoke",
                                         userInfo: "UserInfo",
                                         wellKnown: "Discovery"
                                     }
