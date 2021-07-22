@@ -884,7 +884,7 @@ export const console: ConsoleNS = {
                                         scriptBased: {
                                             accordion: {
                                                 title: {
-                                                    description: "Control your Authentication flow using a script.",
+                                                    description: "Define your log-in flow using a script.",
                                                     heading: "Conditional Authentication"
                                                 }
                                             },
@@ -984,11 +984,11 @@ export const console: ConsoleNS = {
                                             forms: {
                                                 fields: {
                                                     attributesFrom: {
-                                                        label: "Use attributes from this step",
+                                                        label: "Pick attributes from this step",
                                                         placeholder: "Select step"
                                                     },
                                                     subjectIdentifierFrom: {
-                                                        label: "Use subject identifier from this step",
+                                                        label: "Pick subject identifier from this step",
                                                         placeholder: "Select step"
                                                     }
                                                 }

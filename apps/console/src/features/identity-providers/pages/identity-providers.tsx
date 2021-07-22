@@ -400,20 +400,23 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
             action={
                 (isIdPListRequestLoading
                     || isAuthenticatorFetchRequestRequestLoading
-                    || !(!searchQuery && idpList?.identityProviders?.length <= 0)) && (
-                    <PrimaryButton
-                        onClick={ (): void => {
-                            history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));
-                        } }
-                        data-testid={ `${ testId }-add-button` }
-                    >
-                        <Icon name="add"/>
-                        {
-                            useNewConnectionsView
-                                ? t("console:develop.features.authenticationProvider.buttons.addIDP")
-                                : t("console:develop.features.idp.buttons.addIDP")
-                        }
-                    </PrimaryButton>
+                    || !(!searchQuery && idpList?.identityProviders?.length <= 0)
+                ) && (
+                    (useNewConnectionsView !== undefined) && (
+                        <PrimaryButton
+                            onClick={ (): void => {
+                                history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));
+                            } }
+                            data-testid={ `${ testId }-add-button` }
+                        >
+                            <Icon name="add"/>
+                            {
+                                useNewConnectionsView
+                                    ? t("console:develop.features.authenticationProvider.buttons.addIDP")
+                                    : t("console:develop.features.idp.buttons.addIDP")
+                            }
+                        </PrimaryButton>
+                    )
                 )
             }
             isLoading={ useNewConnectionsView === undefined }
