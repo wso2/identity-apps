@@ -41,6 +41,11 @@ export interface CommonNS {
     close: string;
     challengeQuestionNumber: string;
     change: string;
+    chunkLoadErrorMessage: {
+        heading: string;
+        description: string;
+        primaryActionText: string;
+    }
     claim: string;
     clear: string;
     comingSoon: string;

@@ -27,6 +27,7 @@ import {
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
 import {
+    ChunkErrorModal,
     Code,
     ContentLoader,
     NetworkErrorModal,
@@ -256,6 +257,13 @@ export const App = (): ReactElement => {
                                                     description={ I18n.instance.t("common:networkErrorMessage" +
                                                         ".description") }
                                                     primaryActionText={ I18n.instance.t("common:networkErrorMessage" +
+                                                        ".primaryActionText") }
+                                                />
+                                                <ChunkErrorModal
+                                                    heading={ I18n.instance.t("common:chunkLoadErrorMessage.heading") }
+                                                    description={ I18n.instance.t("common:chunkLoadErrorMessage" +
+                                                        ".description") }
+                                                    primaryActionText={ I18n.instance.t("common:chunkLoadErrorMessage" +
                                                         ".primaryActionText") }
                                                 />
                                                 <Switch>

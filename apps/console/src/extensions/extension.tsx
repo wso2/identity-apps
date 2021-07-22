@@ -21,7 +21,7 @@ import React, { ReactElement, Suspense, lazy, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { Placeholder } from "semantic-ui-react";
 import { ExtensionsManager } from "./extensions-manager";
-import { getEmptyPlaceholderIllustrations } from "../features/core";
+import { AppUtils, getEmptyPlaceholderIllustrations } from "../features/core";
 
 /**
  * Extension Interface.
@@ -60,6 +60,7 @@ export const ComponentPlaceholder = (props: ExtensionInterface): ReactElement =>
 
     return (
         <ErrorBoundary
+                onChunkLoadError={ AppUtils.onChunkLoadError }
                 fallback={ (
                     <EmptyPlaceholder
                         image={ getEmptyPlaceholderIllustrations().genericError }

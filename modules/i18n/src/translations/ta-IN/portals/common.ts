@@ -40,6 +40,11 @@ export const common: CommonNS = {
     cancel: "இரத்து செய்",
     challengeQuestionNumber: "சவால் வினா {{number}}",
     change: "மாற்று",
+    chunkLoadErrorMessage: {
+        description: "கோரப்பட்ட பயன்பாட்டிற்கு சேவை செய்யும் போது பிழை ஏற்பட்டது. பயன்பாட்டை மீண்டும் ஏற்ற முயற்சிக்கவும்.",
+        heading: "ஏதோ தவறு நடந்துவிட்டது",
+        primaryActionText: "பயன்பாட்டை மீண்டும் ஏற்றவும்"
+    },
     claim: "கோர்",
     clear: "அழிக்கவும்",
     close: "நெருக்கமான",

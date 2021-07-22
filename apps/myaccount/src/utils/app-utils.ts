@@ -17,6 +17,7 @@
  *
  */
 
+import { AppConstants } from "@wso2is/core/constants";
 import { StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import get from "lodash-es/get";
@@ -76,5 +77,13 @@ export class AppUtils {
             ...JSON.parse(LocalStorageUtils.getValueFromLocalStorage(tenantName)),
             [ username ]: preferences
         }));
+    }
+
+    /**
+     * Callback to be fired on every chunk load error.
+     */
+    public static onChunkLoadError(): void {
+
+        dispatchEvent(new Event(AppConstants.CHUNK_LOAD_ERROR_EVENT));
     }
 }

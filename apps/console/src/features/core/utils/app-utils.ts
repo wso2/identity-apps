@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppConstants } from "@wso2is/core/constants";
 import { StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -117,5 +118,13 @@ export class AppUtils {
         newPref.identityAppsSettings.devPortal.hiddenRoutes = [ ...hiddenRoutes, routeId ];
 
         this.setUserPreferences(newPref);
+    }
+
+    /**
+     * Callback to be fired on every chunk load error.
+     */
+    public static onChunkLoadError(): void {
+
+        dispatchEvent(new Event(AppConstants.CHUNK_LOAD_ERROR_EVENT));
     }
 }

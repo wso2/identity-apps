@@ -40,6 +40,11 @@ export const common: CommonNS = {
     cancel: "අවලංගු කරන්න",
     challengeQuestionNumber: "අභියෝගාත්මක ප්\u200Dරශ්නය {{number}}",
     change: "වෙනස් කරන්න",
+    chunkLoadErrorMessage: {
+        description: "ඉල්ලූ යෙදුමට සේවය කිරීමේදී දෝෂයක් ඇතිවිය. කරුණාකර යෙදුම නැවත පූරණය කිරීමට උත්සාහ කරන්න.",
+        heading: "මොකක්හරි වැරැද්දක් වෙලා",
+        primaryActionText: "යෙදුම නැවත පූරණය කරන්න"
+    },
     claim: "හිමිකම",
     clear: "මකන්න",
     close: "වසන්න",

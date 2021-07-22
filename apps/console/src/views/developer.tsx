@@ -343,6 +343,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
                 ) }
             >
                 <ErrorBoundary
+                    onChunkLoadError={ AppUtils.onChunkLoadError }
                     fallback={ (
                         <EmptyPlaceholder
                             action={ (

@@ -29,7 +29,7 @@ import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState }
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { AppState, PreLoader } from "../features/core";
+import { AppState, AppUtils, PreLoader } from "../features/core";
 import { ProtectedRoute } from "../features/core/components";
 import { getAppLayoutRoutes, getEmptyPlaceholderIllustrations } from "../features/core/configs";
 import { AppConstants } from "../features/core/constants";
@@ -58,6 +58,7 @@ export const AppLayout: FunctionComponent<{}> = (): ReactElement => {
     return (
         <AppLayoutSkeleton>
             <ErrorBoundary
+                onChunkLoadError={ AppUtils.onChunkLoadError }
                 fallback={ (
                     <EmptyPlaceholder
                         action={ (

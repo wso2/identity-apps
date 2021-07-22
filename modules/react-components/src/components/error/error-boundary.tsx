@@ -31,6 +31,7 @@ interface ErrorBoundaryState {
  */
 interface ErrorBoundaryProps {
     fallback: React.ReactNode;
+    onChunkLoadError: () => void;
 }
 
 /**
@@ -43,7 +44,7 @@ interface ErrorBoundaryProps {
  * @param {PlaceholderProps} props - Props injected in to the placeholder component.
  * @return {JSX.Element}
  */
-export class ErrorBoundary extends React.Component<PropsWithChildren<ErrorBoundaryProps>, ErrorBoundaryState> {
+export class ErrorBoundary extends React.Component<PropsWithChildren<ErrorBoundaryProps>, ErrorBoundaryState, ErrorBoundaryProps> {
 
     constructor(props) {
         super(props);
@@ -54,6 +55,12 @@ export class ErrorBoundary extends React.Component<PropsWithChildren<ErrorBounda
     }
 
     componentDidCatch(error, errorInfo) {
+
+        const { onChunkLoadError } = this.props;
+
+        if (error.name === 'ChunkLoadError') {
+            onChunkLoadError && onChunkLoadError();
+        }
         // Catch errors in any components below and re-render with error message
         this.setState({
             error,
