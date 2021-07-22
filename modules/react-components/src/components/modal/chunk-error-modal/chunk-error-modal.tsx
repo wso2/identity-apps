@@ -24,7 +24,7 @@ import { ConfirmationModal } from "../confirmation-modal";
 /**
  * Prop type of the `ChunkErrorModal` component.
  */
-interface ChunkModalPropTypes {
+interface ChunkModalPropsInterface {
     heading: string;
     description: string;
     primaryActionText: string;
@@ -34,28 +34,22 @@ interface ChunkModalPropTypes {
  * This component listens to the `chunk load error` and pops up a modal
  * when this error is occurred.
  */
-export const ChunkErrorModal: FunctionComponent<ChunkModalPropTypes> = (
-    props: ChunkModalPropTypes
+export const ChunkErrorModal: FunctionComponent<ChunkModalPropsInterface> = (
+    props: ChunkModalPropsInterface
 ): ReactElement => {
+
     const { heading, description, primaryActionText } = props;
 
     const [ showModal, setShowModal ] = useState(false);
 
     /**
-     * Show modal.
-     */
-    const showErrorModal = () => {
-        setShowModal(true);
-    };
-
-    /**
      * Called on mount and unmount to add/remove the event listener.
      */
     useEffect(() => {
-        addEventListener(AppConstants.CHUNK_LOAD_ERROR_EVENT, showErrorModal);
+        addEventListener(AppConstants.CHUNK_LOAD_ERROR_EVENT, () => setShowModal(true));
 
         return () => {
-            removeEventListener(AppConstants.CHUNK_LOAD_ERROR_EVENT, showErrorModal);
+            removeEventListener(AppConstants.CHUNK_LOAD_ERROR_EVENT, () => setShowModal(true));
         };
     }, []);
 

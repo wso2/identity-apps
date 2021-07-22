@@ -123,9 +123,8 @@ export class AppUtils {
     /**
      * Callback to be fired on every chunk load error.
      */
-    public static onChunkLoadError(status: boolean): void {
-        if (status) {
-            dispatchEvent(new Event(AppConstants.CHUNK_LOAD_ERROR_EVENT));
-        }
+    public static onChunkLoadError(): void {
+
+        dispatchEvent(new Event(AppConstants.CHUNK_LOAD_ERROR_EVENT));
     }
 }

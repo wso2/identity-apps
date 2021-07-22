@@ -31,7 +31,7 @@ interface ErrorBoundaryState {
  */
 interface ErrorBoundaryProps {
     fallback: React.ReactNode;
-    onChunkLoadError: (state: boolean) => void;
+    onChunkLoadError: () => void;
 }
 
 /**
@@ -57,8 +57,9 @@ export class ErrorBoundary extends React.Component<PropsWithChildren<ErrorBounda
     componentDidCatch(error, errorInfo) {
 
         const { onChunkLoadError } = this.props;
+
         if (error.name === 'ChunkLoadError') {
-            onChunkLoadError && onChunkLoadError(true);
+            onChunkLoadError && onChunkLoadError();
         }
         // Catch errors in any components below and re-render with error message
         this.setState({
