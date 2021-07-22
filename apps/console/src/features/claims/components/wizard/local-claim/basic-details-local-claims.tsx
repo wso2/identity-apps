@@ -179,7 +179,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     onMouseOut={ () => {
                                         closePopup(setIsShowClaimIDHint, claimTimer);
                                     } }
-                                    validation={ (value: string, validation: Validation )=> {
+                                    validation={ (value: string, validation: Validation)=> {
                                         if (value === "") {
                                             setNoUniqueOIDCAttrib(true);
                                             setNoUniqueSCIMAttrib(true);
