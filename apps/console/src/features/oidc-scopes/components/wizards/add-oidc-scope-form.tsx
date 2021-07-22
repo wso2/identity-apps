@@ -23,7 +23,7 @@ import { useTranslation } from "react-i18next";
 
 const SCOPE_NAME_MAX_LENGTH: number = 40;
 const SCOPE_DISPLAY_NAME_MAX_LENGTH: number = 40;
-const SCOPE_DESCRIPTION_MAX_LENGTH: number = 300;
+const SCOPE_DESCRIPTION_MAX_LENGTH: number = 100;
 const FIELD_WIDTH: number = 10;
 
 /**
