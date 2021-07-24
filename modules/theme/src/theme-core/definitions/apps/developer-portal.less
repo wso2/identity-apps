@@ -133,107 +133,212 @@
         }
     }
 
-    .authentication-steps-section {
+    .authentication-flow-section {
 
-        .authentication-step-container {
-            margin-bottom: 2em;
+        .authentication-steps-section {
 
-            .step-header {
-                display: inline-block;
-            }
-            .delete-button {
-                display: inline-block;
-                float: right;
-                color: @nobel;
+            .authentication-step-container {
+                margin-bottom: 2em;
 
-                &:hover {
-                    color: @black;
-                    cursor: pointer;
+                .authentication-step-actions {
+                    .step-header {
+                        position: absolute;
+                        top: -10px;
+                    }
+
+                    .delete-button {
+                        position: absolute;
+                        top: -10px;
+                        right: -5px;
+                        color: @nobel;
+
+                        &:hover {
+                            color: @black;
+                            cursor: pointer;
+                        }
+                    }
                 }
-            }
-            .authentication-step {
-                background-color: @whiteSmoke;
-                padding: @signOnMethodsAuthStepPadding;
-                border-radius: @defaultBorderRadius;
-                display: @signOnMethodsAuthStepDisplay;
-                overflow: @signOnMethodsAuthStepOverflow;
-                flex-direction: @signOnMethodsAuthStepFlexDirection;
-                flex-wrap: wrap;
-                align-content: flex-start;
-                justify-content: flex-start;
-                align-items: center;
-
-                &.empty-placeholder-container {
+                .authentication-step {
+                    background-color: @whiteSmoke;
+                    padding: @signOnMethodsAuthStepPadding;
+                    border-radius: @defaultBorderRadius;
+                    display: @signOnMethodsAuthStepDisplay;
+                    overflow: @signOnMethodsAuthStepOverflow;
+                    flex-direction: @signOnMethodsAuthStepFlexDirection;
+                    min-height: @signOnMethodsAuthStepMinHeight;
+                    flex-wrap: wrap;
                     align-content: center;
-                    justify-content: center;
+                    justify-content: flex-start;
+                    align-items: center;
 
-                    .empty-placeholder {
-                        padding-top: 0;
+                    &.empty-placeholder-container {
+                        align-content: center;
+                        justify-content: center;
+
+                        .empty-placeholder {
+                            padding-top: 0;
+                        }
+                    }
+                }
+
+                .checkboxes-extension {
+                    margin: 0 0 15px 0;
+                    padding: 10px 10px 10px 0;
+                    border-bottom-right-radius: @defaultBorderRadius;
+                    border-bottom-left-radius: @defaultBorderRadius;
+
+                    .checkbox {
+                        &:not(:last-child) {
+                            margin-right: 20px;
+                        }
                     }
                 }
             }
+            
+            .step-actions-container {
 
-            .checkboxes-extension {
-                margin: 0 0 15px 0;
-                padding: 10px 10px 10px 0;
-                border-bottom-right-radius: @defaultBorderRadius;
-                border-bottom-left-radius: @defaultBorderRadius;
-
-                .checkbox {
-                    &:not(:last-child) {
-                        margin-right: 20px;
+                .action-button-group {
+                    margin: auto 0;
+                    width: max-content;
+                    
+                    .link-button {
+                        margin-left: 0;
+                    }
+                    .action-divider {
+                        margin-left: 20px;
                     }
                 }
             }
         }
         
-        .step-actions-container {
+        &.timeline {
+            margin-left: 30px;
 
-            .action-button-group {
-                margin: auto 0;
-                width: max-content;
+            .timeline-button {
+                display: flex;
                 
-                .link-button {
-                    margin-left: 0;
+                &.start {
+                    top: 16px;
+                    margin-left: -14px;
+                    position: relative;
+
+                    svg.icon {
+                        width: 60px;
+                    }
                 }
-                .action-divider {
-                    margin-left: 20px;
+
+                &.add {
+                    margin-left: 1px;
+
+                    svg.icon {
+                        width: 28px;
+                    }
+
+                    &:before {
+                        background-color: @signOnMethodsAuthStepBorderColor;
+                        content: "";
+                        display: block;
+                        left: 15px;
+                        position: relative;
+                        top: 23px;
+                        height: 18px;
+                        margin-top: 5px;
+                        width: 1px;
+                    }
+
+                    &:after {
+                        content: '';
+                        position: relative;
+                        left: -16px;
+                        top: 45px;
+                        display: block;
+                        border-right: 1px solid @signOnMethodsAuthStepBorderColor;
+                        border-bottom: 1px solid @signOnMethodsAuthStepBorderColor;
+                        width: 5px;
+                        height: 5px;
+                        transform: rotate(45deg);
+                    }
+                }
+
+                &.done {
+                    margin-left: -8px;
+                    margin-top: 25px;
                 }
             }
-        }
+            .timeline-item {
+                display: flex;
+                margin-left: 16px;
+                padding: 16px 0;
+                position: relative;
+                align-items: center;
+                flex-direction: row;
 
-        .trail {
-            &:after {
-                content: '';
-                margin-top: 0;
-                margin-left: 10px;
-                width: 50px;
-                z-index: 9;
-                height: 0;
-                border: @signOnMethodsAuthStepBorder;
-            }
-        }
-
-        .flow-button-container {
-            text-align: center;
-            align-items: center;
-            justify-content: center;
-            display: flex;
-
-            &.with-trail {
-                &:after {
-                    content: '';
-                    margin-top: 0;
-                    margin-left: 10px;
-                    width: 47px;
-                    z-index: 9999;
-                    height: 0;
-                    border: @signOnMethodsAuthStepBorder;
+                .timeline-badge {
+                    align-items: center;
+                    background-color: @white;
+                    border: 1px solid #838383;
+                    border-radius: 50%;
+                    color: @black;
+                    display: flex;
+                    flex-shrink: 0;
+                    height: 25px;
+                    justify-content: center;
+                    margin-left: -12px;
+                    margin-right: 8px;
+                    position: relative;
+                    width: 25px;
+                    z-index: 1;
+                    font-size: 0.8em;
+                    
+                    &:after {
+                        background-color: @signOnMethodsAuthStepBorderColor;
+                        content: "";
+                        display: block;
+                        left: 24px;
+                        position: absolute;
+                        width: 58px;
+                        height: 1px;
+                    }
                 }
-            }
+                
+                .timeline-body {
+                    flex: auto;
+                    margin: 0 0 0 50px;
+                    max-width: 100%;
+                    min-width: 0;
 
-            &.with-margin {
-                margin-right: @signOnMethodsAuthStepButtonMarginRight;
+                    .authentication-step-actions {
+                        .step-header {
+                            display: none;
+                        }
+                    }
+                    
+                    .authentication-step {
+                        border: 1px solid @signOnMethodsAuthStepBorderColor;
+
+                        &.empty-placeholder-container {
+                            .empty-placeholder {
+                                padding-bottom: 8px;
+                            }
+                        }
+                    }
+
+                    .checkboxes-extension {
+                        margin-bottom: 0;
+                        padding-bottom: 0;
+                    }
+                }
+                
+                &:before {
+                    background-color: @defaultBorderColor;
+                    bottom: 0;
+                    content: "";
+                    display: block;
+                    left: 0;
+                    position: absolute;
+                    top: 0;
+                    width: 1px;
+                }
             }
         }
     }
@@ -336,6 +441,20 @@
                     box-shadow: @defaultCardHoverBoxShadow;
                 }
             }
+        }
+    }
+}
+// Check if `gap` is supported to be added to auth options.
+@supports (gap: 10px) and (display: flex) {
+    .authentication-step {
+
+        &:not(.empty-placeholder-container) {
+            gap: 10px;
+        }
+
+        .authenticator-item-wrapper {
+            margin-right: 0;
+            margin-bottom: 0;
         }
     }
 }

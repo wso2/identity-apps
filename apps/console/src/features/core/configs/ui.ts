@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FunctionComponent, SVGProps } from "react";
 import { ReactComponent as AlertIcon } from "../../../themes/default/assets/images/icons/alert-icon.svg";
 import { ReactComponent as ArrowRight } from "../../../themes/default/assets/images/icons/arrow-right-icon.svg";
 import {
@@ -258,7 +259,7 @@ export const AppSwitcherIcons = (): Record<string, any> => {
     };
 };
 
-export const getGeneralIcons = (): Record<string, any> => {
+export const getGeneralIcons = (): { [ key: string ]: FunctionComponent<SVGProps<SVGSVGElement>> } => {
 
     return {
         crossIcon: CrossIcon
