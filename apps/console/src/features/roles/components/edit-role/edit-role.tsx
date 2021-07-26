@@ -46,6 +46,7 @@ interface EditRoleProps extends SBACInterface<FeatureConfigInterface> {
 export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps): ReactElement => {
 
     const {
+        roleId,
         roleObject,
         onRoleUpdate
     } = props;
@@ -92,6 +93,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                         <BasicRoleDetails
                             isReadOnly={ isAdminRole }
                             data-testid="role-mgt-edit-role-basic"
+                            roleId={ roleId }
                             isGroup={ isGroup }
                             roleObject={ roleObject }
                             onRoleUpdate={ onRoleUpdate }

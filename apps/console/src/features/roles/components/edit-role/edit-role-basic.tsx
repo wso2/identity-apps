@@ -23,21 +23,25 @@ import {
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, FormValue, Forms } from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment } from "@wso2is/react-components";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Divider, Form, Grid, InputOnChangeData, Label } from "semantic-ui-react";
-import { AppConstants, SharedUserStoreUtils, history } from "../../../core";
+import { AppConstants, SharedUserStoreUtils, history, SharedUserStoreConstants } from "../../../core";
 import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "../../../userstores";
-import { deleteRoleById, updateRoleDetails } from "../../api";
-import { PatchRoleDataInterface } from "../../models";
+import { deleteRoleById, searchRoleList, updateRoleDetails } from "../../api";
+import { PatchRoleDataInterface, SearchRoleInterface } from "../../models";
 
 /**
  * Interface to contain props needed for component
  */
 interface BasicRoleProps extends TestableComponentInterface {
+    /**
+     * Role id.
+     */
+    roleId: string;
     /**
      * Role details
      */
@@ -66,6 +70,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     const dispatch = useDispatch();
 
     const {
+        roleId,
         roleObject,
         onRoleUpdate,
         isGroup,
@@ -79,6 +84,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     const [ userStoreRegEx, setUserStoreRegEx ] = useState<string>("");
     const [ isRoleNamePatternValid, setIsRoleNamePatternValid ] = useState<boolean>(true);
     const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
+    const [ userStore, setUserStore ] = useState<string>(SharedUserStoreConstants.PRIMARY_USER_STORE);
 
     useEffect(() => {
         if (roleObject && roleObject.displayName.indexOf("/") !== -1) {
@@ -115,6 +121,40 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
         //     regEx = PRIMARY_USERSTORE_PROPERTY_VALUES.RolenameJavaScriptRegEx;
         // }
         return PRIMARY_USERSTORE_PROPERTY_VALUES.RolenameJavaScriptRegEx;
+    };
+
+    /**
+     * The following function validates role name against the user store regEx.
+     */
+    const validateRoleNamePattern = async (): Promise<string> => {
+        let userStoreRegEx = "";
+        if (userStore !== SharedUserStoreConstants.PRIMARY_USER_STORE) {
+            await SharedUserStoreUtils.getUserStoreRegEx(userStore,
+                SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
+                .then((response) => {
+                    setRegExLoading(true);
+                    userStoreRegEx = response;
+                });
+        } else {
+            await SharedUserStoreUtils.getPrimaryUserStore().then((response) => {
+                setRegExLoading(true);
+                if (response && response.properties) {
+                    userStoreRegEx = response?.properties?.filter(property => {
+                        return property.name === "RolenameJavaScriptRegEx";
+                    })[ 0 ].value;
+                }
+            });
+        }
+
+        setRegExLoading(false);
+        return new Promise((resolve, reject) => {
+            if (userStoreRegEx !== "") {
+                resolve(userStoreRegEx);
+            } else {
+                reject("");
+            }
+        });
+
     };
 
     /**
@@ -236,6 +276,52 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                                 "placeholder")
                                         }
                                         value={ nameValue }
+                                        validation={ async (value: string, validation: Validation) => {
+                                            if (value) {
+                                                let isRoleNameValid = true;
+                                                await validateRoleNamePattern().then(regex => {
+                                                    isRoleNameValid = SharedUserStoreUtils
+                                                        .validateInputAgainstRegEx(value, regex);
+                                                });
+
+                                                if (!isRoleNameValid) {
+                                                    validation.isValid = false;
+                                                    validation.errorMessages.push(t("console:manage.features." +
+                                                        "roles.addRoleWizard.forms.roleBasicDetails.roleName." +
+                                                        "validations.invalid",
+                                                        { type: "role" }));
+                                                }
+
+                                                const searchData: SearchRoleInterface = {
+                                                    filter: `displayName eq  ${ userStore }/${ value }`,
+                                                    schemas: [
+                                                        "urn:ietf:params:scim:api:messages:2.0:SearchRequest"
+                                                    ],
+                                                    startIndex: 1
+                                                };
+
+                                                await searchRoleList(searchData).then(response => {
+                                                    if (response?.data?.totalResults !== 0) {
+                                                        if (response.data.Resources[0]?.id !== roleId) {
+                                                            validation.isValid = false;
+                                                            validation.errorMessages.push(
+                                                                t("console:manage.features.roles.addRoleWizard." +
+                                                                    "forms.roleBasicDetails.roleName.validations.duplicate",
+                                                                    { type: "Role" }));
+                                                        }
+                                                    }
+
+                                                }).catch(() => {
+                                                    dispatch(addAlert({
+                                                        description: t("console:manage.features.roles.notifications." +
+                                                            "fetchRoles.genericError.description"),
+                                                        level: AlertLevels.ERROR,
+                                                        message: t("console:manage.features.roles.notifications." +
+                                                            "fetchRoles.genericError.message")
+                                                    }));
+                                                });
+                                            }
+                                        } }
                                         onChange={ handleRoleNameChange }
                                         type="text"
                                         data-testid={
@@ -246,23 +332,6 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                         loading={ isRegExLoading }
                                         readOnly={ isReadOnly }
                                     />
-                                    {
-                                        !isRoleNamePatternValid && (
-                                            isGroup
-                                                ?
-                                                <Label basic color="red" pointing>
-                                                    { t("console:manage.features.roles.addRoleWizard.forms." +
-                                                        "roleBasicDetails.roleName.validations.invalid",
-                                                        { type: "group" }) }
-                                                </Label>
-                                                :
-                                                <Label basic color="red" pointing>
-                                                    { t("console:manage.features.roles.addRoleWizard.forms." +
-                                                        "roleBasicDetails.roleName.validations.invalid",
-                                                        { type: "role" }) }
-                                                </Label>
-                                        )
-                                    }
                                 </Form.Field>
                             </Grid.Column>
                         </Grid.Row>
@@ -280,7 +349,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                                     ? `${ testId }-group-update-button`
                                                     : `${ testId }-role-update-button`
                                             }
-                                            disabled={ !isRoleNamePatternValid && !isRegExLoading }
+                                            disabled={ isRegExLoading }
                                         >
                                             { t("console:manage.features.roles.edit.basics.buttons.update") }
                                         </Button>
