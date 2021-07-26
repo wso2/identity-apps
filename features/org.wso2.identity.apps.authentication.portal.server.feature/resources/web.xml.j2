@@ -125,6 +125,17 @@
         <param-value>true</param-value>
     </context-param>
 
+    <!-- *************** Authentication Portal Custom Configurations ********************** -->
+    {% if authenticationendpoint_custom_properties is defined %}
+    {% for key, value in authenticationendpoint_custom_properties.items() %}
+    <context-param>
+        <param-name>{{key}}</param-name>
+        <param-value>"{{value}}"</param-value>
+    </context-param>
+    {% endfor %}
+    {% endif %}
+    <!-- *************** End of Authentication Portal Custom Configurations ********************** -->
+
     <filter>
         <filter-name>HttpHeaderSecurityFilter</filter-name>
         <filter-class>org.apache.catalina.filters.HttpHeaderSecurityFilter</filter-class>
