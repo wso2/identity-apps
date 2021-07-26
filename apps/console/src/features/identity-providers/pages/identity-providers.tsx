@@ -357,7 +357,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
      * @param {DropdownProps} data - Dropdown data.
      */
     const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>,
-                                            data: DropdownProps): void => {
+                                               data: DropdownProps): void => {
 
         setListSortingStrategy(IDENTITY_PROVIDER_LIST_SORTING_OPTIONS.find((option) => {
             return data.value === option.value;
@@ -381,7 +381,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
      * @param {DropdownProps} data - Dropdown data.
      */
     const handleItemsPerPageDropdownChange = (event: MouseEvent<HTMLAnchorElement>,
-                                            data: DropdownProps): void => {
+                                              data: DropdownProps): void => {
         setListItemLimit(data.value as number);
     };
 
@@ -404,8 +404,8 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                     || isAuthenticatorFetchRequestRequestLoading
                     || !(!searchQuery && idpList?.identityProviders?.length <= 0))) && (
                     <PrimaryButton
-                        disabled={ isIdPListRequestLoading || isAuthenticatorFetchRequestRequestLoading }
-                        loading={ isIdPListRequestLoading || isAuthenticatorFetchRequestRequestLoading }
+                        disabled={ (isIdPListRequestLoading || isAuthenticatorFetchRequestRequestLoading) }
+                        loading={ (isIdPListRequestLoading || isAuthenticatorFetchRequestRequestLoading) }
                         onClick={ (): void => {
                             history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));
                         } }
