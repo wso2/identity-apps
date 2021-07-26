@@ -310,6 +310,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                                                     { type: "Role" }));
                                                         }
                                                     }
+
                                                 }).catch(() => {
                                                     dispatch(addAlert({
                                                         description: t("console:manage.features.roles.notifications." +
