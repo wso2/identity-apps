@@ -436,9 +436,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             type="textarea"
                             name="description"
                             label={ t("console:manage.features.claims.local.forms.description.label") }
-                            required={ true }
-                            requiredErrorMessage={ t("console:manage.features.claims.local.forms.description." +
-                                "requiredErrorMessage") }
+                            required={ false }
+                            requiredErrorMessage=""
                             placeholder={ t("console:manage.features.claims.local.forms.description.placeholder") }
                             value={ values?.get("description")?.toString() }
                             data-testid={ `${ testId }-form-description-input` }

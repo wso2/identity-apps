@@ -286,9 +286,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         inputType="resourceName"
                         name="description"
                         label={ t("console:manage.features.claims.local.forms.description.label") }
-                        required={ true }
-                        message={ t("console:manage.features.claims.local.forms.description." +
-                            "requiredErrorMessage") }
+                        required={ false }
+                        requiredErrorMessage=""
                         placeholder={
                             t("console:manage.features.claims.local.forms.description.placeholder")
                         }
