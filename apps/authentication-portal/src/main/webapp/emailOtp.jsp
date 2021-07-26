@@ -23,6 +23,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="includes/localize.jsp" %>
+<%@ include file="includes/init-url.jsp" %>
 <%
     request.getSession().invalidate();
     String queryString = request.getQueryString();
@@ -98,7 +99,7 @@
             <% } %>
             <div id="alertDiv"></div>
             <div class="segment-form">
-                <form class="ui large form" id="codeForm" name="codeForm" action="../commonauth" method="POST">
+                <form class="ui large form" id="codeForm" name="codeForm" action="<%=commonauthURL%>" method="POST">
                     <%
                         String loginFailed = request.getParameter("authFailure");
                         if (loginFailed != null && "true".equals(loginFailed)) {
