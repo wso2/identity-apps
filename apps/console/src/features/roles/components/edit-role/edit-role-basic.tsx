@@ -293,7 +293,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                                 }
 
                                                 const searchData: SearchRoleInterface = {
-                                                    filter: `displayName eq  ${ userStore }/${ value }`,
+                                                    filter: "displayName eq " + value.toString(),
                                                     schemas: [
                                                         "urn:ietf:params:scim:api:messages:2.0:SearchRequest"
                                                     ],
@@ -310,7 +310,6 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                                                     { type: "Role" }));
                                                         }
                                                     }
-
                                                 }).catch(() => {
                                                     dispatch(addAlert({
                                                         description: t("console:manage.features.roles.notifications." +
