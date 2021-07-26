@@ -53,7 +53,7 @@ import { ReactComponent as SLOIcon } from "../../../themes/default/assets/images
 import { ReactComponent as SpinWheelIcon } from "../../../themes/default/assets/images/icons/spin-wheel-icon.svg";
 import { ReactComponent as SSOIcon } from "../../../themes/default/assets/images/icons/sso.svg";
 import { ReactComponent as TokenIcon } from "../../../themes/default/assets/images/icons/token.svg";
-import { ReactComponent as RevokeTokenIcon } from "../../../themes/default/assets/images/icons/revoke.svg";
+import { ReactComponent as RevokeTokenIcon } from "../../../themes/default/assets/images/icons/outline-icons/revoke-outline.svg";
 import { ReactComponent as UserInfoIcon } from "../../../themes/default/assets/images/icons/userInfo.svg";
 import GithubIdPIcon from "../../../themes/default/assets/images/identity-providers/github-idp-illustration.svg";
 import {
