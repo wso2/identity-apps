@@ -3664,7 +3664,7 @@ export const console: ConsoleNS = {
                 title: "Enregistrer une nouvelle candidature"
             },
             applications: {
-                subTitle: "Gérez les applications à l'aide de modèles et configurez l'authentification.",
+                subTitle: "Enregistrez et gérez vos applications et configurez la connexion.",
                 title: "Applications"
             },
             applicationsEdit: {
