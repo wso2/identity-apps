@@ -123,6 +123,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const [ appList, setAppList ] = useState<ApplicationListInterface>({});
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
+    const [ isPageLoading, setPageLoading ] = useState<boolean>(true);
     const [ isApplicationListRequestLoading, setApplicationListRequestLoading ] = useState<boolean>(false);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
@@ -173,6 +174,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             })
             .finally(() => {
                 setApplicationListRequestLoading(false);
+                setPageLoading(false);
             });
     };
 
@@ -257,12 +259,14 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     return (
         <PageLayout
             action={
-                (isApplicationListRequestLoading || !(!searchQuery && appList?.totalResults <= 0))
+                (!isPageLoading && (isApplicationListRequestLoading || !(!searchQuery && appList?.totalResults <= 0))
                 && (hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.create,
-                    allowedScopes))
+                    allowedScopes)))
                 && (
                     <>
                         <PrimaryButton
+                            disabled={ isApplicationListRequestLoading }
+                            loading={ isApplicationListRequestLoading }
                             onClick={ (): void => {
                                 eventPublisher.publish("application-click-new-application-button");
 
@@ -279,7 +283,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             title={ t("console:develop.pages.applications.title") }
             description={ t("console:develop.pages.applications.subTitle") }
             data-testid={ `${ testId }-page-layout` }
-            isLoading={ isApplicationListRequestLoading }
+            isLoading={ isPageLoading }
         >
             { renderRemoteFetchStatus() }
             <ListLayout
@@ -318,7 +322,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 onPageChange={ handlePaginationChange }
                 onSortStrategyChange={ handleListSortingStrategyOnChange }
                 showPagination={ appList?.totalResults !== 0 }
-                showTopActionPanel={ isApplicationListRequestLoading || !(!searchQuery && appList?.totalResults <= 0) }
+                showTopActionPanel={ !isPageLoading && 
+                    (isApplicationListRequestLoading || !(!searchQuery && appList?.totalResults <= 0)) }
                 sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
                 sortStrategy={ listSortingStrategy }
                 totalPages={ Math.ceil(appList.totalResults / listItemLimit) }

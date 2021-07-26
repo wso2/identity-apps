@@ -91,6 +91,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
     const [ localAuthenticators, setLocalAuthenticators ] = useState<AuthenticatorInterface[]>([]);
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(undefined);
+    const [ isPageLoading, setPageLoading ] = useState<boolean>(true);
     const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(undefined);
     const [
         isAuthenticatorFetchRequestRequestLoading,
@@ -169,6 +170,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
             })
             .finally(() => {
                 setIsAuthenticatorFetchRequestRequestLoading(false);
+                setPageLoading(false);
             });
     }, [ useNewConnectionsView ]);
 
@@ -355,7 +357,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
      * @param {DropdownProps} data - Dropdown data.
      */
     const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>,
-                                               data: DropdownProps): void => {
+                                            data: DropdownProps): void => {
 
         setListSortingStrategy(IDENTITY_PROVIDER_LIST_SORTING_OPTIONS.find((option) => {
             return data.value === option.value;
@@ -379,7 +381,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
      * @param {DropdownProps} data - Dropdown data.
      */
     const handleItemsPerPageDropdownChange = (event: MouseEvent<HTMLAnchorElement>,
-                                              data: DropdownProps): void => {
+                                            data: DropdownProps): void => {
         setListItemLimit(data.value as number);
     };
 
@@ -398,10 +400,12 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
     return (
         <PageLayout
             action={
-                (isIdPListRequestLoading
+                (!isPageLoading && (isIdPListRequestLoading
                     || isAuthenticatorFetchRequestRequestLoading
-                    || !(!searchQuery && idpList?.identityProviders?.length <= 0)) && (
+                    || !(!searchQuery && idpList?.identityProviders?.length <= 0))) && (
                     <PrimaryButton
+                        disabled={ isIdPListRequestLoading || isAuthenticatorFetchRequestRequestLoading }
+                        loading={ isIdPListRequestLoading || isAuthenticatorFetchRequestRequestLoading }
                         onClick={ (): void => {
                             history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));
                         } }
@@ -416,7 +420,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                     </PrimaryButton>
                 )
             }
-            isLoading={ useNewConnectionsView === undefined }
+            isLoading={ (isPageLoading || useNewConnectionsView === undefined) }
             title={
                 useNewConnectionsView
                     ? t("console:develop.pages.authenticationProvider.title")
