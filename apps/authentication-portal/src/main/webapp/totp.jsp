@@ -24,6 +24,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="includes/localize.jsp" %>
+<%@ include file="includes/init-url.jsp" %>
 
     <%
         request.getSession().invalidate();
@@ -145,7 +146,7 @@
                                value='<%=Encode.forHtmlAttribute(request.getParameter("username"))%>'>
 
                         <div class="segment-form">
-                            <form action="../commonauth" method="post" id="totpForm" class="ui large form">
+                            <form action="<%=commonauthURL%>" method="post" id="totpForm" class="ui large form">
                                 <p id="instruction"></p>
                                 <div class="field">
                                     <input type="text" name="token" class="form-control" placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "verification.code")%>">

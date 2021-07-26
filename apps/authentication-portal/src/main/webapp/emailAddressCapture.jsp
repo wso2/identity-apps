@@ -23,6 +23,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="includes/localize.jsp" %>
+<%@ include file="includes/init-url.jsp" %>
 
 <%
     request.getSession().invalidate();
@@ -114,7 +115,7 @@
             <div id="alertDiv"></div>
             <div class="segment-form">
                 <form class="ui large form" id="pin_form" name="pin_form"
-                      action="../commonauth" method="POST">
+                      action="<%=commonauthURL%>" method="POST">
                     
                     <%
                         String loginFailed = request.getParameter("authFailure");
