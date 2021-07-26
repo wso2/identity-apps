@@ -252,6 +252,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
     };
 
+    /**
+     * Check whether the application is a Single Page Application
+     */
     useEffect(() => {
         if (!template?.id || !SinglePageApplicationTemplate?.id) {
             return;
@@ -262,6 +265,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
     }, [ template ]);
 
+    /**
+     * Check whether the application is an OIDC Web Application
+     */
     useEffect(() => {
         if (!template?.id || !OIDCWebApplicationTemplate?.id) {
             return;
@@ -490,6 +496,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         label: "Opaque",
                         value: ele
                     });
+                // Cookie binding was hidden from the UI for SPAs & Traditional OIDC with https://github.com/wso2/identity-apps/pull/2254
                 } else if ((isSPAApplication || isOIDCWebApplication) && isBinding && ele === "cookie") {
                     return false;
                 } else {
