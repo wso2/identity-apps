@@ -32,6 +32,7 @@ import {
 } from "../components";
 import { getEmptyPlaceholderIllustrations } from "../configs";
 import { AppState } from "../store";
+import { AppUtils } from "../utils";
 
 /**
  * Inner page layout component Prop types.
@@ -102,6 +103,7 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
                     onSidePanelPusherClick={ handleSidePanelPusherClick }
                 >
                     <ErrorBoundary
+                        onChunkLoadError={ AppUtils.onChunkLoadError }
                         fallback={ (
                             <EmptyPlaceholder
                                 action={ (

@@ -431,6 +431,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                 ) }
             >
                 <ErrorBoundary
+                    onChunkLoadError={ AppUtils.onChunkLoadError }
                     fallback={ (
                         <EmptyPlaceholder
                             action={ (
