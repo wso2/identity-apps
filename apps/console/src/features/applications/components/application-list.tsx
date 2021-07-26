@@ -382,7 +382,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
      */
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
-        if (searchQuery) {
+        if (searchQuery && list?.totalResults === 0) {
             return (
                 <EmptyPlaceholder
                     action={ (
