@@ -346,16 +346,20 @@ export class ApplicationManagementConstants {
         IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_NAME,
         IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID,
         IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_NAME,
+        IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_NAME
     ];
 
     // Authenticators that can handle TOTP.
     public static readonly TOTP_HANDLERS = [
-        ...ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS
+        ...ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
+        ...ApplicationManagementConstants.SOCIAL_AUTHENTICATORS
     ];
 
     // Authenticators that can handle Email OTP.
     public static readonly EMAIL_OTP_HANDLERS = [
-        ...ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS
+        ...ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
+        ...ApplicationManagementConstants.SOCIAL_AUTHENTICATORS
     ];
 
     /**
