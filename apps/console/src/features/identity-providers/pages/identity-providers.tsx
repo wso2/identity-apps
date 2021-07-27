@@ -238,6 +238,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
             })
             .finally(() => {
                 setIsAuthenticatorFetchRequestRequestLoading(false);
+                setPageLoading(false);
             });
     };
 
@@ -295,6 +296,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
             .finally(() => {
                 setIdPListRequestLoading(false);
                 setIsPaginating(false);
+                setPageLoading(false);
             });
     };
 
@@ -420,7 +422,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                     </PrimaryButton>
                 )
             }
-            isLoading={ (isPageLoading || useNewConnectionsView === undefined) }
+            isLoading={ isPageLoading || (useNewConnectionsView === undefined) }
             title={
                 useNewConnectionsView
                     ? t("console:develop.pages.authenticationProvider.title")
@@ -569,9 +571,9 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                             onSortStrategyChange={ handleListSortingStrategyOnChange }
                             showPagination={ true }
                             showTopActionPanel={
-                                useNewConnectionsView !== undefined && (
+                                !isPageLoading && (useNewConnectionsView !== undefined && (
                                     isIdPListRequestLoading || !(!searchQuery && idpList?.totalResults <= 0)
-                                )
+                                ))
                             }
                             sortOptions={ IDENTITY_PROVIDER_LIST_SORTING_OPTIONS }
                             sortStrategy={ listSortingStrategy }
@@ -613,7 +615,8 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                                         data-testid={ `${ testId }-advance-search` }
                                     />
                                 }
-                                isLoading={ useNewConnectionsView === undefined && isIdPListRequestLoading }
+                                isLoading={ isPageLoading ||
+                                    (useNewConnectionsView === undefined && isIdPListRequestLoading) }
                                 list={ idpList }
                                 onEmptyListPlaceholderActionClick={
                                     () => history.push(AppConstants.getPaths().get("IDP_TEMPLATES"))
