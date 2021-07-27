@@ -227,6 +227,8 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                     )
                 )
             ) {
+                setGovernanceConnectorsEvaluated(true);
+
                 return;
             }
 
