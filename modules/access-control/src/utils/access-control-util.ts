@@ -35,6 +35,8 @@ export class AccessControlUtils {
      * @param routeArray Un authenticated routes array
      * @param allowedScopes user scopes
      * @param featureConfig feature scope configuration
+     * @param checkForUIResourceScopes Specifies if the UI resource scope should be considered
+     *
      * @returns filtered route array based on the user scopes
      */
     public static getAuthenticatedRoutes(
@@ -81,18 +83,33 @@ export class AccessControlUtils {
      * @param developRoutes routes related to develop section
      * @param allowedScopes allowed scopes
      * @param featureConfig feature config
+     * @param checkForUIResourceScopes Specifies if the UI resource scope should be considered
+     *
      * @returns
      */
     public static getDisabledTab(
-        manageRoutes: RouteInterface[], developRoutes: RouteInterface[],
-        allowedScopes: string, featureConfig: any // TODO : Properly map FeatureConfigInterface type
+        manageRoutes: RouteInterface[],
+        developRoutes: RouteInterface[],
+        allowedScopes: string,
+        featureConfig: any, // TODO : Properly map FeatureConfigInterface type
+        checkForUIResourceScopes?: boolean
     ): string {
 
         let isManageTabDisabled = false;
         let isDevelopTabDisabled = false;
 
-        const authenticatedManageRoutes = this.getAuthenticatedRoutes(manageRoutes, allowedScopes, featureConfig);
-        const authenticatedDevelopRoutes = this.getAuthenticatedRoutes(developRoutes, allowedScopes, featureConfig);
+        const authenticatedManageRoutes = this.getAuthenticatedRoutes(
+            manageRoutes,
+            allowedScopes,
+            featureConfig,
+            checkForUIResourceScopes
+        );
+        const authenticatedDevelopRoutes = this.getAuthenticatedRoutes(
+            developRoutes,
+            allowedScopes,
+            featureConfig,
+            checkForUIResourceScopes
+        );
 
         if (authenticatedManageRoutes.length < 1) {
             isManageTabDisabled = true;
