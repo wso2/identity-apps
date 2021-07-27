@@ -125,16 +125,16 @@
         <param-value>true</param-value>
     </context-param>
 
-    <!-- *************** Authentication Portal Custom Configurations ********************** -->
-    {% if authenticationendpoint_custom_properties is defined %}
-    {% for key, value in authenticationendpoint_custom_properties.items() %}
+    <!-- *************** Authentication Portal Context Parameters ********************** -->
+    {% if authenticationendpoint.context_params is defined %}
+    {% for key, value in authenticationendpoint.context_params.items() %}
     <context-param>
         <param-name>{{key}}</param-name>
         <param-value>"{{value}}"</param-value>
     </context-param>
     {% endfor %}
     {% endif %}
-    <!-- *************** End of Authentication Portal Custom Configurations ********************** -->
+    <!-- *************** End of Authentication Portal Context Parameters ********************** -->
 
     <filter>
         <filter-name>HttpHeaderSecurityFilter</filter-name>
