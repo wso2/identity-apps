@@ -864,7 +864,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                 fill="primary"
                                 icon={ getSignInFlowIcons().addButton }
                                 onClick={ handleAuthenticationStepAdd }
-                                data-testid={ `${ testId }-new-authentication-step-button` }
+                                data-tourid="add-new-step-button"
                             />
                         </div>
                     )
