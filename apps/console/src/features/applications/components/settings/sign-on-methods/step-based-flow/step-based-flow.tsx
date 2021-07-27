@@ -18,10 +18,7 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import {
-    ConfirmationModal,
-    LinkButton
-} from "@wso2is/react-components";
+import { ConfirmationModal, GenericIcon } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     Fragment,
@@ -33,7 +30,6 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Icon } from "semantic-ui-react";
 import { AddAuthenticatorModal } from "./add-authenticator-modal";
 import { AuthenticationStep } from "./authentication-step";
 import { AppState, ConfigReducerStateInterface, EventPublisher } from "../../../../../core";
@@ -49,6 +45,7 @@ import {
     IdentityProviderTemplateLoadingStrategies,
     IdentityProviderTemplateManagementUtils
 } from "../../../../../identity-providers";
+import { getSignInFlowIcons } from "../../../../configs";
 import { ApplicationManagementConstants } from "../../../../constants";
 import {
     AuthenticationSequenceInterface,
@@ -817,7 +814,14 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
     return (
         <div className="authentication-flow-wrapper" data-testid={ testId }>
-            <div className="authentication-flow-section">
+            <div className="authentication-flow-section timeline">
+                <div className="timeline-button start">
+                    <GenericIcon
+                        size="x50"
+                        transparent
+                        icon={ getSignInFlowIcons().startButton }
+                    />
+                </div>
                 <div className="authentication-steps-section" ref={ authenticationStepsDivRef }>
                     {
                         authenticationSteps &&
@@ -856,26 +860,28 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                             ))
                             : null
                     }
-                    {
-                        !readOnly && (
-                            <div className="step-actions-container">
-                                <div className="action-button-group">
-                                    <LinkButton
-                                        fluid
-                                        data-tourid="add-new-step-button"
-                                        className="text-left pl-0"
-                                        onClick={ handleAuthenticationStepAdd }
-                                    >
-                                        <Icon name="plus"/>
-                                        {
-                                            t("console:develop.features.applications.edit.sections.signOnMethod." +
-                                                "sections.authenticationFlow.sections.stepBased.actions.addNewStep")
-                                        }
-                                    </LinkButton>
-                                </div>
-                            </div>
-                        )
-                    }
+                </div>
+                {
+                    !readOnly && (
+                        <div className="timeline-button add">
+                            <GenericIcon
+                                link
+                                transparent
+                                size="mini"
+                                fill="primary"
+                                icon={ getSignInFlowIcons().addButton }
+                                onClick={ handleAuthenticationStepAdd }
+                                data-tourid="add-new-step-button"
+                            />
+                        </div>
+                    )
+                }
+                <div className="timeline-button done">
+                    <GenericIcon
+                        size="x50"
+                        transparent
+                        icon={ getSignInFlowIcons().doneButton }
+                    />
                 </div>
             </div>
             { showAuthenticatorAddModal && renderAuthenticatorAddModal() }
