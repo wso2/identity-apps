@@ -147,11 +147,12 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
                     routes = routes.filter(route => route.id === "404");
         }
 
-        const controlledRoutes = AccessControlUtils.getAuthenticatedRoutes(routes, allowedScopes, featureConfig);
+        const controlledRoutes = AccessControlUtils.getAuthenticatedRoutes(
+            routes, allowedScopes, featureConfig, commonConfig.checkForUIResourceScopes);
         const sanitizedManageRoutes: RouteInterface[] = CommonRouteUtils.sanitizeForUI(cloneDeep(manageRoutes));
 
         const tab: string = AccessControlUtils.getDisabledTab(
-            sanitizedManageRoutes, filteredRoutes, allowedScopes, featureConfig);
+            sanitizedManageRoutes, filteredRoutes, allowedScopes, featureConfig, commonConfig.checkForUIResourceScopes);
 
         if (tab === "MANAGE") {
             dispatch(setManageVisibility(false));

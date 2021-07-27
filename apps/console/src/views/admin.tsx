@@ -138,13 +138,15 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
 
         const routes: RouteInterface[] = CommonRouteUtils.sanitizeForUI(cloneDeep(filteredRoutes));
         const sanitizedDevelopRoutes: RouteInterface[] = CommonRouteUtils.sanitizeForUI(cloneDeep(developRoutes));
-        const controlledRoutes = AccessControlUtils.getAuthenticatedRoutes(routes, allowedScopes, featureConfig);
+        const controlledRoutes = AccessControlUtils.getAuthenticatedRoutes(
+            routes, allowedScopes, featureConfig, commonConfig.checkForUIResourceScopes);
 
         setAccessControlledRoutes(controlledRoutes);
         setFilteredRoutes(controlledRoutes);
 
         const tab: string = AccessControlUtils.getDisabledTab(
-            filteredRoutes, sanitizedDevelopRoutes, allowedScopes, featureConfig);
+            filteredRoutes, sanitizedDevelopRoutes, allowedScopes, featureConfig,
+            commonConfig.checkForUIResourceScopes);
 
         if (tab === "MANAGE") {
             dispatch(setManageVisibility(false));
