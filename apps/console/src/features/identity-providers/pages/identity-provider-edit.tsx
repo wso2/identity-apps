@@ -103,7 +103,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
 
     const isReadOnly = useMemo(() => (
         !hasRequiredScopes(
-            featureConfig?.attributeDialects, featureConfig?.attributeDialects?.scopes?.update, allowedScopes)
+            featureConfig?.identityProviders, featureConfig?.identityProviders?.scopes?.update, allowedScopes)
     ), [ featureConfig, allowedScopes ]);
 
     /**
