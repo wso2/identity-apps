@@ -333,7 +333,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     }
                     {
                         //Hides on user_id and username claims
-                        claim && claim.displayName !== ClaimManagementConstants.USER_ID 
+                        claim && claim.displayName !== ClaimManagementConstants.USER_ID
                             && claim.displayName !== ClaimManagementConstants.USER_NAME &&
                         (
                             <Field.CheckboxLegacy
@@ -389,7 +389,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     }
                     {
                         //Hides on user_id and username claims
-                        claim && claim.displayName !== ClaimManagementConstants.USER_ID 
+                        claim && claim.displayName !== ClaimManagementConstants.USER_ID
                             && claim.displayName !== ClaimManagementConstants.USER_NAME &&
                         (
                             <Field.CheckboxLegacy
@@ -401,6 +401,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 value={ claim?.readOnly ? [ "readOnly" ] : [] }
                                 data-testid={ `${ testId }-form-readonly-checkbox` }
                                 readOnly={ isReadOnly }
+                            />
+                        )
                     }
                     <Show when={ AccessControlConstants.ATTRIBUTE_EDIT }>
                         <Field.Button
