@@ -405,19 +405,19 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                 ) && (
                     (useNewConnectionsView !== undefined) && (
                         <Show when={ AccessControlConstants.IDP_WRITE }>
-	                        <PrimaryButton
-	                            onClick={ (): void => {
-	                                history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));
-	                            } }
-	                            data-testid={ `${ testId }-add-button` }
-	                        >
-	                            <Icon name="add"/>
-	                            {
-	                                useNewConnectionsView
-	                                    ? t("console:develop.features.authenticationProvider.buttons.addIDP")
-	                                    : t("console:develop.features.idp.buttons.addIDP")
-	                            }
-	                        </PrimaryButton>
+                            <PrimaryButton
+                                onClick={ (): void => {
+                                    history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));
+                                } }
+                                data-testid={ `${ testId }-add-button` }
+                            >
+                                <Icon name="add" />
+                                {
+                                    useNewConnectionsView
+                                        ? t("console:develop.features.authenticationProvider.buttons.addIDP")
+                                        : t("console:develop.features.idp.buttons.addIDP")
+                                }
+                            </PrimaryButton>
                         </Show>
                     )
                 )
