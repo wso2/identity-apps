@@ -147,6 +147,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
         }
 
         setRegExLoading(false);
+
         return new Promise((resolve, reject) => {
             if (userStoreRegEx !== "") {
                 resolve(userStoreRegEx);
