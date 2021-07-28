@@ -96,6 +96,16 @@ interface InboundOIDCFormPropsInterface extends TestableComponentInterface {
 }
 
 /**
+ * Interface for grant icons.
+ */
+interface GrantIconInterface {
+    label: string | ReactElement;
+    value: string;
+    hint?: any;
+    disabled?: boolean;
+}
+
+/**
  * Inbound OIDC protocol configurations form.
  *
  * @param {InboundOIDCFormPropsInterface} props - Props injected to the component.
@@ -586,7 +596,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                  * as optional because not all children have hint/description
                  * popups. {@see modules > forms > CheckboxChild}
                  */
-                const grant: { label: any; value: string; hint?: any; disabled?: boolean } = {
+                const grant: GrantIconInterface = {
                     label: modifyGrantTypeLabels(name, displayName),
                     value: name
                 };
