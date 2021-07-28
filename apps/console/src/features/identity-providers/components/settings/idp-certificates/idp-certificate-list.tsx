@@ -377,16 +377,16 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                                         ] }
                                         imageSize="tiny"
                                             action={ (
-                                            <Show when={ AccessControlConstants.IDP_EDIT }>
-                                                <PrimaryButton
-                                                    onClick={ () => setShowWizard(true) }
-                                                    data-testid={
-                                                        `${ testId }-emptyPlaceholder-add-certificate-button` }
-                                                    type="button"
-                                                >
-                                                    <Icon name="add"/>
-                                                    { t("console:develop.features.authenticationProvider" +
-                                                        ".buttons.addCertificate") }
+                                                <Show when={ AccessControlConstants.IDP_EDIT }>
+                                                    <PrimaryButton
+                                                        onClick={ () => setShowWizard(true) }
+                                                        data-testid={
+                                                            `${ testId }-emptyPlaceholder-add-certificate-button` }
+                                                        type="button"
+                                                    >
+                                                        <Icon name="add"/>
+                                                        { t("console:develop.features.authenticationProvider" +
+                                                            ".buttons.addCertificate") }
                                                     </PrimaryButton>
                                                 </Show>
                                         ) }

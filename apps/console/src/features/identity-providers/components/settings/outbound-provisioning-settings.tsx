@@ -419,12 +419,12 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                         ] }
                                         imageSize="tiny"
                                             action={ (
-                                            <Show when={ AccessControlConstants.IDP_EDIT }>
-                                                <PrimaryButton onClick={ () => setShowWizard(true) }
-                                                            data-testid={ `${ testId }-add-connector-button` }>
-                                                    <Icon name="add"/>
-                                                    { t("console:develop.features.authenticationProvider." +
-                                                        "buttons.addConnector") }
+                                                <Show when={ AccessControlConstants.IDP_EDIT }>
+                                                    <PrimaryButton onClick={ () => setShowWizard(true) }
+                                                                data-testid={ `${ testId }-add-connector-button` }>
+                                                        <Icon name="add"/>
+                                                        { t("console:develop.features.authenticationProvider." +
+                                                            "buttons.addConnector") }
                                                     </PrimaryButton>
                                                 </Show>
                                         ) }

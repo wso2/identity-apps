@@ -74,7 +74,6 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
-
     useEffect(() => {
         const userstore = [];
 

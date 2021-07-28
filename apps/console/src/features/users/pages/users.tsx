@@ -513,7 +513,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         >
                             <Icon name="add"/>
                             { t("console:manage.features.users.buttons.addNewUserBtn") }
-                            </PrimaryButton>
+                        </PrimaryButton>
                     </Show>
                 )
             }
