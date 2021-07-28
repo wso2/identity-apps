@@ -1332,17 +1332,17 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     children={ [
                                         {
                                             key: 1,
-                                            text: "BACK CHANNEL",
+                                            text: "Back Channel",
                                             value: LogoutMethods.BACK_CHANNEL
                                         },
                                         {
                                             key: 2,
-                                            text: "FRONT CHANNEL HTTP REDIRECT",
+                                            text: "Front Channel HTTP Redirect",
                                             value: LogoutMethods.FRONT_CHANNEL_HTTP_REDIRECT
                                         },
                                         {
                                             key: 3,
-                                            text: "FRONT CHANNEL HTTP POST",
+                                            text: "Front Channel HTTP Post",
                                             value: LogoutMethods.FRONT_CHANNEL_HTTP_POST
                                         }
                                     ]
