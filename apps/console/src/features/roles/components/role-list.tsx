@@ -17,6 +17,7 @@
  */
 
 import { RoleConstants } from "@wso2is/core/constants";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     LoadableComponentInterface,
     RoleListInterface,
@@ -38,9 +39,18 @@ import {
 } from "@wso2is/react-components";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import { AppConstants, UIConstants, getEmptyPlaceholderIllustrations, history } from "../../core";
+import {
+    AppConstants,
+    AppState,
+    FeatureConfigInterface,
+    UIConstants,
+    getEmptyPlaceholderIllustrations,
+    history
+} from "../../core";
 import { APPLICATION_DOMAIN } from "../constants";
+import { Show, AccessControlConstants } from "@wso2is/access-control";
 
 interface RoleListProps extends LoadableComponentInterface, TestableComponentInterface {
     /**
@@ -128,6 +138,9 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
     } = props;
 
     const { t } = useTranslation();
+
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ currentDeletedRole, setCurrentDeletedRole ] = useState<RolesInterface>();
@@ -221,14 +234,16 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 <EmptyPlaceholder
                     data-testid={ `${ testId }-empty-list-empty-placeholder` }
                     action={ (
-                        <PrimaryButton
-                            data-testid={ `${ testId }-empty-list-empty-placeholder-add-button` }
-                            onClick={ onEmptyListPlaceholderActionClick }
-                        >
-                            <Icon name="add"/>
-                            { t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.action",
-                                { type: "Role" }) }
-                        </PrimaryButton>
+                        <Show when={ AccessControlConstants.ROLE_WRITE }>
+                            <PrimaryButton
+                                data-testid={ `${ testId }-empty-list-empty-placeholder-add-button` }
+                                onClick={ onEmptyListPlaceholderActionClick }
+                            >
+                                <Icon name="add"/>
+                                { t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.action",
+                                    { type: "Role" }) }
+                            </PrimaryButton>
+                        </Show>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
@@ -319,16 +334,24 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
 
         return [
             {
-                icon: (): SemanticICONS => "pencil alternate",
+                icon: (): SemanticICONS =>
+                    hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes)
+                        ? "pencil alternate"
+                        : "eye",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void =>
-                    handleRoleEdit(role?.id),
-                popupText: (): string => t("console:manage.features.roles.list.popups.edit",
-                    { type: "Role" }),
+                    hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes)
+                        && handleRoleEdit(role?.id),
+                popupText: (): string =>
+                    hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes)
+                        ? t("console:manage.features.roles.list.popups.edit",
+                            { type: "Role" })
+                        : t("common:view"),
                 renderer: "semantic-icon"
             },
             {
                 hidden: (role: RolesInterface) => (role?.displayName === RoleConstants.ADMIN_ROLE ||
-                    role?.displayName === RoleConstants.ADMIN_GROUP),
+                    role?.displayName === RoleConstants.ADMIN_GROUP)
+                    || !hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.delete, allowedScopes),
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void => {
                     setCurrentDeletedRole(role);

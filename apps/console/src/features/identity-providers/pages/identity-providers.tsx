@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { GridLayout, ListLayout, PageLayout, PrimaryButton, SearchWithFilterLabels } from "@wso2is/react-components";
 import get from "lodash-es/get";
@@ -137,7 +138,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                 const moderated: AuthenticatorInterface[] = [];
 
                 response.forEach((authenticator: AuthenticatorInterface) => {
-                    
+
                     // If type is not local return.
                     if (authenticator.type !== AuthenticatorTypes.LOCAL) {
                         return;
@@ -176,7 +177,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
      * Fetches the available filter tags from the authenticators meta API.
      */
     useEffect(() => {
-        
+
         // If the listing view is legacy (list) view, no need to fetch filter tags.
         if (useNewConnectionsView !== true || !isEmpty(filterTags)) {
             return;
@@ -250,7 +251,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
     const getIdPList = (limit: number, offset: number, filter: string, append: boolean): void => {
 
         setIdPListRequestLoading(true);
-        
+
         if (append) {
             setIsPaginating(true);
         }
@@ -268,7 +269,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                     && idpList.identityProviders.length > 0)
                     ? idpList.identityProviders
                     : [];
-                
+
                 const idpListFromResponse: IdentityProviderInterface[] = response?.identityProviders
                     ? response.identityProviders
                     : [];
@@ -328,7 +329,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
         setSearchQuery(query);
         // Filter out the templates.
         getAllAuthenticators(IdentityProviderManagementUtils.buildAuthenticatorsFilterQuery(query, selectedFilters));
-        
+
         if (isEmpty(query) && isEmpty(selectedFilters)) {
             setShowFilteredList(false);
         } else {
@@ -403,19 +404,21 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                     || !(!searchQuery && idpList?.identityProviders?.length <= 0)
                 ) && (
                     (useNewConnectionsView !== undefined) && (
-                        <PrimaryButton
-                            onClick={ (): void => {
-                                history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));
-                            } }
-                            data-testid={ `${ testId }-add-button` }
-                        >
-                            <Icon name="add"/>
-                            {
-                                useNewConnectionsView
-                                    ? t("console:develop.features.authenticationProvider.buttons.addIDP")
-                                    : t("console:develop.features.idp.buttons.addIDP")
-                            }
-                        </PrimaryButton>
+                        <Show when={ AccessControlConstants.IDP_WRITE }>
+                            <PrimaryButton
+                                onClick={ (): void => {
+                                    history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));
+                                } }
+                                data-testid={ `${ testId }-add-button` }
+                            >
+                                <Icon name="add" />
+                                {
+                                    useNewConnectionsView
+                                        ? t("console:develop.features.authenticationProvider.buttons.addIDP")
+                                        : t("console:develop.features.idp.buttons.addIDP")
+                                }
+                            </PrimaryButton>
+                        </Show>
                     )
                 )
             }

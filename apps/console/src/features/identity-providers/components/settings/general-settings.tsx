@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
@@ -25,18 +26,18 @@ import { useDispatch } from "react-redux";
 import { CheckboxProps, Divider, List } from "semantic-ui-react";
 import { getApplicationDetails } from "../../../applications/api";
 import { ApplicationBasicInterface } from "../../../applications/models";
-import { 
-    deleteIdentityProvider, 
-    getIDPConnectedApps, 
-    getIdentityProviderList, 
-    updateIdentityProviderDetails 
+import {
+    deleteIdentityProvider,
+    getIDPConnectedApps,
+    getIdentityProviderList,
+    updateIdentityProviderDetails
 } from "../../api";
 import { IdentityProviderManagementConstants } from "../../constants";
-import { 
-    ConnectedAppInterface, 
-    ConnectedAppsInterface, 
-    IdentityProviderInterface, 
-    IdentityProviderListResponseInterface 
+import {
+    ConnectedAppInterface,
+    ConnectedAppsInterface,
+    IdentityProviderInterface,
+    IdentityProviderListResponseInterface
 } from "../../models";
 import { GeneralDetailsForm } from "../forms";
 import { handleGetIDPListCallError, handleIDPDeleteError, handleIDPUpdateError } from "../utils";
@@ -77,6 +78,10 @@ interface GeneralSettingsInterface extends TestableComponentInterface {
      * Callback to update the idp details.
      */
     onUpdate: (id: string) => void;
+    /**
+     * Specifies if the component should only be read-only.
+     */
+    isReadOnly: boolean;
 }
 
 /**
@@ -98,6 +103,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         isLoading,
         onDelete,
         onUpdate,
+        isReadOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -268,40 +274,47 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                         imageUrl={ imageUrl }
                         idpList={ idpList }
                         data-testid={ `${ testId }-form` }
+                        isReadOnly={ isReadOnly }
 
                     />
                     <Divider hidden />
                     { !(IdentityProviderManagementConstants.DELETING_FORBIDDEN_IDPS.includes(name)) && (
-                        <DangerZoneGroup sectionHeader={ t("console:develop.features.authenticationProvider." +
-                            "dangerZoneGroup.header") }>
-                            <DangerZone
-                                actionTitle={ t("console:develop.features.authenticationProvider." +
-                                    "dangerZoneGroup.disableIDP.actionTitle",
-                                    { state: isEnabled ? t("common:disable") : t("common:enable") }) }
-                                header={ t("console:develop.features.authenticationProvider.dangerZoneGroup." +
-                                    "disableIDP.header",
-                                    { state: isEnabled ? t("common:disable") : t("common:enable") } ) }
-                                subheader={ isEnabled ? t("console:develop.features.authenticationProvider." +
-                                    "dangerZoneGroup.disableIDP.subheader") : t("console:develop.features." +
-                                        "authenticationProvider.dangerZoneGroup.disableIDP.subheader2") }
-                                onActionClick={ undefined }
-                                toggle={ {
-                                    checked: isEnabled,
-                                    onChange: handleIdentityProviderDisable
-                                } }
-                                data-testid={ `${ testId }-disable-idp-danger-zone` }
-                            />
-                            <DangerZone
-                                actionTitle={ t("console:develop.features.authenticationProvider." +
-                                    "dangerZoneGroup.deleteIDP.actionTitle") }
-                                header={ t("console:develop.features.authenticationProvider." +
-                                    "dangerZoneGroup.deleteIDP.header") }
-                                subheader={ t("console:develop.features.authenticationProvider." +
-                                    "dangerZoneGroup.deleteIDP.subheader") }
-                                onActionClick={ handleIdentityProviderDeleteAction }
-                                data-testid={ `${ testId }-delete-idp-danger-zone` }
-                            />
-                        </DangerZoneGroup>
+                        <Show when={ AccessControlConstants.IDP_EDIT || AccessControlConstants.IDP_DELETE }>
+                            <DangerZoneGroup sectionHeader={ t("console:develop.features.authenticationProvider." +
+                                "dangerZoneGroup.header") }>
+                                <Show when={ AccessControlConstants.IDP_EDIT }>
+                                    <DangerZone
+                                        actionTitle={ t("console:develop.features.authenticationProvider." +
+                                            "dangerZoneGroup.disableIDP.actionTitle",
+                                            { state: isEnabled ? t("common:disable") : t("common:enable") }) }
+                                        header={ t("console:develop.features.authenticationProvider.dangerZoneGroup." +
+                                            "disableIDP.header",
+                                            { state: isEnabled ? t("common:disable") : t("common:enable") } ) }
+                                        subheader={ isEnabled ? t("console:develop.features.authenticationProvider." +
+                                            "dangerZoneGroup.disableIDP.subheader") : t("console:develop.features." +
+                                                "authenticationProvider.dangerZoneGroup.disableIDP.subheader2") }
+                                        onActionClick={ undefined }
+                                        toggle={ {
+                                            checked: isEnabled,
+                                            onChange: handleIdentityProviderDisable
+                                        } }
+                                        data-testid={ `${ testId }-disable-idp-danger-zone` }
+                                    />
+                                </Show>
+                                <Show when={ AccessControlConstants.IDP_DELETE }>
+                                    <DangerZone
+                                        actionTitle={ t("console:develop.features.authenticationProvider." +
+                                            "dangerZoneGroup.deleteIDP.actionTitle") }
+                                        header={ t("console:develop.features.authenticationProvider." +
+                                            "dangerZoneGroup.deleteIDP.header") }
+                                        subheader={ t("console:develop.features.authenticationProvider." +
+                                            "dangerZoneGroup.deleteIDP.subheader") }
+                                        onActionClick={ handleIdentityProviderDeleteAction }
+                                        data-testid={ `${ testId }-delete-idp-danger-zone` }
+                                    />
+                                </Show>
+                            </DangerZoneGroup>
+                        </Show>
                     ) }
                     {
                         showDeleteConfirmationModal && (

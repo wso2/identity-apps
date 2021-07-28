@@ -19,14 +19,15 @@
 
 import { FeatureAccessConfigInterface, RouteInterface } from "@wso2is/core/models";
 import { AuthenticateUtils } from "@wso2is/core/utils";
+import { AccessControlConstants } from "../access-control-constants";
 
 /**
  * A class to contain util functions related to access control
  */
 export class AccessControlUtils {
 
-    public static readonly MANAGE_GETTING_STARTED_ID: string = "manage-getting-started";
-    public static readonly DEVELOP_GETTING_STARTED_ID: string = "developer-getting-started";
+    public static readonly MANAGE_GETTING_STARTED_ID: string = "manageGettingStarted";
+    public static readonly DEVELOP_GETTING_STARTED_ID: string = "developerGettingStarted";
 
     /**
      * Util method to filter base routes based on user scopes retrieved via the token call.
@@ -34,12 +35,15 @@ export class AccessControlUtils {
      * @param routeArray Un authenticated routes array
      * @param allowedScopes user scopes
      * @param featureConfig feature scope configuration
+     * @param checkForUIResourceScopes Specifies if the UI resource scope should be considered
+     *
      * @returns filtered route array based on the user scopes
      */
     public static getAuthenticatedRoutes(
         routeArray: RouteInterface[],
         allowedScopes: string,
-        featureConfig: any // TODO : Properly map FeatureConfigInterface type
+        featureConfig: any, // TODO : Properly map FeatureConfigInterface type
+        checkForUIResourceScopes?: boolean
     ): RouteInterface[] {
 
         const authenticatedRoutes: RouteInterface[] = new Array<RouteInterface>();
@@ -47,21 +51,17 @@ export class AccessControlUtils {
         routeArray.map((route: RouteInterface) => {
             const feature: FeatureAccessConfigInterface = featureConfig[route.id];
 
-            if (!feature
-                && (route.id === this.MANAGE_GETTING_STARTED_ID || route.id === this.DEVELOP_GETTING_STARTED_ID)) {
-                    authenticatedRoutes.push(route);
-
-                    return;
-            }
-
             if (feature && feature.enabled) {
                 let shouldShowRoute: boolean = false;
-                for (const [ , value ] of Object.entries(feature?.scopes)) {
-                    if (value && value instanceof Array) {
-                        if (AuthenticateUtils.hasScopes(value, allowedScopes)) {
-                            shouldShowRoute = true;
-                        }
-                    }
+                if (
+                    AuthenticateUtils.hasScopes(feature?.scopes.read, allowedScopes) &&
+                    (!checkForUIResourceScopes ||
+                        !feature?.scopes?.feature ||
+                        (feature?.scopes?.feature &&
+                            AuthenticateUtils.hasScopes(feature?.scopes.feature, allowedScopes)) ||
+                        AuthenticateUtils.hasScopes([AccessControlConstants.FULL_UI_SCOPE], allowedScopes))
+                ) {
+                    shouldShowRoute = true;
                 }
 
                 if (route.showOnSidePanel && shouldShowRoute) {
@@ -69,10 +69,6 @@ export class AccessControlUtils {
 
                     return;
                 }
-            }
-
-            if (route.showOnSidePanel) {
-                authenticatedRoutes.push(route);
             }
 
         });
@@ -87,28 +83,39 @@ export class AccessControlUtils {
      * @param developRoutes routes related to develop section
      * @param allowedScopes allowed scopes
      * @param featureConfig feature config
+     * @param checkForUIResourceScopes Specifies if the UI resource scope should be considered
+     *
      * @returns
      */
     public static getDisabledTab(
-        manageRoutes: RouteInterface[], developRoutes: RouteInterface[],
-        allowedScopes: string, featureConfig: any // TODO : Properly map FeatureConfigInterface type
+        manageRoutes: RouteInterface[],
+        developRoutes: RouteInterface[],
+        allowedScopes: string,
+        featureConfig: any, // TODO : Properly map FeatureConfigInterface type
+        checkForUIResourceScopes?: boolean
     ): string {
 
         let isManageTabDisabled = false;
         let isDevelopTabDisabled = false;
 
-        const authenticatedManageRoutes = this.getAuthenticatedRoutes(manageRoutes, allowedScopes, featureConfig);
-        const authenticatedDevelopRoutes = this.getAuthenticatedRoutes(developRoutes, allowedScopes, featureConfig);
+        const authenticatedManageRoutes = this.getAuthenticatedRoutes(
+            manageRoutes,
+            allowedScopes,
+            featureConfig,
+            checkForUIResourceScopes
+        );
+        const authenticatedDevelopRoutes = this.getAuthenticatedRoutes(
+            developRoutes,
+            allowedScopes,
+            featureConfig,
+            checkForUIResourceScopes
+        );
 
-        if (authenticatedManageRoutes.length < 2
-            || (authenticatedManageRoutes.length === 1
-                && authenticatedManageRoutes[0].id !== this.MANAGE_GETTING_STARTED_ID)) {
+        if (authenticatedManageRoutes.length < 1) {
             isManageTabDisabled = true;
         }
 
-        if (authenticatedDevelopRoutes.length < 2
-            || (authenticatedDevelopRoutes.length === 1
-                && authenticatedDevelopRoutes[0].id !== this.DEVELOP_GETTING_STARTED_ID)) {
+        if (authenticatedDevelopRoutes.length < 1) {
             isDevelopTabDisabled = true;
         }
 

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -370,24 +371,26 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                     </Header>
                 </Table.Cell>
                 <Table.Cell textAlign="right">
-                    <Popup
-                        trigger={ (
-                            <Icon
-                            link={ true }
-                            data-testid={ `${ testId }-user-delete-button` }
-                            className="list-icon pr-4"
-                            size="large"
-                            color="grey"
-                            name="trash alternate"
-                            onClick={ () => {
-                                deleteGroupUser(user);
-                            } }                    
-                            />
-                        ) }
-                        position="top right"
-                        content={ t("common:remove") }
+                    <Show when={ AccessControlConstants.GROUP_EDIT }>
+                        <Popup
+                            trigger={ (
+                                <Icon
+                                link={ true }
+                                data-testid={ `${ testId }-user-delete-button` }
+                                className="list-icon pr-4"
+                                size="large"
+                                color="grey"
+                                name="trash alternate"
+                                onClick={ () => {
+                                    deleteGroupUser(user);
+                                } }
+                                />
+                            ) }
+                            position="top right"
+                            content={ t("common:remove") }
                         inverted
-                    />
+                        />
+                    </Show>
                 </Table.Cell>
             </Table.Row>
         );

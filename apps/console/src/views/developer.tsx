@@ -46,6 +46,7 @@ import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
+import { commonConfig } from "../extensions";
 import { getProfileInformation } from "../features/authentication/store";
 import {
     AppConstants,
@@ -136,20 +137,22 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
         let routes: RouteInterface[] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
             getDeveloperViewRoutes(),
             featureConfig,
-            allowedScopes);
+            allowedScopes,
+            commonConfig.checkForUIResourceScopes);
 
         // TODO : Remove this logic once getting started pages are removed.
-        if (routes.length === 2 
-            && routes.filter(route => route.id === AccessControlUtils.DEVELOP_GETTING_STARTED_ID).length > 0 
+        if (routes.length === 2
+            && routes.filter(route => route.id === AccessControlUtils.DEVELOP_GETTING_STARTED_ID).length > 0
                 && routes.filter(route => route.id === "404").length > 0) {
                     routes = routes.filter(route => route.id === "404");
         }
 
-        const controlledRoutes = AccessControlUtils.getAuthenticatedRoutes(routes, allowedScopes, featureConfig);
+        const controlledRoutes = AccessControlUtils.getAuthenticatedRoutes(
+            routes, allowedScopes, featureConfig, commonConfig.checkForUIResourceScopes);
         const sanitizedManageRoutes: RouteInterface[] = CommonRouteUtils.sanitizeForUI(cloneDeep(manageRoutes));
 
         const tab: string = AccessControlUtils.getDisabledTab(
-            sanitizedManageRoutes, filteredRoutes, allowedScopes, featureConfig);
+            sanitizedManageRoutes, filteredRoutes, allowedScopes, featureConfig, commonConfig.checkForUIResourceScopes);
 
         if (tab === "MANAGE") {
             dispatch(setManageVisibility(false));
