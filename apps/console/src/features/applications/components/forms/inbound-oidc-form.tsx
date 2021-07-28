@@ -24,6 +24,7 @@ import {
     Code,
     ConfirmationModal,
     CopyInputField,
+    GenericIcon,
     Heading,
     Hint,
     LinkButton,
@@ -61,6 +62,7 @@ import {
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
 import { CertificateFormFieldModal } from "../modals";
+import { getGeneralIcons } from "../../configs";
 
 /**
  * Proptypes for the inbound OIDC form component.
@@ -91,6 +93,16 @@ interface InboundOIDCFormPropsInterface extends TestableComponentInterface {
      * Application template.
      */
     template?: ApplicationTemplateListItemInterface;
+}
+
+/**
+ * Interface for grant icons.
+ */
+interface GrantIconInterface {
+    label: string | ReactElement;
+    value: string;
+    hint?: any;
+    disabled?: boolean;
 }
 
 /**
@@ -498,21 +510,30 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     };
 
     /**
-     * Modifies the grant type label string value. For now we only concatenate
-     * some extra value to the `implicit` field. If you need to do the same for
-     * other checkboxes label then add a condition and bind the values.
+     * Modifies the grant type label. For `implicit` and `password` fields,
+     * a warning icon is concatenated with the label.
      *
      * @param value {string} checkbox key {@link TEMPLATE_WISE_ALLOWED_GRANT_TYPES}
      * @param label {string} mapping label for value
      */
-    const modifyGrantTypeLabels = (value: string, label: string): string => {
-        if (value === ApplicationManagementConstants.IMPLICIT_GRANT) {
-            return t("console:develop.features.applications.forms.inboundOIDC.fields.grant.children.implicit.label",
-                { grantType: label });
-        }
-        if (value === ApplicationManagementConstants.PASSWORD) {
-            return t("console:develop.features.applications.forms.inboundOIDC.fields.grant.children.password.label",
-                { grantType: label });
+    const modifyGrantTypeLabels = (value: string, label: string) => {
+        if (value === ApplicationManagementConstants.IMPLICIT_GRANT ||
+            value === ApplicationManagementConstants.PASSWORD) {
+            return (
+                <>
+                    <label>
+                        { label }
+                        <GenericIcon
+                            icon={ getGeneralIcons().warning }
+                            defaultIcon
+                            colored
+                            transparent
+                            spaced="left"
+                            floated="right"
+                        />
+                    </label>
+                </>
+            );
         }
         return label;
     };
@@ -575,7 +596,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                  * as optional because not all children have hint/description
                  * popups. {@see modules > forms > CheckboxChild}
                  */
-                const grant: { label: string; value: string; hint?: any; disabled?: boolean } = {
+                const grant: GrantIconInterface = {
                     label: modifyGrantTypeLabels(name, displayName),
                     value: name
                 };
