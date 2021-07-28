@@ -612,7 +612,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     deleteApplication: {
-                        assertionHint: "Veuillez taper <1>{{ name }}</1> pour confirmer.",
+                        assertionHint: "Veuillez confirmer votre action.",
                         content: "Toutes les applications qui en dépendent risquent également " +
                             "de ne plus fonctionner. Veuillez procéder avec prudence.",
                         header: "Etes-vous sûr ?",
@@ -4322,7 +4322,7 @@ export const console: ConsoleNS = {
                             name: "attribut {{type}}"
                         },
                         header: "Êtes-vous sûr ?",
-                        hint: "Veuillez saisir <1>{{assertion}}</1> pour confirmer.",
+                        hint: "Veuillez confirmer votre action.",
                         local: {
                             message: "Si vous supprimez cet attribut local, les données de l'utilisateur appartenant "
                                 + "à cet attribut seront également supprimés.",
@@ -4387,7 +4387,7 @@ export const console: ConsoleNS = {
                         content: "Si vous supprimez cet attribut local, les données utilisateur appartenant à cet attribut "
                             + "seront également supprimés. Veuillez procéder avec prudence.",
                         header: "Êtes-vous sûr ?",
-                        hint: "Veuillez saisir <1>{{nom}}</1> pour confirmer.",
+                        hint: "Veuillez confirmer votre action.",
                         message: "Cette action est irréversible et supprimera définitivement l'attribut local sélectionné.",
                         primaryAction: "Confirmer"
                     },
@@ -5656,7 +5656,7 @@ export const console: ConsoleNS = {
                             update: "Mettre à jour"
                         },
                         confirmation: {
-                            assertionHint: "Veuillez taper <1>{{ roleName }}</1> pour confirmer.",
+                            assertionHint: "Veuillez confirmer votre action.",
                             content: "Si vous supprimez ce {{type}}, les permissions qui lui sont attachées seront supprimées et " +
                                 "les utilisateurs qui y sont rattachés ne pourront plus effectuer les actions prévues qui étaient " +
                                 "précédemment autorisées. Veuillez procéder avec prudence.",
@@ -5721,7 +5721,7 @@ export const console: ConsoleNS = {
                     },
                     confirmations: {
                         deleteItem: {
-                            assertionHint: "Veuillez taper <1>{{ roleName }}</1> pour confirmer.",
+                            assertionHint: "Veuillez confirmer votre action.",
                             content: "Si vous supprimez ce {{type}}, les permissions qui y sont attachées seront supprimées et " +
                                 "les utilisateurs qui y sont rattachés ne pourront plus effectuer les actions prévues qui étaient " +
                                 "précédemment autorisées. Veuillez procéder avec prudence.",
@@ -5952,7 +5952,7 @@ export const console: ConsoleNS = {
             user: {
                 deleteUser: {
                     confirmationModal: {
-                        assertionHint: "Veuillez saisir <1>{{ userName }}</1> pour confirmer.",
+                        assertionHint: "Veuillez confirmer votre action.",
                         content: "Si vous supprimez cet utilisateur, l'utilisateur ne pourra pas se " +
                             "connecter à Mon compte ou à toute autre application à laquelle l'utilisateur " +
                             "était abonné auparavant. Veuillez procéder avec prudence.",

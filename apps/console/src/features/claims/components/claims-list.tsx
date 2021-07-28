@@ -430,15 +430,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 onClose={ closeDeleteConfirm }
                 type="warning"
                 open={ deleteConfirm }
-                assertion={ listItem.assertion }
-                assertionHint={
-                    <p>
-                        <Trans i18nKey="console: manage.featuresclaims.list.confirmation.hint">
-                            Please type <strong>{ { assertion: listItem.assertion } }</strong> to confirm.
-                        </Trans>
-                    </p>
-                }
-                assertionType="input"
+                assertionHint={ t("console:manage.features.claims.list.confirmation.hint") }
+                assertionType="checkbox"
                 primaryAction={ t("console:manage.features.claims.list.confirmation.action") }
                 secondaryAction={ t("common:cancel") }
                 onSecondaryActionClick={ (): void => {

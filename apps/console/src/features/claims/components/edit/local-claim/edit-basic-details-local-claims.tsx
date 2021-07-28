@@ -109,15 +109,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             onClose={ (): void => setConfirmDelete(false) }
             type="warning"
             open={ confirmDelete }
-            assertion={ claim.displayName }
-            assertionHint={
-                <p>
-                    <Trans i18nKey="console:manage.features.claims.local.confirmation.hint">
-                        Please type <strong>{ { name: claim.displayName } }</strong> to confirm.
-                    </Trans>
-                </p>
-            }
-            assertionType="input"
+            assertionHint={ t("console:manage.features.claims.local.confirmation.hint") }
+            assertionType="checkbox"
             primaryAction={ t("console:manage.features.claims.local.confirmation.primaryAction") }
             secondaryAction={ t("common:cancel") }
             onSecondaryActionClick={ (): void => setConfirmDelete(false) }

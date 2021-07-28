@@ -394,21 +394,8 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                     onClose={ (): void => setShowDeleteConfirmationModal(false) }
                     type="warning"
                     open={ showGroupDeleteConfirmation }
-                    assertion={ currentDeletedGroup.displayName }
-                    assertionHint={
-                        (
-                            <p>
-                                <Trans
-                                    i18nKey={ "console:manage.features.roles.list.confirmations.deleteItem." +
-                                    "assertionHint" }
-                                    tOptions={ { roleName: currentDeletedGroup.displayName } }
-                                >
-                                    Please type <strong>{ currentDeletedGroup.displayName }</strong> to confirm.
-                                </Trans>
-                            </p>
-                        )
-                    }
-                    assertionType="input"
+                    assertionHint={ t("console:manage.features.roles.list.confirmations.deleteItem.assertionHint") }
+                    assertionType="checkbox"
                     primaryAction="Confirm"
                     secondaryAction="Cancel"
                     onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
