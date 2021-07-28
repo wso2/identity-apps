@@ -996,12 +996,13 @@ export const console: ConsoleNS = {
                                             heading: "Step-based configuration",
                                             hint: "Create a user login flow by dragging authenticators on to the " +
                                                 "relevant steps.",
-                                            secondFactorDisabled: "Second factor authenticators can only be used if " +
-                                                "<1>Username & Password</1> or any other handler such as <3>" +
-                                                "Identifier First</3> is present in a previous step, that can " +
-                                                "identify the user.",
+                                            secondFactorDisabled: "Les authentificateurs de deuxième facteur ne " +
+                                                "peuvent être utilisés que si <1>Nom d'utilisateur et mot de " +
+                                                "passe</1>, <3>Connexion sociale</3> ou tout autre gestionnaire " +
+                                                "tel que <5>Identifier First</5> qui peut gérer ces facteurs sont " +
+                                                "présents dans une étape précédente.",
                                             secondFactorDisabledInFirstStep: "Second factor authenticators can " +
-                                                "not be used in the first step"
+                                                "not be used in the first step."
                                         }
                                     }
                                 },
