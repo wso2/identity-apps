@@ -25,6 +25,7 @@ import { useSelector } from "react-redux";
 import { Button, Grid, Icon, List, Modal, Popup } from "semantic-ui-react";
 import { deleteFederatedAssociation, getFederatedAssociations } from "../../api/federated-associations";
 import { getSettingsSectionIcons } from "../../configs";
+import { commonConfig } from "../../extensions";
 import {
     AlertInterface,
     AlertLevels, AuthStateInterface
@@ -101,7 +102,7 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
      */
     useEffect(() => {
         if (disableExternalLoginsOnEmpty) {
-            if (!federatedAssociations) {
+            if (federatedAssociations) {
                 setShowExternalLogins(false);
             }
         }
@@ -272,5 +273,6 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
  * See type definitions in {@link FederatedAssociationsPropsInterface}
  */
 FederatedAssociations.defaultProps = {
-    "data-testid": "federated-associations"
+    "data-testid": "federated-associations",
+    disableExternalLoginsOnEmpty: commonConfig.personalInfoPage.externalLogins.disableExternalLoginsOnEmpty
 };

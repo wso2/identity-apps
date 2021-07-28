@@ -82,11 +82,11 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
      */
     useEffect(() => {
         // Sets user's source of sign up if the user is a federated user.
-        const userSourceId = profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
+        const userSource = profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
             ["userSourceId"];
 
-        if (isNonLocalCredentialUser && userSourceId) {
-            setUserSource(userSourceId);
+        if (isNonLocalCredentialUser && userSource) {
+            setUserSource(userSource);
         }
     }, [profileDetails?.profileInfo, isNonLocalCredentialUser]);
 
