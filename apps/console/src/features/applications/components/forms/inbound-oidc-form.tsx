@@ -45,6 +45,8 @@ import { AppState, ConfigReducerStateInterface } from "../../../core";
 import { ApplicationManagementConstants } from "../../constants";
 import SinglePageApplicationTemplate
     from "../../data/application-templates/templates/single-page-application/single-page-application.json";
+import OIDCWebApplicationTemplate
+    from "../../data/application-templates/templates/oidc-web-application/oidc-web-application.json";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
 import {
@@ -191,6 +193,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const enableRequestObjectSignatureValidation = useRef<HTMLElement>();
     const scopeValidator = useRef<HTMLElement>();
     const [ isSPAApplication, setSPAApplication ] = useState<boolean>(false);
+    const [ isOIDCWebApplication, setOIDCWebApplication ] = useState<boolean>(false);
     const [ isCustomApplication, setCustomApplication ] = useState<boolean>(false);
 
     /**
@@ -261,6 +264,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
     };
 
+    /**
+     * Check whether the application is a Single Page Application
+     */
     useEffect(() => {
         if (!template?.id || !SinglePageApplicationTemplate?.id) {
             return;
@@ -268,6 +274,19 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
         if (template.id == SinglePageApplicationTemplate.id) {
             setSPAApplication(true);
+        }
+    }, [ template ]);
+
+    /**
+     * Check whether the application is an OIDC Web Application
+     */
+    useEffect(() => {
+        if (!template?.id || !OIDCWebApplicationTemplate?.id) {
+            return;
+        }
+
+        if (template.id == OIDCWebApplicationTemplate.id) {
+            setOIDCWebApplication(true);
         }
     }, [ template ]);
 
@@ -489,7 +508,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         label: "Opaque",
                         value: ele
                     });
-                } else if ((isSPAApplication) && isBinding && ele === "cookie") {
+                // Cookie binding was hidden from the UI for SPAs & Traditional OIDC with https://github.com/wso2/identity-apps/pull/2254
+                } else if ((isSPAApplication || isOIDCWebApplication) && isBinding && ele === "cookie") {
                     return false;
                 } else {
                     allowedList.push({
