@@ -1726,7 +1726,7 @@ export const console: ConsoleNS = {
                                         label: "Audiences",
                                         placeholder: "Enter audience",
                                         validations: {
-                                            invalid: "Please add valid URL"
+                                            invalid: "Please add valid URI"
                                         }
                                     },
                                     nameIdFormat: {
@@ -1743,7 +1743,7 @@ export const console: ConsoleNS = {
                                         label: "Recipients",
                                         placeholder: "Enter recipient",
                                         validations: {
-                                            invalid: "Please add valid URL"
+                                            invalid: "Please add valid URI"
                                         }
                                     }
                                 },
