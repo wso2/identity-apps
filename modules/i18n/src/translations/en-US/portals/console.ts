@@ -1780,7 +1780,10 @@ export const console: ConsoleNS = {
                                         label: "Enable encryption",
                                         validations: {
                                             empty: "This is a required field."
-                                        }
+                                        },
+                                        hint: "Select to encrypt the SAML2 Assertions returned after authentication. " +
+                                            "To use encryption configure the certificate of your application" +
+                                            " in the Certificate section below."
                                     },
                                     assertionEncryptionAlgorithm: {
                                         label: "Assertion encryption algorithm",
@@ -2683,6 +2686,15 @@ export const console: ConsoleNS = {
                                     }
                                 }
                             }
+                        }
+                    },
+                    applicationCertificateWizard: {
+                        heading: "Add New Certificate",
+                        subHeading: "Add new certificate to the application",
+                        emptyPlaceHolder: {
+                            title: "No certificate",
+                            description1: "This Application has no certificate added.",
+                            description2: "Add a certificate to view it here."
                         }
                     }
                 }

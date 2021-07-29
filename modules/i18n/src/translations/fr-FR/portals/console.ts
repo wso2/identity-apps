@@ -1809,7 +1809,11 @@ export const console: ConsoleNS = {
                                         label: "Activer",
                                         validations: {
                                             empty: "Ce champ est obligatoire."
-                                        }
+                                        },
+                                        hint: "Sélectionnez pour chiffrer les assertions SAML2 renvoyées après " +
+                                            "l'authentification. Pour utiliser le cryptage, configurez le " +
+                                            "certificat de votre application dans la section Certificat ci-dessous."
+
                                     },
                                     assertionEncryptionAlgorithm: {
                                         label: "Algorithme de chiffrement des assertions",
@@ -2699,6 +2703,15 @@ export const console: ConsoleNS = {
                                     }
                                 }
                             }
+                        }
+                    },
+                    applicationCertificateWizard: {
+                        heading: "Ajouter un nouveau certificat",
+                        subHeading: "Ajouter un nouveau certificat à l'application",
+                        emptyPlaceHolder: {
+                            title: "Pas de certificat",
+                            description1: "Cette application n'a pas de certificat ajouté.",
+                            description2: "Ajoutez un certificat pour le voir ici"
                         }
                     }
                 }

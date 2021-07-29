@@ -19,7 +19,7 @@
 import { AlertInterface, AlertLevels, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils, URLUtils } from "@wso2is/core/utils";
-import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import { Field, FormValue, Forms, useTrigger, Validation } from "@wso2is/forms";
 import {
     Code,
     ConfirmationModal,
@@ -65,6 +65,7 @@ import {
 import { ApplicationManagementUtils } from "../../utils";
 import { CertificateFormFieldModal } from "../modals";
 import { getGeneralIcons } from "../../configs";
+import { ApplicationCertificateWrapper } from "../settings/certificate";
 
 /**
  * Proptypes for the inbound OIDC form component.
@@ -195,6 +196,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ isSPAApplication, setSPAApplication ] = useState<boolean>(false);
     const [ isOIDCWebApplication, setOIDCWebApplication ] = useState<boolean>(false);
     const [ isCustomApplication, setCustomApplication ] = useState<boolean>(false);
+
+    const [ finalCertValue, setFinalCertValue ] = useState<string>(undefined);
+    const [ selectedCertType, setSelectedCertType ] = useState<CertificateTypeInterface>(certificate?.type);
+    const [ isCertAvailableForEncrypt, setCertAvailableForEncrypt ] = useState(false);
+
+    const [ triggerCertSubmit, setTriggerCertSubmit ] = useTrigger();
 
     /**
      * Reset the encryption field initial values if its
@@ -392,6 +399,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
         }
     }, [ certificate ]);
+
+    /**
+     * Set certificate available for encryption or not.
+     */
+    useEffect(()=> {
+        if (isEmpty(finalCertValue) || selectedCertType === CertificateTypeInterface.NONE) {
+            setCertAvailableForEncrypt(false);
+        } else {
+            setCertAvailableForEncrypt(true);
+        }
+    },[ finalCertValue, selectedCertType ]);
 
     /**
      * Handle grant type change.
@@ -762,10 +780,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             idToken: {
                 audience: audienceUrls !== "" ? audienceUrls.split(",") : [],
                 encryption: {
-                    algorithm: isEncryptionEnabled ?
+                    algorithm: isEncryptionEnabled && isCertAvailableForEncrypt ?
                         values.get("algorithm") : metadata.idTokenEncryptionAlgorithm.defaultValue,
-                    enabled: values.get("encryption")?.includes("enableEncryption"),
-                    method: isEncryptionEnabled ?
+                    enabled: isCertAvailableForEncrypt && values.get("encryption")?.includes("enableEncryption"),
+                    method: isEncryptionEnabled && isCertAvailableForEncrypt ?
                         values.get("method") : metadata.idTokenEncryptionMethod.defaultValue
                 },
                 expiryInSeconds: Number(values.get("idExpiryInSeconds"))
@@ -845,8 +863,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             general: {
                 advancedConfigurations: {
                     certificate: {
-                        type: values.get("certificateType"),
-                        value: isPEMSelected ? values.get("certificateValue") : values.get("jwksValue")
+                        type: (selectedCertType !== CertificateTypeInterface.NONE) ? selectedCertType: certificate?.type,
+                        value: (selectedCertType !== CertificateTypeInterface.NONE) ? finalCertValue: ""
                     }
                 }
             },
@@ -1773,6 +1791,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     name="encryption"
                                     label=""
                                     required={ false }
+                                    disabled={ !isCertAvailableForEncrypt }
                                     requiredErrorMessage={
                                         t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
                                             ".fields.encryption.validations.empty")
@@ -1813,7 +1832,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         token using the public key of your application. To use encryption,
                                         configure the JWKS endpoint or the certificate of your application in the
                                         Certificate section below.
-                        </Trans>
+                                    </Trans>
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
@@ -1826,14 +1845,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
                                             ".fields.algorithm.label")
                                     }
-                                    required={ isEncryptionEnabled }
+                                    required={ isEncryptionEnabled && isCertAvailableForEncrypt }
                                     requiredErrorMessage={
                                         t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
                                             ".fields.algorithm.validations.empty")
                                     }
                                     type="dropdown"
+                                    disabled={ !isEncryptionEnabled || !isCertAvailableForEncrypt }
                                     default={
-                                        isEncryptionEnabled ? (initialValues?.idToken
+                                        isEncryptionEnabled && isCertAvailableForEncrypt ? (initialValues?.idToken
                                             ? initialValues.idToken.encryption.algorithm
                                             : metadata.idTokenEncryptionAlgorithm.defaultValue) : ""
                                     }
@@ -1842,11 +1862,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             ".idToken.fields.algorithm.placeholder")
                                     }
                                     children={ getAllowedList(metadata.idTokenEncryptionAlgorithm) }
-                                    disabled={ !isEncryptionEnabled }
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-encryption-algorithm-dropdown` }
                                 />
-                                <Hint disabled={ !isEncryptionEnabled }>
+                                <Hint disabled={ !isEncryptionEnabled || !isCertAvailableForEncrypt }>
                                     <Trans
                                         i18nKey={
                                             "console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
@@ -1854,8 +1873,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         }
                                     >
                                         The dropdown contains the supported <Code withBackground>id_token</Code>
-                            encryption algorithms.
-                        </Trans>
+                                        encryption algorithms.
+                                    </Trans>
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
@@ -1864,18 +1883,19 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Field
                                     ref={ method }
                                     name="method"
+                                    disabled={ !isEncryptionEnabled || !isCertAvailableForEncrypt }
                                     label={
                                         t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                             ".idToken.fields.method.label")
                                     }
-                                    required={ isEncryptionEnabled }
+                                    required={ isEncryptionEnabled && isCertAvailableForEncrypt }
                                     requiredErrorMessage={
                                         t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
                                             ".fields.method.validations.empty")
                                     }
                                     type="dropdown"
                                     default={
-                                        isEncryptionEnabled ? (initialValues?.idToken
+                                        isEncryptionEnabled && isCertAvailableForEncrypt ? (initialValues?.idToken
                                             ? initialValues.idToken.encryption.method
                                             : metadata.idTokenEncryptionMethod.defaultValue) : ""
                                     }
@@ -1884,11 +1904,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             ".fields.method.placeholder")
                                     }
                                     children={ getAllowedList(metadata.idTokenEncryptionMethod) }
-                                    disabled={ !isEncryptionEnabled }
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-encryption-method-dropdown` }
                                 />
-                                <Hint disabled={ !isEncryptionEnabled }>
+                                <Hint disabled={ !isEncryptionEnabled || !isCertAvailableForEncrypt }>
                                     <Trans
                                         i18nKey={
                                             "console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
@@ -1897,7 +1916,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     >
                                         The dropdown contains the supported <Code withBackground>id_token</Code>
                                         encryption methods.
-                        </Trans>
+                                    </Trans>
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
@@ -2131,201 +2150,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     </Grid.Column>
                 </Grid.Row>
             }
-
-            { /* Certificates */ }
-            {
-                (!isSPAApplication && applicationConfig.inboundOIDCForm.showCertificates) &&
-                (
-                    <>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Divider />
-                            </Grid.Column>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Heading as="h4">
-                                    {
-                                        t("console:develop.features.applications.forms." +
-                                            "advancedConfig.sections.certificate.heading") }
-                                </Heading>
-                                <Field
-                                    label={
-                                        t("console:develop.features.applications.forms." +
-                                            "advancedConfig.sections.certificate.fields.type.label")
-                                    }
-                                    name="certificateType"
-                                    default={ CertificateTypeInterface.JWKS }
-                                    listen={
-                                        (values) => {
-                                            setPEMSelected(values.get("certificateType") === "PEM");
-                                        }
-                                    }
-                                    type="radio"
-                                    value={ certificate?.type }
-                                    children={ [
-                                        {
-                                            hint: {
-                                                content: t("console:develop.features.applications.forms." +
-                                                    "advancedConfig.sections.certificate.fields.jwksValue.description"),
-                                                header: t("console:develop.features.applications.forms." +
-                                                    "advancedConfig.sections.certificate.fields.type.children." +
-                                                    "jwks.label")
-                                            },
-                                            label: t("console:develop.features.applications.forms." +
-                                                "advancedConfig.sections.certificate.fields.type.children.jwks.label"),
-                                            value: CertificateTypeInterface.JWKS
-                                        },
-                                        {
-                                            hint: {
-                                                content: t("console:develop.features.applications.forms." +
-                                                    "advancedConfig.sections.certificate.fields.pemValue.description"),
-                                                header: t("console:develop.features.applications.forms." +
-                                                    "advancedConfig.sections.certificate.fields.type.children." +
-                                                    "pem.label")
-                                            },
-                                            label: t("console:develop.features.applications.forms." +
-                                                "advancedConfig.sections.certificate.fields.type.children.pem.label"),
-                                            value: CertificateTypeInterface.PEM
-                                        }
-                                    ] }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-certificate-type-radio-group` }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                {
-                                    isPEMSelected
-                                        ?
-                                        (
-                                            <>
-                                                <Field
-                                                    name="certificateValue"
-                                                    label={
-                                                        t("console:develop.features.applications.forms.advancedConfig" +
-                                                            ".sections.certificate.fields.pemValue.label")
-                                                    }
-                                                    required={ isEncryptionEnabled }
-                                                    requiredErrorMessage={
-                                                        t("console:develop.features.applications.forms.advancedConfig" +
-                                                            ".sections.certificate.fields.pemValue.validations.empty")
-                                                    }
-                                                    placeholder={
-                                                        ApplicationManagementConstants.PEM_CERTIFICATE_PLACEHOLDER
-                                                    }
-                                                    type="textarea"
-                                                    validation={ (value: string, validation: Validation) => {
-                                                        if (applicationConfig.inboundOIDCForm
-                                                            .shouldValidateCertificate &&
-                                                            !CertificateManagementUtils.decodeCertificate(value)) {
-                                                            validation.isValid = false;
-                                                            validation.errorMessages.push(
-                                                                t(
-                                                                    "console:develop.features.applications.forms" +
-                                                                    ".advancedConfig.sections.certificate.fields" +
-                                                                    ".pemValue.validations.invalid"
-                                                                )
-                                                            );
-                                                        }
-                                                    } }
-                                                    value={
-                                                        (CertificateTypeInterface.PEM === certificate?.type)
-                                                        && certificate?.value
-                                                    }
-                                                    listen={
-                                                        (values) => {
-                                                            setPEMValue(
-                                                                values.get("certificateValue") as string
-                                                            );
-                                                        }
-                                                    }
-                                                    readOnly={ readOnly }
-                                                    data-testid={ `${ testId }-certificate-textarea` }
-                                                />
-                                                < Hint>
-                                                    {
-                                                        t("console:develop.features.applications.forms." +
-                                                            "advancedConfig.sections.certificate.fields.pemValue.hint")
-                                                    }
-                                                </Hint>
-                                                <LinkButton
-                                                    className="certificate-info-link-button"
-                                                    onClick={ (e: MouseEvent<HTMLButtonElement>) => {
-                                                        e.preventDefault();
-                                                        viewCertificate();
-                                                    } }
-                                                    disabled={ isEmpty(PEMValue) }
-                                                    data-testid={ `${ testId }-certificate-info-button` }
-                                                >
-                                                    {
-                                                        t("console:develop.features.applications.forms." +
-                                                            "advancedConfig.sections.certificate.fields.pemValue." +
-                                                            "actions.view")
-                                                    }
-                                                </LinkButton>
-                                            </>
-                                        )
-                                        : (
-                                            <>
-                                                <Field
-                                                    name="jwksValue"
-                                                    label={
-                                                        t("console:develop.features.applications.forms.advancedConfig" +
-                                                            ".sections.certificate.fields.jwksValue.label")
-                                                    }
-                                                    required={ isEncryptionEnabled }
-                                                    requiredErrorMessage={
-                                                        t("console:develop.features.applications.forms.advancedConfig" +
-                                                            ".sections.certificate.fields.jwksValue.validations.empty")
-                                                    }
-                                                    placeholder={
-                                                        t("console:develop.features.applications.forms.advancedConfig" +
-                                                            ".sections.certificate.fields.jwksValue.placeholder") }
-                                                    type="text"
-                                                    validation={ (value: string, validation: Validation) => {
-                                                        if (!FormValidation.url(value)) {
-                                                            validation.isValid = false;
-                                                            validation.errorMessages.push(
-                                                                t(
-                                                                    "console:develop.features.applications.forms" +
-                                                                    ".advancedConfig.sections.certificate.fields" +
-                                                                    ".jwksValue.validations.invalid"
-                                                                )
-                                                            );
-                                                        }
-                                                    } }
-                                                    value={
-                                                        (CertificateTypeInterface.JWKS === certificate?.type)
-                                                        && certificate?.value
-                                                    }
-                                                    readOnly={ readOnly }
-                                                    data-testid={ `${ testId }-jwks-input` }
-                                                />
-                                            </>
-                                        )
-                                }
-                                <Hint>
-                                    { t("console:develop.features.applications.forms.advancedConfig.sections" +
-                                        ".certificate.hint", {
-                                        productName: config.ui.productName
-                                    }) }
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </>
-                )
-            }
-            {
-                showCertificateModal && (
-                    <CertificateFormFieldModal
-                        open={ showCertificateModal }
-                        certificate={ certificateDisplay }
-                        onClose={ () => {
-                            setShowCertificateModal(false);
-                        } }
-                    />
-                )
-            }
+            {/* Certificate Section */}
+            <ApplicationCertificateWrapper
+                updateCertFinalValue={ setFinalCertValue }
+                updateCertType={ setSelectedCertType }
+                certificate={ certificate }
+                readOnly={ false }
+                hidden={ isSPAApplication || !(applicationConfig.inboundOIDCForm.showCertificates) }
+                isRequired={ true }
+                triggerSubmit={ triggerCertSubmit }
+            />
             {
                 !readOnly && (
                     <Grid.Row columns={ 1 }>
@@ -2665,6 +2499,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const handleFormSubmit = (values: Map<string, FormValue>): void => {
 
         let isExpiryTimesTooLowModalShown: boolean = false;
+
+        setTriggerCertSubmit();
+        if (selectedCertType !== CertificateTypeInterface.NONE && isEmpty(finalCertValue)) {
+            return;
+        }
 
         if (showCallbackURLField) {
             submitUrl((url: string) => {
