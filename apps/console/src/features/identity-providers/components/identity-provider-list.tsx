@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -32,13 +34,15 @@ import {
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Divider, Header, Icon, List, SemanticICONS } from "semantic-ui-react";
 import { handleIDPDeleteError } from "./utils";
 import { getApplicationDetails } from "../../applications/api";
 import { ApplicationBasicInterface } from "../../applications/models";
 import {
     AppConstants,
+    AppState,
+    FeatureConfigInterface,
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
@@ -136,6 +140,9 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
     const [ isAppsLoading, setIsAppsLoading ] = useState(true);
 
     const { t } = useTranslation();
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     /**
      * Redirects to the identity provider edit page when the edit button is clicked.
@@ -251,12 +258,14 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                 <EmptyPlaceholder
                     className="list-placeholder"
                     action={ onEmptyListPlaceholderActionClick && (
-                        <PrimaryButton
-                            onClick={ onEmptyListPlaceholderActionClick }
-                        >
-                            <Icon name="add"/>
-                            { t("console:develop.features.idp.buttons.addIDP") }
-                        </PrimaryButton>
+                        <Show when={ AccessControlConstants.IDP_WRITE }>
+                            <PrimaryButton
+                                onClick={ onEmptyListPlaceholderActionClick }
+                            >
+                                <Icon name="add"/>
+                                { t("console:develop.features.idp.buttons.addIDP") }
+                            </PrimaryButton>
+                        </Show>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
@@ -351,16 +360,26 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
             {
                 "data-testid": `${ testId }-item-edit-button`,
                 hidden: (): boolean => false,
-                icon: (): SemanticICONS => "pencil alternate",
+                icon: (): SemanticICONS =>
+                    hasRequiredScopes(featureConfig?.identityProviders,
+                        featureConfig?.identityProviders?.scopes?.update, allowedScopes)
+                            ? "pencil alternate"
+                            : "eye",
                 onClick: (e: SyntheticEvent, idp: IdentityProviderInterface): void =>
                     handleIdentityProviderEdit(idp.id),
-                popupText:(): string => t("common:edit"),
+                popupText: (): string =>
+                    hasRequiredScopes(featureConfig?.identityProviders,
+                        featureConfig?.identityProviders?.scopes?.update, allowedScopes)
+                        ? t("common:edit")
+                        : t("common:view"),
                 renderer: "semantic-icon"
             },
             {
                 "data-testid": `${ testId }-item-delete-button`,
                 hidden: (idp: IdentityProviderInterface): boolean =>
-                    IdentityProviderManagementConstants.DELETING_FORBIDDEN_IDPS.includes(idp.name),
+                    IdentityProviderManagementConstants.DELETING_FORBIDDEN_IDPS.includes(idp.name)
+                    || !hasRequiredScopes(featureConfig?.identityProviders,
+                        featureConfig?.identityProviders?.scopes?.delete, allowedScopes),
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, idp: IdentityProviderInterface): void =>
                     handleIdentityProviderDeleteAction(idp.id),

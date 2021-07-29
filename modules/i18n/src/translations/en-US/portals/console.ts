@@ -613,7 +613,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     deleteApplication: {
-                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        assertionHint: "Please confirm your action.",
                         content: "This action is irreversible and will permanently delete the application.",
                         header: "Are you sure?",
                         message: "If you delete this application, authentication flows for this application will " +
@@ -884,7 +884,7 @@ export const console: ConsoleNS = {
                                         scriptBased: {
                                             accordion: {
                                                 title: {
-                                                    description: "Control your Authentication flow using a script.",
+                                                    description: "Define your log-in flow using a script.",
                                                     heading: "Conditional Authentication"
                                                 }
                                             },
@@ -984,11 +984,11 @@ export const console: ConsoleNS = {
                                             forms: {
                                                 fields: {
                                                     attributesFrom: {
-                                                        label: "Use attributes from this step",
+                                                        label: "Pick attributes from this step",
                                                         placeholder: "Select step"
                                                     },
                                                     subjectIdentifierFrom: {
-                                                        label: "Use subject identifier from this step",
+                                                        label: "Pick subject identifier from this step",
                                                         placeholder: "Select step"
                                                     }
                                                 }
@@ -1139,7 +1139,8 @@ export const console: ConsoleNS = {
                             subject: {
                                 fields:{
                                     subjectAttribute: {
-                                        hint: "Choose the attribute",
+                                        hint: "Select which of the shared attributes you want to use as the" +
+                                            " subject identifier of the user",
                                         hintOIDC: "Select which of the shared attributes you want to use as the" +
                                             " subject identifier of the user. This represents the <1>sub</1> claim of" +
                                             " the <1>id_token</1>.",
@@ -2119,6 +2120,7 @@ export const console: ConsoleNS = {
                                         keystore: "Key Set",
                                         jwks: "JWKS",
                                         token: "Token",
+                                        revoke: "Revoke",
                                         userInfo: "UserInfo",
                                         wellKnown: "Discovery"
                                     }
@@ -4849,7 +4851,7 @@ export const console: ConsoleNS = {
                 title: "Register New Application"
             },
             applications: {
-                subTitle: "Manage applications using templates, and configure authentication.",
+                subTitle: "Register and manage your applications and configure sign-in.",
                 title: "Applications"
             },
             applicationsEdit: {
@@ -5508,7 +5510,7 @@ export const console: ConsoleNS = {
                             name: "{{type}} attribute"
                         },
                         header: "Are you sure?",
-                        hint: "Please type <1>{{assertion}}</1> to confirm.",
+                        hint: "Please confirm your action.",
                         local: {
                             message: "If you delete this attribute, the user data belonging "
                                 + "to this attribute will also be deleted.",
@@ -5573,7 +5575,7 @@ export const console: ConsoleNS = {
                         content: "If you delete this attribute, the user data belonging to this attribute "
                             + "will also be deleted. Please proceed with caution.",
                         header: "Are you sure?",
-                        hint: "Please type <1>{{name}}</1> to confirm.",
+                        hint: "Please confirm your action.",
                         message: "This action is irreversible and will permanently delete the selected " +
                             "attribute.",
                         primaryAction: "Confirm"
@@ -6832,7 +6834,7 @@ export const console: ConsoleNS = {
                             update: "Update"
                         },
                         confirmation: {
-                            assertionHint: "Please type <1>{{ roleName }}</1> to confirm.",
+                            assertionHint: "Please confirm your action.",
                             content: "If you delete this {{type}}, the permissions attached to it will be " +
                                 "deleted and the users attached to it will no longer be able to perform intended " +
                                 "actions which were previously allowed. Please proceed with caution",
@@ -6896,7 +6898,7 @@ export const console: ConsoleNS = {
                     },
                     confirmations: {
                         deleteItem: {
-                            assertionHint: "Please type <1>{{ roleName }}</1> to confirm.",
+                            assertionHint: "Please confirm your action.",
                             content: "If you delete this {{type}}, the permissions attached to it will be " +
                                 "deleted and the users attached to it will no longer be able to perform " +
                                 "intended actions which were previously allowed. Please proceed with caution.",
@@ -7127,7 +7129,7 @@ export const console: ConsoleNS = {
             user: {
                 deleteUser: {
                     confirmationModal: {
-                        assertionHint: "Please type <1>{{ userName }}</1> to confirm.",
+                        assertionHint: "Please confirm your action.",
                         content: "If you delete this user, the user will not be able to log in to My Account or " +
                             "any other application the user was subscribed to before. Please proceed with caution.",
                         header: "Are you sure?",
@@ -7747,7 +7749,9 @@ export const console: ConsoleNS = {
                                 empty: "Username is a required field",
                                 invalid: "A user already exists with this username.",
                                 invalidCharacters: "Username seems to contain invalid characters.",
-                                regExViolation: "Please enter a valid email."
+                                regExViolation: "Enter a valid email between 3 and 50 characters. You can use " +
+                                "alphanumeric characters, unicode characters, underscores (_), dashes (-), " +
+                                    "periods (.), and an at sign (@)."
                             }
                         }
                     }

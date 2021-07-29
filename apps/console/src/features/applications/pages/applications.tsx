@@ -16,17 +16,15 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import {
-    GenericIcon,
-    LinkButton,
     ListLayout,
     PageLayout,
-    PrimaryButton,
-    SecondaryButton
+    PrimaryButton
 } from "@wso2is/react-components";
 import find from "lodash-es/find";
 import React, {
@@ -40,7 +38,6 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
-    Button as SemButton,
     DropdownItemProps,
     DropdownProps,
     Icon,
@@ -50,21 +47,19 @@ import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
     AppState,
+    ConfigReducerStateInterface,
     EventPublisher,
     FeatureConfigInterface,
     UIConstants,
-    history,
-    ConfigReducerStateInterface
+    history
 } from "../../core";
-import { getGeneralIcons } from "../configs";
 import { RemoteFetchStatus } from "../../remote-repository-configuration";
 import { getApplicationList } from "../api";
 import { ApplicationList, MinimalAppCreateWizard } from "../components";
-import { ApplicationListInterface } from "../models";
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
-import isEmpty from "lodash-es/isEmpty";
+import { ApplicationListInterface } from "../models";
 
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -258,10 +253,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         <PageLayout
             action={
                 (isApplicationListRequestLoading || !(!searchQuery && appList?.totalResults <= 0))
-                && (hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.create,
-                    allowedScopes))
                 && (
-                    <>
+                    <Show when={ AccessControlConstants.APPLICATION_WRITE }>
                         <PrimaryButton
                             onClick={ (): void => {
                                 eventPublisher.publish("application-click-new-application-button");
@@ -273,7 +266,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                             <Icon name="add"/>
                             { t("console:develop.features.applications.list.actions.add") }
                         </PrimaryButton>
-                    </>
+                    </Show>
                 )
             }
             title={ t("console:develop.pages.applications.title") }

@@ -30,6 +30,7 @@ import { deleteADialect, getADialect } from "../api";
 import { EditDialectDetails, EditExternalClaims } from "../components";
 import { ClaimManagementConstants } from "../constants";
 import { resolveType } from "../utils";
+import { Show, AccessControlConstants } from "@wso2is/access-control";
 
 /**
  * Props for the External Dialects edit page.
@@ -296,24 +297,27 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                 <Grid>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column width={ 16 }>
-                            <DangerZoneGroup
-                                sectionHeader={ t("common:dangerZone") }
-                                data-testid={ `${ testId }-danger-zone-group` }
-                            >
-                                <DangerZone
-                                    actionTitle={ t("console:manage.features.claims.dialects.dangerZone.actionTitle", {
-                                        type: resolveType(attributeType, true, true)
-                                    }) }
-                                    header={ t("console:manage.features.claims.dialects.dangerZone.header", {
-                                        type: resolveType(attributeType, true)
-                                    }) }
-                                    subheader={ t("console:manage.features.claims.dialects.dangerZone.subheader", {
-                                        type: resolveType(attributeType)
-                                    }) }
-                                    onActionClick={ () => setConfirmDelete(true) }
-                                    data-testid={ `${ testId }-dialect-delete-danger-zone` }
-                                />
-                            </DangerZoneGroup>
+                            <Show when={ AccessControlConstants.SCOPE_DELETE }>
+                                <DangerZoneGroup
+                                    sectionHeader={ t("common:dangerZone") }
+                                    data-testid={ `${ testId }-danger-zone-group` }
+                                >
+                                    <DangerZone
+                                        actionTitle={ t("console:manage.features.claims.dialects." +
+                                            "dangerZone.actionTitle", {
+                                            type: resolveType(attributeType, true, true)
+                                        }) }
+                                        header={ t("console:manage.features.claims.dialects.dangerZone.header", {
+                                            type: resolveType(attributeType, true)
+                                        }) }
+                                        subheader={ t("console:manage.features.claims.dialects.dangerZone.subheader", {
+                                            type: resolveType(attributeType)
+                                        }) }
+                                        onActionClick={ () => setConfirmDelete(true) }
+                                        data-testid={ `${ testId }-dialect-delete-danger-zone` }
+                                    />
+                                </DangerZoneGroup>
+                            </Show>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>

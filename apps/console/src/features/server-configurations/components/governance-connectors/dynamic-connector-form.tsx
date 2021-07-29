@@ -16,18 +16,20 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { I18n } from "@wso2is/i18n";
 import { Hint, PrimaryButton, RenderInput, RenderToggle } from "@wso2is/react-components";
-import React from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import { Divider, Form, Grid } from "semantic-ui-react";
-import { AppState } from "../../../core";
+import { serverConfigurationConfig } from "../../../../extensions";
+import { AppState, FeatureConfigInterface } from "../../../core";
 import { ServerConfigurationsConstants } from "../../constants";
 import { ConnectorPropertyInterface } from "../../models";
 import { GovernanceConnectorUtils } from "../../utils";
-import { serverConfigurationConfig } from "../../../../extensions";
 
 /**
  * Determine the matching Form component based on the property attributes.
@@ -76,6 +78,14 @@ const DynamicConnectorForm = (props) => {
 
     const { t } = useTranslation();
 
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+
+    const isReadOnly = useMemo(() => (
+        !hasRequiredScopes(
+            featureConfig?.attributeDialects, featureConfig?.attributeDialects?.scopes?.update, allowedScopes)
+    ), [ featureConfig, allowedScopes ]);
+
     return (
         <Form onSubmit={ handleSubmit }>
             { <Grid padded={ true }>
@@ -105,6 +115,7 @@ const DynamicConnectorForm = (props) => {
                                         validate={ [
                                             required
                                         ] }
+                                        readOnly={ isReadOnly }
                                     />
                                 ) : (
                                         <label>{ property.displayName }</label>
@@ -161,6 +172,7 @@ const DynamicConnectorForm = (props) => {
                                                 );
                                             }
                                         } }
+                                        readOnly={ isReadOnly }
                                     />
                                 ) }
                             </Grid.Column>
@@ -175,10 +187,12 @@ const DynamicConnectorForm = (props) => {
                         computer={ 14 }
                         className={ !serverConfigurationConfig.intendSettings && "pl-0" }
                     >
-                        <PrimaryButton
-                            data-testid={ `${ testId }-update-button` }
-                            type="submit">{ t("common:update") }
-                        </PrimaryButton>
+                        { !isReadOnly &&
+                            <PrimaryButton
+                                data-testid={ `${ testId }-update-button` }
+                                type="submit">{ t("common:update") }
+                            </PrimaryButton>
+                        }
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

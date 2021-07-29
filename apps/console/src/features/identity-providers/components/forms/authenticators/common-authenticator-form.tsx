@@ -38,6 +38,7 @@ export const CommonAuthenticatorForm: FunctionComponent<CommonPluggableComponent
         triggerSubmit,
         enableSubmitButton,
         showCustomProperties,
+        readOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -50,6 +51,7 @@ export const CommonAuthenticatorForm: FunctionComponent<CommonPluggableComponent
             metadata={ metadata }
             data-testid={ testId }
             showCustomProperties={ showCustomProperties }
+            readOnly={ readOnly }
         />
     );
 };

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { getRolesList } from "@wso2is/core/api";
 import { AlertLevels, RoleListInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -34,6 +35,7 @@ import { handleGetRoleListError, handleUpdateIDPRoleMappingsError } from "../../
 interface OutboundProvisioningRolesPropsInterface extends TestableComponentInterface {
     idpId: string;
     idpRoles: IdentityProviderRolesInterface;
+    isReadOnly?: boolean;
 }
 
 export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRolesPropsInterface> = (
@@ -42,6 +44,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
     const {
         idpId,
         idpRoles,
+        isReadOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -101,7 +104,8 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                         "notifications.updateIDPRoleMappings." +
                         "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.authenticationProvider.notifications.updateIDPRoleMappings.success.message")
+                    message: t("console:develop.features.authenticationProvider." +
+                        "notifications.updateIDPRoleMappings.success.message")
                 }
             ));
         }).catch(error => {
@@ -147,17 +151,20 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                             label={ t("console:develop.features.authenticationProvider.forms." +
                                 "outboundProvisioningRoles.label") }
                             data-testid={ `${ testId }-role-select-dropdown` }
+                            readOnly={ isReadOnly }
                         />
                         <Popup
                             trigger={
                                 (
-                                    <Button
-                                        onClick={ (e) => handleRoleAdd(e) }
-                                        icon="add"
-                                        type="button"
-                                        disabled={ false }
-                                        className="inline"
-                                    />
+                                    <Show when={ AccessControlConstants.IDP_EDIT }>
+                                        <Button
+                                            onClick={ (e) => handleRoleAdd(e) }
+                                            icon="add"
+                                            type="button"
+                                            disabled={ false }
+                                            className="inline"
+                                        />
+                                    </Show>
                                 )
                             }
                             position="top center"
@@ -174,16 +181,16 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                     {
                         selectedRoles && selectedRoles?.map((selectedRole, index) => {
                             return (
-                                <Label
-                                    key={ index }
-                                >
-                                    { selectedRole }
-                                    <Icon
-                                        name="delete"
-                                        onClick={ () => handleRoleRemove(selectedRole) }
-                                        data-testid={ `${ testId }-delete-button` }
-                                    />
-                                </Label>
+                                <Show key={ index } when={ AccessControlConstants.IDP_EDIT }>
+                                    <Label>
+                                        { selectedRole }
+                                        <Icon
+                                            name="delete"
+                                            onClick={ () => handleRoleRemove(selectedRole) }
+                                            data-testid={ `${ testId }-delete-button` }
+                                        />
+                                    </Label>
+                                </Show>
                             );
                         })
                     }
@@ -191,19 +198,21 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
             </Grid.Row>
             <Grid.Row>
                 <Grid.Column width={ 8 }>
-                    <Button
-                        primary
-                        size="small"
-                        onClick={ () => {
-                            if (selectedRoles === undefined) {
-                                return;
-                            }
-                            handleOutboundProvisioningRoleMapping(selectedRoles);
-                        } }
-                        data-testid={ `${ testId }-update-button` }
-                    >
-                        { t("common:update") }
-                    </Button>
+                    <Show when={ AccessControlConstants.IDP_EDIT }>
+                        <Button
+                            primary
+                            size="small"
+                            onClick={ () => {
+                                if (selectedRoles === undefined) {
+                                    return;
+                                }
+                                handleOutboundProvisioningRoleMapping(selectedRoles);
+                            } }
+                            data-testid={ `${ testId }-update-button` }
+                        >
+                            { t("common:update") }
+                        </Button>
+                    </Show>
                 </Grid.Column>
             </Grid.Row>
         </Grid>

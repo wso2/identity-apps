@@ -52,6 +52,7 @@ import { FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "../../
 import { getUserSessions, terminateAllUserSessions, terminateUserSession } from "../api";
 import { ApplicationSessionInterface, UserSessionInterface, UserSessionsInterface } from "../models";
 import { CONSUMER_USERSTORE } from "../../userstores";
+import { Show, AccessControlConstants } from "@wso2is/access-control";
 
 /**
  * Proptypes for the user sessions component.
@@ -471,22 +472,24 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                             }
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column width={ 16 }>
-                                    <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
-                                        <DangerZone
-                                            actionTitle={ t("console:manage.features.users.userSessions." +
-                                                "dangerZones.terminate." +
-                                                "actionTitle") }
-                                            header={ t("console:manage.features.users.userSessions.dangerZones." +
-                                                "terminate.header") }
-                                            subheader={ t("console:manage.features.users.userSessions.dangerZones." +
-                                                "terminate.subheader") }
-                                            onActionClick={ () => {
-                                                setTerminatingSession(session);
-                                                setShowSessionTerminateConfirmationModal(true);
-                                            } }
-                                            data-testid={ `${ testId }-terminate-button` }
-                                        />
-                                    </DangerZoneGroup>
+                                    <Show when={ AccessControlConstants.USER_EDIT }>
+                                        <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
+                                            <DangerZone
+                                                actionTitle={ t("console:manage.features.users.userSessions." +
+                                                    "dangerZones.terminate." +
+                                                    "actionTitle") }
+                                                header={ t("console:manage.features.users.userSessions.dangerZones." +
+                                                    "terminate.header") }
+                                                subheader={ t("console:manage.features.users.userSessions." +
+                                                    "dangerZones.terminate.subheader") }
+                                                onActionClick={ () => {
+                                                    setTerminatingSession(session);
+                                                    setShowSessionTerminateConfirmationModal(true);
+                                                } }
+                                                data-testid={ `${ testId }-terminate-button` }
+                                            />
+                                        </DangerZoneGroup>
+                                    </Show>
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>
@@ -685,16 +688,18 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                     <Grid data-testid={ testId }>
                         <Grid.Row>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <DangerButton
-                                    floated="right"
-                                    data-testid={ `${ testId }-terminate-all-button` }
-                                    onClick={ () => setShowAllSessionsTerminateConfirmationModal(true) }
-                                >
-                                    {
-                                        t("console:manage.features.users.userSessions.components.sessionDetails" +
-                                            ".actions.terminateAllSessions")
-                                    }
-                                </DangerButton>
+                                <Show when={ AccessControlConstants.USER_EDIT }>
+                                    <DangerButton
+                                        floated="right"
+                                        data-testid={ `${ testId }-terminate-all-button` }
+                                        onClick={ () => setShowAllSessionsTerminateConfirmationModal(true) }
+                                    >
+                                        {
+                                            t("console:manage.features.users.userSessions.components.sessionDetails" +
+                                                ".actions.terminateAllSessions")
+                                        }
+                                    </DangerButton>
+                                </Show>
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row>

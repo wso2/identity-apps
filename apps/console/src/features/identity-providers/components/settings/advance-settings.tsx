@@ -43,6 +43,10 @@ interface AdvanceSettingsPropsInterface extends TestableComponentInterface {
      * Callback to update the idp details.
      */
     onUpdate: (id: string) => void;
+    /**
+     * Specifies if the component should only be read-only.
+     */
+    isReadOnly: boolean;
 }
 
 /**
@@ -59,6 +63,7 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
         editingIDP,
         advancedConfigurations,
         onUpdate,
+        isReadOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -94,6 +99,7 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
                 config={ advancedConfigurations }
                 onSubmit={ handleAdvancedConfigFormSubmit }
                 data-testid={ testId }
+                isReadOnly={ isReadOnly }
             />
         </EmphasizedSegment>
     );

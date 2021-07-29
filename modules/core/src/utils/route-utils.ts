@@ -19,6 +19,7 @@
 
 import isEmpty from "lodash-es/isEmpty";
 import { matchPath } from "react-router-dom";
+import { AppConstants } from "../constants";
 import { hasRequiredScopes } from "../helpers";
 import { ChildRouteInterface, FeatureAccessConfigInterface, RouteInterface } from "../models";
 
@@ -42,19 +43,18 @@ export class RouteUtils {
      * @param {RouteInterface[]} routes - Routes to evaluate.
      * @param {T} featureConfig - Feature config.
      * @param {string} allowedScopes - Set of allowed scopes.
+     * @param {boolean} checkForUIResourceScopes - Sets if UI Resource Scopes should be considered for filtering.
+     *
      * @return {RouteInterface[]} Filtered routes.
      */
     public static filterEnabledRoutes<T>(routes: RouteInterface[],
                                          featureConfig: T,
-                                         allowedScopes: string): RouteInterface[] { 
+                                         allowedScopes: string,
+                                         checkForUIResourceScopes?: boolean): RouteInterface[] {
 
         // Filters features based on scope requirements.
         const filter = (routeArr: RouteInterface[] | ChildRouteInterface[], allowedScopes: string) => {
             return routeArr.filter((route: RouteInterface | ChildRouteInterface) => {
-                if (route.children) {
-                    route.children = filter(route.children, allowedScopes);
-                }
-
                 let feature: FeatureAccessConfigInterface = null;
 
                 for (const [ key, value ] of Object.entries(featureConfig)) {
@@ -65,11 +65,38 @@ export class RouteUtils {
                     }
                 }
 
-                if (!feature) {
+                const handleRouteEnabled = (): boolean => {
+                    if (route.children) {
+                        route.children = filter(route.children, allowedScopes);
+                    }
+
                     return true;
+                };
+
+                if (!feature) {
+                    return handleRouteEnabled();
                 }
 
-                return hasRequiredScopes(feature, feature?.scopes?.read, allowedScopes);
+                if (!feature?.enabled) {
+                    return false;
+                }
+
+                if (
+                    checkForUIResourceScopes &&
+                    !(
+                        hasRequiredScopes(feature, feature?.scopes?.feature, allowedScopes) ||
+                        hasRequiredScopes(feature, [ AppConstants.FULL_UI_SCOPE ], allowedScopes)
+                    )
+                ) {
+                    return false;
+                }
+
+                // Ideally, the read scope should be available if the UI resource scope is available.
+                if (hasRequiredScopes(feature, feature?.scopes?.read, allowedScopes)) {
+                    return handleRouteEnabled();
+                }
+
+                return false;
             });
         };
 

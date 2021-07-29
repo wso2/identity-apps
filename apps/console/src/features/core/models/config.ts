@@ -69,7 +69,7 @@ export interface FeatureConfigInterface {
     /**
      * General Configuration settings feature.
      */
-    generalConfigurations?: FeatureAccessConfigInterface;
+    governanceConnectors?: FeatureAccessConfigInterface;
     /**
      * Groups feature.
      */

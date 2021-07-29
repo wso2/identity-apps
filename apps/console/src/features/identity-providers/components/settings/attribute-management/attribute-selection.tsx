@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, Heading, Hint, PrimaryButton } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
@@ -32,6 +33,10 @@ interface AttributeSelectionPropsInterface extends TestableComponentInterface {
     selectedAttributesWithMapping: IdentityProviderCommonClaimMappingInterface[];
     setSelectedAttributesWithMapping: (selectedAttributes: IdentityProviderCommonClaimMappingInterface[]) => void;
     uiProps: AttributeSelectionUIPropsInterface;
+    /**
+     * Specifies if the component should only be read-only.
+     */
+    isReadOnly: boolean;
 }
 
 export interface AttributeSelectionUIPropsInterface {
@@ -57,6 +62,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         setSelectedAttributesWithMapping,
         selectedAttributesWithMapping,
         uiProps,
+        isReadOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -119,13 +125,15 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                     />
                                 </Table.Cell>
                                 <Table.Cell textAlign="right">
-                                    <Button
-                                        size="medium"
-                                        icon="pencil"
-                                        floated="right"
-                                        onClick={ handleOpenSelectionModal }
-                                        data-testid={ `${ testId }-edit-button` }
-                                    />
+                                    <Show when={ AccessControlConstants.IDP_EDIT }>
+                                        <Button
+                                            size="medium"
+                                            icon="pencil"
+                                            floated="right"
+                                            onClick={ handleOpenSelectionModal }
+                                            data-testid={ `${ testId }-edit-button` }
+                                        />
+                                    </Show>
                                 </Table.Cell>
                             </Table.Row>
                         </Table.Body>
@@ -173,6 +181,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                     `${ testId }-attribute-list-item-${
                                                         mapping?.claim.id }`
                                                 }
+                                                isReadOnly={ isReadOnly }
                                             />
                                         );
                                     }
@@ -214,10 +223,12 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                         "subtitles.0")
                                                 ] }
                                                 action={
-                                                    <PrimaryButton onClick={ handleOpenSelectionModal } icon="plus">
-                                                        { t("console:develop.features.authenticationProvider." +
-                                                            "buttons.addAttribute") }
-                                                    </PrimaryButton>
+                                                    <Show when={ AccessControlConstants.IDP_EDIT }>
+                                                        <PrimaryButton onClick={ handleOpenSelectionModal } icon="plus">
+                                                            { t("console:develop.features.authenticationProvider." +
+                                                                "buttons.addAttribute") }
+                                                        </PrimaryButton>
+                                                    </Show>
                                                 }
                                                 image={ getEmptyPlaceholderIllustrations().emptyList }
                                                 imageSize="tiny"

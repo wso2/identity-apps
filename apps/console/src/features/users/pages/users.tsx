@@ -60,6 +60,7 @@ import { deleteUser, getUsersList } from "../api";
 import { AddUserWizard, UsersList, UsersListOptionsComponent } from "../components";
 import { UserManagementConstants } from "../constants";
 import { UserListInterface } from "../models";
+import { Show, AccessControlConstants } from "@wso2is/access-control";
 
 /**
  * Props for the Users page.
@@ -505,13 +506,15 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             action={
                 (isUserListRequestLoading || !(!searchQuery && usersList?.totalResults <= 0))
                 && (
-                    <PrimaryButton
-                        data-testid="user-mgt-user-list-add-user-button"
-                        onClick={ () => handleAddNewUserWizardClick()  }
-                    >
-                        <Icon name="add"/>
-                        { t("console:manage.features.users.buttons.addNewUserBtn") }
-                    </PrimaryButton>
+                    <Show when={ AccessControlConstants.USER_WRITE }>
+                        <PrimaryButton
+                            data-testid="user-mgt-user-list-add-user-button"
+                            onClick={ () => handleAddNewUserWizardClick()  }
+                        >
+                            <Icon name="add"/>
+                            { t("console:manage.features.users.buttons.addNewUserBtn") }
+                        </PrimaryButton>
+                    </Show>
                 )
             }
             title={ t("console:manage.pages.users.title") }

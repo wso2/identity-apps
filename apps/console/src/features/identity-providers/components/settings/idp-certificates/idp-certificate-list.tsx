@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { AlertLevels, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
@@ -51,6 +52,10 @@ interface IdpCertificatesPropsListInterface extends TestableComponentInterface {
      * Callback to update the idp details.
      */
     onUpdate: (id: string) => void;
+    /**
+     * Specifies if the component should only be read-only.
+     */
+    isReadOnly: boolean;
 }
 
 /**
@@ -67,6 +72,7 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
     const {
         editingIDP,
         onUpdate,
+        isReadOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -282,14 +288,16 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                     <Grid>
                         <Grid.Row>
                             <Grid.Column>
-                                <PrimaryButton
-                                    floated="right"
-                                    onClick={ () => setShowWizard(true) }
-                                    data-testid={ `${testId}-add-certificate-button` }
-                                >
-                                    <Icon name="add"/>
-                                    { t("console:develop.features.authenticationProvider.buttons.addCertificate") }
-                                </PrimaryButton>
+                                <Show when={ AccessControlConstants.IDP_EDIT }>
+                                    <PrimaryButton
+                                        floated="right"
+                                        onClick={ () => setShowWizard(true) }
+                                        data-testid={ `${testId}-add-certificate-button` }
+                                    >
+                                        <Icon name="add"/>
+                                        { t("console:develop.features.authenticationProvider.buttons.addCertificate") }
+                                    </PrimaryButton>
+                                </Show>
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row>
@@ -301,6 +309,7 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                                         count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                                         imageType: "circular"
                                     } }
+                                    readOnly={ isReadOnly }
                                 >
                                     {
                                         certificates?.map((certificate, index) => (
@@ -367,16 +376,19 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                                                 "emptyCertificateList.subtitles.1")
                                         ] }
                                         imageSize="tiny"
-                                        action={ (
-                                            <PrimaryButton
-                                                onClick={ () => setShowWizard(true) }
-                                                data-testid={ `${ testId }-emptyPlaceholder-add-certificate-button` }
-                                                type="button"
-                                            >
-                                                <Icon name="add"/>
-                                                { t("console:develop.features.authenticationProvider" +
-                                                    ".buttons.addCertificate") }
-                                            </PrimaryButton>
+                                            action={ (
+                                                <Show when={ AccessControlConstants.IDP_EDIT }>
+                                                    <PrimaryButton
+                                                        onClick={ () => setShowWizard(true) }
+                                                        data-testid={
+                                                            `${ testId }-emptyPlaceholder-add-certificate-button` }
+                                                        type="button"
+                                                    >
+                                                        <Icon name="add"/>
+                                                        { t("console:develop.features.authenticationProvider" +
+                                                            ".buttons.addCertificate") }
+                                                    </PrimaryButton>
+                                                </Show>
                                         ) }
                                         data-testid={ `${testId}-empty-placeholder` }
                                     />

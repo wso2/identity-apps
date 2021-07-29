@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -27,7 +28,7 @@ import {
     PrimaryButton,
     SegmentedAccordionTitleActionInterface
 } from "@wso2is/react-components";
-import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
+import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { CheckboxProps, Divider, Grid, Icon, Segment } from "semantic-ui-react";
@@ -73,6 +74,10 @@ interface ProvisioningSettingsPropsInterface extends TestableComponentInterface 
      * Callback to update the idp details.
      */
     onUpdate: (id: string) => void;
+    /**
+     * Specifies if the component should only be read-only.
+     */
+    isReadOnly: boolean;
 }
 
 /**
@@ -90,6 +95,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         outboundConnectors,
         isLoading,
         onUpdate,
+        isReadOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -330,16 +336,18 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                         <div className="default-provisioning-connector-section">
                             <Grid>
                                 <Grid.Row>
-                                    <Grid.Column>
-                                        <PrimaryButton
-                                            floated="right"
-                                            onClick={ () => setShowWizard(true) }
-                                            data-testid={ `${ testId }-add-connector-button` }
-                                        >
-                                            <Icon name="add"/>
-                                                { t("console:develop.features.authenticationProvider." +
-                                                    "buttons.addConnector") }
-                                        </PrimaryButton>
+                                        <Grid.Column>
+                                            <Show when={ AccessControlConstants.IDP_EDIT }>
+                                                <PrimaryButton
+                                                    floated="right"
+                                                    onClick={ () => setShowWizard(true) }
+                                                    data-testid={ `${ testId }-add-connector-button` }
+                                                >
+                                                    <Icon name="add"/>
+                                                        { t("console:develop.features.authenticationProvider." +
+                                                            "buttons.addConnector") }
+                                                </PrimaryButton>
+                                            </Show>
                                     </Grid.Column>
                                 </Grid.Row>
                                 <Grid.Row>
@@ -370,7 +378,8 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                                             onSubmit={ handleConnectorConfigFormSubmit }
                                                                             type={ connector.meta?.name }
                                                                             data-testid={ `${testId}-${
-                                                                                connector.meta?.name}-content` }
+                                                                                connector.meta?.name }-content` }
+                                                                            isReadOnly={ isReadOnly }
                                                                         />
                                                                     ),
                                                                     id: connector?.id,
@@ -378,7 +387,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                                 }
                                                             ]
                                                         }
-                                                        data-testid={ `${testId}-accordion` }
+                                                        data-testid={ `${ testId }-accordion` }
                                                     />
                                                 );
                                             })
@@ -409,13 +418,15 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                 "subtitles.1")
                                         ] }
                                         imageSize="tiny"
-                                        action={ (
-                                            <PrimaryButton onClick={ () => setShowWizard(true) }
-                                                           data-testid={ `${ testId }-add-connector-button` }>
-                                                <Icon name="add"/>
-                                                { t("console:develop.features.authenticationProvider." +
-                                                    "buttons.addConnector") }
-                                            </PrimaryButton>
+                                            action={ (
+                                                <Show when={ AccessControlConstants.IDP_EDIT }>
+                                                    <PrimaryButton onClick={ () => setShowWizard(true) }
+                                                                data-testid={ `${ testId }-add-connector-button` }>
+                                                        <Icon name="add"/>
+                                                        { t("console:develop.features.authenticationProvider." +
+                                                            "buttons.addConnector") }
+                                                    </PrimaryButton>
+                                                </Show>
                                         ) }
                                         data-testid={ `${ testId }-empty-placeholder` }
                                     />
@@ -489,6 +500,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                             idpRoles={ identityProvider?.roles }
                             idpId={ identityProvider?.id }
                             data-testid={ `${ testId }-roles` }
+                            isReadOnly={ isReadOnly }
                         />
                     )
                     : <ContentLoader/>

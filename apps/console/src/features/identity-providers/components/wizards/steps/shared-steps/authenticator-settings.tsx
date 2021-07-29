@@ -96,6 +96,7 @@ export const AuthenticatorSettings: FunctionComponent<AuthenticatorSettingsWizar
                 triggerSubmit={ triggerSubmit }
                 enableSubmitButton={ false }
                 data-testid={ testId }
+                isReadOnly={ false }
             /> : null
         )
     );

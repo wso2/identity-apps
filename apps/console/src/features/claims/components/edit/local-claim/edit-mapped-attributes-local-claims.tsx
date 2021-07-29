@@ -16,15 +16,18 @@
 * under the License.
 */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { getUserStoreList } from "@wso2is/core/api";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import { EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
+import { AppState, FeatureConfigInterface } from "../../../../core";
 import { UserStoreListItem } from "../../../../userstores";
 import { updateAClaim } from "../../../api";
 
@@ -43,9 +46,9 @@ interface EditMappedAttributesLocalClaimsPropsInterface extends TestableComponen
 }
 
 /**
- * This component renders the Mapped Attribute pane of 
+ * This component renders the Mapped Attribute pane of
  * the edit local claim screen
- * 
+ *
  * @param {EditMappedAttributesLocalClaimsPropsInterface} props - Props injected to the component.
  *
  * @return {React.ReactElement}
@@ -68,6 +71,9 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
 
     const { t } = useTranslation();
 
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
     useEffect(() => {
         const userstore = [];
 
@@ -84,6 +90,11 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
         });
     }, []);
 
+    const isReadOnly = useMemo(() => (
+        !hasRequiredScopes(
+            featureConfig?.attributeDialects, featureConfig?.attributeDialects?.scopes?.update, allowedScopes)
+    ), [ featureConfig, allowedScopes ]);
+
     return (
         <EmphasizedSegment padded="very">
             <Grid data-testid={ testId }>
@@ -99,7 +110,7 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                 const claimData = { ...claim };
                                 delete claimData.id;
                                 delete claimData.dialectURI;
-    
+
                                 const submitData = {
                                     ...claimData,
                                     attributeMapping: Array.from(values).map(([ userstore, attribute ]) => {
@@ -158,6 +169,7 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                                             .toLowerCase() === store.name.toLowerCase();
                                                     })?.mappedAttribute }
                                                     data-testid={ `${ testId }-form-store-name-input` }
+                                                    readOnly={ isReadOnly }
                                                 />
                                             </Grid.Column>
                                         </Grid.Row>
@@ -165,19 +177,21 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                 }) }
                             </Grid>
                         </Forms>
-    
+
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 8 }>
-                        <PrimaryButton
-                            onClick={ () => {
-                                setSubmit();
-                            } }
-                            data-testid={ `${ testId }-form-submit-button` }
-                        >
-                            { t("common:update") }
-                        </PrimaryButton>
+                        <Show when={ AccessControlConstants.ATTRIBUTE_EDIT }>
+                            <PrimaryButton
+                                onClick={ () => {
+                                    setSubmit();
+                                } }
+                                data-testid={ `${ testId }-form-submit-button` }
+                            >
+                                { t("common:update") }
+                            </PrimaryButton>
+                        </Show>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

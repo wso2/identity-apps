@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
@@ -96,12 +97,16 @@ interface AttributeSelectionPropsInterface extends TestableComponentInterface {
      *  - etc...
      */
     hideIdentityClaimAttributes?: boolean;
+    /**
+     * Specifies if the component should only be read-only.
+     */
+    isReadOnly: boolean;
 }
 
 export const LocalDialectURI = "http://wso2.org/claims";
 
 export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterface> = (
-    props
+    props: AttributeSelectionPropsInterface
 ): ReactElement => {
 
     const {
@@ -112,6 +117,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         onUpdate,
         provisioningAttributesEnabled,
         hideIdentityClaimAttributes,
+        isReadOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -315,6 +321,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                     "forms.attributeSettings.attributeMapping.hint")
                             } }
                             data-testid={ `${ testId }-claim-attribute-selection` }
+                            isReadOnly={ isReadOnly }
                         /> }
 
                         { selectedClaimsWithMapping &&
@@ -335,6 +342,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                             data-testid={ `${ testId }-uri-attribute-settings` }
                             roleError={ isSubmitting && roleError && !roleClaimUri }
                             subjectError={ isSubmitting && subjectError && !subjectClaimUri }
+                            isReadOnly={ isReadOnly }
                         /> }
 
                         { /* Select attributes for provisioning. */ }
@@ -365,6 +373,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                     "attributeProvisioning.hint")
                             } }
                             data-testid={ `${ testId }-provisioning-attribute-selection` }
+                            isReadOnly={ isReadOnly }
                         /> }
 
                         { /* Set role mappings. */ }
@@ -373,18 +382,21 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                             initialRoleMappings={ initialRoleMappings }
                             onSubmit={ setRoleMapping }
                             data-testid={ `${ testId }-role-mapping` }
+                            isReadOnly={ isReadOnly }
                         />
 
                         <Grid.Row>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 3 }>
-                                <Button
-                                    primary
-                                    size="small"
-                                    onClick={ setTriggerSubmission }
-                                    data-testid={ `${ testId }-update-button` }
-                                >
-                                    { t("common:update") }
-                                </Button>
+                                <Show when={ AccessControlConstants.IDP_EDIT }>
+                                    <Button
+                                        primary
+                                        size="small"
+                                        onClick={ setTriggerSubmission }
+                                        data-testid={ `${ testId }-update-button` }
+                                    >
+                                        { t("common:update") }
+                                    </Button>
+                                </Show>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
@@ -399,6 +411,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
  */
 AttributeSettings.defaultProps = {
     "data-testid": "idp-edit-attribute-settings",
-    provisioningAttributesEnabled: true,
-    hideIdentityClaimAttributes: false
+    hideIdentityClaimAttributes: false,
+    provisioningAttributesEnabled: true
 };

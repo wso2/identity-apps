@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -345,12 +346,20 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 hidden: (): boolean => !isFeatureEnabled(featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
                 icon: (app: ApplicationListItemInterface): SemanticICONS => {
-                    return app?.access === ApplicationAccessTypes.READ && "eye" || "pencil alternate";
+                    return app?.access === ApplicationAccessTypes.READ
+                        || !hasRequiredScopes(featureConfig?.applications,
+                            featureConfig?.applications?.scopes?.update, allowedScopes)
+                            ? "eye"
+                            : "pencil alternate";
                 },
                 onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void =>
                     handleApplicationEdit(app.id, app.access),
                 popupText: (app: ApplicationListItemInterface): string => {
-                    return app?.access === ApplicationAccessTypes.READ && t("common:view") || t("common:edit");
+                    return app?.access === ApplicationAccessTypes.READ
+                        || !hasRequiredScopes(featureConfig?.applications,
+                            featureConfig?.applications?.scopes?.update, allowedScopes)
+                                ? t("common:view")
+                                : t("common:edit");
                 },
                 renderer: "semantic-icon"
             },
@@ -407,10 +416,12 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 <EmptyPlaceholder
                     className={ !isRenderedOnPortal ? "list-placeholder" : "" }
                     action={ onEmptyListPlaceholderActionClick && (
-                        <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
-                            <Icon name="add"/>
-                            { t("console:develop.features.applications.placeholders.emptyList.action") }
-                        </PrimaryButton>
+                        <Show when={ AccessControlConstants.APPLICATION_WRITE }>
+                            <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
+                                <Icon name="add"/>
+                                { t("console:develop.features.applications.placeholders.emptyList.action") }
+                            </PrimaryButton>
+                        </Show>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
@@ -454,21 +465,9 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="warning"
                         open={ showDeleteConfirmationModal }
-                        assertion={ deletingApplication.name }
-                        assertionHint={ (
-                            <p>
-                                <Trans
-                                    i18nKey={
-                                        "console:develop.features.applications.confirmations.deleteApplication" +
-                                        ".assertionHint"
-                                    }
-                                    tOptions={ { name: deletingApplication.name } }
-                                >
-                                    Please type <strong>{ deletingApplication.name }</strong> to confirm.
-                                </Trans>
-                            </p>
-                        ) }
-                        assertionType="input"
+                        assertionHint={ t("console:develop.features.applications.confirmations.deleteApplication." +
+                            "assertionHint") }
+                        assertionType="checkbox"
                         primaryAction={ t("common:confirm") }
                         secondaryAction={ t("common:cancel") }
                         onSecondaryActionClick={ (): void => {
