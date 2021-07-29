@@ -19,7 +19,7 @@
 import { AlertInterface, AlertLevels, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils, URLUtils } from "@wso2is/core/utils";
-import { Field, Forms, Validation } from "@wso2is/forms";
+import { Field, Forms, useTrigger, Validation } from "@wso2is/forms";
 import { Code, CopyInputField, Heading, Hint, LinkButton, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
@@ -42,6 +42,7 @@ import {
 } from "../../models";
 import { CertificateFormFieldModal } from "../modals";
 import { applicationConfig } from "../../../../extensions";
+import { ApplicationCertificateWrapper } from "../settings/certificate";
 
 interface InboundSAMLFormPropsInterface extends TestableComponentInterface {
     /**
@@ -133,6 +134,12 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
     const [ PEMValue, setPEMValue ] = useState<string>(undefined);
     const [ certificateDisplay, setCertificateDisplay ] = useState<DisplayCertificate>(null);
 
+    const [ finalCertValue, setFinalCertValue ] = useState<string>(undefined);
+    const [ selectedCertType, setSelectedCertType ] = useState<CertificateTypeInterface>(certificate?.type);
+    const [ isCertAvailableForEncrypt, setCertAvailableForEncrypt ] = useState(false);
+
+    const [ triggerCertSubmit, setTriggerCertSubmit ] = useTrigger();
+
     const issuer = useRef<HTMLElement>();
     const applicationQualifier = useRef<HTMLElement>();
     const consumerURL = useRef<HTMLDivElement>();
@@ -163,18 +170,6 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
     const returnToURL = useRef<HTMLDivElement>();
     const assertionQueryProfile = useRef<HTMLElement>();
 
-    /**
-     * Set initial PEM values.
-     */
-    useEffect(() => {
-        if (CertificateTypeInterface.PEM === certificate?.type) {
-            setPEMSelected(true);
-            if (certificate?.value) {
-                setPEMValue(certificate.value);
-            }
-        }
-    }, [ certificate ]);
-
     const createDefaultAssertionConsumerUrl = () => {
         const allowedOptions = [];
         if (!isEmpty(assertionConsumerUrls)) {
@@ -193,7 +188,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                 advancedConfigurations: {
                     certificate: {
                         type: CertificateTypeInterface.PEM,
-                        value: values.get("certificateValue")
+                        value: (selectedCertType !== CertificateTypeInterface.NONE) ? finalCertValue: ""
                     }
                 }
             },
@@ -234,9 +229,11 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             audiences: audiences ? audiences.split(",") : [],
                             digestAlgorithm: values.get("digestAlgorithm"),
                             encryption: {
-                                assertionEncryptionAlgorithm: values.get("assertionEncryptionAlgorithm"),
-                                enabled: values.get("assertionEncryption").includes("enableAssertionEncryption"),
-                                keyEncryptionAlgorithm: values.get("keyEncryptionAlgorithm")
+                                assertionEncryptionAlgorithm: isCertAvailableForEncrypt ? values.get("assertionEncryptionAlgorithm")
+                                    : metadata?.assertionEncryptionAlgorithm.defaultValue,
+                                enabled: isCertAvailableForEncrypt && values.get("assertionEncryption").includes("enableAssertionEncryption"),
+                                keyEncryptionAlgorithm: isCertAvailableForEncrypt ? values.get("keyEncryptionAlgorithm")
+                                    : metadata?.keyEncryptionAlgorithm.defaultValue
                             },
                             nameIdFormat: values.get("nameIdFormat"),
                             recipients: recipients ? recipients.split(",") : []
@@ -372,31 +369,25 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
     };
 
     /**
-     * Construct the details from the pem value.
+     * Set certificate available for encryption or not.
      */
-    const viewCertificate = () => {
-        if (isPEMSelected && PEMValue) {
-            const displayCertificate: DisplayCertificate = CertificateManagementUtils.displayCertificate(
-                null, PEMValue);
-
-            if (displayCertificate) {
-                setCertificateDisplay(displayCertificate);
-                setShowCertificateModal(true);
-            } else {
-                dispatch(addAlert<AlertInterface>({
-                    description: t("console:common.notifications.invalidPEMFile.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:common.notifications.invalidPEMFile.genericError.message")
-                }));
-            }
+    useEffect(()=> {
+        if (isEmpty(finalCertValue) || selectedCertType === CertificateTypeInterface.NONE) {
+            setCertAvailableForEncrypt(false);
+        } else {
+            setCertAvailableForEncrypt(true);
         }
-    };
+    },[ finalCertValue, selectedCertType ]);
 
     return (
         metadata ?
             (
                 <Forms
                     onSubmit={ (values) => {
+                        setTriggerCertSubmit();
+                        if (selectedCertType !== CertificateTypeInterface.NONE && isEmpty(finalCertValue)) {
+                            return;
+                        }
                         if (isEmpty(assertionConsumerUrls)) {
                             setAssertionConsumerUrlError(true);
                             scrollToInValidField("consumerURL");
@@ -1096,6 +1087,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     name="assertionEncryption"
                                     label=""
                                     required={ false }
+                                    disabled={ !isCertAvailableForEncrypt }
                                     requiredErrorMessage={
                                         t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".encryption.fields.assertionEncryption.validations.empty")
@@ -1122,6 +1114,10 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-assertion-encryption-checkbox` }
                                 />
+                                <Hint>
+                                    { t("console:develop.features.applications.forms.inboundSAML" +
+                                        ".sections.encryption.fields.assertionEncryption.hint") }
+                                </Hint>
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
@@ -1139,7 +1135,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".encryption.fields.assertionEncryptionAlgorithm.validations.empty")
                                     }
-                                    disabled={ !isAssertionEncryptionEnabled }
+                                    disabled={ !isAssertionEncryptionEnabled || !isCertAvailableForEncrypt }
                                     default={ metadata?.assertionEncryptionAlgorithm.defaultValue }
                                     value={
                                         initialValues?.singleSignOnProfile.assertion.encryption
@@ -1162,7 +1158,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     name="keyEncryptionAlgorithm"
                                     type="dropdown"
                                     required={ false }
-                                    disabled={ !isAssertionEncryptionEnabled }
+                                    disabled={ !isAssertionEncryptionEnabled || !isCertAvailableForEncrypt }
                                     requiredErrorMessage={
                                         t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".encryption.fields.keyEncryptionAlgorithm.validations.empty")
@@ -1578,78 +1574,17 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </>
                             )
                         }
-
-                        { /* Certificates */ }
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Divider/>
-                            </Grid.Column>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Heading as="h5">
-                                    {
-                                        t("console:develop.features.applications.forms." +
-                                            "advancedConfig.sections.certificate.heading") }
-                                </Heading>
-                                <Field
-                                    name="certificateValue"
-                                    label={ "" }
-                                    required={ false }
-                                    requiredErrorMessage={
-                                        t("console:develop.features.applications.forms.advancedConfig" +
-                                            ".sections.certificate.fields.pemValue.validations.empty")
-                                    }
-                                    placeholder={
-                                        ApplicationManagementConstants.PEM_CERTIFICATE_PLACEHOLDER
-                                    }
-                                    type="textarea"
-                                    value={
-                                        (CertificateTypeInterface.PEM === certificate?.type)
-                                        && certificate?.value
-                                    }
-                                    listen={
-                                        (values) => {
-                                            setPEMValue(
-                                                values.get("certificateValue") as string
-                                            );
-                                        }
-                                    }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-certificate-textarea` }
-                                />
-                                < Hint>
-                                    {
-                                        t("console:develop.features.applications.forms." +
-                                            "advancedConfig.sections.certificate.fields.pemValue.hint")
-                                    }
-                                </Hint>
-                                <LinkButton
-                                    className="certificate-info-link-button"
-                                    onClick={ (e: MouseEvent<HTMLButtonElement>) => {
-                                        e.preventDefault();
-                                        viewCertificate();
-                                    } }
-                                    disabled={ isEmpty(PEMValue) }
-                                    data-testid={ `${ testId }-certificate-info-button` }
-                                >
-                                    {
-                                        t("console:develop.features.applications.forms." +
-                                            "advancedConfig.sections.certificate.fields.pemValue." +
-                                            "actions.view")
-                                    }
-                                </LinkButton>
-                            </Grid.Column>
-                        </Grid.Row>
-                        {
-                            showCertificateModal && (
-                                <CertificateFormFieldModal
-                                    open={ showCertificateModal }
-                                    certificate={ certificateDisplay }
-                                    onClose={ () => {
-                                        setShowCertificateModal(false);
-                                    } }
-                                />
-                            )
-                        }
+                        {/* Certificate Section */}
+                        <ApplicationCertificateWrapper
+                            updateCertFinalValue={ setFinalCertValue }
+                            updateCertType={ setSelectedCertType }
+                            certificate={ certificate }
+                            readOnly={ false }
+                            hidden={ false }
+                            isRequired={ true }
+                            hideJWKS={ true }
+                            triggerSubmit={ triggerCertSubmit }
+                        />
                         {
                             !readOnly && (
                                 <Grid.Row columns={ 1 }>
@@ -1667,7 +1602,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 </Grid.Row>
                             )
                         }
-                     </Grid>
+                    </Grid>
                 </Forms>
             )
             : null
