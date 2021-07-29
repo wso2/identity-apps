@@ -495,8 +495,8 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         <ConfirmationModal.Content data-testid={ `${ testId }-confirmation-modal-content` }>
                             <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
                             {
-                                deletingUser[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId
-                                    ? t("console:manage.features.user.deleteJITUser.content")
+                                deletingUser[SCIMConfigs.scim.enterpriseSchema]?.userSourceId
+                                    ? t("console:manage.features.user.deleteJITUser.confirmationModal.content")
                                     : t("console:manage.features.user.deleteUser.confirmationModal.content")
                             }
                         </ConfirmationModal.Content>
