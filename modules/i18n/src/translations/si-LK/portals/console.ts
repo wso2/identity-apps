@@ -1765,7 +1765,9 @@ export const console: ConsoleNS = {
                                         label: "සක්‍රීය කරන්න",
                                         validations: {
                                             empty: "මෙය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි."
-                                        }
+                                        },
+                                        hint: "සත්‍යාපනයෙන් පසු ආපසු ලබා දුන් SAML2 ප්‍රකාශයන් සංකේතනය කිරීමට තෝරන්න. " +
+                                            "ගුප්තකේතනය භාවිතා කිරීම සඳහා පහත සහතිකයේ ඔබේ අයදුම්පතේ සහතිකය වින්‍යාස කරන්න."
                                     },
                                     assertionEncryptionAlgorithm: {
                                         label: "ප්‍රකාශ කිරීමේ සංකේතාංකන ඇල්ගොරිතම",
@@ -2647,6 +2649,15 @@ export const console: ConsoleNS = {
                                     }
                                 }
                             }
+                        }
+                    },
+                    applicationCertificateWizard: {
+                        heading: "නව සහතිකයක් එක් කරන්න",
+                        subHeading: "යෙදුමට නව සහතිකයක් එක් කරන්න",
+                        emptyPlaceHolder: {
+                            title: "සහතිකයක් නැත",
+                            description1:"මෙම යෙදුමට සහතිකයක් එකතු කර නොමැත.",
+                            description2: "එය බැලීමට සහතිකයක් එක් කරන්න."
                         }
                     }
                 }
