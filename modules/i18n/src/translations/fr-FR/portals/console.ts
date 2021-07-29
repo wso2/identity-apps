@@ -1156,7 +1156,8 @@ export const console: ConsoleNS = {
                             subject: {
                                 fields:{
                                     subjectAttribute: {
-                                        hint: "Choisissez l'attribut",
+                                        hint: "Sélectionnez les attributs partagés que vous souhaitez utiliser " +
+                                            "comme identifiant de sujet de l'utilisateur.",
                                         hintOIDC: "Sélectionnez les attributs partagés que vous souhaitez utiliser " +
                                             "comme identifiant de sujet de l'utilisateur. Cela représente la " +
                                             "revendication <1>sub</1> du <1>id_token</1>.",

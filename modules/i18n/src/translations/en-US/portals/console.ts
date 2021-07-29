@@ -1139,7 +1139,8 @@ export const console: ConsoleNS = {
                             subject: {
                                 fields:{
                                     subjectAttribute: {
-                                        hint: "Choose the attribute",
+                                        hint: "Select which of the shared attributes you want to use as the" +
+                                            " subject identifier of the user",
                                         hintOIDC: "Select which of the shared attributes you want to use as the" +
                                             " subject identifier of the user. This represents the <1>sub</1> claim of" +
                                             " the <1>id_token</1>.",
