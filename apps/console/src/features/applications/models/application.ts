@@ -183,6 +183,7 @@ export interface ClaimConfigurationInterface {
  *  Acceptable certificate types.
  */
 export enum CertificateTypeInterface {
+    NONE ="None",
     JWKS = "JWKS",
     PEM = "PEM"
 }
