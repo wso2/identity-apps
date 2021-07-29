@@ -5977,6 +5977,13 @@ export const console: ConsoleNS = {
                 searchPlaceholder: "Rechercher un {{type}}"
             },
             user: {
+                deleteJITUser: {
+                    confirmationModal: {
+                        content: "Si vous supprimez cet utilisateur, l'utilisateur ne pourra pas se connecter à Mon " +
+                            "compte ou à toute autre application à laquelle l'utilisateur était abonné avant la " +
+                            "prochaine connexion de l'utilisateur à l'aide d'une option de connexion sociale."
+                    }
+                },
                 deleteUser: {
                     confirmationModal: {
                         assertionHint: "Veuillez confirmer votre action.",

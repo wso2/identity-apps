@@ -5915,6 +5915,12 @@ export const console: ConsoleNS = {
                 searchPlaceholder: "සොයන්න {{type}}"
             },
             user: {
+                deleteJITUser: {
+                    confirmationModal: {
+                        content: "ඔබ මෙම පරිශීලකයා මකා දැමුවහොත්, ඊළඟ වතාවේ සමාජ පිවිසුම් විකල්පයක් භාවිතා කර පරිශීලකයා ඇතුළු වන " +
+                            "තෙක් පරිශීලකයාට මගේ ගිණුමට ඇතුළු වීමට හෝ පරිශීලකයාගේ වෙනත් ඕනෑම යෙදුමට දායක වීමට නොහැකි වනු ඇත."
+                    }
+                },
                 deleteUser: {
                     confirmationModal: {
                         assertionHint: "කරුණාකර ඔබේ ක්‍රියාව තහවුරු කරන්න.",

@@ -3292,6 +3292,11 @@ export interface ConsoleNS {
                 };
             };
             user: {
+                deleteJITUser: {
+                    confirmationModal: {
+                        content: string;
+                    }
+                };
                 deleteUser: {
                     confirmationModal: Confirmation;
                 };
