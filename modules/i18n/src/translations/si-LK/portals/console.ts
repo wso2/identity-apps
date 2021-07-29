@@ -1708,7 +1708,7 @@ export const console: ConsoleNS = {
                                         label: "ප්‍රේක්ෂකයෝ",
                                         placeholder: "ප්‍රේක්ෂකයින් ඇතුළත් කරන්න",
                                         validations: {
-                                            invalid: "කරුණාකර වලංගු URL එක් කරන්න"
+                                            invalid: "කරුණාකර වලංගු URI එක් කරන්න"
                                         }
                                     },
                                     nameIdFormat: {
@@ -1726,7 +1726,7 @@ export const console: ConsoleNS = {
                                         label: "ලබන්නන්",
                                         placeholder: "ලබන්නන් ඇතුළත් කරන්න",
                                         validations: {
-                                            invalid: "කරුණාකර වලංගු URL එක් කරන්න"
+                                            invalid: "කරුණාකර වලංගු URI එක් කරන්න"
                                         }
                                     }
                                 },
