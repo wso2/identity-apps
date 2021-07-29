@@ -180,6 +180,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const [ protocolToDelete, setProtocolToDelete ] = useState<string>(undefined);
     const [ showLandingPage, setShowLandingPage ] = useState<boolean>(true);
     const [ requestLoading, setRequestLoading ] = useState<boolean>(false);
+    const [ isProtocolLoading, setProtocolLoading ] = useState<boolean>(true);
 
     const [ samlCreationOption, setSAMLCreationOption ] = useState<SAMLConfigModes>(undefined);
 
@@ -525,11 +526,13 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
 
         return (
             <EmphasizedSegment className="protocol-settings-section form-wrapper" padded="very">
-                { resolveProtocolBanner() }
+                { !isProtocolLoading? resolveProtocolBanner() : null }
                 {
                     Object.values(SupportedAuthProtocolTypes).includes(selectedProtocol as SupportedAuthProtocolTypes)
                         ? (
                             <InboundFormFactory
+                                isProtocolLoading={ isProtocolLoading }
+                                setProtocolLoading={ setProtocolLoading }
                                 certificate={ certificate }
                                 tenantDomain={ tenantName }
                                 allowedOrigins={ allowedOriginList }
@@ -560,6 +563,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                         )
                         : (
                             <InboundFormFactory
+                                isProtocolLoading={ isProtocolLoading }
+                                setProtocolLoading={ setProtocolLoading }
                                 certificate={ certificate }
                                 metadata={ authProtocolMeta[ selectedProtocol ] }
                                 initialValues={

@@ -29,7 +29,7 @@ import {
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider } from "semantic-ui-react";
+import { Divider, Segment } from "semantic-ui-react";
 import { AppState, FeatureConfigInterface, UIConfigInterface } from "../../../core";
 import { deleteApplication, updateApplicationDetails } from "../../api";
 import {
@@ -330,7 +330,10 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                     </ConfirmationModal>
                 </>
             )
-            : <ContentLoader/>
+            :
+            <Segment padded="very">
+                <ContentLoader inline="centered" active/>
+            </Segment>  
     );
 };
 

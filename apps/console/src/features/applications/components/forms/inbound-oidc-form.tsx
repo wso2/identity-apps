@@ -23,6 +23,7 @@ import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import {
     Code,
     ConfirmationModal,
+    ContentLoader,
     CopyInputField,
     Heading,
     Hint,
@@ -38,7 +39,7 @@ import union from "lodash-es/union";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Divider, Form, Grid, Label, List, Message } from "semantic-ui-react";
+import { Button, Container, Divider, Form, Grid, Label, List, Message } from "semantic-ui-react";
 import { applicationConfig } from "../../../../extensions";
 import { AppState, ConfigReducerStateInterface } from "../../../core";
 import { ApplicationManagementConstants } from "../../constants";
@@ -91,6 +92,11 @@ interface InboundOIDCFormPropsInterface extends TestableComponentInterface {
      * Application template.
      */
     template?: ApplicationTemplateListItemInterface;
+    /**
+     * Handles loading UI.
+     */
+    isProtocolLoading?: boolean;
+    setProtocolLoading?: any;
 }
 
 /**
@@ -115,6 +121,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         allowedOriginList,
         tenantDomain,
         template,
+        isProtocolLoading,
+        setProtocolLoading,
         [ "data-testid" ]: testId
     } = props;
 
@@ -251,12 +259,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     useEffect(() => {
         if (!template?.id || !SinglePageApplicationTemplate?.id) {
+            setProtocolLoading(false);
             return;
         }
 
         if (template.id == SinglePageApplicationTemplate.id) {
             setSPAApplication(true);
         }
+        setProtocolLoading(false);
     }, [ template ]);
 
     /**
@@ -2661,7 +2671,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     };
 
     return (
-        metadata ?
+        !isProtocolLoading && metadata ?
             (
                 <Forms
                     onSubmit={ handleFormSubmit }
@@ -2850,7 +2860,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     { showLowExpiryTimesConfirmationModal && lowExpiryTimesConfirmationModal }
                 </Forms>
             )
-            : null
+            : 
+            <Container>
+                <ContentLoader inline="centered" active/>
+            </Container>
     );
 };
 
