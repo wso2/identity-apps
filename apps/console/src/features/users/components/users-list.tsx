@@ -216,15 +216,15 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     const isNameAvailable = user.name?.familyName === undefined && user.name?.givenName === undefined;
 
                     if (user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId) {
-                        header = (user.name && user.name.givenName !== undefined)
-                            ? user.name.givenName + " " + (user.name.familyName ? user.name.familyName : "")
-                            : user.emails[0];
-
                         subHeader = user.emails[0]
                             ? user.emails[0]
                             : user.userName.split("/")?.length > 1
                                 ? user.userName.split("/")[ 1 ]
                                 : user.userName.split("/")[ 0 ];
+
+                        header = (user.name && user.name.givenName !== undefined)
+                            ? user.name.givenName + " " + (user.name.familyName ? user.name.familyName : "")
+                            : subHeader;
 
                     } else {
                         subHeader = user.userName.split("/")?.length > 1
@@ -495,7 +495,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         <ConfirmationModal.Content data-testid={ `${ testId }-confirmation-modal-content` }>
                             <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
                             {
-                                deletingUser[ SCIMConfigs.scim.enterpriseSchema ].userSourceId
+                                deletingUser[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId
                                     ? t("console:manage.features.user.deleteJITUser.content")
                                     : t("console:manage.features.user.deleteUser.confirmationModal.content")
                             }

@@ -1057,7 +1057,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
                             {
-                                deletingUser[ SCIMConfigs.scim.enterpriseSchema ].userSourceId
+                                deletingUser[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId
                                     ? t("console:manage.features.user.deleteJITUser.content")
                                     : t("console:manage.features.user.deleteUser.confirmationModal.content")
                             }
