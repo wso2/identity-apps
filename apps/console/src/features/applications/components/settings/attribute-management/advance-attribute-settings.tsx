@@ -222,15 +222,15 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
 
             return (
                 <Hint compact>
-                    {t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
-                        ".subject.fields.subjectAttribute.hint")}
+                    { t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
+                        ".subject.fields.subjectAttribute.hint") }
                 </Hint>
             );
         }
         return (
             <Hint compact>
-                {t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
-                    ".subject.fields.subjectAttribute.hint")}
+                { t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
+                    ".subject.fields.subjectAttribute.hint") }
             </Hint>
         );
     };
