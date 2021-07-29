@@ -188,7 +188,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                         let isAttributeValid: boolean = true;
 
                                         // TODO : Discuss on max characters for attribute name
-                                        if (!value.match(/^\w+$/) || value.length > 30) {
+                                        if (!new RegExp(/^([a-zA-Z0-9 _-]+)$/).test(value) || value.length > 30) {
                                             isAttributeValid = false;
                                         }
 
