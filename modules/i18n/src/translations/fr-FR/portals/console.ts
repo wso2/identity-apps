@@ -791,8 +791,8 @@ export const console: ConsoleNS = {
                                     " partager avec cette application.",
                                 mandatoryAttributeHint: "Marquez les attributs utilisateur qui doivent " +
                                     "obligatoirement être partagés avec l'application. Lors de la connexion, " +
-                                    "Asgardeo invite l'utilisateur à saisir ces valeurs d'attribut, si elles ne " +
-                                    "sont pas déjà fournies dans le profil de l'utilisateur.",
+                                    "{{productName}} invite l'utilisateur à saisir ces valeurs d'attribut, si elles " +
+                                    "ne sont pas déjà fournies dans le profil de l'utilisateur.",
                                 mappingTable: {
                                     actions: {
                                         enable: "Activer l'association"

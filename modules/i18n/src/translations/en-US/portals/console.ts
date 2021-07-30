@@ -790,7 +790,7 @@ export const console: ConsoleNS = {
                                 attributeComponentHintAlt: "Manage the user attributes you want to share with this" +
                                     " application.",
                                 mandatoryAttributeHint: "Mark which user attributes are mandatory to be shared " +
-                                    "with the application. At login, Asgardeo prompts the user to enter these " +
+                                    "with the application. At login, {{productName}} prompts the user to enter these " +
                                     "attribute values, if not already provided in the user's profile.",
                                 mappingTable: {
                                     actions: {
