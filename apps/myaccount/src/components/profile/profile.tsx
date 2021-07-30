@@ -155,8 +155,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                             tempProfileInfo.set(schema.name, primaryEmail);
                         }
                     } else {
-                        if (schema.extended
-                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]) {
+                        if (schema.extended) {
                             tempProfileInfo.set(
                                 schema.name,
                                 profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
@@ -165,18 +164,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                             );
                             return;
                         }
-
-                        if (schema.extended
-                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]) {
-                            tempProfileInfo.set(
-                                schema.name,
-                                profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
-                                ? profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
-                                : ""
-                            );
-                            return;
-                        }
-
                         tempProfileInfo.set(schema.name, profileDetails.profileInfo[schemaNames[0]]);
                     }
                 } else {
@@ -328,7 +315,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             if (schemaNames.length === 1) {
                 if (isExtended) {
                     value = {
-                        [schema.schemaId]: {
+                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
                             [schemaNames[0]]: values.get(formName)
                         }
                     };
@@ -338,7 +325,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             } else {
                 if (isExtended) {
                     value = {
-                        [schema.schemaId]: {
+                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
                             [schemaNames[0]]: {
                                 [schemaNames[1]]: values.get(formName)
                             }
