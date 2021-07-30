@@ -88,6 +88,7 @@ interface AccessConfigurationPropsInterface extends SBACInterface<FeatureConfigI
      * Is the application info request loading.
      */
     isLoading?: boolean;
+    setIsLoading?: any;
     /**
      * Callback to update the application details.
      */
@@ -147,6 +148,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         inboundProtocolConfig,
         inboundProtocols,
         isLoading,
+        setIsLoading,
         onUpdate,
         allowedOriginList,
         onAllowedOriginsUpdate,
@@ -180,7 +182,6 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const [ protocolToDelete, setProtocolToDelete ] = useState<string>(undefined);
     const [ showLandingPage, setShowLandingPage ] = useState<boolean>(true);
     const [ requestLoading, setRequestLoading ] = useState<boolean>(false);
-    const [ isProtocolLoading, setProtocolLoading ] = useState<boolean>(true);
 
     const [ samlCreationOption, setSAMLCreationOption ] = useState<SAMLConfigModes>(undefined);
 
@@ -323,7 +324,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
      * @param values - Form values.
      */
     const handleSubmit = (values: any): void => {
-
+        setIsLoading(true);
         updateApplicationDetails({ id: appId, ...values.general })
             .then(() => {
                 handleInboundConfigFormSubmit(values.inbound, selectedProtocol);
@@ -526,13 +527,13 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
 
         return (
             <EmphasizedSegment className="protocol-settings-section form-wrapper" padded="very">
-                { !isProtocolLoading? resolveProtocolBanner() : null }
+                { !isLoading? resolveProtocolBanner() : null }
                 {
                     Object.values(SupportedAuthProtocolTypes).includes(selectedProtocol as SupportedAuthProtocolTypes)
                         ? (
                             <InboundFormFactory
-                                isProtocolLoading={ isProtocolLoading }
-                                setProtocolLoading={ setProtocolLoading }
+                                isLoading={ isLoading }
+                                setIsLoading={ setIsLoading }
                                 certificate={ certificate }
                                 tenantDomain={ tenantName }
                                 allowedOrigins={ allowedOriginList }
@@ -563,8 +564,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                         )
                         : (
                             <InboundFormFactory
-                                isProtocolLoading={ isProtocolLoading }
-                                setProtocolLoading={ setProtocolLoading }
+                                isLoading={ isLoading }
+                                setIsLoading={ setIsLoading }
                                 certificate={ certificate }
                                 metadata={ authProtocolMeta[ selectedProtocol ] }
                                 initialValues={
@@ -884,8 +885,10 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                         )
                     }
                 </Grid>
-            )
-            : <ContentLoader/>
+            ) :
+                <EmphasizedSegment padded="very">
+                    <ContentLoader inline="centered" active/>
+                </EmphasizedSegment>
     );
 };
 

@@ -76,8 +76,8 @@ interface InboundFormFactoryInterface extends TestableComponentInterface {
     /**
      * Handles loading UI.
      */
-    isProtocolLoading?: boolean;
-    setProtocolLoading?: any;
+    isLoading?: boolean;
+    setIsLoading?: any;
 }
 
 /**
@@ -105,8 +105,8 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         template,
         showSAMLCreation,
         SAMLCreationOption,
-        isProtocolLoading,
-        setProtocolLoading,
+        isLoading,
+        setIsLoading,
         [ "data-testid" ]: testId
     } = props;
 
@@ -114,8 +114,8 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         case SupportedAuthProtocolTypes.OIDC:
             return (
                 <InboundOIDCForm
-                    isProtocolLoading={ isProtocolLoading }
-                    setProtocolLoading={ setProtocolLoading }
+                    isLoading={ isLoading }
+                    setIsLoading={ setIsLoading }
                     certificate={ certificate }
                     tenantDomain={ tenantDomain }
                     allowedOriginList={ allowedOrigins }

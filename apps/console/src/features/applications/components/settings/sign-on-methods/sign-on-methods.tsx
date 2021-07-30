@@ -17,7 +17,7 @@
  */
 
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { Code, ConfirmationModal, EmphasizedSegment, LabeledCard, Text } from "@wso2is/react-components";
+import { Code, ConfirmationModal, ContentLoader, EmphasizedSegment, LabeledCard, Text } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -624,41 +624,44 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     return (
         <EmphasizedSegment className="sign-on-methods-tab-content" padded="very">
             {
-                (!readOnly && !loginFlow && isDefaultFlowConfiguration())
-                    ? (
-                        <SignInMethodLanding
-                            isLoading={ isLoading || isAuthenticatorsFetchRequestLoading }
-                            readOnly={ readOnly }
-                            onLoginFlowSelect={ (type: LoginFlowTypes) => {
-                                handleLoginFlowSelect(type,
-                                    googleAuthenticators,
-                                    gitHubAuthenticators,
-                                    facebookAuthenticators);
-                            } }
-                            data-testid={ `${ testId }-landing` }
-                        />
-                    )
-                    : (
-                        <>
-                            <SignInMethodCustomization
-                                appId={ appId }
-                                isLoading={ isLoading || isAuthenticatorsFetchRequestLoading }
-                                authenticators={ authenticators }
-                                authenticationSequence={ moderatedAuthenticationSequence }
-                                onIDPCreateWizardTrigger={ (type: string, cb: () => void, template: any) => {
-                                    setSelectedIDPTemplate(template);
-                                    setIDPCreateWizardTriggerOrigin("EXTERNAL");
-                                    setIDPTemplateTypeToTrigger(type);
-                                    setShowMissingSocialAuthenticatorModal(false);
-                                    setShowIDPCreateWizard(true);
-                                    broadcastIDPCreateSuccessMessage = cb;
-                                } }
-                                onUpdate={ onUpdate }
-                                onReset={ handleLoginFlowReset }
-                                data-testid={ testId }
+                !(isLoading || isAuthenticatorsFetchRequestLoading)?
+                    ((!readOnly && !loginFlow && isDefaultFlowConfiguration())
+                        ? (
+                            <SignInMethodLanding
                                 readOnly={ readOnly }
+                                onLoginFlowSelect={ (type: LoginFlowTypes) => {
+                                    handleLoginFlowSelect(type,
+                                        googleAuthenticators,
+                                        gitHubAuthenticators,
+                                        facebookAuthenticators);
+                                } }
+                                data-testid={ `${ testId }-landing` }
                             />
-                        </>
+                        ) : (
+                            <>
+                                <SignInMethodCustomization
+                                    appId={ appId }
+                                    authenticators={ authenticators }
+                                    authenticationSequence={ moderatedAuthenticationSequence }
+                                    onIDPCreateWizardTrigger={ (type: string, cb: () => void, template: any) => {
+                                        setSelectedIDPTemplate(template);
+                                        setIDPCreateWizardTriggerOrigin("EXTERNAL");
+                                        setIDPTemplateTypeToTrigger(type);
+                                        setShowMissingSocialAuthenticatorModal(false);
+                                        setShowIDPCreateWizard(true);
+                                        broadcastIDPCreateSuccessMessage = cb;
+                                    } }
+                                    onUpdate={ onUpdate }
+                                    onReset={ handleLoginFlowReset }
+                                    data-testid={ testId }
+                                    isLoading={ isAuthenticatorsFetchRequestLoading }
+                                    setIsLoading={ setIsAuthenticatorsFetchRequestLoading }
+                                    readOnly={ readOnly }
+                                />
+                            </>
+                        )
+                    ) : (
+                        <ContentLoader inline="centered" active/>
                     )
             }
             { showIDPCreateWizard && renderIDPCreateWizard() }

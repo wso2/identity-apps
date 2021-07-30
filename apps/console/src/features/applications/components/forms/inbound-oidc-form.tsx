@@ -95,8 +95,8 @@ interface InboundOIDCFormPropsInterface extends TestableComponentInterface {
     /**
      * Handles loading UI.
      */
-    isProtocolLoading?: boolean;
-    setProtocolLoading?: any;
+    isLoading?: boolean;
+    setIsLoading?: any;
 }
 
 /**
@@ -121,8 +121,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         allowedOriginList,
         tenantDomain,
         template,
-        isProtocolLoading,
-        setProtocolLoading,
+        isLoading,
+        setIsLoading,
         [ "data-testid" ]: testId
     } = props;
 
@@ -259,14 +259,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     useEffect(() => {
         if (!template?.id || !SinglePageApplicationTemplate?.id) {
-            setProtocolLoading(false);
+            setIsLoading(false);
             return;
         }
 
         if (template.id == SinglePageApplicationTemplate.id) {
             setSPAApplication(true);
         }
-        setProtocolLoading(false);
+        setIsLoading(false);
     }, [ template ]);
 
     /**
@@ -2632,7 +2632,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * @param {Map<string, >} values - Form values.
      */
     const handleFormSubmit = (values: Map<string, FormValue>): void => {
-
         let isExpiryTimesTooLowModalShown: boolean = false;
 
         if (showCallbackURLField) {
@@ -2655,7 +2654,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     });
                 }
             });
-
             return;
         }
 
@@ -2668,10 +2666,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 onSubmit(updateConfiguration(values, undefined, undefined));
             }
         }
+        setIsLoading(false);
     };
 
     return (
-        !isProtocolLoading && metadata ?
+        !isLoading && metadata ?
             (
                 <Forms
                     onSubmit={ handleFormSubmit }

@@ -793,9 +793,9 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     let submitAdvanceForm: () => void;
 
     return (
-        !isClaimRequestLoading && selectedDialect && !(isClaimLoading && isEmpty(externalClaims))
-            ? (
-                <EmphasizedSegment padded="very">
+        <EmphasizedSegment padded="very">
+            { !isClaimRequestLoading && selectedDialect && !(isClaimLoading && isEmpty(externalClaims))?
+                <>
                     <Grid className="claim-mapping">
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
@@ -932,14 +932,11 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                 )
                             }
                         </Grid>
-                    ) : null
-                }
-                </EmphasizedSegment>
-            )
-            :
-            <Segment padded="very">
-                <ContentLoader inline="centered" active/>
-            </Segment>  
+                        ) : null
+                    }
+                </> : <ContentLoader inline="centered" active/>
+            }
+        </EmphasizedSegment>
     );
 };
 

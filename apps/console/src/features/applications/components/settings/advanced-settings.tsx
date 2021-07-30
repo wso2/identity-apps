@@ -19,8 +19,8 @@
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { EmphasizedSegment } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import { ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState, FeatureConfigInterface } from "../../../core";
@@ -75,6 +75,10 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
     const dispatch = useDispatch();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    /**
+     * Handles the loader UI for changes in Advanced Settings.
+     */
+    const [ isAdvancedSettingsLoading, setAdvancedSettingsLoading ] = useState<boolean>(false);   
 
     /**
      * Handles the advanced config form submit action.
@@ -82,6 +86,7 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
      * @param values - Form values.
      */
     const handleAdvancedConfigFormSubmit = (values: any): void => {
+        setAdvancedSettingsLoading(true);
         updateApplicationConfigurations(appId, values)
             .then(() => {
                 dispatch(addAlert({
@@ -112,22 +117,27 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
                     message: t("console:develop.features.applications.notifications.updateAdvancedConfig" +
                         ".genericError.message")
                 }));
+            })
+            .finally(() => {
+                setAdvancedSettingsLoading(false);
             });
     };
 
     return (
         <EmphasizedSegment className="advanced-configuration-section" padded="very">
-            <AdvancedConfigurationsForm
-                config={ advancedConfigurations }
-                onSubmit={ handleAdvancedConfigFormSubmit }
-                readOnly={
-                    readOnly
-                    || !hasRequiredScopes(featureConfig?.applications,
-                        featureConfig?.applications?.scopes?.update,
-                        allowedScopes)
-                }
-                data-testid={ `${ testId }-form` }
-            />
+            { !isAdvancedSettingsLoading?
+                <AdvancedConfigurationsForm
+                    config={ advancedConfigurations }
+                    onSubmit={ handleAdvancedConfigFormSubmit }
+                    readOnly={
+                        readOnly
+                        || !hasRequiredScopes(featureConfig?.applications,
+                            featureConfig?.applications?.scopes?.update,
+                            allowedScopes)
+                    }
+                    data-testid={ `${ testId }-form` }
+                /> : <ContentLoader inline="centered" active/>
+             }
         </EmphasizedSegment>
     );
 };
