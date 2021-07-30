@@ -156,6 +156,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         }
                     } else {
                         if (schema.extended
+                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
                             && profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]) {
                             tempProfileInfo.set(
                                 schema.name,
@@ -167,6 +168,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         }
 
                         if (schema.extended
+                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
                             && profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]) {
                             tempProfileInfo.set(
                                 schema.name,
