@@ -21,7 +21,7 @@ import { Field, Form } from "@wso2is/form";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { applicationConfig } from "../../../../extensions";
-import {AdvancedConfigurationsInterface, ApplicationTemplateListItemInterface} from "../../models";
+import { AdvancedConfigurationsInterface, ApplicationTemplateListItemInterface } from "../../models";
 import SAMLWebApplicationTemplate
     from "../../data/application-templates/templates/saml-web-application/saml-web-application.json";
 

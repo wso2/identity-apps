@@ -25,7 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState, FeatureConfigInterface } from "../../../core";
 import { updateApplicationConfigurations } from "../../api";
-import {AdvancedConfigurationsInterface, ApplicationTemplateListItemInterface} from "../../models";
+import { AdvancedConfigurationsInterface, ApplicationTemplateListItemInterface } from "../../models";
 import { AdvancedConfigurationsForm } from "../forms";
 
 /**
