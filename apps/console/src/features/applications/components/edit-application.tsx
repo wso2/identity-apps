@@ -664,6 +664,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onUpdate={ handleApplicationUpdate }
                 featureConfig={ featureConfig }
                 readOnly={ readOnly }
+                template={ template }
                 data-testid={ `${ testId }-advanced-settings` }
             />
         </ResourceTab.Pane>
