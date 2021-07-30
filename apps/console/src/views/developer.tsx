@@ -164,7 +164,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
         RouteUtils.gracefullyHandleRouting(routes, AppConstants.getDeveloperViewBasePath(), location.pathname);
 
         // Filter the routes and get only the enabled routes defined in the app config.
-        setFilteredRoutes(controlledRoutes);
+        setFilteredRoutes(routes);
 
         if (!isEmpty(profileInfo)) {
             return;
