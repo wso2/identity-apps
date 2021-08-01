@@ -226,23 +226,30 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                    gitHubAuthenticators: GenericAuthenticatorInterface[],
                                    facebookAuthenticators: GenericAuthenticatorInterface[]): void => {
 
-        eventPublisher.publish("application-sign-in-method-click-add", {
-            "method": loginFlow
-        });
-
         if (!loginFlow) {
             setModeratedAuthenticationSequence(authenticationSequence);
         } else if (loginFlow === LoginFlowTypes.DEFAULT) {
+            eventPublisher.publish("application-sign-in-method-click-add", {
+                "type": "default"
+            });
+
             setModeratedAuthenticationSequence({
                 ...authenticationSequence,
                 ...cloneDeep(DefaultFlowConfigurationSequenceTemplate)
             });
         } else if (loginFlow === LoginFlowTypes.SECOND_FACTOR_TOTP) {
+            eventPublisher.publish("application-sign-in-method-click-add", {
+                "type": "second-factor-totp"
+            });
+
             setModeratedAuthenticationSequence({
                 ...authenticationSequence,
                 ...cloneDeep(SecondFactorTOTPSequenceTemplate)
             });
         } else if (loginFlow === LoginFlowTypes.GOOGLE_LOGIN) {
+            eventPublisher.publish("application-sign-in-method-click-add", {
+                "type": "google-login"
+            });
 
             setSocialDisclaimerModalType(LoginFlowTypes.GOOGLE_LOGIN);
             
@@ -271,6 +278,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                });
            }
         } else if (loginFlow === LoginFlowTypes.GITHUB_LOGIN) {
+            eventPublisher.publish("application-sign-in-method-click-add", {
+                "type": "github-login"
+            });
             
             setSocialDisclaimerModalType(LoginFlowTypes.GITHUB_LOGIN);
             
@@ -299,6 +309,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 });
             }
         } else if (loginFlow === LoginFlowTypes.FACEBOOK_LOGIN) {
+            eventPublisher.publish("application-sign-in-method-click-add", {
+                "type": "facebook-login"
+            });
 
             setSocialDisclaimerModalType(LoginFlowTypes.FACEBOOK_LOGIN);
             
