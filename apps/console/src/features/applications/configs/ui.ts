@@ -126,6 +126,7 @@ import { ReactComponent as JWTLogo } from "../../../themes/default/assets/images
 import { ReactComponent as MicrosoftLogo } from "../../../themes/default/assets/images/third-party/microsoft-logo.svg";
 import { ReactComponent as Office365Logo } from "../../../themes/default/assets/images/third-party/office-365-logo.svg";
 import { ReactComponent as YahooLogo } from "../../../themes/default/assets/images/third-party/yahoo-logo.svg";
+import { ReactComponent as WarningIcon } from "../../../themes/default/assets/images/icons/warning-icon.svg";
 
 export const getInboundProtocolLogos = () => {
 
@@ -224,7 +225,8 @@ export const getGeneralIcons = () => {
     return {
         addCircleOutline: AddCircleOutlineIcon,
         plusIcon: PlusIcon,
-        predefined: ProtocolPredefined
+        predefined: ProtocolPredefined,
+        warning: WarningIcon
     };
 };
 

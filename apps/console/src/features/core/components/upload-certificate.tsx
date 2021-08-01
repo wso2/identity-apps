@@ -434,7 +434,8 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                                     </p>
                                     <p className="description">– or –</p>
                                 </div>
-                                <Button basic primary onClick={ () => {
+                                <Button basic primary onClick={ (event) => {
+                                    event.preventDefault();
                                     fileUpload.current.click();
                                 } }>
                                     { t("console:manage.features.certificates.keystore.wizard.dropZone.action") }
@@ -511,7 +512,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
             <input
                 ref={ fileUpload }
                 type="file"
-                accept=".pem, .cer, .crt"
+                accept=".pem, .cer, .crt, .cert"
                 hidden
                 onChange={ (event) => {
                     const file: File = event.target.files[ 0 ];

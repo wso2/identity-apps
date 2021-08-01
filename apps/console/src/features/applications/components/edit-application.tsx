@@ -634,6 +634,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         && (inboundProtocolList[ 0 ] === SupportedAuthProtocolTypes.OIDC)
                 }
                 onUpdate={ handleApplicationUpdate }
+                applicationTemplateId={ application?.templateId }
                 readOnly={ readOnly }
                 data-testid={ `${ testId }-attribute-settings` }
             />

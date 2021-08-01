@@ -999,6 +999,15 @@ export interface ConsoleNS {
                             template : FormAttributes;
                         };
                     };
+                    applicationCertificateWizard: {
+                        heading: string;
+                        subHeading: string;
+                        emptyPlaceHolder: {
+                            title: string;
+                            description1: string;
+                            description2: string;
+                        }
+                    }
                 };
             };
             authenticationProvider?: {

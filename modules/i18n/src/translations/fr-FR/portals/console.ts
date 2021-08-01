@@ -1156,7 +1156,8 @@ export const console: ConsoleNS = {
                             subject: {
                                 fields:{
                                     subjectAttribute: {
-                                        hint: "Choisissez l'attribut",
+                                        hint: "Sélectionnez les attributs partagés que vous souhaitez utiliser " +
+                                            "comme identifiant de sujet de l'utilisateur.",
                                         hintOIDC: "Sélectionnez les attributs partagés que vous souhaitez utiliser " +
                                             "comme identifiant de sujet de l'utilisateur. Cela représente la " +
                                             "revendication <1>sub</1> du <1>id_token</1>.",
@@ -1752,7 +1753,7 @@ export const console: ConsoleNS = {
                                         label: "Audience",
                                         placeholder: "Saisir l'audience",
                                         validations: {
-                                            invalid: "Veuillez ajouter une URL valide"
+                                            invalid: "Veuillez ajouter une URI valide"
                                         }
                                     },
                                     nameIdFormat: {
@@ -1770,7 +1771,7 @@ export const console: ConsoleNS = {
                                         label: "Destinataires",
                                         placeholder: "Saisir les destinataires",
                                         validations: {
-                                            invalid: "Veuillez ajouter une URL valide"
+                                            invalid: "Veuillez ajouter une URI valide"
                                         }
                                     }
                                 },
@@ -1808,7 +1809,11 @@ export const console: ConsoleNS = {
                                         label: "Activer",
                                         validations: {
                                             empty: "Ce champ est obligatoire."
-                                        }
+                                        },
+                                        hint: "Sélectionnez pour chiffrer les assertions SAML2 renvoyées après " +
+                                            "l'authentification. Pour utiliser le cryptage, configurez le " +
+                                            "certificat de votre application dans la section Certificat ci-dessous."
+
                                     },
                                     assertionEncryptionAlgorithm: {
                                         label: "Algorithme de chiffrement des assertions",
@@ -2698,6 +2703,15 @@ export const console: ConsoleNS = {
                                     }
                                 }
                             }
+                        }
+                    },
+                    applicationCertificateWizard: {
+                        heading: "Ajouter un nouveau certificat",
+                        subHeading: "Ajouter un nouveau certificat à l'application",
+                        emptyPlaceHolder: {
+                            title: "Pas de certificat",
+                            description1: "Cette application n'a pas de certificat ajouté.",
+                            description2: "Ajoutez un certificat pour le voir ici"
                         }
                     }
                 }
@@ -3678,7 +3692,7 @@ export const console: ConsoleNS = {
                 title: "Enregistrer une nouvelle candidature"
             },
             applications: {
-                subTitle: "Gérez les applications à l'aide de modèles et configurez l'authentification.",
+                subTitle: "Enregistrez et gérez vos applications et configurez la connexion.",
                 title: "Applications"
             },
             applicationsEdit: {
@@ -6595,7 +6609,10 @@ export const console: ConsoleNS = {
                                 empty: "Le nom d'utilisateur est obligatoire",
                                 invalid: "Ce nom d'utilisateur n'est pas disponible.",
                                 invalidCharacters: "Le nom d'utilisateur semble contenir des caractères non valides.",
-                                regExViolation: "Veuillez saisir une adresse e-mail valide."
+                                regExViolation: "Saisissez un e-mail valide entre 3 et 50 caractères. Vous pouvez " +
+                                    "utiliser des caractères alphanumériques, caractères Unicode, " +
+                                    "des traits de soulignement (_), des tirets (-), des points (.), " +
+                                    "et un signe arobase (@)."
                             }
                         }
                     }

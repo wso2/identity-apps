@@ -1139,7 +1139,8 @@ export const console: ConsoleNS = {
                             subject: {
                                 fields:{
                                     subjectAttribute: {
-                                        hint: "Choose the attribute",
+                                        hint: "Select which of the shared attributes you want to use as the" +
+                                            " subject identifier of the user",
                                         hintOIDC: "Select which of the shared attributes you want to use as the" +
                                             " subject identifier of the user. This represents the <1>sub</1> claim of" +
                                             " the <1>id_token</1>.",
@@ -1725,7 +1726,7 @@ export const console: ConsoleNS = {
                                         label: "Audiences",
                                         placeholder: "Enter audience",
                                         validations: {
-                                            invalid: "Please add valid URL"
+                                            invalid: "Please add valid URI"
                                         }
                                     },
                                     nameIdFormat: {
@@ -1742,7 +1743,7 @@ export const console: ConsoleNS = {
                                         label: "Recipients",
                                         placeholder: "Enter recipient",
                                         validations: {
-                                            invalid: "Please add valid URL"
+                                            invalid: "Please add valid URI"
                                         }
                                     }
                                 },
@@ -1779,7 +1780,10 @@ export const console: ConsoleNS = {
                                         label: "Enable encryption",
                                         validations: {
                                             empty: "This is a required field."
-                                        }
+                                        },
+                                        hint: "Select to encrypt the SAML2 Assertions returned after authentication. " +
+                                            "To use encryption configure the certificate of your application" +
+                                            " in the Certificate section below."
                                     },
                                     assertionEncryptionAlgorithm: {
                                         label: "Assertion encryption algorithm",
@@ -2682,6 +2686,15 @@ export const console: ConsoleNS = {
                                     }
                                 }
                             }
+                        }
+                    },
+                    applicationCertificateWizard: {
+                        heading: "Add New Certificate",
+                        subHeading: "Add new certificate to the application",
+                        emptyPlaceHolder: {
+                            title: "No certificate",
+                            description1: "This Application has no certificate added.",
+                            description2: "Add a certificate to view it here."
                         }
                     }
                 }
@@ -4850,7 +4863,7 @@ export const console: ConsoleNS = {
                 title: "Register New Application"
             },
             applications: {
-                subTitle: "Manage applications using templates, and configure authentication.",
+                subTitle: "Register and manage your applications and configure sign-in.",
                 title: "Applications"
             },
             applicationsEdit: {
@@ -7748,7 +7761,9 @@ export const console: ConsoleNS = {
                                 empty: "Username is a required field",
                                 invalid: "A user already exists with this username.",
                                 invalidCharacters: "Username seems to contain invalid characters.",
-                                regExViolation: "Please enter a valid email."
+                                regExViolation: "Enter a valid email between 3 and 50 characters. You can use " +
+                                "alphanumeric characters, unicode characters, underscores (_), dashes (-), " +
+                                    "periods (.), and an at sign (@)."
                             }
                         }
                     }
