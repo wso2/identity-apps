@@ -38,7 +38,7 @@ interface BasicDetailsLocalClaimsPropsInterface extends TestableComponentInterfa
      */
     onSubmit: (data: any, values: Map<string, FormValue>) => void;
     /**
-     * Form Values to be saved 
+     * Form Values to be saved
      */
     values: Map<string, FormValue>;
     /**
@@ -100,7 +100,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
 
     /**
      * This shows a popup with a delay of 500 ms.
-     * 
+     *
      * @param {React.Dispatch<React.SetStateAction<boolean>>} callback The state dispatch method.
      * @param {React.MutableRefObject<any>} ref The ref object carrying the `setTimeout` ID.
      */
@@ -113,7 +113,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
 
     /**
      * This closes the popup.
-     * 
+     *
      * @param {React.Dispatch<React.SetStateAction<boolean>>} callback The state dispatch method.
      * @param {React.MutableRefObject<any>} ref The ref object carrying the `setTimeout` ID.
      */
@@ -147,7 +147,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                 if (noUniqueOIDCAttrib && noUniqueSCIMAttrib) {
                     onSubmit(data, values);
                 }
-                
+
             } }
             submitState={ submitState }
         >
@@ -194,7 +194,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
 
                                         if (!isAttributeValid) {
                                             validation.isValid = false;
-                                            validation.errorMessages.push(t("console:manage.features.claims." 
+                                            validation.errorMessages.push(t("console:manage.features.claims."
                                                 +"dialects.forms.fields.attributeName.validation.invalid"));
                                         }
 
@@ -249,28 +249,28 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                             <Message color="orange" >
                                                                 { (() => {
                                                                     // TODO: Add to translations file
-                                                                    if (!noUniqueOIDCAttrib 
+                                                                    if (!noUniqueOIDCAttrib
                                                                         && !noUniqueSCIMAttrib) {
                                                                         return (
-                                                                            <>The mapping names generated for 
-                                                                                <b> OpenID Connect & SCIM </b> 
+                                                                            <>The mapping names generated for
+                                                                                <b> OpenID Connect & SCIM </b>
                                                                                 protocol(s) is already available.</>
                                                                         );
-                                                                    } else if ( noUniqueOIDCAttrib 
+                                                                    } else if ( noUniqueOIDCAttrib
                                                                         && !noUniqueSCIMAttrib ) {
                                                                         return (
-                                                                            <>The mapping names generated for 
-                                                                                <b> SCIM </b> 
+                                                                            <>The mapping names generated for
+                                                                                <b> SCIM </b>
                                                                                 protocol(s) is already available.</>
                                                                         );
-                                                                    } else if ( !noUniqueOIDCAttrib 
+                                                                    } else if ( !noUniqueOIDCAttrib
                                                                         && noUniqueSCIMAttrib) {
                                                                         return (
-                                                                            <>The mapping names generated for 
-                                                                                <b> OpenID Connect </b> 
+                                                                            <>The mapping names generated for
+                                                                                <b> OpenID Connect </b>
                                                                                 protocol(s) is already available.</>
                                                                         );
-                                                                        
+
                                                                     }
                                                                 })() }
                                                             </Message>
@@ -289,13 +289,13 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                             floated="left"
                                                         />
                                                         <span>
-                                                            { t("extensions:manage.attributes." 
+                                                            { t("extensions:manage.attributes."
                                                                 +"generatedAttributeMapping.OIDCProtocol") }
                                                         </span>
                                                     </Grid.Column>
                                                     <Grid.Column width={ 11 }>
                                                         <InlineEditInput
-                                                            text={ oidcMapping } 
+                                                            text={ oidcMapping }
                                                             onChangesSaved={ (value: string) => {
                                                                 attributeConfig.localAttributes
                                                                     .checkAttributeNameAvailability(
@@ -319,13 +319,13 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                             floated="left"
                                                         />
                                                         <span>
-                                                            { t("extensions:manage.attributes." 
+                                                            { t("extensions:manage.attributes."
                                                                 +"generatedAttributeMapping.SCIMProtocol") }
                                                         </span>
                                                     </Grid.Column>
                                                     <Grid.Column width={ 11 }>
                                                         <InlineEditInput
-                                                            textPrefix="urn:scim:custom:schema:"
+                                                            textPrefix="urn:scim:wso2:schema:"
                                                             onChangesSaved={ (value: string) => {
                                                                 attributeConfig.localAttributes
                                                                     .checkAttributeNameAvailability(
@@ -334,11 +334,11 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                                 });
                                                                 setScimMapping(value);
                                                             } }
-                                                            text={ scimMapping } 
+                                                            text={ scimMapping }
                                                         />
                                                     </Grid.Column>
                                                 </Grid.Row>
-                                                
+
                                             </Grid>
                                         </Card.Description>
                                     </Card.Content>
@@ -444,7 +444,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             data-testid={ `${ testId }-form-description-input` }
                         />
                     </Grid.Column>
-                    { attributeConfig.localAttributes.createWizard.showRegularExpression && 
+                    { attributeConfig.localAttributes.createWizard.showRegularExpression &&
                         <Grid.Column width={ 8 }>
                             <Field
                                 type="text"
@@ -553,7 +553,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                         />
                     </Grid.Column>
                 </Grid.Row>
-                { attributeConfig.localAttributes.createWizard.showReadOnlyAttribute && 
+                { attributeConfig.localAttributes.createWizard.showReadOnlyAttribute &&
                     // TODO: Track this as an issue for future implementations
                     <Grid.Row column={ 1 }>
                         <Grid.Column>
