@@ -46,6 +46,8 @@ import {
     isLocalIdentityClaim,
     updateAvailableLocalClaims
 } from "../utils";
+import { AttributeSelection, RoleMappingSettings, UriAttributesSettings } from "./attribute-management";
+import { AttributesSelectionV2 } from "./attribute-management/attribute-selection-v2";
 
 export interface DropdownOptionsInterface {
     key: string;
@@ -303,36 +305,24 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             ? (
                 <EmphasizedSegment padded="very">
                     <Grid className="attributes-settings">
-                        { /* Select attributes for mapping. */ }
-                        { selectedClaimsWithMapping &&
-                        <AttributeSelection
-                            attributeList={
-                                availableLocalClaims.filter(
-                                    hideIdentityClaimAttributes
-                                        ? ({ uri }) => !isLocalIdentityClaim(uri)
-                                        : (_) => true
-                                )
-                            }
-                            selectedAttributesWithMapping={ selectedClaimsWithMapping }
-                            setSelectedAttributesWithMapping={ setSelectedClaimsWithMapping }
-                            uiProps={ {
-                                attributeColumnHeader: t("console:develop.features.authenticationProvider." +
-                                    "forms.attributeSettings.attributeMapping.attributeColumnHeader"),
-                                attributeMapColumnHeader: t("console:develop.features.authenticationProvider." +
-                                    "forms.attributeSettings.attributeMapping.attributeMapColumnHeader"),
-                                attributeMapInputPlaceholderPrefix: t("console:develop.features." +
-                                    "authenticationProvider.forms" +
-                                    ".attributeSettings.attributeMapping.attributeMapInputPlaceholderPrefix"),
-                                componentHeading: t("console:develop.features.authenticationProvider." +
-                                    "forms.attributeSettings." +
-                                    "attributeMapping.componentHeading"),
-                                enablePrecedingDivider: false,
-                                hint: t("console:develop.features.authenticationProvider." +
-                                    "forms.attributeSettings.attributeMapping.hint")
-                            } }
-                            data-testid={ `${ testId }-claim-attribute-selection` }
-                            isReadOnly={ isReadOnly }
-                        /> }
+
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column width={ 10 }>
+                                <AttributesSelectionV2
+                                    onAttributesSelected={ (mappingsToBeAdded) => {
+                                        setSelectedClaimsWithMapping([ ...mappingsToBeAdded ]);
+                                    } }
+                                    attributeList={
+                                        availableLocalClaims.filter(
+                                            hideIdentityClaimAttributes
+                                                ? ({ uri }) => !isLocalIdentityClaim(uri)
+                                                : () => true
+                                        )
+                                    }
+                                    mappedAttributesList={ [ ...selectedClaimsWithMapping ] }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
 
                         { selectedClaimsWithMapping &&
                         <UriAttributesSettings
@@ -346,7 +336,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                             }
                             initialRoleUri={ roleClaimUri }
                             initialSubjectUri={ subjectClaimUri }
-                            claimMappingOn={ !isEmpty(selectedClaimsWithMapping) }
+                            claimMappingOn={ isRoleMappingsEnabled && !isEmpty(selectedClaimsWithMapping) }
                             updateRole={ setRoleClaimUri }
                             updateSubject={ setSubjectClaimUri }
                             data-testid={ `${ testId }-uri-attribute-settings` }
@@ -402,7 +392,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                     <Button
                                         primary
                                         size="small"
-                                        onClick={ setTriggerSubmission }
+                                        onClick={ handleAttributesUpdate }
                                         data-testid={ `${ testId }-update-button` }
                                     >
                                         { t("common:update") }
