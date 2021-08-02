@@ -163,6 +163,10 @@
                         .description {
                             margin-top: 0;
 
+                            &.linked {
+                                cursor: pointer;
+                            }
+
                             .name {
                                 font-weight: bold;
                                 min-width: 100px;
