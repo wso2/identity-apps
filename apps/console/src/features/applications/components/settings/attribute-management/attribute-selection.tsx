@@ -167,7 +167,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     // Stops the UI loader when the component is initialized and have fetched the availableExternalClaims
     useEffect(() => {
-        if ( initializationFinished && ( availableExternalClaims.length > 0 || availableClaims.length > 0)) {
+        if (initializationFinished && claimConfigurations) {
             // Stop loader UI for SAML applications
             if (selectedDialect.localDialect && availableClaims.length > 0) {
                 setUserAttributesLoading(false);   
@@ -177,7 +177,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 setUserAttributesLoading(false); 
             }                
         }
-    }, [availableClaims, availableExternalClaims, initializationFinished]);
+    }, [availableClaims, availableExternalClaims, claimConfigurations, initializationFinished]);
 
     const updateMandatory = (claimURI: string, mandatory: boolean) => {
         if (selectedDialect.localDialect) {
@@ -964,9 +964,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 { addSelectionModal() }
                 { removeAttributeModal() }
             </>
-            : !initializationFinished
-                ? <ContentLoader />
-                : null
+            : null
     );
 };
 
