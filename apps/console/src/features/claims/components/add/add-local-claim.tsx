@@ -16,8 +16,10 @@
 * under the License.
 */
 
-import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { AlertLevels, Claim, ProfileSchemaInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
+import { getProfileSchemas } from "@wso2is/core/api";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
@@ -105,7 +107,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
         } else {
             setShowMapAttributes(true);
         }
-        
+
     }, [ hiddenUserStores ]);
 
     /**
@@ -142,6 +144,9 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                             claimURI: `${attributeConfig.localAttributes.
                                 customDialectURI}:${customMappings.get("scim")}`,
                             mappedLocalClaimURI: data.claimURI
+                        }).
+                        then(() => {
+                            fetchUpdatedSchemaList();
                         });
                     });
 
@@ -185,10 +190,47 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                                 "addLocalClaim.genericError.description"),
                         level: AlertLevels.ERROR,
                         message: error?.message
-                            || t("console:manage.features.claims.local.notifications.addLocalClaim." + 
+                            || t("console:manage.features.claims.local.notifications.addLocalClaim." +
                                 "genericError.message")
                     }
                 );
+            });
+    };
+
+    /**
+     * Fetch the updated SCIM2 schema list.
+     */
+    const fetchUpdatedSchemaList = (): void => {
+        dispatch(setProfileSchemaRequestLoadingStatus(true));
+
+        getProfileSchemas()
+            .then((response: ProfileSchemaInterface[]) => {
+                dispatch(setSCIMSchemas<ProfileSchemaInterface[]>(response));
+            })
+            .catch((error: IdentityAppsApiException) => {
+                if (error?.response?.data?.description) {
+                    dispatch(addAlert({
+                            description: error.response.data.description,
+                            level: AlertLevels.ERROR,
+                            message: t("console:manage.notifications.getProfileSchema.error.message")
+                        })
+                    );
+                }
+
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "console:manage.notifications.getProfileSchema.genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "console:manage.notifications.getProfileSchema.genericError.message"
+                        )
+                    })
+                );
+            })
+            .finally(() => {
+                dispatch(setProfileSchemaRequestLoadingStatus(false));
             });
     };
 
@@ -221,7 +263,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                     value: "TRUE"
                 }];
             }
-            
+
         }
 
         if (!showMapAttributes) {
@@ -304,7 +346,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                 ),
                 icon: getAddLocalClaimWizardStepIcons().general,
                 title: t("console:manage.features.claims.local.wizard.steps.summary")
-    
+
             }
             : undefined
         )
@@ -314,7 +356,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
      * Moves the wizard to the next step
      */
     const next = () => {
-        
+
         if (STEPS.length === 1) {
             setFirstStep();
         }
@@ -368,7 +410,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                         : ""
                 }
             </Modal.Header>
-            { STEPS.length > 1 && 
+            { STEPS.length > 1 &&
                 <Modal.Content className="steps-container" data-testid={ `${ testId }-steps` }>
                     <Steps.Group
                         current={ currentWizardStep }
