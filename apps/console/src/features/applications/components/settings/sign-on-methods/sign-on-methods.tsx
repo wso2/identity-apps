@@ -660,9 +660,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                 />
                             </>
                         )
-                    ) : (
-                        <ContentLoader inline="centered" active/>
-                    )
+                    ) : <ContentLoader inline="centered" active/>
             }
             { showIDPCreateWizard && renderIDPCreateWizard() }
             { showMissingSocialAuthenticatorModal && renderMissingSocialAuthenticatorModal() }

@@ -19,8 +19,8 @@
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import { EmphasizedSegment } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState, FeatureConfigInterface } from "../../../core";

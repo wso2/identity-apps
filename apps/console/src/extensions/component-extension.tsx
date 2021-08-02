@@ -19,7 +19,7 @@
 import { I18n } from "@wso2is/i18n";
 import { ContentLoader, EmptyPlaceholder, ErrorBoundary } from "@wso2is/react-components";
 import React, { Suspense, lazy } from "react";
-import { Container, Loader, Placeholder } from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
 import { ExtensionsManager } from "./extensions-manager";
 import { getEmptyPlaceholderIllustrations } from "../features/core";
 

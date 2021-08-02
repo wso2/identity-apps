@@ -2632,6 +2632,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * @param {Map<string, >} values - Form values.
      */
     const handleFormSubmit = (values: Map<string, FormValue>): void => {
+
         let isExpiryTimesTooLowModalShown: boolean = false;
 
         if (showCallbackURLField) {
@@ -2654,6 +2655,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     });
                 }
             });
+
             return;
         }
 
@@ -2858,8 +2860,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     { showReactiveConfirmationModal && renderReactivateConfirmationModal() }
                     { showLowExpiryTimesConfirmationModal && lowExpiryTimesConfirmationModal }
                 </Forms>
-            )
-            : 
+            ) : 
             <Container>
                 <ContentLoader inline="centered" active/>
             </Container>

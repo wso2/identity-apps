@@ -22,12 +22,9 @@ import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import {
     ContentLoader,
-    GenericIcon,
-    LinkButton,
     ListLayout,
     PageLayout,
-    PrimaryButton,
-    SecondaryButton
+    PrimaryButton
 } from "@wso2is/react-components";
 import find from "lodash-es/find";
 import React, {
@@ -125,7 +122,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const [ appList, setAppList ] = useState<ApplicationListInterface>({});
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
-    const [ isPageLoading, setPageLoading ] = useState<boolean>(true);
     const [ isApplicationListRequestLoading, setApplicationListRequestLoading ] = useState<boolean>(false);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
@@ -176,7 +172,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             })
             .finally(() => {
                 setApplicationListRequestLoading(false);
-                setPageLoading(false);
             });
     };
 
@@ -261,14 +256,14 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     return (
         <PageLayout
             action={
-                !isPageLoading && (isApplicationListRequestLoading || !(!searchQuery && appList?.totalResults <= 0))
+                !isApplicationListRequestLoading && !(!searchQuery && appList?.totalResults <= 0)
                 && (hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.create,
                     allowedScopes))
                 && (
                     <>
                         <PrimaryButton
-                            disabled={ isPageLoading || isApplicationListRequestLoading }
-                            loading={ isPageLoading || isApplicationListRequestLoading }
+                            disabled={ isApplicationListRequestLoading }
+                            loading={ isApplicationListRequestLoading }
                             onClick={ (): void => {
                                 eventPublisher.publish("application-click-new-application-button");
 
@@ -286,7 +281,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             description={ t("console:develop.pages.applications.subTitle") }
             data-testid={ `${ testId }-page-layout` }
         >
-        { !isPageLoading? (
+        { !isApplicationListRequestLoading? (
             <>
                 { renderRemoteFetchStatus() }
                 <ListLayout
@@ -396,7 +391,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         }
                     />
                 ) }
-            </> ) : 
+            </> 
+            ) : 
             <Container>
                 <ContentLoader inline="centered" active/>
             </Container>

@@ -29,7 +29,7 @@ import {
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Segment } from "semantic-ui-react";
+import { Divider } from "semantic-ui-react";
 import { AppState, FeatureConfigInterface, UIConfigInterface } from "../../../core";
 import { deleteApplication, updateApplicationDetails } from "../../api";
 import {
@@ -72,7 +72,6 @@ interface GeneralApplicationSettingsInterface extends SBACInterface<FeatureConfi
      * Is the application info request loading.
      */
     isLoading?: boolean;
-    setIsLoading?: any;
     /**
      * Name of the application.
      */
@@ -116,7 +115,6 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         imageUrl,
         accessUrl,
         isLoading,
-        setIsLoading,
         onDelete,
         onUpdate,
         readOnly,
@@ -333,9 +331,9 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                 </>
             )
             :
-            <Segment padded="very">
+            <EmphasizedSegment padded="very">
                 <ContentLoader inline="centered" active/>
-            </Segment>  
+            </EmphasizedSegment>  
     );
 };
 
