@@ -396,15 +396,22 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             />
                         )
                     }
-                    <Show when={ AccessControlConstants.ATTRIBUTE_EDIT }>
-                        <Field.Button
-                            ariaLabel="submit"
-                            size="small"
-                            buttonType="primary_btn"
-                            label={ t("common:update") }
-                            name="submit"
-                        />
-                    </Show>
+                    {
+                        hasRequiredScopes(
+                            featureConfig?.attributeDialects,
+                            featureConfig?.attributeDialects?.scopes?.update,
+                            allowedScopes
+                        ) &&
+                        (
+                            <Field.Button
+                                ariaLabel="submit"
+                                size="small"
+                                buttonType="primary_btn"
+                                label={ t("common:update") }
+                                name="submit"
+                            />
+                        )
+                    }
                 </Form>
             </EmphasizedSegment>
             <Divider hidden />
