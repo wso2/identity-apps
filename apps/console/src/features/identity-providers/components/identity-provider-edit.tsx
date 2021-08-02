@@ -165,9 +165,14 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                         identityProvider.federatedAuthenticators.defaultAuthenticatorId
                     )
                 }
+                isRoleMappingsEnabled={
+                    isSaml && identityProviderConfig.utils.isRoleMappingsEnabled(
+                        identityProvider.federatedAuthenticators.defaultAuthenticatorId
+                    )
+                }
                 data-testid={ `${ testId }-attribute-settings` }
                 provisioningAttributesEnabled={
-                    identityProviderConfig.utils.isProvisioningAttributesEnabled(
+                    isSaml && identityProviderConfig.utils.isProvisioningAttributesEnabled(
                         identityProvider.federatedAuthenticators.defaultAuthenticatorId
                     )
                 }
