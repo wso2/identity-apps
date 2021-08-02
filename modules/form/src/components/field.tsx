@@ -46,6 +46,7 @@ export interface FormFieldPropsInterface extends FieldProps<any, any, any>, Test
 type FieldType = FC<FormFieldPropsInterface> & {
     Input: typeof FieldInput;
     Button: typeof FieldButton;
+    CheckboxLegacy: typeof FieldCheckboxLegacy;
     Textarea: typeof FieldTextarea;
     Checkbox: typeof FieldCheckbox;
     Dropdown: typeof FieldDropdown;
