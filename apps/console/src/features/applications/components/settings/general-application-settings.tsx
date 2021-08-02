@@ -176,7 +176,6 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
      * @param {ApplicationInterface} updatedDetails - Form values.
      */
     const handleFormSubmit = (updatedDetails: ApplicationInterface): void => {
-        setIsLoading(true);
         updateApplicationDetails(updatedDetails)
             .then(() => {
                 dispatch(addAlert({
@@ -207,9 +206,6 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                     message: t("console:develop.features.applications.notifications.updateApplication.genericError" +
                         ".message")
                 }));
-            })
-            .finally(() => {
-                setIsLoading(false);
             });
     };
 

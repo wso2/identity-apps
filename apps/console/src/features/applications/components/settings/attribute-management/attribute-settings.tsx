@@ -204,7 +204,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     const [ roleMapping, setRoleMapping ] = useState<RoleMappingInterface[]>([]);
 
     const [ isClaimLoading, setIsClaimLoading ] = useState<boolean>(true);
-    const [ isUserAttributesLoading, setUserAttributesLoading ] = useState<boolean>(true);
+    const [ isUserAttributesLoading, setUserAttributesLoading ] = useState<boolean>(false);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
@@ -932,7 +932,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                 )
                             }
                         </Grid>
-                        ) : null
+                        ) : <ContentLoader inline="centered" active/>
                     }
                 </> : <ContentLoader inline="centered" active/>
             }

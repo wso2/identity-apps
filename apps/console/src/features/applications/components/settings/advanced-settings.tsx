@@ -75,10 +75,6 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
     const dispatch = useDispatch();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
-    /**
-     * Handles the loader UI for changes in Advanced Settings.
-     */
-    const [ isAdvancedSettingsLoading, setAdvancedSettingsLoading ] = useState<boolean>(false);   
 
     /**
      * Handles the advanced config form submit action.
@@ -86,7 +82,6 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
      * @param values - Form values.
      */
     const handleAdvancedConfigFormSubmit = (values: any): void => {
-        setAdvancedSettingsLoading(true);
         updateApplicationConfigurations(appId, values)
             .then(() => {
                 dispatch(addAlert({
@@ -117,27 +112,22 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
                     message: t("console:develop.features.applications.notifications.updateAdvancedConfig" +
                         ".genericError.message")
                 }));
-            })
-            .finally(() => {
-                setAdvancedSettingsLoading(false);
             });
     };
 
     return (
         <EmphasizedSegment className="advanced-configuration-section" padded="very">
-            { !isAdvancedSettingsLoading?
-                <AdvancedConfigurationsForm
-                    config={ advancedConfigurations }
-                    onSubmit={ handleAdvancedConfigFormSubmit }
-                    readOnly={
-                        readOnly
-                        || !hasRequiredScopes(featureConfig?.applications,
-                            featureConfig?.applications?.scopes?.update,
-                            allowedScopes)
-                    }
-                    data-testid={ `${ testId }-form` }
-                /> : <ContentLoader inline="centered" active/>
-             }
+            <AdvancedConfigurationsForm
+                config={ advancedConfigurations }
+                onSubmit={ handleAdvancedConfigFormSubmit }
+                readOnly={
+                    readOnly
+                    || !hasRequiredScopes(featureConfig?.applications,
+                        featureConfig?.applications?.scopes?.update,
+                        allowedScopes)
+                }
+                data-testid={ `${ testId }-form` }
+            />
         </EmphasizedSegment>
     );
 };
