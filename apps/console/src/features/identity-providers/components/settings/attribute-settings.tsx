@@ -46,7 +46,6 @@ import {
     isLocalIdentityClaim,
     updateAvailableLocalClaims
 } from "../utils";
-import { AttributeSelection, RoleMappingSettings, UriAttributesSettings } from "./attribute-management";
 import { AttributesSelectionV2 } from "./attribute-management/attribute-selection-v2";
 
 export interface DropdownOptionsInterface {
