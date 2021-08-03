@@ -612,7 +612,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     deleteApplication: {
-                        assertionHint: "Veuillez taper <1>{{ name }}</1> pour confirmer.",
+                        assertionHint: "Veuillez confirmer votre action.",
                         content: "Toutes les applications qui en dépendent risquent également " +
                             "de ne plus fonctionner. Veuillez procéder avec prudence.",
                         header: "Etes-vous sûr ?",
@@ -1156,7 +1156,8 @@ export const console: ConsoleNS = {
                             subject: {
                                 fields:{
                                     subjectAttribute: {
-                                        hint: "Choisissez l'attribut",
+                                        hint: "Sélectionnez les attributs partagés que vous souhaitez utiliser " +
+                                            "comme identifiant de sujet de l'utilisateur.",
                                         hintOIDC: "Sélectionnez les attributs partagés que vous souhaitez utiliser " +
                                             "comme identifiant de sujet de l'utilisateur. Cela représente la " +
                                             "revendication <1>sub</1> du <1>id_token</1>.",
@@ -1417,9 +1418,9 @@ export const console: ConsoleNS = {
                                 },
                                 hint: "Cela déterminera la manière dont l'application communique avec le service " +
                                     "de jetons.",
-                                label: "Grant type autorisés",
+                                label: "Types de subvention autorisés",
                                 validations: {
-                                    empty: "Sélectionnez au minimum un grant type"
+                                    empty: "Sélectionnez au moins un type de subvention"
                                 },
                                 vvalidation: {
                                     refreshToken:"Le type d'octroi Refresh token doit être sélectionné uniquement " +
@@ -1752,7 +1753,7 @@ export const console: ConsoleNS = {
                                         label: "Audience",
                                         placeholder: "Saisir l'audience",
                                         validations: {
-                                            invalid: "Veuillez ajouter une URL valide"
+                                            invalid: "Veuillez ajouter une URI valide"
                                         }
                                     },
                                     nameIdFormat: {
@@ -1770,7 +1771,7 @@ export const console: ConsoleNS = {
                                         label: "Destinataires",
                                         placeholder: "Saisir les destinataires",
                                         validations: {
-                                            invalid: "Veuillez ajouter une URL valide"
+                                            invalid: "Veuillez ajouter une URI valide"
                                         }
                                     }
                                 },
@@ -1808,7 +1809,11 @@ export const console: ConsoleNS = {
                                         label: "Activer",
                                         validations: {
                                             empty: "Ce champ est obligatoire."
-                                        }
+                                        },
+                                        hint: "Sélectionnez pour chiffrer les assertions SAML2 renvoyées après " +
+                                            "l'authentification. Pour utiliser le cryptage, configurez le " +
+                                            "certificat de votre application dans la section Certificat ci-dessous."
+
                                     },
                                     assertionEncryptionAlgorithm: {
                                         label: "Algorithme de chiffrement des assertions",
@@ -2698,6 +2703,15 @@ export const console: ConsoleNS = {
                                     }
                                 }
                             }
+                        }
+                    },
+                    applicationCertificateWizard: {
+                        heading: "Ajouter un nouveau certificat",
+                        subHeading: "Ajouter un nouveau certificat à l'application",
+                        emptyPlaceHolder: {
+                            title: "Pas de certificat",
+                            description1: "Cette application n'a pas de certificat ajouté.",
+                            description2: "Ajoutez un certificat pour le voir ici"
                         }
                     }
                 }
@@ -3678,7 +3692,7 @@ export const console: ConsoleNS = {
                 title: "Enregistrer une nouvelle candidature"
             },
             applications: {
-                subTitle: "Gérez les applications à l'aide de modèles et configurez l'authentification.",
+                subTitle: "Enregistrez et gérez vos applications et configurez la connexion.",
                 title: "Applications"
             },
             applicationsEdit: {
@@ -4322,7 +4336,7 @@ export const console: ConsoleNS = {
                             name: "attribut {{type}}"
                         },
                         header: "Êtes-vous sûr ?",
-                        hint: "Veuillez saisir <1>{{assertion}}</1> pour confirmer.",
+                        hint: "Veuillez confirmer votre action.",
                         local: {
                             message: "Si vous supprimez cet attribut local, les données de l'utilisateur appartenant "
                                 + "à cet attribut seront également supprimés.",
@@ -4387,7 +4401,7 @@ export const console: ConsoleNS = {
                         content: "Si vous supprimez cet attribut local, les données utilisateur appartenant à cet attribut "
                             + "seront également supprimés. Veuillez procéder avec prudence.",
                         header: "Êtes-vous sûr ?",
-                        hint: "Veuillez saisir <1>{{nom}}</1> pour confirmer.",
+                        hint: "Veuillez confirmer votre action.",
                         message: "Cette action est irréversible et supprimera définitivement l'attribut local sélectionné.",
                         primaryAction: "Confirmer"
                     },
@@ -5656,7 +5670,7 @@ export const console: ConsoleNS = {
                             update: "Mettre à jour"
                         },
                         confirmation: {
-                            assertionHint: "Veuillez taper <1>{{ roleName }}</1> pour confirmer.",
+                            assertionHint: "Veuillez confirmer votre action.",
                             content: "Si vous supprimez ce {{type}}, les permissions qui lui sont attachées seront supprimées et " +
                                 "les utilisateurs qui y sont rattachés ne pourront plus effectuer les actions prévues qui étaient " +
                                 "précédemment autorisées. Veuillez procéder avec prudence.",
@@ -5721,7 +5735,7 @@ export const console: ConsoleNS = {
                     },
                     confirmations: {
                         deleteItem: {
-                            assertionHint: "Veuillez taper <1>{{ roleName }}</1> pour confirmer.",
+                            assertionHint: "Veuillez confirmer votre action.",
                             content: "Si vous supprimez ce {{type}}, les permissions qui y sont attachées seront supprimées et " +
                                 "les utilisateurs qui y sont rattachés ne pourront plus effectuer les actions prévues qui étaient " +
                                 "précédemment autorisées. Veuillez procéder avec prudence.",
@@ -5952,7 +5966,7 @@ export const console: ConsoleNS = {
             user: {
                 deleteUser: {
                     confirmationModal: {
-                        assertionHint: "Veuillez saisir <1>{{ userName }}</1> pour confirmer.",
+                        assertionHint: "Veuillez confirmer votre action.",
                         content: "Si vous supprimez cet utilisateur, l'utilisateur ne pourra pas se " +
                             "connecter à Mon compte ou à toute autre application à laquelle l'utilisateur " +
                             "était abonné auparavant. Veuillez procéder avec prudence.",
@@ -6057,7 +6071,10 @@ export const console: ConsoleNS = {
                                     empty: "Le nom d'utilisateur est obligatoire",
                                     invalid: "Ce nom d'utilisateur n'est pas disponible.",
                                     invalidCharacters: "Le nom d'utilisateur semble contenir des caractères non valides.",
-                                    regExViolation: "Merci d'entrer un nom d'utilisateur valide."
+                                    regExViolation: "Saisissez un e-mail valide entre 3 et 50 caractères. Vous pouvez " +
+                                        "utiliser des caractères alphanumériques, caractères Unicode, " +
+                                        "des traits de soulignement (_), des tirets (-), des signes plus (+), " +
+                                        "des points (.), et un signe arobase (@)."
                                 }
                             }
                         },
@@ -6592,7 +6609,10 @@ export const console: ConsoleNS = {
                                 empty: "Le nom d'utilisateur est obligatoire",
                                 invalid: "Ce nom d'utilisateur n'est pas disponible.",
                                 invalidCharacters: "Le nom d'utilisateur semble contenir des caractères non valides.",
-                                regExViolation: "Veuillez saisir une adresse e-mail valide."
+                                regExViolation: "Saisissez un e-mail valide entre 3 et 50 caractères. Vous pouvez " +
+                                    "utiliser des caractères alphanumériques, caractères Unicode, " +
+                                    "des traits de soulignement (_), des tirets (-), des points (.), " +
+                                    "et un signe arobase (@)."
                             }
                         }
                     }

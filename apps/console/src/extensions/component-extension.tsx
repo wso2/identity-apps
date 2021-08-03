@@ -21,7 +21,7 @@ import { ContentLoader, EmptyPlaceholder, ErrorBoundary } from "@wso2is/react-co
 import React, { Suspense, lazy } from "react";
 import { Container } from "semantic-ui-react";
 import { ExtensionsManager } from "./extensions-manager";
-import { getEmptyPlaceholderIllustrations } from "../features/core";
+import { AppUtils, getEmptyPlaceholderIllustrations } from "../features/core";
 
 interface ComponentExtensionInterface {
     component?: string;
@@ -68,6 +68,7 @@ export const ComponentExtensionPlaceholder = (args: ComponentExtensionInterface)
                     menuItem: I18n.instance.t(pane.title),
                     render: () => (
                         <ErrorBoundary
+                            onChunkLoadError={ AppUtils.onChunkLoadError }
                             fallback={ (
                                 <EmptyPlaceholder
                                     image={ getEmptyPlaceholderIllustrations().genericError }

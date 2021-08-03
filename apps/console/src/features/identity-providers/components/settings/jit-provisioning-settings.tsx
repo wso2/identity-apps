@@ -48,6 +48,10 @@ interface JITProvisioningSettingsInterface extends TestableComponentInterface {
      * Callback to update the idp details.
      */
     onUpdate: (id: string) => void;
+    /**
+     * Specifies if the component should only be read-only.
+     */
+    isReadOnly: boolean;
 }
 
 /**
@@ -64,6 +68,7 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
         isLoading,
         jitProvisioningConfigurations,
         onUpdate,
+        isReadOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -126,6 +131,7 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
                         onSubmit={ handleJITProvisioningConfigFormSubmit }
                         useStoreList={ userStore }
                         data-testid={ testId }
+                        isReadOnly={ isReadOnly }
                     />
                 </EmphasizedSegment>
             )

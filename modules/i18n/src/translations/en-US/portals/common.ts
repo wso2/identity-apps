@@ -40,6 +40,11 @@ export const common: CommonNS = {
     cancel: "Cancel",
     challengeQuestionNumber: "Challenge Question {{number}}",
     change: "Change",
+    chunkLoadErrorMessage: {
+        description: "An error occurred when serving the requested application. Please try reloading the app.",
+        heading: "Something went wrong",
+        primaryActionText: "Reload the App"
+    },
     claim: "Claim",
     clear: "Clear",
     close: "Close",

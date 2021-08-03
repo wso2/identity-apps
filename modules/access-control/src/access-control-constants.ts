@@ -17,8 +17,8 @@
  */
 
 /**
- * This class will contain front end permissions which is required to 
- * be passed on to the permission context and also while checking the 
+ * This class will contain front end permissions which is required to
+ * be passed on to the permission context and also while checking the
  * relvant permission is available when the show component is evaluvating.
  */
 export class AccessControlConstants {
@@ -83,7 +83,7 @@ export class AccessControlConstants {
     public static readonly IDP_DELETE: string = "identity_provider:delete";
 
     /**
-     * Users feature permissiom
+     * Users feature permission
      */
     public static readonly USER: string = "user";
 
@@ -133,6 +133,31 @@ export class AccessControlConstants {
     public static readonly GROUP_DELETE: string = "group:delete";
 
     /**
+     * Role feature permission
+     */
+    public static readonly ROLE: string = "role";
+
+    /**
+     * Role read permission
+     */
+    public static readonly ROLE_READ: string = "role:read";
+
+    /**
+     * Role write permission
+     */
+    public static readonly ROLE_WRITE: string = "role:write";
+
+    /**
+     * Role edit permission
+     */
+    public static readonly ROLE_EDIT: string = "role:edit";
+
+    /**
+     * Role delete permission
+     */
+    public static readonly ROLE_DELETE: string = "role:delete";
+
+    /**
      * Attribute feature permission
      */
     public static readonly ATTRIBUTE: string = "attribute";
@@ -161,7 +186,7 @@ export class AccessControlConstants {
      * Scope feature permission
      */
     public static readonly SCOPE: string = "scope";
-    
+
     /**
      * Scope read permission
      */
@@ -181,5 +206,10 @@ export class AccessControlConstants {
      * Scope delete permission
      */
     public static readonly SCOPE_DELETE: string = "scope:delete";
+
+    /**
+     * Full console scope
+     */
+    public static readonly FULL_UI_SCOPE: string = "console:full";
 
 }

@@ -28,6 +28,7 @@ interface OutboundProvisioningConnectorFormFactoryInterface extends TestableComp
     type?: string;
     triggerSubmit?: boolean;
     enableSubmitButton?: boolean;
+    isReadOnly?: boolean;
 }
 
 /**
@@ -47,6 +48,7 @@ export const OutboundProvisioningConnectorFormFactory: FunctionComponent<
         type,
         triggerSubmit,
         enableSubmitButton,
+        isReadOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -60,6 +62,7 @@ export const OutboundProvisioningConnectorFormFactory: FunctionComponent<
                     triggerSubmit={ triggerSubmit }
                     enableSubmitButton={ enableSubmitButton }
                     data-testid={ testId }
+                    readOnly={ isReadOnly }
                 />;
         }
     };

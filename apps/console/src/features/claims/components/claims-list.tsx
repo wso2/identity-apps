@@ -59,6 +59,7 @@ import { UserStoreListItem, getUserStores } from "../../userstores";
 import { deleteAClaim, deleteADialect, deleteAnExternalClaim } from "../api";
 import { ClaimManagementConstants } from "../constants";
 import { AddExternalClaim } from "../models";
+import { Show, AccessControlConstants } from "@wso2is/access-control";
 
 /**
  * The model of the object containing info specific to the list type.
@@ -429,15 +430,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 onClose={ closeDeleteConfirm }
                 type="warning"
                 open={ deleteConfirm }
-                assertion={ listItem.assertion }
-                assertionHint={
-                    <p>
-                        <Trans i18nKey="console: manage.featuresclaims.list.confirmation.hint">
-                            Please type <strong>{ { assertion: listItem.assertion } }</strong> to confirm.
-                        </Trans>
-                    </p>
-                }
-                assertionType="input"
+                assertionHint={ t("console:manage.features.claims.list.confirmation.hint") }
+                assertionType="checkbox"
                 primaryAction={ t("console:manage.features.claims.list.confirmation.action") }
                 secondaryAction={ t("common:cancel") }
                 onSecondaryActionClick={ (): void => {
@@ -521,6 +515,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 <EmptyPlaceholder
                     action={ attributeConfig.attributesPlaceholderAddButton(attributeType)
                         && (
+                        <Show when={ AccessControlConstants.SCOPE_WRITE }>
                             <PrimaryButton
                                 onClick={ onEmptyListPlaceholderActionClick }
                             >
@@ -534,6 +529,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                             "emptyList.action.external")
                                 }
                             </PrimaryButton>
+                        </Show>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
@@ -860,13 +856,17 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         if (isLocalClaim(list)) {
             return [
                 {
-                    hidden: (): boolean => !hasRequiredScopes(featureConfig?.attributeDialects,
-                        featureConfig?.attributeDialects?.scopes?.create, allowedScopes),
-                    icon: (): SemanticICONS => "pencil alternate",
+                    icon: (): SemanticICONS => !hasRequiredScopes(featureConfig?.attributeDialects,
+                        featureConfig?.attributeDialects?.scopes?.update, allowedScopes)
+                        ? "eye"
+                        : "pencil alternate",
                     onClick: (e: SyntheticEvent, claim: Claim | ExternalClaim | ClaimDialect): void => {
                         history.push(AppConstants.getPaths().get("LOCAL_CLAIMS_EDIT").replace(":id", claim?.id));
                     },
-                    popupText: (): string => t("common:edit"),
+                    popupText: (): string => hasRequiredScopes(featureConfig?.attributeDialects,
+                        featureConfig?.attributeDialects?.scopes?.update, allowedScopes)
+                        ? t("common:edit")
+                        : t("common:view"),
                     renderer: "semantic-icon"
                 },
                 attributeConfig.attributes.deleteAction && {

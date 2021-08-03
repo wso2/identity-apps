@@ -16,13 +16,14 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
-import { 
-    AlertLevels, 
-    LoadableComponentInterface, 
-    SBACInterface, 
-    TestableComponentInterface 
+import {
+    AlertLevels,
+    LoadableComponentInterface,
+    SBACInterface,
+    TestableComponentInterface
 } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import {
@@ -398,13 +399,15 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 <EmptyPlaceholder
                     data-testid={ `${ testId }-empty-placeholder` }
                     action={ (
-                        <PrimaryButton
-                            data-testid={ `${ testId }-empty-placeholder-add-user-button` }
-                            onClick={ () => onEmptyListPlaceholderActionClick() }
-                        >
-                            <Icon name="add"/>
-                            { t("console:manage.features.users.usersList.list.emptyResultPlaceholder.addButton") }
-                        </PrimaryButton>
+                        <Show when={ AccessControlConstants.USER_WRITE }>
+                            <PrimaryButton
+                                data-testid={ `${ testId }-empty-placeholder-add-user-button` }
+                                onClick={ () => onEmptyListPlaceholderActionClick() }
+                            >
+                                <Icon name="add"/>
+                                { t("console:manage.features.users.usersList.list.emptyResultPlaceholder.addButton") }
+                            </PrimaryButton>
+                        </Show>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
@@ -452,21 +455,9 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="warning"
                         open={ showDeleteConfirmationModal }
-                        assertion={ deletingUser.userName }
-                        assertionHint={
-                            (
-                                <p>
-                                    <Trans
-                                        i18nKey={ "console:manage.features.user.deleteUser.confirmationModal." +
-                                        "assertionHint" }
-                                        tOptions={ { userName: deletingUser.userName } }
-                                    >
-                                        Please type <strong>{ deletingUser.userName }</strong> to confirm.
-                                    </Trans>
-                                </p>
-                            )
-                        }
-                        assertionType="input"
+                        assertionHint={ t("console:manage.features.user.deleteUser.confirmationModal." +
+                            "assertionHint") }
+                        assertionType="checkbox"
                         primaryAction="Confirm"
                         secondaryAction="Cancel"
                         onSecondaryActionClick={ (): void =>{

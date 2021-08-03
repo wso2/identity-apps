@@ -18,10 +18,7 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import {
-    ConfirmationModal,
-    LinkButton
-} from "@wso2is/react-components";
+import { ConfirmationModal, GenericIcon } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     Fragment,
@@ -33,7 +30,6 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Icon } from "semantic-ui-react";
 import { AddAuthenticatorModal } from "./add-authenticator-modal";
 import { AuthenticationStep } from "./authentication-step";
 import { AppState, ConfigReducerStateInterface, EventPublisher } from "../../../../../core";
@@ -49,6 +45,7 @@ import {
     IdentityProviderTemplateLoadingStrategies,
     IdentityProviderTemplateManagementUtils
 } from "../../../../../identity-providers";
+import { getSignInFlowIcons } from "../../../../configs";
 import { ApplicationManagementConstants } from "../../../../constants";
 import {
     AuthenticationSequenceInterface,
@@ -404,44 +401,49 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             const deletingOption: AuthenticatorInterface = steps[ stepIndex ].options[ optionIndex ];
             const noOfSecondFactorsOnRight: number = SignInMethodUtils.countSpecificFactorInSteps(
                 ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS, rightSideSteps);
-            const noOfTOTPOnRight: number = SignInMethodUtils.countSpecificFactorInSteps(
-                [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR ], rightSideSteps);
-            const onlyTOTPOnRight: boolean = noOfSecondFactorsOnRight === noOfTOTPOnRight;
+            const noOfSecondFactorsOnRightRequiringHandlers: number = SignInMethodUtils.countSpecificFactorInSteps(
+                [
+                    IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
+                    IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR
+                ], rightSideSteps);
+            const onlySecondFactorsRequiringHandlersOnRight: boolean = noOfSecondFactorsOnRight
+                === noOfSecondFactorsOnRightRequiringHandlers;
             const isDeletingOptionFirstFactor: boolean = ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS
                 .includes(deletingOption.authenticator);
-            const isDeletingOptionTOTPHandler: boolean = ApplicationManagementConstants.TOTP_HANDLERS
-                .includes(deletingOption.authenticator);
+            const isDeletingOptionSecondFactorHandler: boolean = [
+                ...ApplicationManagementConstants.TOTP_HANDLERS,
+                ...ApplicationManagementConstants.EMAIL_OTP_HANDLERS
+            ].includes(deletingOption.authenticator);
             const immediateStepHavingSpecificFactors: number = SignInMethodUtils.getImmediateStepHavingSpecificFactors(
                 ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS, steps);
 
             // If the deleting step is a first factor, we have to check if there are other handlers that 
             // could handle the second factors on the right.
-            if (isDeletingOptionFirstFactor || isDeletingOptionTOTPHandler) {
-                let firstFactorsInTheStep = 0;
-                let totpHandlersInTheStep = 0;
-                
+            if (isDeletingOptionFirstFactor || isDeletingOptionSecondFactorHandler) {
+                let firstFactorsInTheStep: number = 0;
+                let secondFactorHandlersInTheStep: number = 0;
+
                 steps[ stepIndex ].options.filter((option: AuthenticatorInterface) => {
-                    if (ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS
-                        .includes(option.authenticator)) {
+                    if (ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS.includes(option.authenticator)) {
                         firstFactorsInTheStep++;
                     }
 
-                    if (ApplicationManagementConstants.TOTP_HANDLERS
-                        .includes(option.authenticator)) {
-                        totpHandlersInTheStep++;
+                    if ([ ...ApplicationManagementConstants.TOTP_HANDLERS,
+                        ...ApplicationManagementConstants.EMAIL_OTP_HANDLERS ].includes(option.authenticator)) {
+                        secondFactorHandlersInTheStep++;
                     }
                 });
 
-                // If the step that the deleting authenticator has no other first factors or totp handlers,
+                // If the step that the deleting authenticator has no other first factors or handlers,
                 // start evaluation other options.
-                if ((onlyTOTPOnRight && totpHandlersInTheStep <= 1)
-                    || (!onlyTOTPOnRight && firstFactorsInTheStep <= 1)) {
+                if ((onlySecondFactorsRequiringHandlersOnRight && secondFactorHandlersInTheStep <= 1)
+                    || (!onlySecondFactorsRequiringHandlersOnRight && firstFactorsInTheStep <= 1)) {
 
-                    // If there are is TOTP on the right, evaluate if the left side has TOTP handlers.
+                    // If there is TOTP or Email OTP on the right, evaluate if the left side has necessary handlers.
                     // Else check if there are first factors on the left.
-                    const containProperHandlersOnLeft: boolean = onlyTOTPOnRight
-                        ? SignInMethodUtils.hasSpecificFactorsInSteps(
-                            ApplicationManagementConstants.TOTP_HANDLERS, leftSideSteps)
+                    const containProperHandlersOnLeft: boolean = onlySecondFactorsRequiringHandlersOnRight
+                        ? SignInMethodUtils.hasSpecificFactorsInSteps([ ...ApplicationManagementConstants.TOTP_HANDLERS,
+                                ...ApplicationManagementConstants.EMAIL_OTP_HANDLERS ], leftSideSteps)
                         : SignInMethodUtils.hasSpecificFactorsInSteps(
                             ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, leftSideSteps);
 
@@ -455,16 +457,18 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                             .getLeftAndRightSideSteps(immediateStepHavingSpecificFactors, steps);
 
                         // Try to find a proper handler in steps left of the immediate second factor.
-                        const noOfProperHandlersOnLeftFromImmediateSecondFactor: number = onlyTOTPOnRight
+                        const noOfProperHandlersOnLeft: number = onlySecondFactorsRequiringHandlersOnRight
                             ? SignInMethodUtils.countSpecificFactorInSteps(
-                                ApplicationManagementConstants.TOTP_HANDLERS,
-                                leftSideStepsFromImmediateSecondFactor)
+                                [
+                                    ...ApplicationManagementConstants.TOTP_HANDLERS,
+                                    ...ApplicationManagementConstants.EMAIL_OTP_HANDLERS
+                                ], leftSideStepsFromImmediateSecondFactor)
                             : SignInMethodUtils.countSpecificFactorInSteps(
                                 ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
                                 leftSideStepsFromImmediateSecondFactor);
 
                         // If there are no other handlers, Show a warning and abort option delete. 
-                        if (noOfProperHandlersOnLeftFromImmediateSecondFactor <= 1) {
+                        if (noOfProperHandlersOnLeft <= 1) {
                             dispatch(
                                 addAlert({
                                     description: t(
@@ -810,7 +814,14 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
     return (
         <div className="authentication-flow-wrapper" data-testid={ testId }>
-            <div className="authentication-flow-section">
+            <div className="authentication-flow-section timeline">
+                <div className="timeline-button start">
+                    <GenericIcon
+                        size="x50"
+                        transparent
+                        icon={ getSignInFlowIcons().startButton }
+                    />
+                </div>
                 <div className="authentication-steps-section" ref={ authenticationStepsDivRef }>
                     {
                         authenticationSteps &&
@@ -849,26 +860,28 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                             ))
                             : null
                     }
-                    {
-                        !readOnly && (
-                            <div className="step-actions-container">
-                                <div className="action-button-group">
-                                    <LinkButton
-                                        fluid
-                                        data-tourid="add-new-step-button"
-                                        className="text-left pl-0"
-                                        onClick={ handleAuthenticationStepAdd }
-                                    >
-                                        <Icon name="plus"/>
-                                        {
-                                            t("console:develop.features.applications.edit.sections.signOnMethod." +
-                                                "sections.authenticationFlow.sections.stepBased.actions.addNewStep")
-                                        }
-                                    </LinkButton>
-                                </div>
-                            </div>
-                        )
-                    }
+                </div>
+                {
+                    !readOnly && (
+                        <div className="timeline-button add">
+                            <GenericIcon
+                                link
+                                transparent
+                                size="mini"
+                                fill="primary"
+                                icon={ getSignInFlowIcons().addButton }
+                                onClick={ handleAuthenticationStepAdd }
+                                data-tourid="add-new-step-button"
+                            />
+                        </div>
+                    )
+                }
+                <div className="timeline-button done">
+                    <GenericIcon
+                        size="x50"
+                        transparent
+                        icon={ getSignInFlowIcons().doneButton }
+                    />
                 </div>
             </div>
             { showAuthenticatorAddModal && renderAuthenticatorAddModal() }

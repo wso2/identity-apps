@@ -48,9 +48,10 @@ import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
+import { commonConfig, serverConfigurationConfig } from "../extensions";
 import { getProfileInformation } from "../features/authentication/store";
 import {
-    
+
     AppConstants,
     AppState,
     AppUtils,
@@ -137,13 +138,15 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
 
         const routes: RouteInterface[] = CommonRouteUtils.sanitizeForUI(cloneDeep(filteredRoutes));
         const sanitizedDevelopRoutes: RouteInterface[] = CommonRouteUtils.sanitizeForUI(cloneDeep(developRoutes));
-        const controlledRoutes = AccessControlUtils.getAuthenticatedRoutes(routes, allowedScopes, featureConfig);
+        const controlledRoutes = AccessControlUtils.getAuthenticatedRoutes(
+            routes, allowedScopes, featureConfig, commonConfig.checkForUIResourceScopes);
 
         setAccessControlledRoutes(controlledRoutes);
         setFilteredRoutes(controlledRoutes);
 
         const tab: string = AccessControlUtils.getDisabledTab(
-            filteredRoutes, sanitizedDevelopRoutes, allowedScopes, featureConfig);
+            filteredRoutes, sanitizedDevelopRoutes, allowedScopes, featureConfig,
+            commonConfig.checkForUIResourceScopes);
 
         if (tab === "MANAGE") {
             dispatch(setManageVisibility(false));
@@ -188,7 +191,8 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
             CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
                 getAdminViewRoutes(),
                 featureConfig,
-                allowedScopes)
+                allowedScopes,
+                commonConfig.checkForUIResourceScopes)
         );
 
         if (!isEmpty(profileInfo)) {
@@ -205,9 +209,9 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
             return;
         }
 
-        if (!featureConfig?.generalConfigurations?.enabled
-            || !hasRequiredScopes(featureConfig?.generalConfigurations,
-                featureConfig?.generalConfigurations?.scopes?.read,
+        if (!featureConfig?.governanceConnectors?.enabled
+            || !hasRequiredScopes(featureConfig?.governanceConnectors,
+                featureConfig?.governanceConnectors?.scopes?.read,
                 allowedScopes)) {
 
             setGovernanceConnectorsEvaluated(true);
@@ -215,6 +219,21 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
         }
 
         if (!(governanceConnectorCategories !== undefined && governanceConnectorCategories.length > 0)) {
+            if (
+                !(
+                    serverConfigurationConfig.showConnectorsOnTheSidePanel &&
+                    hasRequiredScopes(
+                        featureConfig.governanceConnectors,
+                        featureConfig.governanceConnectors.scopes.read,
+                        allowedScopes
+                    )
+                )
+            ) {
+                setGovernanceConnectorsEvaluated(true);
+
+                return;
+            }
+
             GovernanceConnectorUtils.getGovernanceConnectors();
 
             return;
@@ -225,9 +244,12 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
             const filteredRoutesClone: RouteInterface[] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
                 getAdminViewRoutes(),
                 featureConfig,
-                allowedScopes);
+                allowedScopes,
+                commonConfig.checkForUIResourceScopes);
 
-            governanceConnectorCategories.map((category: GovernanceConnectorCategoryInterface, index: number) => {
+            serverConfigurationConfig.showConnectorsOnTheSidePanel
+                && governanceConnectorCategories.map(
+                    (category: GovernanceConnectorCategoryInterface, index: number) => {
                 let subCategoryExists = false;
                 category.connectors?.map(connector => {
                     if (connector.subCategory !== "DEFAULT") {
@@ -417,7 +439,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                         mobileSidePanelVisibility={ mobileSidePanelVisibility }
                         onSidePanelItemClick={ handleSidePanelItemClick }
                         onSidePanelPusherClick={ handleSidePanelPusherClick }
-                        routes={ CommonRouteUtils.sanitizeForUI(cloneDeep(accessControlledRoutes), 
+                        routes={ CommonRouteUtils.sanitizeForUI(cloneDeep(filteredRoutes),
                             AppUtils.getHiddenRoutes()) }
                         selected={ selectedRoute }
                         translationHook={ t }
@@ -431,6 +453,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                 ) }
             >
                 <ErrorBoundary
+                    onChunkLoadError={ AppUtils.onChunkLoadError }
                     fallback={ (
                         <EmptyPlaceholder
                             action={ (

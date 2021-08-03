@@ -21,7 +21,9 @@ import { Field, Form } from "@wso2is/form";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { applicationConfig } from "../../../../extensions";
-import { AdvancedConfigurationsInterface } from "../../models";
+import { AdvancedConfigurationsInterface, ApplicationTemplateListItemInterface } from "../../models";
+import SAMLWebApplicationTemplate
+    from "../../data/application-templates/templates/saml-web-application/saml-web-application.json";
 
 /**
  *  Advanced Configurations for the Application.
@@ -33,6 +35,10 @@ interface AdvancedConfigurationsFormPropsInterface extends TestableComponentInte
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Application template.
+     */
+    template?: ApplicationTemplateListItemInterface;
 }
 
 /**
@@ -50,6 +56,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
         config,
         onSubmit,
         readOnly,
+        template,
         [ "data-testid" ]: testId
     } = props;
 
@@ -109,20 +116,25 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 data-testid={ `${testId}-skip-login-consent-checkbox` }
                 hint={ t("console:develop.features.applications.forms.advancedConfig.fields.skipConsentLogin.hint") }
             />
-            <Field.CheckboxLegacy
-                ariaLabel="Skip consent logout"
-                name="skipConsentLogout"
-                label={ t("console:develop.features.applications.forms.advancedConfig.fields.skipConsentLogout" +
-                    ".label"
-                ) }
-                required={ false }
-                value={ config?.skipLogoutConsent ? ["skipLogoutConsent"] : [] }
-                readOnly={ readOnly }
-                data-testid={ `${testId}-skip-logout-consent-checkbox` }
-                hint={ t("console:develop.features.applications.forms.advancedConfig.fields.skipConsentLogout" +
-                    ".hint"
-                ) }
-            />
+            {
+                SAMLWebApplicationTemplate?.id !== template?.id &&
+                (
+                    <Field.CheckboxLegacy
+                        ariaLabel="Skip consent logout"
+                        name="skipConsentLogout"
+                        label={ t("console:develop.features.applications.forms.advancedConfig.fields.skipConsentLogout" +
+                            ".label"
+                        ) }
+                        required={ false }
+                        value={ config?.skipLogoutConsent ? ["skipLogoutConsent"] : [] }
+                        readOnly={ readOnly }
+                        data-testid={ `${testId}-skip-logout-consent-checkbox` }
+                        hint={ t("console:develop.features.applications.forms.advancedConfig.fields.skipConsentLogout" +
+                            ".hint"
+                        ) }
+                    />
+                )
+            }
             <Field.CheckboxLegacy
                 ariaLabel="Return authenticated IDP list"
                 name="returnAuthenticatedIdpList"

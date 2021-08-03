@@ -183,6 +183,7 @@ export interface ClaimConfigurationInterface {
  *  Acceptable certificate types.
  */
 export enum CertificateTypeInterface {
+    NONE ="None",
     JWKS = "JWKS",
     PEM = "PEM"
 }
@@ -578,6 +579,7 @@ export interface OIDCApplicationConfigurationInterface {
     endSessionEndpoint: string;
     introspectionEndpoint: string;
     tokenEndpoint: string;
+    tokenRevocationEndpoint: string;
     userEndpoint: string;
     jwksEndpoint: string;
     wellKnownEndpoint: string;
@@ -600,6 +602,7 @@ export const emptyOIDCAppConfiguration = (): OIDCApplicationConfigurationInterfa
     introspectionEndpoint: "",
     jwksEndpoint: "",
     tokenEndpoint: "",
+    tokenRevocationEndpoint: "",
     userEndpoint: "",
     wellKnownEndpoint: ""
 });

@@ -27,7 +27,7 @@ import { CommonPluggableComponentForm } from "../components";
  * @return { ReactElement }
  */
 export const CommonOutboundProvisioningConnectorForm: FunctionComponent<
-    CommonPluggableComponentFormPropsInterface> = (props
+    CommonPluggableComponentFormPropsInterface> = (props: CommonPluggableComponentFormPropsInterface
 ): ReactElement => {
 
     const {
@@ -36,6 +36,7 @@ export const CommonOutboundProvisioningConnectorForm: FunctionComponent<
         onSubmit,
         triggerSubmit,
         enableSubmitButton,
+        readOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -47,6 +48,7 @@ export const CommonOutboundProvisioningConnectorForm: FunctionComponent<
             triggerSubmit={ triggerSubmit }
             metadata={ metadata }
             data-testid={ testId }
+            readOnly={ readOnly }
         />
     );
 };

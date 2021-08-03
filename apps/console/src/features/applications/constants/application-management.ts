@@ -346,6 +346,8 @@ export class ApplicationManagementConstants {
         IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_NAME,
         IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID,
         IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_NAME,
+        IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_NAME
     ];
 
     // Authenticators that can handle TOTP.

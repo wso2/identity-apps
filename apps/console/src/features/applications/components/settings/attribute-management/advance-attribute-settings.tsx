@@ -26,6 +26,7 @@ import { Divider, Grid } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "./attribute-settings";
 import { applicationConfig } from "../../../../../extensions";
 import { InboundProtocolListItemInterface, RoleConfigInterface, SubjectConfigInterface } from "../../../models";
+import { ApplicationManagementConstants } from "../../../constants";
 
 interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterface {
     dropDownOptions: any;
@@ -41,6 +42,7 @@ interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterf
      * Make the form read only.
      */
     readOnly?: boolean;
+    applicationTemplateId?: string;
 }
 
 export const SubjectAttributeFieldName = "subjectAttribute";
@@ -57,6 +59,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
 ): ReactElement => {
 
     const {
+        applicationTemplateId,
         dropDownOptions,
         setSubmissionValues,
         setSelectedValue,
@@ -175,46 +178,54 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     };
 
     const resolveSubjectAttributeHint = (): ReactElement => {
-        if (technology.length === 1) {
-            switch (technology[ 0 ].type) {
-                case ("oauth2"):
-                    return (
-                        <Hint compact>
-                            <Trans
-                                i18nKey={
-                                    "console:develop.features.applications.forms.advancedAttributeSettings.sections" +
-                                    ".subject.fields.subjectAttribute.hintOIDC"
-                                }
-                            >
-                                Select which of the shared attributes you want to use as the subject identifier of the
-                                user. This represents the <Code withBackground>sub</Code> claim of the
-                                <Code withBackground>id_token</Code>.
-                            </Trans>
-                        </Hint>
-                    );
-                case ("samlsso"):
-                    return (
-                        <Hint compact>
-                            <Trans
-                                i18nKey={
-                                    "console:develop.features.applications.forms.advancedAttributeSettings.sections" +
-                                    ".subject.fields.subjectAttribute.hintSAML"
-                                }
-                            >
-                                Select which of the shared attributes you want to use as the subject identifier of the
-                                user. This represents the <Code withBackground>subject</Code> element of the SAML
-                                assertion.
-                            </Trans>
-                        </Hint>
-                    );
-                default:
-                    return (
-                        <Hint compact>
-                            { t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
-                                ".subject.fields.subjectAttribute.hint") }
-                        </Hint>
-                    );
-            }
+        if (
+            technology.length === 1
+            || applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+            || applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
+        ) {
+            if (
+                technology[0]?.type === "oauth2"
+                || applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+            ) {
+
+                return (
+                    <Hint compact>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.applications.forms.advancedAttributeSettings.sections" +
+                                ".subject.fields.subjectAttribute.hintOIDC"
+                            }
+                        >
+                            Select which of the shared attributes you want to use as the subject identifier of the
+                            user. This represents the <Code withBackground>sub</Code> claim of the
+                            <Code withBackground>id_token</Code>.
+                        </Trans>
+                    </Hint>
+                );
+            } else if (technology[0]?.type === "samlsso"
+                || applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML)
+                return (
+                    <Hint compact>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.applications.forms.advancedAttributeSettings.sections" +
+                                ".subject.fields.subjectAttribute.hintSAML"
+                            }
+                        >
+                            Select which of the shared attributes you want to use as the subject identifier of the
+                            user. This represents the <Code withBackground>subject</Code> element of the SAML
+                            assertion.
+                        </Trans>
+                    </Hint>
+                );
+        } else {
+
+            return (
+                <Hint compact>
+                    { t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
+                        ".subject.fields.subjectAttribute.hint") }
+                </Hint>
+            );
         }
         return (
             <Hint compact>

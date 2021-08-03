@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { getUserStoreList } from "@wso2is/core/api";
 import { AlertInterface, AlertLevels, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -351,13 +352,15 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             action={
                 (isGroupsListRequestLoading || !(!searchQuery && paginatedGroups?.length <= 0))
                 && (
-                    <PrimaryButton
-                        data-testid="group-mgt-groups-list-add-button"
-                        onClick={ () => setShowWizard(true) }
-                    >
-                        <Icon name="add"/>
-                        { t("console:manage.features.roles.list.buttons.addButton", { type: "Group" }) }
-                    </PrimaryButton>
+                    <Show when={ AccessControlConstants.GROUP_WRITE }>
+                        <PrimaryButton
+                            data-testid="group-mgt-groups-list-add-button"
+                            onClick={ () => setShowWizard(true) }
+                        >
+                            <Icon name="add"/>
+                            { t("console:manage.features.roles.list.buttons.addButton", { type: "Group" }) }
+                        </PrimaryButton>
+                    </Show>
                 )
             }
             title={ t("console:manage.pages.groups.title") }

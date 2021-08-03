@@ -25,7 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState, FeatureConfigInterface } from "../../../core";
 import { updateApplicationConfigurations } from "../../api";
-import { AdvancedConfigurationsInterface } from "../../models";
+import { AdvancedConfigurationsInterface, ApplicationTemplateListItemInterface } from "../../models";
 import { AdvancedConfigurationsForm } from "../forms";
 
 /**
@@ -48,6 +48,10 @@ interface AdvancedSettingsPropsInterface extends SBACInterface<FeatureConfigInte
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Application template.
+     */
+    template?: ApplicationTemplateListItemInterface;
 }
 
 /**
@@ -67,6 +71,7 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
         featureConfig,
         onUpdate,
         readOnly,
+        template,
         [ "data-testid" ]: testId
     } = props;
 
@@ -126,6 +131,7 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
                         featureConfig?.applications?.scopes?.update,
                         allowedScopes)
                 }
+                template={ template }
                 data-testid={ `${ testId }-form` }
             />
         </EmphasizedSegment>

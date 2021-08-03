@@ -136,7 +136,7 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
                                                 required={ true }
                                                 requiredErrorMessage={ t("console:manage.features.claims.local.forms." +
                                                     "attribute.requiredErrorMessage") }
-                                                value={ values?.get(store.name).toString() }
+                                                value={ values?.get(store.name)?.toString() }
                                                 data-testid={ `${ testId }-form-store-name-input` }
                                             />
                                         </Grid.Column>

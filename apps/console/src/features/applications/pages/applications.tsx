@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -42,28 +43,25 @@ import {
     DropdownItemProps,
     DropdownProps,
     Icon,
-    PaginationProps,
-    Button as SemButton
+    PaginationProps
 } from "semantic-ui-react";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
     AppState,
+    ConfigReducerStateInterface,
     EventPublisher,
     FeatureConfigInterface,
     UIConstants,
-    history,
-    ConfigReducerStateInterface
+    history
 } from "../../core";
-import { getGeneralIcons } from "../configs";
 import { RemoteFetchStatus } from "../../remote-repository-configuration";
 import { getApplicationList } from "../api";
 import { ApplicationList, MinimalAppCreateWizard } from "../components";
-import { ApplicationListInterface } from "../models";
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
-import isEmpty from "lodash-es/isEmpty";
+import { ApplicationListInterface } from "../models";
 
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -256,11 +254,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     return (
         <PageLayout
             action={
-                !isApplicationListRequestLoading && !(!searchQuery && appList?.totalResults <= 0)
-                && (hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.create,
-                    allowedScopes))
+                (!isApplicationListRequestLoading && !(!searchQuery && appList?.totalResults <= 0))
                 && (
-                    <>
+                    <Show when={ AccessControlConstants.APPLICATION_WRITE }>
                         <PrimaryButton
                             disabled={ isApplicationListRequestLoading }
                             loading={ isApplicationListRequestLoading }
@@ -274,7 +270,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                             <Icon name="add"/>
                             { t("console:develop.features.applications.list.actions.add") }
                         </PrimaryButton>
-                    </>
+                    </Show>
                 )
             }
             title={ t("console:develop.pages.applications.title") }

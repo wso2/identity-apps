@@ -44,6 +44,7 @@ interface TransferListItemPropsInterface extends TableRowProps, TestableComponen
     handleOpenPermissionModal?: () => void;
     showListSubItem?: boolean;
     listSubItem?: ReactNode;
+    readOnly?: boolean;
 }
 
 /**
@@ -69,6 +70,7 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
         handleOpenPermissionModal,
         showListSubItem,
         listSubItem,
+        readOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -83,6 +85,7 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
                     checked={ isItemChecked }
                     onChange={ handleItemChange }
                     onClick={ handleItemClick }
+                    readOnly={ readOnly }
                 />
             </Table.Cell>
             {

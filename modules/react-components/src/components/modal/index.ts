@@ -21,3 +21,4 @@ export * from "./confirmation-modal";
 export * from "./edit-avatar-modal";
 export * from "./session-timeout-modal";
 export * from "./network-error-modal";
+export * from "./chunk-error-modal";

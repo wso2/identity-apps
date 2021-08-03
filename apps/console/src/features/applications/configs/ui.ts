@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FunctionComponent, SVGProps } from "react";
 import BasicAuthIcon from "../../../themes/default/assets/images/authenticators/basic-auth.png";
 import { ReactComponent as EmailOTPIcon } from "../../../themes/default/assets/images/authenticators/email-otp.svg";
 import FIDOLogo from "../../../themes/default/assets/images/authenticators/fido.png";
@@ -30,6 +31,7 @@ import { ReactComponent as CodeIcon } from "../../../themes/default/assets/image
 import { ReactComponent as CogWheelIcon } from "../../../themes/default/assets/images/icons/cog-wheel-icon.svg";
 import { ReactComponent as CubeStack } from "../../../themes/default/assets/images/icons/cube-stack-icon.svg";
 import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
+import { ReactComponent as DoneButtonIcon } from "../../../themes/default/assets/images/icons/done-button.svg";
 import { ReactComponent as GearsIcon } from "../../../themes/default/assets/images/icons/gears-icon.svg";
 import {
     ReactComponent as IDPCertificateIcon
@@ -43,7 +45,9 @@ import {
 } from "../../../themes/default/assets/images/icons/magnifier-colored-icon.svg";
 import { ReactComponent as IDPMetadataIcon } from "../../../themes/default/assets/images/icons/metadata.svg";
 import { ReactComponent as OpenBookIcon } from "../../../themes/default/assets/images/icons/open-book-icon.svg";
-import  AddCircleOutlineIcon from "../../../themes/default/assets/images/icons/outline-icons/add-circle-outline.svg";
+import  {
+    ReactComponent as AddCircleOutlineIcon
+} from "../../../themes/default/assets/images/icons/outline-icons/add-circle-outline.svg";
 import { ReactComponent as WellKnownIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/discovery-endpoint.svg";
 import PlusIcon from "../../../themes/default/assets/images/icons/plus-icon.svg";
@@ -52,7 +56,9 @@ import { ReactComponent as ShuttleIcon } from "../../../themes/default/assets/im
 import { ReactComponent as SLOIcon } from "../../../themes/default/assets/images/icons/slo.svg";
 import { ReactComponent as SpinWheelIcon } from "../../../themes/default/assets/images/icons/spin-wheel-icon.svg";
 import { ReactComponent as SSOIcon } from "../../../themes/default/assets/images/icons/sso.svg";
+import { ReactComponent as StartButtonIcon } from "../../../themes/default/assets/images/icons/start-button.svg";
 import { ReactComponent as TokenIcon } from "../../../themes/default/assets/images/icons/token.svg";
+import { ReactComponent as RevokeTokenIcon } from "../../../themes/default/assets/images/icons/outline-icons/revoke-outline.svg";
 import { ReactComponent as UserInfoIcon } from "../../../themes/default/assets/images/icons/userInfo.svg";
 import GithubIdPIcon from "../../../themes/default/assets/images/identity-providers/github-idp-illustration.svg";
 import {
@@ -68,8 +74,14 @@ import {
     ReactComponent as BoxTemplateIllustration
 } from "../../../themes/default/assets/images/illustrations/box-template-illustration.svg";
 import {
+    ReactComponent as codeFileIllustration
+} from "../../../themes/default/assets/images/illustrations/code-file.svg";
+import {
     ReactComponent as CustomApplicationTemplateIllustration
 } from "../../../themes/default/assets/images/illustrations/custom-app-illustration.svg";
+import {
+    ReactComponent as globalIllustration
+} from "../../../themes/default/assets/images/illustrations/global.svg";
 import {
     ReactComponent as OIDCMobileTemplateIllustration
 } from "../../../themes/default/assets/images/illustrations/oidc-mobile-template-illustration.svg";
@@ -82,6 +94,9 @@ import {
 import {
     ReactComponent as SAMLWebAppTemplateIllustration
 } from "../../../themes/default/assets/images/illustrations/saml-web-app-template-illustration.svg";
+import {
+    ReactComponent as settingsIllustration
+} from "../../../themes/default/assets/images/illustrations/setting.svg";
 import {
     ReactComponent as SlackTemplateIllustration
 } from "../../../themes/default/assets/images/illustrations/slack-template-illustration.svg";
@@ -111,15 +126,7 @@ import { ReactComponent as JWTLogo } from "../../../themes/default/assets/images
 import { ReactComponent as MicrosoftLogo } from "../../../themes/default/assets/images/third-party/microsoft-logo.svg";
 import { ReactComponent as Office365Logo } from "../../../themes/default/assets/images/third-party/office-365-logo.svg";
 import { ReactComponent as YahooLogo } from "../../../themes/default/assets/images/third-party/yahoo-logo.svg";
-import {
-    ReactComponent as globalIllustration
-} from "../../../themes/default/assets/images/illustrations/global.svg";
-import {
-    ReactComponent as codeFileIllustration
-} from "../../../themes/default/assets/images/illustrations/code-file.svg";
-import {
-    ReactComponent as settingsIllustration
-} from "../../../themes/default/assets/images/illustrations/setting.svg";
+import { ReactComponent as WarningIcon } from "../../../themes/default/assets/images/icons/warning-icon.svg";
 
 export const getInboundProtocolLogos = () => {
 
@@ -199,6 +206,7 @@ export const getHelpPanelIcons = () => {
             samlSLO: SLOIcon,
             samlSSO: SSOIcon,
             token: TokenIcon,
+            revoke: RevokeTokenIcon,
             userInfo: UserInfoIcon,
             wellKnown: WellKnownIcon
         },
@@ -217,7 +225,8 @@ export const getGeneralIcons = () => {
     return {
         addCircleOutline: AddCircleOutlineIcon,
         plusIcon: PlusIcon,
-        predefined: ProtocolPredefined
+        predefined: ProtocolPredefined,
+        warning: WarningIcon
     };
 };
 
@@ -225,6 +234,19 @@ export const getSignInMethodIllustrations = (): Record<string, unknown> => {
     
     return {
         basicAuth: BasicAuthIllustration
+    };
+};
+
+export const getSignInFlowIcons = (): {
+    addButton: FunctionComponent<SVGProps<SVGSVGElement>>;
+    startButton: FunctionComponent<SVGProps<SVGSVGElement>>;
+    doneButton: FunctionComponent<SVGProps<SVGSVGElement>>;
+} => {
+    
+    return {
+        addButton: AddCircleOutlineIcon,
+        doneButton: DoneButtonIcon,
+        startButton: StartButtonIcon
     };
 };
 

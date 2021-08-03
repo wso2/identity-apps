@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
@@ -36,6 +37,10 @@ interface AdvanceConfigurationsFormPropsInterface extends IdentityProviderAdvanc
      * Callback to update the idp details.
      */
     onSubmit: (values: any) => void;
+    /**
+     * Specifies if the component should only be read-only.
+     */
+    isReadOnly: boolean;
 }
 
 /**
@@ -51,6 +56,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
     const {
         config,
         onSubmit,
+        isReadOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -92,6 +98,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             ] }
                             toggle
                             data-testid={ `${ testId }-federation-hub` }
+                            readOnly={ isReadOnly }
                         />
                         <Hint>
                             { t("console:develop.features.authenticationProvider.forms." +
@@ -114,6 +121,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             type="text"
                             value={ config.homeRealmIdentifier }
                             data-testid={ `${ testId }-home-realm-identifier` }
+                            readOnly={ isReadOnly }
                         />
                         <Hint>
                             { t("console:develop.features.authenticationProvider" +
@@ -136,6 +144,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             type="text"
                             value={ config.alias }
                             data-testid={ `${ testId }-alias` }
+                            readOnly={ isReadOnly }
                         />
                         <Hint>
                             { t("console:develop.features.authenticationProvider.forms.advancedConfigs.alias.hint") }
@@ -144,10 +153,12 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Button primary type="submit" size="small" className="form-button"
-                                data-testid={ `${ testId }-update-button` }>
-                            { t("common:update") }
-                        </Button>
+                        <Show when={ AccessControlConstants.IDP_EDIT }>
+                            <Button primary type="submit" size="small" className="form-button"
+                                    data-testid={ `${ testId }-update-button` }>
+                                { t("common:update") }
+                            </Button>
+                        </Show>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

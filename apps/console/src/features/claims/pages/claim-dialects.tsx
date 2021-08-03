@@ -16,15 +16,23 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { getDialects } from "@wso2is/core/api";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, ClaimDialect, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { AnimatedAvatar, ContentLoader, EmphasizedSegment, GenericIcon, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import {
+    AnimatedAvatar,
+    ContentLoader,
+    EmphasizedSegment,
+    GenericIcon,
+    PageLayout,
+    PrimaryButton 
+} from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid, Header, Icon, Image, List, Placeholder, Popup } from "semantic-ui-react";
+import { Divider, Grid, Header, Icon, Image, List, Popup } from "semantic-ui-react";
 import { attributeConfig } from "../../../extensions";
 import {
     AppConstants,
@@ -113,7 +121,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                     } else if (ClaimManagementConstants.SCIM_MAPPING.includes(attributeMapping.dialectURI)) {
                         scim.push(attributeMapping);
                     } else {
-                        if (attributeConfig.showCustomDialectInSCIM 
+                        if (attributeConfig.showCustomDialectInSCIM
                             && attributeMapping.dialectURI !== attributeConfig.localAttributes.customDialectURI ){
                                 others.push(attributeMapping);
                         }
@@ -166,7 +174,8 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
             ) }
             <PageLayout
                 action={
-                    attributeConfig.addAttributeMapping && 
+                    attributeConfig.addAttributeMapping && (
+                    <Show when={ AccessControlConstants.ATTRIBUTE_WRITE }>
                         <PrimaryButton
                             disabled={ isLoading }
                             loading={ isLoading }
@@ -178,7 +187,9 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                             <Icon name="add" />
                             { t("console:manage.features.claims.dialects.pageLayout.list.primaryAction") }
                         </PrimaryButton>
-                }
+                    </Show>
+                ) }
+                isLoading={ isLoading }
                 title={ t("console:manage.features.claims.dialects.pageLayout.list.title") }
                 description={ t("console:manage.features.claims.dialects.pageLayout.list.description") }
                 data-testid={ `${ testId }-page-layout` }
@@ -192,7 +203,8 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                             ) && (
                                     <>
                                         <Header as="h4">
-                                            { t("console:manage.features.claims.dialects.sections.manageAttributes.heading") }
+                                            { t("console:manage.features.claims.dialects." + 
+                                                "sections.manageAttributes.heading") }
                                         </Header>
                                         <Divider hidden />
                                         <EmphasizedSegment
@@ -219,23 +231,32 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                 />
                                                                 <List.Header>
                                                                     { t(
-                                                                        "console:manage.features.claims.dialects.sections." +
+                                                                        "console:manage.features." + 
+                                                                        "claims.dialects.sections." +
                                                                         "manageAttributes.attributes.heading"
                                                                     ) }
                                                                 </List.Header>
-                                                                <List.Description data-testid={ `${ testId }-local-dialect` }>
+                                                                <List.Description 
+                                                                    data-testid={ `${ testId }-local-dialect` }
+                                                                >
                                                                     { t(
-                                                                        "console:manage.features.claims.dialects.sections." +
+                                                                        "console:manage.features." +
+                                                                        "claims.dialects.sections." +
                                                                         "manageAttributes.attributes.description"
                                                                     ) }
                                                                 </List.Description>
                                                             </Grid.Column>
-                                                            <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
+                                                            <Grid.Column 
+                                                                width={ 4 }
+                                                                verticalAlign="middle"
+                                                                textAlign="right"
+                                                            >
                                                                 <Popup
                                                                     content={
                                                                         hasRequiredScopes(
                                                                             featureConfig?.attributeDialects,
-                                                                            featureConfig?.attributeDialects?.scopes?.create,
+                                                                            featureConfig?.attributeDialects?.
+                                                                            scopes?.create,
                                                                             allowedScopes
                                                                         ) ?
                                                                         t("common:edit") :
@@ -244,7 +265,8 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                     trigger={
                                                                         hasRequiredScopes(
                                                                             featureConfig?.attributeDialects,
-                                                                            featureConfig?.attributeDialects?.scopes?.create,
+                                                                            featureConfig?.attributeDialects?.
+                                                                            scopes?.create,
                                                                             allowedScopes
                                                                         ) ?
                                                                         <Icon color="grey" name="pencil" /> :
@@ -444,9 +466,24 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                     </Grid.Column>
                                                     <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
                                                         <Popup
-                                                            content={ t("common:edit") }
+                                                            content={ hasRequiredScopes(
+                                                                featureConfig?.attributeDialects,
+                                                                featureConfig?.attributeDialects?.scopes?.create,
+                                                                allowedScopes
+                                                            )
+                                                                ? t("common:edit")
+                                                                : t("common:view") }
                                                             trigger={
-                                                                <Icon color="grey" name="pencil" />
+                                                                <Icon color="grey" name={
+                                                                    hasRequiredScopes(
+                                                                        featureConfig?.attributeDialects,
+                                                                        featureConfig?.attributeDialects?.
+                                                                        scopes?.create,
+                                                                        allowedScopes
+                                                                    )
+                                                                        ? "pencil"
+                                                                        : "eye"
+                                                                } />
                                                             }
                                                             inverted
                                                         />

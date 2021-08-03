@@ -108,6 +108,10 @@ interface AttributeSelectionPropsInterface extends SBACInterface<FeatureConfigIn
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Template ID of the application.
+     */
+    applicationTemplateId?: string;
 }
 
 export const getLocalDialectURI = (): string => {
@@ -156,6 +160,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     const {
         appId,
+        applicationTemplateId,
         technology,
         featureConfig,
         claimConfigurations,
@@ -859,6 +864,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                                 allowedScopes)
                                         }
                                         technology={ technology }
+                                        applicationTemplateId={ applicationTemplateId }
                                         data-testid={ `${ testId }-advanced-attribute-settings-form` }
                                     />
                                 </Grid.Column>
