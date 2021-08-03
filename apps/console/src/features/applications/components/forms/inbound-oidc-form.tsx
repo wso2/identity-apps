@@ -198,7 +198,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ isCustomApplication, setCustomApplication ] = useState<boolean>(false);
 
     const [ finalCertValue, setFinalCertValue ] = useState<string>(undefined);
-    const [ selectedCertType, setSelectedCertType ] = useState<CertificateTypeInterface>(certificate?.type);
+    const [ selectedCertType, setSelectedCertType ] = useState<CertificateTypeInterface>(CertificateTypeInterface.NONE);
     const [ isCertAvailableForEncrypt, setCertAvailableForEncrypt ] = useState(false);
 
     const [ triggerCertSubmit, setTriggerCertSubmit ] = useTrigger();
@@ -365,6 +365,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
 
     }, [ initialValues ]);
+
+    /**
+     * Set the certificate type
+     */
+    useEffect(()=> {
+        if (certificate?.type){
+            setSelectedCertType(certificate?.type);
+        }
+
+    },[certificate])
 
     /**
      * Sets if a valid token binding type is selected.
@@ -2501,7 +2511,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         let isExpiryTimesTooLowModalShown: boolean = false;
 
         setTriggerCertSubmit();
-        if (selectedCertType !== CertificateTypeInterface.NONE && isEmpty(finalCertValue)) {
+        if (!isSPAApplication && (applicationConfig.inboundOIDCForm.showCertificates)  &&
+            selectedCertType !== CertificateTypeInterface.NONE && isEmpty(finalCertValue)) {
             return;
         }
 

@@ -135,7 +135,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
     const [ certificateDisplay, setCertificateDisplay ] = useState<DisplayCertificate>(null);
 
     const [ finalCertValue, setFinalCertValue ] = useState<string>(undefined);
-    const [ selectedCertType, setSelectedCertType ] = useState<CertificateTypeInterface>(certificate?.type);
+    const [ selectedCertType, setSelectedCertType ] = useState<CertificateTypeInterface>(CertificateTypeInterface.NONE);
     const [ isCertAvailableForEncrypt, setCertAvailableForEncrypt ] = useState(false);
 
     const [ triggerCertSubmit, setTriggerCertSubmit ] = useTrigger();
@@ -180,6 +180,16 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
         }
         return allowedOptions;
     };
+
+    /**
+     * Set the certificate type
+     */
+    useEffect(()=> {
+        if (certificate?.type){
+            setSelectedCertType(certificate?.type);
+        }
+
+    },[certificate])
 
     const updateConfiguration = (values) => {
 
