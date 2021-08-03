@@ -34,6 +34,7 @@ import beautify from "js-beautify";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
+import kebabCase from "lodash-es/kebabCase";
 import set from "lodash-es/set";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -321,7 +322,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      */
     const handleTemplateSelection = (template: AdaptiveAuthTemplateInterface) => {
         eventPublisher.publish("application-sign-in-method-conditional-authentication-template", {
-            "template": template["name"]
+            "type": kebabCase(template["name"])
         });
 
         setIsNewlyAddedScriptTemplate(true);
