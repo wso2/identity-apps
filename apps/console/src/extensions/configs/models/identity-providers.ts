@@ -45,8 +45,20 @@ export interface IdentityProviderConfig {
     };
     utils: {
         isAuthenticatorAllowed: (name: string) => boolean;
-        isProvisioningAttributesEnabled: (authenticatorId: string) => boolean;
         hideIdentityClaimAttributes?: (authenticatorId: string) => boolean;
+        hideLogoInputFieldInIdPGeneralSettingsForm?: (authenticatorId: string) => boolean;
+        /**
+         * If returned {@code false} the provisioning claims section is hidden
+         * entirely. Update operations will fallback to defaults.
+         * @param authenticatorId
+         */
+        isProvisioningAttributesEnabled: (authenticatorId: string) => boolean;
+        /**
+         * If returned {@code false} it will hide both uri mapping for role and
+         * external mappings component entirely.
+         * @param authenticatorId
+         */
+        isRoleMappingsEnabled?: (authenticatorId: string) => boolean;
     };
     /**
      * Local authenticators + Federated authenticators will be shown in one grid view as connections.

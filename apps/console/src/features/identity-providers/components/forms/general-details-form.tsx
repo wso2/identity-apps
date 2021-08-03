@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -69,7 +69,14 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
     /**
      * List of available Idps.
      */
-    idpList?: IdentityProviderListResponseInterface
+    idpList?: IdentityProviderListResponseInterface;
+    /**
+     * Why? to hide or show the IdP logo edit input field.
+     * Introduced this for SAML and OIDC enterprise protocols.
+     * By default the icon/logo for this is readonly from
+     * extensions.
+     */
+    hideIdPLogoEditField?: boolean;
     /**
      * Specifies if the component should only be read-only.
      */
@@ -97,6 +104,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         onUpdate,
         editingIDP,
         idpList,
+        hideIdPLogoEditField,
         isReadOnly,
         [ "data-testid" ]: testId
     } = props;
@@ -212,7 +220,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             "generalDetails.description.hint") }
                         readOnly={ isReadOnly }
                     />
-                    <Field.Input
+                    { !hideIdPLogoEditField && <Field.Input
                         name="image"
                         ariaLabel= "image"
                         inputType="url"
@@ -229,7 +237,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         hint={ t("console:develop.features.authenticationProvider.forms." +
                             "generalDetails.image.hint") }
                         readOnly={ isReadOnly }
-                    />
+                    /> }
                     { !isReadOnly &&
                         <Field.Button
                             ariaLabel= "submit"
@@ -274,5 +282,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 GeneralDetailsForm.defaultProps = {
     "data-testid": "idp-edit-general-settings-form",
     enableWizardMode: false,
-    triggerSubmit: false
+    triggerSubmit: false,
+    hideIdPLogoEditField: false
 };

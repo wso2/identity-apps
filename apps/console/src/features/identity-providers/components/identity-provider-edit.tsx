@@ -130,6 +130,13 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
     const GeneralIdentityProviderSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <GeneralSettings
+                hideIdPLogoEditField={
+                    identityProviderConfig
+                        .utils
+                        ?.hideLogoInputFieldInIdPGeneralSettingsForm(
+                            identityProvider?.federatedAuthenticators?.defaultAuthenticatorId
+                        )
+                }
                 editingIDP={ identityProvider }
                 description={ identityProvider.description }
                 isEnabled={ identityProvider.isEnabled }
@@ -158,9 +165,14 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                         identityProvider.federatedAuthenticators.defaultAuthenticatorId
                     )
                 }
+                isRoleMappingsEnabled={
+                    isSaml && identityProviderConfig.utils.isRoleMappingsEnabled(
+                        identityProvider.federatedAuthenticators.defaultAuthenticatorId
+                    )
+                }
                 data-testid={ `${ testId }-attribute-settings` }
                 provisioningAttributesEnabled={
-                    identityProviderConfig.utils.isProvisioningAttributesEnabled(
+                    isSaml && identityProviderConfig.utils.isProvisioningAttributesEnabled(
                         identityProvider.federatedAuthenticators.defaultAuthenticatorId
                     )
                 }
