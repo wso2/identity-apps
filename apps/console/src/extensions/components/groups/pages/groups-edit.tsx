@@ -20,10 +20,16 @@ import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "../../core";
-import { getGroupById } from "../api";
-import { EditGroup } from "../components";
-import { GroupsInterface } from "../models";
+import {
+    AppConstants,
+    AppState,
+    FeatureConfigInterface,
+    SharedUserStoreUtils,
+    history
+} from "../../../../features/core";
+import { getGroupById } from "../../../../features/groups/api";
+import { GroupsInterface } from "../../../../features/groups/models";
+import { EditGroup } from "../edit-group";
 
 const GroupEditPage: FunctionComponent<any> = (): ReactElement => {
 
@@ -84,8 +90,8 @@ const GroupEditPage: FunctionComponent<any> = (): ReactElement => {
         <PageLayout
             isLoading={ isGroupDetailsRequestLoading }
             title={
-                group && group.displayName ?
-                    group.displayName :
+                group && group?.displayName ?
+                    group?.displayName?.split("/")[1] :
                     t("console:manage.pages.rolesEdit.title")
             }
             backButton={ {

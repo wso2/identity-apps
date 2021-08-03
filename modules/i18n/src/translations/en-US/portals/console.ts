@@ -8483,7 +8483,7 @@ export const console: ConsoleNS = {
                 title: "Roles"
             },
             rolesEdit: {
-                backButton: "Go back to Groups",
+                backButton: "Go back to {{type}}",
                 subTitle: null,
                 title: "Edit Role"
             },
