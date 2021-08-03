@@ -4528,7 +4528,7 @@ export const console: ConsoleNS = {
                         },
                         local: {
                             action: "Nouvel attribut local",
-                            back: "Revenir aux attributs et mappages",
+                            back: "Revenir aux Attributs et Mappages",
                             description: "Créer et gérer les attributs locaux",
                             title: "Attributs locaux"
                         }
@@ -7014,7 +7014,7 @@ export const console: ConsoleNS = {
                 },
                 pageLayout: {
                     edit: {
-                        back: "Revenir aux annuaires",
+                        back: "Revenir aux Annuaires",
                         description: "Modifier l'annuaire",
                         tabs: {
                             connection: "Connexion",
@@ -7029,7 +7029,7 @@ export const console: ConsoleNS = {
                         title: "Annuaires"
                     },
                     templates: {
-                        back: "Revenir aux annuaires",
+                        back: "Revenir aux Annuaires",
                         description: "Veuillez sélectionner un type d'annuaire parmi les possibilités suivantes.",
                         templateHeading: "Démarrage rapide",
                         templateSubHeading: "Modèles d'annuaires prédéfinis pour en faciliter l'initialisation.",
@@ -7149,7 +7149,7 @@ export const console: ConsoleNS = {
                 title: "Modèles d'e-mails"
             },
             emailTemplatesWithDisplayName: {
-                backButton: "Revenir aux applications",
+                backButton: "Revenir aux Applications",
                 subTitle: null,
                 title: "Modèle d'e-mail - {{displayName}}"
             },
@@ -7162,7 +7162,7 @@ export const console: ConsoleNS = {
                 title: "Scopes OIDC"
             },
             oidcScopesEdit: {
-                backButton: "Revenir aux scopes",
+                backButton: "Revenir aux Scopes",
                 subTitle: "Ajouter ou supprimer des attributs OIDC du scope",
                 title: "Modifier le scope : {{ name }}"
             },
@@ -7189,7 +7189,7 @@ export const console: ConsoleNS = {
                 title: "Utilisateurs"
             },
             usersEdit: {
-                backButton: "Revenir aux utilisateurs",
+                backButton: "Revenir aux Utilisateurs",
                 subTitle: "{{name}}",
                 title: "{{email}}"
             }
