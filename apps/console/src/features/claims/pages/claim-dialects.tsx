@@ -189,7 +189,6 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                         </PrimaryButton>
                     </Show>
                 ) }
-                isLoading={ isLoading }
                 title={ t("console:manage.features.claims.dialects.pageLayout.list.title") }
                 description={ t("console:manage.features.claims.dialects.pageLayout.list.description") }
                 data-testid={ `${ testId }-page-layout` }
