@@ -1400,9 +1400,9 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 hint: "This will determine how the application communicates with the token service.",
-                                label: "Allowed grant type",
+                                label: "Allowed grant types",
                                 validations: {
-                                    empty: "Select at least a  grant type"
+                                    empty: "Select at least one grant type"
                                 },
                                 validation: {
                                     refreshToken:"Refresh token grant type should only be selected along with " +

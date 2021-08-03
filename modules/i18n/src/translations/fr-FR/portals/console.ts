@@ -1418,9 +1418,9 @@ export const console: ConsoleNS = {
                                 },
                                 hint: "Cela déterminera la manière dont l'application communique avec le service " +
                                     "de jetons.",
-                                label: "Grant type autorisés",
+                                label: "Types de subvention autorisés",
                                 validations: {
-                                    empty: "Sélectionnez au minimum un grant type"
+                                    empty: "Sélectionnez au moins un type de subvention"
                                 },
                                 vvalidation: {
                                     refreshToken:"Le type d'octroi Refresh token doit être sélectionné uniquement " +
