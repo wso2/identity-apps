@@ -416,7 +416,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                     </PrimaryButton>
                 )
             }
-            isLoading={ (useNewConnectionsView === undefined) }
+            isLoading={ useNewConnectionsView === undefined }
             title={
                 useNewConnectionsView
                     ? t("console:develop.pages.authenticationProvider.title")
