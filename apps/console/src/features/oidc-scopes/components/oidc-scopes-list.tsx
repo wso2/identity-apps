@@ -43,7 +43,7 @@ import {
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Container, Header, Icon, Segment, SemanticICONS } from "semantic-ui-react";
+import { Header, Icon, SemanticICONS } from "semantic-ui-react";
 import { ApplicationManagementConstants } from "../../applications";
 import {
     AppConstants,

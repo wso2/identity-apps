@@ -109,7 +109,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     const [ gitHubAuthenticators, setGitHubAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
     const [ facebookAuthenticators, setFacebookAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
     const [ showMissingSocialAuthenticatorModal, setShowMissingSocialAuthenticatorModal ] = useState<boolean>(false);
-    const [ isAuthenticatorsFetchRequestLoading, setIsAuthenticatorsFetchRequestLoading ] = useState<boolean>(false);
+    const [ isAuthenticatorsFetchRequestLoading, setIsAuthenticatorsFetchRequestLoading ] = useState<boolean>(true);
     const [
         showDuplicateSocialAuthenticatorSelectionModal,
         setShowDuplicateSocialAuthenticatorSelectionModal
