@@ -134,9 +134,26 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
             return;
         }
 
+        /**
+         * This is a temporary fix to resolve a deployment issue. Should be removed once the issue is resolved.
+         */
+        const tempFeature = {
+            developerGettingStarted: {
+                disabledFeatures: [],
+                enabled: true,
+                scopes: {
+                    create: [],
+                    delete: [],
+                    read: ["internal_application_mgt_create", "internal_idp_create", "internal_application_mgt_update"],
+                    update: []
+                }
+            }
+        };
+
+        const modifiedFeaturedConfig = { ...featureConfig, tempFeature };
         let routes: RouteInterface[] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
             getDeveloperViewRoutes(),
-            featureConfig,
+            modifiedFeaturedConfig,
             allowedScopes,
             commonConfig.checkForUIResourceScopes);
 
@@ -148,11 +165,12 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
         }
 
         const controlledRoutes = AccessControlUtils.getAuthenticatedRoutes(
-            routes, allowedScopes, featureConfig, commonConfig.checkForUIResourceScopes);
+            routes, allowedScopes, modifiedFeaturedConfig, commonConfig.checkForUIResourceScopes);
         const sanitizedManageRoutes: RouteInterface[] = CommonRouteUtils.sanitizeForUI(cloneDeep(manageRoutes));
 
         const tab: string = AccessControlUtils.getDisabledTab(
-            sanitizedManageRoutes, filteredRoutes, allowedScopes, featureConfig, commonConfig.checkForUIResourceScopes);
+            sanitizedManageRoutes, filteredRoutes, allowedScopes,
+            modifiedFeaturedConfig, commonConfig.checkForUIResourceScopes);
 
         if (tab === "MANAGE") {
             dispatch(setManageVisibility(false));
