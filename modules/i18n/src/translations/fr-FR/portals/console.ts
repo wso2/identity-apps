@@ -7176,7 +7176,7 @@ export const console: ConsoleNS = {
                 title: "Rôles"
             },
             rolesEdit: {
-                backButton: "Revenir aux {{type}}",
+                backButton: "Revenir aux Groupes",
                 subTitle: null,
                 title: "Modifier le rôle"
             },
