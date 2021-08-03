@@ -22,8 +22,17 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { AppState, ConfigReducerStateInterface } from "../../../../../core";
 import { useSelector } from "react-redux";
 
+/**
+ * No component specific props. Hence unnecessary
+ * to implement a separate interface.
+ */
 type Props = TestableComponentInterface;
 
+/**
+ * Help panel content for SAML file based configuration mode.
+ * @param props {Props}
+ * @constructor
+ */
 const SAMLIdPWizardFileBasedHelp: FunctionComponent<Props> = (props: Props): ReactElement => {
 
     const { [ "data-testid" ]: testId } = props;

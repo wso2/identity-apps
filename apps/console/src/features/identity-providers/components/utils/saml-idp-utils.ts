@@ -176,7 +176,7 @@ type FindMetaArgs = { key: string };
 type FindMetaFunction = (args: FindMetaArgs) => CommonPluggableComponentMetaPropertyInterface;
 
 /**
- * tldr: Pre computes idp metadata and data properties to find
+ * TLDR: Pre computes idp metadata and data properties to find
  * and return values in constant time.
  *
  * Why? to do a faster search we need a constant access time data structure to
@@ -202,6 +202,17 @@ export const fastSearch = (
     authenticator.meta?.properties.forEach((meta) => metadataMap.set(meta.key, meta));
 
     return [
+        /**
+         * When you call it like below:
+         *      findPropVal<string>({ defaultValue: "SHA1", key: "DigestAlgorithm" });
+         *
+         * It will get the property value from {@link propertyMap}
+         * If it's not in the property map then the {@link defaultValue}
+         * will be returned instead.
+         *
+         * @param key {string}
+         * @param defaultValue {T}
+         */
         <T>({ key, defaultValue }: FindPropValArgs<T>): T => {
             if (propertyMap.has(key)) {
                 const value = propertyMap.get(key);
@@ -224,10 +235,8 @@ export const fastSearch = (
 
 /**
  * For some reason the metadata API returns strings instead
- * booleans for boolean default values. ¯\_(ツ)_/¯ Its good
- * if we can address them in the API with issue #4288
- * but it is highly unlikey to get resolved because they are
- * legacy codes.
+ * booleans for boolean default values. Its good
+ * if we can address them in the API with issue #4288.
  *
  * @param value {string}
  */

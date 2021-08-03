@@ -1,3 +1,21 @@
+/**
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 import { FormApi } from "final-form";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Field as FinalField, Form as FinalForm, FormRenderProps } from "react-final-form";
@@ -61,7 +79,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
         }
     }, [ availableAttributeList ]);
 
-    const _getListOfAvailableAttributes = () => {
+    const getListOfAvailableAttributes = () => {
         return copyOfAttrs.map((claim, index) => ({
             content: (
                 <Header as="h6" key={ `attribute-option-${ index }` }>
@@ -81,30 +99,11 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
         }));
     };
 
-    // /**
-    // * Submits the form and clears all the field values and
-    // * field states.
-    // *
-    // * @param values {object}
-    // * @param formApi {any}
-    // */
-    // const onFormSubmission = (values, formApi) => {
-    //     const newMapping = {
-    //         claim: availableAttributeList.find(
-    //             (claim) => claim.id === localClaimId
-    //         ),
-    //         mappedValue
-    //     } as IdentityProviderCommonClaimMappingInterface;
-    //     onSubmit(newMapping);
-    //     // Resets the form field values and its fields states. For some reason,
-    //     // reset() method keeps failing. It has to do something with react-final-form.
-    //     formApi.change("mappedValue", "");
-    //     formApi.resetFieldState("mappedValue");
-    //     formApi.change("localClaimId", "");
-    //     formApi.resetFieldState("mappedValue");
-    //     formApi.resetFieldState("localClaimId");
-    // };
-
+    /**
+     * Form submission handler.
+     * @param values {Record<string, any>}
+     * @param form {FormApi<Record<string, any>>}
+     */
     const onFormSub = (values: Record<string, any>, form: FormApi<Record<string, any>>) => {
         // Find the claim by id and create a instance of
         // IdentityProviderCommonClaimMappingInterface
@@ -158,7 +157,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                                     component={ SelectAdapter }
                                     required
                                     width={ 16 }
-                                    options={ _getListOfAvailableAttributes() }
+                                    options={ getListOfAvailableAttributes() }
                                     label={ !editingMode && "Maps to" }
                                     placeholder="Select mapping attribute"
                                     aria-label="Local Claim Attribute"
@@ -196,65 +195,6 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
             ) }
         />
     );
-
-    //     <Form uncontrolledForm={ true }
-    //           onSubmit={ onFormSubmission }>
-    //         <pre>{ JSON.stringify({ localClaimId, mappedValue }, null, 2) }</pre>
-    //         <Grid>
-    //             <Grid.Row columns={ editingMode ? 3 : 2 }>
-    //                 <Grid.Column width={ editingMode ? 7 : 8 }>
-    //                     <Field.Input
-    //                         required
-    //                         label={ !editingMode && "External IdP Attribute" }
-    //                         placeholder="Enter external IdP attribute"
-    //                         ariaLabel="External IdP Attribute Mapping Value"
-    //                         inputType="default"
-    //                         maxLength={ 120 }
-    //                         minLength={ 1 }
-    //                         width={ 16 }
-    //                         value={ initialValues?.mappedValue }
-    //                         listen={ (value) => setMappedValue(String(value)) }
-    //                         name="mappedValue"/>
-    //                 </Grid.Column>
-    //                 <Grid.Column width={ 8 }>
-    //                     <Field.Dropdown
-    //                         search clearable required
-    //                         label={ !editingMode && "Maps to" }
-    //                         width={ 16 }
-    //                         options={ _getListOfAvailableAttributes() }
-    //                         placeholder="Select mapping attribute"
-    //                         listen={ (value) => setLocalClaimId(String(value)) }
-    //                         value={ initialValues?.localClaimId }
-    //                         noResultsMessage="Try another attribute search."
-    //                         ariaLabel="Local Claim Attribute"
-    //                         name="localClaimId"/>
-    //                 </Grid.Column>
-    //                 { editingMode && (
-    //                     <Grid.Column width={ 1 }>
-    //                         <Field.Button
-    //                             disabled={ !mappedValue || !localClaimId }
-    //                             icon="checkmark"
-    //                             type="submit"
-    //                             name="submit-button"
-    //                             ariaLabel="Attribute Selection Form Submit Button"
-    //                             buttonType="secondary_btn"/>
-    //                     </Grid.Column>
-    //                 ) }
-    //             </Grid.Row>
-    //             { !editingMode && <Grid.Row columns={ 1 }>
-    //                 <Grid.Column width={ 16 } textAlign="right">
-    //                     <Field.Button
-    //                         disabled={ !mappedValue || !localClaimId }
-    //                         type="submit"
-    //                         name="submit-button"
-    //                         label="Add Attribute Mapping"
-    //                         ariaLabel="Attribute Selection Form Submit Button"
-    //                         buttonType="primary_btn"/>
-    //                 </Grid.Column>
-    //             </Grid.Row> }
-    //         </Grid>
-    //     </Form>
-    // );
 
 };
 

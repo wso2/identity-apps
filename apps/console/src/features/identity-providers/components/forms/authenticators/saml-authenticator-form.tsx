@@ -44,6 +44,11 @@ import {
     SSO_URL_LENGTH
 } from "../../utils/saml-idp-utils";
 
+/**
+ * The i18n namespace entry key for this component's contents.
+ * Optionally you can pass this key to {@link useTranslation}
+ * to avoid concatenate strings.
+ */
 const I18N_TARGET_KEY = "console:develop.features.authenticationProvider.forms.authenticatorSettings.saml";
 
 /**
@@ -100,14 +105,18 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
     const [ isUserIdInClaims, setIsUserIdInClaims ] = useState<boolean>(false);
     const [ isLogoutEnabled, setIsLogoutEnabled ] = useState<boolean>(false);
 
-    // ISAuthnReqSigned, IsLogoutReqSigned these two fields states will be used by other
-    // fields states. Basically, algorithms fields enable and disable states will be
-    // determine by these two states.
+    /**
+     * ISAuthnReqSigned, IsLogoutReqSigned these two fields states will be used by other
+     * fields states. Basically, algorithms fields enable and disable states will be
+     * determine by these two states.
+     */
     const [ isLogoutReqSigned, setIsLogoutReqSigned ] = useState<boolean>(false);
     const [ isAuthnReqSigned, setIsAuthnReqSigned ] = useState<boolean>(false);
 
-    // This isAlgorithmsEnabled state will control the enable and disable state of
-    // algorithm dropdowns (Signature and Digest)
+    /**
+     * This isAlgorithmsEnabled state will control the enable and disable state of
+     * algorithm dropdowns (Signature and Digest)
+     */
     const [ isAlgorithmsEnabled, setIsAlgorithmsEnabled ] = useState<boolean>(false);
 
     const initialFormValues = useMemo<SamlPropertiesInterface>(() => {
@@ -126,9 +135,11 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             LogoutReqUrl: findPropVal<string>({ defaultValue: "", key: "LogoutReqUrl" }),
             IncludeProtocolBinding: findPropVal<boolean>({ defaultValue: false, key: "IncludeProtocolBinding" }),
             ISAuthnReqSigned: findPropVal<boolean>({ defaultValue: false, key: "ISAuthnReqSigned" }),
-            // `IsAuthnRespSigned` is by default set to true when creating the SAML IdP so,
-            // always the value will be true. Keeping this here to indicate for the user and
-            // to enable this if requirements gets changed.
+            /**
+             * `IsAuthnRespSigned` is by default set to true when creating the SAML IdP so,
+             * always the value will be true. Keeping this here to indicate for the user and
+             * to enable this if requirements gets changed.
+             */
             IsAuthnRespSigned: findPropVal<boolean>({ defaultValue: true, key: "IsAuthnRespSigned" }),
             IsLogoutEnabled: findPropVal<boolean>({ defaultValue: false, key: "IsLogoutEnabled" }),
             IsLogoutReqSigned: findPropVal<boolean>({ defaultValue: false, key: "IsLogoutReqSigned" }),
