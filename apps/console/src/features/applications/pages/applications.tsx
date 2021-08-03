@@ -22,7 +22,7 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import {
-    ContentLoader,
+    GridLayout,
     ListLayout,
     PageLayout,
     PrimaryButton
@@ -39,7 +39,6 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
-    Container,
     DropdownItemProps,
     DropdownProps,
     Icon,
@@ -388,10 +387,11 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     />
                 ) }
             </> 
-            ) : 
-            <Container>
-                <ContentLoader inline="centered" active/>
-            </Container>
+            ) : (
+                <GridLayout
+                    isLoading={ isApplicationListRequestLoading }
+                />
+            )
         }
         </PageLayout>
     );
