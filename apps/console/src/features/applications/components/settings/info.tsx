@@ -103,53 +103,54 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
     }, [inboundProtocols]);
 
     return (
-        <EmphasizedSegment loading={ isLoading } padded="very" data-testid={ testId }>
-            {
-                !isLoading ? (
-                    <Grid className="form-container with-max-width">
-                        <Grid.Row>
-                            <Grid.Column>
+        !isLoading ? (
+            <EmphasizedSegment loading={ isLoading } padded="very" data-testid={ testId }>
+                <Grid className="form-container with-max-width">
+                    <Grid.Row>
+                        <Grid.Column>
 
-                                { (isOIDC || templateId === CustomApplicationTemplate.id
-                                    || templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC) && (
-                                    <>
-                                        <Heading ellipsis as="h4">
-                                            { t("console:develop.features.applications.edit.sections.info." +
-                                                "oidcHeading") }
-                                        </Heading>
-                                        <Heading as="h6" color="grey" compact>
-                                            { t("console:develop.features.applications.edit.sections.info." +
-                                                "oidcSubHeading") }
-                                        </Heading>
-                                        <Divider hidden/>
-                                        <OIDCConfigurations oidcConfigurations={ oidcConfigurations }/>
-                                    </>
-                                ) }
-                                { isOIDC && isSAML ? (
-                                    <>
-                                        <Divider className="x2" hidden/>
-                                    </>
-                                ) : null }
-                                { (isSAML || templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) && (
-                                    <>
-                                        <Heading ellipsis as="h4">
-                                            { t("console:develop.features.applications.edit.sections.info." +
-                                                "samlHeading") }
-                                        </Heading>
-                                        <Heading as="h6" color="grey" compact>
-                                            { t("console:develop.features.applications.edit.sections.info." +
-                                                "samlSubHeading") }
-                                        </Heading>
-                                        <Divider hidden/>
-                                        <SAMLConfigurations samlConfigurations={ samlConfigurations }/>
-                                    </>
-                                ) }
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                ) : <ContentLoader inline="centered" active/>
-            }
-        </EmphasizedSegment>
+                            { (isOIDC || templateId === CustomApplicationTemplate.id
+                                || templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC) && (
+                                <>
+                                    <Heading ellipsis as="h4">
+                                        { t("console:develop.features.applications.edit.sections.info." +
+                                            "oidcHeading") }
+                                    </Heading>
+                                    <Heading as="h6" color="grey" compact>
+                                        { t("console:develop.features.applications.edit.sections.info." +
+                                            "oidcSubHeading") }
+                                    </Heading>
+                                    <Divider hidden/>
+                                    <OIDCConfigurations oidcConfigurations={ oidcConfigurations }/>
+                                </>
+                            ) }
+                            { isOIDC && isSAML ? (
+                                <>
+                                    <Divider className="x2" hidden/>
+                                </>
+                            ) : null }
+                            { (isSAML || templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) && (
+                                <>
+                                    <Heading ellipsis as="h4">
+                                        { t("console:develop.features.applications.edit.sections.info." +
+                                            "samlHeading") }
+                                    </Heading>
+                                    <Heading as="h6" color="grey" compact>
+                                        { t("console:develop.features.applications.edit.sections.info." +
+                                            "samlSubHeading") }
+                                    </Heading>
+                                    <Divider hidden/>
+                                    <SAMLConfigurations samlConfigurations={ samlConfigurations }/>
+                                </>
+                            ) }
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </EmphasizedSegment> 
+        ) :
+            <EmphasizedSegment padded="very">
+                <ContentLoader inline="centered" active/>
+            </EmphasizedSegment>
     );
 };
 
