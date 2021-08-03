@@ -165,14 +165,14 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         setFilterSelectedExternalClaims(tempFilterSelectedExternalClaims);
     }, [ claimConfigurations ]);
 
-    // Stops the UI loader when the component is initialized and have fetched the availableExternalClaims
+    // Stops the UI loader when the component is initialized and have fetched the availableExternalClaims.
     useEffect(() => {
         if (initializationFinished && claimConfigurations) {
-            // Stop loader UI for SAML applications
+            // Stop loader UI for SAML applications.
             if (selectedDialect.localDialect && availableClaims.length > 0) {
                 setUserAttributesLoading(false);   
             }
-            //  Stop loader UI for OIDC and SP applications
+            //  Stop loader UI for OIDC and SP applications.
             if (!selectedDialect.localDialect && availableExternalClaims.length > 0) {
                 setUserAttributesLoading(false); 
             }                

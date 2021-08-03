@@ -39,7 +39,7 @@ import {
     useConfirmationModalAlert
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import {
