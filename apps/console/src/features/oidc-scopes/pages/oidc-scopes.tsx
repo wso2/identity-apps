@@ -77,7 +77,6 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     const [ scopeList, setScopeList ] = useState<OIDCScopesListInterface[]>([]);
     const [ tempScopeList, setTempScopeList ] = useState<OIDCScopesListInterface[]>([]);
     const [ isScopesListRequestLoading, setScopesListRequestLoading ] = useState<boolean>(true);
-    const [ isPageLoading, setPageLoading ] = useState<boolean>(true);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ sortOrder, setSortOrder ] = useState(true);
@@ -134,7 +133,6 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
             })
             .finally(() => {
                 setScopesListRequestLoading(false);
-                setPageLoading(false);
             });
     };
 
@@ -184,9 +182,8 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
 
     return (
         <PageLayout
-            isLoading={ isPageLoading }
             action={
-                (!isPageLoading && hasRequiredScopes(
+                (hasRequiredScopes(
                     featureConfig?.applications, featureConfig?.applications?.scopes?.create, allowedScopes))
                     ? (
                         <PrimaryButton
@@ -206,7 +203,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
             data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
-                showTopActionPanel={ !isPageLoading && (isScopesListRequestLoading || !(scopeList?.length == 0)) }
+                showTopActionPanel={ (!isScopesListRequestLoading && !(scopeList?.length == 0)) }
                 listItemLimit={ listItemLimit }
                 showPagination={ false }
                 onPageChange={ () => null }

@@ -584,7 +584,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 imageUrl={ application.imageUrl }
                 name={ application.name }
                 isLoading={ isLoading }
-                setIsLoading={ setIsLoading }
                 onDelete={ onDelete }
                 onUpdate={ handleApplicationUpdate }
                 featureConfig={ featureConfig }
