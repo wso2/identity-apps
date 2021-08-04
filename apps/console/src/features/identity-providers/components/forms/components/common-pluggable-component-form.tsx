@@ -217,65 +217,8 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
     const triggerAlgorithmSelectionDropdowns = (key: string, values: Map<string, FormValue>) => {
 
-        /**
-         * Hold on! before you ask why? Just READ this!
-         * --
-         *
-         * let X be two checkboxes. Form keys:  "IsLogoutReqSigned", "ISAuthnReqSigned"
-         * let Y be a dropdown.     Form Key:   "SignatureAlgorithm"
-         * let Z be a dropdown.     Form Key:   "DigestAlgorithm"
-         *
-         * Say Y & Z depends on X's state:-
-         *
-         *    Requirement is that Y and Z should be enabled only when one of X is enabled.
-         *    In the initial form render we need to disable the fields based on the above
-         *    condition. The fun part is based on X's state how can we trigger Y, Z
-         *    state? Ha! you've come to the wrong place but you are in the right place NOW?!
-         *
-         * So, do we have a solution?
-         * --
-         *
-         * We can listen the change and check whether X has been changed and its current
-         * value. If X's is enabled then we need to dynamically enable the dropdown fields.
-         * {@link handleParentPropertyChange} calls when a field has been changed but not
-         * in the initial run. In order to get it working we need to do some unorthodox
-         * wizardry that is even unacceptable by dear god.
-         *
-         * Why include this logic here instead of above component?
-         * --
-         *
-         * Good question! I also keep asking this from others and myself. Good luck out
-         * there mate! But you may ask, why can't you take the state and events up
-         * to the component tree? Ha! funny enough all IdPs depends on this component
-         * to render it's authenticator settings. Taking state and events upwards
-         * will make this more complicated. So, feel free to explore...
-         *
-         * Currently, these fields are being auto generated and programmed to handle state
-         * only one-way. The only proper solution to this is to, separate the concerns
-         * and make an individual idp do only one thing correctly. Instead of depending
-         * on common components. These components didn't chose the bug life but the bug
-         * life chose them xD.
-         *
-         * List of unknown things?!
-         * --
-         *      - Can user update the form it self only by enabling the checkbox?
-         *      - What happens when there's no default value to the field?
-         *      - But can we assign a default value to the meta prop object?
-         *      - Can we ensure the state will refresh and re-render after a metadata update?
-         *      - Why form state represents API's structure?
-         *
-         * This is what happens when you abstract things to the point where you can't
-         * implement a basic logical condition that was invented in 1918. Below this point
-         * you will see a specific logic tied to SAML protocol fields. But this is the
-         * only way we can ensure that values have the proper state in the form based on
-         * the current state.
-         *
-         * PS: np thank me later! append(:joy)
-         */
-
         if (key === "IsLogoutReqSigned" || key === "ISAuthnReqSigned") {
 
-            // I'm easing your life to navigate this append(:poop)
             const enableField = (formKey: string): void => {
                 const props = metadata
                     .properties
@@ -290,7 +233,6 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                 if (props) props.isDisabled = true;
             };
 
-            // See? how simple! even torvalds would love this! xD
             const isChecked = (value: FormValue): boolean =>
                 value &&
                 (Array.isArray(value) && value.length > 0) ||
