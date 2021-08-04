@@ -789,9 +789,9 @@ export const console: ConsoleNS = {
                                     "by navigating to <3>Attribute Mappings.</3>",
                                 attributeComponentHintAlt: "Manage the user attributes you want to share with this" +
                                     " application.",
-                                mandatoryAttributeHint: "Mark which attributes are mandatory for a user to share" +
-                                    " with the application. When logging in, Asgardeo prompts the user to enter the" +
-                                    " attribute value if it is not already provided in the user's profile.",
+                                mandatoryAttributeHint: "Mark which user attributes are mandatory to be shared " +
+                                    "with the application. At login, {{productName}} prompts the user to enter these " +
+                                    "attribute values, if not already provided in the user's profile.",
                                 mappingTable: {
                                     actions: {
                                         enable: "Enable mapping"
@@ -1557,7 +1557,7 @@ export const console: ConsoleNS = {
                                             empty: "Please fill the Front Channel Logout URL",
                                             invalid: "Please add valid URL"
                                         }
-                                    },
+                                    }
                                 },
                                 heading: "PKCE"
                             },
@@ -1616,7 +1616,7 @@ export const console: ConsoleNS = {
                                     "in the authorization request.",
                                 fields: {
                                     signatureValidation: {
-                                        label: "Enable signature validation",
+                                        label: "Enable signature validation"
                                     }
                                 },
                                 heading: "Request Object"
