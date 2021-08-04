@@ -14,6 +14,9 @@ export interface CommonConfig {
     nonLocalCredentialUser: {
         enableNonLocalCredentialUserView: boolean;
     };
+    overviewPage: {
+        enableAlternateWidgetLayout: boolean;
+    };
     accountSecurityPage: {
         accountRecovery: {
             emailRecovery: {

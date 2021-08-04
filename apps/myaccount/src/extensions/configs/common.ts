@@ -16,6 +16,9 @@ export const commonConfig: CommonConfig = {
     nonLocalCredentialUser: {
         enableNonLocalCredentialUserView: false
     },
+    overviewPage: {
+        enableAlternateWidgetLayout: false
+    },
     accountSecurityPage: {
         accountRecovery: {
             emailRecovery: {
