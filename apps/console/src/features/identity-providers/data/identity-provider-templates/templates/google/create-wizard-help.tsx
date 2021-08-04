@@ -18,12 +18,12 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, CopyInputField, Heading } from "@wso2is/react-components";
-import React, {FunctionComponent, ReactElement, useEffect, useState} from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Message } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface } from "../../../../../core";
-import {identityProviderConfig} from "../../../../../../extensions";
+import { identityProviderConfig } from "../../../../../../extensions/configs";
 
 /**
  * Prop types of the component.
