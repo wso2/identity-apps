@@ -88,14 +88,15 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     const [ countryList, setCountryList ] = useState<DropdownItemProps[]>([]);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
 
-    /**
-     * Set the userId.
-     */
-    useEffect(() => {
-
-        setUserId(profileDetails.profileInfo.id);
-    }, [profileDetails]);
-
+    // Removed User ID field from profile.
+    // Uncomment if User ID needs to be added back.
+    // /**
+    //  * Set the userId.
+    //  */
+    // useEffect(() => {
+    //
+    //     setUserId(profileDetails.profileInfo.id);
+    // }, [profileDetails]);
     /**
      * Set the if the email verification is pending.
      */
@@ -1052,31 +1053,33 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             <List divided={ true } verticalAlign="middle"
                   className="main-content-inner"
                   data-testid={ `${testId}-schema-list` }>
-                {
-                    isProfileInfoLoading || profileSchemaLoader
-                        ? null
-                        : (
-                        profileSchema && (
-                            <List.Item key={ profileSchema.length } className="inner-list-item"
-                                       data-testid={ `${testId}-schema-list-item` }>
-                                <Grid padded={ true }>
-                                    <Grid.Row columns={ 3 }>
-                                        < Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
-                                            <List.Content> User Id </List.Content>
-                                        </Grid.Column>
-                                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
-                                            <List.Content>
-                                                <List.Description>
-                                                    { userId }
-                                                </List.Description>
-                                            </List.Content>
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                </Grid>
-                            </List.Item>
-                        )
-                    )
-                }
+                { /*Removed User ID field from profile.*/ }
+                { /*Uncomment if User ID needs to be added back.*/ }
+                { /*{*/ }
+                { /*    isProfileInfoLoading || profileSchemaLoader*/ }
+                { /*        ? null*/ }
+                { /*        : (*/ }
+                { /*        profileSchema && (*/ }
+                { /*            <List.Item key={ profileSchema.length } className="inner-list-item"*/ }
+                { /*                       data-testid={ `${testId}-schema-list-item` }>*/ }
+                { /*                <Grid padded={ true }>*/ }
+                { /*                    <Grid.Row columns={ 3 }>*/ }
+                { /*                        < Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">*/ }
+                { /*                            <List.Content> User Id </List.Content>*/ }
+                { /*                        </Grid.Column>*/ }
+                { /*                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>*/ }
+                { /*                            <List.Content>*/ }
+                { /*                                <List.Description>*/ }
+                { /*                                    { userId }*/ }
+                { /*                                </List.Description>*/ }
+                { /*                            </List.Content>*/ }
+                { /*                        </Grid.Column>*/ }
+                { /*                    </Grid.Row>*/ }
+                { /*                </Grid>*/ }
+                { /*            </List.Item>*/ }
+                { /*        )*/ }
+                { /*    )*/ }
+                { /*}*/ }
                 {
                     profileSchema && profileSchema.map((schema: ProfileSchema, index: number) => {
                         if (!(schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT")
@@ -1087,7 +1090,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ONETIME_PASSWORD")
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_SOURCE_ID")
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("IDP_TYPE")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("LOCAL_CREDENTIAL_EXISTS"))) {
+                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("LOCAL_CREDENTIAL_EXISTS"))
+                        ) {
                             return (
                                 <>
                                     {
