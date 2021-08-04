@@ -150,7 +150,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
             }
         };
 
-        const modifiedFeaturedConfig = { ...featureConfig, ...tempFeature };
+        const modifiedFeaturedConfig = { ...featureConfig, tempFeature };
         let routes: RouteInterface[] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
             getDeveloperViewRoutes(),
             modifiedFeaturedConfig,
