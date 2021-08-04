@@ -148,7 +148,6 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
-
     useEffect(() => {
         const tempFilterSelectedExternalClaims = [ ...filterSelectedExternalClaims ];
         claimConfigurations?.claimMappings?.map((claim) => {
