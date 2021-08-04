@@ -3762,7 +3762,8 @@ export const console: ConsoleNS = {
                             },
                             heading: "Help",
                             name: {
-                                description: "Provide a unique name for the identity provider.",
+                                idpDescription: "Provide a unique name for the identity provider.",
+                                connectionDescription: "Provide a unique name for the connection.",
                                 heading: "Name"
                             },
                             preRequisites: {
@@ -3790,7 +3791,8 @@ export const console: ConsoleNS = {
                             },
                             heading: "Help",
                             name: {
-                                description: "Provide a unique name for the identity provider.",
+                                idpDescription: "Provide a unique name for the identity provider.",
+                                connectionDescription: "Provide a unique name for the connection.",
                                 heading: "Name"
                             },
                             preRequisites: {
@@ -3818,7 +3820,8 @@ export const console: ConsoleNS = {
                             },
                             heading: "Help",
                             name: {
-                                description: "Provide a unique name for the identity provider.",
+                                idpDescription: "Provide a unique name for the identity provider.",
+                                connectionDescription: "Provide a unique name for the connection.",
                                 heading: "Name"
                             },
                             preRequisites: {
