@@ -98,7 +98,7 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
     }, []);
 
     /**
-     *
+     * This sets flag to disable showing external logins section based on config.
      */
     useEffect(() => {
         if (disableExternalLoginsOnEmpty) {
