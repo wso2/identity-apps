@@ -33,6 +33,8 @@ import { AppState } from "../store";
  */
 interface OverviewPagePropsInterface extends TestableComponentInterface {
     enableNonLocalCredentialUserView?: boolean;
+    enableAlternateWidgetLayout?: boolean;
+
 }
 
 /**
@@ -45,7 +47,8 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
 ): ReactElement => {
 
     const {
-        enableNonLocalCredentialUserView
+        enableNonLocalCredentialUserView,
+        enableAlternateWidgetLayout
     } = props;
     const { t } = useTranslation();
     const isProfileInfoLoading: boolean = useSelector( (state: AppState) => state.loaders.isProfileInfoLoading);
@@ -83,7 +86,7 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
     useEffect(() => {
         // Sets user's source of sign up if the user is a federated user.
         const userSource = profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
-            ["userSourceId"];
+            [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("IDP_TYPE")];
 
         if (isNonLocalCredentialUser && userSource) {
             setUserSource(userSource);
@@ -111,6 +114,7 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
             { isProfileInfoLoading == false &&
                 <Overview
                     userSource={ userSource }
+                    enableAlternateWidgetLayout={ enableAlternateWidgetLayout }
                 />
             }
         </InnerPageLayout>
@@ -122,7 +126,8 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
  * See type definitions in {@link OverviewPage}
  */
 OverviewPage.defaultProps = {
-    enableNonLocalCredentialUserView: commonConfig.nonLocalCredentialUser.enableNonLocalCredentialUserView
+    enableNonLocalCredentialUserView: commonConfig.nonLocalCredentialUser.enableNonLocalCredentialUserView,
+    enableAlternateWidgetLayout: commonConfig.overviewPage.enableAlternateWidgetLayout
 };
 
 

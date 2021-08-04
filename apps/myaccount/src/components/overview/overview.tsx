@@ -32,6 +32,7 @@ import { AppState } from "../../store";
  */
 interface OverviewPropsInterface extends TestableComponentInterface {
     userSource?: string;
+    enableAlternateWidgetLayout?: boolean
 }
 
 /**
@@ -44,7 +45,8 @@ export const Overview: FunctionComponent<OverviewPropsInterface> = (
 ): ReactElement => {
 
     const {
-        userSource
+        userSource,
+        enableAlternateWidgetLayout
     } = props;
 
     const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
@@ -166,8 +168,20 @@ export const Overview: FunctionComponent<OverviewPropsInterface> = (
         <Grid className="overview-page">
             <Divider hidden />
             <Grid.Row>
-                { profileStatus(8, 16) }
-                { accountSecurity(8, 16) }
+                {
+                    !enableAlternateWidgetLayout ?
+                    <>
+                        { accountStatus(9, 16) }
+                        { accountActivity(7, 16) }
+                        { accountSecurity(8, 16) }
+                        { consents(8, 16) }
+                    </>
+                    :
+                        <>
+                            { profileStatus(8, 16) }
+                            { accountSecurity(8, 16) }
+                        </>
+                }
             </Grid.Row>
         </Grid>
     );
