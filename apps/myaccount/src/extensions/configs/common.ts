@@ -19,6 +19,9 @@ export const commonConfig: CommonConfig = {
     overviewPage: {
         enableAlternateWidgetLayout: false
     },
+    userProfilePage: {
+        showEmail: true
+    },
     accountSecurityPage: {
         accountRecovery: {
             emailRecovery: {

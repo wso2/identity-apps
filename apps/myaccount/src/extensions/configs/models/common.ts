@@ -17,6 +17,9 @@ export interface CommonConfig {
     overviewPage: {
         enableAlternateWidgetLayout: boolean;
     };
+    userProfilePage: {
+        showEmail: boolean;
+    };
     accountSecurityPage: {
         accountRecovery: {
             emailRecovery: {

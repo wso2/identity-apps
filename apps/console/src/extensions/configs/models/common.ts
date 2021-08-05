@@ -12,4 +12,7 @@ export interface CommonConfig {
         enableQuerySearch: boolean;
     };
     checkForUIResourceScopes: boolean;
+    userEditSection: {
+        showEmail: boolean;
+    };
 }

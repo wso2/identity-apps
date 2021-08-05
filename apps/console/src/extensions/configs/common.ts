@@ -22,5 +22,8 @@ export const commonConfig: CommonConfig = {
     advancedSearchWithBasicFilters: {
         enableQuerySearch: true
     },
-    checkForUIResourceScopes: false
+    checkForUIResourceScopes: false,
+    userEditSection: {
+        showEmail: true
+    }
 };
