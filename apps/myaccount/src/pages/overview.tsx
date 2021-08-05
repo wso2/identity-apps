@@ -34,7 +34,6 @@ import { AppState } from "../store";
 interface OverviewPagePropsInterface extends TestableComponentInterface {
     enableNonLocalCredentialUserView?: boolean;
     enableAlternateWidgetLayout?: boolean;
-
 }
 
 /**
