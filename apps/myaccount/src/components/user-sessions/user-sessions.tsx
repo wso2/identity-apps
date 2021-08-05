@@ -33,6 +33,8 @@ import {
     emptyUserSessions
 } from "../../models";
 import { SettingsSection } from "../shared";
+import { AppConstants } from "../../constants";
+import { history } from "../../helpers";
 
 /**
  * Proptypes for the user sessions component.
@@ -189,6 +191,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
     const handleTerminateAllUserSessions = () => {
         terminateAllUserSessions()
             .then(() => {
+                history.push(AppConstants.getPaths().get("LOGOUT"));
                 onAlertFired({
                     description: t(
                         "myAccount:components.userSessions.notifications.terminateAllUserSessions.success.description"
@@ -200,6 +203,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
                 });
             })
             .catch((error) => {
+                getUserSessions();
                 if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({
                         description: t(
@@ -229,7 +233,6 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
             })
             .finally(() => {
                 setRevokeAllUserSessionsModalVisibility(false);
-                getUserSessions();
             });
     };
 
