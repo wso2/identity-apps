@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { Code, FormInputLabel, FormSection } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, useMemo, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid, SemanticWIDTHS } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface } from "../../../../core";
@@ -321,7 +321,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                     <SectionRow>
                         <Field.Checkbox
                             name="IsSLORequestAccepted"
-                            value={ isSLORequestAccepted }
+                            initialValue={ isSLORequestAccepted }
                             ariaLabel={ t(`${ I18N_TARGET_KEY }.IsSLORequestAccepted.ariaLabel`) }
                             data-testid={ `${ testId }-IsSLORequestAccepted-field` }
                             label={ (
@@ -341,7 +341,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                         <Field.Checkbox
                             required={ false }
                             name="IsLogoutEnabled"
-                            value={ isLogoutEnabled }
+                            initialValue={ isLogoutEnabled }
                             ariaLabel={ t(`${ I18N_TARGET_KEY }.IsLogoutEnabled.ariaLabel`) }
                             data-testid={ `${ testId }-IsLogoutEnabled-field` }
                             label={ (
@@ -405,7 +405,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                         <Field.Checkbox
                             required={ false }
                             name="IsLogoutReqSigned"
-                            value={ isLogoutReqSigned }
+                            initialValue={ isLogoutReqSigned }
                             ariaLabel={ t(`${ I18N_TARGET_KEY }.IsLogoutReqSigned.ariaLabel`) }
                             data-testid={ `${ testId }-IsLogoutReqSigned-field` }
                             label={ (
@@ -423,7 +423,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                         <Field.Checkbox
                             required={ false }
                             name="ISAuthnReqSigned"
-                            value={ isAuthnReqSigned }
+                            initialValue={ isAuthnReqSigned }
                             ariaLabel={ t(`${ I18N_TARGET_KEY }.ISAuthnReqSigned.ariaLabel`) }
                             data-testid={ `${ testId }-ISAuthnReqSigned-field` }
                             label={ (
@@ -485,7 +485,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                         <Field.Checkbox
                             required={ false }
                             name="IncludeProtocolBinding"
-                            value={ includeProtocolBinding }
+                            initialValue={ includeProtocolBinding }
                             ariaLabel={ t(`${ I18N_TARGET_KEY }.IncludeProtocolBinding.ariaLabel`) }
                             data-testid={ `${ testId }-IncludeProtocolBinding-field` }
                             label={ (
@@ -501,7 +501,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                         <Field.Checkbox
                             required={ false }
                             name="IsUserIdInClaims"
-                            value={ isUserIdInClaims }
+                            initialValue={ isUserIdInClaims }
                             ariaLabel={ t(`${ I18N_TARGET_KEY }.IsUserIdInClaims.ariaLabel`) }
                             data-testid={ `${ testId }-IsUserIdInClaims-field` }
                             label={ (
