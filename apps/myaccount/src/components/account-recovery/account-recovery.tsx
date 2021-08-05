@@ -18,12 +18,11 @@
 
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { List } from "semantic-ui-react";
 import { EmailRecovery, SecurityQuestionsComponent } from "./options";
-import { getPreference } from "../../api";
 import { AppConstants } from "../../constants";
 import {
     AlertInterface,
@@ -35,6 +34,7 @@ import {
 } from "../../models";
 import { AppState } from "../../store";
 import { SettingsSection } from "../shared";
+import { getPreference } from "../../api";
 
 /**
  * Prop types for AccountRecoveryComponent component.
@@ -48,11 +48,11 @@ interface AccountRecoveryProps extends SBACInterface<FeatureConfigInterface>, Te
  * The AccountRecoveryComponent component in the Settings section
  *
  * @param {AccountRecoveryProps} props
- * @return {ReactElement}
+ * @return {JSX.Element}
  */
-export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> = (
+export const AccountRecoveryComponent: React.FunctionComponent<AccountRecoveryProps> = (
     props: AccountRecoveryProps
-): ReactElement => {
+): JSX.Element => {
 
     const {
         onAlertFired,
@@ -156,11 +156,11 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                 ( isQsRecoveryEnabled || isNotificationRecoveryEnabled || isUsernameRecoveryEnabled ) ?
                     (
                         <SettingsSection
-                            data-testid={ `${testId}-settings-section` }
-                            description={ t("myAccount:sections.accountRecovery.description") }
-                            header={ t("myAccount:sections.accountRecovery.heading") }
+                            data-testid={`${testId}-settings-section`}
+                            description={t("myAccount:sections.accountRecovery.description")}
+                            header={t("myAccount:sections.accountRecovery.heading")}
                         >
-                            <List divided={ true } verticalAlign="middle" className="main-content-inner">
+                            <List divided={true} verticalAlign="middle" className="main-content-inner">
                                 <List.Item className="inner-list-item">
                                     {
                                         hasRequiredScopes(
@@ -177,9 +177,9 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                                             ? (
                                                 <SecurityQuestionsComponent
                                                     onAlertFired=
-                                                        { onAlertFired }
+                                                        {onAlertFired}
                                                     data-testid=
-                                                        { `${testId}-settings-section-security-questions-component` }
+                                                        {`${testId}-settings-section-security-questions-component`}
                                                 />
                                             )
                                             : null
@@ -200,8 +200,8 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                                         (isNotificationRecoveryEnabled || isUsernameRecoveryEnabled)
                                             ? (
                                                 <EmailRecovery
-                                                    onAlertFired={ onAlertFired }
-                                                    data-testid={ `${testId}-settings-section-email-recovery` }
+                                                    onAlertFired={onAlertFired}
+                                                    data-testid={`${testId}-settings-section-email-recovery`}
                                                 />
                                             )
                                             : null

@@ -73,7 +73,7 @@ export interface PageHeaderPropsInterface extends LoadableComponentInterface, Te
     /**
      * Header title.
      */
-    title?: ReactNode;
+    title?: string | ReactNode;
     /**
      * Title render element.
      */
