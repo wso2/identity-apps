@@ -4965,7 +4965,7 @@ export const console: ConsoleNS = {
         },
         pages: {
             applicationTemplate: {
-                backButton: "Go back to applications",
+                backButton: "Go back to Applications",
                 subTitle: "Register an application using one of the templates given below. " +
                     "If you don't find a matching template, create a custom application.",
                 title: "Register New Application"
@@ -4975,7 +4975,7 @@ export const console: ConsoleNS = {
                 title: "Applications"
             },
             applicationsEdit: {
-                backButton: "Go back to applications",
+                backButton: "Go back to Applications",
                 subTitle: null,
                 title: null
             },
@@ -5447,7 +5447,7 @@ export const console: ConsoleNS = {
                     },
                     pageLayout: {
                         edit: {
-                            back: "Go back to attribute mappings",
+                            back: "Go back to Attribute Mappings",
                             description: "Edit attribute mapping",
                             updateDialectURI: "Update {{type}} Attribute Mapping",
                             updateExternalAttributes: "Update {{type}} Attribute Mapping"
@@ -5836,7 +5836,7 @@ export const console: ConsoleNS = {
                         },
                         local: {
                             action: "New Attribute",
-                            back: "Go back to attributes and mappings",
+                            back: "Go back to Attributes and Mappings",
                             description: "Create and manage attributes",
                             title: "Attributes"
                         }
@@ -8593,7 +8593,7 @@ export const console: ConsoleNS = {
                 title: "OpenID Connect Scopes"
             },
             oidcScopesEdit: {
-                backButton: "Go back to scopes",
+                backButton: "Go back to Scopes",
                 subTitle: "Add or remove OIDC attributes of the scope",
                 title: "Edit scope: {{ name }}"
             },
@@ -8620,7 +8620,7 @@ export const console: ConsoleNS = {
                 title: "Users"
             },
             usersEdit: {
-                backButton: "Go back to users",
+                backButton: "Go back to Users",
                 subTitle: "{{name}}",
                 title: "{{email}}"
             },
