@@ -506,7 +506,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
 
         terminateAllUserSessions(user.id)
             .then(() => {
-                // Redirect to login page if all the sessions are terminated
+                // Redirect to login page if all the sessions are terminated.
                 history.push(window["AppUtils"].getConfig().routes.logout);
                 dispatch(addAlert<AlertInterface>({
                     description: t(
@@ -521,7 +521,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                 }));
             })
             .catch((error: AxiosError) => {
-                // fetch the sessions if and only if the session termination fails
+                // fetch the sessions if and only if the session termination fails.
                 fetchUserSessions(user.id);
                 if (error.response
                     && error.response.data
