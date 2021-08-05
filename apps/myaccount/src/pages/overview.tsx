@@ -76,7 +76,6 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
             [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("LOCAL_CREDENTIAL_EXISTS")]) {
             setIsNonLocalCredentialUser(true);
         }
-
     }, [profileDetails?.profileInfo]);
 
     /**
