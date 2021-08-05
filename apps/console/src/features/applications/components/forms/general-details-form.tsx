@@ -230,13 +230,13 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     hidden={ hiddenFields?.includes("imageUrl") }
                 />
             }
-            <Field.CheckboxLegacy
+            <Field.Checkbox
                 ariaLabel="Make application discoverable by end users"
                 name="discoverableByEndUsers"
                 required={ false }
                 label={ t("console:develop.features.applications.forms.generalDetails.fields" +
                             ".discoverable.label") }
-                value={ isDiscoverable ? [ "discoverable" ] : [] }
+                initialValue={ isDiscoverable }
                 readOnly={ readOnly }
                 data-testid={ `${ testId }-application-discoverable-checkbox` }
                 listen={ (value) => setDiscoverability(value) }
