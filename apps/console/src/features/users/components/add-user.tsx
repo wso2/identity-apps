@@ -68,7 +68,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     } = props;
 
     const [ userStoreOptions, setUserStoresList ] = useState([]);
-    const [ passwordOption, setPasswordOption ] = useState(initialValues?.passwordOption ?? "createPw");
+    const [ passwordOption, setPasswordOption ] = useState(initialValues?.passwordOption ?? "create-password");
     const [ userStore, setUserStore ] = useState<string>(initialValues?.domain);
     const [ randomPassword, setRandomPassword ] = useState<string>("");
     const [ isPasswordGenerated, setIsPasswordGenerated ] = useState<boolean>(false);
@@ -108,11 +108,11 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     }, []);
 
     /**
-     * Set the password setup option to 'createPw'.
+     * Set the password setup option to 'create-password'.
      */
     useEffect(() => {
         if (!passwordOption) {
-            setPasswordOption("createPw");
+            setPasswordOption("create-password");
         }
     }, []);
 
@@ -120,12 +120,12 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         {
             "data-testid": "user-mgt-add-user-form-create-password-option-radio-button",
             label: t("console:manage.features.user.forms.addUserForm.buttons.radioButton.options.createPassword"),
-            value: "createPw"
+            value: "create-password"
         },
         {
             "data-testid": "user-mgt-add-user-form-ask-password-option-radio-button",
             label: t("console:manage.features.user.forms.addUserForm.buttons.radioButton.options.askPassword"),
-            value: "askPw"
+            value: "ask-password"
         }
     ];
 
@@ -254,7 +254,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     };
 
     const handlePasswordOptions = () => {
-        if (passwordOption && passwordOption === "createPw") {
+        if (passwordOption && passwordOption === "create-password") {
             return (
                 <>
                     <Grid.Row columns={ 2 }>
@@ -374,7 +374,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                     </Grid.Row>
                 </>
             );
-        } else if (passwordOption && passwordOption === "askPw") {
+        } else if (passwordOption && passwordOption === "ask-password") {
             return (
                 <>
                     <Grid.Row columns={ 1 }>
@@ -568,10 +568,10 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 type="radio"
                                 label={ t("console:manage.features.user.forms.addUserForm.buttons.radioButton.label") }
                                 name="passwordOption"
-                                default="createPw"
+                                default="create-password"
                                 listen={ (values) => { setPasswordOption(values.get("passwordOption").toString()); } }
                                 children={ passwordOptions }
-                                value={ initialValues?.passwordOption ?? "createPw" }
+                                value={ initialValues?.passwordOption ?? "create-password" }
                                 tabIndex={ 6 }
                             />
                         </Grid.Column>

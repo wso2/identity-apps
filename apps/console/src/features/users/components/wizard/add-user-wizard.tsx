@@ -374,7 +374,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         let userDetails: UserDetailsInterface = createEmptyUserDetails();
         const password = userInfo.newPassword;
 
-        userInfo.passwordOption && userInfo.passwordOption !== "askPw"
+        userInfo.passwordOption && userInfo.passwordOption !== "ask-password"
             ? (
                 userDetails = {
                     emails:[
