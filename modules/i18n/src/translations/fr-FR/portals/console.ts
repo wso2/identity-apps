@@ -1692,11 +1692,13 @@ export const console: ConsoleNS = {
                                 hint: "Cette valeur peut remplacer l'identifiant de l'entité du fournisseur d'identité qui est " +
                                     "spécifié dans la configuration d'authentification entrante SAML SSO du fournisseur " +
                                     "d'identité résident. L'identifiant de l'entité du fournisseur d'identité " +
-                                    "est utilisé comme émetteur de la réponse SAML qui est générée.",
+                                    "est utilisé comme émetteur de la réponse SAML qui est générée. Il doit s'agir " +
+                                    "d'un URI/URL valide.",
                                 label: "Alias IDP entityId",
                                 placeholder: "Saisir alias",
                                 validations: {
-                                    empty: "Ceci est un champ obligatoire."
+                                    empty: "Ceci est un champ obligatoire.",
+                                    invalid: "Il doit s'agir d'un URI/URL valide."
                                 }
                             },
                             issuer: {
@@ -4079,8 +4081,8 @@ export const console: ConsoleNS = {
                         fields: {
                             attributeName: {
                                 validation: {
-                                    invalid: "Le nom d'attribut ne peut contenir que des caractères " 
-                                        +"alphanumériques et _. Et doit avoir une longueur comprise " 
+                                    invalid: "Le nom d'attribut ne peut contenir que des caractères "
+                                        +"alphanumériques et _. Et doit avoir une longueur comprise "
                                         +"entre 3 et 30 caractères."
                                 }
                             }
