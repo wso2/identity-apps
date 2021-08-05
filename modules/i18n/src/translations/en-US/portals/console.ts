@@ -2922,15 +2922,15 @@ export const console: ConsoleNS = {
                         },
                         facebook: {
                             callbackUrl: {
-                                hint: "The set of redirect URIs specified as valid in the Facebook OAuth app.",
-                                label: "Valid OAuth redirect URIs",
+                                hint: "The redirect URI specified as valid in the Facebook OAuth app.",
+                                label: "Valid OAuth redirect URI",
                                 placeholder: "Enter Valid OAuth redirect URIs.",
                                 validations: {
                                     required: "Valid OAuth redirect URIs is a required field."
                                 }
                             },
                             clientId: {
-                                hint: "The generated unque ID which is generated when the Facebook OAuth app is created.",
+                                hint: "The generated unique ID which is generated when the Facebook OAuth app is created.",
                                 label: "App ID",
                                 placeholder: "Enter App ID from Facebook application.",
                                 validations: {
@@ -3867,7 +3867,8 @@ export const console: ConsoleNS = {
                             },
                             heading: "Help",
                             name: {
-                                description: "Provide a unique name for the identity provider.",
+                                idpDescription: "Provide a unique name for the identity provider.",
+                                connectionDescription: "Provide a unique name for the connection.",
                                 heading: "Name"
                             },
                             preRequisites: {
@@ -3895,7 +3896,8 @@ export const console: ConsoleNS = {
                             },
                             heading: "Help",
                             name: {
-                                description: "Provide a unique name for the identity provider.",
+                                idpDescription: "Provide a unique name for the identity provider.",
+                                connectionDescription: "Provide a unique name for the connection.",
                                 heading: "Name"
                             },
                             preRequisites: {
@@ -3923,7 +3925,8 @@ export const console: ConsoleNS = {
                             },
                             heading: "Help",
                             name: {
-                                description: "Provide a unique name for the identity provider.",
+                                idpDescription: "Provide a unique name for the identity provider.",
+                                connectionDescription: "Provide a unique name for the connection.",
                                 heading: "Name"
                             },
                             preRequisites: {
