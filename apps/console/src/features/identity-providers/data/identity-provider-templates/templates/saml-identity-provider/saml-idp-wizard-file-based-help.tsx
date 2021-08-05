@@ -42,10 +42,9 @@ const SAMLIdPWizardFileBasedHelp: FunctionComponent<Props> = (props: Props): Rea
         <div data-testid={ testId }>
             <Heading as="h5">Metadata file</Heading>
             <p>
-                { config.ui.productName } allows you to upload SAML configuration data using
-                a metadata <Code>XML</Code> file which contains all the required configurations
-                to facilitate exchanging authentication and authorization data
-                between entities in a standard way.
+                { config.ui.productName } allows you to upload SAML configuration data using a
+                metadata <Code>XML</Code> file that contains all the required configurations to exchange authentication
+                information between entities in a standard way.
             </p>
         </div>
     );
