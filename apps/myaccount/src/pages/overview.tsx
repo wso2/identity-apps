@@ -127,7 +127,6 @@ OverviewPage.defaultProps = {
     enableNonLocalCredentialUserView: commonConfig.nonLocalCredentialUser.enableNonLocalCredentialUserView,
     enableAlternateWidgetLayout: commonConfig.overviewPage.enableAlternateWidgetLayout
 };
-
 /**
  * A default export was added to support React.lazy.
  * TODO: Change this to a named export once react starts supporting named exports for code splitting.
