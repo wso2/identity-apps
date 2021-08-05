@@ -28,7 +28,8 @@ import { getSettingsSectionIcons } from "../../configs";
 import { commonConfig } from "../../extensions";
 import {
     AlertInterface,
-    AlertLevels, AuthStateInterface
+    AlertLevels, 
+    AuthStateInterface
 } from "../../models";
 import { FederatedAssociation } from "../../models/federated-associations";
 import { AppState } from "../../store";
