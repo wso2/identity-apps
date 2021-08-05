@@ -70,6 +70,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
     const [ isShowClaimIDHint, setIsShowClaimIDHint ] = useState(false);
     const [ isShowRegExHint, setIsShowRegExHint ] = useState(false);
     const [ isShowDisplayOrderHint, setIsShowDisplayOrderHint ] = useState(false);
+    const [ showMappingError, setShowMappingError ] = useState<boolean>(false);
 
     const [ noUniqueOIDCAttrib, setNoUniqueOIDCAttrib ] = useState<boolean>(true);
     const [ noUniqueSCIMAttrib, setNoUniqueSCIMAttrib ] = useState<boolean>(true);
@@ -140,8 +141,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                 };
 
                 if (attributeConfig.localAttributes.createWizard.customWIzard) {
-                    values.set("oidc", oidcMapping.trim());
-                    values.set("scim", scimMapping.trim());
+                    values.set("oidc", oidcMapping);
+                    values.set("scim", scimMapping);
                 }
 
                 if (noUniqueOIDCAttrib && noUniqueSCIMAttrib) {
@@ -194,7 +195,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
 
                                         if (!isAttributeValid) {
                                             validation.isValid = false;
-                                            validation.errorMessages.push(t("console:manage.features.claims." 
+                                            validation.errorMessages.push(t("console:manage.features.claims."
                                                 +"dialects.forms.fields.attributeName.validation.invalid"));
                                         }
 
@@ -242,6 +243,14 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                             { t("extensions:manage.attributes.generatedAttributeMapping.description") }
                                         </Card.Meta>
                                         <Card.Description className="mt-1 mb-1">
+                                            { showMappingError &&
+                                                <Message className="mb-4" size="tiny" negative>
+                                                    <p>
+                                                        Protocol mapping should only consist alphanumeric values 
+                                                        with underscore as word seperator.
+                                                    </p>
+                                                </Message>
+                                            }
                                             <Grid verticalAlign="middle">
                                                 { !noUniqueOIDCAttrib || !noUniqueSCIMAttrib ?
                                                     <Grid.Row columns={ 1 } >
@@ -270,7 +279,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                                                 <b> OpenID Connect </b> 
                                                                                 protocol(s) is already available.</>
                                                                         );
-                                                                        
+
                                                                     }
                                                                 })() }
                                                             </Message>
@@ -295,14 +304,20 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                     </Grid.Column>
                                                     <Grid.Column width={ 11 }>
                                                         <InlineEditInput
-                                                            text={ oidcMapping } 
+                                                            text={ oidcMapping }
+                                                            errorHandler={ (status) => {
+                                                                setShowMappingError(status);
+                                                            } }
                                                             onChangesSaved={ (value: string) => {
-                                                                attributeConfig.localAttributes
-                                                                    .checkAttributeNameAvailability(
-                                                                        oidcMapping, "OIDC").then(response => {
-                                                                        setNoUniqueOIDCAttrib(response.get("OIDC"));
-                                                                });
-                                                                setOidcMapping(value);
+                                                                if (value) {
+                                                                    attributeConfig.localAttributes
+                                                                        .checkAttributeNameAvailability(
+                                                                            oidcMapping, "OIDC").then(response => {
+                                                                            setNoUniqueOIDCAttrib(response.get("OIDC"));
+                                                                    });
+                                                                    setShowMappingError(false);
+                                                                    setOidcMapping(value);
+                                                                }
                                                             } }
                                                         />
                                                     </Grid.Column>
@@ -326,15 +341,23 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                     <Grid.Column width={ 11 }>
                                                         <InlineEditInput
                                                             textPrefix="urn:scim:wso2:schema:"
-                                                            onChangesSaved={ (value: string) => {
-                                                                attributeConfig.localAttributes
-                                                                    .checkAttributeNameAvailability(
-                                                                        scimMapping, "SCIM").then(response => {
-                                                                        setNoUniqueSCIMAttrib(response.get("SCIM"));
-                                                                });
-                                                                setScimMapping(value);
+                                                            validation="^[a-z_-]*$"
+                                                            errorHandler={ (status) => {
+                                                                setShowMappingError(status);
                                                             } }
-                                                            text={ scimMapping } 
+                                                            onChangesSaved={ (value: string) => {
+                                                                if (value) {
+                                                                    attributeConfig.localAttributes
+                                                                        .checkAttributeNameAvailability(
+                                                                            scimMapping, "SCIM").then(response => {
+                                                                            setNoUniqueSCIMAttrib(response.get("SCIM"));
+                                                                    });
+                                                                    setShowMappingError(false);
+                                                                    setScimMapping(value);
+                                                                }
+                                                                
+                                                            } }
+                                                            text={ scimMapping }
                                                         />
                                                     </Grid.Column>
                                                 </Grid.Row>
@@ -436,15 +459,14 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             type="textarea"
                             name="description"
                             label={ t("console:manage.features.claims.local.forms.description.label") }
-                            required={ true }
-                            requiredErrorMessage={ t("console:manage.features.claims.local.forms.description." +
-                                "requiredErrorMessage") }
+                            required={ false }
+                            requiredErrorMessage=""
                             placeholder={ t("console:manage.features.claims.local.forms.description.placeholder") }
                             value={ values?.get("description")?.toString() }
                             data-testid={ `${ testId }-form-description-input` }
                         />
                     </Grid.Column>
-                    { attributeConfig.localAttributes.createWizard.showRegularExpression && 
+                    { attributeConfig.localAttributes.createWizard.showRegularExpression &&
                         <Grid.Column width={ 8 }>
                             <Field
                                 type="text"
@@ -553,7 +575,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                         />
                     </Grid.Column>
                 </Grid.Row>
-                { attributeConfig.localAttributes.createWizard.showReadOnlyAttribute && 
+                { attributeConfig.localAttributes.createWizard.showReadOnlyAttribute &&
                     // TODO: Track this as an issue for future implementations
                     <Grid.Row column={ 1 }>
                         <Grid.Column>
