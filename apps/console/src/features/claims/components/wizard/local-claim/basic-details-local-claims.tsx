@@ -129,7 +129,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
         <Forms
             onSubmit={ (values) => {
                 const data = {
-                    claimURI: claimURIBase + "/" + values.get("claimURI").toString(),
+                    claimURI: claimURIBase + "/" + values.get("claimURI").toString().trim(),
                     description: values.get("description").toString(),
                     displayName: values.get("name").toString(),
                     displayOrder: values.get("displayOrder") ? parseInt(values.get("displayOrder")?.toString()) : "0",
@@ -140,14 +140,14 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                 };
 
                 if (attributeConfig.localAttributes.createWizard.customWIzard) {
-                    values.set("oidc", oidcMapping);
-                    values.set("scim", scimMapping);
+                    values.set("oidc", oidcMapping.trim());
+                    values.set("scim", scimMapping.trim());
                 }
 
                 if (noUniqueOIDCAttrib && noUniqueSCIMAttrib) {
                     onSubmit(data, values);
                 }
-                
+
             } }
             submitState={ submitState }
         >
@@ -325,7 +325,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                     </Grid.Column>
                                                     <Grid.Column width={ 11 }>
                                                         <InlineEditInput
-                                                            textPrefix="urn:scim:custom:schema:"
+                                                            textPrefix="urn:scim:wso2:schema:"
                                                             onChangesSaved={ (value: string) => {
                                                                 attributeConfig.localAttributes
                                                                     .checkAttributeNameAvailability(
@@ -338,7 +338,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                         />
                                                     </Grid.Column>
                                                 </Grid.Row>
-                                                
+
                                             </Grid>
                                         </Card.Description>
                                     </Card.Content>
