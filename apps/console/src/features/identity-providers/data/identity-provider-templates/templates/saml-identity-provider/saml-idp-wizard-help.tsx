@@ -36,7 +36,7 @@ const SamlIDPWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement
             <Heading as="h5">Service provider entity ID</Heading>
             <p>
                 This value will be used as the <Code>&lt;saml2:Issuer&gt;</Code> in the SAML requests initiated from
-                { config.ui.productName } to external Identity Provider (IdP). You need to provide a unique value
+                {" "}{ config.ui.productName } to external Identity Provider (IdP). You need to provide a unique value
                 as the service provider entity id.
             </p>
             <Divider/>
