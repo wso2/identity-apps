@@ -171,8 +171,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     value={ values?.get("claimURI")?.toString() }
                                     listen={ (values: Map<string, FormValue>) => {
                                         setClaimID(values.get("claimURI").toString());
-                                        setOidcMapping(values.get("claimURI").toString());
-                                        setScimMapping(values.get("claimURI").toString());
+                                        setOidcMapping(values.get("claimURI").toString().replace(/\./g,""));
+                                        setScimMapping(values.get("claimURI").toString().replace(/\./g,""));
                                     } }
                                     onMouseOver={ () => {
                                         delayPopup(setIsShowClaimIDHint, claimTimer);
