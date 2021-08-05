@@ -973,7 +973,7 @@ export const console: ConsoleNS = {
                                                     addNewAuthenticatorCard: {
                                                         title: "Configurer un nouveau fournisseur d'identité"
                                                     },
-                                                    goBackButton: "Revenir à la sélection",
+                                                    goBackButton: "Revenir à la Sélection",
                                                     search: {
                                                         placeholder: "Rechercher des authentificateurs"
                                                     },
@@ -4542,7 +4542,7 @@ export const console: ConsoleNS = {
                         },
                         local: {
                             action: "Nouvel attribut local",
-                            back: "Revenir aux attributs et mappages",
+                            back: "Revenir aux Attributs et Mappages",
                             description: "Créer et gérer les attributs locaux",
                             title: "Attributs locaux"
                         }
@@ -7166,7 +7166,7 @@ export const console: ConsoleNS = {
                 title: "Modèles d'e-mails"
             },
             emailTemplatesWithDisplayName: {
-                backButton: "Revenir aux applications",
+                backButton: "Revenir aux Applications",
                 subTitle: null,
                 title: "Modèle d'e-mail - {{displayName}}"
             },
@@ -7206,7 +7206,7 @@ export const console: ConsoleNS = {
                 title: "Utilisateurs"
             },
             usersEdit: {
-                backButton: "Revenir aux utilisateurs",
+                backButton: "Revenir aux Utilisateurs",
                 subTitle: "{{name}}",
                 title: "{{email}}"
             }
