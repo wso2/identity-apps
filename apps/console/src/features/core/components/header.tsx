@@ -171,6 +171,15 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         </Menu.Item>
     );
 
+    /**
+     * Redirects to myaccount from console.
+     */
+    const onAvatarClick = () => {
+
+        window.open(window[ "AppUtils" ].getConfig().accountApp.path,
+            "_blank", "noopener")
+    }
+
     return (
         <ReusableHeader
             announcement={ announcement && (
@@ -258,6 +267,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     : isHeaderAvatarLabelAllowed
             }
             onSidePanelToggleClick={ onSidePanelToggleClick }
+            onAvatarClick={ onAvatarClick }
             data-testid={ testId }
             { ...rest }
         >

@@ -292,9 +292,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         inputType="resourceName"
                         name="description"
                         label={ t("console:manage.features.claims.local.forms.description.label") }
-                        required={ true }
-                        message={ t("console:manage.features.claims.local.forms.description." +
-                            "requiredErrorMessage") }
+                        required={ false }
+                        requiredErrorMessage=""
                         placeholder={
                             t("console:manage.features.claims.local.forms.description.placeholder")
                         }
@@ -397,15 +396,22 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             />
                         )
                     }
-                    <Show when={ AccessControlConstants.ATTRIBUTE_EDIT }>
-                        <Field.Button
-                            ariaLabel="submit"
-                            size="small"
-                            buttonType="primary_btn"
-                            label={ t("common:update") }
-                            name="submit"
-                        />
-                    </Show>
+                    {
+                        hasRequiredScopes(
+                            featureConfig?.attributeDialects,
+                            featureConfig?.attributeDialects?.scopes?.update,
+                            allowedScopes
+                        ) &&
+                        (
+                            <Field.Button
+                                ariaLabel="submit"
+                                size="small"
+                                buttonType="primary_btn"
+                                label={ t("common:update") }
+                                name="submit"
+                            />
+                        )
+                    }
                 </Form>
             </EmphasizedSegment>
             <Divider hidden />

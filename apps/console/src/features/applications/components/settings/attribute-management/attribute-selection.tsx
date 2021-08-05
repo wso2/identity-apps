@@ -27,6 +27,7 @@ import {
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Button, Checkbox, Grid, Icon, Input, Segment, Table } from "semantic-ui-react";
 import { AttributeSelectionWizardOtherDialect } from "./attirbute-selection-wizard-other-dialect";
 import { AttributeListItem } from "./attribute-list-item";
@@ -39,7 +40,14 @@ import {
 } from "./attribute-settings";
 import { applicationConfig } from "../../../../../extensions";
 import { ClaimManagementConstants } from "../../../../claims/constants";
-import { AppConstants, EventPublisher, getEmptyPlaceholderIllustrations, history } from "../../../../core";
+import {
+    AppConstants,
+    AppState,
+    ConfigReducerStateInterface,
+    EventPublisher,
+    getEmptyPlaceholderIllustrations,
+    history
+} from "../../../../core";
 import {
     ClaimConfigurationInterface,
     ClaimMappingInterface,
@@ -137,6 +145,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     const initValue = useRef(false);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     useEffect(() => {
         const tempFilterSelectedExternalClaims = [ ...filterSelectedExternalClaims ];
@@ -692,7 +702,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                     t("console:develop.features" +
                                                                                         ".applications.edit.sections" +
                                                                                         ".attributes.selection" +
-                                                                                        ".mandatoryAttributeHint")
+                                                                                        ".mandatoryAttributeHint",
+                                                                                        { productName:
+                                                                                            config.ui.productName })
                                                                                 }
                                                                             </Hint>
                                                                         </Table.HeaderCell>
@@ -728,7 +740,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                     t("console:develop.features" +
                                                                                         ".applications.edit.sections" +
                                                                                         ".attributes.selection" +
-                                                                                        ".mandatoryAttributeHint")
+                                                                                        ".mandatoryAttributeHint",
+                                                                                        { productName:
+                                                                                            config.ui.productName })
                                                                                 }
                                                                             </Hint>
                                                                         </Table.HeaderCell>
@@ -820,7 +834,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             t("console:develop.features" +
                                                                                 ".applications.edit.sections" +
                                                                                 ".attributes.selection" +
-                                                                                ".mandatoryAttributeHint")
+                                                                                ".mandatoryAttributeHint",
+                                                                                { productName:
+                                                                                    config.ui.productName })
                                                                         }
                                                                     </Hint>
                                                                 </Table.HeaderCell>

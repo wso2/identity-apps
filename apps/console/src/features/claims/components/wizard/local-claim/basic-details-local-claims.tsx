@@ -38,7 +38,7 @@ interface BasicDetailsLocalClaimsPropsInterface extends TestableComponentInterfa
      */
     onSubmit: (data: any, values: Map<string, FormValue>) => void;
     /**
-     * Form Values to be saved 
+     * Form Values to be saved
      */
     values: Map<string, FormValue>;
     /**
@@ -101,7 +101,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
 
     /**
      * This shows a popup with a delay of 500 ms.
-     * 
+     *
      * @param {React.Dispatch<React.SetStateAction<boolean>>} callback The state dispatch method.
      * @param {React.MutableRefObject<any>} ref The ref object carrying the `setTimeout` ID.
      */
@@ -114,7 +114,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
 
     /**
      * This closes the popup.
-     * 
+     *
      * @param {React.Dispatch<React.SetStateAction<boolean>>} callback The state dispatch method.
      * @param {React.MutableRefObject<any>} ref The ref object carrying the `setTimeout` ID.
      */
@@ -258,25 +258,25 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                             <Message color="orange" >
                                                                 { (() => {
                                                                     // TODO: Add to translations file
-                                                                    if (!noUniqueOIDCAttrib 
+                                                                    if (!noUniqueOIDCAttrib
                                                                         && !noUniqueSCIMAttrib) {
                                                                         return (
-                                                                            <>The mapping names generated for 
-                                                                                <b> OpenID Connect & SCIM </b> 
+                                                                            <>The mapping names generated for
+                                                                                <b> OpenID Connect & SCIM </b>
                                                                                 protocol(s) is already available.</>
                                                                         );
-                                                                    } else if ( noUniqueOIDCAttrib 
+                                                                    } else if ( noUniqueOIDCAttrib
                                                                         && !noUniqueSCIMAttrib ) {
                                                                         return (
-                                                                            <>The mapping names generated for 
-                                                                                <b> SCIM </b> 
+                                                                            <>The mapping names generated for
+                                                                                <b> SCIM </b>
                                                                                 protocol(s) is already available.</>
                                                                         );
-                                                                    } else if ( !noUniqueOIDCAttrib 
+                                                                    } else if ( !noUniqueOIDCAttrib
                                                                         && noUniqueSCIMAttrib) {
                                                                         return (
-                                                                            <>The mapping names generated for 
-                                                                                <b> OpenID Connect </b> 
+                                                                            <>The mapping names generated for
+                                                                                <b> OpenID Connect </b>
                                                                                 protocol(s) is already available.</>
                                                                         );
 
@@ -298,7 +298,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                             floated="left"
                                                         />
                                                         <span>
-                                                            { t("extensions:manage.attributes." 
+                                                            { t("extensions:manage.attributes."
                                                                 +"generatedAttributeMapping.OIDCProtocol") }
                                                         </span>
                                                     </Grid.Column>
@@ -334,7 +334,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                             floated="left"
                                                         />
                                                         <span>
-                                                            { t("extensions:manage.attributes." 
+                                                            { t("extensions:manage.attributes."
                                                                 +"generatedAttributeMapping.SCIMProtocol") }
                                                         </span>
                                                     </Grid.Column>

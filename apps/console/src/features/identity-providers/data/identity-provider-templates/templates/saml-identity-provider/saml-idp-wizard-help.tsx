@@ -36,8 +36,8 @@ const SamlIDPWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement
             <Heading as="h5">Service provider entity ID</Heading>
             <p>
                 This value will be used as the <Code>&lt;saml2:Issuer&gt;</Code> in the SAML requests initiated from
-                { config.ui.productName } to external Identity Provider (IdP). You need to provide a unique value
-                as the service provider entity id.
+                {" "}{ config.ui.productName } to external Identity Provider (IdP). You need to provide a unique value
+                as the service provider entity ID.
             </p>
             <Divider/>
             <Heading as="h5">Identity provider entity ID</Heading>
@@ -46,13 +46,14 @@ const SamlIDPWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement
                 external IdP. Also, this needs to be a unique value to identify the external IdP within your
                 organization.
             </p>
+            <p>E.g., https://ENTERPRISE_DOMAIN</p>
             <Divider/>
             <Heading as="h5">SSO URL</Heading>
             <p>
                 Single sign-on URL of the external IdP. { config.ui.productName } will send SAML authentication
                 requests to this endpoint.
             </p>
-            <p>E.g., https://ENTERPRISE_DOMAIN/token</p>
+            <p>E.g., https://ENTERPRISE_DOMAIN/samlsso</p>
             <Divider/>
             <Heading as="h5">Protocol binding</Heading>
             <p>

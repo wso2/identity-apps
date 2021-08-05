@@ -222,7 +222,7 @@ export const console: ConsoleNS = {
                     1: "කරුණාකර වෙනත් ගිණුමක් සමඟ පුරනය වන්න."
                 },
                 title: "ඔබට අවසර නැත"
-            },
+            }
         },
         privacy: {
             about: {
@@ -444,7 +444,7 @@ export const console: ConsoleNS = {
             }
         },
         sidePanel: {
-            privacy: "පෞද්ගලිකත්වය",
+            privacy: "පෞද්ගලිකත්වය"
         },
         validations: {
             inSecureURL: {
@@ -790,9 +790,9 @@ export const console: ConsoleNS = {
                                     " කළමනාකරණය කරන්න.",
                                 attributeComponentHintAlt: "මෙම යෙදුම සමඟ ඔබට බෙදා ගැනීමට අවශ්‍ය පරිශීලක ගුණාංග" +
                                     " කළමනාකරණය කරන්න.",
-                                mandatoryAttributeHint: "පරිශීලකයාට යෙදුම සමඟ බෙදා ගැනීමට අනිවාර්ය වන්නේ කුමන" +
-                                    " ගුණාංගදැයි සලකුණු කරන්න. පුරනය වීමේදී, පරිශීලකයාගේ පැතිකඩෙහි දැනටමත් සපයා" +
-                                    " නොමැති නම්, ගුණාංග අගය ඇතුළත් කිරීමට අස්ගාර්ඩියෝ පරිශීලකයාගෙන් ඉල්ලා සිටී.",
+                                mandatoryAttributeHint: "යෙදුම සමඟ බෙදා ගැනීමට අනිවාර්යය වන පරිශීලක ගුණාංග මොනවාදැයි " +
+                                    "ලකුණු කරන්න. පුරනය වීමේ දී, පරිශීලකයාගේ පැතිකඩෙහි දැනටමත් සපයා නොමැති නම්, මෙම " +
+                                    "ගුණාංග අගයන් ඇතුළත් කිරීමට {{productName}} පරිශීලකයාගෙන් ඉල්ලා සිටී.",
                                 mappingTable: {
                                     actions: {
                                         enable: "සිතියම්කරණය සක්‍රීය කරන්න"
@@ -969,7 +969,7 @@ export const console: ConsoleNS = {
                                                     stepSelectDropdown: {
                                                         hint: "ඔබට සත්‍යාපකයන් එකතු කිරීමට අවශ්‍ය පියවර තෝරන්න.",
                                                         label:  "පියවර තෝරන්න",
-                                                        placeholder: "පියවර තෝරන්න",
+                                                        placeholder: "පියවර තෝරන්න"
                                                     }
                                                 },
                                                 description: null,
@@ -1396,9 +1396,9 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 hint: "යෙදුම ටෝකන් සේවාව සමඟ සන්නිවේදනය කරන්නේ කෙසේද යන්න මෙය තීරණය කරයි.",
-                                label: "අවසර ලත් වර්ගය",
+                                label: "අවසර ලත් ප්‍රදාන වර්ග",
                                 validations: {
-                                    empty: "අවම වශයෙන් ප්‍රදාන වර්ගයක් තෝරන්න"
+                                    empty: "අවම වශයෙන් එක් ප්‍රදාන වර්ගයක් තෝරන්න"
                                 },
                                 validation: {
                                     refreshToken:"Refresh token ප්‍රදාන වර්ගය තෝරා ගත යුත්තේ ප්‍රබෝධවත් ටෝකනයක් " +
@@ -1543,7 +1543,7 @@ export const console: ConsoleNS = {
                                             empty: "කරුණාකර ඉදිරිපස නාලිකා ලොග්අවුට් URL පුරවන්න",
                                             invalid: "කරුණාකර වලංගු URL එක් කරන්න"
                                         }
-                                    },
+                                    }
                                 },
                                 heading: "PKCE"
                             },
@@ -1598,7 +1598,7 @@ export const console: ConsoleNS = {
                                   " අත්සන් කළ ඉල්ලීම් වස්තු පමණක් පිළිගැනීමට අත්සන් වලංගු කිරීම සක්‍රීය කරන්න.",
                               fields: {
                                   signatureValidation: {
-                                      label: "අත්සන වලංගු කිරීම සක්‍රීය කරන්න",
+                                      label: "අත්සන වලංගු කිරීම සක්‍රීය කරන්න"
                                   }
                               }
                             },
@@ -1709,7 +1709,7 @@ export const console: ConsoleNS = {
                                         label: "ප්‍රේක්ෂකයෝ",
                                         placeholder: "ප්‍රේක්ෂකයින් ඇතුළත් කරන්න",
                                         validations: {
-                                            invalid: "කරුණාකර වලංගු URL එක් කරන්න"
+                                            invalid: "කරුණාකර වලංගු URI එක් කරන්න"
                                         }
                                     },
                                     nameIdFormat: {
@@ -1727,7 +1727,7 @@ export const console: ConsoleNS = {
                                         label: "ලබන්නන්",
                                         placeholder: "ලබන්නන් ඇතුළත් කරන්න",
                                         validations: {
-                                            invalid: "කරුණාකර වලංගු URL එක් කරන්න"
+                                            invalid: "කරුණාකර වලංගු URI එක් කරන්න"
                                         }
                                     }
                                 },
@@ -1765,7 +1765,9 @@ export const console: ConsoleNS = {
                                         label: "සක්‍රීය කරන්න",
                                         validations: {
                                             empty: "මෙය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි."
-                                        }
+                                        },
+                                        hint: "සත්‍යාපනයෙන් පසු ආපසු ලබා දුන් SAML2 ප්‍රකාශයන් සංකේතනය කිරීමට තෝරන්න. " +
+                                            "ගුප්තකේතනය භාවිතා කිරීම සඳහා පහත සහතිකයේ ඔබේ අයදුම්පතේ සහතිකය වින්‍යාස කරන්න."
                                     },
                                     assertionEncryptionAlgorithm: {
                                         label: "ප්‍රකාශ කිරීමේ සංකේතාංකන ඇල්ගොරිතම",
@@ -2647,6 +2649,15 @@ export const console: ConsoleNS = {
                                     }
                                 }
                             }
+                        }
+                    },
+                    applicationCertificateWizard: {
+                        heading: "නව සහතිකයක් එක් කරන්න",
+                        subHeading: "යෙදුමට නව සහතිකයක් එක් කරන්න",
+                        emptyPlaceHolder: {
+                            title: "සහතිකයක් නැත",
+                            description1:"මෙම යෙදුමට සහතිකයක් එකතු කර නොමැත.",
+                            description2: "එය බැලීමට සහතිකයක් එක් කරන්න."
                         }
                     }
                 }
@@ -3575,7 +3586,7 @@ export const console: ConsoleNS = {
                     subtitles: "කරුණාකර මෙහි පෙන්වීමට සැකිලි එක් කරන්න.",
                     title: "පෙන්වීමට සැකිලි නොමැත."
                 }
-            },
+            }
         },
         notifications: {
             endSession: {
@@ -3711,7 +3722,7 @@ export const console: ConsoleNS = {
                 modals: {
                     taskDetails: {
                         header: "අනුමත කිරීමේ කාර්යය",
-                        description: "පරිශීලකයෙකුගේ මෙහෙයුම් ක්‍රියාවක් අනුමත කිරීමට ඔබට ඉල්ලීමක් තිබේ.",
+                        description: "පරිශීලකයෙකුගේ මෙහෙයුම් ක්‍රියාවක් අනුමත කිරීමට ඔබට ඉල්ලීමක් තිබේ."
                     }
                 },
                 notifications: {
@@ -4017,7 +4028,7 @@ export const console: ConsoleNS = {
                                     invalid: "ගුණාංග නාමයේ අඩංගු විය හැක්කේ අක්ෂර සංඛ්‍යා සහ _ පමණි. " 
                                         + "අක්ෂර 3 ත් 30 ත් අතර දිගකින් යුක්ත විය යුතුය."
                                 }
-                            },
+                            }
                         },
                         submit: "යාවත්කාලීන කරන්න"
                     },
@@ -4998,7 +5009,7 @@ export const console: ConsoleNS = {
             },
             oidcScopes: {
                 addAttributes: {
-                    description: "ඔබට {{name}} විෂය පථය සමඟ සම්බන්ධ වීමට අවශ්‍ය පරිශීලක ගුණාංග තෝරන්න.",
+                    description: "ඔබට {{name}} විෂය පථය සමඟ සම්බන්ධ වීමට අවශ්‍ය පරිශීලක ගුණාංග තෝරන්න."
                 },
                 buttons: {
                     addScope: "නව OIDC විෂය පථය"
@@ -5220,7 +5231,7 @@ export const console: ConsoleNS = {
                         action: "සියල්ල බලන්න",
                         subtitles: {
                             0: "ඔබ සෙවූ විෂය පථය අපට සොයාගත නොහැකි විය.",
-                            1: "කරුණාකර වෙනත් නමක් උත්සාහ කරන්න.",
+                            1: "කරුණාකර වෙනත් නමක් උත්සාහ කරන්න."
                         },
                         title: "ප්‍රතිපල හමු නොවීය"
                     }
@@ -6076,7 +6087,7 @@ export const console: ConsoleNS = {
                             forceReset: "මුරපදය නැවත සැකසීමට පරිශීලකයාට ආරාධනා කිරීමෙන් පසු වත්මන් මුරපදය භාවිතා කර " +
                                 "පරිශීලකයාට කිසිදු යෙදුමකට පිවිසිය නොහැකි බව කරුණාවෙන් සලකන්න.",
                             setPassword: "සටහන: මුරපදය වෙනස් කිරීමෙන් පසුව පරිශීලකයාට වත්මන් මුරපදය භාවිතා කර කිසිදු යෙදුමකට " +
-                                "පිවිසිය නොහැකි බව කරුණාවෙන් සලකන්න.",
+                                "පිවිසිය නොහැකි බව කරුණාවෙන් සලකන්න."
                         },
                         passwordOptions: {
                             forceReset: "මුරපදය නැවත සැකසීමට පරිශීලකයාට ආරාධනා කරන්න",

@@ -436,7 +436,7 @@ export const console: ConsoleNS = {
             }
         },
         sidePanel: {
-            privacy: "Confidentialité",
+            privacy: "Confidentialité"
         },
         validations: {
             inSecureURL: {
@@ -697,7 +697,7 @@ export const console: ConsoleNS = {
                         actionTitle: "Supprimer",
                         header: "Supprimer l'application",
                         subheader: "Une fois l'application supprimée, elle ne peut pas être récupérée et les " +
-                            "clients utilisant cette application ne fonctionneront plus.",
+                            "clients utilisant cette application ne fonctionneront plus."
                     },
                     header: "Zone de danger"
                 },
@@ -789,10 +789,10 @@ export const console: ConsoleNS = {
                                     " avec cette application.",
                                 attributeComponentHintAlt: "Gérez les attributs utilisateur que vous souhaitez" +
                                     " partager avec cette application.",
-                                mandatoryAttributeHint: "Marquez les attributs que l'utilisateur doit partager avec" +
-                                    " l'application. Lors de la connexion, Asgardeo invite l'utilisateur à saisir la" +
-                                    " valeur de l'attribut si elle n'est pas déjà fournie dans le profil de" +
-                                    " l'utilisateur.",
+                                mandatoryAttributeHint: "Marquez les attributs utilisateur qui doivent " +
+                                    "obligatoirement être partagés avec l'application. Lors de la connexion, " +
+                                    "{{productName}} invite l'utilisateur à saisir ces valeurs d'attribut, si elles " +
+                                    "ne sont pas déjà fournies dans le profil de l'utilisateur.",
                                 mappingTable: {
                                     actions: {
                                         enable: "Activer l'association"
@@ -1418,9 +1418,9 @@ export const console: ConsoleNS = {
                                 },
                                 hint: "Cela déterminera la manière dont l'application communique avec le service " +
                                     "de jetons.",
-                                label: "Grant type autorisés",
+                                label: "Types de subvention autorisés",
                                 validations: {
-                                    empty: "Sélectionnez au minimum un grant type"
+                                    empty: "Sélectionnez au moins un type de subvention"
                                 },
                                 vvalidation: {
                                     refreshToken:"Le type d'octroi Refresh token doit être sélectionné uniquement " +
@@ -1582,7 +1582,7 @@ export const console: ConsoleNS = {
                                             empty: "Veuillez renseigner l'URL de déconnexion aval",
                                             invalid: "Veuillez ajouter une URL valide"
                                         }
-                                    },
+                                    }
                                 },
                                 heading: "PKCE"
                             },
@@ -1643,7 +1643,7 @@ export const console: ConsoleNS = {
                                     "de demande signés dans la demande d'autorisation.",
                                 fields: {
                                     signatureValidation: {
-                                        label: "Activer la validation de la signature",
+                                        label: "Activer la validation de la signature"
                                     }
                                 }
                             },
@@ -1753,7 +1753,7 @@ export const console: ConsoleNS = {
                                         label: "Audience",
                                         placeholder: "Saisir l'audience",
                                         validations: {
-                                            invalid: "Veuillez ajouter une URL valide"
+                                            invalid: "Veuillez ajouter une URI valide"
                                         }
                                     },
                                     nameIdFormat: {
@@ -1771,7 +1771,7 @@ export const console: ConsoleNS = {
                                         label: "Destinataires",
                                         placeholder: "Saisir les destinataires",
                                         validations: {
-                                            invalid: "Veuillez ajouter une URL valide"
+                                            invalid: "Veuillez ajouter une URI valide"
                                         }
                                     }
                                 },
@@ -1809,7 +1809,11 @@ export const console: ConsoleNS = {
                                         label: "Activer",
                                         validations: {
                                             empty: "Ce champ est obligatoire."
-                                        }
+                                        },
+                                        hint: "Sélectionnez pour chiffrer les assertions SAML2 renvoyées après " +
+                                            "l'authentification. Pour utiliser le cryptage, configurez le " +
+                                            "certificat de votre application dans la section Certificat ci-dessous."
+
                                     },
                                     assertionEncryptionAlgorithm: {
                                         label: "Algorithme de chiffrement des assertions",
@@ -2699,6 +2703,15 @@ export const console: ConsoleNS = {
                                     }
                                 }
                             }
+                        }
+                    },
+                    applicationCertificateWizard: {
+                        heading: "Ajouter un nouveau certificat",
+                        subHeading: "Ajouter un nouveau certificat à l'application",
+                        emptyPlaceHolder: {
+                            title: "Pas de certificat",
+                            description1: "Cette application n'a pas de certificat ajouté.",
+                            description2: "Ajoutez un certificat pour le voir ici"
                         }
                     }
                 }
@@ -3625,7 +3638,7 @@ export const console: ConsoleNS = {
                     subtitles: "Veuillez ajouter des modèles à afficher ici.",
                     title: "Pas de modèles à afficher."
                 }
-            },
+            }
         },
         notifications: {
             endSession: {
@@ -3761,7 +3774,7 @@ export const console: ConsoleNS = {
                 modals: {
                     taskDetails: {
                         header: "Tâche d'approbation",
-                        description: "Vous avez une demande d'approbation d'une action opérationnelle d'un utilisateur.",
+                        description: "Vous avez une demande d'approbation d'une action opérationnelle d'un utilisateur."
                     }
                 },
                 notifications: {
@@ -4070,7 +4083,7 @@ export const console: ConsoleNS = {
                                         +"alphanumériques et _. Et doit avoir une longueur comprise " 
                                         +"entre 3 et 30 caractères."
                                 }
-                            },
+                            }
                         },
                         submit: "Mettre à jour"
                     },
@@ -5275,7 +5288,7 @@ export const console: ConsoleNS = {
                         action: "Voir tout",
                         subtitles: {
                             0: "Nous n'avons pas trouvé la portée que vous avez recherchée.",
-                            1: "Veuillez essayer un autre nom.",
+                            1: "Veuillez essayer un autre nom."
                         },
                         title: "Aucun résultat trouvé"
                     }

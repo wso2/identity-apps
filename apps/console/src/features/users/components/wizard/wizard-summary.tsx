@@ -188,7 +188,7 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
                     </Grid.Column>
                 </Grid.Row>
             ) }
-            { modifiedSummary?.email && modifiedSummary?.passwordOption && modifiedSummary?.passwordOption === "askPw"
+            { modifiedSummary?.email && modifiedSummary?.passwordOption && modifiedSummary?.passwordOption === "ask-password"
                 ? (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">

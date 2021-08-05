@@ -58,7 +58,7 @@
 
 @sidePanelModalHelpSectionBoxShadow: -4px 0px 15px -8px #d6d6d6;
 @sidePanelModalHelpSectionBorderLeft: whitesmoke solid 1px;
-@sidePanelModalHelpSectionTransition: width ease-out 100ms;
+@sidePanelModalHelpSectionTransition: all 100ms ease-in-out !important;
 @sidePanelModalHelpContentHeight: @sidePanelModalContentHeight + @sidePanelModalActionPanelHeight;
 @sidePanelModalHelpContentTransition: opacity ease-out 100ms;
 
