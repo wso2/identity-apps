@@ -22,8 +22,8 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { Divider, Grid, SemanticWIDTHS } from "semantic-ui-react";
 import { AccountSecurityWidget, AccountStatusWidget, ConsentManagementWidget, UserSessionsWidget } from "./widgets";
-import { ProfileWidget } from "./widgets/profile-widget";
 import { AppConstants } from "../../constants";
+import { commonConfig } from "../../extensions";
 import { FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
 
@@ -31,8 +31,7 @@ import { AppState } from "../../store";
  * Prop types for the overview edit component.
  */
 interface OverviewPropsInterface extends TestableComponentInterface {
-    userSource?: string;
-    enableAlternateWidgetLayout?: boolean
+    enableThreeWidgetLayout?: boolean;
 }
 
 /**
@@ -45,64 +44,12 @@ export const Overview: FunctionComponent<OverviewPropsInterface> = (
 ): ReactElement => {
 
     const {
-        userSource,
-        enableAlternateWidgetLayout
+        enableThreeWidgetLayout
     } = props;
 
     const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
 
-    /**
-     * Profile status widget with link to profile.
-     * @param widthComputer
-     * @param widthMobile
-     */
-    const profileStatus = (widthComputer, widthMobile): React.ReactElement => {
-        return (
-            <>
-                {
-                    hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read, allowedScopes)
-                    && isFeatureEnabled(accessConfig?.overview,
-                        AppConstants.FEATURE_DICTIONARY.get("OVERVIEW_ACCOUNT_STATUS"))
-                    && (
-                        <Grid.Column computer={ widthComputer } mobile={ widthMobile }>
-                            <ProfileWidget
-                                userSource={ userSource }
-                            />
-                        </Grid.Column>
-                    )
-                }
-            </>
-        );
-    };
-
-    /**
-     * Account Security Widget
-     * @param widthComputer
-     * @param widthMobile
-     */
-    const accountSecurity = (widthComputer: SemanticWIDTHS, widthMobile: SemanticWIDTHS): React.ReactElement => {
-        return (
-            <>
-                {
-                    hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read, allowedScopes)
-                    && isFeatureEnabled(accessConfig?.overview,
-                        AppConstants.FEATURE_DICTIONARY.get("OVERVIEW_ACCOUNT_SECURITY"))
-                    && (
-                        <Grid.Column computer={ widthComputer } mobile={ widthMobile }>
-                            <AccountSecurityWidget/>
-                        </Grid.Column>
-                    )
-                }
-            </>
-        );
-    };
-
-    /**
-     * Account Status widget with shield (Currently not displayed).
-     * @param widthComputer
-     * @param widthMobile
-     */
     const accountStatus = (widthComputer: SemanticWIDTHS, widthMobile: SemanticWIDTHS): React.ReactElement => {
         return (
             <>
@@ -120,11 +67,6 @@ export const Overview: FunctionComponent<OverviewPropsInterface> = (
         );
     };
 
-    /**
-     * Session Management Widget (Currently not displayed).
-     * @param widthComputer
-     * @param widthMobile
-     */
     const accountActivity = (widthComputer: SemanticWIDTHS, widthMobile: SemanticWIDTHS): React.ReactElement => {
         return (
             <>
@@ -142,11 +84,23 @@ export const Overview: FunctionComponent<OverviewPropsInterface> = (
         );
     };
 
-    /**
-     * Consent Management Widget (Currently not displayed).
-     * @param widthComputer
-     * @param widthMobile
-     */
+    const accountSecurity = (widthComputer: SemanticWIDTHS, widthMobile: SemanticWIDTHS): React.ReactElement => {
+        return (
+            <>
+                {
+                    hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read, allowedScopes)
+                    && isFeatureEnabled(accessConfig?.overview,
+                        AppConstants.FEATURE_DICTIONARY.get("OVERVIEW_ACCOUNT_SECURITY"))
+                    && (
+                        <Grid.Column computer={ widthComputer } mobile={ widthMobile }>
+                            <AccountSecurityWidget/>
+                        </Grid.Column>
+                    )
+                }
+            </>
+        );
+    };
+
     const consents = (widthComputer: SemanticWIDTHS, widthMobile: SemanticWIDTHS): React.ReactElement => {
         return (
             <>
@@ -164,26 +118,37 @@ export const Overview: FunctionComponent<OverviewPropsInterface> = (
         );
     };
 
+
     return (
         <Grid className="overview-page">
             <Divider hidden />
             <Grid.Row>
                 {
-                    !enableAlternateWidgetLayout ?
-                    <>
-                        { accountStatus(9, 16) }
-                        { accountActivity(7, 16) }
-                        { accountSecurity(8, 16) }
-                        { consents(8, 16) }
-                    </>
-                    :
-                        <>
-                            { profileStatus(8, 16) }
-                            { accountSecurity(8, 16) }
-                        </>
+                    enableThreeWidgetLayout ? (
+                            <>
+                                { accountStatus(9,16) }
+                                { accountSecurity(7, 16) }
+                                { accountActivity(16, 16) }
+                            </>
+                        ) :
+                        (
+                            <>
+                                { accountStatus(9,16) }
+                                { accountActivity(7, 16) }
+                                { accountSecurity(8, 16) }
+                                { consents(8, 16) }
+                            </>
+                        )
                 }
+
             </Grid.Row>
         </Grid>
     );
 };
 
+/**
+ * Default props for the component.
+ */
+Overview.defaultProps = {
+    enableThreeWidgetLayout: commonConfig.OverviewPage.enableThreeWidgetLayout
+};

@@ -46,8 +46,7 @@ export const myAccount: MyAccountNS = {
             emailRecovery: {
                 descriptions: {
                     add: "மீட்பு மின்னஞ்சல் முகவரிய சேர்க்க",
-                    update: "மீட்பு மின்னஞ்சல் முகவரியை புதுப்பிக்க ({{email}})",
-                    view: "மீட்பு மின்னஞ்சல் முகவரியைக் காண்க ({{email}})"
+                    update: "மீட்பு மின்னஞ்சல் முகவரியை புதுப்பிக்க ({{email}})"
                 },
                 forms: {
                     emailResetForm: {
@@ -740,11 +739,6 @@ export const myAccount: MyAccountNS = {
                     description: "உங்களின் கணக்கினை பாதுகாப்பாக வைத்திருப்பதற்கான அமைப்புக்களும் பரிந்துரைகளும்",
                     header: "கணக்கின் பாதுகாப்பு"
                 },
-                profileStatus: {
-                    completionPercentage: "உங்கள் சுயவிவர நிறைவு {{percentage}}%",
-                    userSourceText: "(உடன் கையொப்பமிடப்பட்டுள்ளது {{source}})",
-                    header: "உங்கள் {{productName}} சுயவிவரம்"
-                },
                 accountStatus: {
                     complete: "உங்கள் சுயவிவரம் முடிந்தது",
                     completedFields: "பூர்த்தி செய்யப்பட்ட புலங்கள்",
@@ -1132,7 +1126,7 @@ export const myAccount: MyAccountNS = {
                             placeholder: "உங்கள் நாட்டை தேர்ந்தெடுங்கள்"
                         }
                     }
-                }
+                },
             },
             messages: {
                 emailConfirmation: {
@@ -1296,7 +1290,7 @@ export const myAccount: MyAccountNS = {
         mobileUpdateWizard: {
             done: "வெற்றி! உங்கள் மொபைல் எண் வெற்றிகரமாக சரிபார்க்கப்பட்டது.",
             submitMobile: {
-                heading: "உங்கள் புதிய மொபைல் எண்ணை உள்ளிடவும்"
+                heading: "உங்கள் புதிய மொபைல் எண்ணை உள்ளிடவும்",
             },
             verifySmsOtp: {
                 generate: "புதிய சரிபார்ப்புக் குறியீட்டை மீண்டும் அனுப்பவும்",
@@ -1304,7 +1298,7 @@ export const myAccount: MyAccountNS = {
                 error: "சரிபார்ப்பு தோல்வியுற்றது. தயவுசெய்து மீண்டும் முயற்சி செய்க.",
                 label: "சரிபார்ப்புக் குறியீடு",
                 placeholder: "உங்கள் சரிபார்ப்புக் குறியீட்டை உள்ளிடவும்",
-                requiredError: "சரிபார்ப்புக் குறியீட்டை உள்ளிடவும்"
+                requiredError: "சரிபார்ப்புக் குறியீட்டை உள்ளிடவும்",
             },
             notifications: {
                 resendSuccess: {
@@ -1478,14 +1472,6 @@ export const myAccount: MyAccountNS = {
             },
             description: "பதிவு செய்த கடவுச்சொல்லை மாற்று.",
             heading: "கடவுச்சொல்லை மாற்று"
-        },
-        createPassword: {
-            actionTitles: {
-                create: "கடவுச்சொல்லை உருவாக்கு"
-            },
-            description: "அஸ்கார்டியோவில் கடவுச்சொல்லை உருவாக்கவும். சமூக உள்நுழைவுக்கு கூடுதலாக அஸ்கார்டியோவில் " +
-                "உள்நுழைய இந்த கடவுச்சொல்லைப் பயன்படுத்தலாம்.",
-            heading: "கடவுச்சொல்லை உருவாக்கு"
         },
         consentManagement: {
             actionTitles: {
