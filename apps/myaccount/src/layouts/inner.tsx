@@ -39,7 +39,7 @@ import { AppUtils } from "../utils";
  */
 interface InnerPageLayoutProps {
     children?: React.ReactNode;
-    pageTitle: string;
+    pageTitle: React.ReactNode;
     pageDescription?: string;
     pageTitleTextAlign?: "left" | "center" | "right" | "justified";
 }

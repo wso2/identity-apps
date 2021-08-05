@@ -31,7 +31,7 @@ import { Field, Forms, Validation } from "@wso2is/forms";
 import { EditAvatarModal, LinkButton, PrimaryButton, UserAvatar } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, MouseEvent, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, Form, Grid, Icon, List, Placeholder, Popup, Responsive } from "semantic-ui-react";
@@ -50,17 +50,19 @@ import { MobileUpdateWizard } from "../shared/mobile-update-wizard";
  */
 interface ProfileProps extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
+    isNonLocalCredentialUser?: boolean;
 }
 
 /**
  * Basic details component.
  *
  * @param {ProfileProps} props - Props injected to the basic details component.
- * @return {JSX.Element}
+ * @return {ReactElement}
  */
-export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): JSX.Element => {
+export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): ReactElement => {
 
     const {
+        isNonLocalCredentialUser,
         onAlertFired,
         featureConfig,
         ["data-testid"]: testId
@@ -86,14 +88,15 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const [ countryList, setCountryList ] = useState<DropdownItemProps[]>([]);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
 
-    /**
-     * Set the userId.
-     */
-    useEffect(() => {
-
-        setUserId(profileDetails.profileInfo.id);
-    }, [profileDetails])
-
+    // Removed User ID field from profile.
+    // Uncomment if User ID needs to be added back.
+    // /**
+    //  * Set the userId.
+    //  */
+    // useEffect(() => {
+    //
+    //     setUserId(profileDetails.profileInfo.id);
+    // }, [profileDetails]);
     /**
      * Set the if the email verification is pending.
      */
@@ -487,10 +490,19 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
          * the value matches.
          */
         const isProfileUsernameReadonly: boolean = config.ui.isProfileUsernameReadonly;
+        const { displayName, name } = schema;
         if (isProfileUsernameReadonly) {
-            const { displayName, name } = schema;
             const usernameClaim = "username";
             if (name?.toLowerCase() === usernameClaim || displayName?.toLowerCase() === usernameClaim) {
+                schema.mutability = ProfileConstants.READONLY_SCHEMA;
+            }
+        }
+
+        /**
+         *  Makes the email field read-only for users without local credentials
+         */
+        if (isNonLocalCredentialUser) {
+            if (name?.toLowerCase() === "emails" ) {
                 schema.mutability = ProfileConstants.READONLY_SCHEMA;
             }
         }
@@ -1041,31 +1053,33 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             <List divided={ true } verticalAlign="middle"
                   className="main-content-inner"
                   data-testid={ `${testId}-schema-list` }>
-                {
-                    isProfileInfoLoading || profileSchemaLoader
-                        ? null
-                        : (
-                        profileSchema && (
-                            <List.Item key={profileSchema.length} className="inner-list-item"
-                                       data-testid={`${testId}-schema-list-item`}>
-                                <Grid padded={true}>
-                                    <Grid.Row columns={3}>
-                                        < Grid.Column mobile={6} tablet={6} computer={4} className="first-column">
-                                            <List.Content> User Id </List.Content>
-                                        </Grid.Column>
-                                        <Grid.Column mobile={8} tablet={8} computer={10}>
-                                            <List.Content>
-                                                <List.Description>
-                                                    { userId }
-                                                </List.Description>
-                                            </List.Content>
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                </Grid>
-                            </List.Item>
-                        )
-                    )
-                }
+                { /*Removed User ID field from profile.*/ }
+                { /*Uncomment if User ID needs to be added back.*/ }
+                { /*{*/ }
+                { /*    isProfileInfoLoading || profileSchemaLoader*/ }
+                { /*        ? null*/ }
+                { /*        : (*/ }
+                { /*        profileSchema && (*/ }
+                { /*            <List.Item key={ profileSchema.length } className="inner-list-item"*/ }
+                { /*                       data-testid={ `${testId}-schema-list-item` }>*/ }
+                { /*                <Grid padded={ true }>*/ }
+                { /*                    <Grid.Row columns={ 3 }>*/ }
+                { /*                        < Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">*/ }
+                { /*                            <List.Content> User Id </List.Content>*/ }
+                { /*                        </Grid.Column>*/ }
+                { /*                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>*/ }
+                { /*                            <List.Content>*/ }
+                { /*                                <List.Description>*/ }
+                { /*                                    { userId }*/ }
+                { /*                                </List.Description>*/ }
+                { /*                            </List.Content>*/ }
+                { /*                        </Grid.Column>*/ }
+                { /*                    </Grid.Row>*/ }
+                { /*                </Grid>*/ }
+                { /*            </List.Item>*/ }
+                { /*        )*/ }
+                { /*    )*/ }
+                { /*}*/ }
                 {
                     profileSchema && profileSchema.map((schema: ProfileSchema, index: number) => {
                         if (!(schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT")
@@ -1073,7 +1087,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("PROFILE_URL")
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_DISABLED")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ONETIME_PASSWORD"))) {
+                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ONETIME_PASSWORD")
+                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_SOURCE_ID")
+                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("IDP_TYPE")
+                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("LOCAL_CREDENTIAL_EXISTS"))
+                        ) {
                             return (
                                 <>
                                     {
