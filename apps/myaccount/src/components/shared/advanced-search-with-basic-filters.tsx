@@ -281,7 +281,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                 value={ defaultSearchAttribute }
                                 data-testid={ `${ testId }-filter-attribute-dropdown` }
                             />
-                            <Form.Group widths="equal">
+                            <Form.Group widths='equal'>
                                 <Field
                                     children={
                                         filterConditionOptions
@@ -369,6 +369,6 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
 AdvancedSearchWithBasicFilters.defaultProps = {
     "data-testid": "advanced-search",
     dropdownPosition: "bottom left",
-    enableQuerySearch: commonConfig.advancedSearchWithBasicFilters.enableQuerySearch,
+    enableQuerySearch: commonConfig.AdvancedSearchWithBasicFilters.enableQuerySearch,
     showResetButton: false
 };

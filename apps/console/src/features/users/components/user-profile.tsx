@@ -71,6 +71,10 @@ interface UserProfilePropsInterface extends TestableComponentInterface, SBACInte
      */
     isReadOnly?: boolean;
     /**
+     * Allow if the user is deletable.
+     */
+    allowDeleteOnly?: boolean;
+    /**
      * Password reset connector properties
      */
     connectorProperties: ConnectorPropertyInterface[];
@@ -103,6 +107,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         user,
         handleUserUpdate,
         isReadOnly,
+        allowDeleteOnly,
         featureConfig,
         connectorProperties,
         isReadOnlyUserStoresLoading,
@@ -639,14 +644,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             <>
                 {
                     (hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete,
-                        allowedScopes) && !isReadOnly &&
-                        (user.userName !== tenantAdmin || user.userName !== "admin") &&
-                        user.userName !== authenticatedUser) && (
+                        allowedScopes) && (!isReadOnly || allowDeleteOnly) &&
+                        !(user.userName === tenantAdmin || user.userName === "admin") &&
+                        !authenticatedUser.includes(user.userName)) && (
                         <DangerZoneGroup
                             sectionHeader={ t("console:manage.features.user.editUser.dangerZoneGroup.header") }
                         >
                             {
-                                configSettings?.accountDisable === "true" && (
+                                !allowDeleteOnly && configSettings?.accountDisable === "true" && (
                                     <DangerZone
                                         data-testid={ `${ testId }-danger-zone` }
                                         actionTitle={ t("console:manage.features.user.editUser.dangerZoneGroup." +
@@ -667,7 +672,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 )
                             }
                             {
-                                configSettings?.accountLock === "true" && (
+                                !allowDeleteOnly && configSettings?.accountLock === "true" && (
                                     <DangerZone
                                         data-testid={ `${ testId }-danger-zone` }
                                         actionTitle={ t("console:manage.features.user.editUser.dangerZoneGroup." +

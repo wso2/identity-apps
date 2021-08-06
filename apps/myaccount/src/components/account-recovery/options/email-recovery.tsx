@@ -21,14 +21,13 @@ import { Field, Forms, Validation } from "@wso2is/forms";
 import { GenericIcon } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List, Popup } from "semantic-ui-react";
 import { updateProfileInfo } from "../../../api";
 import { getAccountRecoveryIcons } from "../../../configs";
 import { CommonConstants } from "../../../constants";
-import { commonConfig } from "../../../extensions";
 import { AlertInterface, AlertLevels, BasicProfileInterface, ProfileSchema } from "../../../models";
 import { AppState } from "../../../store";
 import { getProfileInformation, setActiveForm } from "../../../store/actions";
@@ -49,22 +48,18 @@ const EMAIL = "email";
  */
 interface EmailRecoveryProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
-    enableEditEmail?: boolean;
 }
 
 /**
  * Email recovery section.
  *
  * @param {EmailRecoveryProps} props
- * @return {ReactElement}
+ * @return {JSX.Element}
  */
-export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
-    props: EmailRecoveryProps
-): ReactElement => {
+export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props: EmailRecoveryProps): JSX.Element => {
 
     const {
         onAlertFired,
-        enableEditEmail,
         ["data-testid"]: testId
     } = props;
 
@@ -267,7 +262,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
                                         email || email !== ""
                                         ? t("myAccount:components.accountRecovery.emailRecovery.descriptions.update",
                                             { email: email ? maskEmail(email) : "" })
-                                            : t("myAccount:components.accountRecovery.emailRecovery.descriptions.add")
+                                        : t("myAccount:components.accountRecovery.emailRecovery.descriptions.add")
                                     }
                                     {
                                         (email || email !== "") && isEmailPending ? (
@@ -297,41 +292,27 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
                         </Grid.Column>
                         <Grid.Column width={ 5 } className="last-column">
                             <List.Content floated="right">
-                                { email || email !== "" ? (
-                                    enableEditEmail ? (
-                                        <Icon
-                                            link={ true }
-                                            onClick={ handleEdit }
-                                            data-testid={ `${testId}-edit-button` }
-                                            className="list-icon"
-                                            size="small"
-                                            color="grey"
-                                            name="pencil alternate"
-                                        />
-                                    ):
-                                    (
-                                        <Icon
-                                            link={ true }
-                                            onClick={ handleEdit }
-                                            data-testid={ `${testId}-view-button` }
-                                            className="list-icon"
-                                            size="small"
-                                            color="grey"
-                                            name="eye"
-                                        />
-                                    )
-
-                                ) : (
+                                {email || email !== "" ? (
                                     <Icon
                                         link={ true }
                                         onClick={ handleEdit }
+                                        data-testid={`${testId}-edit-button`}
                                         className="list-icon"
-                                        data-testid={ `${testId}-edit-button` }
                                         size="small"
                                         color="grey"
-                                        name="plus"
+                                        name="pencil alternate"
                                     />
-                                ) }
+                                ) : (
+                                        <Icon
+                                            link={ true }
+                                            onClick={ handleEdit }
+                                            className="list-icon"
+                                            data-testid={`${testId}-edit-button`}
+                                            size="small"
+                                            color="grey"
+                                            name="plus"
+                                        />
+                                    )}
                             </List.Content>
                         </Grid.Column>
                     </Grid.Row>
@@ -355,7 +336,6 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
                                             <Field
                                                 data-testid={ `${testId}-edit-section-form-email-field` }
                                                 autoFocus={ true }
-                                                readOnly={ !enableEditEmail }
                                                 label={ t(
                                                     "myAccount:components.accountRecovery.emailRecovery.forms" +
                                                     ".emailResetForm.inputs.email.label"
@@ -387,51 +367,33 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
                                                 value={ editedEmail }
                                                 width={ 9 }
                                             />
-                                                {
-                                                    enableEditEmail ? (
-                                                        <>
-                                                            <p style={ { fontSize: "12px" } }>
-                                                                <Icon color="grey" floated="left" name="info circle" />
-                                                                { t(
-                                                                    "myAccount:components.profile.forms.emailChangeForm" +
-                                                                    ".inputs.email.note"
-                                                                ) }
-                                                            </p>
-                                                            <Field
-                                                                hidden={ true }
-                                                                type="divider"
-                                                            />
-                                                            <Form.Group inline={ true }>
-                                                                <Field
-                                                                    size="small"
-                                                                    type="submit"
-                                                                    value={ t("common:update").toString() }
-                                                                    data-testid={ `${testId}--edit-section-form-sumbit-button` }
-                                                                />
-                                                                <Field
-                                                                    className="link-button"
-                                                                    onClick={ handleCancel }
-                                                                    size="small"
-                                                                    type="button"
-                                                                    value={ t("common:cancel").toString() }
-                                                                    data-testid={ `${testId}--edit-section-form-cancel-button` }
-                                                                />
-                                                            </Form.Group>
-                                                        </>
-                                                    ):
-                                                    (
-                                                        <Form.Group inline={ true }>
-                                                            <Field
-                                                                className="button"
-                                                                onClick={ handleCancel }
-                                                                size="small"
-                                                                type="button"
-                                                                value={ t("common:done").toString() }
-                                                                data-testid={ `${testId}--edit-section-form-done-button` }
-                                                            />
-                                                        </Form.Group>
-                                                    )
-                                                }
+                                            <p style={ { fontSize: "12px" } }>
+                                                <Icon color="grey" floated="left" name="info circle" />
+                                                {t(
+                                                    "myAccount:components.profile.forms.emailChangeForm" +
+                                                    ".inputs.email.note"
+                                                )}
+                                            </p>
+                                            <Field
+                                                hidden={ true }
+                                                type="divider"
+                                            />
+                                            <Form.Group inline={ true }>
+                                                <Field
+                                                    size="small"
+                                                    type="submit"
+                                                    value={ t("common:update").toString() }
+                                                    data-testid={`${testId}--edit-section-form-sumbit-button`}
+                                                />
+                                                <Field
+                                                    className="link-button"
+                                                    onClick={ handleCancel }
+                                                    size="small"
+                                                    type="button"
+                                                    value={ t("common:cancel").toString() }
+                                                    data-testid={`${testId}--edit-section-form-cancel-button`}
+                                                />
+                                            </Form.Group>
                                         </Forms>
 
                                     </List.Content>
@@ -452,6 +414,5 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
  * See type definitions in {@link EmailRecoveryProps}
  */
 EmailRecovery.defaultProps = {
-    "data-testid": "email-recovery",
-    enableEditEmail: commonConfig.accountSecurityPage.accountRecovery.emailRecovery.enableEditEmail
+    "data-testid": "email-recovery"
 };

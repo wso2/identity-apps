@@ -45,9 +45,8 @@ export const myAccount: MyAccountNS = {
             },
             emailRecovery: {
                 descriptions: {
-                    add: "ප්රතිසාධන ඊමේල් තැපැල් ලිපිනයක් එක් කරන්න",
-                    update: "ප්රතිසාධන ඊමේල් තැපැල් ලිපිනය යාවත්කාලීන කරන්න ({{email}})",
-                    view: "ප්‍රතිසාධන ඊමේල් තැපැල් ලිපිනය බලන්න ({{email}})"
+                    add: "ප්\u200Dරතිසාධන ඊමේල් තැපැල් ලිපිනයක් එක් කරන්න",
+                    update: "ප්\u200Dරතිසාධන ඊමේල් තැපැල් ලිපිනය යාවත්කාලීන කරන්න ({{email}})"
                 },
                 forms: {
                     emailResetForm: {
@@ -728,11 +727,6 @@ export const myAccount: MyAccountNS = {
                     description: "ඔබගේ ගිණුම ආරක්ෂිතව තබා ගැනීමට ඔබට උදව් කිරීමට සැකසීම් සහ නිර්දේශ",
                     header: "ගිණුම් ආරක්ෂාව"
                 },
-                profileStatus: {
-                    completionPercentage: "ඔබගේ ගිණුම සම්පුර්ණ කිරීමේ ප්‍රතිශතය {{percentage}}%",
-                    userSourceText: "({{source} හරහා පුරනය වී ඇත)",
-                    header: "ඔබගේ  {{productName}} ගිණුම"
-                },
                 accountStatus: {
                     complete: "ඔබගේ ගිණුම සම්පූර්ණයි",
                     completedFields: "සම්පුර්ණ කළ ක්ෂේත්‍ර",
@@ -1092,7 +1086,7 @@ export const myAccount: MyAccountNS = {
                             placeholder: "ඔබගේ රට තෝරන්න"
                         }
                     }
-                }
+                },
             },
             messages: {
                 emailConfirmation: {
@@ -1103,7 +1097,7 @@ export const myAccount: MyAccountNS = {
                     content: "දෙවන සාධකය සත්‍\u200Dයාපනය සක්‍රිය කර ඇති විට කෙටි පණිවුඩ OTP යැවීමට සහ පරිශීලක " +
                         "නාමයක් / මුරපද ප්\u200D‍රතිසාධනයකදී ප්\u200D‍රතිසාධන කේත යැවීමට මෙම ජංගම දුරකථන අංකය භාවිතා " +
                         "කරයි. මෙම අංකය යාවත්කාලීන කිරීම සඳහා, ඔබගේ නව අංකයට යවන ලද සත්\u200D‍යාපන කේතය ඇතුළත් කිරීමෙන් " +
-                        "ඔබ නව අංකය සත්\u200D‍යාපනය කළ යුතුය. ඔබට ඉදිරියට යාමට අවශ්\u200D‍ය නම් යාවත්කාලීන ක්ලික් කරන්න."
+                        "ඔබ නව අංකය සත්\u200D‍යාපනය කළ යුතුය. ඔබට ඉදිරියට යාමට අවශ්\u200D‍ය නම් යාවත්කාලීන ක්ලික් කරන්න.",
                 }
             },
             notifications: {
@@ -1255,7 +1249,7 @@ export const myAccount: MyAccountNS = {
         mobileUpdateWizard: {
             done: "සාර්ථකත්වය! ඔබගේ ජංගම දුරකථන අංකය සාර්ථකව සත්‍යාපනය කර ඇත.",
             submitMobile: {
-                heading: "ඔබගේ නව ජංගම දුරකථන අංකය ඇතුළත් කරන්න"
+                heading: "ඔබගේ නව ජංගම දුරකථන අංකය ඇතුළත් කරන්න",
             },
             verifySmsOtp: {
                 generate: "නව සත්‍යාපන කේතයක් යවන්න",
@@ -1263,11 +1257,11 @@ export const myAccount: MyAccountNS = {
                 error: "සත්‍යාපනය අසාර්ථක විය. කරුණාකර නැවත උත්සාහ කරන්න.",
                 label: "සත්යාපන කේතය",
                 placeholder: "ඔබගේ සත්‍යාපන කේතය ඇතුළත් කරන්න",
-                requiredError: "සත්‍යාපන කේතය ඇතුළත් කරන්න"
+                requiredError: "සත්‍යාපන කේතය ඇතුළත් කරන්න",
             },
             notifications: {
                 resendSuccess: {
-                    message: "කේත නැවත යැවීමේ ඉල්ලීම සාර්ථකව යවන ලදි"
+                    message: "කේත නැවත යැවීමේ ඉල්ලීම සාර්ථකව යවන ලදි",
                 },
                 resendError: {
                     error: {
@@ -1438,14 +1432,6 @@ export const myAccount: MyAccountNS = {
                 "ඔබගේ මුරපදය නිතිපතා යාවත්කාලීන කර එය ඔබ භාවිතා කරන වෙනත් " +
                 "මුරපද වලින් අද්විතීය බව සහතික කරගන්න.",
             heading: "මුරපදය වෙනස් කරන්න"
-        },
-        createPassword: {
-            actionTitles: {
-                create: "මුරපදය සාදන්න"
-            },
-            description: "අස්ගාර්ඩියෝ හි මුරපදයක් සාදන්න. ඔබට මෙම මුරපදය භාවිතා කර සමාජ මාධ්ය ප්‍රවේශයට අමතරව අස්ගාර්ඩියෝ" +
-                " වෙත පුරනය විය හැකිය.",
-            heading: "මුරපදය සාදන්න"
         },
         consentManagement: {
             actionTitles: {

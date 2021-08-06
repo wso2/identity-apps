@@ -973,7 +973,7 @@ export const console: ConsoleNS = {
                                                     addNewAuthenticatorCard: {
                                                         title: "Configurer un nouveau fournisseur d'identité"
                                                     },
-                                                    goBackButton: "Revenir à la sélection",
+                                                    goBackButton: "Revenir à la Sélection",
                                                     search: {
                                                         placeholder: "Rechercher des authentificateurs"
                                                     },
@@ -1692,11 +1692,13 @@ export const console: ConsoleNS = {
                                 hint: "Cette valeur peut remplacer l'identifiant de l'entité du fournisseur d'identité qui est " +
                                     "spécifié dans la configuration d'authentification entrante SAML SSO du fournisseur " +
                                     "d'identité résident. L'identifiant de l'entité du fournisseur d'identité " +
-                                    "est utilisé comme émetteur de la réponse SAML qui est générée.",
+                                    "est utilisé comme émetteur de la réponse SAML qui est générée. Il doit s'agir " +
+                                    "d'un URI/URL valide.",
                                 label: "Alias IDP entityId",
                                 placeholder: "Saisir alias",
                                 validations: {
-                                    empty: "Ceci est un champ obligatoire."
+                                    empty: "Ceci est un champ obligatoire.",
+                                    invalid: "Il doit s'agir d'un URI/URL valide."
                                 }
                             },
                             issuer: {
@@ -4079,8 +4081,8 @@ export const console: ConsoleNS = {
                         fields: {
                             attributeName: {
                                 validation: {
-                                    invalid: "Le nom d'attribut ne peut contenir que des caractères " 
-                                        +"alphanumériques et _. Et doit avoir une longueur comprise " 
+                                    invalid: "Le nom d'attribut ne peut contenir que des caractères "
+                                        +"alphanumériques et _. Et doit avoir une longueur comprise "
                                         +"entre 3 et 30 caractères."
                                 }
                             }
@@ -4542,7 +4544,7 @@ export const console: ConsoleNS = {
                         },
                         local: {
                             action: "Nouvel attribut local",
-                            back: "Revenir aux attributs et mappages",
+                            back: "Revenir aux Attributs et Mappages",
                             description: "Créer et gérer les attributs locaux",
                             title: "Attributs locaux"
                         }
@@ -7166,7 +7168,7 @@ export const console: ConsoleNS = {
                 title: "Modèles d'e-mails"
             },
             emailTemplatesWithDisplayName: {
-                backButton: "Revenir aux applications",
+                backButton: "Revenir aux Applications",
                 subTitle: null,
                 title: "Modèle d'e-mail - {{displayName}}"
             },
@@ -7206,7 +7208,7 @@ export const console: ConsoleNS = {
                 title: "Utilisateurs"
             },
             usersEdit: {
-                backButton: "Revenir aux utilisateurs",
+                backButton: "Revenir aux Utilisateurs",
                 subTitle: "{{name}}",
                 title: "{{email}}"
             }
