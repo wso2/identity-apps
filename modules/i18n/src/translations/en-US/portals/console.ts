@@ -7428,7 +7428,8 @@ export const console: ConsoleNS = {
                             "able to log into any application using the current password.",
                         hint: {
                             forceReset: "NOTE: Please note that after inviting the user to change the password " +
-                                "the user will no longer be able to log into any application using the current password.",
+                                "the user will no longer be able to log into any application using the current " +
+                                "password. The password reset link will be valid for {{codeValidityPeriod}} minutes.",
                             setPassword: "NOTE: Please note that after changing the password the user will no longer be " +
                                 "able to log into any application using the current password."
                         },
