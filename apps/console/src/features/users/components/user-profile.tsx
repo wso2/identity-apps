@@ -48,6 +48,7 @@ import { AppConstants, AppState, FeatureConfigInterface, history } from "../../c
 import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../server-configurations";
 import { deleteUser, getUserDetails, updateUserInfo } from "../api";
 import { UserManagementConstants } from "../constants";
+import { commonConfig } from "../../../extensions";
 
 /**
  * Prop types for the basic details component.
@@ -769,7 +770,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 <Field
                     data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
                     name={ schema.name }
-                    label={ schema.name === "profileUrl" ? "Profile Image URL" : fieldName }
+                    label={ schema.name === "profileUrl" ? "Profile Image URL" :
+                        (  (!commonConfig.userEditSection.showEmail && schema.name === "userName")
+                                ? fieldName +" (Email)"
+                                : fieldName
+                        )
+                    }
                     required={ schema.required }
                     requiredErrorMessage={ fieldName + " " + "is required" }
                     placeholder={ "Enter your" + " " + fieldName }
@@ -826,7 +832,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         schema.name === "userName" && domainName.length > 1 ? (
                             <Form.Field>
                                 <label>
-                                    { fieldName }
+                                    { !commonConfig.userEditSection.showEmail
+                                        ? fieldName + " (Email)"
+                                        : fieldName
+                                    }
                                 </label>
                                 <Input
                                     data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
@@ -902,7 +911,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             || schema.name === ProfileConstants?.
                                                 SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_DISABLED")
                                             || schema.name === ProfileConstants?.
-                                                SCIM2_SCHEMA_DICTIONARY.get("ONETIME_PASSWORD"))
+                                                SCIM2_SCHEMA_DICTIONARY.get("ONETIME_PASSWORD")
+                                            || (!commonConfig.userEditSection.showEmail &&
+                                                schema.name === ProfileConstants?.
+                                                SCIM2_SCHEMA_DICTIONARY.get("EMAILS")))
                                             && isFieldDisplayable(schema)) {
                                             return (
                                                 generateProfileEditForm(schema, index)

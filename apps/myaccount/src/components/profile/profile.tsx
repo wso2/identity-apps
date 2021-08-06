@@ -43,6 +43,7 @@ import { AppState } from "../../store";
 import { getProfileInformation, setActiveForm } from "../../store/actions";
 import { EditSection, SettingsSection } from "../shared";
 import { MobileUpdateWizard } from "../shared/mobile-update-wizard";
+import { commonConfig } from "../../extensions";
 
 /**
  * Prop types for the basic details component.
@@ -712,7 +713,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 <Grid padded={ true }>
                     <Grid.Row columns={ 3 }>
                         < Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
-                            <List.Content>{ fieldName }</List.Content>
+                            <List.Content>
+                                {
+                                    !commonConfig.userProfilePage.showEmail &&  fieldName.toLowerCase() === "username"
+                                        ? fieldName + "(Email)"
+                                        : fieldName
+                                }
+                            </List.Content>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
                             <List.Content>
@@ -1073,7 +1080,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("PROFILE_URL")
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_DISABLED")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ONETIME_PASSWORD"))) {
+                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ONETIME_PASSWORD")                      
+                            || (!commonConfig.userProfilePage.showEmail &&
+                                schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"))
+                        )) {
                             return (
                                 <>
                                     {

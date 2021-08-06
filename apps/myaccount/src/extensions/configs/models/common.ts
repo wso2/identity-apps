@@ -23,4 +23,7 @@ export interface CommonConfig {
     OverviewPage: {
         enableThreeWidgetLayout: boolean;
     };
+    userProfilePage: {
+        showEmail: boolean;
+    };
 }

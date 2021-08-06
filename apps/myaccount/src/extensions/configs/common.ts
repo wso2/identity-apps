@@ -24,5 +24,8 @@ export const commonConfig: CommonConfig = {
     },
     OverviewPage: {
         enableThreeWidgetLayout: false
+    },
+    userProfilePage: {
+        showEmail: true
     }
 };
