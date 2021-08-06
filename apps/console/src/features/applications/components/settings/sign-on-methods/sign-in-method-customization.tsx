@@ -59,6 +59,7 @@ interface SignInMethodCustomizationPropsInterface extends SBACInterface<FeatureC
      * Is the application info request loading.
      */
     isLoading?: boolean;
+    setIsLoading?: any;
     /**
      * Callback to trigger IDP create wizard.
      */
@@ -93,6 +94,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         authenticators,
         authenticationSequence,
         isLoading,
+        setIsLoading,
         onIDPCreateWizardTrigger,
         onReset,
         onUpdate,
@@ -232,6 +234,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             };
         }
 
+        setIsLoading(true);
         updateAuthenticationSequence(appId, requestBody)
             .then(() => {
                 dispatch(addAlert({
@@ -263,6 +266,9 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                     message: t("console:develop.features.applications.notifications.updateAuthenticationFlow" +
                         ".genericError.message")
                 }));
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 

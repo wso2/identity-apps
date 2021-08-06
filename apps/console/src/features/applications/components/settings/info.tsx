@@ -81,10 +81,11 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
     const { t } = useTranslation();
     const [ isOIDC, setIsOIDC ] = useState<boolean>(false);
     const [ isSAML, setIsSAML ] = useState<boolean>(false);
-    const [ isLoading, setIsLoading ] = useState<boolean>(false);
+    const [ isLoading, setIsLoading ] = useState<boolean>(true);
 
     useEffect(() => {
         if (inboundProtocols == undefined) {
+            setIsLoading(false);
             return;
         }
 
@@ -145,9 +146,11 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
+            </EmphasizedSegment> 
+        ) :
+            <EmphasizedSegment padded="very">
+                <ContentLoader inline="centered" active/>
             </EmphasizedSegment>
-        )
-        : <ContentLoader/>
     );
 };
 

@@ -331,11 +331,6 @@
             width: @EditRoleSegmentHeaderWidth;
         }
 
-        .ui.table {
-            border-left: none;
-            border-right: none;
-        }
-
         i {
             margin-right: auto;
         }

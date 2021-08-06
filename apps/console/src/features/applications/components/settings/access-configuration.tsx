@@ -88,6 +88,7 @@ interface AccessConfigurationPropsInterface extends SBACInterface<FeatureConfigI
      * Is the application info request loading.
      */
     isLoading?: boolean;
+    setIsLoading?: any;
     /**
      * Callback to update the application details.
      */
@@ -147,6 +148,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         inboundProtocolConfig,
         inboundProtocols,
         isLoading,
+        setIsLoading,
         onUpdate,
         allowedOriginList,
         onAllowedOriginsUpdate,
@@ -322,7 +324,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
      * @param values - Form values.
      */
     const handleSubmit = (values: any): void => {
-
+        setIsLoading(true);
         updateApplicationDetails({ id: appId, ...values.general })
             .then(() => {
                 handleInboundConfigFormSubmit(values.inbound, selectedProtocol);
@@ -525,11 +527,13 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
 
         return (
             <EmphasizedSegment className="protocol-settings-section form-wrapper" padded="very">
-                { resolveProtocolBanner() }
+                { !isLoading? resolveProtocolBanner() : null }
                 {
                     Object.values(SupportedAuthProtocolTypes).includes(selectedProtocol as SupportedAuthProtocolTypes)
                         ? (
                             <InboundFormFactory
+                                isLoading={ isLoading }
+                                setIsLoading={ setIsLoading }
                                 certificate={ certificate }
                                 tenantDomain={ tenantName }
                                 allowedOrigins={ allowedOriginList }
@@ -560,6 +564,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                         )
                         : (
                             <InboundFormFactory
+                                isLoading={ isLoading }
+                                setIsLoading={ setIsLoading }
                                 certificate={ certificate }
                                 metadata={ authProtocolMeta[ selectedProtocol ] }
                                 initialValues={
@@ -879,8 +885,10 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                         )
                     }
                 </Grid>
-            )
-            : <ContentLoader/>
+            ) :
+                <EmphasizedSegment padded="very">
+                    <ContentLoader inline="centered" active/>
+                </EmphasizedSegment>
     );
 };
 
