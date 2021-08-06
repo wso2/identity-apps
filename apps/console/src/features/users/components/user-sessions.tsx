@@ -53,6 +53,7 @@ import { FeatureConfigInterface, getEmptyPlaceholderIllustrations, history } fro
 import { getUserSessions, terminateAllUserSessions, terminateUserSession } from "../api";
 import { ApplicationSessionInterface, UserSessionInterface, UserSessionsInterface } from "../models";
 import { Show, AccessControlConstants } from "@wso2is/access-control";
+
 /**
  * Proptypes for the user sessions component.
  */
