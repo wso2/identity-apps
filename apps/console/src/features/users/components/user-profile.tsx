@@ -766,8 +766,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
                     name={ schema.name }
                     label={ schema.name === "profileUrl" ? "Profile Image URL" :
-                        (  (!commonConfig.userEditSection.showEmail && schema.name === "userName") ?
-                            fieldName+" (Email)" : fieldName) }
+                        (  (!commonConfig.userEditSection.showEmail && schema.name === "userName")
+                                ? fieldName +" (Email)"
+                                : fieldName
+                        )
+                    }
                     required={ schema.required }
                     requiredErrorMessage={ fieldName + " " + "is required" }
                     placeholder={ "Enter your" + " " + fieldName }
@@ -824,8 +827,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         schema.name === "userName" && domainName.length > 1 ? (
                             <Form.Field>
                                 <label>
-                                    { !commonConfig.userEditSection.showEmail ?
-                                        fieldName + " (Email)" : fieldName }
+                                    { !commonConfig.userEditSection.showEmail
+                                        ? fieldName + " (Email)"
+                                        : fieldName
+                                    }
                                 </label>
                                 <Input
                                     data-testid={ `${ testId }-profile-form-${ schema.name }-input` }

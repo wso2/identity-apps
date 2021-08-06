@@ -727,8 +727,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         < Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
                             <List.Content>
                                 {
-                                    !commonConfig.userProfilePage.showEmail &&  fieldName.toLowerCase() === "username" ?
-                                        fieldName + "(Email)" : fieldName
+                                    !commonConfig.userProfilePage.showEmail &&  fieldName.toLowerCase() === "username"
+                                        ? fieldName + "(Email)"
+                                        : fieldName
                                 }
                             </List.Content>
                         </Grid.Column>
