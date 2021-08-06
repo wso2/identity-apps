@@ -382,7 +382,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                             ".emailOTP.useNumericChars.hint"
                         }
                     >
-                       Only numeric characters (<Code>0-9</Code>) are used for the OTP token. Please clear this checkbox to enable alphanumeric characters..
+                       Only numeric characters (<Code>0-9</Code>) are used for the OTP token. Please clear this checkbox to enable alphanumeric characters.
                     </Trans>
                 }
                 readOnly={ readOnly }
