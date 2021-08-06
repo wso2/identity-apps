@@ -33,4 +33,7 @@ export interface UserstoresConfig {
     userstoreList: {
         allowAddingUserstores: boolean;
     };
+    userstoreDomain: {
+        appendToUsername: boolean;
+    };
 }
