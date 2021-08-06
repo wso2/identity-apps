@@ -109,6 +109,10 @@ interface AuthenticatorGridPropsInterface extends LoadableComponentInterface, Te
      * Show list item actions.
      */
     showListItemActions?: boolean;
+    /**
+     * On authenticators list update callback.
+     */
+    onUpdate?: () => void;
 }
 
 /**
@@ -131,6 +135,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
         onItemClick,
         onSearchQueryClear,
         searchQuery,
+        onUpdate,
         [ "data-testid" ]: testId
     } = props;
 
@@ -222,6 +227,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
         deleteIdentityProvider(id)
             .then(() => {
+                onUpdate();
                 dispatch(addAlert({
                     description: t("console:develop.features.authenticationProvider." +
                         "notifications.deleteIDP.success.description"),
