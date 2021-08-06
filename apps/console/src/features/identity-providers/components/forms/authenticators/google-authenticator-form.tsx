@@ -326,7 +326,10 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                 required={ formFields?.ClientId?.meta?.isMandatory }
                 readOnly={ readOnly || formFields?.ClientId?.meta?.readOnly }
                 value={ formFields?.ClientId?.value }
-                maxLength={ formFields?.ClientId?.meta?.maxLength }
+                maxLength={
+                    IdentityProviderManagementConstants
+                        .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MAX_LENGTH as number
+                }
                 minLength={
                     IdentityProviderManagementConstants
                         .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MIN_LENGTH as number
