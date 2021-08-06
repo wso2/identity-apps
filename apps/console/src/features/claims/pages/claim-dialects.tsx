@@ -494,10 +494,11 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                 </EmphasizedSegment>
                             ) 
                         }
-                    </> :
-                    <EmphasizedSegment padded="very">
-                        <ContentLoader inline="centered" active/>
-                    </EmphasizedSegment>
+                    </> : (
+                        <EmphasizedSegment padded="very">
+                            <ContentLoader inline="centered" active/>
+                        </EmphasizedSegment>
+                    )
                 }
             </PageLayout>
         </>

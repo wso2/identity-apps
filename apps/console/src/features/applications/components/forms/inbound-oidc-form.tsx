@@ -101,7 +101,7 @@ interface InboundOIDCFormPropsInterface extends TestableComponentInterface {
      * Handles loading UI.
      */
     isLoading?: boolean;
-    setIsLoading?: any;
+    setIsLoading?: (isLoading: boolean) => void;
 }
 
 /**
