@@ -85,10 +85,10 @@ let triggerPreviousForm: () => void;
             validate={ (values): any => {
                 const errors:any = {};
                 if (!values.scopeName && !initialValues?.scopeName) {
-                    errors.scopeName="This field cannot be empty";
+                    errors.scopeName="Required";
                 }
                 if (!values.displayName && !initialValues?.displayName) {
-                    errors.displayName="This field cannot be empty";
+                    errors.displayName="Required";
                 }
                 return errors;
             } }
