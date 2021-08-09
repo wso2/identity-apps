@@ -16,14 +16,16 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Checkbox, Icon, Input, Label, Popup, Table } from "semantic-ui-react";
 import { ExtendedClaimMappingInterface } from "./attribute-settings";
+import { AppState, FeatureConfigInterface } from "../../../../core";
 
 interface AttributeListItemPropInterface extends TestableComponentInterface {
     displayName: string;
@@ -175,7 +177,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                                     { name: displayName })
                             }
                             value={ mappingOn ? mappedAttribute : defaultMappedAttribute }
-                            onChange={ handleClaimMapping }
+                            onChange={ !readOnly && handleClaimMapping }
                             disabled={ !mappingOn }
                             readOnly={ readOnly }
                             required
@@ -194,9 +196,9 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                         (
                             <Checkbox
                                 checked={ initialMandatory || mandatory || subject }
-                                onClick={ handleMandatoryCheckChange }
+                                onClick={ !readOnly && handleMandatoryCheckChange }
                                 disabled={ mappingOn ? !requested : false }
-                                readOnly={ subject }
+                                readOnly={ subject || readOnly }
                             />
                         )
                     }
@@ -220,7 +222,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                     }
                 />
             </Table.Cell>
-            { deleteAttribute ? (
+            { !readOnly && deleteAttribute ? (
                 <Table.Cell textAlign="right">
                     <Popup
                         trigger={ (
