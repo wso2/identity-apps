@@ -866,7 +866,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             onHelpPanelVisibilityChange={ (isVisible: boolean) => dispatch(toggleHelpPanelVisibility(isVisible)) }
         >
             <PageLayout
-                isLoading={ isApplicationRequestLoading }
                 title={ (
                     <>
                         <span>{ application.name }</span>
@@ -914,6 +913,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     application={ application }
                     featureConfig={ featureConfig }
                     isLoading={ isApplicationRequestLoading }
+                    setIsLoading={ setApplicationRequestLoading }
                     onDelete={ handleApplicationDelete }
                     onUpdate={ handleApplicationUpdate }
                     template={ applicationTemplate }

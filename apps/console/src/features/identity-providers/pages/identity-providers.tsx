@@ -99,6 +99,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
     ] = useState<boolean>(undefined);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ filterTags, setFilterTags ] = useState<string[]>([]);
+    const [ selectedFilterTags, setSelectedFilterTags ] = useState<string[]>([]);
     const [ showFilteredList, setShowFilteredList ] = useState<boolean>(false);
     const [ isPaginating, setIsPaginating ] = useState<boolean>(false);
     const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
@@ -327,6 +328,8 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
 
         // Update the internal state to manage placeholders etc.
         setSearchQuery(query);
+        // Update the state of selected filters.
+        setSelectedFilterTags(selectedFilters);
         // Filter out the templates.
         getAllAuthenticators(IdentityProviderManagementUtils.buildAuthenticatorsFilterQuery(query, selectedFilters));
 
@@ -335,6 +338,15 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
         } else {
             setShowFilteredList(true);
         }
+    };
+
+    /**
+     * Handles the `onUpdate` callback action.
+     */
+    const onUpdate = (): void => {
+
+        getAllAuthenticators(IdentityProviderManagementUtils.buildAuthenticatorsFilterQuery(
+            searchQuery, selectedFilterTags));
     };
 
     /**
@@ -526,6 +538,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                                 onIdentityProviderDelete={ handleIdentityProviderDelete }
                                 onSearchQueryClear={ handleSearchQueryClear }
                                 searchQuery={ searchQuery }
+                                onUpdate={ onUpdate }
                                 data-testid={ `${ testId }-list` }
                             />
                         </GridLayout>

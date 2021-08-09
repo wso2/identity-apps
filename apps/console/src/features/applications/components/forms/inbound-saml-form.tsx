@@ -616,6 +616,15 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         t("console:develop.features.applications.forms.inboundSAML.fields" +
                                             ".idpEntityIdAlias.validations.empty")
                                     }
+                                    validation={(value: string, validation: Validation) => {
+                                        if (!FormValidation.url(value)) {
+                                            validation.errorMessages.push(
+                                                t("console:develop.features.applications.forms.inboundSAML.fields" +
+                                                    ".idpEntityIdAlias.validations.invalid")
+                                            );
+                                            validation.isValid = false;
+                                        }
+                                    }}
                                     value={ initialValues?.idpEntityIdAlias }
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-idp-entity-id-alias-input` }

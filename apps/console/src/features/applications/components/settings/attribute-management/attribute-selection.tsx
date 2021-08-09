@@ -83,6 +83,11 @@ interface AttributeSelectionPropsInterface extends TestableComponentInterface {
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Handles loading UI.
+     */
+    isUserAttributesLoading?: boolean;
+    setUserAttributesLoading?: any;
 }
 
 /**
@@ -121,6 +126,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         claimMappingError,
         readOnly,
         updateMappings,
+        isUserAttributesLoading,
+        setUserAttributesLoading,
         [ "data-testid" ]: testId
     } = props;
 
@@ -167,6 +174,20 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         setSelectedExternalClaims(tempFilterSelectedExternalClaims);
         setFilterSelectedExternalClaims(tempFilterSelectedExternalClaims);
     }, [ claimConfigurations ]);
+
+    // Stops the UI loader when the component is initialized and have fetched the availableExternalClaims.
+    useEffect(() => {
+        if (initializationFinished && claimConfigurations) {
+            // Stop loader UI for SAML applications.
+            if (selectedDialect.localDialect && availableClaims.length > 0) {
+                setUserAttributesLoading(false);   
+            }
+            //  Stop loader UI for OIDC and SP applications.
+            if (!selectedDialect.localDialect && availableExternalClaims.length > 0) {
+                setUserAttributesLoading(false); 
+            }                
+        }
+    }, [availableClaims, availableExternalClaims, claimConfigurations, initializationFinished]);
 
     const updateMandatory = (claimURI: string, mandatory: boolean) => {
         if (selectedDialect.localDialect) {
@@ -300,6 +321,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     const setInitialValues = () => {
         // set local dialect values.
+        setUserAttributesLoading(true);
         if (selectedDialect.localDialect) {
             const initialRequest = getInitiallySelectedClaimsURI();
             const initialSelectedClaims: ExtendedClaimInterface[] = [];
@@ -565,7 +587,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     };
 
     return (
-        claimConfigurations && initializationFinished
+        (!isUserAttributesLoading && claimConfigurations && initializationFinished)
             ?
             <>
                 <Grid.Row data-testid={ testId }>
@@ -958,9 +980,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 { addSelectionModal() }
                 { removeAttributeModal() }
             </>
-            : !initializationFinished
-                ? <ContentLoader />
-                : null
+            : null
     );
 };
 

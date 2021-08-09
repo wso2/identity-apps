@@ -1348,7 +1348,8 @@ export interface ConsoleNS {
                             },
                             heading: string;
                             name: {
-                                description: string;
+                                idpDescription: string;
+                                connectionDescription: string;
                                 heading: string;
                             },
                             preRequisites: {
@@ -1374,7 +1375,8 @@ export interface ConsoleNS {
                                 heading: string;
                             },
                             name: {
-                                description: string;
+                                idpDescription: string;
+                                connectionDescription: string;
                                 heading: string;
                             },
                             preRequisites: {
@@ -1398,7 +1400,8 @@ export interface ConsoleNS {
                             };
                             heading: string;
                             name: {
-                                description: string;
+                                idpDescription: string;
+                                connectionDescription: string;
                                 heading: string;
                             };
                             preRequisites: {

@@ -29,6 +29,7 @@ import {
     AnimatedAvatar,
     AppAvatar,
     ConfirmationModal,
+    ContentLoader,
     DataTable,
     EmptyPlaceholder,
     LinkButton,
@@ -38,9 +39,9 @@ import {
     useConfirmationModalAlert
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
+import { Container, Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
@@ -391,7 +392,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
      */
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
-        if (searchQuery) {
+        if (searchQuery && list?.totalResults === 0) {
             return (
                 <EmptyPlaceholder
                     action={ (
@@ -436,7 +437,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         return null;
     };
 
-    return (
+    return (!(isLoading || isApplicationTemplateRequestLoading)? (
         <>
             <DataTable<ApplicationListItemInterface>
                 className="applications-table"
@@ -500,6 +501,10 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 )
             }
         </>
+    ) :
+        <Container>
+            <ContentLoader inline="centered" active/>
+        </Container> 
     );
 };
 

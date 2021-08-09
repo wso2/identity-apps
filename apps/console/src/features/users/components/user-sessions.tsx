@@ -48,7 +48,7 @@ import React, {
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Label, List, SemanticICONS } from "semantic-ui-react";
-import { FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "../../core";
+import { FeatureConfigInterface, getEmptyPlaceholderIllustrations, history } from "../../core";
 import { getUserSessions, terminateAllUserSessions, terminateUserSession } from "../api";
 import { ApplicationSessionInterface, UserSessionInterface, UserSessionsInterface } from "../models";
 import { CONSUMER_USERSTORE } from "../../userstores";
@@ -506,6 +506,8 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
 
         terminateAllUserSessions(user.id)
             .then(() => {
+                // Redirect to login page if all the sessions are terminated.
+                history.push(window["AppUtils"].getConfig().routes.logout);
                 dispatch(addAlert<AlertInterface>({
                     description: t(
                         "console:manage.features.users.userSessions.notifications.terminateAllUserSessions." +
@@ -519,6 +521,8 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                 }));
             })
             .catch((error: AxiosError) => {
+                // fetch the sessions if and only if the session termination fails.
+                fetchUserSessions(user.id);
                 if (error.response
                     && error.response.data
                     && (error.response.data.description || error.response.data.detail)) {
@@ -545,9 +549,6 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                     )
                 }));
             })
-            .finally(() => {
-                fetchUserSessions(user.id);
-            });
     };
 
     /**
