@@ -1,5 +1,6 @@
 {
     "id": "custom-application",
+    "templateId": "custom-application",
     "name": "Custom Application",
     "description": "Register your application manually.",
     "image": "customApp",

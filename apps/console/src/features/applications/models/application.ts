@@ -247,6 +247,11 @@ export interface ApplicationTemplateListItemInterface {
      * ex: "web-application"
      */
     templateGroup?: string;
+    /**
+     * Template identifier.
+     * ex: "single-page-application"
+    */
+    templateId?: string;
     types?: any[];
     category?: string;
     displayOrder?: number;

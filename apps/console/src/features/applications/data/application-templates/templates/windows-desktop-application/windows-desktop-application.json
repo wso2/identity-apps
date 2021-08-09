@@ -1,5 +1,6 @@
 {
     "id": "df929521-6768-44f5-8586-624126ec3f8b",
+    "templateId": "windows-desktop-application",
     "name": "Windows",
     "description": "Applications developed to target windows desktops.",
     "image": "windows",
