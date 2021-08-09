@@ -328,12 +328,12 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         claim && claim.displayName !== ClaimManagementConstants.USER_ID
                             && claim.displayName !== ClaimManagementConstants.USER_NAME &&
                         (
-                            <Field.CheckboxLegacy
+                            <Field.Checkbox
                                 ariaLabel="supportedByDefault"
                                 name="supportedByDefault"
                                 label={ t("console:manage.features.claims.local.forms.supportedByDefault.label") }
                                 required={ false }
-                                value={ claim?.supportedByDefault ? ["supportedByDefault"] : [] }
+                                defaultValue={ claim?.supportedByDefault ? ["supportedByDefault"] : [] }
                                 listen={ (values) => {
                                     setIsShowDisplayOrder(!!values?.supportedByDefault);
                                 } }
@@ -368,13 +368,13 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     }
                     {
                         claim && attributeConfig.editAttributes.showRequiredCheckBox &&
-                            <Field.CheckboxLegacy
+                            <Field.Checkbox
                                 ariaLabel="required"
                                 name="required"
                                 required={ false }
                                 requiredErrorMessage=""
                                 label={ t("console:manage.features.claims.local.forms.required.label") }
-                                value={ claim?.required ? [ "required" ] : [] }
+                                defaultValue={ claim?.required ? [ "required" ] : [] }
                                 data-testid={ `${ testId }-form-required-checkbox` }
                                 readOnly={ isReadOnly }
                             />
@@ -384,13 +384,13 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         claim && claim.displayName !== ClaimManagementConstants.USER_ID
                             && claim.displayName !== ClaimManagementConstants.USER_NAME &&
                         (
-                            <Field.CheckboxLegacy
+                            <Field.Checkbox
                                 ariaLabel="readOnly"
                                 name="readOnly"
                                 required={ false }
                                 label={ t("console:manage.features.claims.local.forms.readOnly.label") }
                                 requiredErrorMessage=""
-                                value={ claim?.readOnly ? [ "readOnly" ] : [] }
+                                defaultValue={ claim?.readOnly ? [ "readOnly" ] : [] }
                                 data-testid={ `${ testId }-form-readonly-checkbox` }
                                 readOnly={ isReadOnly }
                             />
