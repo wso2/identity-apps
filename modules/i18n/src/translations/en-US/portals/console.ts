@@ -2915,7 +2915,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             useNumericChars: {
-                                hint: "Only use <1>0-9</1> characters in the OTP token.",
+                                hint: "Only numeric characters (<1>0-9</1>) are used for the OTP token. Please clear this checkbox to enable alphanumeric characters.",
                                 label: "Use only numeric characters for OTP token",
                                 validations: {
                                     required: "Use only numeric characters for OTP token is a required field."
