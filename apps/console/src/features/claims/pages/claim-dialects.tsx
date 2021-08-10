@@ -249,6 +249,8 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                 width={ 4 }
                                                                 verticalAlign="middle"
                                                                 textAlign="right"
+                                                                data-testid={ `${ testId }-local-dialect-` +
+                                                                "attributes-edit-icon" }
                                                             >
                                                                 <Popup
                                                                     content={
