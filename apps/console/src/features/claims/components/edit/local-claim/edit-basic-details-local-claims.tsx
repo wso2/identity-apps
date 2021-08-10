@@ -333,7 +333,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 name="supportedByDefault"
                                 label={ t("console:manage.features.claims.local.forms.supportedByDefault.label") }
                                 required={ false }
-                                defaultValue={ claim?.supportedByDefault ? ["supportedByDefault"] : [] }
+                                defaultValue={ claim?.supportedByDefault }
                                 listen={ (values) => {
                                     setIsShowDisplayOrder(!!values?.supportedByDefault);
                                 } }
@@ -374,7 +374,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 required={ false }
                                 requiredErrorMessage=""
                                 label={ t("console:manage.features.claims.local.forms.required.label") }
-                                defaultValue={ claim?.required ? [ "required" ] : [] }
+                                defaultValue={ claim?.required }
                                 data-testid={ `${ testId }-form-required-checkbox` }
                                 readOnly={ isReadOnly }
                             />
@@ -390,7 +390,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 required={ false }
                                 label={ t("console:manage.features.claims.local.forms.readOnly.label") }
                                 requiredErrorMessage=""
-                                defaultValue={ claim?.readOnly ? [ "readOnly" ] : [] }
+                                defaultValue={ claim?.readOnly }
                                 data-testid={ `${ testId }-form-readonly-checkbox` }
                                 readOnly={ isReadOnly }
                             />
