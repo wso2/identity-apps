@@ -712,6 +712,16 @@ export const getAppLayoutRoutes = (): RouteInterface[] => {
             path: AppConstants.getDeveloperViewBasePath(),
             protected: false,
             showOnSidePanel: false
+        },
+        {
+            component: null,
+            icon: null,
+            id: "404",
+            name: "404",
+            path: "*",
+            protected: true,
+            redirectTo: AppConstants.getPaths().get("PAGE_NOT_FOUND"),
+            showOnSidePanel: false
         }
     ];
 };
