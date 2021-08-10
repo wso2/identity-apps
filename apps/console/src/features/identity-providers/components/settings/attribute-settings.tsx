@@ -17,7 +17,8 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { getAllLocalClaims } from "@wso2is/core/api";
+import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
@@ -27,6 +28,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Grid } from "semantic-ui-react";
 import { AttributeSelection, RoleMappingSettings, UriAttributesSettings } from "./attribute-management";
+import { AttributesSelectionV2 } from "./attribute-management/attribute-selection-v2";
 import {
     IdentityProviderClaimInterface,
     IdentityProviderClaimMappingInterface,
@@ -39,14 +41,13 @@ import {
     buildProvisioningClaimList,
     createDropdownOption,
     handleAttributeSettingsFormSubmit,
+    handleGetAllLocalClaimsError,
     initSelectedClaimMappings,
     initSelectedProvisioningClaimsWithDefaultValues,
     initSubjectAndRoleURIs,
     isClaimExistsInIdPClaims,
-    isLocalIdentityClaim,
-    updateAvailableLocalClaims
+    isLocalIdentityClaim
 } from "../utils";
-import { AttributesSelectionV2 } from "./attribute-management/attribute-selection-v2";
 
 export interface DropdownOptionsInterface {
     key: string;
@@ -162,10 +163,33 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     const [roleMapping, setRoleMapping] = useState<IdentityProviderRoleMappingInterface[]>(undefined);
 
     // Trigger role mapping field to submission.
-    const [triggerSubmission, setTriggerSubmission] = useTrigger();
+    const [triggerSubmission] = useTrigger();
+
+    /**
+     * When IdP loads, this component is responsible for fetching the
+     * available claims. So, to to indicate a network call is happening
+     * we need this to hide the form. iff {@code !isLocalClaimsLoading}
+     * and {@code !isLoading} will load the form.
+     */
+    const [ isLocalClaimsLoading, setIsLocalClaimsLoading ] = useState<boolean>(true);
 
     useEffect(() => {
-        updateAvailableLocalClaims(setAvailableLocalClaims);
+        setIsLocalClaimsLoading(true);
+        getAllLocalClaims(null)
+            .then((response: Claim[]) => {
+                setAvailableLocalClaims(response?.map(claim => {
+                    return {
+                        displayName: claim.displayName,
+                        id: claim.id,
+                        uri: claim.claimURI
+                    } as IdentityProviderClaimInterface;
+                }));
+                setIsLocalClaimsLoading(false);
+            })
+            .catch((error) => {
+                setIsLocalClaimsLoading(false);
+                handleGetAllLocalClaimsError(error);
+            });
     }, []);
 
     const setInitialValues = () => {
@@ -300,7 +324,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     }, [roleMapping]);
 
     return (
-        !isLoading
+        !isLoading && !isLocalClaimsLoading
             ? (
                 <EmphasizedSegment padded="very">
                     <Grid className="attributes-settings">
