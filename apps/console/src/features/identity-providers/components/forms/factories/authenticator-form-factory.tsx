@@ -135,6 +135,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                 <SamlAuthenticatorSettingsForm
                     onSubmit={ onSubmit }
                     authenticator={ authenticator }
+                    readOnly={ isReadOnly }
                 />
             );
         default:
