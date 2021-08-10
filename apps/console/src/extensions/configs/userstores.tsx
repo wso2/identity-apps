@@ -34,5 +34,8 @@ export const userstoresConfig: UserstoresConfig = {
     },
     userstoreList: {
         allowAddingUserstores: true
+    },
+    userstoreDomain: {
+        appendToUsername: true
     }
 };
