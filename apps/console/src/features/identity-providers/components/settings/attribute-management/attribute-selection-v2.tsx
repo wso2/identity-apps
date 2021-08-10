@@ -34,6 +34,7 @@ export interface AttributesSelectionV2Props extends TestableComponentInterface {
     attributeList: Array<IdentityProviderClaimInterface>;
     mappedAttributesList: Array<IdentityProviderCommonClaimMappingInterface>;
     onAttributesSelected: (mappingsToBeAdded: IdentityProviderCommonClaimMappingInterface[]) => void;
+    isReadOnly: boolean;
 }
 
 /**
@@ -51,6 +52,7 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
         attributeList,
         mappedAttributesList,
         onAttributesSelected,
+        isReadOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -91,6 +93,7 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
                         </p>
                     ] }
                     action={
+                        !isReadOnly &&
                         <PrimaryButton onClick={ () => setShowAddModal(true) }>
                             <Icon name="add"/>
                             Add IdP Attributes
@@ -180,12 +183,14 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
                                         </Form>
                                     </Grid.Column>
                                     <Grid.Column width={ 9 } textAlign="right">
-                                        <PrimaryButton
+                                        { !isReadOnly &&
+                                            <PrimaryButton
                                             onClick={ () => setShowAddModal(true) }
                                             data-testid={ `${ testId }-list-layout-add-button` }>
-                                            <Icon name="add"/>
-                                            Add Attribute Mapping
-                                        </PrimaryButton>
+                                            <Icon name="add" />
+                                                Add Attribute Mapping
+                                            </PrimaryButton>
+                                        }
                                     </Grid.Column>
                                 </Grid.Row>
                                 <Grid.Row columns={ 1 }>
@@ -217,7 +222,8 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
                                                     ),
                                                     newMapping
                                                 ]);
-                                            } }/>
+                                            } }
+                                            readOnly={ isReadOnly } />
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
