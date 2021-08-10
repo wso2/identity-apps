@@ -918,7 +918,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                 )
                         }
                         { applicationConfig.attributeSettings.attributeSelection
-                            .showShareAttributesHint(selectedDialect)
+                            .showShareAttributesHint(selectedDialect) && !readOnly
                             ? (
                                 <Hint>
                                     <Trans
