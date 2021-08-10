@@ -16,16 +16,13 @@
  * under the License.
  */
 
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Checkbox, Icon, Input, Label, Popup, Table } from "semantic-ui-react";
+import { Checkbox, Icon, Input, Popup, Table } from "semantic-ui-react";
 import { ExtendedClaimMappingInterface } from "./attribute-settings";
-import { AppState, FeatureConfigInterface } from "../../../../core";
 
 interface AttributeListItemPropInterface extends TestableComponentInterface {
     displayName: string;
@@ -73,7 +70,6 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         updateMapping,
         addToMapping,
         selectMandatory,
-        selectRequested,
         isDefaultMappingChanged,
         mapping,
         initialMandatory,
@@ -83,13 +79,10 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         readOnly,
         deleteAttribute,
         subject,
-        mappedURI,
         [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
-
-    const dispatch = useDispatch();
 
     const [mappingOn, setMappingOn] = useState(false);
     const [errorInClaimMapping, setErrorInClaimMapping] = useState(false);
