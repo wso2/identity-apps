@@ -380,6 +380,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             />
                     }
                     {
+                        attributeConfig.localAttributes.createWizard.showReadOnlyAttribute &&
                         //Hides on user_id and username claims
                         claim && claim.displayName !== ClaimManagementConstants.USER_ID
                             && claim.displayName !== ClaimManagementConstants.USER_NAME &&
