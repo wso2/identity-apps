@@ -153,7 +153,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                     <Grid.Column mobile={ 2 } tablet={ 2 } computer={ 1 }>
                     </Grid.Column>
                     <Grid.Column mobile={ 14 } tablet={ 14 } computer={ 7 }>
-                        { getPropertyField(property, eachPropertyMeta, listen, testId) }
+                        { getPropertyField(property, { ...eachPropertyMeta, readOnly }, listen, testId) }
                     </Grid.Column>
                 </Grid.Row>
             );
@@ -161,7 +161,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             return (
                 <Grid.Row columns={ 1 } key={ eachPropertyMeta?.displayOrder }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        { getPropertyField(property, eachPropertyMeta, listen, testId) }
+                        { getPropertyField(property, { ...eachPropertyMeta, readOnly }, listen, testId) }
                     </Grid.Column>
                 </Grid.Row>
             );
