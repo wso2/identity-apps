@@ -51,7 +51,7 @@
 
             <div class="ui segment">
                 <div class="ui visible negative message">
-                   Error 502 - Bade Gateway
+                   Error 502 - Bad Gateway
                 </div>
             </div>
         </div>
