@@ -343,6 +343,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                         )
                                     }
                                     mappedAttributesList={ [ ...selectedClaimsWithMapping ] }
+                                    isReadOnly = { isReadOnly }
                                 />
                             </Grid.Column>
                         </Grid.Row>

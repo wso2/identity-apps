@@ -228,32 +228,34 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
     };
 
     /**
-     * A util function to build a user friendly seach query 
+     * A util function to build a user friendly seach query
      * for display purpose.
-     * 
-     * @param defaultQuery - generated 
-     * @returns 
+     *
+     * @param defaultQuery - generated
+     * @returns
      */
     const buildSearchQuery = (defaultQuery: string): string => {
-        const queryElements: string[] = defaultQuery.split(" ");
+        const queryElements: string[] = defaultQuery?.split(" ");
         let UserFriendlyQuery: string = "";
 
-        switch (queryElements[1]) {
-            case "eq":
-                UserFriendlyQuery = `${queryElements[0]} equals to ${queryElements[2]}`;
-                break;
-            case "co":
-                UserFriendlyQuery = `${queryElements[0]} containing ${queryElements[2]}`;
-                break;
-            case "sw":
-                UserFriendlyQuery = `${queryElements[0]} starting with ${queryElements[2]}`;
-                break;
-            case "ew":
-                UserFriendlyQuery = `${queryElements[0]} ending with ${queryElements[2]}`;
-                break;
-        
-            default:
-                break;
+        if (queryElements) {
+            switch (queryElements[ 1 ]) {
+                case "eq":
+                    UserFriendlyQuery = `${ queryElements[ 0 ] } equals to ${ queryElements[ 2 ] }`;
+                    break;
+                case "co":
+                    UserFriendlyQuery = `${ queryElements[ 0 ] } containing ${ queryElements[ 2 ] }`;
+                    break;
+                case "sw":
+                    UserFriendlyQuery = `${ queryElements[ 0 ] } starting with ${ queryElements[ 2 ] }`;
+                    break;
+                case "ew":
+                    UserFriendlyQuery = `${ queryElements[ 0 ] } ending with ${ queryElements[ 2 ] }`;
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         return UserFriendlyQuery;
@@ -293,7 +295,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
                             } }
                             data-testid={ `${ testId }-list-layout-add-button` }
                         >
-                            <Icon name="add"/>
+                            <Icon name="add" />
                             { t("console:manage.features.claims.local.pageLayout.local.action") }
                         </PrimaryButton>
                     )
