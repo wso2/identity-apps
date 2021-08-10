@@ -994,11 +994,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             attached
                             warning
                          >
-                            { t("console:manage.features.user.deleteUser.confirmationModal.message") }
+                            { commonConfig.userEditSection.isGuestUser
+                                ? t("extensions:manage.guest.deleteUser.confirmationModal.message")
+                                : t("console:manage.features.user.deleteUser.confirmationModal.message")
+                            }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
                             <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
-                            { t("console:manage.features.user.deleteUser.confirmationModal.content") }
+                            { commonConfig.userEditSection.isGuestUser
+                                ? t("extensions:manage.guest.deleteUser.confirmationModal.content")
+                                : t("console:manage.features.user.deleteUser.confirmationModal.content")
+                            }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

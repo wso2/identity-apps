@@ -22,6 +22,7 @@ export interface CommonConfig {
     };
     checkForUIResourceScopes: boolean;
     userEditSection: {
+        isGuestUser: boolean;
         showEmail: boolean;
     };
 }

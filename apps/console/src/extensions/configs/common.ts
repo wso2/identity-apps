@@ -24,6 +24,7 @@ export const commonConfig: CommonConfig = {
     },
     checkForUIResourceScopes: false,
     userEditSection: {
+        isGuestUser: false,
         showEmail: true
     }
 };
