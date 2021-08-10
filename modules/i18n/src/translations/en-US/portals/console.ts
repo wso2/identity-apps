@@ -8359,8 +8359,8 @@ export const console: ConsoleNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully sent the invitation.",
-                            message: "Sending the invitation successful"
+                            description: "Successfully sent the invitation via email.",
+                            message: "Invitation sent"
                         }
                     },
                     resendInvite: {
@@ -8373,8 +8373,8 @@ export const console: ConsoleNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully resent the invitation.",
-                            message: "Resending the invitation successful"
+                            description: "Successfully resent the invitation via email.",
+                            message: "Invitation resent"
                         }
                     },
                     deleteInvite: {
