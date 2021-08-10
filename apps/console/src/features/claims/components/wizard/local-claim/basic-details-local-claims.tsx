@@ -169,6 +169,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     placeholder={ t("console:manage.features.claims.local." +
                                         "forms.attributeID.placeholder") }
                                     value={ values?.get("claimURI")?.toString() }
+                                    maxLength={ 30 }
                                     listen={ (values: Map<string, FormValue>) => {
                                         setClaimID(values.get("claimURI").toString());
                                         setOidcMapping(values.get("claimURI").toString().replace(/\./g,""));
@@ -419,6 +420,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     "attributeID.requiredErrorMessage") }
                                 placeholder={ t("console:manage.features.claims.local.forms.attributeID.placeholder") }
                                 value={ values?.get("claimURI")?.toString() }
+                                maxLength={ 30 }
                                 listen={ (values: Map<string, FormValue>) => {
                                     setClaimID(values.get("claimURI").toString());
                                 } }
