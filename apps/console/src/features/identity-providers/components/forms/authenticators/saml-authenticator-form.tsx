@@ -225,7 +225,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                         as the service provider <Code>entityId</Code>.
                     </>
                 ) }
-                readOnly
+                readOnly={ readOnly }
             />
 
             <Field.Input
@@ -251,7 +251,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 hint={ t(`${ I18N_TARGET_KEY }.SSOUrl.hint`, {
                     productName: config.ui.productName
                 }) }
-                readOnly
+                readOnly={ readOnly }
             />
 
             <Field.Input
@@ -281,7 +281,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                         organization.
                     </>
                 ) }
-                readOnly
+                readOnly={ readOnly }
             />
 
             <Field.Dropdown
@@ -301,7 +301,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 hint={ t(`${ I18N_TARGET_KEY }.NameIDType.hint`, {
                     productName: config.ui.productName
                 }) }
-                readOnly
+                readOnly={ readOnly }
             />
 
             <Field.Dropdown
@@ -319,7 +319,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 ) }
                 validate={ required }
                 hint={ t(`${ I18N_TARGET_KEY }.RequestMethod.hint`) }
-                readOnly
+                readOnly={ readOnly }
             />
             <div />
 
@@ -342,7 +342,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                                 })
                             }
                             listen={ (value: any) => setIsSLORequestAccepted(Boolean(value)) }
-                            readOnly
+                            readOnly={ readOnly }
                         />
                     </SectionRow>
                     <SectionRow>
@@ -359,7 +359,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             ) }
                             hint={ t(`${ I18N_TARGET_KEY }.IsLogoutEnabled.hint`) }
                             listen={ (value: any) => setIsLogoutEnabled(Boolean(value)) }
-                            readOnly
+                            readOnly={ readOnly }
                         />
                     </SectionRow>
                     <SectionRow>
@@ -387,7 +387,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                                     : undefined;
                             } }
                             hint={ t(`${ I18N_TARGET_KEY }.LogoutReqUrl.hint`) }
-                            readOnly
+                            readOnly={ readOnly }
                         />
                     </SectionRow>
                 </Grid>
@@ -409,7 +409,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                                 </FormInputLabel>
                             ) }
                             hint={ t(`${ I18N_TARGET_KEY }.IsAuthnRespSigned.hint`) }
-                            readOnly
+                            readOnly={ readOnly }
                         />
                     </SectionRow>
                     <SectionRow>
@@ -428,7 +428,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                                 productName: config.ui.productName
                             }) }
                             listen={ (checked: any) => setIsLogoutReqSigned(Boolean(checked)) }
-                            readOnly
+                            readOnly={ readOnly }
                         />
                     </SectionRow>
                     <SectionRow>
@@ -447,7 +447,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                                 productName: config.ui.productName
                             }) }
                             listen={ (value: any) => setIsAuthnReqSigned(Boolean(value)) }
-                            readOnly
+                            readOnly={ readOnly }
                         />
                     </SectionRow>
                     <SectionRow>
@@ -467,7 +467,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                                 </FormInputLabel>
                             ) }
                             validate={ getAlgorithmsDropdownFieldValidators() }
-                            readOnly
+                            readOnly={ readOnly }
                         />
                     </SectionRow>
                     <SectionRow>
@@ -487,7 +487,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                                 </FormInputLabel>
                             ) }
                             validate={ getAlgorithmsDropdownFieldValidators() }
-                            readOnly
+                            readOnly={ readOnly }
                         />
                     </SectionRow>
                 </Grid>
@@ -510,7 +510,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             ) }
                             hint={ t(`${ I18N_TARGET_KEY }.IncludeProtocolBinding.hint`) }
                             listen={ (value: any) => setIncludeProtocolBinding(Boolean(value)) }
-                            readOnly
+                            readOnly={ readOnly }
                         />
                     </SectionRow>
                     <SectionRow>
@@ -527,7 +527,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             ) }
                             hint={ t(`${ I18N_TARGET_KEY }.IsUserIdInClaims.hint`) }
                             listen={ (value: any) => setIsUserIdInClaims(Boolean(value)) }
-                            readOnly
+                            readOnly={ readOnly }
                         />
                     </SectionRow>
                     <SectionRow>
@@ -536,7 +536,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             label={ t(`${ I18N_TARGET_KEY }.commonAuthQueryParams.label`) }
                             ariaLabel={ t(`${ I18N_TARGET_KEY }.commonAuthQueryParams.ariaLabel`) }
                             name="commonAuthQueryParams"
-                            readOnly
+                            readOnly={ readOnly }
                         />
                     </SectionRow>
                 </Grid>
