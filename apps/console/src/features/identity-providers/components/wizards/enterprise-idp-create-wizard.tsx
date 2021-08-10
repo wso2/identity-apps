@@ -267,7 +267,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             ];
             // Certificates: bind the JWKS URL if exists otherwise pem
             identityProvider[ "certificate" ][ "jwksUri" ] = values.jwks_endpoint ?? EMPTY_STRING;
-            identityProvider[ "certificate" ][ "certificates" ] = [ pemString ?? EMPTY_STRING ];
+            identityProvider[ "certificate" ][ "certificates" ] = [ pemString ? btoa(pemString) : EMPTY_STRING ];
 
         } else {
 
@@ -295,8 +295,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     { key: "IsSLORequestAccepted", value: "true" }
                 ];
             }
-            identityProvider[ "certificate" ][ "certificates" ] = [ pemString ?? EMPTY_STRING ];
-
+            identityProvider[ "certificate" ][ "certificates" ] = [ pemString ? btoa(pemString) : EMPTY_STRING ];
+            
         }
 
         // Identity provider placeholder image.
@@ -720,7 +720,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         onChange={ (result) => {
                             setPastedPEMContent(result.pastedContent);
                             setSelectedCertificateFile(result.file);
-                            setPemString(result.serialized?.pemStripped);
+                            setPemString(result.serialized?.pem);
                             /**
                              * If there's pasted content or a file, but it hasn't been serialized
                              * and if it's not valid then we must disable the next button. This condition
