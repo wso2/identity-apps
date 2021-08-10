@@ -19,8 +19,11 @@
 import { CommonConfig } from "./models";
 
 export const commonConfig: CommonConfig = {
-    advancedSearchWithBasicFilters: {
+    AdvancedSearchWithBasicFilters: {
         enableQuerySearch: true
     },
-    checkForUIResourceScopes: false
+    checkForUIResourceScopes: false,
+    userEditSection: {
+        showEmail: true
+    }
 };

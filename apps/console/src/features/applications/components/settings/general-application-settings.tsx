@@ -313,9 +313,11 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 </>
-            )
-            : <ContentLoader/>
-    );
+            ) :
+                <EmphasizedSegment padded="very">
+                    <ContentLoader inline="centered" active/>
+                </EmphasizedSegment>  
+        );
 };
 
 /**

@@ -48,10 +48,10 @@ import React, {
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Label, List, SemanticICONS } from "semantic-ui-react";
+import { userstoresConfig } from "../../../extensions";
 import { FeatureConfigInterface, getEmptyPlaceholderIllustrations, history } from "../../core";
 import { getUserSessions, terminateAllUserSessions, terminateUserSession } from "../api";
 import { ApplicationSessionInterface, UserSessionInterface, UserSessionsInterface } from "../models";
-import { CONSUMER_USERSTORE } from "../../userstores";
 import { Show, AccessControlConstants } from "@wso2is/access-control";
 
 /**
@@ -293,18 +293,25 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
     };
 
     /**
-     * Returns username without the "CONSUMER" domain reference.
+     * Processes the username according to userstore configurations.
      *
-     * @param userName
-     * @return userName without CONSUMER domain name
+     * @param {string} applicationSubject
+     * @return {string}
      */
-    const getUserNameWithoutDomain = (userName: string): string => {
+    const getUsername = (applicationSubject: string): string => {
 
-        const splitComponents = userName.split("/");
-        if (splitComponents.length > 1 && splitComponents[0] === CONSUMER_USERSTORE) {
-            return splitComponents[1];
+        const splitComponents = applicationSubject.split("/");
+        let username = applicationSubject;
+
+        if (splitComponents.length > 1 && !userstoresConfig.userstoreDomain.appendToUsername) {
+            username = splitComponents[1];
         }
-        return userName;
+        if (username.split("@").length > 1) {
+
+            return username.split("@")[0].concat("@").concat(username.split("@")[1]);
+        }
+
+        return username.split("@")[0];
     };
 
     /**
@@ -428,7 +435,6 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                                 {
                                                     session.applications.map((application: ApplicationSessionInterface,
                                                                               index: number) => (
-
                                                         <List.Description className="pb-2" key={ index }>
                                                             <Label
                                                                 className="micro spaced-right"
@@ -443,14 +449,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                                                 }
                                                                 tOptions={ {
                                                                     app: application.appName,
-                                                                    user: getUserNameWithoutDomain(application.subject).
-                                                                    split("@").length > 1
-                                                                        ? getUserNameWithoutDomain(application.subject).
-                                                                        split("@")[ 0 ].concat("@")
-                                                                        .concat(getUserNameWithoutDomain(application.subject).
-                                                                        split("@")[ 1 ])
-                                                                        : getUserNameWithoutDomain(application.subject)
-                                                                            .split("@")[ 0 ]
+                                                                    user: getUsername(application.subject)
                                                                 } }
                                                             >
                                                                 { "Logged in on " }
@@ -548,7 +547,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                         "genericError.message"
                     )
                 }));
-            })
+            });
     };
 
     /**
@@ -725,7 +724,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                         showSessionTerminateConfirmationModal
                                         || showAllSessionsTerminateConfirmationModal
                                     }
-                                    assertion={ getUserNameWithoutDomain(user.userName) }
+                                    assertion={ getUsername(user.userName) }
                                     assertionHint={ (
                                         <p>
                                             <Trans
@@ -736,9 +735,9 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                                         : "console:manage.features.users.confirmations." +
                                                         "terminateAllSessions.assertionHint"
                                                 }
-                                                tOptions={ { name: getUserNameWithoutDomain(user.userName) } }
+                                                tOptions={ { name: getUsername(user.userName) } }
                                             >
-                                                Please type <strong>{ getUserNameWithoutDomain(user.userName) }</strong> to confirm.
+                                                Please type <strong>{ getUsername(user.userName) }</strong> to confirm.
                                             </Trans>
                                         </p>
                                     ) }

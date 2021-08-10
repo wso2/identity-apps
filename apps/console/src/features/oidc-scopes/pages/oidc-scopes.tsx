@@ -187,6 +187,8 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
                     featureConfig?.applications, featureConfig?.applications?.scopes?.create, allowedScopes))
                     ? (
                         <PrimaryButton
+                            disabled={ isScopesListRequestLoading }
+                            loading={ isScopesListRequestLoading }
                             onClick={ () => setShowWizard(true) }
                             data-testid={ `${ testId }-list-layout-add-button` }
                         >
@@ -201,7 +203,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
             data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
-                showTopActionPanel={ isScopesListRequestLoading || !(scopeList?.length == 0) }
+                showTopActionPanel={ (!isScopesListRequestLoading && !(scopeList?.length == 0)) }
                 listItemLimit={ listItemLimit }
                 showPagination={ false }
                 onPageChange={ () => null }

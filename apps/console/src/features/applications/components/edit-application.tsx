@@ -82,6 +82,7 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
      * Is the data still loading.
      */
     isLoading?: boolean;
+    setIsLoading?: any;
     /**
      * Callback to be triggered after deleting the application.
      */
@@ -119,6 +120,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         application,
         featureConfig,
         isLoading,
+        setIsLoading,
         getConfiguredInboundProtocolsList,
         getConfiguredInboundProtocolConfigs,
         onDelete,
@@ -604,6 +606,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 applicationTemplateId={ application.templateId }
                 extendedAccessConfig={ tabPaneExtensions !== undefined }
                 isLoading={ isLoading }
+                setIsLoading={ setIsLoading }
                 onUpdate={ handleApplicationUpdate }
                 onProtocolUpdate = { handleProtocolUpdate }
                 isInboundProtocolConfigRequestLoading={ isInboundProtocolConfigRequestLoading }

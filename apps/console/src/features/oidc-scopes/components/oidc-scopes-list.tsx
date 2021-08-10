@@ -30,7 +30,9 @@ import {
     AppAvatar,
     Code,
     ConfirmationModal,
+    ContentLoader,
     DataTable,
+    EmphasizedSegment,
     EmptyPlaceholder,
     LinkButton,
     PrimaryButton,
@@ -357,30 +359,36 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
     };
 
     return (
-        <>
-            <DataTable<OIDCScopesListInterface>
-                className="oidc-scopes-table"
-                externalSearch={ advancedSearch }
-                isLoading={ isLoading }
-                loadingStateOptions={ {
-                    count: defaultListItemLimit,
-                    imageType: "square"
-                } }
-                actions={ resolveTableActions() }
-                columns={ resolveTableColumns() }
-                data={ list }
-                onRowClick={
-                    (e: SyntheticEvent, scope: OIDCScopesListInterface): void => {
-                        handleOIDCScopesEdit(scope?.name);
-                        onListItemClick(e, scope);
-                    }
-                }
-                placeholders={ showPlaceholders() }
-                transparent={ !isLoading && (showPlaceholders() !== null) }
-                selectable={ selection }
-                showHeader={ false }
-                data-testid={ testId }
-            />
+        <> 
+            {
+                !isLoading?
+                    <DataTable<OIDCScopesListInterface>
+                        className="oidc-scopes-table"
+                        externalSearch={ advancedSearch }
+                        isLoading={ isLoading }
+                        loadingStateOptions={ {
+                            count: defaultListItemLimit,
+                            imageType: "square"
+                        } }
+                        actions={ resolveTableActions() }
+                        columns={ resolveTableColumns() }
+                        data={ list }
+                        onRowClick={
+                            (e: SyntheticEvent, scope: OIDCScopesListInterface): void => {
+                                handleOIDCScopesEdit(scope?.name);
+                                onListItemClick(e, scope);
+                            }
+                        }
+                        placeholders={ showPlaceholders() }
+                        transparent={ !isLoading && (showPlaceholders() !== null) }
+                        selectable={ selection }
+                        showHeader={ false }
+                        data-testid={ testId }
+                    /> :
+                    <EmphasizedSegment padded="very">
+                        <ContentLoader inline="centered" active/>
+                    </EmphasizedSegment>
+            }
             {
                 deletingScope && (
                     <ConfirmationModal

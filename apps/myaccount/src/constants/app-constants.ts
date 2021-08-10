@@ -171,7 +171,6 @@ export class AppConstants {
         .set("PROFILEINFO_EXPORT_PROFILE", "profileInfo.exportProfile")
         .set("PROFILEINFO_MOBILE_VERIFICATION", "profileInfo.mobileVerification")
         .set("SECURITY_CHANGE_PASSWORD", "security.changePassword")
-        .set("SECURITY_CREATE_PASSWORD", "security.createPassword")
         .set("SECURITY_ACCOUNT_RECOVERY", "security.accountRecovery")
         .set("SECURITY_ACCOUNT_RECOVERY_CHALLENGE_QUESTIONS", "security.accountRecovery.challengeQuestions")
         .set("SECURITY_ACCOUNT_RECOVERY_EMAIL_RECOVERY", "security.accountRecovery.emailRecovery")

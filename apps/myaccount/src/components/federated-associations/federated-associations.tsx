@@ -16,23 +16,17 @@
  * under the License.
  */
 
-import { ProfileConstants } from "@wso2is/core/constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { Button, Grid, Icon, List, Modal, Popup } from "semantic-ui-react";
 import { deleteFederatedAssociation, getFederatedAssociations } from "../../api/federated-associations";
 import { getSettingsSectionIcons } from "../../configs";
-import { commonConfig } from "../../extensions";
 import {
     AlertInterface,
-    AlertLevels, 
-    AuthStateInterface
+    AlertLevels
 } from "../../models";
 import { FederatedAssociation } from "../../models/federated-associations";
-import { AppState } from "../../store";
 import { SettingsSection, UserAvatar } from "../shared";
 
 /**
@@ -41,8 +35,6 @@ import { SettingsSection, UserAvatar } from "../shared";
  */
 interface FederatedAssociationsPropsInterface extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
-    disableExternalLoginsOnEmpty?: boolean;
-    enableNonLocalCredentialUserView?: boolean;
 }
 
 /**
@@ -53,18 +45,12 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
     props: FederatedAssociationsPropsInterface
 ): React.ReactElement => {
 
-    const {
-        onAlertFired,
-        disableExternalLoginsOnEmpty,
-        enableNonLocalCredentialUserView,
-        ["data-testid"]: testId
-    } = props;
+    const { onAlertFired, ["data-testid"]: testId } = props;
 
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [id, setId] = useState(null);
     const { t } = useTranslation();
     const [federatedAssociations, setFederatedAssociations] = useState<FederatedAssociation[]>([]);
-    const [showExternalLogins, setShowExternalLogins] = useState<boolean>(true);
 
     /**
      * This calls the `getFederatedAssociations` api call
@@ -97,17 +83,6 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
     useEffect(() => {
         getFederatedAssociationsList();
     }, []);
-
-    /**
-     * This sets flag to disable showing external logins section based on config.
-     */
-    useEffect(() => {
-        if (disableExternalLoginsOnEmpty) {
-            if (federatedAssociations) {
-                setShowExternalLogins(false);
-            }
-        }
-    }, [federatedAssociations]);
 
     /**
      * This function calls the `deleteFederatedAssociation` api call
@@ -215,30 +190,28 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
                                                     }
                                                 </List.Description>
                                             </Grid.Column>
-                                            { !enableNonLocalCredentialUserView &&
-                                                <Grid.Column width={ 5 } className="last-column">
-                                                    <List.Content floated="right">
-                                                        <Popup
-                                                            trigger={ (
-                                                                <Icon
-                                                                    link
-                                                                    className="list-icon"
-                                                                    size="small"
-                                                                    color="red"
-                                                                    name="trash alternate outline"
-                                                                    onClick={ () => {
-                                                                        setId(federatedAssociation.id);
-                                                                        setConfirmDelete(true);
-                                                                    } }
-                                                                />
-                                                            ) }
-                                                            inverted
-                                                            position="top center"
-                                                            content={ t("common:remove") }
-                                                        />
-                                                    </List.Content>
-                                                </Grid.Column>
-                                            }
+                                            <Grid.Column width={ 5 } className="last-column">
+                                                <List.Content floated="right">
+                                                    <Popup
+                                                        trigger={ (
+                                                            <Icon
+                                                                link
+                                                                className="list-icon"
+                                                                size="small"
+                                                                color="red"
+                                                                name="trash alternate outline"
+                                                                onClick={ () => {
+                                                                    setId(federatedAssociation.id);
+                                                                    setConfirmDelete(true);
+                                                                } }
+                                                            />
+                                                        ) }
+                                                        inverted
+                                                        position="top center"
+                                                        content={ t("common:remove") }
+                                                    />
+                                                </List.Content>
+                                            </Grid.Column>
                                         </Grid.Row>
                                     </Grid>
                                 </List.Item>
@@ -251,7 +224,7 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
     };
 
     return (
-        showExternalLogins &&
+        federatedAssociations.length > 0 &&
             <SettingsSection
                 data-testid={ `${testId}-settings-section` }
                 description={ t("myAccount:sections.federatedAssociations.description") }
@@ -274,6 +247,5 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
  * See type definitions in {@link FederatedAssociationsPropsInterface}
  */
 FederatedAssociations.defaultProps = {
-    "data-testid": "federated-associations",
-    disableExternalLoginsOnEmpty: commonConfig.personalInfoPage.externalLogins.disableExternalLoginsOnEmpty
+    "data-testid": "federated-associations"
 };

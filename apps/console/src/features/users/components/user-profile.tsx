@@ -48,6 +48,7 @@ import { AppConstants, AppState, FeatureConfigInterface, history } from "../../c
 import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../server-configurations";
 import { deleteUser, getUserDetails, updateUserInfo } from "../api";
 import { UserManagementConstants } from "../constants";
+import { commonConfig } from "../../../extensions";
 
 /**
  * Prop types for the basic details component.
@@ -69,6 +70,10 @@ interface UserProfilePropsInterface extends TestableComponentInterface, SBACInte
      * Show if the user is read only.
      */
     isReadOnly?: boolean;
+    /**
+     * Allow if the user is deletable.
+     */
+    allowDeleteOnly?: boolean;
     /**
      * Password reset connector properties
      */
@@ -102,6 +107,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         user,
         handleUserUpdate,
         isReadOnly,
+        allowDeleteOnly,
         featureConfig,
         connectorProperties,
         isReadOnlyUserStoresLoading,
@@ -638,14 +644,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             <>
                 {
                     (hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete,
-                        allowedScopes) && !isReadOnly &&
-                        (user.userName !== tenantAdmin || user.userName !== "admin") &&
-                        user.userName !== authenticatedUser) && (
+                        allowedScopes) && (!isReadOnly || allowDeleteOnly) &&
+                        !(user.userName === tenantAdmin || user.userName === "admin") &&
+                        !authenticatedUser.includes(user.userName)) && (
                         <DangerZoneGroup
                             sectionHeader={ t("console:manage.features.user.editUser.dangerZoneGroup.header") }
                         >
                             {
-                                configSettings?.accountDisable === "true" && (
+                                !allowDeleteOnly && configSettings?.accountDisable === "true" && (
                                     <DangerZone
                                         data-testid={ `${ testId }-danger-zone` }
                                         actionTitle={ t("console:manage.features.user.editUser.dangerZoneGroup." +
@@ -666,7 +672,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 )
                             }
                             {
-                                configSettings?.accountLock === "true" && (
+                                !allowDeleteOnly && configSettings?.accountLock === "true" && (
                                     <DangerZone
                                         data-testid={ `${ testId }-danger-zone` }
                                         actionTitle={ t("console:manage.features.user.editUser.dangerZoneGroup." +
@@ -764,7 +770,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 <Field
                     data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
                     name={ schema.name }
-                    label={ schema.name === "profileUrl" ? "Profile Image URL" : fieldName }
+                    label={ schema.name === "profileUrl" ? "Profile Image URL" :
+                        (  (!commonConfig.userEditSection.showEmail && schema.name === "userName")
+                                ? fieldName +" (Email)"
+                                : fieldName
+                        )
+                    }
                     required={ schema.required }
                     requiredErrorMessage={ fieldName + " " + "is required" }
                     placeholder={ "Enter your" + " " + fieldName }
@@ -821,7 +832,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         schema.name === "userName" && domainName.length > 1 ? (
                             <Form.Field>
                                 <label>
-                                    { fieldName }
+                                    { !commonConfig.userEditSection.showEmail
+                                        ? fieldName + " (Email)"
+                                        : fieldName
+                                    }
                                 </label>
                                 <Input
                                     data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
@@ -897,7 +911,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             || schema.name === ProfileConstants?.
                                                 SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_DISABLED")
                                             || schema.name === ProfileConstants?.
-                                                SCIM2_SCHEMA_DICTIONARY.get("ONETIME_PASSWORD"))
+                                                SCIM2_SCHEMA_DICTIONARY.get("ONETIME_PASSWORD")
+                                            || (!commonConfig.userEditSection.showEmail &&
+                                                schema.name === ProfileConstants?.
+                                                SCIM2_SCHEMA_DICTIONARY.get("EMAILS")))
                                             && isFieldDisplayable(schema)) {
                                             return (
                                                 generateProfileEditForm(schema, index)
