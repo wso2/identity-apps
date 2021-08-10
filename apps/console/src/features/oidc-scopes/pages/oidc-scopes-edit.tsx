@@ -471,7 +471,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                             minLength={ 3 }
                                             readOnly={ isReadOnly }
                                         />
-                                        <Show when={ AccessControlConstants.SCOPE_EDIT }>
+                                        { !isReadOnly &&
                                             <Field.Button
                                                 ariaLabel="submit"
                                                 size="small"
@@ -479,7 +479,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                                 label={ t("common:update") }
                                                 name="submit"
                                             />
-                                        </Show>
+                                        }
                                     </Form>
                                 ) : (
                                         <Placeholder>
