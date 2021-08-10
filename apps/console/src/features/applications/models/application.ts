@@ -298,6 +298,11 @@ export interface ApplicationTemplateGroupInterface {
      * Title for the sub template selection section inside the wizard.
      */
     subTemplatesSectionTitle?: string;
+    /**
+     * Template group identifier.
+     * ex: "traditional-web-application"
+    */
+    templateId?: string;
 }
 
 /**
