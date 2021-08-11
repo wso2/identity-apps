@@ -220,7 +220,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
         }
 
         eventPublisher.publish("application-click-create-new", {
-            "type": selected.name
+            "type": selected.templateId
         });
 
         setSelectedTemplate(selected);
@@ -410,7 +410,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                             primary
                             onClick={ () =>  {
                                 eventPublisher.publish("application-click-create-new", {
-                                    "type": "Custom Application"
+                                    "type": "custom-application"
                                 });
                                 
                                 setSelectedTemplate(CustomApplicationTemplate);

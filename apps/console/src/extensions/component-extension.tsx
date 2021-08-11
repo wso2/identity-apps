@@ -65,6 +65,7 @@ export const ComponentExtensionPlaceholder = (args: ComponentExtensionInterface)
             config.panes.map(pane => {
                 const DynamicLoader = lazy(() => import(`${ pane.path }`));
                 tabPanes.push({
+                    componentId: pane.componentid,
                     menuItem: I18n.instance.t(pane.title),
                     render: () => (
                         <ErrorBoundary

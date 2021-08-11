@@ -1,5 +1,6 @@
 {
     "id": "b9c5e11e-fc78-484b-9bec-015d247561b8",
+    "templateId": "oidc-web-application",
     "name": "OpenID Connect",
     "description": "Regular web application that uses redirection within the browser.",
     "image": "oidc",

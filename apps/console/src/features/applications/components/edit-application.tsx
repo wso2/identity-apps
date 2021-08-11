@@ -422,7 +422,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      */
      const handleTabChange = (e: SyntheticEvent, data: TabProps): void => {
         eventPublisher.publish("application-switch-edit-application-tabs", {
-            "menuItemName": data.panes[data.activeIndex].menuItem
+            "type": data.panes[data.activeIndex].componentId
         });
 
         handleActiveTabIndexChange(data.activeIndex as number);
@@ -729,6 +729,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_GENERAL_SETTINGS"))) {
 
                 panes.push({
+                    componentId: "general",
                     menuItem: t("console:develop.features.applications.edit.sections.general.tabName"),
                     render: GeneralApplicationSettingsTabPane
                 });
@@ -737,6 +738,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG"))) {
 
                 panes.push({
+                    componentId: "protocol",
                     menuItem: t("console:develop.features.applications.edit.sections.access.tabName"),
                     render: ApplicationSettingsTabPane
                 });
@@ -745,6 +747,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ATTRIBUTE_MAPPING"))) {
 
                 panes.push({
+                    componentId: "user-attributes",
                     menuItem: t("console:develop.features.applications.edit.sections.attributes.tabName"),
                     render: AttributeSettingTabPane
                 });
@@ -753,6 +756,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG"))) {
 
                 panes.push({
+                    componentId: "sign-in-method",
                     menuItem: t("console:develop.features.applications.edit.sections.signOnMethod.tabName"),
                     render: SignOnMethodsTabPane
                 });
@@ -763,6 +767,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))) {
 
                 panes.push({
+                    componentId: "provisioning",
                     menuItem: t("console:develop.features.applications.edit.sections.provisioning.tabName"),
                     render: ProvisioningSettingsTabPane
                 });
@@ -771,6 +776,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ADVANCED_SETTINGS"))) {
 
                 panes.push({
+                    componentId: "advanced",
                     menuItem: t("console:develop.features.applications.edit.sections.advanced.tabName"),
                     render: AdvancedSettingsTabPane
                 });
@@ -779,6 +785,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))) {
 
                 panes.push({
+                    componentId: "info",
                     menuItem: {
                         content: t("console:develop.features.applications.edit.sections.info.tabName"),
                         icon: "info circle grey"
@@ -792,30 +799,37 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
         return [
             {
+                componentId: "general",
                 menuItem: t("console:develop.features.applications.edit.sections.general.tabName"),
                 render: GeneralApplicationSettingsTabPane
             },
             {
+                componentId: "protocol",
                 menuItem: t("console:develop.features.applications.edit.sections.access.tabName"),
                 render: ApplicationSettingsTabPane
             },
             {
+                componentId: "user-attributes",
                 menuItem: t("console:develop.features.applications.edit.sections.attributes.tabName"),
                 render: AttributeSettingTabPane
             },
             {
+                componentId: "sign-in-method",
                 menuItem: t("console:develop.features.applications.edit.sections.signOnMethod.tabName"),
                 render: SignOnMethodsTabPane
             },
             applicationConfig.editApplication.showProvisioningSettings && {
+                componentId: "provisioning",
                 menuItem: t("console:develop.features.applications.edit.sections.provisioning.tabName"),
                 render: ProvisioningSettingsTabPane
             },
             {
+                componentId: "advanced",
                 menuItem: t("console:develop.features.applications.edit.sections.advanced.tabName"),
                 render: AdvancedSettingsTabPane
             },
             {
+                componentId: "info",
                 menuItem: {
                     content: t("console:develop.features.applications.edit.sections.info.tabName"),
                     icon: "info circle grey"

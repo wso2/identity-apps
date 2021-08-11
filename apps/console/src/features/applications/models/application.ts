@@ -247,6 +247,11 @@ export interface ApplicationTemplateListItemInterface {
      * ex: "web-application"
      */
     templateGroup?: string;
+    /**
+     * Template identifier.
+     * ex: "single-page-application"
+    */
+    templateId?: string;
     types?: any[];
     category?: string;
     displayOrder?: number;
@@ -293,6 +298,11 @@ export interface ApplicationTemplateGroupInterface {
      * Title for the sub template selection section inside the wizard.
      */
     subTemplatesSectionTitle?: string;
+    /**
+     * Template group identifier.
+     * ex: "traditional-web-application"
+    */
+    templateId?: string;
 }
 
 /**

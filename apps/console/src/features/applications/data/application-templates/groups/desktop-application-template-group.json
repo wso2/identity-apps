@@ -3,6 +3,7 @@
     "description": "Applications developed to target native desktops.",
     "enabled": true,
     "id": "desktop",
+    "templateId": "desktop-application",
     "displayOrder": 3,
     "image": "windowsNative",
     "name": "Desktop Application",
