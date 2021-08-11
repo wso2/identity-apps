@@ -24,7 +24,8 @@ export interface SCIMConfigInterface {
         core1Schema: string,
         coreSchema: string,
         enterpriseSchema: string,
-        userSchema: string
+        userSchema: string,
+        customEnterpriseSchema:string
     };
 
     scimEnterpriseUserClaimUri: {

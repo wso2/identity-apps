@@ -27,6 +27,7 @@ import { resolveUserProfileName } from "../helpers";
 import { InnerPageLayout } from "../layouts";
 import { AuthStateInterface } from "../models";
 import { AppState } from "../store";
+import {SCIMConfigs} from "../extensions/configs/scim";
 
 /**
  * Prop types for the overview page.
@@ -72,9 +73,11 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
             return;
         }
         // Verifies if the user is a user without local credentials.
-        if (!profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
+        if (!profileDetails?.profileInfo?.[SCIMConfigs.scim.customEnterpriseSchema]?.
             [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("LOCAL_CREDENTIAL_EXISTS")]) {
             setIsNonLocalCredentialUser(true);
+        } else {
+            setIsNonLocalCredentialUser(false);
         }
     }, [profileDetails?.profileInfo]);
 
@@ -83,7 +86,7 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
      */
     useEffect(() => {
         // Sets user's source of sign up if the user is a federated user.
-        const userSource = profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
+        const userSource = profileDetails?.profileInfo?.[SCIMConfigs.scim.customEnterpriseSchema]?.
             [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("IDP_TYPE")];
 
         if (isNonLocalCredentialUser && userSource) {

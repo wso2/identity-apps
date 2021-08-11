@@ -30,6 +30,7 @@ import { InnerPageLayout } from "../layouts";
 import { AlertInterface, AuthStateInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 import { addAlert } from "../store/actions";
+import {SCIMConfigs} from "../extensions/configs/scim";
 
 /**
  * Prop types for the basic details component.
@@ -73,9 +74,11 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
             return;
         }
         // Verifies if the user is a user without local credentials.
-        if (!profileDetails?.profileInfo?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.
+        if (!profileDetails?.profileInfo?.[SCIMConfigs.scim.customEnterpriseSchema]?.
             [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("LOCAL_CREDENTIAL_EXISTS")]) {
             setIsNonLocalCredentialUser(true);
+        } else {
+            setIsNonLocalCredentialUser(false);
         }
     }, [profileDetails?.profileInfo]);
 
