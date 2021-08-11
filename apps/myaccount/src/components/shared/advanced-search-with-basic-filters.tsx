@@ -281,7 +281,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                 value={ defaultSearchAttribute }
                                 data-testid={ `${ testId }-filter-attribute-dropdown` }
                             />
-                            <Form.Group widths=' equal '>
+                            <Form.Group widths="equal">
                                 <Field
                                     children={
                                         filterConditionOptions
