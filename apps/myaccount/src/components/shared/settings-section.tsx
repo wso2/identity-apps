@@ -19,8 +19,9 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon } from "@wso2is/react-components";
 import classNames from "classnames";
-import React, { Fragment, FunctionComponent, MouseEvent, PropsWithChildren } from "react";
-import { Card, Grid, Header, Icon, List, Menu, Message, Responsive, SemanticICONS } from "semantic-ui-react";
+import React, { Fragment, FunctionComponent, MouseEvent, PropsWithChildren, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Card, Dimmer, Grid, Header, Icon, List, Menu, Message, Responsive, SemanticICONS } from "semantic-ui-react";
 import { ThemeIconSizes } from "./icon";
 
 /**
@@ -30,7 +31,7 @@ import { ThemeIconSizes } from "./icon";
 interface SettingsSectionProps extends TestableComponentInterface {
     className?: string;
     contentPadding?: boolean;
-    description?: string;
+    description?: React.ReactNode;
     header: string;
     icon?: any;
     iconMini?: any;
@@ -48,6 +49,9 @@ interface SettingsSectionProps extends TestableComponentInterface {
     secondaryActionIcon?: SemanticICONS;
     showActionBar?: boolean;
     topActionBar?: React.ReactNode;
+    disabled?: boolean;
+    renderDisabledItemsAsGrayscale?: boolean;
+    overlayOpacity?: number;
 }
 
 /**
@@ -64,6 +68,7 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
         className,
         contentPadding,
         description,
+        disabled,
         header,
         icon,
         iconMini,
@@ -72,10 +77,12 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
         iconSize,
         onPrimaryActionClick,
         onSecondaryActionClick,
+        overlayOpacity,
         placeholder,
         primaryAction,
         primaryActionDisabled,
         primaryActionIcon,
+        renderDisabledItemsAsGrayscale,
         secondaryAction,
         secondaryActionDisabled,
         secondaryActionIcon,
@@ -84,9 +91,17 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
         topActionBar
     } = props;
 
-    const classes = classNames({
-        "with-top-action-bar": topActionBar !== undefined
-    }, className);
+    const classes = classNames(
+        {
+            "with-top-action-bar": topActionBar !== undefined,
+            disabled,
+            grayscale : disabled && renderDisabledItemsAsGrayscale
+        },
+        className);
+
+    const { t } = useTranslation();
+
+    const [ dimmerState, setDimmerState ] = useState<boolean>(false);
 
     /**
      * Construct the action element.
@@ -140,7 +155,21 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
     };
 
     return (
-        <Card className={ `settings-card ${ classes }` } fluid padded="very" data-testid={ `${testId}-card` }>
+        <Card
+            className={ `settings-card ${ classes }` }
+            fluid
+            padded="very"
+            onMouseEnter={ () => setDimmerState(true) }
+            onMouseLeave={ () => setDimmerState(false) }
+            data-testid={ `${testId}-card` }
+        >
+            {
+                disabled && (
+                    <Dimmer className="lighter" active={ dimmerState }>
+                        { t("common:featureAvailable" ) }
+                    </Dimmer>
+                )
+            }
             <Card.Content data-testid={ `${testId}-card-content` }>
                 <Grid>
                     <Grid.Row className="header-section" columns={ 2 } data-testid={ `${testId}-card-content-header` }>
@@ -231,7 +260,7 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
                                         ? `${testId}-card-primary-button` 
                                         : secondaryAction
                                         ? `${testId}-card-secondary-button`
-                                        : `${testId}-card-placeholder`}
+                                        : `${testId}-card-placeholder` }
                                     onKeyPress={ (e: KeyboardEvent) => {
                                         if (e.key !== "Enter") {
                                             return;
