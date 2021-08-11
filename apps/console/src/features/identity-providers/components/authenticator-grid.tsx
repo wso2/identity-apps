@@ -230,10 +230,10 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                 onUpdate();
                 dispatch(addAlert({
                     description: t("console:develop.features.authenticationProvider." +
-                        "notifications.deleteIDP.success.description"),
+                        "notifications.deleteConnection.success.description"),
                     level: AlertLevels.SUCCESS,
                     message: t("console:develop.features.authenticationProvider.notifications." +
-                        "deleteIDP.success.message")
+                        "deleteConnection.success.message")
                 }));
             })
             .catch((error) => {

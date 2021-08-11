@@ -3408,6 +3408,20 @@ export const console: ConsoleNS = {
                             message: "Delete successful"
                         }
                     },
+                    deleteConnection: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Connection Delete Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while deleting the connection.",
+                            message: "Connection Delete Error"
+                        },
+                        success: {
+                            description: "Successfully deleted the connection.",
+                            message: "Delete successful"
+                        }
+                    },
                     disableAuthenticator: {
                         error: {
                             description: "You cannot disable the default authenticator.",
