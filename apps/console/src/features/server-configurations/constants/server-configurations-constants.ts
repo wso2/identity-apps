@@ -306,6 +306,7 @@ export class ServerConfigurationsConstants {
 	public static readonly RECOVERY_LINK_PASSWORD_RESET: string = "Recovery.AdminPasswordReset.RecoveryLink";
 	public static readonly OTP_PASSWORD_RESET: string = "Recovery.AdminPasswordReset.OTP";
 	public static readonly OFFLINE_PASSWORD_RESET: string = "Recovery.AdminPasswordReset.Offline";
+	public static readonly ADMIN_FORCED_PASSWORD_RESET_EXPIRY_TIME: string = "Recovery.AdminPasswordReset.ExpiryTime";
 
 	/**
 	 * Extensions Constants.

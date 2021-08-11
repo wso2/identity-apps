@@ -6152,7 +6152,8 @@ export const console: ConsoleNS = {
                         hint: {
                             forceReset: "REMARQUE: Veuillez noter qu'après avoir invité l'utilisateur à réinitialiser " +
                                 "le mot de passe, l'utilisateur ne pourra plus se connecter à aucune application en " +
-                                "utilisant le mot de passe actuel.",
+                                "utilisant le mot de passe actuel. Le lien de réinitialisation du mot de passe sera " +
+                                "valide pendant {{codeValidityPeriod}} minutes.",
                             setPassword: "REMARQUE: veuillez noter qu'après avoir modifié le mot de passe, l'utilisateur ne " +
                                 "pourra plus se connecter à aucune application en utilisant le mot de passe actuel."
                         },

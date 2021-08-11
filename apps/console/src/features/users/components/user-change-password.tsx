@@ -150,6 +150,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
         return governanceConnectorProperties?.map((property, index) => {
             if (property?.name !== ServerConfigurationsConstants.ACCOUNT_DISABLE_INTERNAL_NOTIFICATION_MANAGEMENT
                 && property?.name !== ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE
+                && property?.name !== ServerConfigurationsConstants.ADMIN_FORCED_PASSWORD_RESET_EXPIRY_TIME
                 && property?.name !== ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION) {
 
                 return (
