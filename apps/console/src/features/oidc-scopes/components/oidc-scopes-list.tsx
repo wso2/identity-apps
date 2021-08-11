@@ -30,10 +30,9 @@ import {
     AppAvatar,
     Code,
     ConfirmationModal,
-    ContentLoader,
     DataTable,
-    EmphasizedSegment,
     EmptyPlaceholder,
+    GridLayout,
     LinkButton,
     PrimaryButton,
     TableActionsInterface,
@@ -361,7 +360,10 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
     return (
         <> 
             {
-                !isLoading?
+                <GridLayout
+                    isLoading={ isLoading }
+                    showTopActionPanel={ false }
+                >
                     <DataTable<OIDCScopesListInterface>
                         className="oidc-scopes-table"
                         externalSearch={ advancedSearch }
@@ -384,10 +386,8 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                         selectable={ selection }
                         showHeader={ false }
                         data-testid={ testId }
-                    /> :
-                    <EmphasizedSegment padded="very">
-                        <ContentLoader inline="centered" active/>
-                    </EmphasizedSegment>
+                    /> 
+                </GridLayout>
             }
             {
                 deletingScope && (
