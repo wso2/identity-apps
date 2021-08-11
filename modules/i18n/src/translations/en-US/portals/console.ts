@@ -1424,7 +1424,9 @@ export const console: ConsoleNS = {
                                 content: "The application has been revoked. Reactivate the application to allow " +
                                     "users to log in.",
                                 heading: "Application is inactive"
-                            }
+                            },
+                            customInvalidMessage: "Please enter a valid URI. Valid formats include HTTP, HTTPS, " +
+                                "or private-use URI scheme."
                         },
                         sections: {
                             accessToken: {

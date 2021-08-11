@@ -1338,7 +1338,9 @@ export const console: ConsoleNS = {
                                 content: "යෙදුම අවලංගු කර ඇත. ඔබට යෙදුම නැවත සක්‍රිය කිරීමට අවශ්‍ය නම් " +
                                     "කරුණාකර රහස ජනනය කරන්න.",
                                 heading: "යෙදුම අවලංගු කර ඇත"
-                            }
+                            },
+                            customInvalidMessage: "වලංගු URI එකක් ඇතුළු කරන්න. වලංගු ආකෘති වලට HTTP, HTTPS, හෝ " +
+                                "පුද්ගලික භාවිත URI යෝජනා ක්‍රමය ඇතුළත් වේ."
                         },
                         fields: {
                             allowedOrigins: {
