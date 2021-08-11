@@ -28,7 +28,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { attributeConfig } from "../../../../extensions";
-import { AppState } from "../../../core";
+import { AppState, EventPublisher } from "../../../core";
 import { AppConstants } from "../../../core/constants";
 import { history } from "../../../core/helpers";
 import { addDialect, addExternalClaim, addLocalClaim } from "../../api";
@@ -95,6 +95,8 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
     /**
      * Conditionally disable map attribute step
      * if there are no secondary user stores.
@@ -127,6 +129,8 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 
         addLocalClaim(data)
             .then((response) => {
+                eventPublisher.publish("manage-attribute-add-new-attribute");
+                
                 dispatch(addAlert(
                     {
                         description: t("console:manage.features.claims.local.notifications." +

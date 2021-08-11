@@ -66,6 +66,7 @@ import {
 import { getGeneralIcons } from "../../../../configs";
 import { AuthenticationStepInterface } from "../../../../models";
 import { EventPublisher } from "../../../../../core/utils";
+import kebabCase from "lodash-es/kebabCase";
 
 /**
  * Proptypes for the Add authenticator modal component.
@@ -254,7 +255,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
         selectedAuthenticators.forEach(element => {
             eventPublisher.publish("application-sign-in-method-add-new-authenticator", {
-                "authenticator": element["defaultAuthenticator"]["name"]
+                "type": kebabCase(element["defaultAuthenticator"]["name"])
             });
         });
 
