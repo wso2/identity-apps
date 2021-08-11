@@ -282,7 +282,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     { key: "SSOUrl", value: values.SSOUrl },
                     { key: "SelectMode", value: "Manual Configuration" },
                     { key: "IsUserIdInClaims", value: "true" },
-                    { key: "IsSLORequestAccepted", value: "true" },
+                    { key: "IsSLORequestAccepted", value: "false" },
                     { key: "SignatureAlgorithm", value: "RSA with SHA1" },
                     { key: "DigestAlgorithm", value: "SHA1" }
                 ];
@@ -292,7 +292,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     { key: "meta_data_saml", value: xmlBase64String ?? EMPTY_STRING },
                     { key: "SelectMode", value: "Metadata File Configuration" },
                     { key: "IsUserIdInClaims", value: "true" },
-                    { key: "IsSLORequestAccepted", value: "true" }
+                    { key: "IsSLORequestAccepted", value: "false" }
                 ];
             }
             identityProvider[ "certificate" ][ "certificates" ] = [ pemString ?? EMPTY_STRING ];
