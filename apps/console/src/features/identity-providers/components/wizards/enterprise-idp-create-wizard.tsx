@@ -31,8 +31,8 @@ import {
     SelectionCard,
     Steps,
     Switcher,
-    useWizardAlert,
-    XMLFileStrategy
+    XMLFileStrategy,
+    useWizardAlert
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -52,9 +52,9 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dimmer, Divider, Grid, Icon } from "semantic-ui-react";
-import { AppConstants, getCertificateIllustrations, ModalWithSidePanel, store } from "../../../core";
+import { AppConstants, ModalWithSidePanel, getCertificateIllustrations, store } from "../../../core";
 import { createIdentityProvider, getIdentityProviderList } from "../../api";
-import { getIdentityProviderWizardStepIcons, getIdPIcons } from "../../configs";
+import { getIdPIcons, getIdentityProviderWizardStepIcons } from "../../configs";
 import { IdentityProviderManagementConstants } from "../../constants";
 import {
     GenericIdentityProviderCreateWizardPropsInterface,
@@ -387,6 +387,12 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             if (isIdpNameAlreadyTaken(values.name)) {
                 errors.name = t("console:develop.features.authenticationProvider." +
                     "forms.generalDetails.name.validations.duplicate");
+            }
+            // We have the inputType "identifier" but however it has no
+            // effect because validate function is overridden by this function.
+            // So, we need re-check this manually.
+            if (!FormValidation.identifier(values.name)) {
+                errors.name = "Please enter a valid name";
             }
             setNextShouldBeDisabled(ifFieldsHave(errors));
             return errors;
