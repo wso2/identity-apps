@@ -30,6 +30,8 @@ import {
 } from "../../../models";
 import {
     composeValidators,
+    DEFAULT_NAME_ID_FORMAT,
+    DEFAULT_PROTOCOL_BINDING,
     fastSearch,
     getAvailableNameIDFormats,
     getAvailableProtocolBindingTypes,
@@ -123,13 +125,19 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
 
     const initialFormValues = useMemo<SamlPropertiesInterface>(() => {
 
-        const [ findPropVal ] = fastSearch(authenticator);
+        const [ findPropVal, findMeta ] = fastSearch(authenticator);
 
         return {
             DigestAlgorithm: findPropVal<string>({ defaultValue: "SHA1", key: "DigestAlgorithm" }),
             IdPEntityId: findPropVal<string>({ defaultValue: "", key: "IdPEntityId" }),
-            NameIDType: findPropVal<string>({ defaultValue: "", key: "NameIDType" }),
-            RequestMethod: findPropVal<string>({ defaultValue: "", key: "RequestMethod" }),
+            NameIDType: findPropVal<string>({
+                defaultValue: findMeta({ key: "NameIDType" })?.defaultValue ?? DEFAULT_NAME_ID_FORMAT,
+                key: "NameIDType"
+            }),
+            RequestMethod: findPropVal<string>({
+                defaultValue: findMeta({ key: "RequestMethod" })?.defaultValue ?? DEFAULT_PROTOCOL_BINDING,
+                key: "RequestMethod"
+            }),
             SPEntityId: findPropVal<string>({ defaultValue: "", key: "SPEntityId" }),
             SSOUrl: findPropVal<string>({ defaultValue: "", key: "SSOUrl" }),
             SignatureAlgorithm: findPropVal<string>({ defaultValue: "RSA with SHA1", key: "SignatureAlgorithm" }),
@@ -166,7 +174,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
         setIsAlgorithmsEnabled(ifEitherOneOfThemIsChecked);
     }, [ isLogoutReqSigned, isAuthnReqSigned ]);
 
-    const onFormSubmit = (values: { [ key: string ]: any }): void => {
+    const onFormSubmit = (values: { [key: string]: any }): void => {
         const manualOverride = {
             "IncludeProtocolBinding": includeProtocolBinding,
             "ISAuthnReqSigned": isAuthnReqSigned,
@@ -197,7 +205,9 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
     };
 
     return (
-        <Form onSubmit={ onFormSubmit } uncontrolledForm={ true } initialValues={ initialFormValues }>
+        <Form onSubmit={ onFormSubmit }
+              uncontrolledForm={ true }
+              initialValues={ formValues }>
 
             <Field.Input
                 required={ true }
@@ -288,6 +298,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 required={ true }
                 name="NameIDType"
                 value={ formValues?.NameIDType }
+                defaultValue={ formValues?.NameIDType }
                 placeholder={ t(`${ I18N_TARGET_KEY }.NameIDType.placeholder`) }
                 ariaLabel={ t(`${ I18N_TARGET_KEY }.NameIDType.ariaLabel`) }
                 data-testid={ `${ testId }-NameIDType-field` }
@@ -308,6 +319,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 required={ true }
                 name="RequestMethod"
                 value={ formValues?.RequestMethod }
+                defaultValue={ formValues?.RequestMethod }
                 placeholder={ t(`${ I18N_TARGET_KEY }.RequestMethod.placeholder`) }
                 ariaLabel={ t(`${ I18N_TARGET_KEY }.RequestMethod.ariaLabel`) }
                 data-testid={ `${ testId }-RequestMethod-field` }
@@ -321,7 +333,8 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 hint={ t(`${ I18N_TARGET_KEY }.RequestMethod.hint`) }
                 readOnly={ readOnly }
             />
-            <div />
+
+            <div/>
 
             <FormSection heading="Single Logout">
                 <Grid>
@@ -559,6 +572,9 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
 
 };
 
+/**
+ * Default properties for {@link SamlAuthenticatorSettingsForm}
+ */
 SamlAuthenticatorSettingsForm.defaultProps = {
     "data-testid": "saml-authenticator-settings-form"
 };
