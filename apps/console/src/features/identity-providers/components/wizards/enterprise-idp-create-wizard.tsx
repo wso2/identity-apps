@@ -392,7 +392,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             // effect because validate function is overridden by this function.
             // So, we need re-check this manually.
             if (!FormValidation.identifier(values.name)) {
-                errors.name = "Please enter a valid name";
+                errors.name = t("console:develop.features.authenticationProvider." +
+                    "templates.enterprise.validation.name");
             }
             setNextShouldBeDisabled(ifFieldsHave(errors));
             return errors;

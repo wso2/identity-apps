@@ -3642,6 +3642,15 @@ export const console: ConsoleNS = {
                     subtitles: "Veuillez ajouter des modèles à afficher ici.",
                     title: "Pas de modèles à afficher."
                 }
+            },
+            authenticationProvider: {
+                templates: {
+                    enterprise: {
+                        validation: {
+                            name: "Merci d'entrer un nom valide"
+                        }
+                    }
+                }
             }
         },
         notifications: {
