@@ -3419,7 +3419,7 @@ export const console: ConsoleNS = {
                         },
                         success: {
                             description: "Successfully deleted the connection.",
-                            message: "Delete successful"
+                            message: "Delete Successful"
                         }
                     },
                     disableAuthenticator: {
