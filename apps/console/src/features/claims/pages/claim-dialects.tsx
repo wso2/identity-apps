@@ -295,11 +295,11 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                     </Header>
                     <Divider hidden />
                     {
-                        oidcAttributeMappings.length > 0 && (
+                        oidcAttributeMappings?.length > 0 && (
                             <EmphasizedSegment 
                                 className="clickable"
                                 data-testid={ `${ testId }-oidc-dialect-container` }
-                                >
+                            >
                                 <List>
                                     <List.Item
                                         onClick={ () => {
@@ -366,7 +366,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                         )
                     }
                     {
-                        scimAttributeMappings.length > 0 && (
+                        scimAttributeMappings?.length > 0 && (
                             <EmphasizedSegment
                                 onClick={ () => {
                                     history.push(
@@ -427,7 +427,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                         )
                     }
                     {
-                        otherAttributeMappings.length > 0 && (
+                        otherAttributeMappings?.length > 0 && (
                             <EmphasizedSegment
                                 onClick={ () => {
                                     history.push(
