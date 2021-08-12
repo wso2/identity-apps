@@ -74,12 +74,13 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
             return;
         }
         // Verifies if the user is a user without local credentials.
-        if (!profileDetails?.profileInfo?.[SCIMConfigs.scim.customEnterpriseSchema]?.
-            [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("LOCAL_CREDENTIAL_EXISTS")]) {
+        const localCredentialExist = profileDetails?.profileInfo?.[SCIMConfigs.scim.customEnterpriseSchema]?.
+            [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("LOCAL_CREDENTIAL_EXISTS")];
+
+        if (localCredentialExist && localCredentialExist == "false") {
             setIsNonLocalCredentialUser(true);
-        } else {
-            setIsNonLocalCredentialUser(false);
         }
+
     }, [profileDetails?.profileInfo]);
 
 
