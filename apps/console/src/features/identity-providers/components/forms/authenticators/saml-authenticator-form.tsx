@@ -174,7 +174,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
         setIsAlgorithmsEnabled(ifEitherOneOfThemIsChecked);
     }, [ isLogoutReqSigned, isAuthnReqSigned ]);
 
-    const onFormSubmit = (values: { [key: string]: any }): void => {
+    const onFormSubmit = (values: { [ key: string ]: any }): void => {
         const manualOverride = {
             "IncludeProtocolBinding": includeProtocolBinding,
             "ISAuthnReqSigned": isAuthnReqSigned,

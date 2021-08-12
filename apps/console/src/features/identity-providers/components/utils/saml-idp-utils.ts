@@ -266,7 +266,7 @@ export const booleanSentAsAStringValue = (value: any): boolean => {
 };
 
 export type MinMaxLength = { max: number; min: number };
-export type FormErrors = { [key: string]: string };
+export type FormErrors = { [ key: string ]: string };
 
 export const SERVICE_PROVIDER_ENTITY_ID_LENGTH: MinMaxLength = { max: 240, min: 3 };
 export const SSO_URL_LENGTH: MinMaxLength = { max: 2048, min: 10 };
@@ -284,7 +284,7 @@ export const IDENTITY_PROVIDER_NAME_LENGTH: MinMaxLength = { max: 120, min: 3 };
  * @param errors {FormErrors}
  */
 export const ifFieldsHave = (errors: FormErrors): boolean => {
-    return !Object.keys(errors).every((k) => !errors[k]);
+    return !Object.keys(errors).every((k) => !errors[ k ]);
 };
 
 export const composeValidators = (...validators: any[]) => (value: string) => {
