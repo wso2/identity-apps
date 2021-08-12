@@ -1455,6 +1455,7 @@ export interface ConsoleNS {
                     };
                     deleteCertificate: Notification;
                     deleteIDP: Notification;
+                    deleteConnection: Notification;
                     disableAuthenticator: Notification;
                     disableOutboundProvisioningConnector: Notification;
                     duplicateCertificateUpload: Notification;
