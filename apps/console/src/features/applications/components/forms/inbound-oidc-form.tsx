@@ -1238,8 +1238,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             "callBackUrls.placeholder")
                                     }
                                     validationErrorMsg={
-                                        t("console:develop.features.applications.forms.inboundOIDC.fields." +
+                                        CustomApplicationTemplate?.id !== template?.id
+                                        ? t("console:develop.features.applications.forms.inboundOIDC.fields." +
                                             "callBackUrls.validations.invalid")
+                                        : t("console:develop.features.applications.forms.inboundOIDC.messages." +
+                                                "customInvalidMessage")
                                     }
                                     emptyErrorMessage={
                                         t("console:develop.features.applications.forms.inboundOIDC.fields." +

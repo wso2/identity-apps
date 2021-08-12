@@ -1440,10 +1440,12 @@ export const console: ConsoleNS = {
                         },
                         messages: {
                             revokeDisclaimer: {
-                                content: "விண்ணப்பம் ரத்து செய்யப்பட்டது. நீங்கள் பயன்பாட்டை மீண்டும் இயக்க விரும்பினால் " +
-                                    "ரகசியத்தை மீண்டும் உருவாக்கவும்.",
+                                content: "La demande a été révoquée. Réactivez l'application pour permettre " +
+                                    "aux utilisateurs de se connecter.",
                                 heading: "La demande est révoquée"
-                            }
+                            },
+                            customInvalidMessage: "Veuillez saisir un URI valide. Les formats valides incluent " +
+                                "HTTP, HTTPS ou le schéma d'URI à usage privé."
                         },
                         sections: {
                             accessToken: {

@@ -802,6 +802,7 @@ export interface ConsoleNS {
                         };
                         messages: {
                             revokeDisclaimer: Message;
+                            customInvalidMessage: string;
                         };
                     };
                     inboundSAML: {
