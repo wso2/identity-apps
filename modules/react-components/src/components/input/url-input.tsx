@@ -414,7 +414,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                 popupSubHeader={
                     <React.Fragment>
                         <Icon name={ positive ? "check" : "times" } color={ positive ? "green" : "red" }/>
-                        { origin !== "null" ? origin : href }
+                        { origin && origin !== "null" ? origin : href }
                     </React.Fragment>
                 }
                 popupContent={
