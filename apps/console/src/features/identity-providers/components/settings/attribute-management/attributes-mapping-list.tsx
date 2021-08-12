@@ -46,6 +46,7 @@ export interface AttributeMappingListProps extends TestableComponentInterface {
         oldMapping: IdentityProviderCommonClaimMappingInterface,
         mapping: IdentityProviderCommonClaimMappingInterface
     ) => void;
+    readOnly?: boolean;
 }
 
 export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> = (
@@ -57,7 +58,8 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
         attributeMappingsListToShow,
         onMappingDeleted,
         onMappingEdited,
-        noDataPlaceholder
+        noDataPlaceholder,
+        readOnly
     } = props;
 
     const [ editingMappings, setEditingMappings ] = useState<string[]>([]);
@@ -65,7 +67,7 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
     const createTableActions = (): TableActionsInterface[] => {
         return [ {
             hidden: ({ claim }: IdentityProviderCommonClaimMappingInterface) =>
-                editingMappings.includes(claim.id),
+                editingMappings.includes(claim.id) || readOnly,
             icon: (): SemanticICONS => "pencil alternate",
             onClick(e, mapping: IdentityProviderCommonClaimMappingInterface) {
                 setEditingMappings([ ...editingMappings, mapping.claim.id ]);
@@ -74,7 +76,7 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
             renderer: "semantic-icon"
         }, {
             hidden: ({ claim }: IdentityProviderCommonClaimMappingInterface) =>
-                editingMappings.includes(claim.id),
+                editingMappings.includes(claim.id) || readOnly,
             icon: (): SemanticICONS => "trash alternate",
             onClick: (e, mapping: IdentityProviderCommonClaimMappingInterface) => {
                 // In our interface, once user enter into editing mode they

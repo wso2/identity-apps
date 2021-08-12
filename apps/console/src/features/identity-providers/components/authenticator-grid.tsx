@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -37,7 +38,7 @@ import React, {
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Divider, Icon, List } from "semantic-ui-react";
 import { handleIDPDeleteError } from "./utils";
 import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "../../../extensions/configs";
@@ -45,6 +46,8 @@ import { getApplicationDetails } from "../../applications/api";
 import { ApplicationBasicInterface } from "../../applications/models";
 import {
     AppConstants,
+    AppState,
+    FeatureConfigInterface,
     getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
@@ -152,6 +155,9 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     ] = useState<boolean>(false);
     const [ isAppsLoading, setIsAppsLoading ] = useState<boolean>(true);
     const [ showCustomEditView, setShowCustomEditView ] = useState<boolean>(false);
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     /**
      * Redirects to the authenticator edit page when the edit button is clicked.
@@ -360,7 +366,11 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
                                         handleGridItemOnClick(e, authenticator);
                                     } }
-                                    onDelete={ () => handleAuthenticatorDeleteInitiation(authenticator.id) }
+                                    onDelete={ hasRequiredScopes(featureConfig?.identityProviders,
+                                        featureConfig?.identityProviders?.scopes?.delete, allowedScopes)
+                                        ? () => handleAuthenticatorDeleteInitiation(authenticator.id)
+                                        : null
+                                    }
                                     showActions={ true }
                                     showResourceEdit={ true }
                                     showResourceDelete={

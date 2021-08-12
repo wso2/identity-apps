@@ -180,12 +180,12 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         if (initializationFinished && claimConfigurations) {
             // Stop loader UI for SAML applications.
             if (selectedDialect.localDialect && availableClaims.length > 0) {
-                setUserAttributesLoading(false);   
+                setUserAttributesLoading(false);
             }
             //  Stop loader UI for OIDC and SP applications.
             if (!selectedDialect.localDialect && availableExternalClaims.length > 0) {
-                setUserAttributesLoading(false); 
-            }                
+                setUserAttributesLoading(false);
+            }
         }
     }, [availableClaims, availableExternalClaims, claimConfigurations, initializationFinished]);
 
@@ -428,7 +428,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     const handleOpenSelectionModal = () => {
         eventPublisher.publish("application-user-attribute-click-add");
-        
+
         setShowSelectionModal(true);
     };
 
@@ -939,7 +939,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                     </Segment>
                                 )
                         }
-                        { applicationConfig.attributeSettings.attributeSelection
+                        { !readOnly && applicationConfig.attributeSettings.attributeSelection
                             .showShareAttributesHint(selectedDialect)
                             ? (
                                 <Hint>

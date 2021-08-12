@@ -21,8 +21,7 @@ import { Code } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Checkbox, Icon, Input, Label, Popup, Table } from "semantic-ui-react";
+import { Checkbox, Icon, Input, Popup, Table } from "semantic-ui-react";
 import { ExtendedClaimMappingInterface } from "./attribute-settings";
 
 interface AttributeListItemPropInterface extends TestableComponentInterface {
@@ -71,7 +70,6 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         updateMapping,
         addToMapping,
         selectMandatory,
-        selectRequested,
         isDefaultMappingChanged,
         mapping,
         initialMandatory,
@@ -81,13 +79,10 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         readOnly,
         deleteAttribute,
         subject,
-        mappedURI,
         [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
-
-    const dispatch = useDispatch();
 
     const [mappingOn, setMappingOn] = useState(false);
     const [errorInClaimMapping, setErrorInClaimMapping] = useState(false);
@@ -175,7 +170,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                                     { name: displayName })
                             }
                             value={ mappingOn ? mappedAttribute : defaultMappedAttribute }
-                            onChange={ handleClaimMapping }
+                            onChange={ !readOnly && handleClaimMapping }
                             disabled={ !mappingOn }
                             readOnly={ readOnly }
                             required
@@ -194,9 +189,9 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                         (
                             <Checkbox
                                 checked={ initialMandatory || mandatory || subject }
-                                onClick={ handleMandatoryCheckChange }
+                                onClick={ !readOnly && handleMandatoryCheckChange }
                                 disabled={ mappingOn ? !requested : false }
-                                readOnly={ subject }
+                                readOnly={ subject || readOnly }
                             />
                         )
                     }
@@ -220,7 +215,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                     }
                 />
             </Table.Cell>
-            { deleteAttribute ? (
+            { !readOnly && deleteAttribute ? (
                 <Table.Cell textAlign="right">
                     <Popup
                         trigger={ (

@@ -2178,7 +2178,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 updateCertFinalValue={ setFinalCertValue }
                 updateCertType={ setSelectedCertType }
                 certificate={ certificate }
-                readOnly={ false }
+                readOnly={ readOnly }
                 hidden={ isSPAApplication || !(applicationConfig.inboundOIDCForm.showCertificates) }
                 isRequired={ true }
                 triggerSubmit={ triggerCertSubmit }
@@ -2754,7 +2754,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     { showReactiveConfirmationModal && renderReactivateConfirmationModal() }
                     { showLowExpiryTimesConfirmationModal && lowExpiryTimesConfirmationModal }
                 </Forms>
-            ) : 
+            ) :
             <Container>
                 <ContentLoader inline="centered" active/>
             </Container>
