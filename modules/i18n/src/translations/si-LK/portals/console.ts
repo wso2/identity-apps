@@ -3590,6 +3590,15 @@ export const console: ConsoleNS = {
                     subtitles: "කරුණාකර මෙහි පෙන්වීමට සැකිලි එක් කරන්න.",
                     title: "පෙන්වීමට සැකිලි නොමැත."
                 }
+            },
+            authenticationProvider: {
+                templates: {
+                    enterprise: {
+                        validation: {
+                            name: "වලංගු නමක් ඇතුළත් කරන්න"
+                        }
+                    }
+                }
             }
         },
         notifications: {

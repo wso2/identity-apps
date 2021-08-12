@@ -3964,6 +3964,11 @@ export const console: ConsoleNS = {
                     quickSetup: {
                         heading: "Quick Setup",
                         subHeading: "Predefined set of templates to speed up your identity provider creation."
+                    },
+                    enterprise: {
+                        validation: {
+                            name: "Please enter a valid name"
+                        }
                     }
                 },
                 wizards: {

@@ -49,6 +49,8 @@ export const getAvailableNameIDFormats = (): Array<SamlIdPListItemOption> => {
     }));
 };
 
+export const DEFAULT_NAME_ID_FORMAT = "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified";
+
 /**
  * Returns the supported protocol binding types.
  */
@@ -59,6 +61,8 @@ export const getAvailableProtocolBindingTypes = (): Array<SamlIdPListItemOption>
         { key: 3, text: "As Per Request", value: "as_request" }
     ];
 };
+
+export const DEFAULT_PROTOCOL_BINDING = "redirect";
 
 /**
  * From this point onwards we have some metadata mapping functions.
@@ -181,7 +185,7 @@ type FindMetaFunction = (args: FindMetaArgs) => CommonPluggableComponentMetaProp
  *
  * Why? to do a faster search we need a constant access time data structure to
  * find the current value by key. This is because `data.properties` is a array of
- * object { key, value } pairs which makes find operation exhaustive (looping)
+ * object { key, value } pairs which makes find operation exhaustive
  * when dealing with larger objects.
  *
  * Usage:
@@ -212,21 +216,25 @@ export const fastSearch = (
          *
          * @param key {string}
          * @param defaultValue {T}
-         */
-        <T>({ key, defaultValue }: FindPropValArgs<T>): T => {
+         */<T>({ key, defaultValue }: FindPropValArgs<T>): T => {
             if (propertyMap.has(key)) {
                 const value = propertyMap.get(key);
-                if (booleanSentAsAStringValue(value)) {
+                if (metadataMap.get(key)?.type === "BOOLEAN" &&
+                    booleanSentAsAStringValue(value)) {
                     return (castToBool(value) as unknown) as T;
                 }
+                if (!value)
+                    return defaultValue;
+
                 return value;
             }
             return defaultValue;
         },
-        ({ key }: FindMetaArgs) => {
+        ({ key }: FindMetaArgs): CommonPluggableComponentMetaPropertyInterface | null => {
             if (metadataMap.has(key)) {
                 return metadataMap.get(key);
             }
+
             return null;
         }
     ];
