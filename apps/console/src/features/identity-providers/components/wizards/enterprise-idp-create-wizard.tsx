@@ -394,7 +394,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             <Field.Input
                 data-testid={ `${ testId }-form-wizard-idp-name` }
                 ariaLabel="name"
-                inputType="name"
+                inputType="identifier"
                 name="name"
                 placeholder="Enter a name for the identity provider"
                 label="Identity provider name"
