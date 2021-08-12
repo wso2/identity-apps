@@ -6491,10 +6491,11 @@ export const console: ConsoleNS = {
                         editRoles: {
                             confirmationModal: {
                                 assertionHint: "Veuillez confirmer votre action.",
-                                content: "Si aucun rôle n'est sélectionné, l'utilisateur ne pourra pas se connecter " +
-                                    "à la console. Veuillez procéder avec prudence.",
+                                content: "La modification du rôle entraînera pour l'utilisateur soit la perte de " +
+                                    "l'accès, soit l'accès à certaines fonctionnalités. " +
+                                    "Veuillez procéder avec prudence.",
                                 header: "Êtes-vous sûr?",
-                                message: "Cette action supprimera tous les rôles associés à cet utilisateur."
+                                message: "Cette action modifiera le rôle de cet utilisateur."
                             },
                             heading: "Rôles assignés",
                             popups: {

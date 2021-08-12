@@ -7755,10 +7755,10 @@ export const console: ConsoleNS = {
                         editRoles: {
                             confirmationModal: {
                                 assertionHint: "Please confirm your action.",
-                                content: "If a role is not selected, the user will not be able to log in to Console. " +
-                                    "Please proceed with caution.",
+                                content: "Modifying the role will result in the user either losing " +
+                                    "or gaining access to certain features. Please proceed with caution.",
                                 header: "Are you sure?",
-                                message: "This action will remove all the roles associated with this user."
+                                message: "This action will modify the role of this user."
                             },
                             heading: "Assigned Roles",
                             popups: {
