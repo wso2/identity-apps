@@ -218,9 +218,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     if (user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId) {
                         subHeader = user.emails[0]
                             ? user.emails[0]
-                            : user.userName.split("/")?.length > 1
-                                ? user.userName.split("/")[ 1 ]
-                                : user.userName.split("/")[ 0 ];
+                            : user.id;
 
                         header = (user.name && user.name.givenName !== undefined)
                             ? user.name.givenName + " " + (user.name.familyName ? user.name.familyName : "")
