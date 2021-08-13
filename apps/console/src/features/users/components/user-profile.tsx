@@ -44,6 +44,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Icon, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
+import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
 import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../server-configurations";
 import { deleteUser, getUserDetails, updateUserInfo } from "../api";
@@ -1055,7 +1056,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             { t("console:manage.features.user.disableUser.confirmationModal.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
-                            { t("console:manage.features.user.disableUser.confirmationModal.content") }
+                            {
+                                deletingUser[SCIMConfigs.scim.enterpriseSchema]?.userSourceId
+                                    ? t("console:manage.features.user.deleteJITUser.confirmationModal.content")
+                                    : t("console:manage.features.user.deleteUser.confirmationModal.content")
+                            }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

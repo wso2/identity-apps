@@ -7270,6 +7270,13 @@ export const console: ConsoleNS = {
                 searchPlaceholder: "Search {{type}}"
             },
             user: {
+                deleteJITUser: {
+                    confirmationModal: {
+                        content: "If you delete this user, the user will not be able to log in to My Account or any " +
+                            "other application to which the user was subscribed to until the next time the user " +
+                            "signs in using a social login option."
+                    }
+                },
                 deleteUser: {
                     confirmationModal: {
                         assertionHint: "Please confirm your action.",

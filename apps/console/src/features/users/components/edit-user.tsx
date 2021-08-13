@@ -28,6 +28,7 @@ import { UserGroupsList } from "./user-groups-edit";
 import { UserProfile } from "./user-profile";
 import { UserRolesList } from "./user-roles-edit";
 import { UserSessions } from "./user-sessions";
+import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { FeatureConfigInterface } from "../../core/models";
 import { AppState } from "../../core/store";
 import { ConnectorPropertyInterface } from "../../server-configurations/models";
@@ -95,6 +96,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         if (!isFeatureEnabled(featureConfig?.users, UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
             || readOnlyUserStores?.includes(userStore?.toString())
             || !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
+            || user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId
         ) {
             setReadOnly(true);
         }
