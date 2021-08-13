@@ -938,7 +938,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                 )
                             }
                         </Grid>
-                        ) : <ContentLoader inline="centered" active/>
+                        ) : null
                     }
                 </EmphasizedSegment> 
             ) :
