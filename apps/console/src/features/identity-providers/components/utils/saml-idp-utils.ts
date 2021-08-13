@@ -29,27 +29,28 @@ type SamlIdPListItemOption = {
     value: string;
 };
 
+export const supportedSchemes: string[] = [
+    "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
+    "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+    "urn:oasis:names:tc:SAML:2.0:nameid-format:entity",
+    "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
+    "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
+    "urn:oasis:names:tc:SAML:2.0:nameid-format:encrypted",
+    "urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName",
+    "urn:oasis:names:tc:SAML:1.1:nameid-format:WindowsDomainQualifiedName",
+    "urn:oasis:names:tc:SAML:2.0:nameid-format:kerberos"
+];
+
+export const DEFAULT_NAME_ID_FORMAT = "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified";
+
 /**
  * Returns the available nameid formats with the correct urn scheme.
  */
 export const getAvailableNameIDFormats = (): Array<SamlIdPListItemOption> => {
-    const schemes: string[] = [
-        "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
-        "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
-        "urn:oasis:names:tc:SAML:2.0:nameid-format:entity",
-        "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
-        "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
-        "urn:oasis:names:tc:SAML:2.0:nameid-format:encrypted",
-        "urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName",
-        "urn:oasis:names:tc:SAML:1.1:nameid-format:WindowsDomainQualifiedName",
-        "urn:oasis:names:tc:SAML:2.0:nameid-format:kerberos"
-    ];
-    return schemes.map((scheme: string, index: number) => ({
+    return supportedSchemes.map((scheme: string, index: number) => ({
         key: index, text: scheme, value: scheme
     }));
 };
-
-export const DEFAULT_NAME_ID_FORMAT = "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified";
 
 /**
  * Returns the supported protocol binding types.
