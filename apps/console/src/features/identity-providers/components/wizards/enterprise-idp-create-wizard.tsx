@@ -62,6 +62,7 @@ import {
     StrictIdentityProviderInterface
 } from "../../models";
 import { handleGetIDPListCallError } from "../utils";
+import { getAvailableNameIDFormats, getAvailableProtocolBindingTypes } from "../utils/saml-idp-utils";
 
 /**
  * Proptypes for the enterprise identity provider
@@ -186,33 +187,6 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 title: "Certificates"
             }
         ] as WizardStepInterface[];
-    };
-
-    const getAvailableNameIDFormats = () => {
-
-        const schemes = [
-            "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
-            "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
-            "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
-            "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
-            "urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName",
-            "urn:oasis:names:tc:SAML:1.1:nameid-format:WindowsDomainQualifiedName",
-            "urn:oasis:names:tc:SAML:2.0:nameid-format:kerberos",
-            "urn:oasis:names:tc:SAML:2.0:nameid-format:entity"
-        ];
-
-        return schemes.map((scheme: string, index: number) => ({
-            key: index, text: scheme, value: scheme
-        }));
-
-    };
-
-    const getAvailableProtocolBindingTypes = () => {
-        return [
-            { key: 1, text: "HTTP Redirect", value: "redirect" },
-            { key: 2, text: "HTTP Post", value: "post" },
-            { key: 3, text: "As Per Request", value: "as_request" }
-        ];
     };
 
     const isIdpNameAlreadyTaken = (userInput: string): boolean => {
