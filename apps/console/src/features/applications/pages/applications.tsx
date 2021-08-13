@@ -360,14 +360,13 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         onApplicationDelete={ handleApplicationDelete }
                         onEmptyListPlaceholderActionClick={
                             () => {
-                                eventPublisher.publish("application-click-new-application-button");
-                            
                                 history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
                             }
                         }
                         onSearchQueryClear={ handleSearchQueryClear }
                         searchQuery={ searchQuery }
                         data-testid={ `${ testId }-list` }
+                        data-componentid="application"
                     />
                 </ListLayout>
                 { showWizard && (

@@ -16,7 +16,11 @@
  * under the License.
  */
 
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    AlertLevels,
+    IdentifiableComponentInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { GenericIcon, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
@@ -27,7 +31,13 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, Header } from "semantic-ui-react";
 import { OidcAuthenticationWizardFrom } from "./oidc-authentication-wizard-page";
-import { AppConstants, AppState, ModalWithSidePanel, store } from "../../../../features/core";
+import {
+    AppConstants,
+    AppState,
+    EventPublisher,
+    ModalWithSidePanel,
+    store
+} from "../../../../features/core";
 import {
     createIdentityProvider,
     getFederatedAuthenticatorMetadata
@@ -46,7 +56,7 @@ import {
  * Proptypes for the identity provider creation wizard component.
  */
 interface MinimalAuthenticationProviderCreateWizardPropsInterface extends TestableComponentInterface,
-    GenericIdentityProviderCreateWizardPropsInterface { }
+    GenericIdentityProviderCreateWizardPropsInterface, IdentifiableComponentInterface { }
 
 /**
  * Identity provider creation wizard component.
@@ -65,7 +75,8 @@ export const OidcAuthenticationProviderCreateWizard: FunctionComponent<MinimalAu
         title,
         subTitle,
         template,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        [ "data-componentid" ]: componentId
     } = props;
 
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
@@ -88,6 +99,8 @@ export const OidcAuthenticationProviderCreateWizard: FunctionComponent<MinimalAu
     const [ wizStep, setWizStep ] = useState<number>(0);
     const [ totalStep, setTotalStep ] = useState<number>(0);
 
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
     /**
      * Creates a new identity provider.
      *
@@ -98,6 +111,10 @@ export const OidcAuthenticationProviderCreateWizard: FunctionComponent<MinimalAu
         // identityProvider.templateId = template.id
         createIdentityProvider(identityProvider)
             .then((response) => {
+                eventPublisher.publish("connections-finish-adding-connection", {
+                    "type": componentId
+                });
+
                 dispatch(addAlert({
                     description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
                         "success.description"),
@@ -398,5 +415,6 @@ export const OidcAuthenticationProviderCreateWizard: FunctionComponent<MinimalAu
  */
 OidcAuthenticationProviderCreateWizard.defaultProps = {
     currentStep: 1,
+    "data-componentid": "oidc-idp",
     "data-testid": "idp-edit-idp-create-wizard"
 };

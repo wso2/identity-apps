@@ -47,6 +47,7 @@ import { ApplicationBasicInterface } from "../../applications/models";
 import {
     AppConstants,
     AppState,
+    EventPublisher,
     FeatureConfigInterface,
     getEmptyPlaceholderIllustrations,
     history
@@ -158,6 +159,8 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     /**
      * Redirects to the authenticator edit page when the edit button is clicked.
@@ -360,9 +363,38 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                     onEdit={ (e: MouseEvent<HTMLButtonElement>) => {
                                         // If edit flow override is defined, set the custom edit view flag to true.
                                         if (authenticatorConfig?.editFlowOverrides) {
+                                            eventPublisher.publish("connections-click-template-connect", { "type":
+                                                isIdP 
+                                                    ? AuthenticatorMeta.getAuthenticatorTemplateName(
+                                                        (authenticator as IdentityProviderInterface)
+                                                            .federatedAuthenticators?.defaultAuthenticatorId)
+                                                        ? AuthenticatorMeta.getAuthenticatorTemplateName(
+                                                            (authenticator as IdentityProviderInterface)
+                                                                .federatedAuthenticators?.defaultAuthenticatorId) 
+                                                        : "other"
+                                                    : AuthenticatorMeta.getAuthenticatorTemplateName(authenticator.id)
+                                                        ? AuthenticatorMeta
+                                                            .getAuthenticatorTemplateName(authenticator.id) 
+                                                        : ""
+                                            });
+
                                             setShowCustomEditView(true);
                                             return;
                                         }
+
+                                        eventPublisher.publish("connections-click-template-setup", { "type":
+                                            isIdP 
+                                                ? AuthenticatorMeta.getAuthenticatorTemplateName(
+                                                    (authenticator as IdentityProviderInterface)
+                                                        .federatedAuthenticators?.defaultAuthenticatorId)
+                                                    ? AuthenticatorMeta.getAuthenticatorTemplateName(
+                                                        (authenticator as IdentityProviderInterface)
+                                                            .federatedAuthenticators?.defaultAuthenticatorId) 
+                                                    : "other"
+                                                : AuthenticatorMeta.getAuthenticatorTemplateName(authenticator.id)
+                                                    ? AuthenticatorMeta.getAuthenticatorTemplateName(authenticator.id) 
+                                                    : ""
+                                        });
 
                                         handleGridItemOnClick(e, authenticator);
                                     } }

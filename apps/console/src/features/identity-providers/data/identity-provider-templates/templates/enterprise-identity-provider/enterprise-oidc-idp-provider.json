@@ -91,5 +91,6 @@
     "image": "oidc",
     "name": "OpenID Connect",
     "services": [],
-    "disabled": false
+    "disabled": false,
+    "templateId": "enterprise-oidc-idp"
 }

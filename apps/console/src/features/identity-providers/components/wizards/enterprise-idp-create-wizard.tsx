@@ -16,7 +16,11 @@
  * under the License.
  */
 
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { 
+    AlertLevels,
+    IdentifiableComponentInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Wizard2, WizardPage } from "@wso2is/form";
 import {
@@ -37,6 +41,7 @@ import {
 import { FormValidation } from "@wso2is/validation";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
+import kebabCase from "lodash-es/kebabCase";
 
 import React, {
     FC,
@@ -52,7 +57,13 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dimmer, Divider, Grid, Icon } from "semantic-ui-react";
-import { AppConstants, ModalWithSidePanel, getCertificateIllustrations, store } from "../../../core";
+import { 
+    AppConstants,
+    EventPublisher,
+    ModalWithSidePanel,
+    getCertificateIllustrations,
+    store
+} from "../../../core";
 import { createIdentityProvider, getIdentityProviderList } from "../../api";
 import { getIdPIcons, getIdentityProviderWizardStepIcons } from "../../configs";
 import { IdentityProviderManagementConstants } from "../../constants";
@@ -68,7 +79,7 @@ import { handleGetIDPListCallError } from "../utils";
  * creation wizard component.
  */
 interface EnterpriseIDPCreateWizardProps extends TestableComponentInterface,
-    GenericIdentityProviderCreateWizardPropsInterface {
+    GenericIdentityProviderCreateWizardPropsInterface, IdentifiableComponentInterface {
 }
 
 /**
@@ -108,7 +119,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         title,
         subTitle,
         template,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        [ "data-componentid" ]: componentId
     } = props;
 
     const wizardRef = useRef(null);
@@ -134,6 +146,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
+
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     useEffect(() => {
         setIsIDPListLoading(true);
@@ -316,6 +330,10 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
         createIdentityProvider(identityProvider)
             .then((response) => {
+                eventPublisher.publish("connections-finish-adding-connection", {
+                    "type": componentId + "-" + kebabCase(selectedProtocol)
+                });
+
                 dispatch(addAlert({
                     description: t("console:develop.features.authenticationProvider.notifications." +
                         "addIDP.success.description"),
@@ -946,6 +964,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
  */
 EnterpriseIDPCreateWizard.defaultProps = {
     currentStep: 0,
+    "data-componentid": "enterprise-idp",
     "data-testid": "enterprise-idp-create-wizard"
 };
 
