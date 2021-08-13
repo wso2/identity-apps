@@ -119,7 +119,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const [ appList, setAppList ] = useState<ApplicationListInterface>({});
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
-    const [ isApplicationListRequestLoading, setApplicationListRequestLoading ] = useState<boolean>(true);
+    const [ isApplicationListRequestLoading, setApplicationListRequestLoading ] = useState<boolean>(false);
+    const [ isLoading, setLoading ] = useState<boolean>(true);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
@@ -169,6 +170,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             })
             .finally(() => {
                 setApplicationListRequestLoading(false);
+                setLoading(false);
             });
     };
 
@@ -253,7 +255,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     return (
         <PageLayout
             action={
-                (!isApplicationListRequestLoading && !(!searchQuery && appList?.totalResults <= 0))
+                (!isLoading && !(!searchQuery && appList?.totalResults <= 0))
                 && (
                     <Show when={ AccessControlConstants.APPLICATION_WRITE }>
                         <PrimaryButton
@@ -276,7 +278,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             description={ t("console:develop.pages.applications.subTitle") }
             data-testid={ `${ testId }-page-layout` }
         >
-        { !isApplicationListRequestLoading? (
+        { !isLoading? (
             <>
                 { renderRemoteFetchStatus() }
                 <ListLayout
@@ -389,7 +391,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             </> 
             ) : (
                 <GridLayout
-                    isLoading={ isApplicationListRequestLoading }
+                    isLoading={ isLoading }
                 />
             )
         }
