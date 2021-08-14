@@ -47,10 +47,9 @@ import { ChangePasswordComponent } from "./user-change-password";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
 import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../server-configurations";
-import { deleteUser, getUserDetails, updateUserInfo } from "../api";
+import { getUserDetails, updateUserInfo } from "../api";
 import { UserManagementConstants } from "../constants";
-import { commonConfig } from "../../../extensions";
-
+import { commonConfig,userConfig} from "../../../extensions";
 /**
  * Prop types for the basic details component.
  */
@@ -314,10 +313,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     /**
      * This function handles deletion of the user.
      *
-     * @param userId
+     * @param deletingUser
      */
-    const handleUserDelete = (userId: string): void => {
-        deleteUser(userId)
+    const handleUserDelete = (deletingUser: ProfileInfoInterface): void => {
+        userConfig.deleteUser(deletingUser)
             .then(() => {
                 onAlertFired({
                     description: t(
@@ -984,7 +983,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             setShowDeleteConfirmationModal(false);
                             setAlert(null);
                         } }
-                        onPrimaryActionClick={ (): void => handleUserDelete(deletingUser.id) }
+                        onPrimaryActionClick={ (): void => handleUserDelete(deletingUser) }
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
