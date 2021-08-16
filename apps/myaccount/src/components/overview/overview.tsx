@@ -54,7 +54,7 @@ export const Overview: FunctionComponent<OverviewPropsInterface> = (
 
     /**
      * Profile status widget with link to profile.
-     * @param widthComputer
+     * @param {SemanticWIDTHS} widthComputer - Width for the computer screens.
      * @param widthMobile
      */
     const profileStatus = (widthComputer, widthMobile): React.ReactElement => {
