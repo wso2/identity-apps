@@ -45,7 +45,7 @@ import { InnerPageLayout } from "../layouts";
 import { AlertInterface, AuthStateInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 import { addAlert } from "../store/actions";
-import {SCIMConfigs} from "../extensions/configs/scim";
+import { SCIMConfigs } from "../extensions/configs/scim";
 
 /**
 * Prop types for the Account Security page.

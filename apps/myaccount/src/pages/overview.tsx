@@ -27,7 +27,7 @@ import { resolveUserProfileName } from "../helpers";
 import { InnerPageLayout } from "../layouts";
 import { AuthStateInterface } from "../models";
 import { AppState } from "../store";
-import {SCIMConfigs} from "../extensions/configs/scim";
+import { SCIMConfigs } from "../extensions/configs/scim";
 
 /**
  * Prop types for the overview page.
