@@ -49,7 +49,7 @@ import { AppConstants, AppState, FeatureConfigInterface, history } from "../../c
 import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../server-configurations";
 import { getUserDetails, updateUserInfo } from "../api";
 import { UserManagementConstants } from "../constants";
-import { commonConfig,userConfig} from "../../../extensions";
+import { commonConfig,userConfig } from "../../../extensions";
 /**
  * Prop types for the basic details component.
  */
