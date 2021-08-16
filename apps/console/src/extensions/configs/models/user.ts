@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { ProfileInfoInterface } from "@wso2is/core/models";
 
 export interface User {
