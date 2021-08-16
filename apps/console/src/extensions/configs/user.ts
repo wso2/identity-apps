@@ -18,7 +18,7 @@
 
 import {ProfileInfoInterface} from "@wso2is/core/models";
 import { deleteUser } from "../../features/users";
-import {User} from "./models";
+import { User } from "./models";
 
 export const userConfig : User = {
     deleteUser: (user: ProfileInfoInterface): Promise<any> => {
