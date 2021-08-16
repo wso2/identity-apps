@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,10 +16,12 @@
  * under the License.
  */
 
-export * from "./attribute";
-export * from "./identity-providers";
-export * from "./application";
-export * from "./group";
-export * from "./common";
-export * from "./userstores";
-export * from "./user";
+import {ProfileInfoInterface} from "@wso2is/core/models";
+import { deleteUser } from "../../features/users";
+import { User } from "./models";
+
+export const userConfig : User = {
+    deleteUser: (user: ProfileInfoInterface): Promise<any> => {
+        return deleteUser(user.id);
+    }
+};

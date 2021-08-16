@@ -23,3 +23,4 @@ export * from "./common";
 export * from "./models";
 export * from "./server-configuration";
 export * from "./userstores";
+export * from "./user";
