@@ -19,6 +19,7 @@
 import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
 import { hideAJAXTopLoadingBar, showAJAXTopLoadingBar } from "@wso2is/core/store";
 import { AuthenticateUtils } from "@wso2is/core/utils";
+import { EventPublisher } from "./event-publisher";
 import { AppConstants } from "../constants";
 import { history } from "../helpers";
 import { store } from "../store";
@@ -64,6 +65,15 @@ export class HttpUtils {
      * @param error - Http error.
      */
     public static onHttpRequestError(error: any): void {
+        /**
+         * Publish an event on the http request error.
+        */
+        EventPublisher.getInstance().publish("console-error-http-request-error", {
+            "type": "error-response",
+            "response": error.response ? error.response : "",
+            "status": error.response ? error.response.status ? error.response.status : "" : ""
+        });
+
         // Terminate the session if the token endpoint returns a bad request(400)
         // The token binding feature will return a 400 status code when the session
         // times out.

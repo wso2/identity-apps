@@ -25,7 +25,7 @@ import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, use
 import { useTranslation } from "react-i18next";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "../../../extensions/configs";
-import { AdvancedSearchWithBasicFilters, AppConstants, UIConstants, history } from "../../core";
+import { AdvancedSearchWithBasicFilters, AppConstants, EventPublisher, UIConstants, history } from "../../core";
 import { getAuthenticatorTags, getAuthenticators, getIdentityProviderList } from "../api";
 import { AuthenticatorGrid, IdentityProviderList, handleGetIDPListCallError } from "../components";
 import { AuthenticatorMeta } from "../meta";
@@ -103,6 +103,8 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
     const [ showFilteredList, setShowFilteredList ] = useState<boolean>(false);
     const [ isPaginating, setIsPaginating ] = useState<boolean>(false);
     const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
+
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     /**
      * Checks if the listing view defined in the config is the new connections view.
@@ -419,6 +421,8 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                         <Show when={ AccessControlConstants.IDP_WRITE }>
                             <PrimaryButton
                                 onClick={ (): void => {
+                                    eventPublisher.publish("connections-click-new-connection-button");
+
                                     history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));
                                 } }
                                 data-testid={ `${ testId }-add-button` }
@@ -531,6 +535,8 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                                         : idpList?.identityProviders
                                 }
                                 onEmptyListPlaceholderActionClick={ () => {
+                                    eventPublisher.publish("connections-click-new-connection-button");
+                                    
                                     history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));
                                 } }
                                 isFiltering={ showFilteredList }

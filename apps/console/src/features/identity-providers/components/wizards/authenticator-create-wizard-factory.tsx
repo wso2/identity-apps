@@ -281,6 +281,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                             onWizardClose();
                         } }
                         template={ selectedTemplateWithUniqueName }
+                        data-componentid={ selectedTemplate?.templateId }
                         { ...rest }
                     />
                 )
@@ -298,6 +299,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                             onWizardClose();
                         } }
                         template={ selectedTemplateWithUniqueName }
+                        data-componentid={ selectedTemplate?.templateId }
                         { ...rest }
                     />
                 )
@@ -315,6 +317,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                             onWizardClose();
                         } }
                         template={ selectedTemplateWithUniqueName }
+                        data-componentid={ selectedTemplate?.templateId }
                         { ...rest }
                     />
                 )
@@ -332,6 +335,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                             onWizardClose();
                         } }
                         template={ selectedTemplateWithUniqueName }
+                        data-componentid={ selectedTemplate?.templateId }
                         { ...rest }
                     />
                 )
@@ -349,6 +353,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                             onWizardClose();
                         } }
                         template={ selectedTemplateWithUniqueName }
+                        data-componentid={ selectedTemplate?.templateId }
                         { ...rest }
                     />
                 )

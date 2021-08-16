@@ -38,6 +38,7 @@ import {
     AppConstants,
     AppState,
     ConfigReducerStateInterface,
+    EventPublisher,
     getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
@@ -103,6 +104,8 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     const [ filterTags, setFilterTags ] = useState<string[]>([]);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
+
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     /**
      * Checks if the listing view defined in the config is the new connections view.
@@ -237,6 +240,10 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
 
         if (selectedTemplate) {
             setSelectedTemplate(selectedTemplate);
+
+            eventPublisher.publish("connections-select-template", {
+                "type": selectedTemplate.templateId
+            });
         }
 
         setTemplateType(id);

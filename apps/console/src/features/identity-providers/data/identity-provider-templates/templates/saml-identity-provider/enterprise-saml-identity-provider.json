@@ -140,5 +140,6 @@
     "image": "enterprise",
     "name": "SAML",
     "services": [],
-    "disabled": false
+    "disabled": false,
+    "templateId": "enterprise-saml-idp"
 }

@@ -82,5 +82,6 @@
             ]
         }
     },
-    "type": "SOCIAL"
+    "type": "SOCIAL",
+    "templateId": "google-idp"
 }

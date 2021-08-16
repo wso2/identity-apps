@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { GenericIcon, Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
 import { ContentLoader } from "@wso2is/react-components/src/components/loader/content-loader";
@@ -33,6 +33,7 @@ import {
     AppConstants,
     AppState,
     ConfigReducerStateInterface,
+    EventPublisher,
     ModalWithSidePanel
 } from "../../../../../features/core";
 import { createIdentityProvider } from "../../../api";
@@ -48,7 +49,7 @@ import {
  * Proptypes for the Facebook Authentication Provider Create Wizard.
  */
 interface FacebookAuthenticationProviderCreateWizardPropsInterface extends TestableComponentInterface,
-    GenericIdentityProviderCreateWizardPropsInterface {
+    GenericIdentityProviderCreateWizardPropsInterface, IdentifiableComponentInterface {
 }
 
 /**
@@ -111,7 +112,8 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
         title,
         subTitle,
         template,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        [ "data-componentid" ]: componentId
     } = props;
 
     const dispatch = useDispatch();
@@ -125,6 +127,8 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
     const [ wizStep, setWizStep ] = useState<number>(0);
     const [ totalStep, setTotalStep ] = useState<number>(0);
+
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     /**
      * Track wizard steps from wizard component.
@@ -146,6 +150,10 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
 
         createIdentityProvider(identityProvider)
             .then((response) => {
+                eventPublisher.publish("connections-finish-adding-connection", {
+                    "type": componentId
+                });
+
                 dispatch(addAlert({
                     description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
                         "success.description"),
@@ -464,5 +472,6 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
  */
 FacebookAuthenticationProviderCreateWizard.defaultProps = {
     currentStep: 1,
+    "data-componentid": "facebook-idp",
     "data-testid": "facebook-idp-create-wizard"
 };

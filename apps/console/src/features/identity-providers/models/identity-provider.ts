@@ -212,6 +212,10 @@ export interface IdentityProviderTemplateItemInterface {
     templateGroup?: string;
     subTemplates?: IdentityProviderTemplateItemInterface[];
     subTemplatesSectionTitle?: string;
+    /**
+     * Template identifier.
+    */
+    templateId?: string;
 }
 
 /**

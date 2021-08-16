@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import {
@@ -36,7 +36,13 @@ import { Grid } from "semantic-ui-react";
 import {
     GoogleAuthenticationProviderCreateWizardContent
 } from "./google-authentication-provider-create-wizard-content";
-import { AppConstants, AppState, ModalWithSidePanel, store } from "../../../../../features/core";
+import {
+    AppConstants,
+    AppState,
+    EventPublisher,
+    ModalWithSidePanel,
+    store
+} from "../../../../../features/core";
 import {
     createIdentityProvider,
     getFederatedAuthenticatorMetadata
@@ -56,7 +62,7 @@ import { handleGetFederatedAuthenticatorMetadataAPICallError } from "../../utils
  * Proptypes for the identity provider creation wizard component.
  */
 interface MinimalAuthenticationProviderCreateWizardPropsInterface extends TestableComponentInterface,
-    GenericIdentityProviderCreateWizardPropsInterface {
+    GenericIdentityProviderCreateWizardPropsInterface, IdentifiableComponentInterface {
 }
 
 /**
@@ -78,7 +84,8 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
         title,
         subTitle,
         template,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        [ "data-componentid" ]: componentId
     } = props;
 
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
@@ -98,6 +105,8 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
     const [ wizStep, setWizStep ] = useState<number>(0);
     const [ totalStep, setTotalStep ] = useState<number>(0);
 
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
     /**
      * Creates a new identity provider.
      *
@@ -108,6 +117,10 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
         // identityProvider.templateId = template.id
         createIdentityProvider(identityProvider)
             .then((response) => {
+                eventPublisher.publish("connections-finish-adding-connection", {
+                    "type": componentId
+                });
+
                 dispatch(addAlert({
                     description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
                         "success.description"),
@@ -443,5 +456,6 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
  */
 GoogleAuthenticationProviderCreateWizard.defaultProps = {
     currentStep: 1,
+    "data-componentid": "google-idp",
     "data-testid": "idp-edit-idp-create-wizard"
 };
