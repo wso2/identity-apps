@@ -52,6 +52,7 @@ export const ProfileWidget: FunctionComponent<AsgardeoProfileWidgetProps> = (
         ["data-testid"]: testId
     } = props;
 
+
     const { t } = useTranslation();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
