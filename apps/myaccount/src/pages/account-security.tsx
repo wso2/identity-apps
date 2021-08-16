@@ -16,11 +16,15 @@
  * under the License.
  */
 
+import { ProfileConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, {
+    FunctionComponent,
     ReactElement,
     useEffect,
-    useRef
+    useRef,
+    useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,23 +39,43 @@ import {
     UserSessionsComponent
 } from "../components";
 import { AppConstants, CommonConstants } from "../constants";
+import { commonConfig } from "../extensions";
+import { resolveUserStoreEmbeddedUsername } from "../helpers";
 import { InnerPageLayout } from "../layouts";
-import { AlertInterface, FeatureConfigInterface } from "../models";
+import { AlertInterface, AuthStateInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 import { addAlert } from "../store/actions";
+import { SCIMConfigs } from "../extensions/configs/scim";
+
+/**
+* Prop types for the Account Security page.
+*/
+interface AccountSecurityPagePropsInterface extends TestableComponentInterface, RouteProps {
+    enableNonLocalCredentialUserView?: boolean;
+}
 
 /**
  * Account security page.
  *
  * @return {React.ReactElement}
  */
-const AccountSecurityPage = (props: RouteProps): ReactElement => {
+const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>= (
+    props: AccountSecurityPagePropsInterface
+): ReactElement => {
+
+    const {
+        enableNonLocalCredentialUserView
+    } = props;
+
     const { t } = useTranslation();
     const dispatch = useDispatch();
+    const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const disableMFAforSuperTenantUser: boolean = useSelector((state: AppState) => state?.config?.ui?.disableMFAforSuperTenantUser);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
+    const [ isNonLocalCredentialUser, setIsNonLocalCredentialUser ] = useState<boolean>(false);
+    const [ userstore, setUserstore ] = useState<string>(null);
 
     const consentControl = useRef<HTMLDivElement>(null);
     const accountSecurity = useRef<HTMLDivElement>(null);
@@ -84,6 +108,35 @@ const AccountSecurityPage = (props: RouteProps): ReactElement => {
     }, [ props.location ]);
 
     /**
+     * Checks if the user is a user without local credentials.
+     */
+    useEffect(() => {
+        if (!enableNonLocalCredentialUserView) {
+            return;
+        }
+
+        // Verifies if the user is a user without local credentials.
+        const localCredentialExist = profileDetails?.profileInfo?.[SCIMConfigs.scim.customEnterpriseSchema]?.
+            [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("LOCAL_CREDENTIAL_EXISTS")];
+
+        if (localCredentialExist && localCredentialExist == "false") {
+            setIsNonLocalCredentialUser(true);
+        }
+
+    }, [profileDetails?.profileInfo]);
+
+    /**
+     * Sets userstore of the user.
+     */
+    useEffect(() => {
+        if (profileDetails?.profileInfo?.userName) {
+            const userstore: string = resolveUserStoreEmbeddedUsername(profileDetails.profileInfo.userName);
+            setUserstore(userstore);
+        }
+    }, [profileDetails?.profileInfo]);
+
+
+    /**
      * Dispatches the alert object to the redux store.
      * @param {AlertInterface} alert - Alert object.
      */
@@ -97,7 +150,7 @@ const AccountSecurityPage = (props: RouteProps): ReactElement => {
             pageDescription={ t("myAccount:pages.security.subTitle") }
         >
             <Grid>
-                { !isReadOnlyUser &&
+                { !isReadOnlyUser && !isNonLocalCredentialUser &&
                     hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
                     isFeatureEnabled(
                         accessConfig?.security,
@@ -110,7 +163,20 @@ const AccountSecurityPage = (props: RouteProps): ReactElement => {
                         </Grid.Row>
                     ) : null }
 
-                { !isReadOnlyUser &&
+                { /* Create password section temporarily commented until feature is planned. */ }
+                { /*{ !isReadOnlyUser && isNonLocalCredentialUser &&*/ }
+                { /*    hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&*/ }
+                { /*    isFeatureEnabled(*/ }
+                { /*        accessConfig?.security,*/ }
+                { /*        AppConstants.FEATURE_DICTIONARY.get("SECURITY_CREATE_PASSWORD")*/ }
+                { /*    ) ? (*/ }
+                { /*        <Grid.Row>*/ }
+                { /*            <Grid.Column width={ 16 }>*/ }
+                { /*                <CreatePassword onAlertFired={ handleAlerts } />*/ }
+                { /*            </Grid.Column>*/ }
+                { /*        </Grid.Row>*/ }
+                { /*    ) : null }*/ }
+                { !isReadOnlyUser && !isNonLocalCredentialUser &&
                     hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
                     isFeatureEnabled(
                         accessConfig?.security,
@@ -177,7 +243,8 @@ const AccountSecurityPage = (props: RouteProps): ReactElement => {
                     isFeatureEnabled(
                         accessConfig?.security,
                         AppConstants.FEATURE_DICTIONARY.get("SECURITY_CONSENTS")
-                    ) ? (
+                    ) && commonConfig.utils.isManageConsentAllowedForUser(userstore)
+                    ? (
 
                         <Grid.Row>
                             <Grid.Column width={ 16 }>
@@ -191,6 +258,13 @@ const AccountSecurityPage = (props: RouteProps): ReactElement => {
             </Grid>
         </InnerPageLayout>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+AccountSecurityPage.defaultProps = {
+    enableNonLocalCredentialUserView: commonConfig.nonLocalCredentialUser.enableNonLocalCredentialUserView
 };
 
 /**

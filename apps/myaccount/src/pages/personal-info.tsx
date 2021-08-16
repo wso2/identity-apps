@@ -16,28 +16,48 @@
  * under the License.
  */
 
+import { ProfileConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
-import React, { ReactElement } from "react";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { FederatedAssociations, LinkedAccounts, Profile, ProfileExport } from "../components";
 import { AppConstants } from "../constants";
+import { commonConfig } from "../extensions";
 import { InnerPageLayout } from "../layouts";
-import { AlertInterface, FeatureConfigInterface } from "../models";
+import { AlertInterface, AuthStateInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 import { addAlert } from "../store/actions";
+import {SCIMConfigs} from "../extensions/configs/scim";
+
+/**
+ * Prop types for the basic details component.
+ * Also see {@link PersonalInfoPage.defaultProps}
+ */
+interface PersonalInfoPagePropsInterface extends TestableComponentInterface {
+    enableNonLocalCredentialUserView?: boolean;
+}
 
 /**
  * Personal Info page.
  *
  * @return {React.ReactElement}
  */
-const PersonalInfoPage = (): ReactElement => {
+const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
+    props: PersonalInfoPagePropsInterface
+): ReactElement => {
+    const {
+        enableNonLocalCredentialUserView
+    } = props;
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
+    const [ isNonLocalCredentialUser, setIsNonLocalCredentialUser ] = useState<boolean>(false);
+    const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
+
     /**
      * Dispatches the alert object to the redux store.
      * @param {AlertInterface} alert - Alert object.
@@ -45,6 +65,24 @@ const PersonalInfoPage = (): ReactElement => {
     const handleAlerts = (alert: AlertInterface) => {
         dispatch(addAlert(alert));
     };
+
+    /**
+     * Checks if the user is a user without local credentials.
+     */
+    useEffect(() => {
+        if (!enableNonLocalCredentialUserView) {
+            return;
+        }
+        // Verifies if the user is a user without local credentials.
+        const localCredentialExist = profileDetails?.profileInfo?.[SCIMConfigs.scim.customEnterpriseSchema]?.
+            [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("LOCAL_CREDENTIAL_EXISTS")];
+
+        if (localCredentialExist && localCredentialExist == "false") {
+            setIsNonLocalCredentialUser(true);
+        }
+
+    }, [profileDetails?.profileInfo]);
+
 
     return (
         <InnerPageLayout
@@ -69,8 +107,8 @@ const PersonalInfoPage = (): ReactElement => {
                     && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 }>
-
                                 <Profile
+                                    isNonLocalCredentialUser={ isNonLocalCredentialUser }
                                     featureConfig={ accessConfig }
                                     onAlertFired={ handleAlerts }
                                 />
@@ -99,7 +137,10 @@ const PersonalInfoPage = (): ReactElement => {
                     && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 }>
-                                <FederatedAssociations onAlertFired={ handleAlerts }/>
+                                <FederatedAssociations
+                                    enableNonLocalCredentialUserView={ enableNonLocalCredentialUserView }
+                                    onAlertFired={ handleAlerts }
+                                />
                             </Grid.Column>
                         </Grid.Row>
                     )
@@ -120,6 +161,14 @@ const PersonalInfoPage = (): ReactElement => {
             </Grid>
         </InnerPageLayout>
     );
+};
+
+/**
+* Default properties for the {@link PersonalInfoPage} component.
+* See type definitions in {@link PersonalInfoPage}
+*/
+PersonalInfoPage.defaultProps = {
+    enableNonLocalCredentialUserView: commonConfig.nonLocalCredentialUser.enableNonLocalCredentialUserView
 };
 
 /**

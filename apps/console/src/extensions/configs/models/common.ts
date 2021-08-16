@@ -17,7 +17,7 @@
  */
 
 export interface CommonConfig {
-    AdvancedSearchWithBasicFilters: {
+    advancedSearchWithBasicFilters: {
         enableQuerySearch: boolean;
     };
     checkForUIResourceScopes: boolean;
