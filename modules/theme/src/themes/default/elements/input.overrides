@@ -91,3 +91,11 @@
         }
     }
 }
+
+/*-------------------------------
+ Remove Duplicated Eye-Icon for Password Fields in MS Edge Browser
+--------------------------------*/
+input[type=password]::-ms-reveal, input[type=password]::-ms-clear {
+    display: none;
+}
+
