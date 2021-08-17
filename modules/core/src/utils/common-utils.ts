@@ -208,4 +208,15 @@ export class CommonUtils {
 
         return countryDropDown;
     }
+
+    /**
+     * Returns boolean value for both boolean strings and primitive boolean value.
+     *
+     * @param {any} booleanResult - Result that needs to be converted to boolean. 
+     * Can be a string or a boolean value.
+     * @return {boolean}
+     */
+    public static parseBoolean(booleanResult: any): boolean {
+        return (String(booleanResult).toLowerCase() == "true");
+    }
 }
