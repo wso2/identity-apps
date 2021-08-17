@@ -141,6 +141,22 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     }, []);
 
     /**
+     * If the original `authenticationSequence` changes, the moderated one should also change.
+     *
+     * @remarks This had to be added to fix the state issues came after the loading spinner
+     * conditional rendering. Components are getting unmounted when the spinner is shown causing it to
+     * re-render the component.
+     */
+    useEffect(() => {
+
+        if (authenticationSequence === undefined) {
+            return;
+        }
+
+        setModeratedAuthenticationSequence(authenticationSequence);
+    }, [ authenticationSequence ]);
+
+    /**
      * Fetches the list of Authenticators and categorize them.
      *
      * @param {(all: GenericAuthenticatorInterface[][],
