@@ -147,7 +147,7 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
             disabled,
             fluid,
             inline,
-            [ "no-hover" ]: action,
+            [ "no-hover" ]: action || disabled,
             selected,
             ["with-image"]: image
         },
@@ -161,7 +161,7 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
             link={ false }
             as="div"
             data-testid={ testId }
-            onClick={ !action && onClick }
+            onClick={ !action && !disabled && onClick }
             { ...rest }
         >
             <Card.Content>
