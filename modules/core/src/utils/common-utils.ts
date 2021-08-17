@@ -217,6 +217,6 @@ export class CommonUtils {
      * @return {boolean}
      */
     public static parseBoolean(booleanResult: any): boolean {
-        return (String(booleanResult).toLowerCase() == "true");
+        return (String(booleanResult).toLowerCase() === "true");
     }
 }
