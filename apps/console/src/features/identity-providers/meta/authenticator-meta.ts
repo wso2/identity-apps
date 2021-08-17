@@ -58,10 +58,10 @@ export class AuthenticatorMeta {
             "existing Facebook accounts.",
             [ IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID ]: "Login users with " +
             "existing Twitter accounts.",
-            [ IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID ]: "Login users with " +
-            "existing accounts in the Enterprise IdP.",
-            [ IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID ]: "Login users with " +
-            "existing accounts in the Enterprise IdP.",
+            [ IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID ]: "Authenticate users with " +
+            "Enterprise OIDC connections.",
+            [ IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID ]: "Authenticate users with " +
+            "Enterprise SAML connections.",
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
             "one-time passcode sent via email."
         }, authenticatorId);
