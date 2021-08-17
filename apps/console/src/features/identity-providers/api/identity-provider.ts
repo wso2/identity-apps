@@ -767,9 +767,15 @@ export const getAuthenticators = (filter?: string, type?: AuthenticatorTypes): P
                     response.config);
             }
 
+            // Extend the API response with the locally defined array from config.
+            const authenticators: AuthenticatorInterface[] = [
+                ...response.data,
+                ...identityProviderConfig.authenticatorResponseExtension
+            ];
+
             // If `type` is defined, only return authenticators of that type.
             if (type) {
-                return Promise.resolve(response.data.filter((authenticator: AuthenticatorInterface) => {
+                return Promise.resolve(authenticators.filter((authenticator: AuthenticatorInterface) => {
                     return authenticator.type === type;
                 }));
             }
