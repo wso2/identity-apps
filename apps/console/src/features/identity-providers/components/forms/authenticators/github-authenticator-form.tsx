@@ -418,7 +418,7 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                             <Trans
                                 i18nKey={
                                     "console:develop.features.authenticationProvider.forms" +
-                                    ".authenticatorSettings.facebook.scopes.hint"
+                                    ".authenticatorSettings.github.scopes.hint"
                                 }
                             >
                                 The scopes specifies the type of access provided for connected apps
