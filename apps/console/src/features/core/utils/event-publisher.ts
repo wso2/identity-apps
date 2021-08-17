@@ -55,9 +55,9 @@ export class EventPublisher {
      * Function to publish event logs.
      * 
      * @param {string} eventId - Publishing event identifier.
-     * @param { {[key: string]: string} } [customProperties] - Any custom properties to be published (optional).
+     * @param { {[key: string]: any} } [customProperties] - Any custom properties to be published (optional).
     */
-    public publish(eventId: string, customProperties?: { [key: string]: string }): void {
+    public publish(eventId: string, customProperties?: { [key: string]: any }): void {
         if(customProperties) {
             /**
              * If you want to do any event logging, do it here.
