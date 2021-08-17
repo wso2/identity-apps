@@ -20,6 +20,7 @@ import { IdentityProviderConfig } from "./models";
 import { IdentityProviderManagementConstants } from "../../features/identity-providers";
 
 export const identityProviderConfig: IdentityProviderConfig = {
+    authenticatorResponseExtension: [],
     authenticators: {},
     editIdentityProvider: {
         attributesSettings: true,
