@@ -1012,7 +1012,7 @@ export const console: ConsoleNS = {
                                                 "</1> ou tout autre gestionnaire tel que <3>Identifiant d’abord " +
                                                 "</3>qui peut gérer ces facteurs est présent dans une étape précédente.",
                                             secondFactorDisabledInFirstStep: "Les authentificateurs de deuxième " +
-                                                "facteur ne peuvent pas être utilisés dans la première étape"
+                                                "facteur ne peuvent pas être utilisés dans la première étape."
                                         }
                                     }
                                 },
