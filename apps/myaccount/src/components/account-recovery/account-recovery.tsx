@@ -18,10 +18,11 @@
 
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { EmphasizedSegment } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { List } from "semantic-ui-react";
+import { List, Placeholder } from "semantic-ui-react";
 import { EmailRecovery, SecurityQuestionsComponent } from "./options";
 import { getPreference } from "../../api";
 import { AppConstants } from "../../constants";
@@ -69,12 +70,13 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
     const [ isQsRecoveryEnabled, setIsQsRecoveryEnabled ] = useState<boolean>(false);
     const [ isNotificationRecoveryEnabled, setIsNotificationRecoveryEnabled ] = useState<boolean>(false);
     const [ isUsernameRecoveryEnabled, setIsUsernameRecoveryEnabled ] = useState<boolean>(false);
+    const [ isAccountRecoveryDetailsLoading, setIsAccountRecoveryDetailsLoading ] = useState<boolean>(false);
 
     /**
      * The following method gets the preference for account recovery.
      */
     const getPreferences = (): void => {
-
+        setIsAccountRecoveryDetailsLoading(true);
         const recoveryConnector: PreferenceRequest[] = [
             {
                 "connector-name": RECOVERY_CONNECTOR,
@@ -140,6 +142,9 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                         "myAccount:sections.accountRecovery.preference.notifications.genericError.message"
                     )
                 });
+            })
+            .finally(() => {
+                setIsAccountRecoveryDetailsLoading(false);
             });
     };
 
@@ -150,7 +155,7 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
         getPreferences();
     }, []);
 
-    return (
+    return (!isAccountRecoveryDetailsLoading? (
         <>
             {
                 ( isQsRecoveryEnabled || isNotificationRecoveryEnabled || isUsernameRecoveryEnabled ) ?
@@ -213,6 +218,20 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                     : null
             }
         </>
+            ) :
+            <EmphasizedSegment padded="very">
+                <Placeholder fluid>
+                    <Placeholder.Header image>
+                        <Placeholder.Line />
+                        <Placeholder.Line />
+                    </Placeholder.Header>
+                    <Placeholder.Paragraph>
+                        <Placeholder.Line />
+                        <Placeholder.Line />
+                        <Placeholder.Line />
+                    </Placeholder.Paragraph>
+                </Placeholder>
+            </EmphasizedSegment>
     );
 };
 
