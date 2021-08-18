@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode } from "react";
+import React, { FunctionComponent, MouseEvent, PropsWithChildren, ReactElement, ReactNode } from "react";
 import { ButtonProps, Icon } from "semantic-ui-react";
 import { LinkButton } from "../../button";
 import { InfoCard, InfoCardPropsInterface } from "../../card";
@@ -89,15 +89,16 @@ export interface ResourceGridCardPropsInterface extends InfoCardPropsInterface, 
 /**
  * Resource Grid Card component.
  *
- * @param {ResourceGridCardPropsInterface} props - Props injected to the component.
+ * @param {PropsWithChildren<ResourceGridCardPropsInterface>} props - Props injected to the component.
  * @return {React.ReactElement}
  */
-export const ResourceGridCard: FunctionComponent<ResourceGridCardPropsInterface> = (
-    props: ResourceGridCardPropsInterface
+export const ResourceGridCard: FunctionComponent<PropsWithChildren<ResourceGridCardPropsInterface>> = (
+    props: PropsWithChildren<ResourceGridCardPropsInterface>
 ): ReactElement => {
 
     const {
         className,
+        children,
         comingSoonRibbonLabel,
         disabled,
         editButtonLabel,
@@ -166,7 +167,9 @@ export const ResourceGridCard: FunctionComponent<ResourceGridCardPropsInterface>
                 )
             }
             { ...rest }
-        />
+        >
+            { children }
+        </InfoCard>
     );
 };
 
