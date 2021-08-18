@@ -20,7 +20,13 @@ import { ReactNode } from "react";
 import { AuthenticatorInterface } from "../../../features/identity-providers/models";
 
 export interface IdentityProviderConfig {
+    /**
+     * To extend the Authenticators API response.
+     */
     authenticatorResponseExtension: AuthenticatorInterface[];
+    /**
+     * Config for the Authenticators.
+     */
     authenticators: {
         [ key: string ]: AuthenticatorExtensionsConfigInterface;
     };
