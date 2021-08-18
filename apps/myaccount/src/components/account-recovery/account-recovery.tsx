@@ -170,7 +170,7 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                             : null
                     }
                 >
-                    { (!isAccountRecoveryDetailsLoading ?
+                    { !isAccountRecoveryDetailsLoading ?
 
                             <List divided={ true } verticalAlign="middle" className="main-content-inner" >
                                     <List.Item className="inner-list-item">
@@ -211,8 +211,7 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                                         : null}
                                 </List.Item>
                             </List>
-                    : (
-                        <EmphasizedSegment>
+                    :   <EmphasizedSegment>
                             <Placeholder fluid>
                                 <Placeholder.Header image>
                                     <Placeholder.Line />
@@ -228,8 +227,6 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                                 </Placeholder.Header>
                             </Placeholder>
                         </EmphasizedSegment>
-                     )
-                    )
                     }
                 </SettingsSection>
             }
