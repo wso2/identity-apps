@@ -40,6 +40,7 @@ export interface AttributeMappingListProps extends TestableComponentInterface {
      * mostly read only, used for dropdowns and such.
      */
     availableAttributesList: Array<IdentityProviderClaimInterface>;
+    alreadyMappedAttributesList: Array<IdentityProviderCommonClaimMappingInterface>;
     noDataPlaceholder?: ReactNode;
     onMappingDeleted: (mapping: IdentityProviderCommonClaimMappingInterface) => void;
     onMappingEdited: (
@@ -56,6 +57,7 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
     const {
         availableAttributesList,
         attributeMappingsListToShow,
+        alreadyMappedAttributesList,
         onMappingDeleted,
         onMappingEdited,
         noDataPlaceholder,
@@ -95,44 +97,46 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
             dataIndex: "claim",
             id: "column-1",
             render(mapping: IdentityProviderCommonClaimMappingInterface): ReactNode {
-                return editingMappings.includes(mapping.claim.id) ? (
-                    <AttributeMappingListItem
-                        editingMode
-                        mapping={ mapping }
-                        availableAttributeList={ availableAttributesList }
-                        onSubmit={ (editedMapping) => {
-                            // Remove it from currently editing mappings.
-                            setEditingMappings([
-                                ...editingMappings
-                                    .filter(id => id !== mapping.claim.id)
-                                    .filter(id => id !== editedMapping.claim.id)
-                            ]);
-                            // Once done, notify the parent that a mapping has been
-                            // changed with the edited instance itself.
-                            onMappingEdited(mapping, editedMapping);
-                        } }
-                    />
-                ) : (
-                    <Header image as="h6" className="header-with-icon">
-                        <AppAvatar
-                            image={
-                                <AnimatedAvatar
-                                    name={ mapping.mappedValue }
-                                    size="mini"/>
-                            }
-                            size="mini"
-                            spaced="right"
+                return editingMappings.includes(mapping.claim.id)
+                    ? (
+                        <AttributeMappingListItem
+                            editingMode
+                            mapping={ mapping }
+                            availableAttributeList={ availableAttributesList }
+                            alreadyMappedAttributesList={ alreadyMappedAttributesList }
+                            onSubmit={ (editedMapping) => {
+                                // Remove it from currently editing mappings.
+                                setEditingMappings([
+                                    ...editingMappings
+                                        .filter(id => id !== mapping.claim.id)
+                                        .filter(id => id !== editedMapping.claim.id)
+                                ]);
+                                // Once done, notify the parent that a mapping has been
+                                // changed with the edited instance itself.
+                                onMappingEdited(mapping, editedMapping);
+                            } }
                         />
-                        <Header.Content>
-                            { mapping.mappedValue }
-                            <Header.Subheader>
-                                <Code compact withBackground={ false }>
-                                    { mapping.claim.uri }
-                                </Code>
-                            </Header.Subheader>
-                        </Header.Content>
-                    </Header>
-                );
+                    ) : (
+                        <Header image as="h6" className="header-with-icon">
+                            <AppAvatar
+                                image={
+                                    <AnimatedAvatar
+                                        name={ mapping.mappedValue }
+                                        size="mini"/>
+                                }
+                                size="mini"
+                                spaced="right"
+                            />
+                            <Header.Content>
+                                { mapping.mappedValue }
+                                <Header.Subheader>
+                                    <Code compact withBackground={ false }>
+                                        { mapping.claim.uri }
+                                    </Code>
+                                </Header.Subheader>
+                            </Header.Content>
+                        </Header>
+                    );
             },
             title: "Mapped Claim"
         };

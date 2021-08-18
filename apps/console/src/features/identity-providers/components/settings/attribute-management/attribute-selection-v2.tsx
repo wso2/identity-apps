@@ -92,13 +92,12 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
                             There are no attributes added for this <strong>Identity Provider</strong>.
                         </p>
                     ] }
-                    action={
-                        !isReadOnly &&
+                    action={ !isReadOnly && (
                         <PrimaryButton onClick={ () => setShowAddModal(true) }>
                             <Icon name="add"/>
                             Add IdP Attributes
                         </PrimaryButton>
-                    }
+                    ) }
                     image={ getEmptyPlaceholderIllustrations().emptyList }
                     imageSize="tiny"
                     data-testid={ `${ testId }-empty-placeholder` }
@@ -183,19 +182,20 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
                                         </Form>
                                     </Grid.Column>
                                     <Grid.Column width={ 9 } textAlign="right">
-                                        { !isReadOnly &&
+                                        { !isReadOnly && (
                                             <PrimaryButton
-                                            onClick={ () => setShowAddModal(true) }
-                                            data-testid={ `${ testId }-list-layout-add-button` }>
-                                            <Icon name="add" />
+                                                onClick={ () => setShowAddModal(true) }
+                                                data-testid={ `${ testId }-list-layout-add-button` }>
+                                                <Icon name="add"/>
                                                 Add Attribute Mapping
                                             </PrimaryButton>
-                                        }
+                                        ) }
                                     </Grid.Column>
                                 </Grid.Row>
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column width={ 16 }>
                                         <AttributeMappingList
+                                            alreadyMappedAttributesList={ [ ...mappedAttributesList ] }
                                             attributeMappingsListToShow={
                                                 mappedAttributesList.filter((m) => {
                                                     if (searchQuery) {
@@ -223,7 +223,7 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
                                                     newMapping
                                                 ]);
                                             } }
-                                            readOnly={ isReadOnly } />
+                                            readOnly={ isReadOnly }/>
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
@@ -234,6 +234,7 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
             { showAddModal && (
                 <AddAttributeSelectionModal
                     attributeList={ [ ...attributeList.filter((a) => !mappedAttrIds.includes(a.id)) ] }
+                    alreadyMappedAttributesList={ [ ...mappedAttributesList ] }
                     show={ showAddModal }
                     onClose={ onCancel }
                     onSave={ onSave }/>
