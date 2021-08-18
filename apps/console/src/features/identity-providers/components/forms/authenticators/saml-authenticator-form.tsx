@@ -391,14 +391,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             ) }
                             maxLength={ LOGOUT_URL_LENGTH.max }
                             minLength={ LOGOUT_URL_LENGTH.min }
-                            validate={ (value) => {
-                                return (formValues?.IsLogoutEnabled && value)
-                                    ? composeValidators(
-                                        isUrl,
-                                        hasLength(LOGOUT_URL_LENGTH)
-                                    )(value)
-                                    : undefined;
-                            } }
                             hint={ t(`${ I18N_TARGET_KEY }.LogoutReqUrl.hint`) }
                             readOnly={ readOnly }
                         />
