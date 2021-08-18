@@ -58,6 +58,7 @@ export interface IdentityProviderTemplatesConfigInterface {
 export interface TemplateConfigInterface<T> {
     content?: TemplateContentInterface;
     enabled: boolean;
+    comingSoon?: boolean;
     id: string;
     resource?: T | Promise<T> | string;
 }

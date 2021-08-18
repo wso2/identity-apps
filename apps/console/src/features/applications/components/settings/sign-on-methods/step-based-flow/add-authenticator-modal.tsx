@@ -22,13 +22,14 @@ import {
     GenericIcon,
     Heading,
     Hint,
-    InfoCard,
     LinkButton,
     PrimaryButton,
+    ResourceGrid,
     Text
 } from "@wso2is/react-components";
 import classNames from "classnames";
 import isEmpty from "lodash-es/isEmpty";
+import kebabCase from "lodash-es/kebabCase";
 import startCase from "lodash-es/startCase";
 import React, {
     ChangeEvent,
@@ -55,18 +56,18 @@ import {
     SemanticWIDTHS
 } from "semantic-ui-react";
 import { Authenticators } from "./authenticators";
+import { getEmptyPlaceholderIllustrations } from "../../../../../core/configs";
+import { EventPublisher } from "../../../../../core/utils";
 import {
-    AuthenticatorCategories,
     AuthenticatorMeta,
     GenericAuthenticatorInterface,
     IdentityProviderManagementUtils,
     IdentityProviderTemplateCategoryInterface,
+    IdentityProviderTemplateInterface,
     getIdPIcons
 } from "../../../../../identity-providers";
 import { getGeneralIcons } from "../../../../configs";
 import { AuthenticationStepInterface } from "../../../../models";
-import { EventPublisher } from "../../../../../core/utils";
-import kebabCase from "lodash-es/kebabCase";
 
 /**
  * Proptypes for the Add authenticator modal component.
@@ -350,56 +351,86 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     const renderAddNewAuthenticatorContent = (): ReactElement => {
 
         return (
-            <>
-                <Modal.Content
-                    scrolling
-                    className="authenticator-container"
-                >
-                    <div className="page-header-wrapper">
-                        <div
-                            className="back-button mb-0"
-                            onClick={ () => setShowAddNewAuthenticatorView(false) }
-                        >
-                            <Icon name="arrow left"/>
-                            {
-                                t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                                    "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.goBackButton")
-                            }
-                        </div>
-                    </div>
-                    <Divider hidden />
-                    <Card.Group itemsPerRow={ CARDS_PER_ROW }>
+            <Modal.Content
+                scrolling
+                className="authenticator-container"
+            >
+                <div className="page-header-wrapper">
+                    <div
+                        className="back-button mb-0"
+                        onClick={ () => setShowAddNewAuthenticatorView(false) }
+                    >
+                        <Icon name="arrow left"/>
                         {
-                            categorizedIDPTemplates.map((category) => {
-                                return category?.templates?.map((template, index: number) => (
-                                    <InfoCard
-                                        key={ index }
-                                        header={ template.name }
-                                        disabled={ template.disabled }
-                                        subHeader={
-                                            AuthenticatorMeta.getAuthenticatorTypeDisplayName(template.type as
-                                                    AuthenticatorCategories)
-                                                ? t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(template.type as
-                                                    AuthenticatorCategories))
-                                                : template.type
-                                        }
-                                        description={ template.description }
-                                        image={
-                                            IdentityProviderManagementUtils
-                                                .resolveTemplateImage(template.image, getIdPIcons())
-                                        }
-                                        onClick={ () => {
-                                            onIDPCreateWizardTrigger(template.id, () => {
-                                               setShowAddNewAuthenticatorView(false);
-                                            }, template);
-                                        } }
-                                    />
-                                ));
-                            })
+                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.goBackButton")
                         }
-                    </Card.Group>
-                </Modal.Content>
-            </>
+                    </div>
+                </div>
+                <Divider hidden/>
+                {
+                    categorizedIDPTemplates
+                        .map((category: IdentityProviderTemplateCategoryInterface, index: number) => {
+                            return (
+                                <ResourceGrid
+                                    key={ index }
+                                    isEmpty={
+                                        !(category?.templates
+                                            && Array.isArray(category.templates)
+                                            && category.templates.length > 0)
+                                    }
+                                    emptyPlaceholder={ (
+                                        <EmptyPlaceholder
+                                            image={ getEmptyPlaceholderIllustrations().newList }
+                                            imageSize="tiny"
+                                            title={
+                                                t("console:develop.features.authenticationProvider" +
+                                                    ".placeHolders.emptyConnectionTypeList.title")
+                                            }
+                                            subtitle={ [
+                                                t("console:develop.features.authenticationProvider" +
+                                                    ".placeHolders.emptyConnectionTypeList" +
+                                                    ".subtitles.0"),
+                                                t("console:develop.features.authenticationProvider" +
+                                                    ".placeHolders.emptyConnectionTypeList" +
+                                                    ".subtitles.1")
+                                            ] }
+                                            data-testid={ `${ testId }-empty-placeholder` }
+                                        />
+                                    ) }
+                                >
+                                    {
+                                        category.templates.map((
+                                            template: IdentityProviderTemplateInterface,
+                                            templateIndex: number
+                                        ) => (
+                                            <ResourceGrid.Card
+                                                key={ templateIndex }
+                                                resourceName={ template.name }
+                                                isResourceComingSoon={ template.comingSoon }
+                                                disabled={ template.disabled }
+                                                comingSoonRibbonLabel={ t("common:comingSoon") }
+                                                resourceDescription={ template.description }
+                                                resourceImage={
+                                                    IdentityProviderManagementUtils
+                                                        .resolveTemplateImage(template.image, getIdPIcons())
+                                                }
+                                                tags={ template.tags }
+                                                onClick={ () => {
+                                                    onIDPCreateWizardTrigger(template.id, () => {
+                                                        setShowAddNewAuthenticatorView(false);
+                                                    }, template);
+                                                } }
+                                                showTooltips={ false }
+                                                data-testid={ `${ testId }-${ template.name }` }
+                                            />
+                                        ))
+                                    }
+                                </ResourceGrid>
+                            );
+                        })
+                }
+            </Modal.Content>
         );
     };
 

@@ -63,7 +63,9 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID ]: "Login users with " +
             "existing accounts in the Enterprise IdP.",
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
-            "one-time passcode sent via email."
+            "one-time passcode sent via email.",
+            [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
+            "SMS one-time passcode."
         }, authenticatorId);
     }
 
@@ -148,7 +150,8 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "FIDO",
             [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: "TOTP",
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Email OTP",
-            [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Identifier First"
+            [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Identifier First",
+            [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "SMS OTP"
         }, authenticatorId);
     }
 
@@ -173,7 +176,8 @@ export class AuthenticatorMeta {
             [
                 IdentityProviderManagementConstants.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
                 ]: getAuthenticatorIcons()?.sessionExecutor,
-            [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.emailOTP
+            [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.emailOTP,
+            [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.smsOTP
         }, authenticatorId);
         
         return icon ?? getAuthenticatorIcons().default;
@@ -198,7 +202,8 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID ]: "Twitter",
             [ IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID ]: "Enterprise",
             [ IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID ]: "Enterprise",
-            [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Predefined"
+            [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Predefined",
+            [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "Predefined"
         }, authenticatorId);
     }
 
@@ -235,6 +240,7 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ]: "username-and-password",
             [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "fido",
             [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: "totp",
+            [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "sms-otp",
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "email-otp",
             [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "identifier-first",
             [ IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "google",
