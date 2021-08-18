@@ -63,7 +63,7 @@ export const resolveUserProfileName = (state: AuthStateInterface, isProfileInfoL
         return resolveUserDisplayName(state);
     }
     return null;
-}
+};
 
 /**
  * Same username can exist in two different user stores. This function
@@ -105,4 +105,17 @@ export const resolveUserStoreEmbeddedUsername = (username: string): string => {
     }
 
     return username;
+};
+
+/**
+ * Resolves the user's userstore from the username
+ *
+ * @param {string} username - Username of the user with user store embedded.
+ * @return {string}
+ */
+export const resolveUserstore= (username: string): string => {
+    // Userstore is index 0 and index 1 is username
+    const USERSTORE = 0;
+    const parts = username?.split("/");
+    return parts[USERSTORE];
 };

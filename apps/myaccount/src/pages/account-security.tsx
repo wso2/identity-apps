@@ -40,12 +40,12 @@ import {
 } from "../components";
 import { AppConstants, CommonConstants } from "../constants";
 import { commonConfig } from "../extensions";
-import { resolveUserStoreEmbeddedUsername } from "../helpers";
+import { SCIMConfigs } from "../extensions/configs/scim";
+import { resolveUserstore } from "../helpers";
 import { InnerPageLayout } from "../layouts";
 import { AlertInterface, AuthStateInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 import { addAlert } from "../store/actions";
-import { SCIMConfigs } from "../extensions/configs/scim";
 
 /**
 * Prop types for the Account Security page.
@@ -130,7 +130,7 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
      */
     useEffect(() => {
         if (profileDetails?.profileInfo?.userName) {
-            const userstore: string = resolveUserStoreEmbeddedUsername(profileDetails.profileInfo.userName);
+            const userstore: string = resolveUserstore(profileDetails.profileInfo.userName);
             setUserstore(userstore);
         }
     }, [profileDetails?.profileInfo]);
