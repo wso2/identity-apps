@@ -77,6 +77,7 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
      */
     const getPreferences = (): void => {
         setIsAccountRecoveryDetailsLoading(true);
+
         const recoveryConnector: PreferenceRequest[] = [
             {
                 "connector-name": RECOVERY_CONNECTOR,
@@ -165,14 +166,13 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                     placeholder={
                         !isAccountRecoveryDetailsLoading &&
                         !(isQsRecoveryEnabled || isNotificationRecoveryEnabled || isUsernameRecoveryEnabled) ?
-                            "No Account recovery options enabled"
+                            "No Account Recovery options enabled"
                             : null
                     }
                 >
                     { (!isAccountRecoveryDetailsLoading ?
 
                             <List divided={ true } verticalAlign="middle" className="main-content-inner" >
-                                <>
                                     <List.Item className="inner-list-item">
                                         {hasRequiredScopes(
                                             featureConfig?.security,
@@ -210,24 +210,25 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                                         )
                                         : null}
                                 </List.Item>
-                                </>
                             </List>
-                            : <EmphasizedSegment>
-                                <Placeholder fluid>
-                                    <Placeholder.Header image>
-                                        <Placeholder.Line />
-                                        <Placeholder.Line />
-                                    </Placeholder.Header>
-                                    <Placeholder.Header image>
-                                        <Placeholder.Line />
-                                        <Placeholder.Line />
-                                    </Placeholder.Header>
-                                    <Placeholder.Header image>
-                                        <Placeholder.Line />
-                                        <Placeholder.Line />
-                                    </Placeholder.Header>
-                                </Placeholder>
-                            </EmphasizedSegment>
+                    : (
+                        <EmphasizedSegment>
+                            <Placeholder fluid>
+                                <Placeholder.Header image>
+                                    <Placeholder.Line />
+                                    <Placeholder.Line />
+                                </Placeholder.Header>
+                                <Placeholder.Header image>
+                                    <Placeholder.Line />
+                                    <Placeholder.Line />
+                                </Placeholder.Header>
+                                <Placeholder.Header image>
+                                    <Placeholder.Line />
+                                    <Placeholder.Line />
+                                </Placeholder.Header>
+                            </Placeholder>
+                        </EmphasizedSegment>
+                     )
                     )
                     }
                 </SettingsSection>
