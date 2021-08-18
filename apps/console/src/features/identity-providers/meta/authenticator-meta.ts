@@ -65,7 +65,7 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
             "one-time passcode sent via email.",
             [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
-            "SMS One Time passcode."
+            "SMS one-time passcode."
         }, authenticatorId);
     }
 
