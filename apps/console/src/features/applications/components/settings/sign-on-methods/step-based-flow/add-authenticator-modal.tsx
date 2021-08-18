@@ -22,7 +22,6 @@ import {
     GenericIcon,
     Heading,
     Hint,
-    InfoCard,
     LinkButton,
     PrimaryButton,
     ResourceGrid,
@@ -30,6 +29,7 @@ import {
 } from "@wso2is/react-components";
 import classNames from "classnames";
 import isEmpty from "lodash-es/isEmpty";
+import kebabCase from "lodash-es/kebabCase";
 import startCase from "lodash-es/startCase";
 import React, {
     ChangeEvent,
@@ -56,18 +56,18 @@ import {
     SemanticWIDTHS
 } from "semantic-ui-react";
 import { Authenticators } from "./authenticators";
+import { getEmptyPlaceholderIllustrations } from "../../../../../core/configs";
+import { EventPublisher } from "../../../../../core/utils";
 import {
-    AuthenticatorCategories,
     AuthenticatorMeta,
     GenericAuthenticatorInterface,
     IdentityProviderManagementUtils,
     IdentityProviderTemplateCategoryInterface,
+    IdentityProviderTemplateInterface,
     getIdPIcons
 } from "../../../../../identity-providers";
 import { getGeneralIcons } from "../../../../configs";
 import { AuthenticationStepInterface } from "../../../../models";
-import { EventPublisher } from "../../../../../core/utils";
-import kebabCase from "lodash-es/kebabCase";
 
 /**
  * Proptypes for the Add authenticator modal component.
