@@ -114,7 +114,8 @@ export const resolveUserStoreEmbeddedUsername = (username: string): string => {
  * @return {string}
  */
 export const resolveUserstore= (username: string): string => {
-    const parts = username.split("/");
-
-    return parts[0];
+    // Userstore is index 0 and index 1 is username
+    const USERSTORE = 0;
+    const parts = username?.split("/");
+    return parts[USERSTORE];
 };
