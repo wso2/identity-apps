@@ -155,20 +155,26 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
         getPreferences();
     }, []);
 
-    return (!isAccountRecoveryDetailsLoading? (
+    return (
         <>
             {
-                ( isQsRecoveryEnabled || isNotificationRecoveryEnabled || isUsernameRecoveryEnabled ) ?
-                    (
-                        <SettingsSection
-                            data-testid={ `${testId}-settings-section` }
-                            description={ t("myAccount:sections.accountRecovery.description") }
-                            header={ t("myAccount:sections.accountRecovery.heading") }
-                        >
-                            <List divided={ true } verticalAlign="middle" className="main-content-inner">
-                                <List.Item className="inner-list-item">
-                                    {
-                                        hasRequiredScopes(
+                <SettingsSection
+                    data-testid={ `${testId}-settings-section` }
+                    description={ t("myAccount:sections.accountRecovery.description") }
+                    header={ t("myAccount:sections.accountRecovery.heading") }
+                    placeholder={
+                        !isAccountRecoveryDetailsLoading &&
+                        !(isQsRecoveryEnabled || isNotificationRecoveryEnabled || isUsernameRecoveryEnabled) ?
+                            "No Account recovery options enabled"
+                            : null
+                    }
+                >
+                    { (!isAccountRecoveryDetailsLoading ?
+
+                            <List divided={ true } verticalAlign="middle" className="main-content-inner" >
+                                <>
+                                    <List.Item className="inner-list-item">
+                                        {hasRequiredScopes(
                                             featureConfig?.security,
                                             featureConfig?.security?.scopes?.read,
                                             allowedScopes
@@ -181,57 +187,52 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                                         isQsRecoveryEnabled
                                             ? (
                                                 <SecurityQuestionsComponent
-                                                    onAlertFired=
-                                                        { onAlertFired }
-                                                    data-testid=
-                                                        { `${testId}-settings-section-security-questions-component` }
-                                                />
+                                                    onAlertFired={onAlertFired}
+                                                    data-testid={`${testId}-settings-section-security-questions-component`}/>
                                             )
-                                            : null
-                                    }
+                                            : null}
+                                    </List.Item><List.Item className="inner-list-item">
+                                    {hasRequiredScopes(
+                                        featureConfig?.security,
+                                        featureConfig?.security?.scopes?.read,
+                                        allowedScopes
+                                    ) &&
+                                    isFeatureEnabled(
+                                        featureConfig?.security,
+                                        AppConstants.FEATURE_DICTIONARY
+                                            .get("SECURITY_ACCOUNT_RECOVERY_EMAIL_RECOVERY")
+                                    ) &&
+                                    (isNotificationRecoveryEnabled || isUsernameRecoveryEnabled)
+                                        ? (
+                                            <EmailRecovery
+                                                onAlertFired={onAlertFired}
+                                                data-testid={`${testId}-settings-section-email-recovery`}/>
+                                        )
+                                        : null}
                                 </List.Item>
-                                <List.Item className="inner-list-item">
-                                    {
-                                        hasRequiredScopes(
-                                            featureConfig?.security,
-                                            featureConfig?.security?.scopes?.read,
-                                            allowedScopes
-                                        ) &&
-                                        isFeatureEnabled(
-                                            featureConfig?.security,
-                                            AppConstants.FEATURE_DICTIONARY
-                                                .get("SECURITY_ACCOUNT_RECOVERY_EMAIL_RECOVERY")
-                                        ) &&
-                                        (isNotificationRecoveryEnabled || isUsernameRecoveryEnabled)
-                                            ? (
-                                                <EmailRecovery
-                                                    onAlertFired={ onAlertFired }
-                                                    data-testid={ `${testId}-settings-section-email-recovery` }
-                                                />
-                                            )
-                                            : null
-                                    }
-                                </List.Item>
+                                </>
                             </List>
-                        </SettingsSection>
+                            : <EmphasizedSegment>
+                                <Placeholder fluid>
+                                    <Placeholder.Header image>
+                                        <Placeholder.Line />
+                                        <Placeholder.Line />
+                                    </Placeholder.Header>
+                                    <Placeholder.Header image>
+                                        <Placeholder.Line />
+                                        <Placeholder.Line />
+                                    </Placeholder.Header>
+                                    <Placeholder.Header image>
+                                        <Placeholder.Line />
+                                        <Placeholder.Line />
+                                    </Placeholder.Header>
+                                </Placeholder>
+                            </EmphasizedSegment>
                     )
-                    : null
+                    }
+                </SettingsSection>
             }
         </>
-            ) :
-            <EmphasizedSegment padded="very">
-                <Placeholder fluid>
-                    <Placeholder.Header image>
-                        <Placeholder.Line />
-                        <Placeholder.Line />
-                    </Placeholder.Header>
-                    <Placeholder.Paragraph>
-                        <Placeholder.Line />
-                        <Placeholder.Line />
-                        <Placeholder.Line />
-                    </Placeholder.Paragraph>
-                </Placeholder>
-            </EmphasizedSegment>
     );
 };
 
