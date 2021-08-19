@@ -29,6 +29,7 @@ import {
 } from "../models";
 import { store } from "../store";
 import { setProfileCompletion } from "../store/actions";
+import { SCIMConfigs } from "../extensions/configs/scim";
 
 /**
  * This function extracts the sub attributes from the schemas and appends them to the main schema iterable.
@@ -91,9 +92,9 @@ export const flattenProfileInfo = (profileInfo: any, parentAttributeName?: strin
     const tempProfile = [];
     let mutatedProfileInfo = { ...profileInfo };
 
-    if (profileInfo[ ProfileConstants.SCIM2_ENT_USER_SCHEMA ]) {
-        mutatedProfileInfo = { ...profileInfo, ...profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA] };
-        delete mutatedProfileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA];
+    if (profileInfo[ SCIMConfigs.scim.customEnterpriseSchema ]) {
+        mutatedProfileInfo = { ...profileInfo, ...profileInfo[SCIMConfigs.scim.customEnterpriseSchema] };
+        delete mutatedProfileInfo[SCIMConfigs.scim.customEnterpriseSchema];
     }
 
     for (let key in mutatedProfileInfo) {
@@ -190,8 +191,8 @@ export const getProfileCompletion = (
     const skippedAttributed = [];
 
     for (const schema of flattenSchemas([...profileSchemas])) {
-        // Skip `Roles`
-        if (schema.displayName === "Role") {
+        // Skip `Roles` & 'Local Credential Exists'
+        if (schema.displayName === "Role" || schema.displayName === "Local Credential Exists" ) {
             continue;
         }
 
