@@ -42,7 +42,7 @@ import { SettingsSection, UserAvatar } from "../shared";
 interface FederatedAssociationsPropsInterface extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
     disableExternalLoginsOnEmpty?: boolean;
-    enableNonLocalCredentialUserView?: boolean;
+    isNonLocalCredentialUser?: boolean;
 }
 
 /**
@@ -56,7 +56,7 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
     const {
         onAlertFired,
         disableExternalLoginsOnEmpty,
-        enableNonLocalCredentialUserView,
+        isNonLocalCredentialUser,
         ["data-testid"]: testId
     } = props;
 
@@ -103,8 +103,10 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
      */
     useEffect(() => {
         if (disableExternalLoginsOnEmpty) {
-            if (federatedAssociations) {
+            if (federatedAssociations.length <= 0) {
                 setShowExternalLogins(false);
+            } else {
+                setShowExternalLogins(true);
             }
         }
     }, [federatedAssociations]);
@@ -215,7 +217,7 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
                                                     }
                                                 </List.Description>
                                             </Grid.Column>
-                                            { !enableNonLocalCredentialUserView &&
+                                            { !isNonLocalCredentialUser &&
                                             <Grid.Column width={ 5 } className="last-column">
                                                 <List.Content floated="right">
                                                     <Popup
