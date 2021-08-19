@@ -29,7 +29,7 @@ import {
 } from "../models";
 import { store } from "../store";
 import { setProfileCompletion } from "../store/actions";
-import {SCIMConfigs} from "../extensions/configs/scim";
+import { SCIMConfigs } from "../extensions/configs/scim";
 
 /**
  * This function extracts the sub attributes from the schemas and appends them to the main schema iterable.
