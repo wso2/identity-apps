@@ -240,7 +240,7 @@ export class ServerConfigurationsConstants {
 	/**
 	 * Login policies - account locking API Keyword constants.
 	 */
-	public static readonly ACCOUNT_LOCK_ENABLE: string = "account.lock.handler.enable";
+	public static readonly ACCOUNT_LOCK_ENABLE: string = "account.lock.handler.lock.on.max.failed.attempts.enable";
 	public static readonly MAX_FAILED_LOGIN_ATTEMPTS_TO_ACCOUNT_LOCK: string =
 		"account.lock.handler.On.Failure.Max.Attempts";
 	public static readonly ACCOUNT_LOCK_TIME: string = "account.lock.handler.Time";
