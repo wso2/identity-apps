@@ -2900,7 +2900,7 @@ export const console: ConsoleNS = {
                                 validations: {
                                     invalid: "Email OTP expiry time should be an integer.",
                                     range: "Email OTP expiry time should be between 1 second & 86400 seconds(1 day).",
-                                    required: "This field cannot be empty"
+                                    required: "Email OTP expiry time is a required field."
                                 }
                             },
                             tokenLength: {
