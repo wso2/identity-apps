@@ -16,17 +16,28 @@
  * under the License.
  */
 
+import { Field, FieldConstants, Form } from "@wso2is/form";
+import { FormValidation } from "@wso2is/validation";
 import { FormApi } from "final-form";
-import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
-import { Field as FinalField, Form as FinalForm, FormRenderProps } from "react-final-form";
-import { Form as SemanticForm, Grid, Header, Input, Select } from "semantic-ui-react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { Grid, Header } from "semantic-ui-react";
 import { IdentityProviderClaimInterface, IdentityProviderCommonClaimMappingInterface } from "../../../models";
 
 /**
  * Props interface of {@link AttributeMappingListItem}
  */
 export interface AttributeMappingListItemProps {
+    /**
+     * This is the list of attributes that the user can pick from.
+     * It only contains the non-mapped/selected ones.
+     */
     availableAttributeList: Array<IdentityProviderClaimInterface>;
+    /**
+     * Attributes which are already persisted (in model) or mapped locally.
+     * What we mean by locally is that, user can open the modal multiple
+     * times and map attributes before saving.
+     */
+    alreadyMappedAttributesList: Array<IdentityProviderCommonClaimMappingInterface>;
     editingMode?: boolean;
     mapping?: IdentityProviderCommonClaimMappingInterface;
     onSubmit: (mapping: IdentityProviderCommonClaimMappingInterface) => void;
@@ -50,7 +61,7 @@ export interface AttributeMappingListItemProps {
  * inline and hide button with text "Add Mapping Button" below it
  * and input labels.
  *
- * @param props {AttributeMappingListIt emProps}
+ * @param props {AttributeMappingListItemProps}
  * @constructor
  */
 export const AttributeMappingListItem: FunctionComponent<AttributeMappingListItemProps> = (
@@ -60,11 +71,22 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
     const {
         onSubmit,
         availableAttributeList,
+        alreadyMappedAttributesList,
         mapping,
         editingMode
     } = props;
 
     const [ copyOfAttrs, setCopyOfAttrs ] = useState<Array<IdentityProviderClaimInterface>>([]);
+    const [ mappedInputValue, setMappedInputValue ] = useState<string>();
+    const [ selectedLocalAttributeInputValue, setSelectedLocalAttributeInputValue ] = useState<string>();
+    const [ mappingHasError, setMappingHasError ] = useState<boolean>();
+
+    useEffect(() => {
+        if (editingMode) {
+            setMappedInputValue(mapping?.mappedValue);
+            setSelectedLocalAttributeInputValue(mapping?.claim.id);
+        }
+    }, []);
 
     useEffect(() => {
         if (availableAttributeList) {
@@ -121,121 +143,115 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
             form.change("localClaimId", "");
             form.resetFieldState("mappedValue");
             form.resetFieldState("localClaimId");
+            setMappedInputValue("");
+            setSelectedLocalAttributeInputValue("");
         }
     };
 
     return (
-        <FinalForm
+        <Form
             onSubmit={ onFormSub }
+            uncontrolledForm={ true }
             initialValues={ mapping && {
                 localClaimId: mapping?.claim?.id,
                 mappedValue: mapping?.mappedValue
-            } }
-            render={ ({ handleSubmit, values, initialValues }: FormRenderProps): ReactNode => (
-                <SemanticForm onSubmit={ handleSubmit }>
-                    <Grid>
-                        <Grid.Row columns={ editingMode ? 3 : 2 }>
-                            <Grid.Column width={ editingMode ? 7 : 8 }>
-                                <FinalField
-                                    name="mappedValue"
-                                    type="input"
-                                    component={ InputAdapter }
-                                    required
-                                    label={ !editingMode && "External IdP Attribute" }
-                                    width={ 16 }
-                                    initialValue={ initialValues?.mappedValue }
-                                    aria-label="External IdP Attribute Mapping Value"
-                                    placeholder="Enter external IdP attribute"
-                                />
+            } }>
+
+            <Grid>
+                <Grid.Row columns={ editingMode ? 3 : 2 }>
+                    <Grid.Column width={ editingMode ? 7 : 8 }>
+                        <Field.Input
+                            required
+                            name="mappedValue"
+                            inputType="identifier"
+                            maxLength={ 120 }
+                            minLength={ 1 }
+                            label={ !editingMode && "External IdP Attribute" }
+                            placeholder="Enter external IdP attribute"
+                            ariaLabel="External IdP Attribute Mapping Value"
+                            validation={ (value) => {
+                                if (!value || !value.trim()) {
+                                    setMappingHasError(true);
+                                    return FieldConstants.FIELD_REQUIRED_ERROR;
+                                }
+                                // According to 8409:
+                                // Entity category support attribute values MUST be URIs. Such values
+                                // are also referred to as "category support URIs"
+                                // https://datatracker.ietf.org/doc/html/rfc8409#section-4.1
+                                if (!FormValidation.url(value)) {
+                                    setMappingHasError(true);
+                                    return FieldConstants.INVALID_URL_ERROR;
+                                }
+                                // Check whether this attribute external name is already mapped.
+                                const mappedValues = new Set(
+                                    alreadyMappedAttributesList.map((a) => a.mappedValue)
+                                );
+                                if (mappedValues.has(value)) {
+                                    setMappingHasError(true);
+                                    return "There's already a attribute mapped with this name.";
+                                }
+                                // If there's no errors.
+                                setMappingHasError(false);
+                                return undefined;
+                            } }
+                            listen={ (value: string) => setMappedInputValue(value) }
+                            width={ 16 }/>
+                    </Grid.Column>
+                    <Grid.Column width={ editingMode ? 7 : 8 }>
+                        <Field.Dropdown
+                            required
+                            search
+                            clearable
+                            width={ 16 }
+                            value={ editingMode && mapping?.claim?.id }
+                            options={ getListOfAvailableAttributes() }
+                            label={ !editingMode && "Maps to" }
+                            ariaLabel="Local Claim Attribute"
+                            name="localClaimId"
+                            placeholder="Select mapping attribute"
+                            listen={ (value: string) => setSelectedLocalAttributeInputValue(value) }
+                            noResultsMessage="Try another attribute search."
+                        />
+                    </Grid.Column>
+                    { /*When in editing mode, submit button is a icon button.*/ }
+                    { editingMode && (
+                        <React.Fragment>
+                            <Grid.Column width={ 1 }>
+                                <Field.Button
+                                    disabled={
+                                        mappingHasError ||
+                                        !mappedInputValue ||
+                                        !selectedLocalAttributeInputValue
+                                    }
+                                    icon="checkmark"
+                                    type="submit"
+                                    name="submit-button"
+                                    ariaLabel="Attribute Selection Form Submit Button"
+                                    buttonType="secondary_btn"/>
                             </Grid.Column>
-                            <Grid.Column width={ editingMode ? 7 : 8 }>
-                                <FinalField
-                                    search
-                                    clearable
-                                    name="localClaimId"
-                                    type="select"
-                                    component={ SelectAdapter }
-                                    required
-                                    width={ 16 }
-                                    options={ getListOfAvailableAttributes() }
-                                    label={ !editingMode && "Maps to" }
-                                    placeholder="Select mapping attribute"
-                                    aria-label="Local Claim Attribute"
-                                    noResultsMessage="Try another attribute search."
-                                />
-                            </Grid.Column>
-                            { /*When in editing mode, submit button is a icon button.*/ }
-                            { editingMode && (
-                                <Grid.Column width={ 1 }>
-                                    <SemanticForm.Button
-                                        disabled={ !values.mappedValue || !values.localClaimId }
-                                        icon="checkmark"
-                                        type="submit"
-                                        name="submit-button"
-                                        aria-label="Attribute Selection Form Submit Button"/>
-                                </Grid.Column>
-                            ) }
-                        </Grid.Row>
-                        { /*Shows only when the component is not in editing mode.*/ }
-                        { !editingMode && (
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column width={ 16 } textAlign="right">
-                                    <SemanticForm.Button
-                                        disabled={ !values.mappedValue || !values.localClaimId }
-                                        primary
-                                        type="submit"
-                                        name="submit-button"
-                                        children="Add Attribute Mapping"
-                                        aria-label="Attribute Selection Form Submit Button"/>
-                                </Grid.Column>
-                            </Grid.Row>
-                        ) }
-                    </Grid>
-                </SemanticForm>
-            ) }
-        />
+                        </React.Fragment>
+                    ) }
+                </Grid.Row>
+                { /*Shows only when the component is not in editing mode.*/ }
+                { !editingMode && (
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column width={ 16 } textAlign="right">
+                            <Field.Button
+                                disabled={
+                                    mappingHasError ||
+                                    !mappedInputValue ||
+                                    !selectedLocalAttributeInputValue
+                                }
+                                buttonType="primary_btn"
+                                type="submit"
+                                name="submit-button"
+                                label="Add Attribute Mapping"
+                                ariaLabel="Attribute Selection Form Submit Button"/>
+                        </Grid.Column>
+                    </Grid.Row>
+                ) }
+            </Grid>
+        </Form>
     );
 
 };
-
-/**
- * Simple adapter. This component will be removed in near future.
- * @param input
- * @param meta
- * @param rest
- * @constructor
- */
-const SelectAdapter = ({ input, meta, ...rest }: any) => {
-    return (
-        <SemanticForm.Dropdown
-            { ...input }
-            { ...rest }
-            defaultValue={ input?.value }
-            control={ Select }
-            onChange={ (event, { value }) => input.onChange(value) }
-            onBlur={ (event, { value }) => input.onChange(value) }
-            error={ ((meta?.touched || meta.modified)
-                && !!meta?.error) ? meta.error : undefined
-            }
-        />
-    );
-};
-
-/**
- * Simple adapter. This component will be removed in near future.
- * @param input
- * @param meta
- * @param rest
- * @constructor
- */
-const InputAdapter = ({ input, meta, ...rest }: any) => (
-    <SemanticForm.Input
-        { ...input }
-        { ...rest }
-        control={ Input }
-        onChange={ (event, { value }) => input.onChange(value) }
-        error={ ((meta?.touched || meta.modified)
-            && !!meta?.error) ? meta.error : undefined
-        }
-    />
-);

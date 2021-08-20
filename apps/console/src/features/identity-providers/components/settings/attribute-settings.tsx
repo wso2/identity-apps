@@ -336,11 +336,9 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                         setSelectedClaimsWithMapping([ ...mappingsToBeAdded ]);
                                     } }
                                     attributeList={
-                                        availableLocalClaims.filter(
-                                            hideIdentityClaimAttributes
-                                                ? ({ uri }) => !isLocalIdentityClaim(uri)
-                                                : () => true
-                                        )
+                                        hideIdentityClaimAttributes
+                                            ? availableLocalClaims.filter(({ uri }) => !isLocalIdentityClaim(uri))
+                                            : availableLocalClaims
                                     }
                                     mappedAttributesList={ [ ...selectedClaimsWithMapping ] }
                                     isReadOnly = { isReadOnly }

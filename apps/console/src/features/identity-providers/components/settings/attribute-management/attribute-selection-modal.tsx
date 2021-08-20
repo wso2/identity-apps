@@ -27,6 +27,7 @@ import { IdentityProviderClaimInterface, IdentityProviderCommonClaimMappingInter
 
 interface AddAttributeSelectionModalProps extends TestableComponentInterface {
     attributeList: Array<IdentityProviderClaimInterface>;
+    alreadyMappedAttributesList: Array<IdentityProviderCommonClaimMappingInterface>;
     onClose: () => void;
     onSave: (mappingsToBeAdded: IdentityProviderCommonClaimMappingInterface[]) => void;
     show: boolean;
@@ -46,6 +47,7 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
 
     const {
         attributeList,
+        alreadyMappedAttributesList,
         show,
         onClose,
         onSave
@@ -68,9 +70,15 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
      */
     const [ showPlaceholder, setShowPlaceholder ] = useState<boolean>(false);
 
+    const [
+        alreadyLocallyMappedAttributes,
+        setAlreadyLocallyMappedAttributes
+    ] = useState<IdentityProviderCommonClaimMappingInterface[]>();
+
     useEffect(() => {
         // Clone it first. We don't want to mutate the original list.
         setCopyOfAttributes([ ...attributeList ]);
+        setAlreadyLocallyMappedAttributes([ ...alreadyMappedAttributesList ]);
     }, []);
 
     useEffect(() => {
@@ -82,8 +90,13 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
         const idsToHide = newClaimsToBeAdded.reduce((acc, value) => acc.add(value.claim.id), new Set<string>());
         // Records to be added.
         setClaimsToBeAdded(newClaimsToBeAdded);
-        //  Remove the added attribute from the attribute list.
+        // Remove the added attribute from the attribute list.
         setCopyOfAttributes([ ...copyOfAttributes.filter(({ id }) => !idsToHide.has(id)) ]);
+        // Now reinitialize the already mapped attributes list.
+        setAlreadyLocallyMappedAttributes([
+            ...alreadyLocallyMappedAttributes,
+            mapping
+        ]);
     };
 
     const onMappingDeleted = (mapping: IdentityProviderCommonClaimMappingInterface): void => {
@@ -92,6 +105,10 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
         ));
         setClaimsToBeAdded([ ...filtered ]);
         setCopyOfAttributes([ ...copyOfAttributes, mapping.claim ]);
+        setAlreadyLocallyMappedAttributes([
+            ...alreadyLocallyMappedAttributes
+                .filter(e => e?.claim?.id === mapping?.claim.id)
+        ]);
     };
 
     const onMappingEdited = (
@@ -103,6 +120,11 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
         setClaimsToBeAdded([
             ...claimsToBeAdded
                 .filter(({ claim }) => (claim.id !== oldMapping.claim.id)),
+            newMapping
+        ]);
+        setAlreadyLocallyMappedAttributes([
+            ...alreadyLocallyMappedAttributes
+                .filter(e => e?.claim?.id === oldMapping?.claim.id),
             newMapping
         ]);
     };
@@ -140,6 +162,7 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
                         <Grid.Column width={ 16 }>
                             <AttributeMappingListItem
                                 availableAttributeList={ copyOfAttributes }
+                                alreadyMappedAttributesList={ alreadyLocallyMappedAttributes }
                                 onSubmit={ onAttributeMappingAdd }
                             />
                         </Grid.Column>
@@ -148,7 +171,8 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
                                 <React.Fragment>
                                     <Divider hidden/>
                                     <AttributeMappingList
-                                        key={ "mapping-work-list" }
+                                        key="attribute-mapping-working-list"
+                                        alreadyMappedAttributesList={ alreadyLocallyMappedAttributes }
                                         onMappingDeleted={ onMappingDeleted }
                                         onMappingEdited={ onMappingEdited }
                                         attributeMappingsListToShow={ claimsToBeAdded }
