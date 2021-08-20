@@ -103,7 +103,7 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
      */
     useEffect(() => {
         if (disableExternalLoginsOnEmpty) {
-            if (federatedAssociations.length <= 0) {
+            if (federatedAssociations?.length <= 0) {
                 setShowExternalLogins(false);
             } else {
                 setShowExternalLogins(true);
