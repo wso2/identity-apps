@@ -281,6 +281,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                     active={ activeView === "DEVELOPER" }
                                     className="portal-switch"
                                     onClick={ () => {
+                                        eventPublisher.publish("console-click-develop-menu-item");
+
                                         history.push(config.deployment.developerApp.path);
                                     } }
                                     data-testid={ `${ testId }-developer-portal-switch` }
@@ -290,6 +292,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                     active={ activeView === "ADMIN" }
                                     className="portal-switch"
                                     onClick={ () => {
+                                        eventPublisher.publish("console-click-manage-menu-item");
+                                        
                                         history.push(config.deployment.adminApp.path);
                                     } }
                                     data-testid={ `${ testId }-admin-portal-switch` }
