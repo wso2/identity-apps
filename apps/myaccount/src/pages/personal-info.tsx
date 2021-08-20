@@ -138,7 +138,7 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 }>
                                 <FederatedAssociations
-                                    enableNonLocalCredentialUserView={ enableNonLocalCredentialUserView }
+                                    isNonLocalCredentialUser={ isNonLocalCredentialUser }
                                     onAlertFired={ handleAlerts }
                                 />
                             </Grid.Column>
