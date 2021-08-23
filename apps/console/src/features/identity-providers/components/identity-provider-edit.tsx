@@ -137,6 +137,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                             identityProvider?.federatedAuthenticators?.defaultAuthenticatorId
                         )
                 }
+                isSaml={ isSaml }
                 editingIDP={ identityProvider }
                 description={ identityProvider.description }
                 isEnabled={ identityProvider.isEnabled }

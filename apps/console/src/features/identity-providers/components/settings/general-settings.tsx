@@ -86,6 +86,11 @@ interface GeneralSettingsInterface extends TestableComponentInterface {
      * @see {@link GeneralDetailsFormPopsInterface}
      */
     hideIdPLogoEditField?: boolean;
+    /**
+     * Explicitly specifies whether the currently displaying
+     * IdP is a SAML provider or not.
+     */
+    isSaml?: boolean;
 }
 
 /**
@@ -109,6 +114,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         onUpdate,
         isReadOnly,
         hideIdPLogoEditField,
+        isSaml,
         [ "data-testid" ]: testId
     } = props;
 
@@ -271,6 +277,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
             ? (
                 <>
                     <GeneralDetailsForm
+                        isSaml={ isSaml }
                         hideIdPLogoEditField={ hideIdPLogoEditField }
                         name={ name }
                         editingIDP={ editingIDP }
