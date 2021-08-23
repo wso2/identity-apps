@@ -85,7 +85,7 @@ let triggerPreviousForm: () => void;
             validate={ (values): any => {
                 const errors:any = {};
                 if (!values.scopeName && !initialValues?.scopeName) {
-                    errors.scopeName=t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
+                    errors.scopeName = t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
                     "scopeName.validations.empty");
                 }
                 if (!values.displayName && !initialValues?.displayName) {
