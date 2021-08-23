@@ -119,7 +119,7 @@ export const UserSessionsWidget: FunctionComponent<TestableComponentInterface> =
 
     return (
         <div className="widget account-status" data-testid={ testId }>
-            <SettingsSection className={"overview"}
+            <SettingsSection className="overview"
                 data-testid={ `${testId}-settings-section` }
                 description={ t("myAccount:components.overview.widgets.accountActivity.description") }
                 header={ t("myAccount:components.overview.widgets.accountActivity.header") }

@@ -120,7 +120,7 @@ export const ProfileWidget: FunctionComponent<AsgardeoProfileWidgetProps> = (
     );
     return (
         <div className="widget profile" data-testid={ testId }>
-            <SettingsSection className={"overview"}
+            <SettingsSection className="overview"
                 data-testid={ `${testId}-settings-section` }
                 header={ t("myAccount:components.overview.widgets.profileStatus.header" ,
                     { productName: config.ui.productName }) }

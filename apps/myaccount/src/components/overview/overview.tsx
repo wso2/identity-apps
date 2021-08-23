@@ -179,12 +179,12 @@ export const Overview: FunctionComponent<OverviewPropsInterface> = (
                             { accountSecurity(8, 16) }
                             { consents(8, 16) }
                         </>
-                    :
-                    !commonConfig.utils.isShowAdditionalWidgetAllowed(userStore) ?
-                        <>
-                            { profileStatus(8, 16) }
-                            { accountSecurity(8, 16) }
-                        </>
+                    : !commonConfig.utils.isShowAdditionalWidgetAllowed(userStore)
+                        ?
+                            <>
+                                { profileStatus(8, 16) }
+                                { accountSecurity(8, 16) }
+                            </>
                         : <Grid>
                             <Grid.Row>
                                 { profileStatus(8, 16) }
