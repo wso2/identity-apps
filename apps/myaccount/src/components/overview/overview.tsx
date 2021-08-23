@@ -171,7 +171,7 @@ export const Overview: FunctionComponent<OverviewPropsInterface> = (
         <Grid className="overview-page">
             <Divider hidden />
             <Grid.Row>
-                {!enableAlternateWidgetLayout
+                { !enableAlternateWidgetLayout
                     ?
                         <>
                             { accountStatus(9, 16) }
