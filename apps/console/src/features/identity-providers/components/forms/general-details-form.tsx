@@ -81,6 +81,11 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
      * Specifies if the component should only be read-only.
      */
     isReadOnly: boolean;
+    /**
+     * Explicitly specifies whether the currently displaying
+     * IdP is a SAML provider or not.
+     */
+    isSaml?: boolean;
 }
 
 const IDP_NAME_MAX_LENGTH: number = 50;
@@ -106,6 +111,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         idpList,
         hideIdPLogoEditField,
         isReadOnly,
+        isSaml,
         [ "data-testid" ]: testId
     } = props;
 
@@ -250,31 +256,24 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     }
                 </Form>
             </EmphasizedSegment>
-            { identityProviderConfig.generalDetailsForm.showCertificate
-                && <>
-                    < Divider hidden />
+            { identityProviderConfig.generalDetailsForm.showCertificate && (
+                <React.Fragment>
+                    < Divider hidden/>
                     <Grid>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Heading as="h4">Certificates</Heading>
+                                <Heading as="h4" style={ { fontWeight: 600 } }>Certificates</Heading>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
-                    <EmphasizedSegment>
-                        <Grid>
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <IdpCertificates
-                                        editingIDP={ editingIDP }
-                                        onUpdate={ onUpdate }
-                                        isReadOnly={ isReadOnly }
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    </EmphasizedSegment>
-                </>
-            }
+                    <IdpCertificates
+                        enableJWKS={ !isSaml }
+                        isReadOnly={ isReadOnly }
+                        editingIDP={ editingIDP }
+                        onUpdate={ onUpdate }
+                    />
+                </React.Fragment>
+            ) }
         </>
     );
 };
