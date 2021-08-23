@@ -56,9 +56,9 @@ export type CertificateConfigurationMode = "jwks" | "certificates";
  *  |   (?) Below is the {@link Switcher} component. When user clicks      |
  *  |       on one switch it will change the subcomponent input type.      |
  *  |                                                                      |
- *  |   +==============+====================+=================+            |
- *  |   |   JWKS URL   | Upload Certificate |    Paste PEM    |            |
- *  |   +==============+====================+=================+            |
+ *  |   +==============+====================+                              |
+ *  |   |   JWKS URL   | Upload Certificate |                              |
+ *  |   +==============+====================+                              |
  *  |                                                                      |
  *  |                                                                      |
  *  |   (?) Based on the switcher selection the sub component appearance   |
@@ -81,7 +81,7 @@ export type CertificateConfigurationMode = "jwks" | "certificates";
  *  |       configured it will render {@link EmptyCertificatesPlaceholder} |
  *  |       component.                                                     |
  *  |                                                                      |
- *  |                                                                      |
+ *  |       Tab     Tab                                                    |
  *  |   | Upload | Paste |                                                 |
  *  |   +==============================================================+   |
  *  |   |                                                              |   |
