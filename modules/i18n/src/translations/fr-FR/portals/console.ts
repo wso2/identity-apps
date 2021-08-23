@@ -3015,7 +3015,7 @@ export const console: ConsoleNS = {
                     },
                     addCertificate: {
                         subTitle: "Ajouter un nouveau certificat au fournisseur d'identité : {{ idpName }}",
-                        title: "Ajouter un nouveau certificat"
+                        title: "Configurer les certificats"
                     },
                     addProvisioningConnector: {
                         subTitle: "Suivre les étapes pour ajouter un nouveau connecteur d'approvisionnement sortant",
