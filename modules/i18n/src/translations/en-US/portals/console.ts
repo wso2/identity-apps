@@ -6439,14 +6439,14 @@ export const console: ConsoleNS = {
                                 label: "Display name",
                                 placeholder: "Enter the display name",
                                 validations: {
-                                    empty: "Display name is a required field"
+                                    empty: "This field cannot be empty"
                                 }
                             },
                             scopeName: {
                                 label: "Scope",
                                 placeholder: "Enter the scope",
                                 validations: {
-                                    empty: "Scope is a required field",
+                                    empty: "This field cannot be empty",
                                     invalid: "The scope contains invalid characters."
                                 }
                             }

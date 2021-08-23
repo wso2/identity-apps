@@ -5137,14 +5137,14 @@ export const console: ConsoleNS = {
                                 label: "Nom d'affichage",
                                 placeholder: "Entrez le nom d'affichage",
                                 validations: {
-                                    empty: "Le nom d'affichage est un champ obligatoire"
+                                    empty: "Ce champ ne peut pas être vide"
                                 }
                             },
                             scopeName: {
                                 label: "Nom du scope",
                                 placeholder: "Entrez le nom du scope",
                                 validations: {
-                                    empty: "Le nom du scope est un champ obligatoire",
+                                    empty: "Ce champ ne peut pas être vide",
                                     invalid: "La portée contient des caractères non valides."
                                 }
                             }
