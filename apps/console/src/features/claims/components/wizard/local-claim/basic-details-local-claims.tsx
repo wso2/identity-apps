@@ -74,6 +74,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
 
     const [ noUniqueOIDCAttrib, setNoUniqueOIDCAttrib ] = useState<boolean>(true);
     const [ noUniqueSCIMAttrib, setNoUniqueSCIMAttrib ] = useState<boolean>(true);
+    const [ isInlineEditMode, setIsInlineEditMode ] = useState<boolean>(false);
     const [ oidcMapping, setOidcMapping ] = useState<string>(values?.get("oidc").toString());
     const [ scimMapping, setScimMapping ] = useState<string>(values?.get("scim").toString());
 
@@ -141,6 +142,15 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                 };
 
                 if (attributeConfig.localAttributes.createWizard.customWIzard) {
+
+                    if (isInlineEditMode) {
+                        return;
+                    }
+
+                    if (oidcMapping === "" || scimMapping === "") {
+                        return;
+                    }
+
                     values.set("oidc", oidcMapping);
                     values.set("scim", scimMapping);
                 }
@@ -190,7 +200,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                         let isAttributeValid: boolean = true;
 
                                         // TODO : Discuss on max characters for attribute name
-                                        if (!new RegExp(/^([a-zA-Z0-9 _-]+)$/).test(value) || value.length > 30) {
+                                        if (!value.match(/^\w+$/) || value.length > 30) {
                                             isAttributeValid = false;
                                         }
 
@@ -309,6 +319,9 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                             errorHandler={ (status) => {
                                                                 setShowMappingError(status);
                                                             } }
+                                                            onEdit={ (isEdit) => {
+                                                                setIsInlineEditMode(isEdit);
+                                                            } }
                                                             onChangesSaved={ (value: string) => {
                                                                 if (value) {
                                                                     attributeConfig.localAttributes
@@ -345,6 +358,9 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                             validation="^[a-z_-]*$"
                                                             errorHandler={ (status) => {
                                                                 setShowMappingError(status);
+                                                            } }
+                                                            onEdit={ (isEdit) => {
+                                                                setIsInlineEditMode(isEdit);
                                                             } }
                                                             onChangesSaved={ (value: string) => {
                                                                 if (value) {
