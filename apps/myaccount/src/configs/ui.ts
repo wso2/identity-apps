@@ -34,6 +34,7 @@ import { ReactComponent as BoxIcon } from "../themes/default/assets/images/icons
 import { ReactComponent as CloseIcon } from "../themes/default/assets/images/icons/close-icon.svg";
 import { ReactComponent as CodeIcon } from "../themes/default/assets/images/icons/code-icon.svg";
 import { default as ConsentIcon } from "../themes/default/assets/images/icons/consent-icon.svg";
+import { default as MyAccountProfileIcon } from "../themes/default/assets/images/icons/user-profile.svg";
 import ConsoleIcon from "../themes/default/assets/images/icons/console-icon.svg";
 import { ReactComponent as ControlsIcon } from "../themes/default/assets/images/icons/controls-icon.svg";
 import { ReactComponent as CrossIcon } from "../themes/default/assets/images/icons/cross-icon.svg";
@@ -146,7 +147,8 @@ export const getWidgetIcons = () => {
 
     return {
         accountSecurity: PadlockIcon,
-        consents: ConsentIcon
+        consents: ConsentIcon,
+        profile: MyAccountProfileIcon
     };
 };
 

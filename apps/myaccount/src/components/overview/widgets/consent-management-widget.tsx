@@ -40,7 +40,7 @@ export const ConsentManagementWidget: FunctionComponent<TestableComponentInterfa
 
     return (
         <div className="widget consent-management" data-testid={ testId }>
-            <SettingsSection
+            <SettingsSection className={"overview"}
                 data-testid={ `${testId}-settings-section` }
                 header={ t("myAccount:components.overview.widgets.consentManagement.header") }
                 description={ t("myAccount:components.overview.widgets.consentManagement.description") }

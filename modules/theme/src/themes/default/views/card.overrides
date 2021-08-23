@@ -116,6 +116,9 @@
                 margin-top: 0;
             }
         }
+        &.overview {
+            min-height: 220px;
+        }
         // override the default the margin bottom
         &:last-child {
             margin-bottom: 0.3em;

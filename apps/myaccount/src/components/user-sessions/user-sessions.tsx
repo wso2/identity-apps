@@ -21,7 +21,7 @@ import reverse from "lodash-es/reverse";
 import sortBy from "lodash-es/sortBy";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Container, Modal } from "semantic-ui-react";
+import {Button, Container, Modal, Placeholder} from "semantic-ui-react";
 import { UserSessionsList } from "./user-sessions-list";
 import { fetchUserSessions, terminateAllUserSessions, terminateUserSession } from "../../api";
 import {
@@ -35,6 +35,7 @@ import {
 import { SettingsSection } from "../shared";
 import { AppConstants } from "../../constants";
 import { history } from "../../helpers";
+import { EmphasizedSegment } from "@wso2is/react-components";
 
 /**
  * Proptypes for the user sessions component.
@@ -60,11 +61,14 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
     const [ sessionsListActiveIndexes, setSessionsListActiveIndexes ] = useState([]);
     const { onAlertFired, ["data-testid"]: testId } = props;
     const { t } = useTranslation();
+    const [ isSessionDetailsLoading, setIsSessionDetailsLoading ] = useState<boolean>(false);
 
     /**
      * Retrieves the user sessions.
      */
     const getUserSessions = (): void => {
+
+        setIsSessionDetailsLoading(true);
         fetchUserSessions()
             .then((response) => {
                 if (response && response.sessions && response.sessions.length && response.sessions.length > 0) {
@@ -108,7 +112,10 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
                         "myAccount:components.userSessions.notifications.fetchSessions.genericError.message"
                     )
                 });
-            });
+            })
+            .finally(() => {
+                setIsSessionDetailsLoading(false);
+            })
     };
 
     /**
@@ -327,6 +334,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
             description={ t("myAccount:sections.userSessions.description") }
             header={ t("myAccount:sections.userSessions.heading") }
             placeholder={
+                ! isSessionDetailsLoading &&
                 !(userSessions && userSessions.sessions && (userSessions.sessions.length > 0))
                     ? t("myAccount:sections.userSessions.actionTitles.empty")
                     : null
@@ -347,13 +355,23 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
                     : null
             }
         >
-            <UserSessionsList
-                data-testid={ `${testId}-list` }
-                onTerminateUserSessionClick={ handleTerminateUserSessionClick }
-                onUserSessionDetailClick={ handleSessionDetailClick }
-                userSessions={ userSessions && userSessions.sessions ? userSessions.sessions : null }
-                userSessionsListActiveIndexes={ sessionsListActiveIndexes }
-            />
+            {!isSessionDetailsLoading ?
+                <UserSessionsList
+                    data-testid={`${testId}-list`}
+                    onTerminateUserSessionClick={handleTerminateUserSessionClick}
+                    onUserSessionDetailClick={handleSessionDetailClick}
+                    userSessions={userSessions && userSessions.sessions ? userSessions.sessions : null}
+                    userSessionsListActiveIndexes={sessionsListActiveIndexes}
+                />
+            : <EmphasizedSegment>
+                <Placeholder fluid>
+                    <Placeholder.Header image>
+                        <Placeholder.Line/>
+                        <Placeholder.Line/>
+                    </Placeholder.Header>
+                </Placeholder>
+             </EmphasizedSegment>
+            }
             { terminateAllUserSessionsModal }
             { terminateUserSessionModal }
         </SettingsSection>

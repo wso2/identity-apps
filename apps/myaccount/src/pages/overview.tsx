@@ -23,7 +23,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Overview } from "../components";
 import { commonConfig } from "../extensions";
-import { resolveUserProfileName } from "../helpers";
+import {resolveUserProfileName, resolveUserstore} from "../helpers";
 import { InnerPageLayout } from "../layouts";
 import { AuthStateInterface } from "../models";
 import { AppState } from "../store";
@@ -56,6 +56,7 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
     const [ userProfileName, setUserProfileName ] = useState<string>(null);
     const [ isNonLocalCredentialUser, setIsNonLocalCredentialUser ] = useState<boolean>(false);
     const [ userSource, setUserSource ] = useState<string>(null);
+    const [ userStore, setUserstore ] = useState<string> (null);
 
     useEffect(() => {
         if (isProfileInfoLoading === undefined) {
@@ -64,6 +65,16 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
 
         setUserProfileName(resolveUserProfileName(profileDetails, isProfileInfoLoading));
     }, [ isProfileInfoLoading ]);
+
+    /**
+     * Sets user store of the user.
+     */
+    useEffect(() => {
+        if (profileDetails?.profileInfo?.userName) {
+            const userstore: string = resolveUserstore(profileDetails.profileInfo.userName);
+            setUserstore(userstore);
+        }
+    }, [profileDetails?.profileInfo]);
 
     /**
      * Verifies whether a user is a federated user (user without local credentials).
@@ -116,6 +127,7 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
             <Overview
                 userSource={ userSource }
                 enableAlternateWidgetLayout={ enableAlternateWidgetLayout }
+                userStore={userStore}
             />
             }
         </InnerPageLayout>

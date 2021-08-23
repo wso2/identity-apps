@@ -41,7 +41,7 @@ export const AccountSecurityWidget: FunctionComponent<TestableComponentInterface
 
     return (
         <div className="widget account-security" data-testid={ testId }>
-            <SettingsSection
+            <SettingsSection className={"overview"}
                 data-testid={ `${testId}-settings-section` }
                 header={ t("myAccount:components.overview.widgets.accountSecurity.header") }
                 description={ t("myAccount:components.overview.widgets.accountSecurity.description") }
