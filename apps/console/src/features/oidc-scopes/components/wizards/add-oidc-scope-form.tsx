@@ -89,7 +89,7 @@ let triggerPreviousForm: () => void;
                     "scopeName.validations.empty");
                 }
                 if (!values.displayName && !initialValues?.displayName) {
-                    errors.displayName=t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
+                    errors.displayName = t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
                     "displayName.validations.empty");
                 }
                 return errors;
