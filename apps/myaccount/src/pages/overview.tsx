@@ -23,7 +23,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Overview } from "../components";
 import { commonConfig } from "../extensions";
-import {resolveUserProfileName, resolveUserstore} from "../helpers";
+import { resolveUserProfileName, resolveUserstore } from "../helpers";
 import { InnerPageLayout } from "../layouts";
 import { AuthStateInterface } from "../models";
 import { AppState } from "../store";

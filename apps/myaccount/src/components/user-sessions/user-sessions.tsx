@@ -21,7 +21,7 @@ import reverse from "lodash-es/reverse";
 import sortBy from "lodash-es/sortBy";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {Button, Container, Modal, Placeholder} from "semantic-ui-react";
+import { Button, Container, Modal, Placeholder } from "semantic-ui-react";
 import { UserSessionsList } from "./user-sessions-list";
 import { fetchUserSessions, terminateAllUserSessions, terminateUserSession } from "../../api";
 import {

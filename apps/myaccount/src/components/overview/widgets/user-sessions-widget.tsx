@@ -29,8 +29,8 @@ import { AlertLevels, UserSessions, emptyUserSessions } from "../../../models";
 import { addAlert } from "../../../store/actions";
 import { SettingsSection } from "../../shared";
 import { UserSessionsList } from "../../user-sessions";
-import {EmphasizedSegment} from "@wso2is/react-components";
-import {Placeholder} from "semantic-ui-react";
+import { EmphasizedSegment } from "@wso2is/react-components";
+import { Placeholder } from "semantic-ui-react";
 
 /**
  * User sessions widget.
