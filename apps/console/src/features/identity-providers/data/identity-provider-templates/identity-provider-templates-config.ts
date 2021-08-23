@@ -58,6 +58,7 @@ export interface IdentityProviderTemplatesConfigInterface {
 export interface TemplateConfigInterface<T> {
     content?: TemplateContentInterface;
     enabled: boolean;
+    comingSoon?: boolean;
     id: string;
     resource?: T | Promise<T> | string;
 }
@@ -152,6 +153,9 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                             content: {
                                 wizardHelp: lazy(() => (
                                     import("./templates/saml-identity-provider/saml-idp-wizard-help")
+                                )),
+                                fileBasedHelpPanel: lazy(() => (
+                                    import("./templates/saml-identity-provider/saml-idp-wizard-file-based-help")
                                 ))
                             },
                             enabled: window["AppUtils"].getConfig()

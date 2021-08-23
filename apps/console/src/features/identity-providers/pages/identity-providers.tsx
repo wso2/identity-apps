@@ -25,7 +25,7 @@ import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, use
 import { useTranslation } from "react-i18next";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "../../../extensions/configs";
-import { AdvancedSearchWithBasicFilters, AppConstants, UIConstants, history } from "../../core";
+import { AdvancedSearchWithBasicFilters, AppConstants, EventPublisher, UIConstants, history } from "../../core";
 import { getAuthenticatorTags, getAuthenticators, getIdentityProviderList } from "../api";
 import { AuthenticatorGrid, IdentityProviderList, handleGetIDPListCallError } from "../components";
 import { AuthenticatorMeta } from "../meta";
@@ -99,9 +99,12 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
     ] = useState<boolean>(undefined);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ filterTags, setFilterTags ] = useState<string[]>([]);
+    const [ selectedFilterTags, setSelectedFilterTags ] = useState<string[]>([]);
     const [ showFilteredList, setShowFilteredList ] = useState<boolean>(false);
     const [ isPaginating, setIsPaginating ] = useState<boolean>(false);
     const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
+
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     /**
      * Checks if the listing view defined in the config is the new connections view.
@@ -327,6 +330,8 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
 
         // Update the internal state to manage placeholders etc.
         setSearchQuery(query);
+        // Update the state of selected filters.
+        setSelectedFilterTags(selectedFilters);
         // Filter out the templates.
         getAllAuthenticators(IdentityProviderManagementUtils.buildAuthenticatorsFilterQuery(query, selectedFilters));
 
@@ -335,6 +340,15 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
         } else {
             setShowFilteredList(true);
         }
+    };
+
+    /**
+     * Handles the `onUpdate` callback action.
+     */
+    const onUpdate = (): void => {
+
+        getAllAuthenticators(IdentityProviderManagementUtils.buildAuthenticatorsFilterQuery(
+            searchQuery, selectedFilterTags));
     };
 
     /**
@@ -407,6 +421,8 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                         <Show when={ AccessControlConstants.IDP_WRITE }>
                             <PrimaryButton
                                 onClick={ (): void => {
+                                    eventPublisher.publish("connections-click-new-connection-button");
+
                                     history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));
                                 } }
                                 data-testid={ `${ testId }-add-button` }
@@ -519,6 +535,8 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                                         : idpList?.identityProviders
                                 }
                                 onEmptyListPlaceholderActionClick={ () => {
+                                    eventPublisher.publish("connections-click-new-connection-button");
+                                    
                                     history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));
                                 } }
                                 isFiltering={ showFilteredList }
@@ -526,6 +544,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                                 onIdentityProviderDelete={ handleIdentityProviderDelete }
                                 onSearchQueryClear={ handleSearchQueryClear }
                                 searchQuery={ searchQuery }
+                                onUpdate={ onUpdate }
                                 data-testid={ `${ testId }-list` }
                             />
                         </GridLayout>

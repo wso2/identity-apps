@@ -198,5 +198,6 @@
             ]
         }
     },
-    "type": "SOCIAL"
+    "type": "SOCIAL",
+    "templateId": "facebook-idp"
 }

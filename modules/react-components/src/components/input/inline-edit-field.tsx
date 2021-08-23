@@ -22,6 +22,8 @@ import { Grid, GridColumn, Icon, Input, InputOnChangeData, Popup } from "semanti
 
 export interface InlineEditInputPropsInterface extends TestableComponentInterface {
     text: string;
+    validation?: string;
+    errorHandler?: (status: boolean) => void;
     textPrefix?: string;
     textPostfix?: string;
     inputPlaceholderText?: string;
@@ -39,20 +41,33 @@ export const InlineEditInput: FunctionComponent<InlineEditInputPropsInterface> =
 ): ReactElement => {
 
     const {
+        errorHandler,
         text,
         textPrefix,
         textPostfix,
         inputPlaceholderText,
+        validation,
         onChangesSaved,
         [ "data-testid" ]: testId
     } = props;
 
     const [ editMode, setEditMode ] = useState<boolean>(false);
+    const [ prevText, setPrevText ] = useState<string>(text);
     const [ textValue, setTextValue ] = useState<string>(text);
+    const [ regExValidation, setRegExValidation ] = useState<RegExp>();
+    const [ fieldError, setFieldError] = useState<boolean>(false);
 
     useEffect(() => {
         setTextValue(text);
+        setPrevText(text);
     }, [ text ]);
+
+    useEffect(() => {
+        if ( validation ) {
+            const regEx = new RegExp(validation);
+            setRegExValidation(regEx);
+        }
+    }, [validation]);
     
     return (
         editMode ? 
@@ -64,10 +79,11 @@ export const InlineEditInput: FunctionComponent<InlineEditInputPropsInterface> =
                             size="mini"
                             placeholder={ inputPlaceholderText }
                             value={ textValue }
+                            error={ fieldError }
                             onChange={ (
                                 event: React.ChangeEvent<HTMLInputElement>, 
                                 data: InputOnChangeData ) => {
-                                setTextValue(data.value);
+                                setTextValue(data.value.trim());
                             } }
                             data-testid={ `${ testId }-input` }
                         />
@@ -80,6 +96,14 @@ export const InlineEditInput: FunctionComponent<InlineEditInputPropsInterface> =
                                     name="check"
                                     link
                                     onClick={ () => {
+                                        if (textValue === "" || ( validation && !textValue.match(regExValidation) )) {
+                                            setFieldError(true);
+                                            if (errorHandler) {
+                                                errorHandler(true);
+                                            }
+                                            return;
+                                        }
+                                        
                                         setEditMode(false);
                                         onChangesSaved(textValue);
                                     } }
@@ -96,6 +120,8 @@ export const InlineEditInput: FunctionComponent<InlineEditInputPropsInterface> =
                                     link
                                     onClick={ () => {
                                         setEditMode(false);
+                                        errorHandler(false);
+                                        setTextValue(prevText);
                                     } }
                                 />
                             ) }

@@ -17,8 +17,12 @@
  */
 
 export interface CommonConfig {
-    AdvancedSearchWithBasicFilters: {
+    advancedSearchWithBasicFilters: {
         enableQuerySearch: boolean;
     };
     checkForUIResourceScopes: boolean;
+    userEditSection: {
+        isGuestUser: boolean;
+        showEmail: boolean;
+    };
 }

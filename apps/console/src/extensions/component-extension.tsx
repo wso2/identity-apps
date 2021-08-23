@@ -17,9 +17,9 @@
  */
 
 import { I18n } from "@wso2is/i18n";
-import { EmptyPlaceholder, ErrorBoundary } from "@wso2is/react-components";
+import { ContentLoader, EmptyPlaceholder, ErrorBoundary } from "@wso2is/react-components";
 import React, { Suspense, lazy } from "react";
-import { Placeholder } from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
 import { ExtensionsManager } from "./extensions-manager";
 import { AppUtils, getEmptyPlaceholderIllustrations } from "../features/core";
 
@@ -65,6 +65,7 @@ export const ComponentExtensionPlaceholder = (args: ComponentExtensionInterface)
             config.panes.map(pane => {
                 const DynamicLoader = lazy(() => import(`${ pane.path }`));
                 tabPanes.push({
+                    componentId: pane.componentid,
                     menuItem: I18n.instance.t(pane.title),
                     render: () => (
                         <ErrorBoundary
@@ -83,12 +84,9 @@ export const ComponentExtensionPlaceholder = (args: ComponentExtensionInterface)
                         >
                             <Suspense
                                 fallback={ (
-                                    <Placeholder>
-                                        <Placeholder.Header>
-                                            <Placeholder.Line />
-                                            <Placeholder.Line />
-                                        </Placeholder.Header>
-                                    </Placeholder>
+                                    <Container>
+                                        <ContentLoader inline="centered" active/>
+                                    </Container>
                                 ) }>
                                 <DynamicLoader { ...props } />
                             </Suspense>

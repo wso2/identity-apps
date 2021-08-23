@@ -27,6 +27,7 @@ import {
 } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
+import orderBy from "lodash-es/orderBy";
 import startCase from "lodash-es/startCase";
 import union from "lodash-es/union";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
@@ -38,6 +39,7 @@ import {
     AppConstants,
     AppState,
     ConfigReducerStateInterface,
+    EventPublisher,
     getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
@@ -103,6 +105,8 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     const [ filterTags, setFilterTags ] = useState<string[]>([]);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
+
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     /**
      * Checks if the listing view defined in the config is the new connections view.
@@ -173,6 +177,9 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                 let tags: string[] = [];
 
                 response.filter((category: IdentityProviderTemplateCategoryInterface) => {
+                    // Order the templates by pushing coming soon items to the end.
+                    category.templates = orderBy(category.templates, [ "comingSoon" ], [ "desc" ]);
+
                     category.templates.filter((template: IdentityProviderTemplateInterface) => {
                         if (!(template?.tags && Array.isArray(template.tags) && template.tags.length > 0)) {
                             return;
@@ -237,6 +244,10 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
 
         if (selectedTemplate) {
             setSelectedTemplate(selectedTemplate);
+
+            eventPublisher.publish("connections-select-template", {
+                "type": selectedTemplate.templateId
+            });
         }
 
         setTemplateType(id);
@@ -444,7 +455,8 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                                 <ResourceGrid.Card
                                                     key={ templateIndex }
                                                     resourceName={ template.name }
-                                                    isResourceComingSoon={ template.disabled }
+                                                    isResourceComingSoon={ template.comingSoon }
+                                                    disabled={ template.disabled }
                                                     comingSoonRibbonLabel={ t("common:comingSoon") }
                                                     resourceDescription={ template.description }
                                                     resourceImage={

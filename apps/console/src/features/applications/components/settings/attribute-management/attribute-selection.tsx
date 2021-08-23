@@ -27,6 +27,7 @@ import {
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Button, Checkbox, Grid, Icon, Input, Segment, Table } from "semantic-ui-react";
 import { AttributeSelectionWizardOtherDialect } from "./attirbute-selection-wizard-other-dialect";
 import { AttributeListItem } from "./attribute-list-item";
@@ -39,7 +40,14 @@ import {
 } from "./attribute-settings";
 import { applicationConfig } from "../../../../../extensions";
 import { ClaimManagementConstants } from "../../../../claims/constants";
-import { AppConstants, EventPublisher, getEmptyPlaceholderIllustrations, history } from "../../../../core";
+import {
+    AppConstants,
+    AppState,
+    ConfigReducerStateInterface,
+    EventPublisher,
+    getEmptyPlaceholderIllustrations,
+    history
+} from "../../../../core";
 import {
     ClaimConfigurationInterface,
     ClaimMappingInterface,
@@ -75,6 +83,11 @@ interface AttributeSelectionPropsInterface extends TestableComponentInterface {
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Handles loading UI.
+     */
+    isUserAttributesLoading?: boolean;
+    setUserAttributesLoading?: any;
 }
 
 /**
@@ -113,6 +126,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         claimMappingError,
         readOnly,
         updateMappings,
+        isUserAttributesLoading,
+        setUserAttributesLoading,
         [ "data-testid" ]: testId
     } = props;
 
@@ -138,6 +153,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+
     useEffect(() => {
         const tempFilterSelectedExternalClaims = [ ...filterSelectedExternalClaims ];
         claimConfigurations?.claimMappings?.map((claim) => {
@@ -157,6 +174,20 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         setSelectedExternalClaims(tempFilterSelectedExternalClaims);
         setFilterSelectedExternalClaims(tempFilterSelectedExternalClaims);
     }, [ claimConfigurations ]);
+
+    // Stops the UI loader when the component is initialized and have fetched the availableExternalClaims.
+    useEffect(() => {
+        if (initializationFinished && claimConfigurations) {
+            // Stop loader UI for SAML applications.
+            if (selectedDialect.localDialect && availableClaims.length > 0) {
+                setUserAttributesLoading(false);
+            }
+            //  Stop loader UI for OIDC and SP applications.
+            if (!selectedDialect.localDialect && availableExternalClaims.length > 0) {
+                setUserAttributesLoading(false);
+            }
+        }
+    }, [availableClaims, availableExternalClaims, claimConfigurations, initializationFinished]);
 
     const updateMandatory = (claimURI: string, mandatory: boolean) => {
         if (selectedDialect.localDialect) {
@@ -290,6 +321,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     const setInitialValues = () => {
         // set local dialect values.
+        setUserAttributesLoading(true);
         if (selectedDialect.localDialect) {
             const initialRequest = getInitiallySelectedClaimsURI();
             const initialSelectedClaims: ExtendedClaimInterface[] = [];
@@ -396,7 +428,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     const handleOpenSelectionModal = () => {
         eventPublisher.publish("application-user-attribute-click-add");
-        
+
         setShowSelectionModal(true);
     };
 
@@ -555,7 +587,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     };
 
     return (
-        claimConfigurations && initializationFinished
+        (!isUserAttributesLoading && claimConfigurations && initializationFinished)
             ?
             <>
                 <Grid.Row data-testid={ testId }>
@@ -692,7 +724,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                     t("console:develop.features" +
                                                                                         ".applications.edit.sections" +
                                                                                         ".attributes.selection" +
-                                                                                        ".mandatoryAttributeHint")
+                                                                                        ".mandatoryAttributeHint",
+                                                                                        { productName:
+                                                                                            config.ui.productName })
                                                                                 }
                                                                             </Hint>
                                                                         </Table.HeaderCell>
@@ -728,7 +762,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                     t("console:develop.features" +
                                                                                         ".applications.edit.sections" +
                                                                                         ".attributes.selection" +
-                                                                                        ".mandatoryAttributeHint")
+                                                                                        ".mandatoryAttributeHint",
+                                                                                        { productName:
+                                                                                            config.ui.productName })
                                                                                 }
                                                                             </Hint>
                                                                         </Table.HeaderCell>
@@ -820,7 +856,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             t("console:develop.features" +
                                                                                 ".applications.edit.sections" +
                                                                                 ".attributes.selection" +
-                                                                                ".mandatoryAttributeHint")
+                                                                                ".mandatoryAttributeHint",
+                                                                                { productName:
+                                                                                    config.ui.productName })
                                                                         }
                                                                     </Hint>
                                                                 </Table.HeaderCell>
@@ -901,7 +939,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                     </Segment>
                                 )
                         }
-                        { applicationConfig.attributeSettings.attributeSelection
+                        { !readOnly && applicationConfig.attributeSettings.attributeSelection
                             .showShareAttributesHint(selectedDialect)
                             ? (
                                 <Hint>
@@ -942,9 +980,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 { addSelectionModal() }
                 { removeAttributeModal() }
             </>
-            : !initializationFinished
-                ? <ContentLoader />
-                : null
+            : null
     );
 };
 

@@ -138,7 +138,8 @@
         }
     },
     "image": "enterprise",
-    "name": "SAML 2.0",
+    "name": "SAML",
     "services": [],
-    "disabled": false
+    "disabled": false,
+    "templateId": "enterprise-saml-idp"
 }

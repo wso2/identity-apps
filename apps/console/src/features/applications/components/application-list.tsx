@@ -20,6 +20,7 @@ import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
+    IdentifiableComponentInterface,
     LoadableComponentInterface,
     SBACInterface,
     TestableComponentInterface
@@ -31,6 +32,7 @@ import {
     ConfirmationModal,
     DataTable,
     EmptyPlaceholder,
+    GridLayout,
     LinkButton,
     PrimaryButton,
     TableActionsInterface,
@@ -38,12 +40,13 @@ import {
     useConfirmationModalAlert
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
+    EventPublisher,
     FeatureConfigInterface,
     UIConfigInterface,
     UIConstants,
@@ -65,7 +68,7 @@ import { ApplicationTemplateManagementUtils } from "../utils";
  * Proptypes for the applications list component.
  */
 interface ApplicationListPropsInterface extends SBACInterface<FeatureConfigInterface>, LoadableComponentInterface,
-    TestableComponentInterface {
+    TestableComponentInterface, IdentifiableComponentInterface {
 
     /**
      * Advanced Search component.
@@ -143,7 +146,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         showListItemActions,
         isSetStrongerAuth,
         isRenderedOnPortal,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -163,6 +167,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     ] = useState<boolean>(false);
 
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
+
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     /**
      * Fetch the application templates if list is not available in redux.
@@ -391,7 +397,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
      */
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
-        if (searchQuery) {
+        if (searchQuery && list?.totalResults === 0) {
             return (
                 <EmptyPlaceholder
                     action={ (
@@ -417,7 +423,10 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     className={ !isRenderedOnPortal ? "list-placeholder" : "" }
                     action={ onEmptyListPlaceholderActionClick && (
                         <Show when={ AccessControlConstants.APPLICATION_WRITE }>
-                            <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
+                            <PrimaryButton onClick={ () => {
+                                eventPublisher.publish(componentId + "-click-new-application-button");
+                                onEmptyListPlaceholderActionClick();
+                            } }>
                                 <Icon name="add"/>
                                 { t("console:develop.features.applications.placeholders.emptyList.action") }
                             </PrimaryButton>
@@ -437,7 +446,10 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     };
 
     return (
-        <>
+        <GridLayout
+            showTopActionPanel={ false }
+            isLoading={ (isLoading || isApplicationTemplateRequestLoading) }
+        >
             <DataTable<ApplicationListItemInterface>
                 className="applications-table"
                 externalSearch={ advancedSearch }
@@ -499,7 +511,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     </ConfirmationModal>
                 )
             }
-        </>
+        </GridLayout>
     );
 };
 
@@ -507,6 +519,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
  * Default props for the component.
  */
 ApplicationList.defaultProps = {
+    "data-componentid": "application",
     "data-testid": "application-list",
     selection: true,
     showListItemActions: true

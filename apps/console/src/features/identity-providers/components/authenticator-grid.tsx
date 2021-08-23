@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -37,7 +38,7 @@ import React, {
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Divider, Icon, List } from "semantic-ui-react";
 import { handleIDPDeleteError } from "./utils";
 import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "../../../extensions/configs";
@@ -45,6 +46,9 @@ import { getApplicationDetails } from "../../applications/api";
 import { ApplicationBasicInterface } from "../../applications/models";
 import {
     AppConstants,
+    AppState,
+    EventPublisher,
+    FeatureConfigInterface,
     getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
@@ -109,6 +113,10 @@ interface AuthenticatorGridPropsInterface extends LoadableComponentInterface, Te
      * Show list item actions.
      */
     showListItemActions?: boolean;
+    /**
+     * On authenticators list update callback.
+     */
+    onUpdate?: () => void;
 }
 
 /**
@@ -131,6 +139,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
         onItemClick,
         onSearchQueryClear,
         searchQuery,
+        onUpdate,
         [ "data-testid" ]: testId
     } = props;
 
@@ -147,6 +156,11 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     ] = useState<boolean>(false);
     const [ isAppsLoading, setIsAppsLoading ] = useState<boolean>(true);
     const [ showCustomEditView, setShowCustomEditView ] = useState<boolean>(false);
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     /**
      * Redirects to the authenticator edit page when the edit button is clicked.
@@ -222,12 +236,13 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
         deleteIdentityProvider(id)
             .then(() => {
+                onUpdate();
                 dispatch(addAlert({
                     description: t("console:develop.features.authenticationProvider." +
-                        "notifications.deleteIDP.success.description"),
+                        "notifications.deleteConnection.success.description"),
                     level: AlertLevels.SUCCESS,
                     message: t("console:develop.features.authenticationProvider.notifications." +
-                        "deleteIDP.success.message")
+                        "deleteConnection.success.message")
                 }));
             })
             .catch((error) => {
@@ -334,6 +349,10 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                         const isIdP: boolean = IdentityProviderManagementUtils
                             .isConnectorIdentityProvider(authenticator);
 
+                        const isIdPDeletable: boolean = IdentityProviderManagementUtils
+                            .isConnectorIdentityProvider(authenticator) ||
+                            authenticator.type === "FEDERATED";
+
                         return (
                             <Fragment key={ index }>
                                 <ResourceGrid.Card
@@ -344,17 +363,50 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                     onEdit={ (e: MouseEvent<HTMLButtonElement>) => {
                                         // If edit flow override is defined, set the custom edit view flag to true.
                                         if (authenticatorConfig?.editFlowOverrides) {
+                                            eventPublisher.publish("connections-click-template-connect", { "type":
+                                                isIdP 
+                                                    ? AuthenticatorMeta.getAuthenticatorTemplateName(
+                                                        (authenticator as IdentityProviderInterface)
+                                                            .federatedAuthenticators?.defaultAuthenticatorId)
+                                                        ? AuthenticatorMeta.getAuthenticatorTemplateName(
+                                                            (authenticator as IdentityProviderInterface)
+                                                                .federatedAuthenticators?.defaultAuthenticatorId) 
+                                                        : "other"
+                                                    : AuthenticatorMeta.getAuthenticatorTemplateName(authenticator.id)
+                                                        ? AuthenticatorMeta
+                                                            .getAuthenticatorTemplateName(authenticator.id) 
+                                                        : ""
+                                            });
+
                                             setShowCustomEditView(true);
                                             return;
                                         }
 
+                                        eventPublisher.publish("connections-click-template-setup", { "type":
+                                            isIdP 
+                                                ? AuthenticatorMeta.getAuthenticatorTemplateName(
+                                                    (authenticator as IdentityProviderInterface)
+                                                        .federatedAuthenticators?.defaultAuthenticatorId)
+                                                    ? AuthenticatorMeta.getAuthenticatorTemplateName(
+                                                        (authenticator as IdentityProviderInterface)
+                                                            .federatedAuthenticators?.defaultAuthenticatorId) 
+                                                    : "other"
+                                                : AuthenticatorMeta.getAuthenticatorTemplateName(authenticator.id)
+                                                    ? AuthenticatorMeta.getAuthenticatorTemplateName(authenticator.id) 
+                                                    : ""
+                                        });
+
                                         handleGridItemOnClick(e, authenticator);
                                     } }
-                                    onDelete={ () => handleAuthenticatorDeleteInitiation(authenticator.id) }
+                                    onDelete={ hasRequiredScopes(featureConfig?.identityProviders,
+                                        featureConfig?.identityProviders?.scopes?.delete, allowedScopes)
+                                        ? () => handleAuthenticatorDeleteInitiation(authenticator.id)
+                                        : null
+                                    }
                                     showActions={ true }
                                     showResourceEdit={ true }
                                     showResourceDelete={
-                                        isIdP && !IdentityProviderManagementConstants.DELETING_FORBIDDEN_IDPS
+                                        isIdPDeletable && !IdentityProviderManagementConstants.DELETING_FORBIDDEN_IDPS
                                             .includes(authenticator.name)
                                     }
                                     isResourceComingSoon={ authenticatorConfig?.isComingSoon }

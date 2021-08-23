@@ -121,5 +121,6 @@
             ]
         }
     },
-    "type": "SOCIAL"
+    "type": "SOCIAL",
+    "templateId": "github-idp"
 }

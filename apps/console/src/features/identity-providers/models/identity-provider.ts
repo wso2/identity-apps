@@ -212,6 +212,10 @@ export interface IdentityProviderTemplateItemInterface {
     templateGroup?: string;
     subTemplates?: IdentityProviderTemplateItemInterface[];
     subTemplatesSectionTitle?: string;
+    /**
+     * Template identifier.
+    */
+    templateId?: string;
 }
 
 /**
@@ -224,6 +228,10 @@ export interface IdentityProviderTemplateInterface extends IdentityProviderTempl
      * The list of tags that the IDP template can be categorized under.
      */
     tags?: string[];
+    /**
+     * Should resource be listed as coming soon.
+     */
+    comingSoon?: boolean;
 }
 
 /**
@@ -609,7 +617,7 @@ export interface AuthenticatorInterface {
      * Authenticator Image.
      * @example basic-authenticator-logo-url
      */
-    image: string;
+    image?: string;
     /**
      * Authenticator meta tags.
      * @example [ "2FA", "MFA" ]

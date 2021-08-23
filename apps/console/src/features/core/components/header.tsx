@@ -171,6 +171,15 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         </Menu.Item>
     );
 
+    /**
+     * Redirects to myaccount from console.
+     */
+    const onAvatarClick = () => {
+
+        window.open(window[ "AppUtils" ].getConfig().accountApp.path,
+            "_blank", "noopener")
+    }
+
     return (
         <ReusableHeader
             announcement={ announcement && (
@@ -258,6 +267,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     : isHeaderAvatarLabelAllowed
             }
             onSidePanelToggleClick={ onSidePanelToggleClick }
+            onAvatarClick={ onAvatarClick }
             data-testid={ testId }
             { ...rest }
         >
@@ -271,6 +281,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                     active={ activeView === "DEVELOPER" }
                                     className="portal-switch"
                                     onClick={ () => {
+                                        eventPublisher.publish("console-click-develop-menu-item");
+
                                         history.push(config.deployment.developerApp.path);
                                     } }
                                     data-testid={ `${ testId }-developer-portal-switch` }
@@ -280,6 +292,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                     active={ activeView === "ADMIN" }
                                     className="portal-switch"
                                     onClick={ () => {
+                                        eventPublisher.publish("console-click-manage-menu-item");
+                                        
                                         history.push(config.deployment.adminApp.path);
                                     } }
                                     data-testid={ `${ testId }-admin-portal-switch` }

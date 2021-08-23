@@ -20,6 +20,8 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, GenericIcon } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
+import orderBy from "lodash-es/orderBy";
+import union from "lodash-es/union";
 import React, {
     Fragment,
     FunctionComponent,
@@ -719,6 +721,22 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         IdentityProviderTemplateManagementUtils.categorizeTemplates(templates)
             .then((response: IdentityProviderTemplateCategoryInterface[]) => {
+
+                let tags: string[] = [];
+
+                response.filter((category: IdentityProviderTemplateCategoryInterface) => {
+                    // Order the templates by pushing coming soon items to the end.
+                    category.templates = orderBy(category.templates, [ "comingSoon" ], [ "desc" ]);
+
+                    category.templates.filter((template: IdentityProviderTemplateInterface) => {
+                        if (!(template?.tags && Array.isArray(template.tags) && template.tags.length > 0)) {
+                            return;
+                        }
+
+                        tags = union(tags, template.tags);
+                    });
+                });
+
                 setCategorizedTemplates(response);
                 setAddNewAuthenticatorClicked(false);
             })

@@ -436,7 +436,7 @@ export const console: ConsoleNS = {
             }
         },
         sidePanel: {
-            privacy: "Confidentialité",
+            privacy: "Confidentialité"
         },
         validations: {
             inSecureURL: {
@@ -697,7 +697,7 @@ export const console: ConsoleNS = {
                         actionTitle: "Supprimer",
                         header: "Supprimer l'application",
                         subheader: "Une fois l'application supprimée, elle ne peut pas être récupérée et les " +
-                            "clients utilisant cette application ne fonctionneront plus.",
+                            "clients utilisant cette application ne fonctionneront plus."
                     },
                     header: "Zone de danger"
                 },
@@ -789,10 +789,10 @@ export const console: ConsoleNS = {
                                     " avec cette application.",
                                 attributeComponentHintAlt: "Gérez les attributs utilisateur que vous souhaitez" +
                                     " partager avec cette application.",
-                                mandatoryAttributeHint: "Marquez les attributs que l'utilisateur doit partager avec" +
-                                    " l'application. Lors de la connexion, Asgardeo invite l'utilisateur à saisir la" +
-                                    " valeur de l'attribut si elle n'est pas déjà fournie dans le profil de" +
-                                    " l'utilisateur.",
+                                mandatoryAttributeHint: "Marquez les attributs utilisateur qui doivent " +
+                                    "obligatoirement être partagés avec l'application. Lors de la connexion, " +
+                                    "{{productName}} invite l'utilisateur à saisir ces valeurs d'attribut, si elles " +
+                                    "ne sont pas déjà fournies dans le profil de l'utilisateur.",
                                 mappingTable: {
                                     actions: {
                                         enable: "Activer l'association"
@@ -973,7 +973,7 @@ export const console: ConsoleNS = {
                                                     addNewAuthenticatorCard: {
                                                         title: "Configurer un nouveau fournisseur d'identité"
                                                     },
-                                                    goBackButton: "Revenir à la sélection",
+                                                    goBackButton: "Revenir à la Sélection",
                                                     search: {
                                                         placeholder: "Rechercher des authentificateurs"
                                                     },
@@ -1012,7 +1012,7 @@ export const console: ConsoleNS = {
                                                 "</1> ou tout autre gestionnaire tel que <3>Identifiant d’abord " +
                                                 "</3>qui peut gérer ces facteurs est présent dans une étape précédente.",
                                             secondFactorDisabledInFirstStep: "Les authentificateurs de deuxième " +
-                                                "facteur ne peuvent pas être utilisés dans la première étape"
+                                                "facteur ne peuvent pas être utilisés dans la première étape."
                                         }
                                     }
                                 },
@@ -1418,9 +1418,9 @@ export const console: ConsoleNS = {
                                 },
                                 hint: "Cela déterminera la manière dont l'application communique avec le service " +
                                     "de jetons.",
-                                label: "Grant type autorisés",
+                                label: "Types de subvention autorisés",
                                 validations: {
-                                    empty: "Sélectionnez au minimum un grant type"
+                                    empty: "Sélectionnez au moins un type de subvention"
                                 },
                                 vvalidation: {
                                     refreshToken:"Le type d'octroi Refresh token doit être sélectionné uniquement " +
@@ -1440,10 +1440,12 @@ export const console: ConsoleNS = {
                         },
                         messages: {
                             revokeDisclaimer: {
-                                content: "விண்ணப்பம் ரத்து செய்யப்பட்டது. நீங்கள் பயன்பாட்டை மீண்டும் இயக்க விரும்பினால் " +
-                                    "ரகசியத்தை மீண்டும் உருவாக்கவும்.",
+                                content: "La demande a été révoquée. Réactivez l'application pour permettre " +
+                                    "aux utilisateurs de se connecter.",
                                 heading: "La demande est révoquée"
-                            }
+                            },
+                            customInvalidMessage: "Veuillez saisir un URI valide. Les formats valides incluent " +
+                                "HTTP, HTTPS ou le schéma d'URI à usage privé."
                         },
                         sections: {
                             accessToken: {
@@ -1582,7 +1584,7 @@ export const console: ConsoleNS = {
                                             empty: "Veuillez renseigner l'URL de déconnexion aval",
                                             invalid: "Veuillez ajouter une URL valide"
                                         }
-                                    },
+                                    }
                                 },
                                 heading: "PKCE"
                             },
@@ -1643,7 +1645,7 @@ export const console: ConsoleNS = {
                                     "de demande signés dans la demande d'autorisation.",
                                 fields: {
                                     signatureValidation: {
-                                        label: "Activer la validation de la signature",
+                                        label: "Activer la validation de la signature"
                                     }
                                 }
                             },
@@ -1692,11 +1694,13 @@ export const console: ConsoleNS = {
                                 hint: "Cette valeur peut remplacer l'identifiant de l'entité du fournisseur d'identité qui est " +
                                     "spécifié dans la configuration d'authentification entrante SAML SSO du fournisseur " +
                                     "d'identité résident. L'identifiant de l'entité du fournisseur d'identité " +
-                                    "est utilisé comme émetteur de la réponse SAML qui est générée.",
+                                    "est utilisé comme émetteur de la réponse SAML qui est générée. Il doit s'agir " +
+                                    "d'un URI/URL valide.",
                                 label: "Alias IDP entityId",
                                 placeholder: "Saisir alias",
                                 validations: {
-                                    empty: "Ceci est un champ obligatoire."
+                                    empty: "Ceci est un champ obligatoire.",
+                                    invalid: "Il doit s'agir d'un URI/URL valide."
                                 }
                             },
                             issuer: {
@@ -1753,7 +1757,7 @@ export const console: ConsoleNS = {
                                         label: "Audience",
                                         placeholder: "Saisir l'audience",
                                         validations: {
-                                            invalid: "Veuillez ajouter une URL valide"
+                                            invalid: "Veuillez ajouter une URI valide"
                                         }
                                     },
                                     nameIdFormat: {
@@ -1771,7 +1775,7 @@ export const console: ConsoleNS = {
                                         label: "Destinataires",
                                         placeholder: "Saisir les destinataires",
                                         validations: {
-                                            invalid: "Veuillez ajouter une URL valide"
+                                            invalid: "Veuillez ajouter une URI valide"
                                         }
                                     }
                                 },
@@ -1809,7 +1813,11 @@ export const console: ConsoleNS = {
                                         label: "Activer",
                                         validations: {
                                             empty: "Ce champ est obligatoire."
-                                        }
+                                        },
+                                        hint: "Sélectionnez pour chiffrer les assertions SAML2 renvoyées après " +
+                                            "l'authentification. Pour utiliser le cryptage, configurez le " +
+                                            "certificat de votre application dans la section Certificat ci-dessous."
+
                                     },
                                     assertionEncryptionAlgorithm: {
                                         label: "Algorithme de chiffrement des assertions",
@@ -2699,6 +2707,15 @@ export const console: ConsoleNS = {
                                     }
                                 }
                             }
+                        }
+                    },
+                    applicationCertificateWizard: {
+                        heading: "Ajouter un nouveau certificat",
+                        subHeading: "Ajouter un nouveau certificat à l'application",
+                        emptyPlaceHolder: {
+                            title: "Pas de certificat",
+                            description1: "Cette application n'a pas de certificat ajouté.",
+                            description2: "Ajoutez un certificat pour le voir ici"
                         }
                     }
                 }
@@ -3626,6 +3643,15 @@ export const console: ConsoleNS = {
                     title: "Pas de modèles à afficher."
                 }
             },
+            authenticationProvider: {
+                templates: {
+                    enterprise: {
+                        validation: {
+                            name: "Merci d'entrer un nom valide"
+                        }
+                    }
+                }
+            }
         },
         notifications: {
             endSession: {
@@ -3761,7 +3787,7 @@ export const console: ConsoleNS = {
                 modals: {
                     taskDetails: {
                         header: "Tâche d'approbation",
-                        description: "Vous avez une demande d'approbation d'une action opérationnelle d'un utilisateur.",
+                        description: "Vous avez une demande d'approbation d'une action opérationnelle d'un utilisateur."
                     }
                 },
                 notifications: {
@@ -4066,11 +4092,11 @@ export const console: ConsoleNS = {
                         fields: {
                             attributeName: {
                                 validation: {
-                                    invalid: "Le nom d'attribut ne peut contenir que des caractères " 
-                                        +"alphanumériques et _. Et doit avoir une longueur comprise " 
+                                    invalid: "Le nom d'attribut ne peut contenir que des caractères "
+                                        +"alphanumériques et _. Et doit avoir une longueur comprise "
                                         +"entre 3 et 30 caractères."
                                 }
-                            },
+                            }
                         },
                         submit: "Mettre à jour"
                     },
@@ -4529,7 +4555,7 @@ export const console: ConsoleNS = {
                         },
                         local: {
                             action: "Nouvel attribut local",
-                            back: "Revenir aux attributs et mappages",
+                            back: "Revenir aux Attributs et Mappages",
                             description: "Créer et gérer les attributs locaux",
                             title: "Attributs locaux"
                         }
@@ -5111,14 +5137,14 @@ export const console: ConsoleNS = {
                                 label: "Nom d'affichage",
                                 placeholder: "Entrez le nom d'affichage",
                                 validations: {
-                                    empty: "Le nom d'affichage est un champ obligatoire"
+                                    empty: "Ce champ ne peut pas être vide"
                                 }
                             },
                             scopeName: {
                                 label: "Nom du scope",
                                 placeholder: "Entrez le nom du scope",
                                 validations: {
-                                    empty: "Le nom du scope est un champ obligatoire",
+                                    empty: "Ce champ ne peut pas être vide",
                                     invalid: "La portée contient des caractères non valides."
                                 }
                             }
@@ -5275,7 +5301,7 @@ export const console: ConsoleNS = {
                         action: "Voir tout",
                         subtitles: {
                             0: "Nous n'avons pas trouvé la portée que vous avez recherchée.",
-                            1: "Veuillez essayer un autre nom.",
+                            1: "Veuillez essayer un autre nom."
                         },
                         title: "Aucun résultat trouvé"
                     }
@@ -5951,6 +5977,13 @@ export const console: ConsoleNS = {
                 searchPlaceholder: "Rechercher un {{type}}"
             },
             user: {
+                deleteJITUser: {
+                    confirmationModal: {
+                        content: "Si vous supprimez cet utilisateur, l'utilisateur ne pourra pas se connecter à " +
+                            "Mon compte ou à toute autre application à laquelle l'utilisateur était abonné avant " +
+                            "la prochaine connexion de l'utilisateur à l'aide d'une option de connexion sociale."
+                    }
+                },
                 deleteUser: {
                     confirmationModal: {
                         assertionHint: "Veuillez confirmer votre action.",
@@ -6137,7 +6170,8 @@ export const console: ConsoleNS = {
                         hint: {
                             forceReset: "REMARQUE: Veuillez noter qu'après avoir invité l'utilisateur à réinitialiser " +
                                 "le mot de passe, l'utilisateur ne pourra plus se connecter à aucune application en " +
-                                "utilisant le mot de passe actuel.",
+                                "utilisant le mot de passe actuel. Le lien de réinitialisation du mot de passe sera " +
+                                "valide pendant {{codeValidityPeriod}} minutes.",
                             setPassword: "REMARQUE: veuillez noter qu'après avoir modifié le mot de passe, l'utilisateur ne " +
                                 "pourra plus se connecter à aucune application en utilisant le mot de passe actuel."
                         },
@@ -6473,10 +6507,11 @@ export const console: ConsoleNS = {
                         editRoles: {
                             confirmationModal: {
                                 assertionHint: "Veuillez confirmer votre action.",
-                                content: "Si aucun rôle n'est sélectionné, l'utilisateur ne pourra pas se connecter " +
-                                    "à la console. Veuillez procéder avec prudence.",
+                                content: "La modification du rôle entraînera pour l'utilisateur soit la perte de " +
+                                    "l'accès, soit l'accès à certaines fonctionnalités. " +
+                                    "Veuillez procéder avec prudence.",
                                 header: "Êtes-vous sûr?",
-                                message: "Cette action supprimera tous les rôles associés à cet utilisateur."
+                                message: "Cette action modifiera le rôle de cet utilisateur."
                             },
                             heading: "Rôles assignés",
                             popups: {
@@ -7153,7 +7188,7 @@ export const console: ConsoleNS = {
                 title: "Modèles d'e-mails"
             },
             emailTemplatesWithDisplayName: {
-                backButton: "Revenir aux applications",
+                backButton: "Revenir aux Applications",
                 subTitle: null,
                 title: "Modèle d'e-mail - {{displayName}}"
             },
@@ -7193,7 +7228,7 @@ export const console: ConsoleNS = {
                 title: "Utilisateurs"
             },
             usersEdit: {
-                backButton: "Revenir aux utilisateurs",
+                backButton: "Revenir aux Utilisateurs",
                 subTitle: "{{name}}",
                 title: "{{email}}"
             }

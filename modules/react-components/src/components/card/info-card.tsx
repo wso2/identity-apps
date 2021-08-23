@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode } from "react";
+import React, { FunctionComponent, MouseEvent, PropsWithChildren, ReactElement, ReactNode } from "react";
 import { Card, CardProps, Icon, Label, Popup } from "semantic-ui-react";
 import { LinkButton } from "../button";
 import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
@@ -109,16 +109,17 @@ export interface GithubHubRepoMetaInfoInterface {
 /**
  * Selection card component.
  *
- * @param {InfoCardPropsInterface} props - Props injected to the components.
+ * @param {PropsWithChildren<InfoCardPropsInterface>} props - Props injected to the components.
  *
  * @return {React.ReactElement}
  */
-export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
-    props: InfoCardPropsInterface
+export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterface>> = (
+    props: PropsWithChildren<InfoCardPropsInterface>
 ): ReactElement => {
 
     const {
         action,
+        children,
         className,
         description,
         disabled,
@@ -147,7 +148,7 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
             disabled,
             fluid,
             inline,
-            [ "no-hover" ]: action,
+            [ "no-hover" ]: action || disabled,
             selected,
             ["with-image"]: image
         },
@@ -161,7 +162,7 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
             link={ false }
             as="div"
             data-testid={ testId }
-            onClick={ !action && onClick }
+            onClick={ !action && !disabled && onClick }
             { ...rest }
         >
             <Card.Content>
@@ -360,6 +361,7 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
                     </Card.Content>
                 )
             }
+            { children }
         </Card>
     );
 };

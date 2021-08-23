@@ -21,6 +21,7 @@ import { AlertLevels, ExternalClaim, TestableComponentInterface } from "@wso2is/
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { LinkButton, ListLayout, PrimaryButton } from "@wso2is/react-components";
+import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -366,8 +367,8 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                             <PrimaryButton
                                 disabled={ disableSubmit }
                                 onClick={ () => {
-                                    eventPublisher.publish("manage-attribute-add-new-attribute", {
-                                        "attributeType": attributeType
+                                    eventPublisher.publish("manage-attribute-mappings-add-new-attribute", {
+                                        "type": kebabCase(attributeType)
                                     });
                                     
                                     setTriggerAddExternalClaim();

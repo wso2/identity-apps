@@ -20,6 +20,7 @@ import { IdentityClient } from "@wso2/identity-oidc-js";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
+import { identityProviderConfig } from "../../../extensions/configs";
 import { store } from "../../core";
 import { IdentityProviderManagementConstants } from "../constants";
 import {
@@ -738,6 +739,8 @@ export const getLocalAuthenticators = (): Promise<LocalAuthenticatorInterface[]>
  *
  * @param {string} filter - Search filter.
  *
+ * @param {AuthenticatorTypes} type - Authenticator Type.
+ *
  * @return {Promise<AuthenticatorInterface[]>} Response as a promise.
  */
 export const getAuthenticators = (filter?: string, type?: AuthenticatorTypes): Promise<AuthenticatorInterface[]> => {
@@ -767,9 +770,15 @@ export const getAuthenticators = (filter?: string, type?: AuthenticatorTypes): P
                     response.config);
             }
 
+            // Extend the API response with the locally defined array from config.
+            const authenticators: AuthenticatorInterface[] = [
+                ...response.data,
+                ...identityProviderConfig.authenticatorResponseExtension
+            ];
+
             // If `type` is defined, only return authenticators of that type.
             if (type) {
-                return Promise.resolve(response.data.filter((authenticator: AuthenticatorInterface) => {
+                return Promise.resolve(authenticators.filter((authenticator: AuthenticatorInterface) => {
                     return authenticator.type === type;
                 }));
             }

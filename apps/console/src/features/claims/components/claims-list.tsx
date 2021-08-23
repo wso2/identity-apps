@@ -16,6 +16,9 @@
 * under the License.
 */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { getProfileSchemas } from "@wso2is/core/api";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -23,10 +26,11 @@ import {
     ClaimDialect,
     ExternalClaim,
     LoadableComponentInterface,
+    ProfileSchemaInterface,
     SBACInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import {
     AnimatedAvatar,
@@ -42,7 +46,7 @@ import {
 } from "@wso2is/react-components";
 import isEqual from "lodash-es/isEqual";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useRef, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Header, Icon, ItemHeader, Popup, SemanticICONS } from "semantic-ui-react";
 import { EditExternalClaim } from "./edit";
@@ -59,7 +63,6 @@ import { UserStoreListItem, getUserStores } from "../../userstores";
 import { deleteAClaim, deleteADialect, deleteAnExternalClaim } from "../api";
 import { ClaimManagementConstants } from "../constants";
 import { AddExternalClaim } from "../models";
-import { Show, AccessControlConstants } from "@wso2is/access-control";
 
 /**
  * The model of the object containing info specific to the list type.
@@ -339,6 +342,10 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     const deleteExternalClaim = (dialectID: string, claimID: string) => {
         deleteAnExternalClaim(dialectID, claimID).then(() => {
             update();
+            attributeConfig.localAttributes.isSCIMCustomDialectAvailable().then(() => {
+                fetchUpdatedSchemaList();
+            });
+
             closeDeleteConfirm();
             dispatch(addAlert(
                 {
@@ -362,6 +369,43 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 }
             ));
         });
+    };
+
+    /**
+     * Fetch the updated SCIM2 schema list.
+     */
+    const fetchUpdatedSchemaList = (): void => {
+        dispatch(setProfileSchemaRequestLoadingStatus(true));
+
+        getProfileSchemas()
+            .then((response: ProfileSchemaInterface[]) => {
+                dispatch(setSCIMSchemas<ProfileSchemaInterface[]>(response));
+            })
+            .catch((error: IdentityAppsApiException) => {
+                if (error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.notifications.getProfileSchema.error.message")
+                    })
+                    );
+                }
+
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "console:manage.notifications.getProfileSchema.genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "console:manage.notifications.getProfileSchema.genericError.message"
+                        )
+                    })
+                );
+            })
+            .finally(() => {
+                dispatch(setProfileSchemaRequestLoadingStatus(false));
+            });
     };
 
     /**

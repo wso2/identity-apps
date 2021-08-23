@@ -376,6 +376,6 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
 AdvancedSearchWithBasicFilters.defaultProps = {
     "data-testid": "advanced-search",
     dropdownPosition: "bottom left",
-    enableQuerySearch: commonConfig.AdvancedSearchWithBasicFilters.enableQuerySearch,
+    enableQuerySearch: commonConfig.advancedSearchWithBasicFilters.enableQuerySearch,
     showResetButton: false
 };

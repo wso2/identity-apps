@@ -73,7 +73,11 @@ interface InboundFormFactoryInterface extends TestableComponentInterface {
      * Application template.
      */
     createSAMLapp?: (values: any) => void;
-
+    /**
+     * Handles loading UI.
+     */
+    isLoading?: boolean;
+    setIsLoading?: any;
 }
 
 /**
@@ -101,6 +105,8 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         template,
         showSAMLCreation,
         SAMLCreationOption,
+        isLoading,
+        setIsLoading,
         [ "data-testid" ]: testId
     } = props;
 
@@ -108,6 +114,8 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         case SupportedAuthProtocolTypes.OIDC:
             return (
                 <InboundOIDCForm
+                    isLoading={ isLoading }
+                    setIsLoading={ setIsLoading }
                     certificate={ certificate }
                     tenantDomain={ tenantDomain }
                     allowedOriginList={ allowedOrigins }

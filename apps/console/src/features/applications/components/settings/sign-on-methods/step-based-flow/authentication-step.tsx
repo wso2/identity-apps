@@ -180,25 +180,27 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                         <div className="authenticator-item-wrapper" data-testid={ `${ testId }-option` }>
                             <Card fluid className="basic-card authenticator-card">
                                 <Card.Content >
-                                    <Label
-                                        basic
-                                        floating
-                                        circular
-                                        className="close-button"
-                                        size="mini"
-                                        onClick={
-                                            !readOnly && (
-                                                (): void => onStepOptionDelete(stepIndex, optionIndex)
-                                            )
-                                        }
-                                        data-testid={ `${ testId }-close-button` }
-                                    >
-                                        <GenericIcon
-                                            transparent
-                                            size="nano"
-                                            icon={ getGeneralIcons().crossIcon }
-                                        />
-                                    </Label>
+                                    { !readOnly && (
+                                        <Label
+                                            basic
+                                            floating
+                                            circular
+                                            className="close-button"
+                                            size="mini"
+                                            onClick={
+                                                !readOnly && (
+                                                    (): void => onStepOptionDelete(stepIndex, optionIndex)
+                                                )
+                                            }
+                                            data-testid={ `${ testId }-close-button` }
+                                        >
+                                            <GenericIcon
+                                                transparent
+                                                size="nano"
+                                                icon={ getGeneralIcons().crossIcon }
+                                            />
+                                        </Label>
+                                    ) }
                                     <GenericIcon
                                         square
                                         inline
@@ -305,42 +307,48 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                             resolveStepOption(option, stepIndex, optionIndex)
                                         ))
                                     }
-                                    <LinkButton
-                                        data-tourid="add-authentication-options-button"
-                                        className="authenticator-item-wrapper"
-                                        onClick={ onAddAuthenticationClick }
-                                    >
-                                        <Icon name="plus"/>
-                                        {
-                                            t("console:develop.features.applications.edit.sections.signOnMethod." +
-                                                "sections.authenticationFlow.sections.stepBased.actions." +
-                                                "addAuthentication")
-                                        }
-                                    </LinkButton>
+                                    {
+                                        !readOnly && (
+                                            <LinkButton
+                                                data-tourid="add-authentication-options-button"
+                                                className="authenticator-item-wrapper"
+                                                onClick={ onAddAuthenticationClick }
+                                            >
+                                                <Icon name="plus"/>
+                                                {
+                                                    t("console:develop.features.applications." +
+                                                        "edit.sections.signOnMethod." +
+                                                        "sections.authenticationFlow.sections.stepBased.actions." +
+                                                        "addAuthentication")
+                                                }
+                                            </LinkButton>
+                                        ) }
                                 </>
                             )
                             : (
-                                <>
-                                    <LinkButton
-                                        fluid
-                                        data-tourid="add-authentication-options-button"
-                                        onClick={ onAddAuthenticationClick }
-                                    >
-                                        <Icon name="plus"/>
-                                        {
-                                            t("console:develop.features.applications.edit.sections.signOnMethod." +
-                                                "sections.authenticationFlow.sections.stepBased.actions." +
-                                                "addAuthentication")
-                                        }
-                                    </LinkButton>
-                                    <EmptyPlaceholder
-                                        subtitle={ [
-                                            t("console:develop.features.applications.placeholders." +
-                                                "emptyAuthenticatorStep.subtitles.0")
-                                        ] }
-                                        data-testid={ `${ testId }-empty-placeholder` }
-                                    />
-                                </>
+                                !readOnly && (
+                                    <>
+                                        <LinkButton
+                                            fluid
+                                            data-tourid="add-authentication-options-button"
+                                            onClick={ onAddAuthenticationClick }
+                                        >
+                                            <Icon name="plus"/>
+                                            {
+                                                t("console:develop.features.applications.edit.sections.signOnMethod." +
+                                                    "sections.authenticationFlow.sections.stepBased.actions." +
+                                                    "addAuthentication")
+                                            }
+                                        </LinkButton>
+                                        <EmptyPlaceholder
+                                            subtitle={ [
+                                                t("console:develop.features.applications.placeholders." +
+                                                    "emptyAuthenticatorStep.subtitles.0")
+                                            ] }
+                                            data-testid={ `${ testId }-empty-placeholder` }
+                                        />
+                                    </>
+                                )
                             )
                     }
                 </div>

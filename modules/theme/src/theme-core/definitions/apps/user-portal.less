@@ -95,12 +95,17 @@
                 }
             }
         }
-        &.account-security, &.consent-management {
+        &.account-security, &.consent-management, &.profile {
             .header-section {
                 min-height: @overviewPageWidgetHeaderMinHeight;
             }
         }
     }
+}
+
+.overview-page-header {
+    display: inline-block;
+    margin-bottom: 0.6em;
 }
 
 @media only screen and (max-width: @largestMobileScreen) {

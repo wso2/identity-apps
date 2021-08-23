@@ -20,6 +20,7 @@ import { IdentityProviderConfig } from "./models";
 import { IdentityProviderManagementConstants } from "../../features/identity-providers";
 
 export const identityProviderConfig: IdentityProviderConfig = {
+    authenticatorResponseExtension: [],
     authenticators: {},
     editIdentityProvider: {
         attributesSettings: true,
@@ -54,9 +55,20 @@ export const identityProviderConfig: IdentityProviderConfig = {
          *      ]);
          *      return identityClaimsHiddenAuthenticators.has(authenticatorId);
          *
-         * @param authenticatorId
+         * @see IdentityProviderConfig
+         * - @param <ignored> authenticatorId {string}
          */
-        hideIdentityClaimAttributes(authenticatorId: string): boolean {
+        hideIdentityClaimAttributes(): boolean {
+            return false;
+        },
+        /**
+         * This method will either show or hide logo edit field. Provide {@code true}
+         * to render the form input field for it.
+         *
+         * @see IdentityProviderConfig
+         * - @param {string} <ignored> authenticatorId {string}
+         */
+        hideLogoInputFieldInIdPGeneralSettingsForm(): boolean {
             return false;
         },
         isAuthenticatorAllowed: (name: string): boolean => {
@@ -68,7 +80,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
             ].includes(name);
         },
         /**
-         * If the {@param authenticatorId} is not in the excluded set we
+         * If the {-@param authenticatorId} is not in the excluded set we
          * can say the provisioning attributes is enabled for authenticator.
          *
          * As an example:-
@@ -76,8 +88,17 @@ export const identityProviderConfig: IdentityProviderConfig = {
          *          IdentityProviderManagementConstants.BASIC_AUTH_REQUEST_PATH_AUTHENTICATOR,
          *      ]);
          *      return !excludedAuthenticators.has(authenticatorId);
+         *
+         * - @param <ignored> authenticatorId {string}
          */
-        isProvisioningAttributesEnabled(authenticatorId: string): boolean {
+        isProvisioningAttributesEnabled(): boolean {
+            return true;
+        },
+        /**
+         * Enable or disable role mappings form elements from the UI.
+         * - @param <ignored> authenticatorId {string}
+         */
+        isRoleMappingsEnabled(): boolean {
             return true;
         }
     }

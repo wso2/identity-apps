@@ -100,12 +100,23 @@ export interface RuntimeConfigInterface {
 
 /**
  * Common interface to extend testable components.
+ * @deprecated
  */
 export interface TestableComponentInterface {
     /**
      * Unit test id.
      */
     "data-testid"?: string;
+}
+
+/**
+ * Common interface to extend identifiable components.
+*/
+export interface IdentifiableComponentInterface {
+    /**
+     * Unique component id.
+    */
+   "data-componentid"?: string;
 }
 
 /**

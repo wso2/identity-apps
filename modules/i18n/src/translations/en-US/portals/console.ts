@@ -789,9 +789,9 @@ export const console: ConsoleNS = {
                                     "by navigating to <3>Attribute Mappings.</3>",
                                 attributeComponentHintAlt: "Manage the user attributes you want to share with this" +
                                     " application.",
-                                mandatoryAttributeHint: "Mark which attributes are mandatory for a user to share" +
-                                    " with the application. When logging in, Asgardeo prompts the user to enter the" +
-                                    " attribute value if it is not already provided in the user's profile.",
+                                mandatoryAttributeHint: "Mark which user attributes are mandatory to be shared " +
+                                    "with the application. At login, {{productName}} prompts the user to enter these " +
+                                    "attribute values, if not already provided in the user's profile.",
                                 mappingTable: {
                                     actions: {
                                         enable: "Enable mapping"
@@ -996,12 +996,13 @@ export const console: ConsoleNS = {
                                             heading: "Step-based configuration",
                                             hint: "Create a user login flow by dragging authenticators on to the " +
                                                 "relevant steps.",
-                                            secondFactorDisabled: "Second factor authenticators can only be used if " +
-                                                "<1>Username & Password</1> or any other handler such as <3>" +
-                                                "Identifier First</3> is present in a previous step, that can " +
-                                                "identify the user.",
+                                            secondFactorDisabled: "Les authentificateurs de deuxième facteur ne " +
+                                                "peuvent être utilisés que si <1>Nom d'utilisateur et mot de " +
+                                                "passe</1>, <3>Connexion sociale</3> ou tout autre gestionnaire " +
+                                                "tel que <5>Identifier First</5> qui peut gérer ces facteurs sont " +
+                                                "présents dans une étape précédente.",
                                             secondFactorDisabledInFirstStep: "Second factor authenticators can " +
-                                                "not be used in the first step"
+                                                "not be used in the first step."
                                         }
                                     }
                                 },
@@ -1400,9 +1401,9 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 hint: "This will determine how the application communicates with the token service.",
-                                label: "Allowed grant type",
+                                label: "Allowed grant types",
                                 validations: {
-                                    empty: "Select at least a  grant type"
+                                    empty: "Select at least one grant type"
                                 },
                                 validation: {
                                     refreshToken:"Refresh token grant type should only be selected along with " +
@@ -1424,7 +1425,9 @@ export const console: ConsoleNS = {
                                 content: "The application has been revoked. Reactivate the application to allow " +
                                     "users to log in.",
                                 heading: "Application is inactive"
-                            }
+                            },
+                            customInvalidMessage: "Please enter a valid URI. Valid formats include HTTP, HTTPS, " +
+                                "or private-use URI scheme."
                         },
                         sections: {
                             accessToken: {
@@ -1557,7 +1560,7 @@ export const console: ConsoleNS = {
                                             empty: "Please fill the Front Channel Logout URL",
                                             invalid: "Please add valid URL"
                                         }
-                                    },
+                                    }
                                 },
                                 heading: "PKCE"
                             },
@@ -1616,7 +1619,7 @@ export const console: ConsoleNS = {
                                     "in the authorization request.",
                                 fields: {
                                     signatureValidation: {
-                                        label: "Enable signature validation",
+                                        label: "Enable signature validation"
                                     }
                                 },
                                 heading: "Request Object"
@@ -1664,11 +1667,13 @@ export const console: ConsoleNS = {
                             idpEntityIdAlias: {
                                 hint: "This value can override the default Identity Provider (IdP) entity ID " +
                                     "({{defaultIdpEntityID}}). The IdP entity ID is used as the <1>saml2:Issuer</1> " +
-                                    " of the SAML response that is generated by {{productName}}.",
+                                    " of the SAML response that is generated by {{productName}}. This should be a " +
+                                    "valid URI/URL.",
                                 label: "IdP entity ID alias",
                                 placeholder: "Enter alias",
                                 validations: {
-                                    empty: "This is a required field."
+                                    empty: "This is a required field.",
+                                    invalid: "This should be a valid URI/URL."
                                 }
                             },
                             issuer: {
@@ -1726,7 +1731,7 @@ export const console: ConsoleNS = {
                                         label: "Audiences",
                                         placeholder: "Enter audience",
                                         validations: {
-                                            invalid: "Please add valid URL"
+                                            invalid: "Please add valid URI"
                                         }
                                     },
                                     nameIdFormat: {
@@ -1743,7 +1748,7 @@ export const console: ConsoleNS = {
                                         label: "Recipients",
                                         placeholder: "Enter recipient",
                                         validations: {
-                                            invalid: "Please add valid URL"
+                                            invalid: "Please add valid URI"
                                         }
                                     }
                                 },
@@ -1780,7 +1785,10 @@ export const console: ConsoleNS = {
                                         label: "Enable encryption",
                                         validations: {
                                             empty: "This is a required field."
-                                        }
+                                        },
+                                        hint: "Select to encrypt the SAML2 Assertions returned after authentication. " +
+                                            "To use encryption configure the certificate of your application" +
+                                            " in the Certificate section below."
                                     },
                                     assertionEncryptionAlgorithm: {
                                         label: "Assertion encryption algorithm",
@@ -2684,6 +2692,15 @@ export const console: ConsoleNS = {
                                 }
                             }
                         }
+                    },
+                    applicationCertificateWizard: {
+                        heading: "Add New Certificate",
+                        subHeading: "Add new certificate to the application",
+                        emptyPlaceHolder: {
+                            title: "No certificate",
+                            description1: "This Application has no certificate added.",
+                            description2: "Add a certificate to view it here."
+                        }
                     }
                 }
             },
@@ -2901,7 +2918,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             useNumericChars: {
-                                hint: "Only use <1>0-9</1> characters in the OTP token.",
+                                hint: "Only numeric characters (<1>0-9</1>) are used for the OTP token. Please clear this checkbox to enable alphanumeric characters.",
                                 label: "Use only numeric characters for OTP token",
                                 validations: {
                                     required: "Use only numeric characters for OTP token is a required field."
@@ -2910,15 +2927,15 @@ export const console: ConsoleNS = {
                         },
                         facebook: {
                             callbackUrl: {
-                                hint: "The set of redirect URIs specified as valid in the Facebook OAuth app.",
-                                label: "Valid OAuth redirect URIs",
+                                hint: "The redirect URI specified as valid in the Facebook OAuth app.",
+                                label: "Valid OAuth redirect URI",
                                 placeholder: "Enter Valid OAuth redirect URIs.",
                                 validations: {
                                     required: "Valid OAuth redirect URIs is a required field."
                                 }
                             },
                             clientId: {
-                                hint: "The generated unque ID which is generated when the Facebook OAuth app is created.",
+                                hint: "The generated unique ID which is generated when the Facebook OAuth app is created.",
                                 label: "App ID",
                                 placeholder: "Enter App ID from Facebook application.",
                                 validations: {
@@ -3059,6 +3076,111 @@ export const console: ConsoleNS = {
                                         description: "Allows to view user's basic profile data."
                                     }
                                 }
+                            }
+                        },
+                        saml: {
+                            SPEntityId: {
+                                placeholder: "Enter service provider entity ID",
+                                ariaLabel: "Service provider entity ID",
+                                label: "Service provider entity ID",
+                                hint: "This value will be used as the <1><saml2:Issuer></1> in the" +
+                                    " SAML requests initiated from {{productName}} to" +
+                                    " external Identity Provider (IdP). You need to provide" +
+                                    " a unique value as the Service Provider (SP) entity ID."
+                            },
+                            SSOUrl: {
+                                placeholder: "https://ENTERPRISE_IDP/samlsso",
+                                ariaLabel: "Single Sign-On URL",
+                                label: "Single Sign-On URL",
+                                hint: "Single sign-on URL of the external IdP. This is " +
+                                    "where {{productName}} will send its authentication requests."
+                            },
+                            IdPEntityId: {
+                                placeholder: "Enter identity provider entity ID",
+                                ariaLabel: "Identity provider entity ID",
+                                label: "Identity provider entity ID",
+                                hint: "This is the <1>&lt;saml2:Issuer&gt;</1> value specified in" +
+                                    " the SAML responses issued by the external IdP. Also, this needs to" +
+                                    " be a unique value to identify the external IdP within your organization."
+                            },
+                            NameIDType: {
+                                placeholder: "Select identity provider NameIDFormat",
+                                ariaLabel: "Choose NameIDFormat for SAML 2.0 assertion",
+                                label: "Identity provider NameID format",
+                                hint: "Name ID defines the name identifier formats supported by the external " +
+                                    "IdP. Name identifier is how {{productName}} communicates with" +
+                                    " external IdP regarding a user."
+                            },
+                            RequestMethod: {
+                                placeholder: "Select HTTP protocol binding",
+                                ariaLabel: "HTTP protocol for SAML 2.0 bindings",
+                                label: "HTTP protocol binding",
+                                hint: "Protocol binding to use when sending requests. HTTP redirect for simple" +
+                                    " requests or HTTP POST if requests are signed, which is recommended."
+                            },
+                            IsSLORequestAccepted: {
+                                ariaLabel: "Specify whether logout is enabled for IdP",
+                                label: "Accept identity provider logout request",
+                                hint: "Specify whether single logout request from the" +
+                                    " IdP must be accepted by {{productName}}."
+                            },
+                            IsLogoutEnabled: {
+                                ariaLabel: "Specify whether logout is enabled for IdP",
+                                label: "Identity provider logout enabled",
+                                hint: "Specify whether logout is supported by the external "
+                                    + "IdP."
+                            },
+                            LogoutReqUrl: {
+                                placeholder: "Enter logout URL",
+                                ariaLabel: "Specify SAML 2.0 IdP Logout URL",
+                                label: "IdP logout URL",
+                                hint: "Enter the IdP's logout" +
+                                    " URL value if it's different from above."
+                            },
+                            IsAuthnRespSigned: {
+                                ariaLabel: "Authentication response must be signed always?",
+                                label: "Strictly verify authentication response signature info",
+                                hint: "Specifies if SAML2 authentication response from the external" +
+                                    " IdP must be signed or not."
+                            },
+                            IsLogoutReqSigned: {
+                                placeholder: "",
+                                ariaLabel: "Specify whether logout is enabled for IdP",
+                                label: "Logout request signing",
+                                hint: "When enabled {{productName}} will sign the SAML2 logout" +
+                                    " request sent to the external IdP."
+                            },
+                            ISAuthnReqSigned: {
+                                ariaLabel: "Is authentication request signed?",
+                                label: "Authentication request signing",
+                                hint: "When enabled {{productName}} will sign the SAML2 authentication" +
+                                    " request to the external IdP."
+                            },
+                            SignatureAlgorithm: {
+                                placeholder: "Select signature algorithm.",
+                                ariaLabel: "Select the signature algorithm for request signing.",
+                                label: "Signature algorithm"
+                            },
+                            DigestAlgorithm: {
+                                placeholder: "Select digest algorithm",
+                                ariaLabel: "Select the digest algorithm for description.",
+                                label: "Select digest algorithm"
+                            },
+                            IncludeProtocolBinding: {
+                                ariaLabel: "Include protocol binding in the request",
+                                label: "Include protocol binding in the request",
+                                hint: "Specifies whether the transport mechanism should be included in the" +
+                                    " small authentication request."
+                            },
+                            IsUserIdInClaims: {
+                                ariaLabel: "Use Name ID as the user identifier.",
+                                label: "Find user ID from attributes",
+                                hint: "To specify an attribute from the SAML 2.0 assertion as the user" +
+                                    " identifier, configure the subject attribute from the attributes section."
+                            },
+                            commonAuthQueryParams: {
+                                ariaLabel: "SAML request additional query parameters",
+                                label: "Additional query parameters"
                             }
                         }
                     },
@@ -3287,6 +3409,20 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Successfully deleted the identity provider.",
                             message: "Delete successful"
+                        }
+                    },
+                    deleteConnection: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Connection Delete Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while deleting the connection.",
+                            message: "Connection Delete Error"
+                        },
+                        success: {
+                            description: "Successfully deleted the connection.",
+                            message: "Delete Successful"
                         }
                     },
                     disableAuthenticator: {
@@ -3750,7 +3886,8 @@ export const console: ConsoleNS = {
                             },
                             heading: "Help",
                             name: {
-                                description: "Provide a unique name for the identity provider.",
+                                idpDescription: "Provide a unique name for the identity provider.",
+                                connectionDescription: "Provide a unique name for the connection.",
                                 heading: "Name"
                             },
                             preRequisites: {
@@ -3778,7 +3915,8 @@ export const console: ConsoleNS = {
                             },
                             heading: "Help",
                             name: {
-                                description: "Provide a unique name for the identity provider.",
+                                idpDescription: "Provide a unique name for the identity provider.",
+                                connectionDescription: "Provide a unique name for the connection.",
                                 heading: "Name"
                             },
                             preRequisites: {
@@ -3806,7 +3944,8 @@ export const console: ConsoleNS = {
                             },
                             heading: "Help",
                             name: {
-                                description: "Provide a unique name for the identity provider.",
+                                idpDescription: "Provide a unique name for the identity provider.",
+                                connectionDescription: "Provide a unique name for the connection.",
                                 heading: "Name"
                             },
                             preRequisites: {
@@ -3826,6 +3965,11 @@ export const console: ConsoleNS = {
                     quickSetup: {
                         heading: "Quick Setup",
                         subHeading: "Predefined set of templates to speed up your identity provider creation."
+                    },
+                    enterprise: {
+                        validation: {
+                            name: "Please enter a valid name"
+                        }
                     }
                 },
                 wizards: {
@@ -4845,7 +4989,7 @@ export const console: ConsoleNS = {
         },
         pages: {
             applicationTemplate: {
-                backButton: "Go back to applications",
+                backButton: "Go back to Applications",
                 subTitle: "Register an application using one of the templates given below. " +
                     "If you don't find a matching template, create a custom application.",
                 title: "Register New Application"
@@ -4855,7 +4999,7 @@ export const console: ConsoleNS = {
                 title: "Applications"
             },
             applicationsEdit: {
-                backButton: "Go back to applications",
+                backButton: "Go back to Applications",
                 subTitle: null,
                 title: null
             },
@@ -5255,7 +5399,7 @@ export const console: ConsoleNS = {
                         fields: {
                             attributeName: {
                                 validation: {
-                                    invalid: "Attribute name can only contain alphanumeric characters " 
+                                    invalid: "Attribute name can only contain alphanumeric characters "
                                         +"and _. And must be of length between 3 to 30 characters."
                                 }
                             }
@@ -5327,7 +5471,7 @@ export const console: ConsoleNS = {
                     },
                     pageLayout: {
                         edit: {
-                            back: "Go back to attribute mappings",
+                            back: "Go back to Attribute Mappings",
                             description: "Edit attribute mapping",
                             updateDialectURI: "Update {{type}} Attribute Mapping",
                             updateExternalAttributes: "Update {{type}} Attribute Mapping"
@@ -5716,7 +5860,7 @@ export const console: ConsoleNS = {
                         },
                         local: {
                             action: "New Attribute",
-                            back: "Go back to attributes and mappings",
+                            back: "Go back to Attributes and Mappings",
                             description: "Create and manage attributes",
                             title: "Attributes"
                         }
@@ -6295,14 +6439,14 @@ export const console: ConsoleNS = {
                                 label: "Display name",
                                 placeholder: "Enter the display name",
                                 validations: {
-                                    empty: "Display name is a required field"
+                                    empty: "This field cannot be empty"
                                 }
                             },
                             scopeName: {
                                 label: "Scope",
                                 placeholder: "Enter the scope",
                                 validations: {
-                                    empty: "Scope is a required field",
+                                    empty: "This field cannot be empty",
                                     invalid: "The scope contains invalid characters."
                                 }
                             }
@@ -7127,6 +7271,13 @@ export const console: ConsoleNS = {
                 searchPlaceholder: "Search {{type}}"
             },
             user: {
+                deleteJITUser: {
+                    confirmationModal: {
+                        content: "If you delete this user, the user will not be able to log in to My Account or any " +
+                            "other application to which the user was subscribed to until the next time the user " +
+                            "signs in using a social login option."
+                    }
+                },
                 deleteUser: {
                     confirmationModal: {
                         assertionHint: "Please confirm your action.",
@@ -7308,7 +7459,8 @@ export const console: ConsoleNS = {
                             "able to log into any application using the current password.",
                         hint: {
                             forceReset: "NOTE: Please note that after inviting the user to change the password " +
-                                "the user will no longer be able to log into any application using the current password.",
+                                "the user will no longer be able to log into any application using the current " +
+                                "password. The password reset link will be valid for {{codeValidityPeriod}} minutes.",
                             setPassword: "NOTE: Please note that after changing the password the user will no longer be " +
                                 "able to log into any application using the current password."
                         },
@@ -7630,10 +7782,10 @@ export const console: ConsoleNS = {
                         editRoles: {
                             confirmationModal: {
                                 assertionHint: "Please confirm your action.",
-                                content: "If a role is not selected, the user will not be able to log in to Console. " +
-                                    "Please proceed with caution.",
+                                content: "Modifying the role will result in the user either losing " +
+                                    "or gaining access to certain features. Please proceed with caution.",
                                 header: "Are you sure?",
-                                message: "This action will remove all the roles associated with this user."
+                                message: "This action will modify the role of this user."
                             },
                             heading: "Assigned Roles",
                             popups: {
@@ -8237,8 +8389,8 @@ export const console: ConsoleNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully sent the invitation.",
-                            message: "Sending the invitation successful"
+                            description: "Successfully sent the invitation via email.",
+                            message: "Invitation sent"
                         }
                     },
                     resendInvite: {
@@ -8251,8 +8403,8 @@ export const console: ConsoleNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully resent the invitation.",
-                            message: "Resending the invitation successful"
+                            description: "Successfully resent the invitation via email.",
+                            message: "Invitation resent"
                         }
                     },
                     deleteInvite: {
@@ -8473,7 +8625,7 @@ export const console: ConsoleNS = {
                 title: "OpenID Connect Scopes"
             },
             oidcScopesEdit: {
-                backButton: "Go back to scopes",
+                backButton: "Go back to Scopes",
                 subTitle: "Add or remove OIDC attributes of the scope",
                 title: "Edit scope: {{ name }}"
             },
@@ -8500,7 +8652,7 @@ export const console: ConsoleNS = {
                 title: "Users"
             },
             usersEdit: {
-                backButton: "Go back to users",
+                backButton: "Go back to Users",
                 subTitle: "{{name}}",
                 title: "{{email}}"
             },

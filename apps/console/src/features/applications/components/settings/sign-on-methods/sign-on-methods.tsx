@@ -17,7 +17,7 @@
  */
 
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { Code, ConfirmationModal, EmphasizedSegment, LabeledCard, Text } from "@wso2is/react-components";
+import { Code, ConfirmationModal, ContentLoader, EmphasizedSegment, LabeledCard, Text } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -109,7 +109,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     const [ gitHubAuthenticators, setGitHubAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
     const [ facebookAuthenticators, setFacebookAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
     const [ showMissingSocialAuthenticatorModal, setShowMissingSocialAuthenticatorModal ] = useState<boolean>(false);
-    const [ isAuthenticatorsFetchRequestLoading, setIsAuthenticatorsFetchRequestLoading ] = useState<boolean>(false);
+    const [ isAuthenticatorsFetchRequestLoading, setIsAuthenticatorsFetchRequestLoading ] = useState<boolean>(true);
     const [
         showDuplicateSocialAuthenticatorSelectionModal,
         setShowDuplicateSocialAuthenticatorSelectionModal
@@ -139,6 +139,22 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         
         fetchAndCategorizeAuthenticators();
     }, []);
+
+    /**
+     * If the original `authenticationSequence` changes, the moderated one should also change.
+     *
+     * @remarks This had to be added to fix the state issues came after the loading spinner
+     * conditional rendering. Components are getting unmounted when the spinner is shown causing it to
+     * re-render the component.
+     */
+    useEffect(() => {
+
+        if (authenticationSequence === undefined) {
+            return;
+        }
+
+        setModeratedAuthenticationSequence(authenticationSequence);
+    }, [ authenticationSequence ]);
 
     /**
      * Fetches the list of Authenticators and categorize them.
@@ -226,23 +242,30 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                    gitHubAuthenticators: GenericAuthenticatorInterface[],
                                    facebookAuthenticators: GenericAuthenticatorInterface[]): void => {
 
-        eventPublisher.publish("application-sign-in-method-click-add", {
-            "method": loginFlow
-        });
-
         if (!loginFlow) {
             setModeratedAuthenticationSequence(authenticationSequence);
         } else if (loginFlow === LoginFlowTypes.DEFAULT) {
+            eventPublisher.publish("application-sign-in-method-click-add", {
+                "type": "default"
+            });
+
             setModeratedAuthenticationSequence({
                 ...authenticationSequence,
                 ...cloneDeep(DefaultFlowConfigurationSequenceTemplate)
             });
         } else if (loginFlow === LoginFlowTypes.SECOND_FACTOR_TOTP) {
+            eventPublisher.publish("application-sign-in-method-click-add", {
+                "type": "second-factor-totp"
+            });
+
             setModeratedAuthenticationSequence({
                 ...authenticationSequence,
                 ...cloneDeep(SecondFactorTOTPSequenceTemplate)
             });
         } else if (loginFlow === LoginFlowTypes.GOOGLE_LOGIN) {
+            eventPublisher.publish("application-sign-in-method-click-add", {
+                "type": "google-login"
+            });
 
             setSocialDisclaimerModalType(LoginFlowTypes.GOOGLE_LOGIN);
             
@@ -271,6 +294,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                });
            }
         } else if (loginFlow === LoginFlowTypes.GITHUB_LOGIN) {
+            eventPublisher.publish("application-sign-in-method-click-add", {
+                "type": "github-login"
+            });
             
             setSocialDisclaimerModalType(LoginFlowTypes.GITHUB_LOGIN);
             
@@ -299,6 +325,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 });
             }
         } else if (loginFlow === LoginFlowTypes.FACEBOOK_LOGIN) {
+            eventPublisher.publish("application-sign-in-method-click-add", {
+                "type": "facebook-login"
+            });
 
             setSocialDisclaimerModalType(LoginFlowTypes.FACEBOOK_LOGIN);
             
@@ -624,42 +653,43 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     return (
         <EmphasizedSegment className="sign-on-methods-tab-content" padded="very">
             {
-                (!readOnly && !loginFlow && isDefaultFlowConfiguration())
-                    ? (
-                        <SignInMethodLanding
-                            isLoading={ isLoading || isAuthenticatorsFetchRequestLoading }
-                            readOnly={ readOnly }
-                            onLoginFlowSelect={ (type: LoginFlowTypes) => {
-                                handleLoginFlowSelect(type,
-                                    googleAuthenticators,
-                                    gitHubAuthenticators,
-                                    facebookAuthenticators);
-                            } }
-                            data-testid={ `${ testId }-landing` }
-                        />
-                    )
-                    : (
-                        <>
-                            <SignInMethodCustomization
-                                appId={ appId }
-                                isLoading={ isLoading || isAuthenticatorsFetchRequestLoading }
-                                authenticators={ authenticators }
-                                authenticationSequence={ moderatedAuthenticationSequence }
-                                onIDPCreateWizardTrigger={ (type: string, cb: () => void, template: any) => {
-                                    setSelectedIDPTemplate(template);
-                                    setIDPCreateWizardTriggerOrigin("EXTERNAL");
-                                    setIDPTemplateTypeToTrigger(type);
-                                    setShowMissingSocialAuthenticatorModal(false);
-                                    setShowIDPCreateWizard(true);
-                                    broadcastIDPCreateSuccessMessage = cb;
-                                } }
-                                onUpdate={ onUpdate }
-                                onReset={ handleLoginFlowReset }
-                                data-testid={ testId }
+                !(isLoading || isAuthenticatorsFetchRequestLoading)?
+                    ((!readOnly && !loginFlow && isDefaultFlowConfiguration())
+                        ? (
+                            <SignInMethodLanding
                                 readOnly={ readOnly }
+                                onLoginFlowSelect={ (type: LoginFlowTypes) => {
+                                    handleLoginFlowSelect(type,
+                                        googleAuthenticators,
+                                        gitHubAuthenticators,
+                                        facebookAuthenticators);
+                                } }
+                                data-testid={ `${ testId }-landing` }
                             />
-                        </>
-                    )
+                        ) : (
+                            <>
+                                <SignInMethodCustomization
+                                    appId={ appId }
+                                    authenticators={ authenticators }
+                                    authenticationSequence={ moderatedAuthenticationSequence }
+                                    onIDPCreateWizardTrigger={ (type: string, cb: () => void, template: any) => {
+                                        setSelectedIDPTemplate(template);
+                                        setIDPCreateWizardTriggerOrigin("EXTERNAL");
+                                        setIDPTemplateTypeToTrigger(type);
+                                        setShowMissingSocialAuthenticatorModal(false);
+                                        setShowIDPCreateWizard(true);
+                                        broadcastIDPCreateSuccessMessage = cb;
+                                    } }
+                                    onUpdate={ onUpdate }
+                                    onReset={ handleLoginFlowReset }
+                                    data-testid={ testId }
+                                    isLoading={ isAuthenticatorsFetchRequestLoading }
+                                    setIsLoading={ setIsAuthenticatorsFetchRequestLoading }
+                                    readOnly={ readOnly }
+                                />
+                            </>
+                        )
+                    ) : <ContentLoader inline="centered" active/>
             }
             { showIDPCreateWizard && renderIDPCreateWizard() }
             { showMissingSocialAuthenticatorModal && renderMissingSocialAuthenticatorModal() }

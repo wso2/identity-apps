@@ -127,7 +127,7 @@ export const Form: ForwardRefExoticComponent<FormPropsInterface> =
             if (uncontrolledForm) {
                 if ((hasChildrenAndIsValid || hasOnlyOneChild) && !skipFinalTypes(child.type.name)) {
                     return React.createElement(child.type, {
-                        ...allProps,
+                        ...child.props,
                         children: addPropsToChild(
                             React.Children.toArray(child.props?.children),
                             formRenderProps

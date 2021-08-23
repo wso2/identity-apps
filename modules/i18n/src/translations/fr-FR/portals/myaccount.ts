@@ -46,7 +46,8 @@ export const myAccount: MyAccountNS = {
             emailRecovery: {
                 descriptions: {
                     add: "Ajouter ou mettre à jour l'e-mail de récupération",
-                    update: "Mettre à jour de l'e-mail de récupération ({{email}}}"
+                    update: "Mettre à jour de l'e-mail de récupération ({{email}}}",
+                    view: "Afficher l'adresse e-mail de récupération ({{email}}}"
                 },
                 forms: {
                     emailResetForm: {
@@ -733,6 +734,11 @@ export const myAccount: MyAccountNS = {
                     description: "Paramètres et recommandations pour vous aider à sécuriser votre compte",
                     header: "Sécurité du compte"
                 },
+                profileStatus: {
+                    completionPercentage: "Votre profil est complété à {{percentage}}%",
+                    userSourceText: "(Connecté via {{source}})",
+                    header: "Votre profil {{productName}}"
+                },
                 accountStatus: {
                     complete: "Votre profil est complet",
                     completedFields: "Attributs complétés",
@@ -1098,7 +1104,7 @@ export const myAccount: MyAccountNS = {
                             placeholder: "Sélectionnez votre pays"
                         }
                     }
-                },
+                }
             },
             messages: {
                 emailConfirmation: {
@@ -1110,7 +1116,7 @@ export const myAccount: MyAccountNS = {
                         "second facteur est activée et pour l'envoi de codes de récupération en cas de " +
                         "récupération d'un nom d'utilisateur / mot de passe. Pour mettre à jour ce numéro, " +
                         "vous devez vérifier le nouveau numéro en entrant le code de vérification envoyé à votre " +
-                        "nouveau numéro. Cliquez sur mettre à jour si vous souhaitez continuer.",
+                        "nouveau numéro. Cliquez sur mettre à jour si vous souhaitez continuer."
                 }
             },
             notifications: {
@@ -1263,7 +1269,7 @@ export const myAccount: MyAccountNS = {
         mobileUpdateWizard: {
             done: "Succès! Votre numéro de mobile a été vérifié avec succès.",
             submitMobile: {
-                heading: "Entrez votre nouveau numéro de mobile",
+                heading: "Entrez votre nouveau numéro de mobile"
             },
             verifySmsOtp: {
                 generate: "Renvoyer un nouveau code de vérification",
@@ -1271,7 +1277,7 @@ export const myAccount: MyAccountNS = {
                 error: "Échec de la vérification. Veuillez réessayer.",
                 label: "Code de vérification",
                 placeholder: "Entrez votre code de vérification",
-                requiredError: "Entrer le code de vérification",
+                requiredError: "Entrer le code de vérification"
             },
             notifications: {
                 resendSuccess: {
@@ -1448,6 +1454,14 @@ export const myAccount: MyAccountNS = {
             },
             description: "Assurez-vous de mettre à jour régulièrement votre mot de passe et de ne pas le réutiliser sur d'autres sites.",
             heading: "Changer de mot de passe"
+        },
+        createPassword: {
+            actionTitles: {
+                create: "Créer un mot de passe"
+            },
+            description: "Créez un mot de passe dans Asgardeo. Vous pouvez utiliser ce mot de passe pour vous " +
+                "connecter à Asgardeo en plus de la connexion sociale.\n",
+            heading: "Créer un mot de passe"
         },
         consentManagement: {
             actionTitles: {

@@ -18,6 +18,7 @@
 
 import BasicAuthIcon from "../../../themes/default/assets/images/authenticators/basic-auth.png";
 import FIDOLogo from "../../../themes/default/assets/images/authenticators/fido.png";
+import SMSOTPIcon from "../../../themes/default/assets/images/authenticators/sms-otp.svg";
 import SalesforceLogo from "../../../themes/default/assets/images/connectors/salesforce.png";
 import SCIMLogo from "../../../themes/default/assets/images/connectors/scim.png";
 import SPMLLogo from "../../../themes/default/assets/images/connectors/spml.png";
@@ -31,7 +32,6 @@ import { ReactComponent as OpenBookIcon } from "../../../themes/default/assets/i
 import TOTPIcon from "../../../themes/default/assets/images/icons/outline-icons/clock-outline.svg";
 import { ReactComponent as ReportIcon } from "../../../themes/default/assets/images/icons/report-icon.svg";
 import EmailOTPIcon from "../../../themes/default/assets/images/icons/solid-icons/email-solid.svg";
-import SMSOTPIcon from "../../../themes/default/assets/images/icons/solid-icons/sms-solid.svg";
 import {
     ReactComponent as ProvisionCapabilityIcon
 } from "../../../themes/default/assets/images/identity-provider-capabilities/provision.svg";
@@ -46,8 +46,6 @@ import GithubIdPIcon from "../../../themes/default/assets/images/identity-provid
 import GoogleIdPIcon from "../../../themes/default/assets/images/identity-providers/google-idp-illustration.svg";
 import IWAKerberosIdPIllustration
     from "../../../themes/default/assets/images/identity-providers/iwa-idp-illustration.svg";
-import MicrosoftIdPIllustration
-    from "../../../themes/default/assets/images/identity-providers/microsoft-idp-illustration.svg";
 import Office365IdPIllustration
     from "../../../themes/default/assets/images/identity-providers/office365-idp-illustration.svg";
 import {
@@ -64,6 +62,10 @@ import FacebookLogo from "../../../themes/default/assets/images/social/facebook.
 import GoogleLogo from "../../../themes/default/assets/images/social/google.svg";
 import TwitterLogo from "../../../themes/default/assets/images/social/twitter.svg";
 import JWTLogo from "../../../themes/default/assets/images/technologies/jwt-logo.svg";
+import AppleLogo
+    from "../../../themes/default/assets/images/third-party/apple-logo.svg";
+import LinkedInLogo
+    from "../../../themes/default/assets/images/third-party/linkedin-logo.svg";
 import MicrosoftLogo from "../../../themes/default/assets/images/third-party/microsoft-logo.svg";
 import Office365Logo from "../../../themes/default/assets/images/third-party/office-365-logo.svg";
 import YahooLogo from "../../../themes/default/assets/images/third-party/yahoo-logo.svg";
@@ -128,7 +130,9 @@ export const getIdPIcons = (): any => {
         github: GithubIdPIcon,
         google: GoogleIdPIcon,
         iwaKerberos: IWAKerberosIdPIllustration,
-        microsoft: MicrosoftIdPIllustration,
+        microsoft: MicrosoftLogo,
+        apple: AppleLogo,
+        linkedIn: LinkedInLogo,
         office365: Office365IdPIllustration,
         oidc: OIDCLogo,
         saml: SamlLogo,

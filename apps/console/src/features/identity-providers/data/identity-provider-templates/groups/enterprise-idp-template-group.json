@@ -9,5 +9,6 @@
     "services": [],
     "disabled": false,
     "type": "ENTERPRISE",
-    "tags": [ "OIDC", "SAML" ]
+    "tags": [ "OIDC", "SAML" ],
+    "templateId": "enterprise-idp"
 }

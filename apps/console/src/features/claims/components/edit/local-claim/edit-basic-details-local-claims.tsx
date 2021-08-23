@@ -292,9 +292,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         inputType="resourceName"
                         name="description"
                         label={ t("console:manage.features.claims.local.forms.description.label") }
-                        required={ true }
-                        message={ t("console:manage.features.claims.local.forms.description." +
-                            "requiredErrorMessage") }
+                        required={ false }
+                        requiredErrorMessage=""
                         placeholder={
                             t("console:manage.features.claims.local.forms.description.placeholder")
                         }
@@ -329,12 +328,12 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         claim && claim.displayName !== ClaimManagementConstants.USER_ID
                             && claim.displayName !== ClaimManagementConstants.USER_NAME &&
                         (
-                            <Field.CheckboxLegacy
+                            <Field.Checkbox
                                 ariaLabel="supportedByDefault"
                                 name="supportedByDefault"
                                 label={ t("console:manage.features.claims.local.forms.supportedByDefault.label") }
                                 required={ false }
-                                value={ claim?.supportedByDefault ? ["supportedByDefault"] : [] }
+                                defaultValue={ claim?.supportedByDefault }
                                 listen={ (values) => {
                                     setIsShowDisplayOrder(!!values?.supportedByDefault);
                                 } }
@@ -369,43 +368,51 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     }
                     {
                         claim && attributeConfig.editAttributes.showRequiredCheckBox &&
-                            <Field.CheckboxLegacy
+                            <Field.Checkbox
                                 ariaLabel="required"
                                 name="required"
                                 required={ false }
                                 requiredErrorMessage=""
                                 label={ t("console:manage.features.claims.local.forms.required.label") }
-                                value={ claim?.required ? [ "required" ] : [] }
+                                defaultValue={ claim?.required }
                                 data-testid={ `${ testId }-form-required-checkbox` }
                                 readOnly={ isReadOnly }
                             />
                     }
-                    {
+                    {   
+                        attributeConfig.localAttributes.createWizard.showReadOnlyAttribute &&
                         //Hides on user_id and username claims
                         claim && claim.displayName !== ClaimManagementConstants.USER_ID
                             && claim.displayName !== ClaimManagementConstants.USER_NAME &&
                         (
-                            <Field.CheckboxLegacy
+                            <Field.Checkbox
                                 ariaLabel="readOnly"
                                 name="readOnly"
                                 required={ false }
                                 label={ t("console:manage.features.claims.local.forms.readOnly.label") }
                                 requiredErrorMessage=""
-                                value={ claim?.readOnly ? [ "readOnly" ] : [] }
+                                defaultValue={ claim?.readOnly }
                                 data-testid={ `${ testId }-form-readonly-checkbox` }
                                 readOnly={ isReadOnly }
                             />
                         )
                     }
-                    <Show when={ AccessControlConstants.ATTRIBUTE_EDIT }>
-                        <Field.Button
-                            ariaLabel="submit"
-                            size="small"
-                            buttonType="primary_btn"
-                            label={ t("common:update") }
-                            name="submit"
-                        />
-                    </Show>
+                    {
+                        hasRequiredScopes(
+                            featureConfig?.attributeDialects,
+                            featureConfig?.attributeDialects?.scopes?.update,
+                            allowedScopes
+                        ) &&
+                        (
+                            <Field.Button
+                                ariaLabel="submit"
+                                size="small"
+                                buttonType="primary_btn"
+                                label={ t("common:update") }
+                                name="submit"
+                            />
+                        )
+                    }
                 </Form>
             </EmphasizedSegment>
             <Divider hidden />

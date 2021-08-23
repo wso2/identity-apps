@@ -73,6 +73,7 @@ export interface HeaderPropsInterface extends TestableComponentInterface {
      * User dropdown pointing direction.
      */
     userDropdownPointing?: DropdownProps[ "pointing" ];
+    onAvatarClick?: () => void;
 }
 
 /**
@@ -154,6 +155,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         userDropdownIcon,
         userDropdownLinks,
         userDropdownPointing,
+        onAvatarClick,
         [ "data-testid" ]: testId
     } = props;
 
@@ -378,6 +380,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                                     <Item
                                                         className="header"
                                                         key={ `logged-in-user-${ profileInfo.userName }` }
+                                                        onClick={ onAvatarClick }
                                                     >
                                                         <UserAvatar
                                                             authState={ basicProfileInfo }
@@ -385,9 +388,10 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                                             isLoading={ isProfileInfoLoading }
                                                             data-testid={ `${ testId }-user-dropdown-avatar` }
                                                             size="x60"
+                                                            onClick={ onAvatarClick }
                                                         />
                                                         <Item.Content verticalAlign="middle">
-                                                            <Item.Description>
+                                                            <Item.Description className={ onAvatarClick ? "linked" : "" }>
                                                                 <div
                                                                     className="name"
                                                                     data-testid={

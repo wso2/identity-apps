@@ -32,6 +32,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
 
@@ -157,7 +158,7 @@
                         userClaim.setValue(request.getParameter(claim.getUri()));
                         userClaimList.add(userClaim);
 
-                    } else if (claim.getUri().trim().equals("http://wso2.org/claims/locality")
+                    } else if (claim.getUri().trim().equals(IdentityUtil.getClaimUriLocale())
                             && StringUtils.isNotBlank(userLocale)) {
 
                         Claim localeClaim = new Claim();

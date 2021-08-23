@@ -25,6 +25,7 @@ import {
     SBACInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
+import { MultiValueAttributeInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import {
     ConfirmationModal,
@@ -38,9 +39,10 @@ import {
     useConfirmationModalAlert
 } from "@wso2is/react-components";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, ListItemProps, SemanticICONS } from "semantic-ui-react";
+import { SCIMConfigs } from "../../../extensions/configs/scim";
 import {
     AppConstants,
     AppState,
@@ -209,17 +211,28 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 id: "name",
                 key: "name",
                 render: (user: UserBasicInterface): ReactNode => {
-                    const resolvedUserName = (user.name && user.name.givenName !== undefined)
-                        ? user.name.givenName + " " + (user.name.familyName ? user.name.familyName : "")
-                        : user.userName.split("/")?.length > 1
+                    let header: string | MultiValueAttributeInterface;
+                    let subHeader: string | MultiValueAttributeInterface;
+                    const isNameAvailable = user.name?.familyName === undefined && user.name?.givenName === undefined;
+
+                    if (user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId) {
+                        subHeader = user.emails[0]
+                            ? user.emails[0]
+                            : user.id;
+
+                        header = (user.name && user.name.givenName !== undefined)
+                            ? user.name.givenName + " " + (user.name.familyName ? user.name.familyName : "")
+                            : subHeader;
+
+                    } else {
+                        subHeader = user.userName.split("/")?.length > 1
                             ? user.userName.split("/")[ 1 ]
                             : user.userName.split("/")[ 0 ];
 
-                    const resolvedDescription = user.emails
-                        ? user.emails[ 0 ]?.toString()
-                        : user.userName;
-
-                    const isNameAvailable = user.name?.familyName === undefined && user.name?.givenName === undefined;
+                        header = (user.name && user.name.givenName !== undefined)
+                            ? user.name.givenName + " " + (user.name.familyName ? user.name.familyName : "")
+                            : subHeader;
+                    }
 
                     return (
                         <Header
@@ -236,13 +249,13 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                 spaced="right"
                             />
                             <Header.Content>
-                                <div className={ isNameAvailable ? "mt-2" : "" }>{ resolvedUserName }</div>
+                                <div className={ isNameAvailable ? "mt-2" : "" }>{ header }</div>
                                 {
                                     (!isNameAvailable) &&
                                     <Header.Subheader
                                         data-testid={ `${ testId }-item-sub-heading` }
                                     >
-                                        { resolvedDescription }
+                                        { subHeader }
                                     </Header.Subheader>
                                 }
                             </Header.Content>
@@ -479,7 +492,11 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content data-testid={ `${ testId }-confirmation-modal-content` }>
                             <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
-                            { t("console:manage.features.user.deleteUser.confirmationModal.content") }
+                            {
+                                deletingUser[SCIMConfigs.scim.enterpriseSchema]?.userSourceId
+                                    ? t("console:manage.features.user.deleteJITUser.confirmationModal.content")
+                                    : t("console:manage.features.user.deleteUser.confirmationModal.content")
+                            }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

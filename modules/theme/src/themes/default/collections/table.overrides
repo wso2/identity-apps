@@ -77,6 +77,7 @@
         .data-table-cell {
             .header-with-icon {
                 display: @dataTableRowHeaderDisplay;
+                align-items: center;
 
                 .content {
                     vertical-align: @dataTableRowHeaderContentVerticalAlignment;

@@ -28,6 +28,11 @@ interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterf
     dropDownOptions: DropdownOptionsInterface[];
     initialSubjectUri: string;
     initialRoleUri: string;
+    /**
+     * Controls whether role claim mapping should be rendered or not.
+     * If you only want to get subject attribute then you should make
+     * this {@code false}.
+     */
     claimMappingOn: boolean;
     updateRole: (roleUri: string) => void;
     updateSubject: (subjectUri: string) => void;

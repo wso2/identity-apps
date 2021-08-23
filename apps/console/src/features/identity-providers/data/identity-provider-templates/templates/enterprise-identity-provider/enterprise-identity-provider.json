@@ -34,5 +34,6 @@
     "name": "Enterprise",
     "services": [],
     "disabled": false,
+    "templateId": "enterprise-idp",
     "type": "ENTERPRISE"
 }

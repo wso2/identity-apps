@@ -802,6 +802,7 @@ export interface ConsoleNS {
                         };
                         messages: {
                             revokeDisclaimer: Message;
+                            customInvalidMessage: string;
                         };
                     };
                     inboundSAML: {
@@ -999,10 +1000,19 @@ export interface ConsoleNS {
                             template : FormAttributes;
                         };
                     };
+                    applicationCertificateWizard: {
+                        heading: string;
+                        subHeading: string;
+                        emptyPlaceHolder: {
+                            title: string;
+                            description1: string;
+                            description2: string;
+                        }
+                    }
                 };
             };
             authenticationProvider?: {
-                advancedSearch: {
+                advancedSearch?: {
                     form: {
                         inputs: {
                             filterAttribute: {
@@ -1018,25 +1028,25 @@ export interface ConsoleNS {
                     };
                     placeholder: string;
                 };
-                buttons: {
+                buttons?: {
                     addIDP: string;
                     addAuthenticator: string;
                     addConnector: string;
                     addAttribute: string;
                     addCertificate: string;
                 };
-                confirmations: {
+                confirmations?: {
                     deleteIDP: Confirmation;
                     deleteIDPWithConnectedApps: Confirmation;
                     deleteAuthenticator: Confirmation;
                     deleteConnector: Confirmation;
                 };
-                dangerZoneGroup: {
+                dangerZoneGroup?: {
                     header: string;
                     disableIDP: DangerZone;
                     deleteIDP: DangerZone;
                 };
-                edit: {
+                edit?: {
                     common: {
                         settings: {
                             tabName: string;
@@ -1048,7 +1058,7 @@ export interface ConsoleNS {
                         };
                     };
                 };
-                forms: {
+                forms?: {
                     advancedConfigs: {
                         federationHub: FormAttributes;
                         homeRealmIdentifier: FormAttributes;
@@ -1222,6 +1232,24 @@ export interface ConsoleNS {
                                 }
                             };
                         };
+                        saml: {
+                            SPEntityId: FormAttributes;
+                            SSOUrl: FormAttributes;
+                            IdPEntityId: FormAttributes;
+                            NameIDType: FormAttributes;
+                            RequestMethod: FormAttributes;
+                            IsSLORequestAccepted: FormAttributes;
+                            IsLogoutEnabled: FormAttributes;
+                            LogoutReqUrl: FormAttributes;
+                            IsAuthnRespSigned: FormAttributes;
+                            IsLogoutReqSigned: FormAttributes;
+                            ISAuthnReqSigned: FormAttributes;
+                            SignatureAlgorithm: FormAttributes;
+                            DigestAlgorithm: FormAttributes;
+                            IncludeProtocolBinding: FormAttributes;
+                            IsUserIdInClaims: FormAttributes;
+                            commonAuthQueryParams: FormAttributes;
+                        }
                     },
                     outboundConnectorAccordion: {
                         default: {
@@ -1299,17 +1327,17 @@ export interface ConsoleNS {
                         };
                     };
                 };
-                helpPanel: HelpPanelInterface;
-                templates: {
-                    manualSetup: {
+                helpPanel?: HelpPanelInterface;
+                templates?: {
+                    manualSetup?: {
                         heading: string;
                         subHeading: string;
                     };
-                    quickSetup: {
+                    quickSetup?: {
                         heading: string;
                         subHeading: string;
                     };
-                    facebook: {
+                    facebook?: {
                         wizardHelp: {
                             clientId: {
                                 description: string;
@@ -1321,7 +1349,8 @@ export interface ConsoleNS {
                             },
                             heading: string;
                             name: {
-                                description: string;
+                                idpDescription: string;
+                                connectionDescription: string;
                                 heading: string;
                             },
                             preRequisites: {
@@ -1334,7 +1363,7 @@ export interface ConsoleNS {
                             subHeading: string;
                         }
                     },
-                    github: {
+                    github?: {
                         wizardHelp: {
                             heading: string;
                             subHeading: string;
@@ -1347,7 +1376,8 @@ export interface ConsoleNS {
                                 heading: string;
                             },
                             name: {
-                                description: string;
+                                idpDescription: string;
+                                connectionDescription: string;
                                 heading: string;
                             },
                             preRequisites: {
@@ -1359,7 +1389,7 @@ export interface ConsoleNS {
                             }
                         }
                     };
-                    google: {
+                    google?: {
                         wizardHelp: {
                             clientId: {
                                 description: string;
@@ -1371,7 +1401,8 @@ export interface ConsoleNS {
                             };
                             heading: string;
                             name: {
-                                description: string;
+                                idpDescription: string;
+                                connectionDescription: string;
                                 heading: string;
                             };
                             preRequisites: {
@@ -1382,13 +1413,18 @@ export interface ConsoleNS {
                             },
                             subHeading: string;
                         }
-                    },
+                    };
+                    enterprise?: {
+                        validation: {
+                            name: string;
+                        };
+                    };
                 };
-                list: {
+                list?: {
                     actions: string;
                     name: string;
                 };
-                modals: {
+                modals?: {
                     addAuthenticator: {
                         title: string;
                         subTitle: string;
@@ -1409,7 +1445,7 @@ export interface ConsoleNS {
                         };
                     };
                 };
-                notifications: {
+                notifications?: {
                     addFederatedAuthenticator: Notification;
                     addIDP: Notification;
                     changeCertType: {
@@ -1424,6 +1460,7 @@ export interface ConsoleNS {
                     };
                     deleteCertificate: Notification;
                     deleteIDP: Notification;
+                    deleteConnection: Notification;
                     disableAuthenticator: Notification;
                     disableOutboundProvisioningConnector: Notification;
                     duplicateCertificateUpload: Notification;
@@ -1454,13 +1491,13 @@ export interface ConsoleNS {
                     updateOutboundProvisioningConnectors: Notification;
                     updateOutboundProvisioningConnector: Notification;
                 };
-                popups: {
+                popups?: {
                     appStatus: {
                         enabled: Popup;
                         disabled: Popup;
                     };
                 };
-                placeHolders: {
+                placeHolders?: {
                     emptyCertificateList: Placeholder;
                     emptyIDPList: Placeholder;
                     emptyIDPSearchResults: Placeholder;
@@ -1475,7 +1512,7 @@ export interface ConsoleNS {
                     emptyConnectorList: Placeholder;
                     noAttributes: Placeholder;
                 };
-                wizards: {
+                wizards?: {
                     addAuthenticator: {
                         header: string;
                         steps: {
@@ -3255,6 +3292,11 @@ export interface ConsoleNS {
                 };
             };
             user: {
+                deleteJITUser: {
+                    confirmationModal: {
+                        content: string;
+                    }
+                };
                 deleteUser: {
                     confirmationModal: Confirmation;
                 };

@@ -4,6 +4,7 @@
     "enabled": true,
     "displayOrder": 1,
     "id": "web-application",
+    "templateId": "traditional-web-application",
     "image": "oidcWebApp",
     "name": "Traditional Web Application",
     "subTemplatesSectionTitle": "Protocol",

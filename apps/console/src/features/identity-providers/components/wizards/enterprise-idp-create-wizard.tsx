@@ -16,7 +16,11 @@
  * under the License.
  */
 
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { 
+    AlertLevels,
+    IdentifiableComponentInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Wizard2, WizardPage } from "@wso2is/form";
 import {
@@ -37,6 +41,7 @@ import {
 import { FormValidation } from "@wso2is/validation";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
+import kebabCase from "lodash-es/kebabCase";
 
 import React, {
     FC,
@@ -52,7 +57,13 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dimmer, Divider, Grid, Icon } from "semantic-ui-react";
-import { AppConstants, ModalWithSidePanel, getCertificateIllustrations, store } from "../../../core";
+import { 
+    AppConstants,
+    EventPublisher,
+    ModalWithSidePanel,
+    getCertificateIllustrations,
+    store
+} from "../../../core";
 import { createIdentityProvider, getIdentityProviderList } from "../../api";
 import { getIdPIcons, getIdentityProviderWizardStepIcons } from "../../configs";
 import { IdentityProviderManagementConstants } from "../../constants";
@@ -62,13 +73,14 @@ import {
     StrictIdentityProviderInterface
 } from "../../models";
 import { handleGetIDPListCallError } from "../utils";
+import { getAvailableNameIDFormats, getAvailableProtocolBindingTypes } from "../utils/saml-idp-utils";
 
 /**
  * Proptypes for the enterprise identity provider
  * creation wizard component.
  */
 interface EnterpriseIDPCreateWizardProps extends TestableComponentInterface,
-    GenericIdentityProviderCreateWizardPropsInterface {
+    GenericIdentityProviderCreateWizardPropsInterface, IdentifiableComponentInterface {
 }
 
 /**
@@ -108,7 +120,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         title,
         subTitle,
         template,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        [ "data-componentid" ]: componentId
     } = props;
 
     const wizardRef = useRef(null);
@@ -134,6 +147,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
+
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     useEffect(() => {
         setIsIDPListLoading(true);
@@ -188,33 +203,6 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         ] as WizardStepInterface[];
     };
 
-    const getAvailableNameIDFormats = () => {
-
-        const schemes = [
-            "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
-            "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
-            "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
-            "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
-            "urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName",
-            "urn:oasis:names:tc:SAML:1.1:nameid-format:WindowsDomainQualifiedName",
-            "urn:oasis:names:tc:SAML:2.0:nameid-format:kerberos",
-            "urn:oasis:names:tc:SAML:2.0:nameid-format:entity"
-        ];
-
-        return schemes.map((scheme: string, index: number) => ({
-            key: index, text: scheme, value: scheme
-        }));
-
-    };
-
-    const getAvailableProtocolBindingTypes = () => {
-        return [
-            { key: 1, text: "HTTP Redirect", value: "redirect" },
-            { key: 2, text: "HTTP Post", value: "post" },
-            { key: 3, text: "As Per Request", value: "as_request" }
-        ];
-    };
-
     const isIdpNameAlreadyTaken = (userInput: string): boolean => {
         if (idpList?.length > 0) {
             return idpList
@@ -267,7 +255,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             ];
             // Certificates: bind the JWKS URL if exists otherwise pem
             identityProvider[ "certificate" ][ "jwksUri" ] = values.jwks_endpoint ?? EMPTY_STRING;
-            identityProvider[ "certificate" ][ "certificates" ] = [ pemString ?? EMPTY_STRING ];
+            identityProvider[ "certificate" ][ "certificates" ] = [ pemString ? btoa(pemString) : EMPTY_STRING ];
 
         } else {
 
@@ -280,9 +268,9 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     { key: "RequestMethod", value: values.RequestMethod },
                     { key: "SPEntityId", value: values.SPEntityId },
                     { key: "SSOUrl", value: values.SSOUrl },
-                    { key: "selectMode", value: "Manual Configuration" },
-                    { key: "IsUserIdInClaims", value: "true" },
-                    { key: "IsSLORequestAccepted", value: "true" },
+                    { key: "SelectMode", value: "Manual Configuration" },
+                    { key: "IsUserIdInClaims", value: "false" },
+                    { key: "IsSLORequestAccepted", value: "false" },
                     { key: "SignatureAlgorithm", value: "RSA with SHA1" },
                     { key: "DigestAlgorithm", value: "SHA1" }
                 ];
@@ -290,12 +278,12 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 identityProvider.federatedAuthenticators.authenticators[ FIRST_ENTRY ].properties = [
                     { key: "SPEntityId", value: values.SPEntityId },
                     { key: "meta_data_saml", value: xmlBase64String ?? EMPTY_STRING },
-                    { key: "selectMode", value: "Metadata File Configuration" },
-                    { key: "IsUserIdInClaims", value: "true" },
-                    { key: "IsSLORequestAccepted", value: "true" }
+                    { key: "SelectMode", value: "Metadata File Configuration" },
+                    { key: "IsUserIdInClaims", value: "false" },
+                    { key: "IsSLORequestAccepted", value: "false" }
                 ];
             }
-            identityProvider[ "certificate" ][ "certificates" ] = [ pemString ?? EMPTY_STRING ];
+            identityProvider[ "certificate" ][ "certificates" ] = [ pemString ? btoa(pemString) : EMPTY_STRING ];
 
         }
 
@@ -316,6 +304,10 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
         createIdentityProvider(identityProvider)
             .then((response) => {
+                eventPublisher.publish("connections-finish-adding-connection", {
+                    "type": componentId + "-" + kebabCase(selectedProtocol)
+                });
+
                 dispatch(addAlert({
                     description: t("console:develop.features.authenticationProvider.notifications." +
                         "addIDP.success.description"),
@@ -388,13 +380,20 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 errors.name = t("console:develop.features.authenticationProvider." +
                     "forms.generalDetails.name.validations.duplicate");
             }
+            // We have the inputType "identifier" but however it has no
+            // effect because validate function is overridden by this function.
+            // So, we need re-check this manually.
+            if (!FormValidation.identifier(values.name)) {
+                errors.name = t("console:develop.features.authenticationProvider." +
+                    "templates.enterprise.validation.name");
+            }
             setNextShouldBeDisabled(ifFieldsHave(errors));
             return errors;
         } }>
             <Field.Input
                 data-testid={ `${ testId }-form-wizard-idp-name` }
                 ariaLabel="name"
-                inputType="name"
+                inputType="identifier"
                 name="name"
                 placeholder="Enter a name for the identity provider"
                 label="Identity provider name"
@@ -432,7 +431,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                 onClick={ () => setSelectedProtocol("saml") }
                                 imageSize="mini"
                                 showTooltips={ true }
-                                disabled={ true }
+                                disabled={ false }
                                 overlay={ renderDimmerOverlay() }
                                 contentTopBorder={ false }
                                 renderDisabledItemsAsGrayscale={ false }
@@ -478,6 +477,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                         <p><b>Mode of configuration</b></p>
                         <Switcher
+                            compact
                             data-testid={ `${ testId }-form-wizard-saml-config-switcher` }
                             className={ "mt-1" }
                             defaultOptionValue="file"
@@ -548,6 +548,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 : (
                     <FilePicker
                         key={ 1 }
+                        hidePasteOption={ true }
                         fileStrategy={ XML_FILE_PROCESSING_STRATEGY }
                         file={ selectedMetadataFile }
                         pastedContent={ pastedMetadataContent }
@@ -718,7 +719,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         onChange={ (result) => {
                             setPastedPEMContent(result.pastedContent);
                             setSelectedCertificateFile(result.file);
-                            setPemString(result.serialized?.pemStripped);
+                            setPemString(result.serialized?.pem);
                             /**
                              * If there's pasted content or a file, but it hasn't been serialized
                              * and if it's not valid then we must disable the next button. This condition
@@ -780,11 +781,13 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             );
         }));
 
-        if (!subTemplate?.content?.wizardHelp) {
-            return null;
-        }
+        if (!subTemplate?.content?.wizardHelp) return null;
 
-        const { wizardHelp: WizardHelp } = subTemplate?.content;
+        let { wizardHelp: WizardHelp } = subTemplate?.content;
+
+        if (selectedProtocol === "saml" && selectedSamlConfigMode === "file") {
+            WizardHelp = subTemplate.content.fileBasedHelpPanel;
+        }
 
         return (
             <ModalWithSidePanel.SidePanel>
@@ -864,7 +867,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                 data-testid={ testId }>
                                 { resolveWizardPages() }
                             </Wizard2>
-                            : <ContentLoader text="Loading identity providers"/>
+                            : <ContentLoader />
                         }
                     </ModalWithSidePanel.Content>
                 </React.Fragment>
@@ -935,6 +938,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
  */
 EnterpriseIDPCreateWizard.defaultProps = {
     currentStep: 0,
+    "data-componentid": "enterprise-idp",
     "data-testid": "enterprise-idp-create-wizard"
 };
 
