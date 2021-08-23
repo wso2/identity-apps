@@ -120,7 +120,7 @@ export const ProfileWidget: FunctionComponent<AsgardeoProfileWidgetProps> = (
     );
     return (
         <div className="widget profile" data-testid={ testId }>
-            <SettingsSection
+            <SettingsSection className="overview"
                 data-testid={ `${testId}-settings-section` }
                 header={ t("myAccount:components.overview.widgets.profileStatus.header" ,
                     { productName: config.ui.productName }) }
@@ -140,8 +140,8 @@ export const ProfileWidget: FunctionComponent<AsgardeoProfileWidgetProps> = (
                 }
                 primaryAction={ "Manage your profile" }
                 onPrimaryActionClick={ navigate }
-                icon={ getWidgetIcons().consents }
-                iconMini={ getWidgetIcons().consents }
+                icon={ getWidgetIcons().profile }
+                iconMini={ getWidgetIcons().profile }
                 iconSize="tiny"
                 iconStyle="twoTone"
             />

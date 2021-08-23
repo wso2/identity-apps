@@ -37,6 +37,9 @@ export const commonConfig: CommonConfig = {
     utils: {
         isManageConsentAllowedForUser(userstore: string): boolean {
             return true;
+        },
+        isShowAdditionalWidgetAllowed(userstore: string): boolean {
+            return false;
         }
     }
 };

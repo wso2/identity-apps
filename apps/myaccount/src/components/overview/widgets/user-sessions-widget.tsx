@@ -29,6 +29,8 @@ import { AlertLevels, UserSessions, emptyUserSessions } from "../../../models";
 import { addAlert } from "../../../store/actions";
 import { SettingsSection } from "../../shared";
 import { UserSessionsList } from "../../user-sessions";
+import { EmphasizedSegment } from "@wso2is/react-components";
+import { Placeholder } from "semantic-ui-react";
 
 /**
  * User sessions widget.
@@ -43,11 +45,14 @@ export const UserSessionsWidget: FunctionComponent<TestableComponentInterface> =
     const dispatch = useDispatch();
 
     const [ userSessions, setUserSessions ] = useState<UserSessions>(emptyUserSessions);
+    const [ isSessionDetailsLoading, setIsSessionDetailsLoading ] = useState<boolean>(false);
 
     /**
      * Retrieves the user sessions.
      */
     const getUserSessions = (): void => {
+        setIsSessionDetailsLoading(true);
+
         fetchUserSessions()
             .then((response) => {
                 if (response && response.sessions && response.sessions.length && response.sessions.length > 0) {
@@ -95,6 +100,9 @@ export const UserSessionsWidget: FunctionComponent<TestableComponentInterface> =
                         )
                     })
                 );
+            })
+            .finally(() => {
+                setIsSessionDetailsLoading(false);
             });
     };
 
@@ -111,11 +119,12 @@ export const UserSessionsWidget: FunctionComponent<TestableComponentInterface> =
 
     return (
         <div className="widget account-status" data-testid={ testId }>
-            <SettingsSection
+            <SettingsSection className="overview"
                 data-testid={ `${testId}-settings-section` }
                 description={ t("myAccount:components.overview.widgets.accountActivity.description") }
                 header={ t("myAccount:components.overview.widgets.accountActivity.header") }
                 placeholder={
+                    !isSessionDetailsLoading &&
                     !(userSessions && userSessions.sessions && (userSessions.sessions.length > 0))
                         ? t("myAccount:sections.userSessions.actionTitles.empty")
                         : null
@@ -123,13 +132,23 @@ export const UserSessionsWidget: FunctionComponent<TestableComponentInterface> =
                 primaryAction={ t("myAccount:components.overview.widgets.accountActivity.actionTitles.update") }
                 onPrimaryActionClick={ navigate }
             >
-                <UserSessionsList
-                    userSessions={
-                        userSessions && userSessions.sessions && (userSessions.sessions.length > 0)
-                            ? userSessions.sessions.slice(0, 1)
-                            : null
-                    }
-                />
+                { !isSessionDetailsLoading ?
+                    <UserSessionsList
+                        userSessions={
+                            userSessions && userSessions.sessions && (userSessions.sessions.length > 0)
+                                ? userSessions.sessions.slice(0, 1)
+                                : null
+                        }
+                    />
+                    : <EmphasizedSegment>
+                        <Placeholder fluid>
+                            <Placeholder.Header image>
+                                <Placeholder.Line />
+                                <Placeholder.Line />
+                            </Placeholder.Header>
+                        </Placeholder>
+                    </EmphasizedSegment>
+                }
             </SettingsSection>
         </div>
     );

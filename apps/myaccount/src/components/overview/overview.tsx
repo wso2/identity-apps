@@ -26,13 +26,15 @@ import { ProfileWidget } from "./widgets/profile-widget";
 import { AppConstants } from "../../constants";
 import { FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
+import { commonConfig } from "../../extensions";
 
 /**
  * Prop types for the overview edit component.
  */
 interface OverviewPropsInterface extends TestableComponentInterface {
     userSource?: string;
-    enableAlternateWidgetLayout?: boolean
+    enableAlternateWidgetLayout?: boolean;
+    userStore?: string
 }
 
 /**
@@ -46,7 +48,8 @@ export const Overview: FunctionComponent<OverviewPropsInterface> = (
 
     const {
         userSource,
-        enableAlternateWidgetLayout
+        enableAlternateWidgetLayout,
+        userStore
     } = props;
 
     const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
@@ -168,19 +171,30 @@ export const Overview: FunctionComponent<OverviewPropsInterface> = (
         <Grid className="overview-page">
             <Divider hidden />
             <Grid.Row>
-                {
-                    !enableAlternateWidgetLayout ?
+                { !enableAlternateWidgetLayout
+                    ?
                         <>
                             { accountStatus(9, 16) }
                             { accountActivity(7, 16) }
                             { accountSecurity(8, 16) }
                             { consents(8, 16) }
                         </>
-                        :
-                        <>
-                            { profileStatus(8, 16) }
-                            { accountSecurity(8, 16) }
-                        </>
+                    : !commonConfig.utils.isShowAdditionalWidgetAllowed(userStore)
+                        ?
+                            <>
+                                { profileStatus(8, 16) }
+                                { accountSecurity(8, 16) }
+                            </>
+                        : <Grid>
+                            <Grid.Row>
+                                { profileStatus(8, 16) }
+                                { accountSecurity(8, 16) }
+                            </Grid.Row>
+                            <Grid.Row>
+                                { accountActivity(8, 16) }
+                                { consents(8, 16) }
+                            </Grid.Row>
+                        </Grid>
                 }
             </Grid.Row>
         </Grid>
