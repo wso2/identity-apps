@@ -3312,7 +3312,7 @@ export const console: ConsoleNS = {
                     },
                     addCertificate: {
                         subTitle: "Add new certificate to the identity provider: {{ idpName }}",
-                        title: "Add New Certificate"
+                        title: "Configure Certificates"
                     },
                     addProvisioningConnector: {
                         subTitle: "Follow the steps to add new outbound provisioning connector",
