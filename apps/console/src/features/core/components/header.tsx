@@ -38,7 +38,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Container, Menu } from "semantic-ui-react";
-import { ComponentPlaceholder } from "../../../extensions";
+import { commonConfig } from "../../../extensions/configs";
 import { AppSwitcherIcons } from "../configs";
 import { history } from "../helpers";
 import { ConfigReducerStateInterface } from "../models";
@@ -221,50 +221,58 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             extensions={
                 // Remove false values. Needed for `&&` operator.
                 compact([
-                    {
-                        component: <ComponentPlaceholder section="feedback-button" type="component"/>,
-                        floated: "right"
-                    },
+                    ...commonConfig?.header?.getHeaderExtensions(),
                     showAppSwitcherSeparate && {
                         component: renderAppSwitcher(),
                         floated: "right"
-                    },
-                    {
-                        component: <ComponentPlaceholder section="tenant-dropdown" type="component"/>,
-                        floated: "left"
                     }
                 ])
             }
             fluid={ fluid }
             isProfileInfoLoading={ isProfileInfoLoading }
-            userDropdownLinks={ 
-                showAppSwitchButton
-                ? [ 
+            userDropdownLinks={
+                compact([
                     {
-                        icon: "power off",
-                        name: t("common:logout"),
-                        onClick: () => {
-                            eventPublisher.publish("console-click-logout");
-                            
-                            history.push(window[ "AppUtils" ].getConfig().routes.logout);
-                        }
-                    }
-                ] : [
+                        category: "APPS",
+                        categoryLabel: "Apps",
+                        links: [
+                            {
+                                "data-testid": "app-switch-console",
+                                icon: AppSwitcherIcons().myAccount,
+                                name: t("console:manage.features.header.links.userPortalNav"),
+                                onClick: () => {
+                                    eventPublisher.publish("console-click-visit-console");
+                                    window.open(consoleAppURL, "_self");
+                                }
+                            },
+                            {
+                                "data-testid": "app-switch-myaccount",
+                                icon: AppSwitcherIcons().console,
+                                name: t("console:common.header.appSwitch.console.name"),
+                                onClick: () => {
+                                    eventPublisher.publish("console-click-visit-my-account");
+                                    window.open(accountAppURL, "_blank", "noopener");
+                                }
+                            }
+                        ]
+                    },
+                    ...commonConfig?.header?.getUserDropdownLinkExtensions(),
                     {
-                        icon: "arrow right",
-                        name: t("console:manage.features.header.links.userPortalNav"),
-                        onClick: () => window.open(window[ "AppUtils" ].getConfig().accountApp.path,
-                            "_blank", "noopener")
-                    },{
-                        icon: "power off",
-                        name: t("common:logout"),
-                        onClick: () => {
-                            eventPublisher.publish("console-click-logout");
+                        category: "GENERAL",
+                        categoryLabel: null,
+                        links: [
+                            {
+                                name: t("common:logout"),
+                                onClick: () => {
+                                    eventPublisher.publish("console-click-logout");
 
-                            history.push(window[ "AppUtils" ].getConfig().routes.logout);
-                        }
+                                    history.push(window[ "AppUtils" ].getConfig().routes.logout);
+                                }
+                            }
+                        ]
                     }
-            ] }
+                ])
+            }
             profileInfo={ profileInfo }
             showUserDropdown={ true }
             showUserDropdownTriggerLabel={
