@@ -6447,7 +6447,8 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter the scope",
                                 validations: {
                                     empty: "This field cannot be empty",
-                                    invalid: "The scope contains invalid characters."
+                                    invalid: "Scope can only contain alphanumeric characters and _. " +
+                                    "And must be of length between 3 to 40 characters."
                                 }
                             }
                         }
