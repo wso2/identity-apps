@@ -126,7 +126,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     const [ selectedMetadataFile, setSelectedMetadataFile ] = useState<File>(null);
     const [ pastedMetadataContent, setPastedMetadataContent ] = useState<string>(null);
     const [ selectedCertificateFile, setSelectedCertificateFile ] = useState<File>(null);
-    const [ selectedCertInputType, setSelectedCertInputType ] = useState<CertificateInputType>("jwks");
+    const [ selectedCertInputType, setSelectedCertInputType ] =
+        useState<CertificateInputType>(disableJWKS ? "pem" : "jwks");
     const [ selectedProtocol, setSelectedProtocol ] = useState<AvailableProtocols>("oidc");
     const [ selectedSamlConfigMode, setSelectedSamlConfigMode ] = useState<SamlConfigurationMode>("file");
     const [ pastedPEMContent, setPastedPEMContent ] = useState<string>(null);
@@ -663,11 +664,13 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         { (selectedProtocol === "oidc") && (
                             <Switcher
                                 compact
+                                disabledMessage="This feature will be enabled soon."
                                 className={ "mt-1" }
-                                defaultOptionValue="jwks"
-                                selectedValue={ selectedCertInputType }
+                                defaultOptionValue={ disableJWKS ? "pem" : "jwks" }
+                                // selectedValue={ selectedCertInputType }
                                 onChange={ ({ value }) => setSelectedCertInputType(value as any) }
                                 options={ [ {
+                                    disabled: disableJWKS,
                                     label: "JWKS endpoint",
                                     value: "jwks"
                                 }, {
@@ -680,7 +683,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 </Grid.Row>
             </Grid>
             <Divider hidden/>
-            { (selectedProtocol === "oidc" && selectedCertInputType === "jwks") && (
+            { (!disableJWKS && selectedProtocol === "oidc" && selectedCertInputType === "jwks") && (
                 <>
                     <Field.Input
                         ariaLabel="JWKS endpoint URL"
@@ -999,3 +1002,8 @@ const length = (minMax: MinMax) => (value) => {
 const isUrl = (value) => {
     return FormValidation.url(value) ? undefined : "This value is invalid.";
 };
+
+/**
+ * Disable JWKS for for OIDC protocol temporarily...
+ */
+const disableJWKS = true;

@@ -108,6 +108,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         identityProvider,
         isLoading,
         isSaml,
+        isOidc,
         onDelete,
         onUpdate,
         template,
@@ -138,6 +139,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                         )
                 }
                 isSaml={ isSaml }
+                isOidc={ isOidc }
                 editingIDP={ identityProvider }
                 description={ identityProvider.description }
                 isEnabled={ identityProvider.isEnabled }

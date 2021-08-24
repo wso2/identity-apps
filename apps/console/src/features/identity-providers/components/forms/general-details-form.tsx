@@ -86,6 +86,11 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
      * IdP is a SAML provider or not.
      */
     isSaml?: boolean;
+    /**
+     * Explicitly specifies whether the currently displaying
+     * IdP is a OIDC provider or not.
+     */
+    isOidc?: boolean;
 }
 
 const IDP_NAME_MAX_LENGTH: number = 50;
@@ -112,6 +117,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         hideIdPLogoEditField,
         isReadOnly,
         isSaml,
+        isOidc,
         [ "data-testid" ]: testId
     } = props;
 
@@ -267,7 +273,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         </Grid.Row>
                     </Grid>
                     <IdpCertificates
-                        enableJWKS={ !isSaml }
+                        enableJWKS={ !isSaml && !isOidc }
                         isReadOnly={ isReadOnly }
                         editingIDP={ editingIDP }
                         onUpdate={ onUpdate }
