@@ -68,11 +68,17 @@ export class HttpUtils {
         /**
          * Publish an event on the http request error.
         */
-        EventPublisher.getInstance().publish("console-error-http-request-error", {
-            "type": "error-response",
-            "response": error.response ? error.response.data ? error.response.data : "" : "",
-            "status": error.response ? error.response.status ? error.response.status : "" : ""
-        });
+        if(
+                error.response &&
+                error.response.data &&
+                error.response.data.code
+        ) {
+            EventPublisher.getInstance().publish("console-error-http-request-error", {
+                "type": "error-response",
+                "code": error.response.data.code,
+                "status": error.response.status ? error.response.status : ""
+            });
+        }
 
         // Terminate the session if the token endpoint returns a bad request(400)
         // The token binding feature will return a 400 status code when the session
