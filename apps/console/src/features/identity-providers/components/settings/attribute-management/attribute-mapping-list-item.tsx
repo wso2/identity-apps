@@ -187,6 +187,14 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                                     alreadyMappedAttributesList.map((a) => a.mappedValue)
                                 );
                                 if (mappedValues.has(value)) {
+                                    // This means we have a mapping value like this...
+                                    // But we need to make sure that if the current value
+                                    // actually differs from the model value if user is in
+                                    // editing mode...
+                                    if (editingMode && mapping?.mappedValue === value) {
+                                        setMappingHasError(false);
+                                        return undefined;
+                                    }
                                     setMappingHasError(true);
                                     return "There's already a attribute mapped with this name.";
                                 }
