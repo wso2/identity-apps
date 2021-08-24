@@ -53,6 +53,10 @@ export interface AvatarPropsInterface extends TestableComponentInterface, Omit<I
      */
     editIconSize?: GenericIconProps["size"];
     /**
+     * Show hovering effect.
+     */
+    hoverable?: boolean;
+    /**
      * Image to be displayed as an avatar.
      */
     image?: React.ReactNode;
@@ -137,7 +141,7 @@ export interface AvatarPropsInterface extends TestableComponentInterface, Omit<I
 /**
  * Type to handle Avatar sizes.
  */
-export type AvatarSizes = SemanticSIZES | "x60" | "little";
+export type AvatarSizes = SemanticSIZES | "x30" | "x50" | "x60" | "little";
 
 const AVATAR_MODULE_CSS_CLASS = "ui-avatar";
 
@@ -161,6 +165,7 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
         editable,
         editIcon,
         editIconSize,
+        hoverable,
         image,
         initialsColor,
         inline,
@@ -203,7 +208,7 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
 
     const imgElementClasses = classNames(AVATAR_MODULE_CSS_CLASS,
         {
-            "hoverable": onClick !== undefined,
+            "hoverable": hoverable !== false && onClick !== undefined,
             [ `initials-color-${ initialsColor }` ]: initialsColor,
             relaxed,
             rounded,
