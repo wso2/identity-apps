@@ -17,12 +17,17 @@
  */
 
 import { CommonConfig } from "./models";
+import { HeaderExtension, HeaderLinkCategoryInterface } from "@wso2is/react-components";
 
 export const commonConfig: CommonConfig = {
     advancedSearchWithBasicFilters: {
         enableQuerySearch: true
     },
     checkForUIResourceScopes: false,
+    header: {
+        getHeaderExtensions: (): HeaderExtension[] => [],
+        getUserDropdownLinkExtensions: (): HeaderLinkCategoryInterface[] => []
+    },
     userEditSection: {
         isGuestUser: false,
         showEmail: true

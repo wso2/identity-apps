@@ -16,9 +16,23 @@
  * under the License.
  */
 
+import { HeaderLinkCategoryInterface, HeaderExtension } from "@wso2is/react-components";
+
 export interface CommonConfig {
     advancedSearchWithBasicFilters: {
         enableQuerySearch: boolean;
+    };
+    header: {
+        /**
+         * Get the extensions for the header.
+         * @return {HeaderExtension[]}
+         */
+        getHeaderExtensions: () => HeaderExtension[];
+        /**
+         * Get the user dropdown link extensions.
+         * @return {HeaderLinkCategoryInterface[]}
+         */
+        getUserDropdownLinkExtensions: () => HeaderLinkCategoryInterface[];
     };
     checkForUIResourceScopes: boolean;
     userEditSection: {
