@@ -28,6 +28,7 @@ export interface InlineEditInputPropsInterface extends TestableComponentInterfac
     textPostfix?: string;
     inputPlaceholderText?: string;
     onChangesSaved: (changedValue: string) => void;
+    onEdit?: (editMode: boolean) => void;
 }
 
 /**
@@ -48,6 +49,7 @@ export const InlineEditInput: FunctionComponent<InlineEditInputPropsInterface> =
         inputPlaceholderText,
         validation,
         onChangesSaved,
+        onEdit,
         [ "data-testid" ]: testId
     } = props;
 
@@ -104,6 +106,7 @@ export const InlineEditInput: FunctionComponent<InlineEditInputPropsInterface> =
                                             return;
                                         }
                                         
+                                        onEdit(false);
                                         setEditMode(false);
                                         onChangesSaved(textValue);
                                     } }
@@ -120,6 +123,7 @@ export const InlineEditInput: FunctionComponent<InlineEditInputPropsInterface> =
                                     link
                                     onClick={ () => {
                                         setEditMode(false);
+                                        onEdit(false);
                                         errorHandler(false);
                                         setTextValue(prevText);
                                     } }
@@ -151,6 +155,7 @@ export const InlineEditInput: FunctionComponent<InlineEditInputPropsInterface> =
                                             link
                                             onClick={ () => {
                                                 setEditMode(true);
+                                                onEdit(true);
                                             } }
                                         />
                                     ) }
