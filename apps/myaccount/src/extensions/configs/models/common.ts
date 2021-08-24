@@ -11,6 +11,12 @@ export interface CommonConfig {
     advancedSearchWithBasicFilters: {
         enableQuerySearch: boolean;
     };
+    header: {
+        /**
+         * Should the app switcher be shown as nine dots dropdown.
+         */
+        renderAppSwitcherAsDropdown: boolean;
+    };
     userProfilePage: {
         showEmail: boolean;
     };

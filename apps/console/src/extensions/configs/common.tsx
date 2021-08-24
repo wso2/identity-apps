@@ -26,7 +26,8 @@ export const commonConfig: CommonConfig = {
     checkForUIResourceScopes: false,
     header: {
         getHeaderExtensions: (): HeaderExtension[] => [],
-        getUserDropdownLinkExtensions: (): HeaderLinkCategoryInterface[] => []
+        getUserDropdownLinkExtensions: (): HeaderLinkCategoryInterface[] => [],
+        renderAppSwitcherAsDropdown: false
     },
     userEditSection: {
         isGuestUser: false,

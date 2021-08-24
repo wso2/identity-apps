@@ -33,6 +33,10 @@ export interface CommonConfig {
          * @return {HeaderLinkCategoryInterface[]}
          */
         getUserDropdownLinkExtensions: () => HeaderLinkCategoryInterface[];
+        /**
+         * Should the app switcher be shown as nine dots dropdown.
+         */
+        renderAppSwitcherAsDropdown: boolean;
     };
     checkForUIResourceScopes: boolean;
     userEditSection: {

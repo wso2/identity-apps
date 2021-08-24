@@ -81,7 +81,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const isHeaderAvatarLabelAllowed: boolean = useSelector((state: AppState) =>
         state.config.ui.isHeaderAvatarLabelAllowed);
-    const showAppSwitcherSeparate: boolean = useSelector((state: AppState) => state.config.ui.showAppSwitchButton);
+    const showAppSwitchButton: boolean = useSelector((state: AppState) => state.config.ui.showAppSwitchButton);
     const accountAppURL: string = useSelector((state: AppState) => state.config.deployment.accountApp.path);
     const consoleAppURL: string = useSelector((state: AppState) => state.config.deployment.appHomePath);
 
@@ -141,7 +141,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 data-testid="app-switch-trigger"
             >
                 <AppSwitcher
-                    enabled={ showAppSwitcherSeparate }
+                    enabled={ showAppSwitchButton }
                     tooltip={ t("console:common.header.appSwitch.tooltip") }
                     apps={ [
                         {
@@ -222,7 +222,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 // Remove false values. Needed for `&&` operator.
                 compact([
                     ...commonConfig?.header?.getHeaderExtensions(),
-                    showAppSwitcherSeparate && {
+                    showAppSwitchButton && commonConfig?.header?.renderAppSwitcherAsDropdown && {
                         component: renderAppSwitcher(),
                         floated: "right"
                     }
@@ -232,7 +232,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             isProfileInfoLoading={ isProfileInfoLoading }
             userDropdownLinks={
                 compact([
-                    {
+                    showAppSwitchButton && !commonConfig?.header?.renderAppSwitcherAsDropdown && {
                         category: "APPS",
                         categoryLabel: "Apps",
                         links: [
@@ -262,6 +262,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         categoryLabel: null,
                         links: [
                             {
+                                "data-testid": "logout-button",
                                 name: t("common:logout"),
                                 onClick: () => {
                                     eventPublisher.publish("console-click-logout");
