@@ -97,7 +97,6 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
                         : t("myAccount:pages.personalInfoWithoutExportProfile.subTitle") 
             }
         >
-            <Divider hidden/>
             <Grid>
                 {
                     hasRequiredScopes(accessConfig?.personalInfo,

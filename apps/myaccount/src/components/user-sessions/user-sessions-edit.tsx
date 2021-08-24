@@ -204,8 +204,8 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
                             {
                                 userSession.applications && userSession.applications.length > 0
                                     ? (
-                                        <Grid.Row columns={ 2 }>
-                                            <Grid.Column width={ 5 }>
+                                        <Grid.Row columns={ 2 } className="session-display-padded">
+                                            <Grid.Column width={ 5 } className="session-display">
                                                 { t("common:applications") }
                                             </Grid.Column>
                                             <Grid.Column mobile={ 16 } computer={ 11 }>
@@ -215,7 +215,7 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
                                                         as={ Divider }
                                                         hidden
                                                     />
-                                                    <Table celled compact>
+                                                    <Table celled compact className="opaque">
                                                         { /* Temporarily removed table headers as currently one column
                                                          is displayed. */ }
                                                         { /*<Table.Header>*/ }

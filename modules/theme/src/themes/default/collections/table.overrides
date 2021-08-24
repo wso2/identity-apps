@@ -114,6 +114,11 @@
             }
         }
     }
+
+     &.opaque {
+            border:none;
+            background:none;
+        }
 }
 
 @media only screen and (max-width: @tabletBreakpoint) {

@@ -333,6 +333,11 @@
             &.with-bottom-gutters {
                 padding-bottom: (@gutterWidth / 2);
             }
+
+              &.session-display {
+                 padding-top: 0.5em;
+              }
+
         }
     }
 }
@@ -348,6 +353,10 @@
                 padding-bottom: (@gutterWidth / 2);
             }
         }
+         &.session-display-padded {
+              padding-top:0.25em;
+              padding-bottom:0.25em;
+         }
     }
 }
 

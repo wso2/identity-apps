@@ -112,7 +112,7 @@ export const common: CommonNS = {
     },
     next: "Next",
     okay: "Okay",
-    operatingSystem: "Operating System",
+    operatingSystem: "Operating system",
     operations: "Operations",
     overview: "Overview",
     personalInfo: "Personal Info",
