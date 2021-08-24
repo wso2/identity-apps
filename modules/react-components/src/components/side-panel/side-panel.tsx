@@ -95,6 +95,10 @@ export interface CommonSidePanelPropsInterface extends TestableComponentInterfac
      */
     sidePanelTopMargin?: number | boolean;
     /**
+     * Stop showing the category label for single item categories.
+     */
+    skipCategoryLabelForSingleItemCategories?: boolean;
+    /**
      * i18next translation hook.
      */
     translationHook?: any;
@@ -316,5 +320,6 @@ SidePanel.defaultProps = {
     showEllipsis: true,
     sidePanelItemHeight: UIConstants.DEFAULT_SIDE_PANEL_ITEM_HEIGHT,
     sidePanelTopMargin: false,
+    skipCategoryLabelForSingleItemCategories: true,
     translationHook: null
 };
