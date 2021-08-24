@@ -232,14 +232,14 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             isProfileInfoLoading={ isProfileInfoLoading }
             userDropdownLinks={
                 compact([
-                    showAppSwitchButton && !commonConfig?.header?.renderAppSwitcherAsDropdown && {
+                    !commonConfig?.header?.renderAppSwitcherAsDropdown && {
                         category: "APPS",
-                        categoryLabel: "Apps",
+                        categoryLabel: t("common:apps"),
                         links: [
                             {
                                 "data-testid": "app-switch-console",
-                                icon: AppSwitcherIcons().myAccount,
-                                name: t("console:manage.features.header.links.userPortalNav"),
+                                icon: AppSwitcherIcons().console,
+                                name: t("console:common.header.appSwitch.console.name"),
                                 onClick: () => {
                                     eventPublisher.publish("console-click-visit-console");
                                     window.open(consoleAppURL, "_self");
@@ -247,8 +247,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             },
                             {
                                 "data-testid": "app-switch-myaccount",
-                                icon: AppSwitcherIcons().console,
-                                name: t("console:common.header.appSwitch.console.name"),
+                                icon: AppSwitcherIcons().myAccount,
+                                name: t("console:manage.features.header.links.userPortalNav"),
                                 onClick: () => {
                                     eventPublisher.publish("console-click-visit-my-account");
                                     window.open(accountAppURL, "_blank", "noopener");

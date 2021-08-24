@@ -269,7 +269,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 compact([
                     showAppSwitchButton && !commonConfig?.header?.renderAppSwitcherAsDropdown && {
                         category: "APPS",
-                        categoryLabel: "Apps",
+                        categoryLabel: t("common:apps"),
                         links: [
                             {
                                 "data-testid": "app-switch-console",
