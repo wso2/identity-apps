@@ -74,6 +74,10 @@
 @appHeaderExtensionItemPaddingRight: 3px;
 @appHeaderExtensionInnerItemPadding: 0;
 
+@appHeaderExtensionLinkBackground: transparent;
+@appHeaderExtensionLinkHoverBackground: @iconHoverBgColor;
+@appHeaderExtensionLinkColor: inherit;
+
 /*-------------------
       App Footer
 --------------------*/
@@ -137,13 +141,14 @@
 --------------------*/
 
 @userDropdownMinWidth: 270px;
-@userDropdownPadding: 8px;
+@userDropdownPadding: 0;
 @userDropdownLinkMargin: 8px 0;
 @userDropdownLinkedAccountMargin: 8px 0;
-@userDropdownTenantMargin: 5px 0;
-@userDropdownTenantPadding: 5px 10px;
 @userDropdownTriggerTextColor: inherit;
-@userDropdownTriggerPaddingLeft: 13px;
+@userDropdownMenuTriggerPaddingLeft: 5px;
+@userDropdownTriggerWrapperBackground: transparent;
+@userDropdownTriggerHoverWrapperBackground: @iconHoverBgColor;
+@userDropdownLinkMinHeight: 46px;
 
 /*-------------------------------
       Governance Connectors

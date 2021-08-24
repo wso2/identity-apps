@@ -83,7 +83,7 @@ export interface HeaderPropsInterface extends TestableComponentInterface {
 /**
  * Header extension interface.
  */
-interface HeaderExtension {
+export interface HeaderExtension extends TestableComponentInterface {
     /**
      * Component to render.
      */
@@ -403,6 +403,41 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         });
     };
 
+    /**
+     * Renders the header extensions.
+     *
+     * @param {HeaderExtension["floated"]} floated - Floated direction.
+     *
+     * @return {React.ReactElement}
+     */
+    const renderHeaderExtensionLinks = (floated: HeaderExtension[ "floated" ]): ReactElement => {
+
+        return (
+            <>
+                {
+                    extensions.map((extension: HeaderExtension) => {
+                        if (extension.floated !== floated || !extension.component) {
+                            return;
+                        }
+
+                        if (typeof extension.component === "string") {
+                            return (
+                                <div
+                                    data-testid={ extension[ "data-testid" ] }
+                                    className="header-link"
+                                >
+                                    { extension.component }
+                                </div>
+                            );
+                        }
+
+                        return extension.component;
+                    })
+                }
+            </>
+        );
+    };
+
     return (
         <Menu id="app-header" className={ classes } fixed={ fixed } borderless data-testid={ testId }>
             { announcement }
@@ -452,10 +487,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                 className="header-extensions left"
                                 data-testid={ `${ testId }-left-extensions` }
                             >
-                                {
-                                    extensions.map((extension: HeaderExtension) =>
-                                        extension.floated === "left" && extension.component)
-                                }
+                                { renderHeaderExtensionLinks("left") }
                             </Menu.Menu>
                         )
                     )
@@ -466,19 +498,10 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         className="header-extensions right"
                         data-testid={ `${ testId }-user-dropdown-container` }
                     >
-                        {
-                            extensions && (
-                                extensions instanceof Array
-                                && extensions.length > 0
-                                && extensions.some((extension: HeaderExtension) =>
-                                    extension.floated === "right")
-                                && extensions.map((extension: HeaderExtension) =>
-                                    extension.floated === "right" && extension.component)
-                            )
-                        }
+                        { renderHeaderExtensionLinks("right") }
                         {
                             showUserDropdown && (
-                                <Menu.Item key="user-dropdown-trigger">
+                                <Menu.Item className="user-dropdown-menu-trigger" key="user-dropdown-trigger">
                                     <Dropdown
                                         item
                                         trigger={ renderUserDropdownTrigger() }
@@ -489,7 +512,10 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                         data-testid={ `${ testId }-user-dropdown` }
                                     >
                                         {
-                                            <Dropdown.Menu onClick={ handleUserDropdownClick }>
+                                            <Dropdown.Menu
+                                                className="user-dropdown-menu"
+                                                onClick={ handleUserDropdownClick }
+                                            >
                                                 <Item.Group className="authenticated-user" unstackable>
                                                     <Item
                                                         className="header"
