@@ -68,10 +68,10 @@ export class HttpUtils {
         /**
          * Publish an event on the http request error.
         */
-        if(
-                error.response &&
-                error.response.data &&
-                error.response.data.code
+        if (
+            error.response &&
+            error.response.data &&
+            error.response.data.code
         ) {
             EventPublisher.getInstance().publish("console-error-http-request-error", {
                 "type": "error-response",
