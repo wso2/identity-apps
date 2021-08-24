@@ -12,6 +12,8 @@
 /* Size */
 @littleWidth: 48px;
 @miniWidth: 35px;
+@x30Width: 30px;
+@x50Width: 50px;
 @x60Width: 60px;
 @tinyWidth: 80px;
 @smallWidth: 150px;
