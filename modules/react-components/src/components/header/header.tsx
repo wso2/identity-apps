@@ -32,10 +32,10 @@ import {
     Item,
     Menu,
     Placeholder,
-    Responsive,
-    SemanticICONS
+    Responsive
 } from "semantic-ui-react";
 import { UserAvatar } from "../avatar";
+import { GenericIcon } from "../icon";
 
 /**
  * Header component prop types.
@@ -72,7 +72,7 @@ export interface HeaderPropsInterface extends TestableComponentInterface {
     showUserDropdownTriggerBars?: boolean;
     userDropdownIcon?: any;
     userDropdownInfoAction?: React.ReactNode;
-    userDropdownLinks?: HeaderLinkInterface[];
+    userDropdownLinks?: HeaderLinkCategoryInterface[];
     /**
      * User dropdown pointing direction.
      */
@@ -95,6 +95,24 @@ interface HeaderExtension {
 }
 
 /**
+ * Interface for categorized header links.
+ */
+export interface HeaderLinkCategoryInterface {
+    /**
+     * Category to group the links.
+     */
+    category: "APPS" | string;
+    /**
+     * Label to be displayed.
+     */
+    categoryLabel?: ReactNode;
+    /**
+     * Links array.
+     */
+    links: HeaderLinkInterface[];
+}
+
+/**
  * Header links dynamic interface to pass in extra props for `Link` component.
  */
 export interface HeaderLinkInterface extends StrictHeaderLinkInterface {
@@ -104,7 +122,7 @@ export interface HeaderLinkInterface extends StrictHeaderLinkInterface {
 /**
  * Header links strict interface.
  */
-export interface StrictHeaderLinkInterface {
+export interface StrictHeaderLinkInterface extends TestableComponentInterface {
     /**
      * Children content.
      */
@@ -112,11 +130,11 @@ export interface StrictHeaderLinkInterface {
     /**
      * Link icon.
      */
-    icon?: SemanticICONS;
+    icon?: ReactElement | any;
     /**
      * Link name.
      */
-    name: string;
+    name: ReactNode;
     /**
      * Called on dropdown item click.
      *
@@ -295,7 +313,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             <UserAvatar
                                 bordered
                                 avatar
-                                size="little"
+                                size="x30"
                                 image={ getGravatarImage(association.email) }
                                 name={ association.username }
                                 data-testid={ `${ testId }-la-avatar` }
@@ -322,6 +340,67 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 }
             </Item.Group>
         );
+    };
+
+    /**
+     * Renders the links in the dropdown.
+     *
+     * @return {React.ReactElement[]}
+     */
+    const renderUserDropdownLinks = (): ReactElement[] => {
+
+        if (!(userDropdownLinks && userDropdownLinks.length && userDropdownLinks.length > 0)) {
+            return null;
+        }
+
+        return userDropdownLinks.map((category: HeaderLinkCategoryInterface, categoryIndex: number) => {
+
+            return (
+                <>
+                    { category.categoryLabel && (
+                        <Dropdown.Header
+                            className="user-dropdown-links-category-header"
+                            content={ category.categoryLabel }
+                        />
+                    ) }
+                    {
+                        category.links.map((link: HeaderLinkInterface, linkIndex: number) => {
+
+                            const {
+                                content,
+                                "data-testid": linkTestId,
+                                icon,
+                                name,
+                                onClick
+                            } = link;
+
+                            return (
+                                <Dropdown.Item
+                                    key={ linkIndex }
+                                    className="action-panel user-dropdown-link"
+                                    onClick={ onClick }
+                                    data-testid={ linkTestId }
+                                >
+                                    {
+                                        icon && (
+                                            <GenericIcon
+                                                transparent
+                                                icon={ icon }
+                                                size="micro"
+                                                spaced="right"
+                                            />
+                                        )
+                                    }
+                                    { name }
+                                    { content }
+                                </Dropdown.Item>
+                            );
+                        })
+                    }
+                    { (categoryIndex !== userDropdownLinks.length - 1) && <Dropdown.Divider /> }
+                </>
+            );
+        });
     };
 
     return (
@@ -418,15 +497,22 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                                         onClick={ onAvatarClick }
                                                     >
                                                         <UserAvatar
+                                                            hoverable={ false }
                                                             authState={ basicProfileInfo }
                                                             profileInfo={ profileInfo }
                                                             isLoading={ isProfileInfoLoading }
                                                             data-testid={ `${ testId }-user-dropdown-avatar` }
-                                                            size="x60"
+                                                            size="x50"
                                                             onClick={ onAvatarClick }
                                                         />
                                                         <Item.Content verticalAlign="middle">
-                                                            <Item.Description className={ onAvatarClick ? "linked" : "" }>
+                                                            <Item.Description
+                                                                className={
+                                                                    onAvatarClick
+                                                                        ? "linked"
+                                                                        : ""
+                                                                }
+                                                            >
                                                                 <div
                                                                     className="name"
                                                                     data-testid={
@@ -476,43 +562,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                                     </Item>
                                                 </Item.Group>
                                                 { renderLinkedAccounts(linkedAccounts) }
-                                                {
-                                                    (userDropdownLinks
-                                                        && userDropdownLinks.length
-                                                        && userDropdownLinks.length > 0)
-                                                        ? userDropdownLinks.map((link, index) => {
-                                                            const {
-                                                                content,
-                                                                icon,
-                                                                name,
-                                                                onClick
-                                                            } = link;
-
-                                                            return (
-                                                                <Dropdown.Item
-                                                                    key={ index }
-                                                                    className="action-panel"
-                                                                    onClick={ onClick }
-                                                                    data-testid={
-                                                                        `${ testId }-dropdown-link-${
-                                                                            name.replace(" ", "-")
-                                                                            }`
-                                                                    }
-                                                                >
-                                                                    {
-                                                                        icon &&
-                                                                        <Icon
-                                                                            className="link-icon"
-                                                                            name={ icon }
-                                                                        />
-                                                                    }
-                                                                    { name }
-                                                                    { content }
-                                                                </Dropdown.Item>
-                                                            );
-                                                        })
-                                                        : null
-                                                }
+                                                { renderUserDropdownLinks() }
                                             </Dropdown.Menu>
                                         }
                                     </Dropdown>
