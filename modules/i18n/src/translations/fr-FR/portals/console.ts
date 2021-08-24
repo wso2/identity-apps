@@ -5145,7 +5145,8 @@ export const console: ConsoleNS = {
                                 placeholder: "Entrez le nom du scope",
                                 validations: {
                                     empty: "Ce champ ne peut pas être vide",
-                                    invalid: "La portée contient des caractères non valides."
+                                    invalid: "La portée ne peut contenir que des caractères alphanumériques et _. " +
+                                    "Et doit avoir une longueur comprise entre 3 et 40 caractères."
                                 }
                             }
                         }
