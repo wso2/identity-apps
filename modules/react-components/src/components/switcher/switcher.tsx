@@ -17,7 +17,11 @@
  */
 
 import React, { FC, PropsWithChildren, ReactElement, useEffect, useState } from "react";
-import { Button, ButtonGroupProps, ButtonProps, StrictButtonGroupProps } from "semantic-ui-react";
+import { Button, ButtonGroupProps, ButtonProps, Popup } from "semantic-ui-react";
+
+// These interface names are confusing?!
+// FIXME: {@link StrictSwitcher} properties makes no sense since there's optional!
+//        Same case for {@link StrictSwitcherOption}
 
 interface StrictSwitcher {
     /**
@@ -75,6 +79,10 @@ interface StrictSwitcherOption {
      * @param self
      */
     onSelect?: (self: StrictSwitcherOption) => void;
+    /**
+     * Disabled popup content.
+     */
+    disabledMessage?: string;
 }
 
 /**
@@ -203,6 +211,7 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
 
     const {
         defaultOptionValue,
+        disabledMessage,
         selectedValue,
         options,
         onChange,
@@ -290,6 +299,30 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
         >
             { options.map((opt: SwitcherOptionProps, index: number): ReactElement => {
                 const { value, label, disabled, ...optRest } = opt;
+                if (disabled) {
+                    return (
+                        <Popup
+                            content={ disabledMessage ?? "This action is disabled." }
+                            // Why a <span> wrapping the button? Well, buttons doesn't
+                            // trigger hovers when they're disabled...
+                            // Popup only triggers: {hover, click, focus} events.
+                            // https://react.semantic-ui.com/modules/popup/
+                            // https://github.com/Semantic-Org/Semantic-UI-React/issues/1413
+                            trigger={
+                                <div>
+                                    <Button
+                                        style={ { height: "100%" } }
+                                        disabled
+                                        key={ index }
+                                        value={ value }
+                                        content={ label }
+                                        onClick={ OPERATION_PASS }
+                                    />
+                                </div>
+                            }
+                        />
+                    );
+                }
                 return (
                     <Button
                         key={ index }
@@ -305,4 +338,11 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
         </Button.Group>
     );
 
-}
+};
+
+const OPERATION_PASS = (
+    event: React.MouseEvent<HTMLButtonElement>
+): void => {
+    event?.preventDefault();
+    event?.stopPropagation();
+};
