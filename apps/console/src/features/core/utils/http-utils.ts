@@ -70,7 +70,7 @@ export class HttpUtils {
         */
         EventPublisher.getInstance().publish("console-error-http-request-error", {
             "type": "error-response",
-            "response": error.response ? error.response : "",
+            "response": error.response ? error.response.data ? error.response.data : "" : "",
             "status": error.response ? error.response.status ? error.response.status : "" : ""
         });
 
