@@ -66,6 +66,10 @@ export interface HeaderPropsInterface extends TestableComponentInterface {
     showSidePanelToggle?: boolean;
     showUserDropdown?: boolean;
     showUserDropdownTriggerLabel?: boolean;
+    /**
+     * Show hamburger icon near the user dropdown trigger.
+     */
+    showUserDropdownTriggerBars?: boolean;
     userDropdownIcon?: any;
     userDropdownInfoAction?: React.ReactNode;
     userDropdownLinks?: HeaderLinkInterface[];
@@ -149,6 +153,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         userDropdownInfoAction,
         showSidePanelToggle,
         showUserDropdown,
+        showUserDropdownTriggerBars,
         showUserDropdownTriggerLabel,
         onLinkedAccountSwitch,
         onSidePanelToggleClick,
@@ -168,32 +173,62 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         , className
     );
 
-    const trigger = (
-        <span className="user-dropdown-trigger" data-testid={ `${ testId }-user-dropdown-trigger` }>
-            {
-                showUserDropdownTriggerLabel && (
-                    <Responsive minWidth={ 767 } className="username" data-testid={ `${ testId }-user-display-name` }>
-                        {
-                            isProfileInfoLoading
-                                ? (
-                                    <Placeholder data-testid={ `${ testId }-username-loading-placeholder` }>
-                                        <Placeholder.Line/>
-                                    </Placeholder>
-                                )
-                                : resolveUserDisplayName(profileInfo, basicProfileInfo)
-                        }
-                    </Responsive>
-                )
-            }
+    /**
+     * Renders the User dropdown trigger.
+     * @return {React.ReactElement}
+     */
+    const renderUserDropdownTrigger = (): ReactElement => {
+
+        const renderUserDropdownTriggerAvatar = (hoverable: boolean) => (
             <UserAvatar
+                hoverable={ hoverable }
                 isLoading={ isProfileInfoLoading }
                 authState={ basicProfileInfo }
                 profileInfo={ profileInfo }
                 size="mini"
                 data-testid={ `${ testId }-user-avatar` }
             />
-        </span>
-    );
+        );
+
+        return (
+            <span className="user-dropdown-trigger" data-testid={ `${ testId }-user-dropdown-trigger` }>
+                {
+                    showUserDropdownTriggerLabel && (
+                        <Responsive
+                            minWidth={ 767 }
+                            className="username"
+                            data-testid={ `${ testId }-user-display-name` }
+                        >
+                            {
+                                isProfileInfoLoading
+                                    ? (
+                                        <Placeholder data-testid={ `${ testId }-username-loading-placeholder` }>
+                                            <Placeholder.Line/>
+                                        </Placeholder>
+                                    )
+                                    : resolveUserDisplayName(profileInfo, basicProfileInfo)
+                            }
+                        </Responsive>
+                    )
+                }
+                {
+                    !showUserDropdownTriggerLabel && showUserDropdownTriggerBars
+                        ? (
+                            <div className="user-dropdown-trigger-with-bars-wrapper">
+                                <Icon
+                                    name="bars"
+                                    size="large"
+                                    data-testid={ `${ testId }-hamburger-icon` }
+                                    link
+                                />
+                                { renderUserDropdownTriggerAvatar(false) }
+                            </div>
+                        )
+                        : renderUserDropdownTriggerAvatar(true)
+                }
+            </span>
+        );
+    };
 
     /**
      * Stops the dropdown from closing on click.
@@ -367,7 +402,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                 <Menu.Item key="user-dropdown-trigger">
                                     <Dropdown
                                         item
-                                        trigger={ trigger }
+                                        trigger={ renderUserDropdownTrigger() }
                                         floating
                                         pointing={ userDropdownPointing }
                                         icon={ userDropdownIcon }
@@ -503,6 +538,7 @@ Header.defaultProps = {
     onSidePanelToggleClick: () => null,
     showSidePanelToggle: true,
     showUserDropdown: true,
+    showUserDropdownTriggerBars: true,
     showUserDropdownTriggerLabel: true,
     userDropdownIcon: null,
     userDropdownPointing: "top right"
