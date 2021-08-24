@@ -27,6 +27,7 @@ import {
     Header as ReusableHeader,
     HeaderPropsInterface as ReusableHeaderPropsInterface
 } from "@wso2is/react-components";
+import compact from "lodash-es/compact";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
@@ -80,7 +81,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const isHeaderAvatarLabelAllowed: boolean = useSelector((state: AppState) =>
         state.config.ui.isHeaderAvatarLabelAllowed);
-    const showAppSwitchButton: boolean = useSelector((state: AppState) => state.config.ui.showAppSwitchButton);
+    const showAppSwitcherSeparate: boolean = useSelector((state: AppState) => state.config.ui.showAppSwitchButton);
     const accountAppURL: string = useSelector((state: AppState) => state.config.deployment.accountApp.path);
     const consoleAppURL: string = useSelector((state: AppState) => state.config.deployment.appHomePath);
 
@@ -131,45 +132,47 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
      *
      * @return {React.ReactElement}
      */
-    const renderAppSwitcher = (): ReactElement => (
+    const renderAppSwitcher = (): ReactElement => {
 
-        <Menu.Item
-            className="app-switch-button-wrapper"
-            key="app-switch-trigger"
-            data-testid="app-switch-trigger"
-        >
-            <AppSwitcher
-                enabled={ showAppSwitchButton }
-                tooltip={ t("console:common.header.appSwitch.tooltip") }
-                apps={ [
-                    {
-                        "data-testid": "app-switch-console",
-                        description: t("console:common.header.appSwitch.console.description"),
-                        enabled: true,
-                        icon: AppSwitcherIcons().console,
-                        name: t("console:common.header.appSwitch.console.name"),
-                        onClick: () => {
-                            eventPublisher.publish("console-click-visit-console");
+        return (
+            <Menu.Item
+                className="app-switch-button-wrapper"
+                key="app-switch-trigger"
+                data-testid="app-switch-trigger"
+            >
+                <AppSwitcher
+                    enabled={ showAppSwitcherSeparate }
+                    tooltip={ t("console:common.header.appSwitch.tooltip") }
+                    apps={ [
+                        {
+                            "data-testid": "app-switch-console",
+                            description: t("console:common.header.appSwitch.console.description"),
+                            enabled: true,
+                            icon: AppSwitcherIcons().console,
+                            name: t("console:common.header.appSwitch.console.name"),
+                            onClick: () => {
+                                eventPublisher.publish("console-click-visit-console");
 
-                            window.open(consoleAppURL, "_self");
+                                window.open(consoleAppURL, "_self");
+                            }
+                        },
+                        {
+                            "data-testid": "app-switch-myaccount",
+                            description: t("console:common.header.appSwitch.myAccount.description"),
+                            enabled: true,
+                            icon: AppSwitcherIcons().myAccount,
+                            name: t("console:common.header.appSwitch.myAccount.name"),
+                            onClick: () => {
+                                eventPublisher.publish("console-click-visit-my-account");
+
+                                window.open(accountAppURL, "_blank", "noopener");
+                            }
                         }
-                    },
-                    {
-                        "data-testid": "app-switch-myaccount",
-                        description: t("console:common.header.appSwitch.myAccount.description"),
-                        enabled: true,
-                        icon: AppSwitcherIcons().myAccount,
-                        name: t("console:common.header.appSwitch.myAccount.name"),
-                        onClick: () => {
-                            eventPublisher.publish("console-click-visit-my-account");
-
-                            window.open(accountAppURL, "_blank", "noopener");
-                        }
-                    }
-                ] }
-            />
-        </Menu.Item>
-    );
+                    ] }
+                />
+            </Menu.Item>
+        );
+    };
 
     /**
      * Redirects to myaccount from console.
@@ -177,8 +180,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const onAvatarClick = () => {
 
         window.open(window[ "AppUtils" ].getConfig().accountApp.path,
-            "_blank", "noopener")
-    }
+            "_blank", "noopener");
+    };
 
     return (
         <ReusableHeader
@@ -215,20 +218,23 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             ) }
             brandLink={ config.deployment.appHomePath }
             basicProfileInfo={ profileInfo }
-            extensions={ [
-                {
-                    component: <ComponentPlaceholder section="feedback-button" type="component"/>,
-                    floated: "right"
-                },
-                {
-                    component: renderAppSwitcher(),
-                    floated: "right"
-                },
-                {
-                    component: <ComponentPlaceholder section="tenant-dropdown" type="component"/>,
-                    floated: "left"
-                }
-            ] }
+            extensions={
+                // Remove false values. Needed for `&&` operator.
+                compact([
+                    {
+                        component: <ComponentPlaceholder section="feedback-button" type="component"/>,
+                        floated: "right"
+                    },
+                    showAppSwitcherSeparate && {
+                        component: renderAppSwitcher(),
+                        floated: "right"
+                    },
+                    {
+                        component: <ComponentPlaceholder section="tenant-dropdown" type="component"/>,
+                        floated: "left"
+                    }
+                ])
+            }
             fluid={ fluid }
             isProfileInfoLoading={ isProfileInfoLoading }
             userDropdownLinks={ 
