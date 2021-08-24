@@ -29,6 +29,12 @@ export const commonConfig: CommonConfig = {
         getUserDropdownLinkExtensions: (): HeaderLinkCategoryInterface[] => [],
         renderAppSwitcherAsDropdown: false
     },
+    leftNavigation: {
+        isLeftNavigationCategorized: {
+            develop: true,
+            manage: true
+        }
+    },
     userEditSection: {
         isGuestUser: false,
         showEmail: true

@@ -39,6 +39,15 @@ export interface CommonConfig {
         renderAppSwitcherAsDropdown: boolean;
     };
     checkForUIResourceScopes: boolean;
+    leftNavigation: {
+        /**
+         * Should the side panel be categorized for different views.
+         */
+        isLeftNavigationCategorized: {
+            develop: boolean;
+            manage: boolean;
+        };
+    };
     userEditSection: {
         isGuestUser: boolean;
         showEmail: boolean;
