@@ -195,7 +195,7 @@
                     border-bottom: 1px solid @defaultBorderColor;
 
                     .linked-account {
-                        border-radius: @defaultBorderRadius !important;
+                        border-radius: 0 !important;
                         margin: @userDropdownLinkedAccountMargin;
                         border: none;
                         transition: none !important;

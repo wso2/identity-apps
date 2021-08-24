@@ -313,7 +313,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             <UserAvatar
                                 bordered
                                 avatar
-                                size="x30"
+                                size="little"
                                 image={ getGravatarImage(association.email) }
                                 name={ association.username }
                                 data-testid={ `${ testId }-la-avatar` }
@@ -357,7 +357,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
             return (
                 <>
-                    { category.categoryLabel && (
+                    { category?.categoryLabel && (
                         <Dropdown.Header
                             className="user-dropdown-links-category-header"
                             content={ category.categoryLabel }

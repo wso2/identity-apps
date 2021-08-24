@@ -262,7 +262,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         categoryLabel: null,
                         links: [
                             {
-                                "data-testid": "logout-button",
+                                "data-testid": "app-header-dropdown-link-Logout",
                                 name: t("common:logout"),
                                 onClick: () => {
                                     eventPublisher.publish("console-click-logout");
