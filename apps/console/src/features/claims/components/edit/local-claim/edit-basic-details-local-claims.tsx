@@ -377,10 +377,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 defaultValue={ claim?.required }
                                 data-testid={ `${ testId }-form-required-checkbox` }
                                 readOnly={ isReadOnly }
+                                hint={ t("console:manage.features.claims.local.forms.requiredHint") }
                             />
                     }
-                    {   
-                        attributeConfig.localAttributes.createWizard.showReadOnlyAttribute &&
+                    {
                         //Hides on user_id and username claims
                         claim && claim.displayName !== ClaimManagementConstants.USER_ID
                             && claim.displayName !== ClaimManagementConstants.USER_NAME &&
@@ -394,6 +394,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 defaultValue={ claim?.readOnly }
                                 data-testid={ `${ testId }-form-readonly-checkbox` }
                                 readOnly={ isReadOnly }
+                                hint={ t("console:manage.features.claims.local.forms.readOnlyHint") }
                             />
                         )
                     }
