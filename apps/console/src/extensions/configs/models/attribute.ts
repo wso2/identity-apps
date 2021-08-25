@@ -65,6 +65,7 @@ export interface AttributeConfig {
             checkOIDCAvailability: boolean;
             checkSCIMAvailability: boolean;
             showDisplayOrder: boolean;
+            showOnlyMandatory: boolean;
             showRegularExpression: boolean;
             showReadOnlyAttribute: boolean;
             showSummary: boolean;

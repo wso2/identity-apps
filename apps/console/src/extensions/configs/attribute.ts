@@ -112,6 +112,7 @@ export const attributeConfig: AttributeConfig = {
             customWIzard: false,
             identifyAsCustomAttrib: false,
             showDisplayOrder: true,
+            showOnlyMandatory: false,
             showPrimaryUserStore: true,
             showReadOnlyAttribute: true,
             showRegularExpression: true,

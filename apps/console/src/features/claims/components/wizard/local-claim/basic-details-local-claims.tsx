@@ -132,13 +132,13 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
             onSubmit={ (values) => {
                 const data = {
                     claimURI: claimURIBase + "/" + values.get("claimURI").toString().trim(),
-                    description: values.get("description").toString(),
+                    description: values.get("description")?.toString(),
                     displayName: values.get("name").toString(),
                     displayOrder: values.get("displayOrder") ? parseInt(values.get("displayOrder")?.toString()) : "0",
                     readOnly: values.get("readOnly")?.length > 0,
                     regEx: values.get("regularExpression")?.toString(),
-                    required: values.get("required").length > 0,
-                    supportedByDefault: values.get("supportedByDefault").length > 0
+                    required: values.get("required")?.length > 0,
+                    supportedByDefault: values.get("supportedByDefault")?.length > 0
                 };
 
                 if (attributeConfig.localAttributes.createWizard.customWIzard) {
@@ -472,19 +472,22 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                     }
                 </Grid.Row>
                 <Grid.Row columns={ 2 }>
-                    <Grid.Column width={ 8 }>
-                        <Field
-                            type="textarea"
-                            name="description"
-                            label={ t("console:manage.features.claims.local.forms.description.label") }
-                            required={ false }
-                            requiredErrorMessage=""
-                            placeholder={ t("console:manage.features.claims.local.forms.description.placeholder") }
-                            value={ values?.get("description")?.toString() }
-                            data-testid={ `${ testId }-form-description-input` }
-                        />
-                    </Grid.Column>
-                    { attributeConfig.localAttributes.createWizard.showRegularExpression &&
+                    { !attributeConfig.localAttributes.createWizard.showOnlyMandatory &&
+                        <Grid.Column width={ 8 }>
+                            <Field
+                                type="textarea"
+                                name="description"
+                                label={ t("console:manage.features.claims.local.forms.description.label") }
+                                required={ false }
+                                requiredErrorMessage=""
+                                placeholder={ t("console:manage.features.claims.local.forms.description.placeholder") }
+                                value={ values?.get("description")?.toString() }
+                                data-testid={ `${ testId }-form-description-input` }
+                            />
+                        </Grid.Column>
+                    }
+                    { !attributeConfig.localAttributes.createWizard.showOnlyMandatory || 
+                        attributeConfig.localAttributes.createWizard.showRegularExpression &&
                         <Grid.Column width={ 8 }>
                             <Field
                                 type="text"
@@ -517,26 +520,28 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                         </Grid.Column>
                     }
                 </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column width={ 16 }>
-                        <Field
-                            type="checkbox"
-                            name="supportedByDefault"
-                            required={ false }
-                            requiredErrorMessage=""
-                            children={ [
-                                {
-                                    label: t("console:manage.features.claims.local.forms.supportedByDefault.label"),
-                                    value: "Support"
-                                } ] }
-                            value={ values?.get("supportedByDefault") as string[] }
-                            listen={ (values: Map<string, FormValue>) => {
-                                setIsShow(values?.get("supportedByDefault").length > 0);
-                            } }
-                            data-testid={ `${ testId }-form-supported-by-default-checkbox` }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
+                { !attributeConfig.localAttributes.createWizard.showOnlyMandatory && 
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column width={ 16 }>
+                            <Field
+                                type="checkbox"
+                                name="supportedByDefault"
+                                required={ false }
+                                requiredErrorMessage=""
+                                children={ [
+                                    {
+                                        label: t("console:manage.features.claims.local.forms.supportedByDefault.label"),
+                                        value: "Support"
+                                    } ] }
+                                value={ values?.get("supportedByDefault") as string[] }
+                                listen={ (values: Map<string, FormValue>) => {
+                                    setIsShow(values?.get("supportedByDefault").length > 0);
+                                } }
+                                data-testid={ `${ testId }-form-supported-by-default-checkbox` }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                }
                 {
                     isShow && attributeConfig.localAttributes.createWizard.showDisplayOrder && (
                         <Grid.Row columns={ 16 }>
@@ -577,23 +582,26 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                         </Grid.Row>
                     )
                 }
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column width={ 16 }>
-                        <Field
-                            type="checkbox"
-                            name="required"
-                            required={ false }
-                            requiredErrorMessage=""
-                            children={ [ {
-                                label: t("console:manage.features.claims.local.forms.required.label"),
-                                value: "Required"
-                            } ] }
-                            value={ values?.get("required") as string[] }
-                            data-testid={ `${ testId }-form-required-checkbox` }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-                { attributeConfig.localAttributes.createWizard.showReadOnlyAttribute &&
+                {   !attributeConfig.localAttributes.createWizard.showOnlyMandatory &&
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column width={ 16 }>
+                            <Field
+                                type="checkbox"
+                                name="required"
+                                required={ false }
+                                requiredErrorMessage=""
+                                children={ [ {
+                                    label: t("console:manage.features.claims.local.forms.required.label"),
+                                    value: "Required"
+                                } ] }
+                                value={ values?.get("required") as string[] }
+                                data-testid={ `${ testId }-form-required-checkbox` }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                }
+                { !attributeConfig.localAttributes.createWizard.showOnlyMandatory  || 
+                    attributeConfig.localAttributes.createWizard.showReadOnlyAttribute &&
                     // TODO: Track this as an issue for future implementations
                     <Grid.Row column={ 1 }>
                         <Grid.Column>
