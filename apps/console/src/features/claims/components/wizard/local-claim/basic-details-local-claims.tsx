@@ -257,8 +257,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                             { showMappingError &&
                                                 <Message className="mb-4" size="tiny" negative>
                                                     <p>
-                                                        Protocol mapping should only consist alphanumeric values 
-                                                        with underscore as word seperator.
+                                                        Protocol mapping should only consist of alphanumeric 
+                                                        values separated by underscores.
                                                     </p>
                                                 </Message>
                                             }
@@ -266,7 +266,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                 { !noUniqueOIDCAttrib || !noUniqueSCIMAttrib ?
                                                     <Grid.Row columns={ 1 } >
                                                         <Grid.Column>
-                                                            <Message color="orange" >
+                                                            <Message size="tiny" negative>
                                                                 { (() => {
                                                                     // TODO: Add to translations file
                                                                     if (!noUniqueOIDCAttrib
@@ -355,7 +355,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                     <Grid.Column width={ 11 }>
                                                         <InlineEditInput
                                                             textPrefix="urn:scim:wso2:schema:"
-                                                            validation="^[a-z_-]*$"
+                                                            validation="^[a-zA-Z0-9_-]*$"
                                                             errorHandler={ (status) => {
                                                                 setShowMappingError(status);
                                                             } }
