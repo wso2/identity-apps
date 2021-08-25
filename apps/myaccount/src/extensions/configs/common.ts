@@ -13,6 +13,9 @@ export const commonConfig: CommonConfig = {
     advancedSearchWithBasicFilters: {
         enableQuerySearch: false
     },
+    header: {
+        renderAppSwitcherAsDropdown: false
+    },
     userProfilePage: {
         showEmail: true
     },

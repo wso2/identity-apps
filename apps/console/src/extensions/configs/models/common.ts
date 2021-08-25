@@ -16,11 +16,38 @@
  * under the License.
  */
 
+import { HeaderLinkCategoryInterface, HeaderExtension } from "@wso2is/react-components";
+
 export interface CommonConfig {
     advancedSearchWithBasicFilters: {
         enableQuerySearch: boolean;
     };
+    header: {
+        /**
+         * Get the extensions for the header.
+         * @return {HeaderExtension[]}
+         */
+        getHeaderExtensions: () => HeaderExtension[];
+        /**
+         * Get the user dropdown link extensions.
+         * @return {HeaderLinkCategoryInterface[]}
+         */
+        getUserDropdownLinkExtensions: () => HeaderLinkCategoryInterface[];
+        /**
+         * Should the app switcher be shown as nine dots dropdown.
+         */
+        renderAppSwitcherAsDropdown: boolean;
+    };
     checkForUIResourceScopes: boolean;
+    leftNavigation: {
+        /**
+         * Should the side panel be categorized for different views.
+         */
+        isLeftNavigationCategorized: {
+            develop: boolean;
+            manage: boolean;
+        };
+    };
     userEditSection: {
         isGuestUser: boolean;
         showEmail: boolean;

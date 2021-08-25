@@ -27,6 +27,7 @@ import {
     Header as ReusableHeader,
     HeaderPropsInterface as ReusableHeaderPropsInterface
 } from "@wso2is/react-components";
+import compact from "lodash-es/compact";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
@@ -37,7 +38,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Container, Menu } from "semantic-ui-react";
-import { ComponentPlaceholder } from "../../../extensions";
+import { commonConfig } from "../../../extensions/configs";
 import { AppSwitcherIcons } from "../configs";
 import { history } from "../helpers";
 import { ConfigReducerStateInterface } from "../models";
@@ -131,45 +132,47 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
      *
      * @return {React.ReactElement}
      */
-    const renderAppSwitcher = (): ReactElement => (
+    const renderAppSwitcher = (): ReactElement => {
 
-        <Menu.Item
-            className="app-switch-button-wrapper"
-            key="app-switch-trigger"
-            data-testid="app-switch-trigger"
-        >
-            <AppSwitcher
-                enabled={ showAppSwitchButton }
-                tooltip={ t("console:common.header.appSwitch.tooltip") }
-                apps={ [
-                    {
-                        "data-testid": "app-switch-console",
-                        description: t("console:common.header.appSwitch.console.description"),
-                        enabled: true,
-                        icon: AppSwitcherIcons().console,
-                        name: t("console:common.header.appSwitch.console.name"),
-                        onClick: () => {
-                            eventPublisher.publish("console-click-visit-console");
+        return (
+            <Menu.Item
+                className="app-switch-button-wrapper"
+                key="app-switch-trigger"
+                data-testid="app-switch-trigger"
+            >
+                <AppSwitcher
+                    enabled={ showAppSwitchButton }
+                    tooltip={ t("console:common.header.appSwitch.tooltip") }
+                    apps={ [
+                        {
+                            "data-testid": "app-switch-console",
+                            description: t("console:common.header.appSwitch.console.description"),
+                            enabled: true,
+                            icon: AppSwitcherIcons().console,
+                            name: t("console:common.header.appSwitch.console.name"),
+                            onClick: () => {
+                                eventPublisher.publish("console-click-visit-console");
 
-                            window.open(consoleAppURL, "_self");
+                                window.open(consoleAppURL, "_self");
+                            }
+                        },
+                        {
+                            "data-testid": "app-switch-myaccount",
+                            description: t("console:common.header.appSwitch.myAccount.description"),
+                            enabled: true,
+                            icon: AppSwitcherIcons().myAccount,
+                            name: t("console:common.header.appSwitch.myAccount.name"),
+                            onClick: () => {
+                                eventPublisher.publish("console-click-visit-my-account");
+
+                                window.open(accountAppURL, "_blank", "noopener");
+                            }
                         }
-                    },
-                    {
-                        "data-testid": "app-switch-myaccount",
-                        description: t("console:common.header.appSwitch.myAccount.description"),
-                        enabled: true,
-                        icon: AppSwitcherIcons().myAccount,
-                        name: t("console:common.header.appSwitch.myAccount.name"),
-                        onClick: () => {
-                            eventPublisher.publish("console-click-visit-my-account");
-
-                            window.open(accountAppURL, "_blank", "noopener");
-                        }
-                    }
-                ] }
-            />
-        </Menu.Item>
-    );
+                    ] }
+                />
+            </Menu.Item>
+        );
+    };
 
     /**
      * Redirects to myaccount from console.
@@ -177,8 +180,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const onAvatarClick = () => {
 
         window.open(window[ "AppUtils" ].getConfig().accountApp.path,
-            "_blank", "noopener")
-    }
+            "_blank", "noopener");
+    };
 
     return (
         <ReusableHeader
@@ -215,50 +218,62 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             ) }
             brandLink={ config.deployment.appHomePath }
             basicProfileInfo={ profileInfo }
-            extensions={ [
-                {
-                    component: <ComponentPlaceholder section="feedback-button" type="component"/>,
-                    floated: "right"
-                },
-                {
-                    component: renderAppSwitcher(),
-                    floated: "right"
-                },
-                {
-                    component: <ComponentPlaceholder section="tenant-dropdown" type="component"/>,
-                    floated: "left"
-                }
-            ] }
+            extensions={
+                // Remove false values. Needed for `&&` operator.
+                compact([
+                    ...commonConfig?.header?.getHeaderExtensions(),
+                    showAppSwitchButton && commonConfig?.header?.renderAppSwitcherAsDropdown && {
+                        component: renderAppSwitcher(),
+                        floated: "right"
+                    }
+                ])
+            }
             fluid={ fluid }
             isProfileInfoLoading={ isProfileInfoLoading }
-            userDropdownLinks={ 
-                showAppSwitchButton
-                ? [ 
+            userDropdownLinks={
+                compact([
+                    !commonConfig?.header?.renderAppSwitcherAsDropdown && {
+                        category: "APPS",
+                        categoryLabel: t("common:apps"),
+                        links: [
+                            {
+                                "data-testid": "app-switch-console",
+                                icon: AppSwitcherIcons().console,
+                                name: t("console:common.header.appSwitch.console.name"),
+                                onClick: () => {
+                                    eventPublisher.publish("console-click-visit-console");
+                                    window.open(consoleAppURL, "_self");
+                                }
+                            },
+                            {
+                                "data-testid": "app-switch-myaccount",
+                                icon: AppSwitcherIcons().myAccount,
+                                name: t("console:manage.features.header.links.userPortalNav"),
+                                onClick: () => {
+                                    eventPublisher.publish("console-click-visit-my-account");
+                                    window.open(accountAppURL, "_blank", "noopener");
+                                }
+                            }
+                        ]
+                    },
+                    ...commonConfig?.header?.getUserDropdownLinkExtensions(),
                     {
-                        icon: "power off",
-                        name: t("common:logout"),
-                        onClick: () => {
-                            eventPublisher.publish("console-click-logout");
-                            
-                            history.push(window[ "AppUtils" ].getConfig().routes.logout);
-                        }
-                    }
-                ] : [
-                    {
-                        icon: "arrow right",
-                        name: t("console:manage.features.header.links.userPortalNav"),
-                        onClick: () => window.open(window[ "AppUtils" ].getConfig().accountApp.path,
-                            "_blank", "noopener")
-                    },{
-                        icon: "power off",
-                        name: t("common:logout"),
-                        onClick: () => {
-                            eventPublisher.publish("console-click-logout");
+                        category: "GENERAL",
+                        categoryLabel: null,
+                        links: [
+                            {
+                                "data-testid": "app-header-dropdown-link-Logout",
+                                name: t("common:logout"),
+                                onClick: () => {
+                                    eventPublisher.publish("console-click-logout");
 
-                            history.push(window[ "AppUtils" ].getConfig().routes.logout);
-                        }
+                                    history.push(window[ "AppUtils" ].getConfig().routes.logout);
+                                }
+                            }
+                        ]
                     }
-            ] }
+                ])
+            }
             profileInfo={ profileInfo }
             showUserDropdown={ true }
             showUserDropdownTriggerLabel={

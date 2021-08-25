@@ -429,7 +429,12 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                 ) }
                 sidePanel={ (
                     <SidePanel
-                        categorized={ config?.ui?.isLeftNavigationCategorized ?? true }
+                        categorized={
+                            config?.ui?.isLeftNavigationCategorized !== undefined
+                                ? config.ui.isLeftNavigationCategorized
+                                    && commonConfig?.leftNavigation?.isLeftNavigationCategorized?.manage
+                                : true
+                        }
                         caretIcon={ getSidePanelMiscIcons().caretRight }
                         desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
                         fluid={ !isMobileViewport ? fluid : false }

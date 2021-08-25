@@ -32,10 +32,10 @@ import {
     Item,
     Menu,
     Placeholder,
-    Responsive,
-    SemanticICONS
+    Responsive
 } from "semantic-ui-react";
 import { UserAvatar } from "../avatar";
+import { GenericIcon } from "../icon";
 
 /**
  * Header component prop types.
@@ -66,9 +66,13 @@ export interface HeaderPropsInterface extends TestableComponentInterface {
     showSidePanelToggle?: boolean;
     showUserDropdown?: boolean;
     showUserDropdownTriggerLabel?: boolean;
+    /**
+     * Show hamburger icon near the user dropdown trigger.
+     */
+    showUserDropdownTriggerBars?: boolean;
     userDropdownIcon?: any;
     userDropdownInfoAction?: React.ReactNode;
-    userDropdownLinks?: HeaderLinkInterface[];
+    userDropdownLinks?: HeaderLinkCategoryInterface[];
     /**
      * User dropdown pointing direction.
      */
@@ -79,7 +83,7 @@ export interface HeaderPropsInterface extends TestableComponentInterface {
 /**
  * Header extension interface.
  */
-interface HeaderExtension {
+export interface HeaderExtension extends TestableComponentInterface {
     /**
      * Component to render.
      */
@@ -88,6 +92,24 @@ interface HeaderExtension {
      * Float direction.
      */
     floated: "left" | "right";
+}
+
+/**
+ * Interface for categorized header links.
+ */
+export interface HeaderLinkCategoryInterface {
+    /**
+     * Category to group the links.
+     */
+    category: "APPS" | string;
+    /**
+     * Label to be displayed.
+     */
+    categoryLabel?: ReactNode;
+    /**
+     * Links array.
+     */
+    links: HeaderLinkInterface[];
 }
 
 /**
@@ -100,7 +122,7 @@ export interface HeaderLinkInterface extends StrictHeaderLinkInterface {
 /**
  * Header links strict interface.
  */
-export interface StrictHeaderLinkInterface {
+export interface StrictHeaderLinkInterface extends TestableComponentInterface {
     /**
      * Children content.
      */
@@ -108,11 +130,11 @@ export interface StrictHeaderLinkInterface {
     /**
      * Link icon.
      */
-    icon?: SemanticICONS;
+    icon?: ReactElement | any;
     /**
      * Link name.
      */
-    name: string;
+    name: ReactNode;
     /**
      * Called on dropdown item click.
      *
@@ -149,6 +171,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         userDropdownInfoAction,
         showSidePanelToggle,
         showUserDropdown,
+        showUserDropdownTriggerBars,
         showUserDropdownTriggerLabel,
         onLinkedAccountSwitch,
         onSidePanelToggleClick,
@@ -168,32 +191,62 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         , className
     );
 
-    const trigger = (
-        <span className="user-dropdown-trigger" data-testid={ `${ testId }-user-dropdown-trigger` }>
-            {
-                showUserDropdownTriggerLabel && (
-                    <Responsive minWidth={ 767 } className="username" data-testid={ `${ testId }-user-display-name` }>
-                        {
-                            isProfileInfoLoading
-                                ? (
-                                    <Placeholder data-testid={ `${ testId }-username-loading-placeholder` }>
-                                        <Placeholder.Line/>
-                                    </Placeholder>
-                                )
-                                : resolveUserDisplayName(profileInfo, basicProfileInfo)
-                        }
-                    </Responsive>
-                )
-            }
+    /**
+     * Renders the User dropdown trigger.
+     * @return {React.ReactElement}
+     */
+    const renderUserDropdownTrigger = (): ReactElement => {
+
+        const renderUserDropdownTriggerAvatar = (hoverable: boolean) => (
             <UserAvatar
+                hoverable={ hoverable }
                 isLoading={ isProfileInfoLoading }
                 authState={ basicProfileInfo }
                 profileInfo={ profileInfo }
                 size="mini"
                 data-testid={ `${ testId }-user-avatar` }
             />
-        </span>
-    );
+        );
+
+        return (
+            <span className="user-dropdown-trigger" data-testid={ `${ testId }-user-dropdown-trigger` }>
+                {
+                    showUserDropdownTriggerLabel && (
+                        <Responsive
+                            minWidth={ 767 }
+                            className="username"
+                            data-testid={ `${ testId }-user-display-name` }
+                        >
+                            {
+                                isProfileInfoLoading
+                                    ? (
+                                        <Placeholder data-testid={ `${ testId }-username-loading-placeholder` }>
+                                            <Placeholder.Line/>
+                                        </Placeholder>
+                                    )
+                                    : resolveUserDisplayName(profileInfo, basicProfileInfo)
+                            }
+                        </Responsive>
+                    )
+                }
+                {
+                    !showUserDropdownTriggerLabel && showUserDropdownTriggerBars
+                        ? (
+                            <div className="user-dropdown-trigger-with-bars-wrapper">
+                                <Icon
+                                    name="bars"
+                                    size="large"
+                                    data-testid={ `${ testId }-hamburger-icon` }
+                                    link
+                                />
+                                { renderUserDropdownTriggerAvatar(false) }
+                            </div>
+                        )
+                        : renderUserDropdownTriggerAvatar(true)
+                }
+            </span>
+        );
+    };
 
     /**
      * Stops the dropdown from closing on click.
@@ -289,6 +342,102 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         );
     };
 
+    /**
+     * Renders the links in the dropdown.
+     *
+     * @return {React.ReactElement[]}
+     */
+    const renderUserDropdownLinks = (): ReactElement[] => {
+
+        if (!(userDropdownLinks && userDropdownLinks.length && userDropdownLinks.length > 0)) {
+            return null;
+        }
+
+        return userDropdownLinks.map((category: HeaderLinkCategoryInterface, categoryIndex: number) => {
+
+            return (
+                <>
+                    { category?.categoryLabel && (
+                        <Dropdown.Header
+                            className="user-dropdown-links-category-header"
+                            content={ category.categoryLabel }
+                        />
+                    ) }
+                    {
+                        category.links.map((link: HeaderLinkInterface, linkIndex: number) => {
+
+                            const {
+                                content,
+                                "data-testid": linkTestId,
+                                icon,
+                                name,
+                                onClick
+                            } = link;
+
+                            return (
+                                <Dropdown.Item
+                                    key={ linkIndex }
+                                    className="action-panel user-dropdown-link"
+                                    onClick={ onClick }
+                                    data-testid={ linkTestId }
+                                >
+                                    {
+                                        icon && (
+                                            <GenericIcon
+                                                transparent
+                                                icon={ icon }
+                                                size="micro"
+                                                spaced="right"
+                                            />
+                                        )
+                                    }
+                                    { name }
+                                    { content }
+                                </Dropdown.Item>
+                            );
+                        })
+                    }
+                    { (categoryIndex !== userDropdownLinks.length - 1) && <Dropdown.Divider /> }
+                </>
+            );
+        });
+    };
+
+    /**
+     * Renders the header extensions.
+     *
+     * @param {HeaderExtension["floated"]} floated - Floated direction.
+     *
+     * @return {React.ReactElement}
+     */
+    const renderHeaderExtensionLinks = (floated: HeaderExtension[ "floated" ]): ReactElement => {
+
+        return (
+            <>
+                {
+                    extensions.map((extension: HeaderExtension) => {
+                        if (extension.floated !== floated || !extension.component) {
+                            return;
+                        }
+
+                        if (typeof extension.component === "string") {
+                            return (
+                                <div
+                                    data-testid={ extension[ "data-testid" ] }
+                                    className="header-link"
+                                >
+                                    { extension.component }
+                                </div>
+                            );
+                        }
+
+                        return extension.component;
+                    })
+                }
+            </>
+        );
+    };
+
     return (
         <Menu id="app-header" className={ classes } fixed={ fixed } borderless data-testid={ testId }>
             { announcement }
@@ -338,10 +487,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                 className="header-extensions left"
                                 data-testid={ `${ testId }-left-extensions` }
                             >
-                                {
-                                    extensions.map((extension: HeaderExtension) =>
-                                        extension.floated === "left" && extension.component)
-                                }
+                                { renderHeaderExtensionLinks("left") }
                             </Menu.Menu>
                         )
                     )
@@ -352,22 +498,13 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         className="header-extensions right"
                         data-testid={ `${ testId }-user-dropdown-container` }
                     >
-                        {
-                            extensions && (
-                                extensions instanceof Array
-                                && extensions.length > 0
-                                && extensions.some((extension: HeaderExtension) =>
-                                    extension.floated === "right")
-                                && extensions.map((extension: HeaderExtension) =>
-                                    extension.floated === "right" && extension.component)
-                            )
-                        }
+                        { renderHeaderExtensionLinks("right") }
                         {
                             showUserDropdown && (
-                                <Menu.Item key="user-dropdown-trigger">
+                                <Menu.Item className="user-dropdown-menu-trigger" key="user-dropdown-trigger">
                                     <Dropdown
                                         item
-                                        trigger={ trigger }
+                                        trigger={ renderUserDropdownTrigger() }
                                         floating
                                         pointing={ userDropdownPointing }
                                         icon={ userDropdownIcon }
@@ -375,7 +512,10 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                         data-testid={ `${ testId }-user-dropdown` }
                                     >
                                         {
-                                            <Dropdown.Menu onClick={ handleUserDropdownClick }>
+                                            <Dropdown.Menu
+                                                className="user-dropdown-menu"
+                                                onClick={ handleUserDropdownClick }
+                                            >
                                                 <Item.Group className="authenticated-user" unstackable>
                                                     <Item
                                                         className="header"
@@ -383,15 +523,22 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                                         onClick={ onAvatarClick }
                                                     >
                                                         <UserAvatar
+                                                            hoverable={ false }
                                                             authState={ basicProfileInfo }
                                                             profileInfo={ profileInfo }
                                                             isLoading={ isProfileInfoLoading }
                                                             data-testid={ `${ testId }-user-dropdown-avatar` }
-                                                            size="x60"
+                                                            size="x50"
                                                             onClick={ onAvatarClick }
                                                         />
                                                         <Item.Content verticalAlign="middle">
-                                                            <Item.Description className={ onAvatarClick ? "linked" : "" }>
+                                                            <Item.Description
+                                                                className={
+                                                                    onAvatarClick
+                                                                        ? "linked"
+                                                                        : ""
+                                                                }
+                                                            >
                                                                 <div
                                                                     className="name"
                                                                     data-testid={
@@ -441,43 +588,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                                     </Item>
                                                 </Item.Group>
                                                 { renderLinkedAccounts(linkedAccounts) }
-                                                {
-                                                    (userDropdownLinks
-                                                        && userDropdownLinks.length
-                                                        && userDropdownLinks.length > 0)
-                                                        ? userDropdownLinks.map((link, index) => {
-                                                            const {
-                                                                content,
-                                                                icon,
-                                                                name,
-                                                                onClick
-                                                            } = link;
-
-                                                            return (
-                                                                <Dropdown.Item
-                                                                    key={ index }
-                                                                    className="action-panel"
-                                                                    onClick={ onClick }
-                                                                    data-testid={
-                                                                        `${ testId }-dropdown-link-${
-                                                                            name.replace(" ", "-")
-                                                                            }`
-                                                                    }
-                                                                >
-                                                                    {
-                                                                        icon &&
-                                                                        <Icon
-                                                                            className="link-icon"
-                                                                            name={ icon }
-                                                                        />
-                                                                    }
-                                                                    { name }
-                                                                    { content }
-                                                                </Dropdown.Item>
-                                                            );
-                                                        })
-                                                        : null
-                                                }
+                                                { renderUserDropdownLinks() }
                                             </Dropdown.Menu>
                                         }
                                     </Dropdown>
@@ -503,6 +614,7 @@ Header.defaultProps = {
     onSidePanelToggleClick: () => null,
     showSidePanelToggle: true,
     showUserDropdown: true,
+    showUserDropdownTriggerBars: true,
     showUserDropdownTriggerLabel: true,
     userDropdownIcon: null,
     userDropdownPointing: "top right"

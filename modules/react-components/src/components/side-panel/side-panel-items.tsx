@@ -61,6 +61,7 @@ export const SidePanelItems: FunctionComponent<SidePanelItemsPropsInterface> = (
         showCategoryDividers,
         sidePanelPosition,
         sidePanelTopMargin,
+        skipCategoryLabelForSingleItemCategories,
         type,
         translationHook,
         [ "data-testid" ]: testId
@@ -129,9 +130,19 @@ export const SidePanelItems: FunctionComponent<SidePanelItemsPropsInterface> = (
                         ))
                         : Object.entries(routes).map(([ key, value ]) => (
                             <Fragment key={ key }>
-                                <div className={ categoryClasses }>
-                                    { translationHook ? translationHook(key) : key }
-                                </div>
+                                {
+                                    skipCategoryLabelForSingleItemCategories
+                                        ? (value instanceof Array && value.length > 1) && (
+                                            <div className={ categoryClasses }>
+                                                { translationHook ? translationHook(key) : key }
+                                            </div>
+                                        )
+                                        : (
+                                            <div className={ categoryClasses }>
+                                                { translationHook ? translationHook(key) : key }
+                                            </div>
+                                        )
+                                }
                                 {
                                     value instanceof Array && value.map((route, index) => (
                                         renderItem(route, index)

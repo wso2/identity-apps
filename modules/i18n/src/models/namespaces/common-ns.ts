@@ -31,6 +31,7 @@ export interface CommonNS {
     applications: string;
     approvalStatus: string;
     approve: string;
+    apps: string;
     assignees: string;
     authenticator: string;
     authentication: string;

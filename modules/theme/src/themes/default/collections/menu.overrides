@@ -50,6 +50,19 @@
             height: auto;
         }
         .header-extensions {
+            .header-link {
+                .header-link-inner {
+                    background: @appHeaderExtensionLinkBackground;
+                    padding: 10px 15px;
+                    border-radius: @defaultBorderRadius;
+                    color: @appHeaderExtensionLinkColor;
+
+                    &:hover {
+                        cursor: pointer;
+                        background: @appHeaderExtensionLinkHoverBackground;
+                    }
+                }
+            }
             .item.portal-switch {
                 background: @appHeaderPortalSwitchExtensionBackgroundColor;
                 color: @appHeaderPortalSwitchExtensionColor;
@@ -127,8 +140,6 @@
             }
         }
         .user-dropdown {
-            padding-left: @userDropdownTriggerPaddingLeft;
-
             &:hover, &:active, &:focus {
                 background: transparent;
             }
@@ -151,7 +162,7 @@
                 }
             }
             .menu {
-                min-width: @userDropdownMinWidth;
+                min-width: @userDropdownMinWidth !important;
                 padding: @userDropdownPadding;
 
                 .header {
@@ -184,7 +195,7 @@
                     border-bottom: 1px solid @defaultBorderColor;
 
                     .linked-account {
-                        border-radius: @defaultBorderRadius !important;
+                        border-radius: 0 !important;
                         margin: @userDropdownLinkedAccountMargin;
                         border: none;
                         transition: none !important;
@@ -203,8 +214,8 @@
                 .action-panel {
                     border: none;
                     margin: @userDropdownLinkMargin;
-                    padding: 1.2em 1em!important;
-                    border-radius: @defaultBorderRadius;
+                    padding: 14px 20px !important;
+                    border-radius: 0;
 
                     &:last-child {
                         margin-bottom: 0 !important;
@@ -308,6 +319,55 @@
             &:hover {
                 text-decoration: @appFooterLinkTextDecoration;
                 cursor: pointer;
+            }
+        }
+    }
+}
+
+/*-------------------------------
+         User Dropdown
+--------------------------------*/
+
+.ui.menu {
+    .user-dropdown-menu-trigger {
+        padding-left: @userDropdownMenuTriggerPaddingLeft;
+    }
+    .user-dropdown {
+        .user-dropdown-trigger-with-bars-wrapper {
+            border-radius: 25px;
+            padding: 6px 7px;
+            background: @userDropdownTriggerWrapperBackground;
+
+            &:hover, &:active, &:focus {
+                background: @userDropdownTriggerHoverWrapperBackground;
+            }
+            .bars {
+                font-size: 1.3em;
+                margin: 0 7px;
+            }
+            .ui-avatar {
+                box-shadow: 0 0 0px 2px @white;
+            }
+        }
+        .user-dropdown-menu {
+            .authenticated-user {
+                &:hover {
+                    cursor: pointer;
+                    background: @transparentBlack;
+                }
+            }
+            .user-dropdown-links-category-header {
+                text-transform: none;
+                border-bottom: none !important;
+                font-weight: 500;
+                color: @lightFontColor;
+                padding: 0 20px !important;
+                margin-bottom: 8px;
+            }
+            .user-dropdown-link {
+                display: flex !important;
+                margin: 0 !important;
+                min-height: @userDropdownLinkMinHeight;
             }
         }
     }

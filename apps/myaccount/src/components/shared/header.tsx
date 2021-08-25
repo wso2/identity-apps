@@ -45,6 +45,8 @@ import { ConfigReducerStateInterface } from "../../models";
 import { AppState } from "../../store";
 import { getProfileInformation, getProfileLinkedAccounts, handleAccountSwitching } from "../../store/actions";
 import { CommonUtils, refreshPage } from "../../utils";
+import compact from "lodash-es/compact";
+import { commonConfig } from "../../extensions/configs";
 
 /**
  * Dashboard layout Prop types.
@@ -248,30 +250,62 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     } }
                 />
             ) }
-            extensions={ [
-                {
-                    component: renderAppSwitcher(),
-                    floated: "right"
-                }
-            ] }
+            extensions={
+                // Remove false values. Needed for `&&` operator.
+                compact([
+                    showAppSwitchButton && commonConfig?.header?.renderAppSwitcherAsDropdown && {
+                        component: renderAppSwitcher(),
+                        floated: "right"
+                    }
+                ])
+            }
             brandLink={ config.deployment.appHomePath }
             basicProfileInfo={ profileInfo }
             fluid={ fluid }
             isProfileInfoLoading={ isProfileInfoLoading }
             linkedAccounts={ linkedAccounts }
             onLinkedAccountSwitch={ handleLinkedAccountSwitch }
-            userDropdownLinks={ [
-                {
-                    icon: "arrow right",
-                    name: t("common:personalInfo"),
-                    onClick: () => history.push(AppConstants.getPaths().get("PROFILE_INFO"))
-                },
-                {
-                    icon: "power off",
-                    name: t("common:logout"),
-                    onClick: () => history.push(AppConstants.getAppLogoutPath())
-                }
-            ] }
+            userDropdownLinks={
+                compact([
+                    showAppSwitchButton && !commonConfig?.header?.renderAppSwitcherAsDropdown && {
+                        category: "APPS",
+                        categoryLabel: t("common:apps"),
+                        links: [
+                            {
+                                "data-testid": "app-switch-console",
+                                icon: AppSwitcherIcons().console,
+                                name: t("myAccount:components.header.appSwitch.console.name"),
+                                onClick: () => {
+                                    window.open(consoleAppURL, "_blank", "noopener");
+                                }
+                            },
+                            {
+                                "data-testid": "app-switch-myaccount",
+                                icon: AppSwitcherIcons().myAccount,
+                                name: t("myAccount:components.header.appSwitch.myAccount.name"),
+                                onClick: () => {
+                                    window.open(accountAppURL, "_self");
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        category: "GENERAL",
+                        links: [
+                            {
+                                "data-testid": "app-header-dropdown-link-Personal-Info",
+                                name: t("common:personalInfo"),
+                                onClick: () => history.push(AppConstants.getPaths().get("PROFILE_INFO"))
+                            },
+                            {
+                                "data-testid": "app-header-dropdown-link-Logout",
+                                name: t("common:logout"),
+                                onClick: () => history.push(AppConstants.getAppLogoutPath())
+                            }
+                        ]
+                    }
+                ])
+            }
             profileInfo={ profileInfo }
             showUserDropdown={ true }
             showUserDropdownTriggerLabel={
