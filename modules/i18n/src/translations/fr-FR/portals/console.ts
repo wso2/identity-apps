@@ -4464,6 +4464,8 @@ export const console: ConsoleNS = {
                         readOnly: {
                             label: "Mettre cet attribut en lecture seule"
                         },
+                        readOnlyHint: "S'il est sélectionné, la valeur de cet attribut est définie par " +
+                        "le système et n'est pas modifiable sur un profil utilisateur.",
                         regEx: {
                             label: "Expression régulière",
                             placeholder: "Entrez une expression régulière"
@@ -4472,6 +4474,8 @@ export const console: ConsoleNS = {
                         required: {
                             label: "Rendre cet attribut obligatoire lors de l'inscription de l'utilisateur"
                         },
+                        requiredHint: "S'il est sélectionné, l'utilisateur doit spécifier une valeur pour " +
+                        "cet attribut sur le profil.",
                         supportedByDefault: {
                             label: "Afficher cet attribut sur le profil de l'utilisateur et la page d'enregistrement de l'utilisateur"
                         }

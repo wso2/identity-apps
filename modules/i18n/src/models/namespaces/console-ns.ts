@@ -2592,7 +2592,9 @@ export interface ConsoleNS {
                         displayOrder: FormField;
                         displayOrderHint: string;
                         required: FormField;
+                        requiredHint: string;
                         readOnly: FormField;
+                        readOnlyHint: string;
                         attribute: FormField;
                     };
                     dangerZone: DangerZone;
