@@ -5768,6 +5768,8 @@ export const console: ConsoleNS = {
                         readOnly: {
                             label: "Make this attribute read-only on the user's profile"
                         },
+                        readOnlyHint: "If selected, the value for this attribute is system-defined and not " +
+                        "editable on a user profile.",
                         regEx: {
                             label: "Regular expression",
                             placeholder: "Enter a regular expression"
@@ -5776,6 +5778,8 @@ export const console: ConsoleNS = {
                         required: {
                             label: "Make this attribute required on the user's profile"
                         },
+                        requiredHint: "If selected, the user is required to specify a value for this " +
+                        "attribute on the profile.",
                         supportedByDefault: {
                             label: "Display this attribute on the user's profile"
                         }
