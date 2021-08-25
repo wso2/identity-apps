@@ -41,7 +41,7 @@ const render = (
         ...renderOptions
     } = {}
 ): RenderResult => {
-
+debugger;
     const Wrapper = (props: PropsWithChildren<ComponentType>): ReactElement => {
         
         const { children } = props;
