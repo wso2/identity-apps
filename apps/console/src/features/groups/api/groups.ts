@@ -88,6 +88,7 @@ export const getGroupListExcludingMembers = (domain: string): Promise<GroupListI
             if (response.status == 200) {
                 return Promise.resolve(response);
             }
+            return Promise.reject();
         })
         .catch((error: AxiosError) => {
             return Promise.reject(error);
