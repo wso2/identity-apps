@@ -222,7 +222,7 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (props): ReactE
     const createCertificateActions = (certificate: DisplayCertificate, index: number) => {
         return [
             {
-                "data-testid": `${ testId }-edit-cert-${ index }-button`,
+                "data-componentid": `${ testId }-edit-cert-${ index }-button`,
                 icon: "eye",
                 onClick: () => handleViewCertificate(certificate),
                 popupText: t("console:manage.features.users.usersList.list." +
@@ -230,14 +230,14 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (props): ReactE
                 type: "button"
             },
             {
-                "data-testid": `${ testId }-delete-cert-${ index }-button`,
+                "data-componentid": `${ testId }-delete-cert-${ index }-button`,
                 icon: "trash alternate",
                 onClick: () => deleteCertificate(index),
                 popupText: t("console:manage.features.users.usersList.list." +
                     "iconPopups.delete"),
                 type: "button"
             }
-        ] as ResourceListActionInterface[];
+        ] as (ResourceListActionInterface & IdentifiableComponentInterface)[];
     };
 
     /**
@@ -260,6 +260,7 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (props): ReactE
                 <Grid.Row>
                     <Grid.Column>
                         <ResourceList
+                            relaxed={ false }
                             className="application-list"
                             isLoading={ isLoading }
                             loadingStateOptions={ {

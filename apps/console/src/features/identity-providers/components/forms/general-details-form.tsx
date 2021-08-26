@@ -273,7 +273,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         </Grid.Row>
                     </Grid>
                     <IdpCertificates
-                        enableJWKS={ !isSaml && !isOidc }
+                        enableJWKS={ !isSaml }
                         isReadOnly={ isReadOnly }
                         editingIDP={ editingIDP }
                         onUpdate={ onUpdate }

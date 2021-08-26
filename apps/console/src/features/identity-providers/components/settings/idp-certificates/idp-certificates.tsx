@@ -111,29 +111,35 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
         enableJWKS
     } = props;
 
-    const [ selectedConfigurationMode, setSelectedConfigurationMode ] =
-        useState<CertificateConfigurationMode>(enableJWKS ? "jwks" : "certificates");
+    const [ selectedConfigurationMode, setSelectedConfigurationMode ] = useState<CertificateConfigurationMode>();
     const [ addCertificateModalOpen, setAddCertificateModalOpen ] = useState<boolean>(false);
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (!enableJWKS) {
-            // If JWKS is disabled for this IdP, then no questions asked
-            // the only thing we show is certificates.
-            setSelectedConfigurationMode("certificates");
-        } else {
-            if (!editingIDP?.certificate?.jwksUri?.trim() &&
-                editingIDP?.certificate?.certificates?.length > 0) {
+        setInitialModeOfConfiguration();
+    }, []);
+
+    useEffect(() => {
+        setInitialModeOfConfiguration();
+    }, [ editingIDP ]);
+
+    const setInitialModeOfConfiguration = () => {
+        if (enableJWKS) {
+            if (editingIDP?.certificate?.certificates?.length > 0) {
                 setSelectedConfigurationMode("certificates");
             } else {
                 // Even if editingIDP?.certificate?.jwksUri?.trim() empty or not
                 // if above is not configured it's always JWKS.
                 setSelectedConfigurationMode("jwks");
             }
+        } else {
+            // If JWKS is disabled for this IdP, then no questions asked
+            // the only thing we show is certificates.
+            setSelectedConfigurationMode("certificates");
         }
-    }, [ editingIDP ]);
+    };
 
     // Event handlers.
 

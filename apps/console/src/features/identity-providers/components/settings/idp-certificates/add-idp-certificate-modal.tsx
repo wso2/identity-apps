@@ -191,7 +191,9 @@ export const AddIdpCertificateModal: FC<AddIdPCertificateModalV2Props> = (props)
             <Modal.Header className="wizard-header">
                 { t("console:develop.features.authenticationProvider.modals.addCertificate.title") }
                 <Heading as="h6">
-                    { t("console:develop.features.authenticationProvider.modals.addCertificate.subTitle") }
+                    { t("console:develop.features.authenticationProvider.modals.addCertificate.subTitle", {
+                        idpName: currentlyEditingIdP?.name ?? ""
+                    }) }
                 </Heading>
             </Modal.Header>
 

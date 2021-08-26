@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the 'License'); you may not use this file except
@@ -126,8 +126,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     const [ selectedMetadataFile, setSelectedMetadataFile ] = useState<File>(null);
     const [ pastedMetadataContent, setPastedMetadataContent ] = useState<string>(null);
     const [ selectedCertificateFile, setSelectedCertificateFile ] = useState<File>(null);
-    const [ selectedCertInputType, setSelectedCertInputType ] =
-        useState<CertificateInputType>(disableJWKS ? "pem" : "jwks");
+    const [ selectedCertInputType, setSelectedCertInputType ] = useState<CertificateInputType>("jwks");
     const [ selectedProtocol, setSelectedProtocol ] = useState<AvailableProtocols>("oidc");
     const [ selectedSamlConfigMode, setSelectedSamlConfigMode ] = useState<SamlConfigurationMode>("file");
     const [ pastedPEMContent, setPastedPEMContent ] = useState<string>(null);
@@ -474,7 +473,6 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             compact
                             data-testid={ `${ testId }-form-wizard-saml-config-switcher` }
                             className={ "mt-1" }
-                            defaultOptionValue="file"
                             selectedValue={ selectedSamlConfigMode }
                             onChange={ ({ value }) => setSelectedSamlConfigMode(value as any) }
                             options={ [ {
@@ -666,11 +664,10 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                 compact
                                 disabledMessage="This feature will be enabled soon."
                                 className={ "mt-1" }
-                                defaultOptionValue={ disableJWKS ? "pem" : "jwks" }
-                                // selectedValue={ selectedCertInputType }
+                                defaultOptionValue={ "jwks" }
+                                selectedValue={ selectedCertInputType }
                                 onChange={ ({ value }) => setSelectedCertInputType(value as any) }
                                 options={ [ {
-                                    disabled: disableJWKS,
                                     label: "JWKS endpoint",
                                     value: "jwks"
                                 }, {
@@ -683,7 +680,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 </Grid.Row>
             </Grid>
             <Divider hidden/>
-            { (!disableJWKS && selectedProtocol === "oidc" && selectedCertInputType === "jwks") && (
+            { (selectedProtocol === "oidc" && selectedCertInputType === "jwks") && (
                 <>
                     <Field.Input
                         ariaLabel="JWKS endpoint URL"
@@ -1002,8 +999,3 @@ const length = (minMax: MinMax) => (value) => {
 const isUrl = (value) => {
     return FormValidation.url(value) ? undefined : "This value is invalid.";
 };
-
-/**
- * Disable JWKS for for OIDC protocol temporarily...
- */
-const disableJWKS = true;
