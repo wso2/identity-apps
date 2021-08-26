@@ -224,10 +224,10 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
                                                         trigger={ (
                                                             <Icon
                                                                 link
-                                                                className="list-icon"
+                                                                className="list-icon padded-icon"
                                                                 size="small"
-                                                                color="red"
-                                                                name="trash alternate outline"
+                                                                color="grey"
+                                                                name="trash alternate"
                                                                 onClick={ () => {
                                                                     setId(federatedAssociation.id);
                                                                     setConfirmDelete(true);

@@ -444,6 +444,10 @@
                 max-width: max-content;
                 left: 0;
             }
+
+            &.pref-background{
+                background: white;
+            }
         }
     }
 }
