@@ -152,7 +152,8 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
      */
     const onExternalClaimAdd = (values: Map<string, FormValue>): void => {
         const newClaim = {
-            claimURI: `${claimDialectUri}:${values.get("claimURI").toString()}`,
+            claimURI: attributeType === "scim" ? 
+                `${claimDialectUri}:${values.get("claimURI").toString()}` : values.get("claimURI").toString(),
             mappedLocalClaimURI: values.get("localClaim").toString()
         };
         const newState = [ ...claims, newClaim ];

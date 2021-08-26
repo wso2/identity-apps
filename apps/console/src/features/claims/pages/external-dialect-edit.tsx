@@ -44,6 +44,10 @@ interface ExternalDialectEditPageInterface extends TestableComponentInterface {
      * Attribute type
      */
     attributeType?: string;
+    /**
+     * Attribute URI
+     */
+    attributeUri: string;
 }
 
 /**
@@ -56,7 +60,7 @@ interface ExternalDialectEditPageInterface extends TestableComponentInterface {
 const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterface> = (
     props: ExternalDialectEditPageInterface
 ): ReactElement => {
-    const { attributeType, [ "data-testid" ]: testId, id: dialectId } = props;
+    const { attributeType, attributeUri, [ "data-testid" ]: testId, id: dialectId } = props;
 
     const [ dialect, setDialect ] = useState<ClaimDialect>(null);
     const [ claims, setClaims ] = useState<ExternalClaim[]>([]);
@@ -289,6 +293,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                 update={ getExternalClaims }
                 data-testid={ `${ testId }-edit-external-claims` }
                 attributeType={ attributeType }
+                attributeUri={ attributeUri }
             />
 
             <Divider hidden />
