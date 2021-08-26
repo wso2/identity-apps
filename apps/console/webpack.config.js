@@ -422,6 +422,8 @@ module.exports = (env) => {
                     excludeChunks: [ "rpIFrame" ],
                     filename: path.join(distFolder, "index.jsp"),
                     hash: true,
+                    hotjarSystemVariable: "<% String hotjar_track_code = System.getenv(\"hotjar_tracking_code\"); %>",
+                    hotjarTrackingCode: "<%= hotjar_track_code %>",
                     importSuperTenantConstant: !isDeployedOnExternalServer
                         ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
                         "MultitenantConstants.SUPER_TENANT_DOMAIN_NAME\"%>"
