@@ -64,6 +64,10 @@ interface ExternalClaimsPropsInterface extends TestableComponentInterface {
      */
     attributeType?: string;
     /**
+     * Specific claim dialect URI
+     */
+    claimDialectUri?: string;
+    /**
      * Specifies if this is to be rendered in a wizard.
      */
     wizard?: boolean;
@@ -91,6 +95,7 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
         onExternalClaimsChanged,
         shouldShowInitialValues,
         attributeType,
+        claimDialectUri,
         wizard,
         onClaimListChange,
         [ "data-testid" ]: testId
@@ -147,7 +152,7 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
      */
     const onExternalClaimAdd = (values: Map<string, FormValue>): void => {
         const newClaim = {
-            claimURI: values.get("claimURI").toString(),
+            claimURI: `${claimDialectUri}:${values.get("claimURI").toString()}`,
             mappedLocalClaimURI: values.get("localClaim").toString()
         };
         const newState = [ ...claims, newClaim ];

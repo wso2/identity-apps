@@ -113,6 +113,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ disableSubmit, setDisableSubmit ] = useState<boolean>(true);
+    const [ claimDialectUri, setClaimDialectUri ] = useState<string>("");
 
     const [ triggerAddExternalClaim, setTriggerAddExternalClaim ] = useTrigger();
     const [ resetPagination, setResetPagination ] = useTrigger();
@@ -126,6 +127,12 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
     useEffect(() => {
         if (claims) {
             setFilteredClaims(claims);
+            /**
+             * The stored claim dialect URI will be used
+             * on the add claim wizard to identify and add
+             * the new claim with the proper dialect URI.
+             */
+            setClaimDialectUri(claims[0]?.claimDialectURI);
         }
     }, [ claims ]);
 
@@ -353,6 +360,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                                 values={ claims }
                                 shouldShowInitialValues={ false }
                                 attributeType={ attributeType }
+                                claimDialectUri={ claimDialectUri }
                                 wizard={ false }
                                 onClaimListChange={ handleClaimListChange }
                             />
