@@ -4464,8 +4464,9 @@ export const console: ConsoleNS = {
                         readOnly: {
                             label: "Mettre cet attribut en lecture seule"
                         },
-                        readOnlyHint: "S'il est sélectionné, la valeur de cet attribut est définie par " +
-                        "le système et n'est pas modifiable sur un profil utilisateur.",
+                        readOnlyHint: "Si cette option est sélectionnée, la valeur de cet attribut est en " +
+                        "lecture seule dans un profil utilisateur. Assurez-vous de sélectionner cette " +
+                        "option si la valeur de l'attribut est définie par le système.",
                         regEx: {
                             label: "Expression régulière",
                             placeholder: "Entrez une expression régulière"

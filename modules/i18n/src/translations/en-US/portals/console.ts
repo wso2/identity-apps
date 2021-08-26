@@ -5768,8 +5768,8 @@ export const console: ConsoleNS = {
                         readOnly: {
                             label: "Make this attribute read-only on the user's profile"
                         },
-                        readOnlyHint: "If selected, the value for this attribute is system-defined and not " +
-                        "editable on a user profile.",
+                        readOnlyHint: "If this is selected, the value of this attribute is read-only in a user" +
+                        " profile. Be sure to select this option if the attribute value is system-defined.",
                         regEx: {
                             label: "Regular expression",
                             placeholder: "Enter a regular expression"
