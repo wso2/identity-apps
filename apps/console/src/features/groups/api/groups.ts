@@ -65,6 +65,37 @@ export const getGroupList = (domain: string): Promise<GroupListInterface | any> 
 };
 
 /**
+ * Retrieve the list of groups in the system excluding members in those groups.
+ *
+ * @param domain user store
+ */
+export const getGroupListExcludingMembers = (domain: string): Promise<GroupListInterface | any> => {
+
+    const requestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        params: {
+            domain
+        },
+        url: store.getState().config.endpoints.groups + "?excludedAttributes=members"
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status == 200) {
+                return Promise.resolve(response);
+            }
+            return Promise.reject();
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
  * Retrieve Group details for a give group id.
  *
  * @param groupId group id to retrieve group details
