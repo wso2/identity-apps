@@ -58,6 +58,7 @@ export const AddApplicationCertificateWizard: FunctionComponent<AddApplicationCe
 
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
+    const [ showFinishButton, setShowFinishButton ] = useState<boolean>(false);
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
@@ -103,6 +104,7 @@ export const AddApplicationCertificateWizard: FunctionComponent<AddApplicationCe
                     triggerCertificateUpload={ triggerUpload }
                     triggerSubmit={ finishSubmit }
                     onSubmit={ handleWizardFormFinish }
+                    setShowFinishButton={ setShowFinishButton }
                 />
             ),
             icon: getAddIDPCertificateWizardStepIcons().general,
@@ -146,6 +148,7 @@ export const AddApplicationCertificateWizard: FunctionComponent<AddApplicationCe
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { currentWizardStep === STEPS.length - 1 && (
                                 <PrimaryButton
+                                    disabled={ !showFinishButton }
                                     floated="right"
                                     onClick={ navigateToNext }
                                     data-testid={ `${testId}-finish-button` }
