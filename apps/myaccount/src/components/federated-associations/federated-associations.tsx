@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import {
+    IdentityClient
+} from "@wso2/identity-oidc-js";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
@@ -65,6 +68,8 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
     const { t } = useTranslation();
     const [federatedAssociations, setFederatedAssociations] = useState<FederatedAssociation[]>([]);
     const [showExternalLogins, setShowExternalLogins] = useState<boolean>(true);
+    const [currentIDP, setCurrentIDP] = useState<String>();
+    const auth = IdentityClient.getInstance();
 
     /**
      * This calls the `getFederatedAssociations` api call
@@ -97,6 +102,21 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
     useEffect(() => {
         getFederatedAssociationsList();
     }, []);
+
+
+    useEffect(() => {
+        auth.getDecodedIDToken().then((response)=>{
+            for (let i = 0; i < response.amr.length; i++) {
+                if (response.amr[i].includes("Google")) {
+                    setCurrentIDP("Google");
+                }
+                if (response.amr[i].includes("Github")) {
+                    setCurrentIDP("GitHub");
+                }
+            }
+        });
+    }, []);
+
 
     /**
      * This sets flag to disable showing external logins section based on config.
@@ -218,6 +238,8 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
                                                 </List.Description>
                                             </Grid.Column>
                                             { !isNonLocalCredentialUser &&
+                                                !(currentIDP==federatedAssociation.idp.name ||
+                                                currentIDP==federatedAssociation.idp.displayName) ?
                                             <Grid.Column width={ 5 } className="last-column">
                                                 <List.Content floated="right">
                                                     <Popup
@@ -226,8 +248,8 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
                                                                 link
                                                                 className="list-icon"
                                                                 size="small"
-                                                                color="red"
-                                                                name="trash alternate outline"
+                                                                color="grey"
+                                                                name="trash alternate"
                                                                 onClick={ () => {
                                                                     setId(federatedAssociation.id);
                                                                     setConfirmDelete(true);
@@ -239,7 +261,7 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
                                                         content={ t("common:remove") }
                                                     />
                                                 </List.Content>
-                                            </Grid.Column>
+                                            </Grid.Column>:null
                                             }
                                         </Grid.Row>
                                     </Grid>
