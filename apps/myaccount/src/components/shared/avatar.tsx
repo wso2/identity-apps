@@ -153,7 +153,7 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props: AvatarProps)
                     onMouseOver={ onMouseOver }
                     onMouseOut={ onMouseOut }
                 >
-                    <div className="wrapper"><img alt="avatar" src={ image as string } /></div>
+                    <div className="wrapper pref-background"><img alt="avatar" src={ image as string } /></div>
                 </Image>
                 {
                     label

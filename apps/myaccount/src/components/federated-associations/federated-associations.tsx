@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { ProfileConstants } from "@wso2is/core/constants";
+import {
+    IdentityClient
+} from "@wso2/identity-oidc-js";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, useEffect, useState } from "react";
@@ -65,6 +67,9 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
     const { t } = useTranslation();
     const [federatedAssociations, setFederatedAssociations] = useState<FederatedAssociation[]>([]);
     const [showExternalLogins, setShowExternalLogins] = useState<boolean>(true);
+    const [currentIDP, setCurrentIDP] = useState<string>();
+    const [linkedAttribute, setLinkedAttribute] = useState<string>();
+    const auth = IdentityClient.getInstance();
 
     /**
      * This calls the `getFederatedAssociations` api call
@@ -97,6 +102,37 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
     useEffect(() => {
         getFederatedAssociationsList();
     }, []);
+
+
+    // TODO: This is intended to disable remove option for the authenticated IDP in External Login section
+    //  (Ideally not necessary). Hence, disable this and linked conditions after proper BE fix.
+    // Issue: https://github.com/wso2/product-is/issues/12380
+    /**
+     * This temporary one checks for authenticated IDP.
+     */
+    useEffect(() => {
+        auth.getDecodedIDToken().then((response)=>{
+            for (let i = 0; i < response.amr.length; i++) {
+                if (response.amr[i].includes("Google")) {
+                    setCurrentIDP("Google");
+                }
+                if (response.amr[i].includes("Github")) {
+                    setCurrentIDP("GitHub");
+                }
+            }
+        });
+    }, []);
+
+
+    //Todo : Update with relevant linked attribute
+    useEffect(() => {
+        auth.getUserInfo().then((response)=> {
+            /* For the time being, lets have Gmail/Github primary Email (at the time of mapping)
+            as the linked attribute. But sooner we have to display the linking attribute. */
+            setLinkedAttribute(response.email);
+        });
+    }, []);
+
 
     /**
      * This sets flag to disable showing external logins section based on config.
@@ -208,26 +244,28 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
                                                     name={ federatedAssociation.federatedUserId }
                                                 />
                                                 <List.Header>
-                                                    { federatedAssociation.federatedUserId }
-                                                </List.Header>
-                                                <List.Description>
                                                     {
                                                         federatedAssociation.idp.displayName
                                                         || federatedAssociation.idp.name
                                                     }
+                                                </List.Header>
+                                                <List.Description>
+                                                    { linkedAttribute }
                                                 </List.Description>
                                             </Grid.Column>
                                             { !isNonLocalCredentialUser &&
+                                                !(currentIDP==federatedAssociation.idp.name ||
+                                                currentIDP==federatedAssociation.idp.displayName) ?
                                             <Grid.Column width={ 5 } className="last-column">
                                                 <List.Content floated="right">
                                                     <Popup
                                                         trigger={ (
                                                             <Icon
                                                                 link
-                                                                className="list-icon"
+                                                                className="list-icon padded-icon"
                                                                 size="small"
-                                                                color="red"
-                                                                name="trash alternate outline"
+                                                                color="grey"
+                                                                name="trash alternate"
                                                                 onClick={ () => {
                                                                     setId(federatedAssociation.id);
                                                                     setConfirmDelete(true);
@@ -239,7 +277,7 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
                                                         content={ t("common:remove") }
                                                     />
                                                 </List.Content>
-                                            </Grid.Column>
+                                            </Grid.Column>:null
                                             }
                                         </Grid.Row>
                                     </Grid>

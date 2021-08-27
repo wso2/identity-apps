@@ -385,7 +385,7 @@ export const myAccount: MyAccountNS = {
                 "learn more about how we use cookies, refer our <1>Cookie Policy</1>."
         },
         federatedAssociations: {
-            deleteConfirmation: "This will remove this external login from your account. Do you want to continue " +
+            deleteConfirmation: "This will remove the linked social account from your local account. Do you want to continue " +
                 "removing?",
             notifications: {
                 getFederatedAssociations: {
@@ -394,12 +394,12 @@ export const myAccount: MyAccountNS = {
                         message: "Something went wrong"
                     },
                     genericError: {
-                        description: "Couldn't retrieve External Logins",
+                        description: "Couldn't retrieve Linked Social Accounts",
                         message: "Something went wrong"
                     },
                     success: {
-                        description: "External Logins have been retrieved successfully",
-                        message: "External Logins retrieved successfully"
+                        description: "Linked Social Accounts have been retrieved successfully",
+                        message: "Linked Social Accounts retrieved successfully"
                     }
                 },
                 removeAllFederatedAssociations: {
@@ -408,12 +408,12 @@ export const myAccount: MyAccountNS = {
                         message: "Something went wrong"
                     },
                     genericError: {
-                        description: "External Logins couldn't be removed",
+                        description: "Linked Social Accounts couldn't be removed",
                         message: "Something went wrong"
                     },
                     success: {
-                        description: "All the External Logins have been removed successfully",
-                        message: "External Logins removed successfully"
+                        description: "All the Linked Social Accounts have been removed successfully",
+                        message: "Linked Social Accounts removed successfully"
                     }
                 },
                 removeFederatedAssociation: {
@@ -422,12 +422,12 @@ export const myAccount: MyAccountNS = {
                         message: "Something went wrong"
                     },
                     genericError: {
-                        description: "The External Login couldn't be removed",
+                        description: "The Linked Social Account couldn't be removed",
                         message: "Something went wrong"
                     },
                     success: {
-                        description: "The External Login has been removed successfully",
-                        message: "The External Login removed successfully"
+                        description: "The Linked Social Account has been removed successfully",
+                        message: "The Linked Social Account removed successfully"
                     }
                 }
             }
@@ -557,7 +557,7 @@ export const myAccount: MyAccountNS = {
                 heading: "Authenticator App",
                 hint: "Show the QR Code",
                 modals: {
-                    heading: "Set Up An Authenticator App",
+                    heading: "Setup an Authenticator App",
                     done: "Success! Now you can use your Authenticator App for two-factor authentication",
                     scan: {
                         authenticatorApps: "Authenticator Apps",
@@ -1466,7 +1466,7 @@ export const myAccount: MyAccountNS = {
         },
         federatedAssociations: {
             description: "View your accounts from other identity providers that are linked with this account",
-            heading: "External Logins"
+            heading: "Linked Social Accounts"
         },
         linkedAccounts: {
             actionTitles: {

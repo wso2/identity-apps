@@ -166,6 +166,9 @@
                         .small-text {
                             font-size: 11px;
                         }
+                        &.padded-description {
+                            padding-top: 0.7em;
+                        }
                     }
                     .list-item-action {
                         display: inline-block;
