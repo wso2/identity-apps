@@ -241,7 +241,10 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                             menuItem: tab.name,
                             render: () => (
                                 <ResourceTab.Pane controlledSegmentation attached={ false }>
-                                    <ExternalDialectEditPage id={ dialect.id } attributeType={ type }/>
+                                    <ExternalDialectEditPage 
+                                        id={ dialect.id } 
+                                        attributeUri={ tab.uri } 
+                                        attributeType={ type }/>
                                 </ResourceTab.Pane>
                             )
                         });
@@ -256,7 +259,11 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                             menuItem: "Custom Schema",
                             render: () => (
                                 <ResourceTab.Pane controlledSegmentation attached={ false }>
-                                    <ExternalDialectEditPage id={ dialect.id } attributeType={ type }/>
+                                    <ExternalDialectEditPage 
+                                        id={ dialect.id } 
+                                        attributeType={ type }
+                                        attributeUri={ dialect.dialectURI } 
+                                    />
                                 </ResourceTab.Pane>
                             )
                         });
@@ -271,7 +278,11 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                     menuItem: dialect.dialectURI,
                     render: () => (
                         <ResourceTab.Pane controlledSegmentation attached={ false }>
-                            <ExternalDialectEditPage id={ dialect.id  }attributeType={ type } />
+                            <ExternalDialectEditPage 
+                                id={ dialect.id  }
+                                attributeType={ type } 
+                                attributeUri={ dialect.dialectURI } 
+                            />
                         </ResourceTab.Pane>
                     )
                 };
@@ -295,7 +306,11 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                 { dialects?.length > 1 ? (
                     <ResourceTab panes={ generatePanes() } data-testid={ `${ testId }-tabs` } />
                 ) : (
-                        <ExternalDialectEditPage id={ dialects && dialects[ 0 ]?.id } attributeType={ type } />
+                        <ExternalDialectEditPage 
+                            id={ dialects && dialects[ 0 ]?.id } 
+                            attributeType={ type } 
+                            attributeUri={ dialects &&  dialects[ 0 ]?.dialectURI } 
+                        />
                     ) }
             </PageLayout>
         );
