@@ -67,7 +67,7 @@
     boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
     String callback = Encode.forHtmlAttribute(request.getParameter("callback"));
     String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
-    if (StringUtils.isNotBlank(emailUsernameEnable) && emailUsernameEnable.equals("true")) {
+    if (StringUtils.isNotBlank(emailUsernameEnable) && Boolean.parseBoolean(emailUsernameEnable)) {
         if (StringUtils.countMatches(username, "@") == 1) {
             username = username + "@" + tenantDomain;
         }
