@@ -489,17 +489,6 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             <Divider hidden/>
             { (selectedSamlConfigMode === "manual") ? (
                     <div>
-                        <Field.Dropdown
-                            ariaLabel="Name ID format"
-                            name="NameIDType"
-                            label="Name ID format"
-                            required={ true }
-                            width={ 15 }
-                            options={ getAvailableNameIDFormats() }
-                            value={ initialValues.NameIDType }
-                            placeholder="Select an available name identifier"
-                            data-testid={ `${ testId }-form-wizard-saml-nameid-format` }
-                        />
                         <Field.Input
                             inputType="url"
                             ariaLabel="Identity provider Single Sign-On URL"
@@ -523,6 +512,17 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             width={ 15 }
                             placeholder={ "Enter SAML 2.0 entity id (saml issuer)" }
                             data-testid={ `${ testId }-form-wizard-saml-idp-entity-id` }
+                        />
+                        <Field.Dropdown
+                            ariaLabel="Name ID format"
+                            name="NameIDType"
+                            label="Name ID format"
+                            required={ true }
+                            width={ 15 }
+                            options={ getAvailableNameIDFormats() }
+                            value={ initialValues.NameIDType }
+                            placeholder="Select an available name identifier"
+                            data-testid={ `${ testId }-form-wizard-saml-nameid-format` }
                         />
                         <Field.Dropdown
                             ariaLabel="SAML 2.0 protocol binding"
