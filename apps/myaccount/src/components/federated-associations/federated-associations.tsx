@@ -67,7 +67,8 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
     const { t } = useTranslation();
     const [federatedAssociations, setFederatedAssociations] = useState<FederatedAssociation[]>([]);
     const [showExternalLogins, setShowExternalLogins] = useState<boolean>(true);
-    const [currentIDP, setCurrentIDP] = useState<String>();
+    const [currentIDP, setCurrentIDP] = useState<string>();
+    const [linkedAttribute, setLinkedAttribute] = useState<string>();
     const auth = IdentityClient.getInstance();
 
     /**
@@ -120,6 +121,17 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
             }
         });
     }, []);
+
+
+    //Todo : Update with relevant linked attribute
+    useEffect(() => {
+        auth.getUserInfo().then((response)=> {
+            /* For the time being, lets have Gmail/Github primary Email (at the time of mapping)
+            as the linked attribute. But sooner we have to display the linking attribute. */
+            setLinkedAttribute(response.email);
+        });
+    }, []);
+
 
     /**
      * This sets flag to disable showing external logins section based on config.
@@ -231,13 +243,13 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
                                                     name={ federatedAssociation.federatedUserId }
                                                 />
                                                 <List.Header>
-                                                    { federatedAssociation.federatedUserId }
-                                                </List.Header>
-                                                <List.Description>
                                                     {
                                                         federatedAssociation.idp.displayName
                                                         || federatedAssociation.idp.name
                                                     }
+                                                </List.Header>
+                                                <List.Description>
+                                                    { linkedAttribute }
                                                 </List.Description>
                                             </Grid.Column>
                                             { !isNonLocalCredentialUser &&

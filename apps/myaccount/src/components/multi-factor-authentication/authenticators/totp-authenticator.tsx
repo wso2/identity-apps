@@ -502,7 +502,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                     step !== 3
                         ? (
                             <Modal.Header className="wizard-header text-center">
-                                Set Up an Authenticator App
+                                { t(translateKey + "modals.heading") }
                             </Modal.Header>
                         )
                         : null

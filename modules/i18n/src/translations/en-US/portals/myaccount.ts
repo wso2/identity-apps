@@ -557,7 +557,7 @@ export const myAccount: MyAccountNS = {
                 heading: "Authenticator App",
                 hint: "Show the QR Code",
                 modals: {
-                    heading: "Set Up An Authenticator App",
+                    heading: "Setup an Authenticator App",
                     done: "Success! Now you can use your Authenticator App for two-factor authentication",
                     scan: {
                         authenticatorApps: "Authenticator Apps",

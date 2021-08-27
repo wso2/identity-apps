@@ -59,6 +59,6 @@ i.icon {
     }
 
     &.padded-icon{
-        padding-top:0.7em;
+        padding-top: 0.7em;
     }
 }
