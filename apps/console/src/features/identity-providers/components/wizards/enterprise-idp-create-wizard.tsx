@@ -502,9 +502,9 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         />
                         <Field.Input
                             inputType="url"
-                            ariaLabel="Single sign on URL"
+                            ariaLabel="Identity provider Single Sign-On URL"
                             name="SSOUrl"
-                            label="Single sign on URL"
+                            label="Identity provider Single Sign-On URL"
                             required={ true }
                             maxLength={ SSO_URL_LENGTH.max }
                             minLength={ SSO_URL_LENGTH.min }
