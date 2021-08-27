@@ -152,6 +152,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ callBackUrls, setCallBackUrls ] = useState("");
     const [ audienceUrls, setAudienceUrls ] = useState("");
     const [ showURLError, setShowURLError ] = useState(false);
+    const [ showAudienceError, setShowAudienceError ] = useState(false);
     const [ showOriginError, setShowOriginError ] = useState(false);
     const [ showPKCEField, setPKCEField ] = useState<boolean>(undefined);
     const [ showCallbackURLField, setShowCallbackURLField ] = useState<boolean>(undefined);
@@ -1778,8 +1779,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
                                 ".fields.audience.validations.invalid")
                         }
-                        showError={ showURLError }
-                        setShowError={ setShowURLError }
+                        showError={ showAudienceError }
+                        setShowError={ setShowAudienceError }
                         hint={
                             <Trans
                                 i18nKey={
