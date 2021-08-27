@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { HeaderLinkCategoryInterface, HeaderExtension } from "@wso2is/react-components";
+import { HeaderExtension, HeaderLinkCategoryInterface } from "@wso2is/react-components";
+import { HeaderSubPanelItemInterface } from "../../../features/core/components";
 
 export interface CommonConfig {
     advancedSearchWithBasicFilters: {
@@ -28,6 +29,12 @@ export interface CommonConfig {
          * @return {HeaderExtension[]}
          */
         getHeaderExtensions: () => HeaderExtension[];
+        /**
+         * Get the extensions for the Header sub panel.
+         * These will come along with the `Manage` & `Develop` links.
+         * @return {{aligned: "left" | "right"; component: React.ReactElement; order: number}[]}
+         */
+        getHeaderSubPanelExtensions: () => HeaderSubPanelItemInterface[];
         /**
          * Get the user dropdown link extensions.
          * @return {HeaderLinkCategoryInterface[]}
