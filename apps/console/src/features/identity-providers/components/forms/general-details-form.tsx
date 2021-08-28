@@ -25,6 +25,7 @@ import { Divider, Grid } from "semantic-ui-react";
 import { identityProviderConfig } from "../../../../extensions";
 import { IdentityProviderInterface, IdentityProviderListResponseInterface } from "../../models";
 import { IdpCertificates } from "../settings";
+import { FormValidation } from "@wso2is/validation";
 
 /**
  * Proptypes for the identity provider general details form component.
@@ -130,19 +131,23 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      * @param value IDP name
      * @returns error msg if name is already taken.
      */
-    const idpNameValidation= (value: string): string => {
+    const idpNameValidation = (value: string): string => {
+        if (!FormValidation.isValidResourceName(value)) {
+            return t("console:develop.features.authenticationProvider." +
+                "templates.enterprise.validation.name");
+        }
         let nameExist: boolean = false;
         if (idpList?.count > 0) {
-            idpList?.identityProviders.map((idp)=>{
-                if (idp?.name === value && name !== value ) {
+            idpList?.identityProviders.map((idp) => {
+                if (idp?.name === value && name !== value) {
                     nameExist = true;
                 }
             });
         }
         if (nameExist) {
             return t("console:develop.features." +
-            "authenticationProvider.forms.generalDetails.name." +
-            "validations.duplicate");
+                "authenticationProvider.forms.generalDetails.name." +
+                "validations.duplicate");
         }
     };
 
@@ -187,7 +192,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     };
 
     return (
-        <>
+        <React.Fragment>
             <EmphasizedSegment padded="very">
                 <Form
                     uncontrolledForm={ false }
@@ -197,8 +202,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     data-testid={ testId }
                 >
                     <Field.Input
-                        ariaLabel= "name"
-                        inputType= "name"
+                        ariaLabel="name"
+                        inputType="resourceName"
                         name="name"
                         label={ t("console:develop.features.authenticationProvider.forms." +
                             "generalDetails.name.label") }
@@ -206,7 +211,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         message={ t("console:develop.features.authenticationProvider." +
                             "forms.generalDetails.name.validations.empty") }
                         placeholder={ name }
-                        validation ={ (value)=>idpNameValidation(value) }
+                        validation={ (value) => idpNameValidation(value) }
                         value={ name }
                         maxLength={ IDP_NAME_MAX_LENGTH }
                         minLength={ 3 }
@@ -217,8 +222,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     />
                     <Field.Textarea
                         name="description"
-                        ariaLabel= "description"
-                        fieldType= "resourceName"
+                        ariaLabel="description"
                         label={ t("console:develop.features.authenticationProvider.forms." +
                             "generalDetails.description.label") }
                         required={ false }
@@ -232,34 +236,36 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             "generalDetails.description.hint") }
                         readOnly={ isReadOnly }
                     />
-                    { !hideIdPLogoEditField && <Field.Input
-                        name="image"
-                        ariaLabel= "image"
-                        inputType="url"
-                        label={ t("console:develop.features.authenticationProvider." +
-                            "forms.generalDetails.image.label") }
-                        required={ false }
-                        placeholder={ t("console:develop.features.authenticationProvider." +
-                            "forms.generalDetails.image." +
-                            "placeholder") }
-                        value={ imageUrl }
-                        data-testid={ `${ testId }-idp-image` }
-                        maxLength={ IDP_IMAGE_URL_MAX_LENGTH }
-                        minLength={ 3 }
-                        hint={ t("console:develop.features.authenticationProvider.forms." +
-                            "generalDetails.image.hint") }
-                        readOnly={ isReadOnly }
-                    /> }
-                    { !isReadOnly &&
+                    { !hideIdPLogoEditField && (
+                        <Field.Input
+                            name="image"
+                            ariaLabel="image"
+                            inputType="url"
+                            label={ t("console:develop.features.authenticationProvider." +
+                                "forms.generalDetails.image.label") }
+                            required={ false }
+                            placeholder={ t("console:develop.features.authenticationProvider." +
+                                "forms.generalDetails.image." +
+                                "placeholder") }
+                            value={ imageUrl }
+                            data-testid={ `${ testId }-idp-image` }
+                            maxLength={ IDP_IMAGE_URL_MAX_LENGTH }
+                            minLength={ 3 }
+                            hint={ t("console:develop.features.authenticationProvider.forms." +
+                                "generalDetails.image.hint") }
+                            readOnly={ isReadOnly }
+                        />
+                    ) }
+                    { !isReadOnly && (
                         <Field.Button
-                            ariaLabel= "submit"
+                            ariaLabel="Update General Details"
                             size="small"
                             buttonType="primary_btn"
-                            label="submit"
-                            name= "submit"
+                            label={ t("common:update") }
+                            name="submit"
                             disabled={ false }
                         />
-                    }
+                    ) }
                 </Form>
             </EmphasizedSegment>
             { identityProviderConfig.generalDetailsForm.showCertificate && (
@@ -280,7 +286,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     />
                 </React.Fragment>
             ) }
-        </>
+        </React.Fragment>
     );
 };
 

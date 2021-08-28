@@ -373,10 +373,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 errors.name = t("console:develop.features.authenticationProvider." +
                     "forms.generalDetails.name.validations.duplicate");
             }
-            // We have the inputType "identifier" but however it has no
-            // effect because validate function is overridden by this function.
-            // So, we need re-check this manually.
-            if (!FormValidation.identifier(values.name)) {
+            if (!FormValidation.isValidResourceName(values.name)) {
                 errors.name = t("console:develop.features.authenticationProvider." +
                     "templates.enterprise.validation.name");
             }
@@ -386,7 +383,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             <Field.Input
                 data-testid={ `${ testId }-form-wizard-idp-name` }
                 ariaLabel="name"
-                inputType="identifier"
+                inputType="resourceName"
                 name="name"
                 placeholder="Enter a name for the identity provider"
                 label="Identity provider name"
