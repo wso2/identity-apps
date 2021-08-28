@@ -18,7 +18,16 @@
  */
 
 import "fastestsmallesttextencoderdecoder";
-import { email, identifier, imageUrl, isInteger, mobileNumber, resourceName, url } from "./validation";
+import {
+    email,
+    identifier,
+    imageUrl,
+    isInteger,
+    mobileNumber,
+    resourceName,
+    url,
+    isValidResourceName
+} from "./validation";
 
 export const FormValidation = {
     email,
@@ -27,5 +36,6 @@ export const FormValidation = {
     isInteger,
     mobileNumber,
     resourceName,
-    url
+    url,
+    isValidResourceName
 };
