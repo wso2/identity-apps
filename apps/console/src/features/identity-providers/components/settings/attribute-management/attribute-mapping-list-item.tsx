@@ -43,6 +43,8 @@ export interface AttributeMappingListItemProps {
     onSubmit: (mapping: IdentityProviderCommonClaimMappingInterface) => void;
 }
 
+const toBits = (bool: boolean): number => bool ? 1 : 0;
+
 /**
  * This is a common interface that allows the user to map one attribute
  * to another local attribute. The interface looks like this: -
@@ -174,13 +176,20 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                                     setMappingHasError(true);
                                     return FieldConstants.FIELD_REQUIRED_ERROR;
                                 }
-                                // According to 8409:
-                                // Entity category support attribute values MUST be URIs. Such values
-                                // are also referred to as "category support URIs"
-                                // https://datatracker.ietf.org/doc/html/rfc8409#section-4.1
-                                if (!FormValidation.url(value)) {
+                                /**
+                                 * Entity category support attribute values MUST be URIs. Such values
+                                 * are also referred to as "category support URIs" but at the same time
+                                 * our server allows simple strings as well.
+                                 *
+                                 * In the following if condition we do a bitwise AND SC operation
+                                 * to either allow one of them.
+                                 *
+                                 * {@see https://datatracker.ietf.org/doc/html/rfc8409#section-4.1}
+                                 */
+                                if (toBits(!FormValidation.url(value)) &
+                                    toBits(!FormValidation.isValidResourceName(value))) {
                                     setMappingHasError(true);
-                                    return FieldConstants.INVALID_URL_ERROR;
+                                    return "This attribute name is invalid.";
                                 }
                                 // Check whether this attribute external name is already mapped.
                                 const mappedValues = new Set(
