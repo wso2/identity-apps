@@ -48,6 +48,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 
 <jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
+<jsp:directive.include file="plugins/basicauth-extensions.jsp"/>
 <script>
     function goBack() {
         document.getElementById("restartFlowForm").submit();
