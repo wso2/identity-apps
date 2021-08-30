@@ -19,8 +19,7 @@
 import { SCIMConfigInterface } from "./models/scim";
 
 /**
- * This configuration is used to overwrite (in asgardeo-app-extension) and pass the,
- * wso2 custom dialect to the Asgardeo.
+ * SCIM dialect configurations.
  */
 export const SCIMConfigs: SCIMConfigInterface = {
 

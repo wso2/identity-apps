@@ -16,7 +16,7 @@ conventions, code formatting styles, UI design guidelines, etc., are provided.
 - Using custom components
 - Performance
 - [Developer guidelines](https://github.com/wso2/identity-apps/blob/master/docs/DEVELOPER.md)
-- [UI design guidelines](https://github.com/wso2-enterprise/asgardeo-app-extensions/blob/master/docs/ui-design-guide.md)
+- UI design guidelines - TODO
 
 
 ## Introduction
@@ -37,4 +37,4 @@ The @wso2is/form library that we use in the WSO2 Identity App portals cater to a
 identified when it comes to its use-cases. This helps to govern the styles of the form elements, and the behavioral 
 patterns of the forms used in WSO2 Identity Apps. Follow [these guidelines](https://github.com/wso2/identity-apps/blob/master/docs/FORMS.md) 
 to implement a form in the Identity App portals more efficiently, maintaining consistency of the UI aspects as well as the 
-code base that are introduced in the Asgardeo forms.
+code base.

@@ -77,7 +77,7 @@ export const DEFAULT_PROTOCOL_BINDING = "redirect";
  * these methods simply does the mapping for us.
  *
  * This issue is currently tracking via:-
- * FIXME: https://github.com/wso2-enterprise/asgardeo-product/issues/4288
+ * TODO: https://github.com/wso2/product-is/issues/12395
  */
 
 /**
