@@ -5561,7 +5561,7 @@ export const console: ConsoleNS = {
                             }
                         },
                         localAttribute: {
-                            label: "User attribute to map to",
+                            label: "User Attribute to map to",
                             placeholder: "Select a user attribute",
                             requiredErrorMessage: "Select a user attribute to map to"
                         },

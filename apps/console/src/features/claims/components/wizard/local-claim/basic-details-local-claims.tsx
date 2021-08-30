@@ -77,6 +77,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
     const [ isInlineEditMode, setIsInlineEditMode ] = useState<boolean>(false);
     const [ oidcMapping, setOidcMapping ] = useState<string>(values?.get("oidc").toString());
     const [ scimMapping, setScimMapping ] = useState<string>(values?.get("scim").toString());
+    const [ validateMapping, setValidateMapping ] = useState<boolean>(false);
 
     const nameField = useRef<HTMLElement>(null);
     const claimField = useRef<HTMLElement>(null);
@@ -95,8 +96,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
      * and the claim ID from the received `values` prop
      */
     useEffect(() => {
-        setIsShow(values?.get("supportedByDefault").length > 0);
-        setClaimID(values?.get("claimURI").toString());
+        setIsShow(values?.get("supportedByDefault")?.length > 0);
+        setClaimID(values?.get("claimURI")?.toString());
     }, [ values ]);
 
 
@@ -180,6 +181,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                         "forms.attributeID.placeholder") }
                                     value={ values?.get("claimURI")?.toString() }
                                     maxLength={ 30 }
+                                    loading={ validateMapping }
                                     listen={ (values: Map<string, FormValue>) => {
                                         setClaimID(values.get("claimURI").toString());
                                         setOidcMapping(values.get("claimURI").toString().replace(/\./g,""));
@@ -211,11 +213,13 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                         }
 
                                         // TODO: Move constants to constants file
+                                        setValidateMapping(true);
                                         if (attributeConfig.localAttributes.createWizard.checkOIDCAvailability) {
                                             attributeConfig.localAttributes.checkAttributeNameAvailability(
                                                 value,
                                                 "BOTH"
                                             ).then(response => {
+                                                setValidateMapping(false);
                                                 if (response.has("SCIM")) {
                                                     setNoUniqueSCIMAttrib(response.get("SCIM"));
                                                 }
@@ -267,32 +271,13 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                     <Grid.Row columns={ 1 } >
                                                         <Grid.Column>
                                                             <Message size="tiny" negative>
-                                                                { (() => {
-                                                                    // TODO: Add to translations file
-                                                                    if (!noUniqueOIDCAttrib
-                                                                        && !noUniqueSCIMAttrib) {
-                                                                        return (
-                                                                            <>The mapping names generated for
-                                                                                <b> OpenID Connect & SCIM </b>
-                                                                                protocol(s) is already available.</>
-                                                                        );
-                                                                    } else if ( noUniqueOIDCAttrib
-                                                                        && !noUniqueSCIMAttrib ) {
-                                                                        return (
-                                                                            <>The mapping names generated for
-                                                                                <b> SCIM </b>
-                                                                                protocol(s) is already available.</>
-                                                                        );
-                                                                    } else if ( !noUniqueOIDCAttrib
-                                                                        && noUniqueSCIMAttrib) {
-                                                                        return (
-                                                                            <>The mapping names generated for
-                                                                                <b> OpenID Connect </b>
-                                                                                protocol(s) is already available.</>
-                                                                        );
-
-                                                                    }
-                                                                })() }
+                                                                { `The mapping names generated for ${ 
+                                                                    !noUniqueOIDCAttrib ? "OpenID Connect" : ""} ${ 
+                                                                        !noUniqueOIDCAttrib && !noUniqueSCIMAttrib 
+                                                                        ? "and" : "" } ${ 
+                                                                            !noUniqueSCIMAttrib ? "SCIM" : ""
+                                                                            } protocol is already available.` 
+                                                                }
                                                             </Message>
                                                         </Grid.Column>
                                                     </Grid.Row> : <></>
@@ -322,15 +307,16 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                             onEdit={ (isEdit) => {
                                                                 setIsInlineEditMode(isEdit);
                                                             } }
-                                                            onChangesSaved={ (value: string) => {
+                                                            onChangesSaved={ async (value: string)  => {
                                                                 if (value) {
-                                                                    attributeConfig.localAttributes
-                                                                        .checkAttributeNameAvailability(
-                                                                            oidcMapping, "OIDC").then(response => {
+                                                                    await attributeConfig
+                                                                        .localAttributes
+                                                                        .checkAttributeNameAvailability(value, "OIDC")
+                                                                        .then(response => {
                                                                             setNoUniqueOIDCAttrib(response.get("OIDC"));
-                                                                    });
-                                                                    setShowMappingError(false);
-                                                                    setOidcMapping(value);
+                                                                            setShowMappingError(false);
+                                                                            setOidcMapping(value);
+                                                                        });
                                                                 }
                                                             } }
                                                         />
@@ -362,15 +348,16 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                             onEdit={ (isEdit) => {
                                                                 setIsInlineEditMode(isEdit);
                                                             } }
-                                                            onChangesSaved={ (value: string) => {
+                                                            onChangesSaved={ async (value: string) => {
                                                                 if (value) {
-                                                                    attributeConfig.localAttributes
-                                                                        .checkAttributeNameAvailability(
-                                                                            scimMapping, "SCIM").then(response => {
+                                                                    await attributeConfig
+                                                                        .localAttributes
+                                                                        .checkAttributeNameAvailability(value, "SCIM")
+                                                                        .then(response => {
                                                                             setNoUniqueSCIMAttrib(response.get("SCIM"));
-                                                                    });
-                                                                    setShowMappingError(false);
-                                                                    setScimMapping(value);
+                                                                            setShowMappingError(false);
+                                                                            setScimMapping(value);
+                                                                        });
                                                                 }
                                                                 
                                                             } }
