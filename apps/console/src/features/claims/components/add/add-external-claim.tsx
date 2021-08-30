@@ -102,7 +102,6 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
     const [ localClaimsSet, setLocalClaimsSet ] = useState(false);
     const [ claim, setClaim ] = useState<string>("");
 
-
     const [ reset, setReset ] = useTrigger();
 
     const dispatch = useDispatch();
