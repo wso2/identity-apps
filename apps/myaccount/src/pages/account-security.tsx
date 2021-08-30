@@ -147,7 +147,14 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
     return (
         <InnerPageLayout
             pageTitle={ t("myAccount:pages.security.title") }
-            pageDescription={ t("myAccount:pages.security.subTitle") }
+            pageDescription={
+                (!isNonLocalCredentialUser
+                    ?
+                    t("myAccount:pages.security.subTitle")
+                    :
+                    // For socially signed up user.
+                    ("Secure your account by managing your sessions"))
+            }
         >
             <Grid>
                 { !isReadOnlyUser && !isNonLocalCredentialUser &&
