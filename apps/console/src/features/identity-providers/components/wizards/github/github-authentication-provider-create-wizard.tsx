@@ -291,7 +291,7 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
         ];
 
         // TODO: Refactor the usage of absolute image paths once Media Service is available.
-        // Tracked here - https://github.com/wso2-enterprise/asgardeo-product/issues/2973
+        // Tracked here - https://github.com/wso2/product-is/issues/12396
         if (AppConstants.getClientOrigin()) {
             if (AppConstants.getAppBasename()) {
                 identityProvider.image = AppConstants.getClientOrigin() +

@@ -30,4 +30,4 @@ to the repo.
 - Accessibility support
 - Using custom components
 - Performance
-- [UI design guidelines](https://github.com/wso2-enterprise/asgardeo-app-extensions/blob/master/docs/ui-design-guide.md)
+- UI design guidelines - TODO

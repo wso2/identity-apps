@@ -33,7 +33,7 @@ import { SettingsSection } from "../../shared";
  * Proptypes for the user sessions edit component.
  * Also see {@link UserSessionsEdit.defaultProps}
  */
-interface AsgardeoProfileWidgetProps extends TestableComponentInterface {
+interface ProfileWidgetPropsInterface extends TestableComponentInterface {
     userSource?: string;
 }
 
@@ -43,7 +43,7 @@ interface AsgardeoProfileWidgetProps extends TestableComponentInterface {
  *
  * @return {ReactElement}
  */
-export const ProfileWidget: FunctionComponent<AsgardeoProfileWidgetProps> = (
+export const ProfileWidget: FunctionComponent<ProfileWidgetPropsInterface> = (
     props
 ): ReactElement => {
 

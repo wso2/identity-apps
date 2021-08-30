@@ -198,7 +198,7 @@ export class ApplicationManagementConstants {
     /**
      * Currently refresh grant type is recommended to use atleast one of below.
      * We need to get information from backend rather than hard code.
-     * This isssue is track via https://github.com/wso2-enterprise/asgardeo-product/issues/1852.
+     * This isssue is track via https://github.com/wso2/product-is/issues/12397.
      */
     public static readonly IS_REFRESH_TOKEN_GRANT_TYPE_ALLOWED = [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
