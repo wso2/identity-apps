@@ -259,13 +259,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                 }
                             } }
                         />
-                        {
-                            attributeType !== ClaimManagementConstants.OIDC &&
-                            <Label className="mb-3 ml-0">
-                                <em>Attribute URI</em>:&nbsp;
-                                    { claim ? `${claimDialectUri}:${ claim ? claim : "" }` : "" }
-                            </Label>
-                        }
+                        
                     </Grid.Column>
                     <Grid.Column width={ 8 } className="select-attribute">
                         <Field
@@ -309,6 +303,14 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                             }
                             data-testid={ `${ testId }-form-local-claim-dropdown` }
                         />
+                    </Grid.Column>
+                    <Grid.Column width={ 16 }>
+                    {
+                        attributeType !== ClaimManagementConstants.OIDC &&
+                        <Label className="mb-3 mt-2 ml-0">
+                            <em>Attribute URI</em>:&nbsp;{ claim ? `${claimDialectUri}:${ claim ? claim : "" }` : "" }
+                        </Label>
+                    }
                     </Grid.Column>
                 </Grid.Row>
                 {
