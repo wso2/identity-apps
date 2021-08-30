@@ -99,7 +99,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
             setSelectedCertType(certificate?.type);
         }
 
-    },[certificate])
+    }, [ certificate ])
 
     /**
      * Set PEM value.
