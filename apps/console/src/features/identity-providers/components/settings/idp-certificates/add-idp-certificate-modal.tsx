@@ -73,8 +73,6 @@ export const AddIdpCertificateModal: FC<AddIdPCertificateModalV2Props> = (props)
     const [ submitShouldBeDisabled, setSubmitShouldBeDisabled ] = useState<boolean>(true);
     const [ requestInProgress, setRequestInProgress ] = useState<boolean>(false);
 
-    // Event handlers
-
     /**
      * @param result {@link PickerResult<string | File>}
      */
@@ -135,8 +133,6 @@ export const AddIdpCertificateModal: FC<AddIdPCertificateModalV2Props> = (props)
             }
         ];
 
-        // Request
-
         const doOnSuccess = () => {
             dispatch(addAlert({
                 description: t("console:develop.features.authenticationProvider.notifications" +
@@ -176,8 +172,6 @@ export const AddIdpCertificateModal: FC<AddIdPCertificateModalV2Props> = (props)
             .catch(ifTheresAnyErrors);
 
     };
-
-    // JSX and render()
 
     return (
         <Modal

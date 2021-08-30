@@ -83,8 +83,6 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (props): ReactE
         }
     }, [ currentlyEditingIdP?.certificate?.certificates ]);
 
-    // Event handlers...
-
     /**
      * Remove the certificate from the certificated list.
      * The path attribute of the patch request requires the certificate index.
@@ -147,8 +145,6 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (props): ReactE
         setCertificateDisplay(certificate);
         setShowCertificateModal(true);
     };
-
-    // JSX and render() methods...
 
     /**
      * Creates the resource item header.

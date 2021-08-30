@@ -141,8 +141,6 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
         }
     };
 
-    // Event handlers.
-
     const onSelectionChange = ({ value }: SwitcherOptionProps): void => {
         setSelectedConfigurationMode(value as CertificateConfigurationMode);
     };
@@ -205,8 +203,6 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
             .catch(ifTheresAnyError);
 
     };
-
-    // JSX and render()
 
     const jwksInputForm: ReactNode = (
         <Form uncontrolledForm={ true } onSubmit={ onJWKSFormSubmit }>
