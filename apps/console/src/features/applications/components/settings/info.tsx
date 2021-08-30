@@ -81,11 +81,10 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
     const { t } = useTranslation();
     const [ isOIDC, setIsOIDC ] = useState<boolean>(false);
     const [ isSAML, setIsSAML ] = useState<boolean>(false);
-    const [ isLoading, setIsLoading ] = useState<boolean>(true);
+    const [ isLoading, setIsLoading ] = useState<boolean>(false);
 
     useEffect(() => {
         if (inboundProtocols == undefined) {
-            setIsLoading(false);
             return;
         }
 

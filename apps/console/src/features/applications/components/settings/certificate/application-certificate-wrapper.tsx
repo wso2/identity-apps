@@ -85,10 +85,21 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
     const dispatch = useDispatch();
 
     const [certEmpty, setCertEmpty] = useState(false);
-    const [selectedCertType, setSelectedCertType] = useState<CertificateTypeInterface>(certificate?.type);
+    const [ selectedCertType, setSelectedCertType ] = useState<CertificateTypeInterface>(CertificateTypeInterface.NONE);
     const [PEMValue, setPEMValue] = useState<string>(undefined);
     const [JWKSValue, setJWKSValue] = useState<string>(undefined);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+
+    /**
+     * Set the certificate type
+     */
+    useEffect(()=> {
+
+        if (certificate?.type){
+            setSelectedCertType(certificate?.type);
+        }
+
+    }, [ certificate ])
 
     /**
      * Set PEM value.
