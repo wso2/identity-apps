@@ -110,6 +110,7 @@ export const identifier: ValidationFunction = (value: string): boolean => {
 /**
  * This validates resource names. Returns true if valid. False if not valid.
  * @param value
+ * @deprecated please use {@link isValidResourceName}
  */
 export const resourceName: ValidationFunction = (value: string): boolean => {
     if (
@@ -143,6 +144,42 @@ export const isInteger = (value: number): boolean => {
     const result: ValidationResult = Joi.number()
         .integer()
         .validate(value);
-    
+
     return !result.error;
+};
+
+/**
+ * This can be used to validate resource names. For example
+ * IdP names and Application names. This allows values like
+ * { abc123, ab-c123, some-name, some_name, SOME-NAME } but
+ * not values starting with { - _ numbers } only alphabet
+ * lower or upper case.
+ *
+ * This function does not handle lengths! You should have
+ * the logic in place to do that.
+ *
+ * isValidResourceName("2myapp") // => false
+ * isValidResourceName("_myapp") // => false
+ * isValidResourceName(".myapp") // => false
+ * isValidResourceName("-myapp") // => false
+ * isValidResourceName(" myapp") // => false
+ * isValidResourceName("2-myapp") // => false
+ * isValidResourceName("myapp2") // => true
+ * isValidResourceName("my-app2") // => true
+ * isValidResourceName("My_app2") // => true
+ * isValidResourceName("my.app2") // => true
+ * isValidResourceName("My App2") // => true
+ *
+ * See Sandbox for examples {@link https://regex101.com/r/cz6cUb/1}
+ * @param value {string}
+ */
+export const isValidResourceName = (value: string): boolean => {
+    try {
+        const result: ValidationResult = Joi.string()
+            .regex(new RegExp("^[a-zA-Z][a-zA-Z0-9-_. ]+$"))
+            .validate(value);
+        return !result.error;
+    } catch (error) {
+        return false;
+    }
 };

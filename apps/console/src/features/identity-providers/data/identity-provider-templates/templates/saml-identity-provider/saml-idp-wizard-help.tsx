@@ -25,6 +25,11 @@ import { AppState, ConfigReducerStateInterface } from "../../../../../core";
 
 type Props = TestableComponentInterface;
 
+/**
+ * Wizard help panel for manual configuration mode.
+ * @param props {Props}
+ * @constructor
+ */
 const SamlIDPWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement => {
 
     const { [ "data-testid" ]: testId } = props;
@@ -36,9 +41,16 @@ const SamlIDPWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement
             <Heading as="h5">Service provider entity ID</Heading>
             <p>
                 This value will be used as the <Code>&lt;saml2:Issuer&gt;</Code> in the SAML requests initiated from
-                {" "}{ config.ui.productName } to external Identity Provider (IdP). You need to provide a unique value
+                { " " }{ config.ui.productName } to external Identity Provider (IdP). You need to provide a unique value
                 as the service provider entity ID.
             </p>
+            <Divider/>
+            <Heading as="h5">SSO URL</Heading>
+            <p>
+                Single sign-on URL of the external IdP. { config.ui.productName } will send SAML authentication
+                requests to this endpoint.
+            </p>
+            <p>E.g., https://ENTERPRISE_DOMAIN/samlsso</p>
             <Divider/>
             <Heading as="h5">Identity provider entity ID</Heading>
             <p>
@@ -48,28 +60,24 @@ const SamlIDPWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement
             </p>
             <p>E.g., https://ENTERPRISE_DOMAIN</p>
             <Divider/>
-            <Heading as="h5">SSO URL</Heading>
-            <p>
-                Single sign-on URL of the external IdP. { config.ui.productName } will send SAML authentication
-                requests to this endpoint.
-            </p>
-            <p>E.g., https://ENTERPRISE_DOMAIN/samlsso</p>
-            <Divider/>
-            <Heading as="h5">Protocol binding</Heading>
-            <p>
-                This specifies the mechanisms to transport SAML messages in communication protocols.
-            </p>
-            <Divider/>
             <Heading as="h5">Name ID format</Heading>
             <p>
                 This specifies the name identifier format that is used to exchange information regarding the user
                 in the SAML assertion sent from the external IdP.
+            </p>
+            <Divider/>
+            <Heading as="h5">Protocol binding</Heading>
+            <p>
+                This specifies the mechanisms to transport SAML messages in communication protocols.
             </p>
         </div>
     );
 
 };
 
+/**
+ * Default props of {@link SamlIDPWizardHelp}
+ */
 SamlIDPWizardHelp.defaultProps = {
     "data-testid": "saml-idp-create-wizard-help"
 };

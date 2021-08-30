@@ -3091,7 +3091,7 @@ export const console: ConsoleNS = {
                             SSOUrl: {
                                 placeholder: "https://ENTERPRISE_IDP/samlsso",
                                 ariaLabel: "Single Sign-On URL",
-                                label: "Single Sign-On URL",
+                                label: "Identity provider Single Sign-On URL",
                                 hint: "Single sign-on URL of the external IdP. This is " +
                                     "where {{productName}} will send its authentication requests."
                             },

@@ -373,10 +373,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 errors.name = t("console:develop.features.authenticationProvider." +
                     "forms.generalDetails.name.validations.duplicate");
             }
-            // We have the inputType "identifier" but however it has no
-            // effect because validate function is overridden by this function.
-            // So, we need re-check this manually.
-            if (!FormValidation.identifier(values.name)) {
+            if (!FormValidation.isValidResourceName(values.name)) {
                 errors.name = t("console:develop.features.authenticationProvider." +
                     "templates.enterprise.validation.name");
             }
@@ -386,7 +383,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             <Field.Input
                 data-testid={ `${ testId }-form-wizard-idp-name` }
                 ariaLabel="name"
-                inputType="identifier"
+                inputType="resourceName"
                 name="name"
                 placeholder="Enter a name for the identity provider"
                 label="Identity provider name"
@@ -489,22 +486,11 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             <Divider hidden/>
             { (selectedSamlConfigMode === "manual") ? (
                     <div>
-                        <Field.Dropdown
-                            ariaLabel="Name ID format"
-                            name="NameIDType"
-                            label="Name ID format"
-                            required={ true }
-                            width={ 15 }
-                            options={ getAvailableNameIDFormats() }
-                            value={ initialValues.NameIDType }
-                            placeholder="Select an available name identifier"
-                            data-testid={ `${ testId }-form-wizard-saml-nameid-format` }
-                        />
                         <Field.Input
                             inputType="url"
-                            ariaLabel="Single sign on URL"
+                            ariaLabel="Identity provider Single Sign-On URL"
                             name="SSOUrl"
-                            label="Single sign on URL"
+                            label="Identity provider Single Sign-On URL"
                             required={ true }
                             maxLength={ SSO_URL_LENGTH.max }
                             minLength={ SSO_URL_LENGTH.min }
@@ -523,6 +509,17 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             width={ 15 }
                             placeholder={ "Enter SAML 2.0 entity id (saml issuer)" }
                             data-testid={ `${ testId }-form-wizard-saml-idp-entity-id` }
+                        />
+                        <Field.Dropdown
+                            ariaLabel="Name ID format"
+                            name="NameIDType"
+                            label="Name ID format"
+                            required={ true }
+                            width={ 15 }
+                            options={ getAvailableNameIDFormats() }
+                            value={ initialValues.NameIDType }
+                            placeholder="Select an available name identifier"
+                            data-testid={ `${ testId }-form-wizard-saml-nameid-format` }
                         />
                         <Field.Dropdown
                             ariaLabel="SAML 2.0 protocol binding"

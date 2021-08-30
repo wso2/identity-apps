@@ -36,7 +36,7 @@ export const getDefaultValidation = (field: string, fieldType: string, value: an
                 }
                 break;
             case "resourceName":
-                if (!FormValidation.resourceName(value)) {
+                if (!FormValidation.isValidResourceName(value)) {
                     return FieldConstants.INVALID_RESOURCE_ERROR;
                 }
                 break;
