@@ -307,7 +307,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                             onEdit={ (isEdit) => {
                                                                 setIsInlineEditMode(isEdit);
                                                             } }
-                                                            onChangesSaved={ async (value: string)  => {
+                                                            onChangesSaved={ async (value: string) => {
                                                                 if (value) {
                                                                     await attributeConfig
                                                                         .localAttributes
