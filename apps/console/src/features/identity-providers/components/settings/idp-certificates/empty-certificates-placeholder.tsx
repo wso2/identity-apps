@@ -24,6 +24,11 @@ import { useTranslation } from "react-i18next";
 import { Icon, Segment } from "semantic-ui-react";
 import { getEmptyPlaceholderIllustrations } from "../../../../core";
 
+// Component constants.
+
+const AUTH_PROV_PLACEHOLDER_EMPTY_I18N_KEY = "console:develop.features.authenticationProvider" +
+    ".placeHolders.emptyCertificateList";
+
 /**
  * Props interface of {@link EmptyCertificatesPlaceholder}
  */
@@ -73,11 +78,6 @@ export const EmptyCertificatesPlaceholder: FC<EmptyCertificatesPlaceholderProps>
     );
 
 };
-
-// Component constants.
-
-const AUTH_PROV_PLACEHOLDER_EMPTY_I18N_KEY = "console:develop.features.authenticationProvider" +
-    ".placeHolders.emptyCertificateList";
 
 /**
  * Default props of {@link EmptyCertificatesPlaceholder}
