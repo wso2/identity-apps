@@ -268,7 +268,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     <Grid>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Heading as="h4" style={ { fontWeight: 600 } }>Certificates</Heading>
+                                <Heading as="h4">Certificates</Heading>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
