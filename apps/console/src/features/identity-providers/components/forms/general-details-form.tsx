@@ -270,7 +270,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             </EmphasizedSegment>
             { identityProviderConfig.generalDetailsForm.showCertificate && (
                 <React.Fragment>
-                    < Divider hidden/>
+                    <Divider hidden/>
                     <Grid>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>

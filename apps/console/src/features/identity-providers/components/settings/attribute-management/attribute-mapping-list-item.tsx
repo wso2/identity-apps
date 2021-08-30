@@ -189,7 +189,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                                 if (toBits(!FormValidation.url(value)) &
                                     toBits(!FormValidation.isValidResourceName(value))) {
                                     setMappingHasError(true);
-                                    return "This attribute name is invalid.";
+                                    return FieldConstants.INVALID_RESOURCE_ERROR;
                                 }
                                 // Check whether this attribute external name is already mapped.
                                 const mappedValues = new Set(
