@@ -108,12 +108,15 @@ export const Hint: React.FunctionComponent<PropsWithChildren<HintPropsInterface>
                         />
                     )
                     : (
-                        <>
+                        <div style={ { columnGap: ".2rem", display: "inline-flex" } }>
                             { icon && (
-                                <Icon color="grey" floated="left" name={ icon } data-testid={ `${ testId }-icon` }/>
+                                <Icon color="grey"
+                                      floated="left"
+                                      name={ icon }
+                                      data-testid={ `${ testId }-icon` }/>
                             ) }
-                            { children }
-                        </>
+                            <div>{ children }</div>
+                        </div>
                     )
             }
         </div>

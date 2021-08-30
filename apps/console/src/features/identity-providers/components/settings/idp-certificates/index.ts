@@ -17,5 +17,4 @@
  */
 
 export * from "./idp-certificates";
-export * from "./idp-jwks-endpoint-form";
-export * from "./idp-certificate-list";
+export * from "./idp-cetificates-list";

@@ -108,6 +108,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         identityProvider,
         isLoading,
         isSaml,
+        isOidc,
         onDelete,
         onUpdate,
         template,
@@ -137,6 +138,8 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                             identityProvider?.federatedAuthenticators?.defaultAuthenticatorId
                         )
                 }
+                isSaml={ isSaml }
+                isOidc={ isOidc }
                 editingIDP={ identityProvider }
                 description={ identityProvider.description }
                 isEnabled={ identityProvider.isEnabled }

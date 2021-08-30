@@ -2963,7 +2963,7 @@ export const console: ConsoleNS = {
                     },
                     addCertificate: {
                         subTitle: "හැඳුනුම්පත් සපයන්නාට නව සහතිකයක් එක් කරන්න",
-                        title: "නව සහතිකයක් එක් කරන්න"
+                        title: "සහතික වින්‍යාස කරන්න"
                     },
                     addProvisioningConnector: {
                         subTitle: "නව පිටතට යන ප්‍රතිපාදන සම්බන්ධකය එක් කිරීමට පියවර අනුගමනය කරන්න",

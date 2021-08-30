@@ -548,37 +548,6 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         ];
     };
 
-    const showCertificateDetails = (): ReactElement => {
-        return (
-            <Grid>
-                <Grid.Row>
-                    <Grid.Column width={ 16 }>
-                        <Grid>
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <Heading as="h4">Certificates</Heading>
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                        <EmphasizedSegment>
-                            <Grid>
-                                <Grid.Row columns={ 1 }>
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                        <IdpCertificates
-                                            editingIDP={ identityProvider }
-                                            onUpdate={ onUpdate }
-                                            isReadOnly={ isReadOnly }
-                                        />
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        </EmphasizedSegment>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        );
-    };
-
     /**
      * Removes the element identified by the given key, from the properties array.
      */

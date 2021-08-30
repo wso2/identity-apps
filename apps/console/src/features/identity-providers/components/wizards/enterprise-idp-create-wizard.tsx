@@ -16,11 +16,7 @@
  * under the License.
  */
 
-import { 
-    AlertLevels,
-    IdentifiableComponentInterface,
-    TestableComponentInterface
-} from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Wizard2, WizardPage } from "@wso2is/form";
 import {
@@ -57,16 +53,11 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dimmer, Divider, Grid, Icon } from "semantic-ui-react";
-import { 
-    AppConstants,
-    EventPublisher,
-    ModalWithSidePanel,
-    getCertificateIllustrations,
-    store
-} from "../../../core";
+import { AppConstants, EventPublisher, ModalWithSidePanel, getCertificateIllustrations, store } from "../../../core";
 import { createIdentityProvider, getIdentityProviderList } from "../../api";
 import { getIdPIcons, getIdentityProviderWizardStepIcons } from "../../configs";
 import { IdentityProviderManagementConstants } from "../../constants";
+import { AuthenticatorMeta } from "../../meta";
 import {
     GenericIdentityProviderCreateWizardPropsInterface,
     IdentityProviderTemplateInterface,
@@ -176,9 +167,9 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     }, [ selectedProtocol ]);
 
     const initialValues = useMemo(() => ({
-        name: EMPTY_STRING, // This must be filled by the user.
+        NameIDType: "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
         RequestMethod: "post",
-        NameIDType: "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"
+        name: EMPTY_STRING // This must be filled by the user.
     }), []);
 
     // Utils
@@ -222,10 +213,10 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     /**
      * @param values {object} form values
-     * @param _ form {Form} form Instance
-     * @param __ callback
+     * - @param form {Form} form instance
+     * - @param callback
      */
-    const handleFormSubmit = (values, _, __) => {
+    const handleFormSubmit = (values) => {
 
         const FIRST_ENTRY = 0;
 
@@ -299,8 +290,10 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             }
         }
 
-        // Use description from template.
-        identityProvider.description = template.description;
+        // Add the default description from the metadata instead from template.
+        identityProvider.description = AuthenticatorMeta.getAuthenticatorDescription(
+            identityProvider.federatedAuthenticators.authenticators[ FIRST_ENTRY ].authenticatorId
+        );
 
         createIdentityProvider(identityProvider)
             .then((response) => {
@@ -480,15 +473,14 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             compact
                             data-testid={ `${ testId }-form-wizard-saml-config-switcher` }
                             className={ "mt-1" }
-                            defaultOptionValue="file"
                             selectedValue={ selectedSamlConfigMode }
                             onChange={ ({ value }) => setSelectedSamlConfigMode(value as any) }
                             options={ [ {
-                                value: "manual",
-                                label: "Manual Configuration"
+                                label: "Manual Configuration",
+                                value: "manual"
                             }, {
-                                value: "file",
-                                label: "File Based Configuration"
+                                label: "File Based Configuration",
+                                value: "file"
                             } ] }
                         />
                     </Grid.Column>
@@ -670,16 +662,17 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         { (selectedProtocol === "oidc") && (
                             <Switcher
                                 compact
+                                disabledMessage="This feature will be enabled soon."
                                 className={ "mt-1" }
-                                defaultOptionValue="jwks"
+                                defaultOptionValue={ "jwks" }
                                 selectedValue={ selectedCertInputType }
                                 onChange={ ({ value }) => setSelectedCertInputType(value as any) }
                                 options={ [ {
-                                    value: "jwks",
-                                    label: "JWKS endpoint"
+                                    label: "JWKS endpoint",
+                                    value: "jwks"
                                 }, {
-                                    value: "pem",
-                                    label: "Use PEM certificate"
+                                    label: "Use PEM certificate",
+                                    value: "pem"
                                 } ] }
                             />
                         ) }
