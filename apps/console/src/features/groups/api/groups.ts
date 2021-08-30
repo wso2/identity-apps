@@ -96,7 +96,7 @@ export const getGroupListExcludingMembers = (domain: string): Promise<GroupListI
 };
 
 /**
- * Retrieve Group details for a give group id.
+ * Retrieve Group details for a given group id.
  *
  * @param groupId group id to retrieve group details
  */
@@ -108,6 +108,28 @@ export const getGroupById = (groupId: string): Promise<any> => {
         },
         method: HttpMethods.GET,
         url: store.getState().config.endpoints.groups + "/" + groupId
+    };
+
+    return httpClient(requestConfig).then((response) => {
+        return Promise.resolve(response);
+    }).catch((error) => {
+        return Promise.reject(error);
+    });
+};
+
+/**
+ * Retrieve Group details for a given group id excluding members.
+ *
+ * @param groupId group id to retrieve group details
+ */
+export const getGroupByIdExcludingMembers = (groupId: string): Promise<any> => {
+    const requestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.groups + "/" + groupId + "?excludedAttributes=members"
     };
 
     return httpClient(requestConfig).then((response) => {
