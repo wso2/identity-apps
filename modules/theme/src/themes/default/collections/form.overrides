@@ -47,6 +47,10 @@
 
 .ui.form {
     .field {
+        label::after {
+            position: absolute;
+        }
+        
         &.hidden {
             display: none;
         }
