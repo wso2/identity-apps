@@ -85,8 +85,8 @@
             "token": "https://localhost:9443/oauth2/token",
             "totp": "https://localhost:9443/api/users/v1/me/totp",
             "totpSecret": "https://localhost:9443/api/users/v1/me/totp/secret",
-            "typingDNAMe": "https://localhost:9443/api/typingdna/v1.0/me/typingpatterns",
-            "typingDNAServer": "https://localhost:9443/api/typingdna/v1.0/server/typingdnaConfig",
+            "typingDNAMe": "https://localhost:9443/api/identity/typingdna/v1.0/me/typingpatterns",
+            "typingDNAServer": "https://localhost:9443/api/identity/typingdna/v1.0/server/typingdnaConfig",
             "user": "https://localhost:9443/api/identity/user/v1.0/me",
             "wellKnown": "https://localhost:9443/oauth2/oidcdiscovery/.well-known/openid-configuration",
             "consentManagement": {

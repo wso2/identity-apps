@@ -94,8 +94,7 @@ export const TypingDNA: React.FunctionComponent<TypingDNAProps> = (props: Typing
                     <h3>{ t("myAccount:components.loginVerifyData.modals.clearTypingPatternsModal.heading") }</h3>
                 </Container>
                 <br/>
-                <p>{ t("myAccount:components.loginVerifyData.modals.clearTypingPatternsModal.message") }
-                { <a href='https://www.typingdna.com/'>...</a> } </p>
+                <p>{ t("myAccount:components.loginVerifyData.modals.clearTypingPatternsModal.message") }</p>
             </Modal.Content>
             <Modal.Actions>
                 <Button className="link-button" onClick={ handleClearTypingPatternsModalClose }>
