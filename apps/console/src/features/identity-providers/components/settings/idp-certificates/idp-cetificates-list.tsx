@@ -70,10 +70,31 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (props): ReactE
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
 
     /**
+     * When component initialize check the IdP model and set
+     * the available certificates if exists.
+     */
+    useEffect(() => {
+        bindCertificatesToState();
+    }, []);
+
+    /**
      * Create {@link DisplayCertificate} objects for all
      * available certificates.
      */
     useEffect(() => {
+        bindCertificatesToState();
+    }, [ currentlyEditingIdP?.certificate?.certificates ]);
+
+    /**
+     * Why call this in two places?
+     *
+     * 1) First, this func checks whether this IdP has certificates and
+     *    re-binds the new state to the component as {@link DisplayCertificate[]}.
+     *
+     * 2) Initially, when the component renders and when user adds a new certificate
+     *    we need to refresh the state.
+     */
+    const bindCertificatesToState = (): void => {
         if (currentlyEditingIdP?.certificate?.certificates?.length > 0) {
             const certificatesList: DisplayCertificate[] = [];
             currentlyEditingIdP?.certificate?.certificates?.map((certificate) => {
@@ -81,7 +102,7 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (props): ReactE
             });
             setDisplayingCertificates([ ...certificatesList ]);
         }
-    }, [ currentlyEditingIdP?.certificate?.certificates ]);
+    };
 
     /**
      * Remove the certificate from the certificated list.
