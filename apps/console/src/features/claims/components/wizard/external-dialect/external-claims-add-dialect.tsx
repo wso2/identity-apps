@@ -224,6 +224,7 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
                         externalClaims={ claims }
                         data-testid={ `${ testId }-add-external-claims` }
                         attributeType={ attributeType }
+                        claimDialectUri={ claimDialectUri }
                     />
                     <Divider hidden />
                     {

@@ -24,7 +24,7 @@ import { PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Grid, Header, DropdownOnSearchChangeData, StrictDropdownItemProps, DropdownItemProps } from "semantic-ui-react";
+import { DropdownItemProps, DropdownOnSearchChangeData, Grid, Header, Label } from "semantic-ui-react";
 import { addExternalClaim } from "../../api";
 import { ClaimManagementConstants } from "../../constants";
 import { AddExternalClaim } from "../../models";
@@ -66,6 +66,10 @@ interface AddExternalClaimsPropsInterface extends TestableComponentInterface {
      * Specifies the type of the attribute.
      */
     attributeType?: string;
+    /**
+     * Claim dialect URI
+     */
+    claimDialectUri?: string;
 }
 
 /**
@@ -87,6 +91,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
         externalClaims,
         triggerSubmit,
         attributeType,
+        claimDialectUri,
         cancel,
         [ "data-testid" ]: testId
     } = props;
@@ -95,6 +100,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
     const [ filteredLocalClaims, setFilteredLocalClaims ] = useState<Claim[]>();
     const [ localClaimsSearchResults, setLocalClaimsSearchResults ] = useState<Claim[]>();
     const [ localClaimsSet, setLocalClaimsSet ] = useState(false);
+    const [ claim, setClaim ] = useState<string>("");
 
     const [ reset, setReset ] = useTrigger();
 
@@ -176,6 +182,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
             onSubmit={ (values: Map<string, FormValue>) => {
                 if (wizard) {
                     onSubmit(values);
+                    setClaim("");
                     setReset();
                 } else {
                     addExternalClaim(dialectId, {
@@ -226,6 +233,10 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                             placeholder={ t("console:manage.features.claims.external.forms.attributeURI.placeholder",
                                 { type: resolveType(attributeType) }) }
                             type="text"
+                            listen={ (values: Map<string, FormValue>) => {
+                                setClaim(values.get("claimURI").toString());
+                            } }
+                            maxLength={ 30 }
                             data-testid={ `${ testId }-form-claim-uri-input` }
                             validation={ (value: string, validation: Validation) => {
                                 for (const claim of externalClaims) {
@@ -248,6 +259,13 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                 }
                             } }
                         />
+                        {
+                            attributeType !== ClaimManagementConstants.OIDC &&
+                            <Label className="mb-3 ml-0">
+                                <em>Attribute URI</em>:&nbsp;
+                                    { claim ? `${claimDialectUri}:${ claim ? claim : "" }` : "" }
+                            </Label>
+                        }
                     </Grid.Column>
                     <Grid.Column width={ 8 } className="select-attribute">
                         <Field
