@@ -70,7 +70,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
     const [ isShowClaimIDHint, setIsShowClaimIDHint ] = useState(false);
     const [ isShowRegExHint, setIsShowRegExHint ] = useState(false);
     const [ isShowDisplayOrderHint, setIsShowDisplayOrderHint ] = useState(false);
-    const [ showMappingError, setShowMappingError ] = useState<boolean>(false);
+    const [ showOIDCMappingError, setShowOIDCMappingError ] = useState<boolean>(false);
+    const [ showSCIMMappingError, setShowScimMappingError ] = useState<boolean>(false);
 
     const [ noUniqueOIDCAttrib, setNoUniqueOIDCAttrib ] = useState<boolean>(true);
     const [ noUniqueSCIMAttrib, setNoUniqueSCIMAttrib ] = useState<boolean>(true);
@@ -258,11 +259,24 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                             { t("extensions:manage.attributes.generatedAttributeMapping.description") }
                                         </Card.Meta>
                                         <Card.Description className="mt-1 mb-1">
-                                            { showMappingError &&
+                                            { 
+                                                // TODO : Need to move ti i18n files
+                                                showSCIMMappingError &&
                                                 <Message className="mb-4" size="tiny" negative>
                                                     <p>
-                                                        Protocol mapping should only consist of alphanumeric 
-                                                        values separated by underscores.
+                                                        The SCIM mapping value entered contains illegal characters. 
+                                                        Only alphabets, numbers, `_` are allowed.
+                                                    </p>
+                                                </Message>
+                                            }
+                                            { 
+                                                // TODO : Need to move ti i18n files
+                                                showOIDCMappingError &&
+                                                <Message className="mb-4" size="tiny" negative>
+                                                    <p>
+                                                        The OpenID Connect mapping value entered contains 
+                                                        illegal characters. Only alphabets, numbers, `#`, and 
+                                                        `_` are allowed.
                                                     </p>
                                                 </Message>
                                             }
@@ -301,8 +315,9 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                     <Grid.Column width={ 11 }>
                                                         <InlineEditInput
                                                             text={ oidcMapping }
+                                                            validation="^[A-za-z0-9#_]+$"
                                                             errorHandler={ (status) => {
-                                                                setShowMappingError(status);
+                                                                setShowOIDCMappingError(status);
                                                             } }
                                                             onEdit={ (isEdit) => {
                                                                 setIsInlineEditMode(isEdit);
@@ -314,7 +329,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                                         .checkAttributeNameAvailability(value, "OIDC")
                                                                         .then(response => {
                                                                             setNoUniqueOIDCAttrib(response.get("OIDC"));
-                                                                            setShowMappingError(false);
+                                                                            setShowOIDCMappingError(false);
                                                                             setOidcMapping(value);
                                                                         });
                                                                 }
@@ -343,7 +358,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                             textPrefix="urn:scim:wso2:schema:"
                                                             validation="^[a-zA-Z0-9_-]*$"
                                                             errorHandler={ (status) => {
-                                                                setShowMappingError(status);
+                                                                setShowScimMappingError(status);
                                                             } }
                                                             onEdit={ (isEdit) => {
                                                                 setIsInlineEditMode(isEdit);
@@ -355,7 +370,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                                         .checkAttributeNameAvailability(value, "SCIM")
                                                                         .then(response => {
                                                                             setNoUniqueSCIMAttrib(response.get("SCIM"));
-                                                                            setShowMappingError(false);
+                                                                            setShowScimMappingError(false);
                                                                             setScimMapping(value);
                                                                         });
                                                                 }
