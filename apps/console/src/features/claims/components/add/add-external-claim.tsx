@@ -183,6 +183,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
             onSubmit={ (values: Map<string, FormValue>) => {
                 if (wizard) {
                     onSubmit(values);
+                    setClaim("");
                     setReset();
                 } else {
                     addExternalClaim(dialectId, {
