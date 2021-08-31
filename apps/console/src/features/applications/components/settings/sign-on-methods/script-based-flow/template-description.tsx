@@ -17,6 +17,7 @@
  */
 
 import { CodeEditor, LinkButton } from "@wso2is/react-components";
+import isObject from "lodash-es/isObject";
 import React, {
     FunctionComponent,
     ReactElement
@@ -45,130 +46,157 @@ interface TemplateDescriptionPropsInterface {
 
 /**
  * The modal that contains template description.
- * 
+ *
  * @param {TemplateDescriptionPropsInterface} props React component props.
- * 
+ *
  * @returns {ReactElement} Template Description component.
  */
-export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInterface> =
-    (props: TemplateDescriptionPropsInterface): ReactElement => {
+export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInterface> = (
+    props: TemplateDescriptionPropsInterface
+): ReactElement => {
 
-        const { template, open, onClose } = props;
+    const {
+        template,
+        open,
+        onClose
+    } = props;
 
-        const { t } = useTranslation();
+    const { t } = useTranslation();
 
-        return (
-            <Modal open={ open } onClose={ onClose } dimmer="blurring" size="small">
-                <Modal.Header>{ template.title }</Modal.Header>
-                <Modal.Content scrolling>
-                    <p>{ template.summary }</p>
-
-                    <h4>
-                        {
-                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                                "templateDescription.description.prerequisites")
-                        }
-                    </h4>
-                    <List>
-                        { template.preRequisites.map((prerequisite: string, index: number) => {
-                            return (
-                                <List.Item key={ index }>
-                                    <List.Icon name="check circle outline" color="green" />
-                                    <List.Content>{ prerequisite }</List.Content>
-                                </List.Item>
-                            );
-                        }) }
-                    </List>
-
-                    <h4>
-                        {
-                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                                "templateDescription.description.parameters")
-                        }
-                    </h4>
-                    <Table definition>
-                        <Table.Header>
-                            <Table.Row>
-                                <Table.HeaderCell />
-                                <Table.HeaderCell>{
+    return (
+        <Modal open={ open } onClose={ onClose } dimmer="blurring" size="small">
+            <Modal.Header>{ template.title }</Modal.Header>
+            <Modal.Content scrolling>
+                <p>{ template.summary }</p>
+                {
+                    Array.isArray(template?.preRequisites) && template.preRequisites.length > 0 && (
+                        <>
+                            <h4>
+                                {
                                     t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                                        "templateDescription.description.description")
-                                }</Table.HeaderCell>
-                            </Table.Row>
-                        </Table.Header>
-                        <Table.Body>
-                            { Object.entries(template.parametersDescription)
-                                .map(([ param, description ], index: number) => {
+                                        "templateDescription.description.prerequisites")
+                                }
+                            </h4>
+                            <List>
+                                { template.preRequisites.map((prerequisite: string, index: number) => {
                                     return (
-                                        <Table.Row key={ index }>
-                                            <Table.Cell>{ param }</Table.Cell>
-                                            <Table.Cell>{ description }</Table.Cell>
-                                        </Table.Row>
+                                        <List.Item key={ index }>
+                                            <List.Icon name="check circle outline" color="green"/>
+                                            <List.Content>{ prerequisite }</List.Content>
+                                        </List.Item>
                                     );
                                 }) }
-                        </Table.Body>
-                    </Table>
-
-                    <h4>
-                        {
-                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                                "templateDescription.description.defaultSteps")
-                        }
-                    </h4>
-                    { Object.entries(template.defaultStepsDescription)
-                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                        .map(([ step, description ], index: number, steps) => {
-                            return (
-                                <div className="stepper" key={ index }>
-                                    <div className="step-number">{ index + 1 }</div>
-                                    <div className="step-text">{ description }</div>
-                                    { steps.length !== (index + 1) && (<div className="step-connector">
-                                        <div className="step-line"></div>
-                                    </div>) }
-                                </div>
-                            );
-                        }) }
-
-                    <h4>
-                        {
-                            template.helpLink 
-                            ? t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                                "templateDescription.description.helpReference") 
-                            : null
-                        }
-                    </h4>
-                    {
-                        template.helpLink 
-                        ? (
+                            </List>
+                        </>
+                    )
+                }
+                {
+                    isObject(template.parametersDescription) && (
+                        <>
+                            <h4>
+                                {
+                                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                        "templateDescription.description.parameters")
+                                }
+                            </h4>
+                            <Table definition>
+                                <Table.Header>
+                                    <Table.Row>
+                                        <Table.HeaderCell/>
+                                        <Table.HeaderCell>{
+                                            t("console:develop.features.applications.edit.sections" +
+                                                ".signOnMethod.sections.templateDescription.description" +
+                                                ".description")
+                                        }</Table.HeaderCell>
+                                    </Table.Row>
+                                </Table.Header>
+                                <Table.Body>
+                                    { Object.entries(template.parametersDescription)
+                                        .map(([ param, description ], index: number) => {
+                                            return (
+                                                <Table.Row key={ index }>
+                                                    <Table.Cell>{ param }</Table.Cell>
+                                                    <Table.Cell>{ description }</Table.Cell>
+                                                </Table.Row>
+                                            );
+                                        }) }
+                                </Table.Body>
+                            </Table>
+                        </>
+                    )
+                }
+                {
+                    isObject(template.parametersDescription) && (
+                        <>
+                            <h4>
+                                {
+                                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                        "templateDescription.description.defaultSteps")
+                                }
+                            </h4>
+                            {
+                                Object.entries(template.defaultStepsDescription)
+                                    .map(([ step, description ], index: number, steps) => {
+                                        return (
+                                            <div className="stepper" key={ index }>
+                                                <div className="step-number">{ index + 1 }</div>
+                                                <div className="step-text">{ description }</div>
+                                                { steps.length !== (index + 1) && (<div className="step-connector">
+                                                    <div className="step-line"></div>
+                                                </div>) }
+                                            </div>
+                                        );
+                                    })
+                            }
+                        </>
+                    )
+                }
+                {
+                    template.helpLink && (
+                        <>
+                            <h4>
+                                {
+                                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                        "templateDescription.description.helpReference")
+                                }
+                            </h4>
                             <Message icon info>
-                            <Icon name="help circle" />
-                            <Message.Content>
-                                <a target="_blank" href={ template.helpLink } rel="noreferrer">{ template.helpLink }</a>
-                            </Message.Content>
-                            </Message> )
-                        : null
-                    }
-                    <h4>
-                        {
-                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                                "templateDescription.description.code")
-                        }
-                    </h4>
-                    <CodeEditor
-                        lint
-                        language="javascript"
-                        sourceCode={ template.code }
-                        options={ {
-                            lineWrapping: true
-                        } }
-                        readOnly={ true }
-                        data-testid={ `${template.title}-code-editor` }
-                        getThemeFromEnvironment={ true }
-                    />
-                </Modal.Content>
-                <Modal.Actions>
-                    <LinkButton onClick={ onClose }>{ t("common:cancel") }</LinkButton>
-                </Modal.Actions>
-            </Modal>
-        );
-    };
+                                <Icon name="help circle"/>
+                                <Message.Content>
+                                    <a target="_blank" href={ template.helpLink }
+                                       rel="noreferrer">{ template.helpLink }</a>
+                                </Message.Content>
+                            </Message>
+                        </>
+                    )
+                }
+                {
+                    template.code && (
+                        <>
+                            <h4>
+                                {
+                                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                        "templateDescription.description.code")
+                                }
+                            </h4>
+                            <CodeEditor
+                                lint
+                                language="javascript"
+                                sourceCode={ template.code }
+                                options={ {
+                                    lineWrapping: true
+                                } }
+                                readOnly={ true }
+                                data-testid={ `${ template.title }-code-editor` }
+                                getThemeFromEnvironment={ true }
+                            />
+                        </>
+                    )
+                }
+            </Modal.Content>
+            <Modal.Actions>
+                <LinkButton onClick={ onClose }>{ t("common:cancel") }</LinkButton>
+            </Modal.Actions>
+        </Modal>
+    );
+};
