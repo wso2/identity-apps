@@ -51,16 +51,17 @@ import { Responsive } from "semantic-ui-react";
 import { commonConfig, serverConfigurationConfig } from "../extensions";
 import { getProfileInformation } from "../features/authentication/store";
 import {
-
     AppConstants,
     AppState,
     AppUtils,
+    AppViewTypes,
     ConfigReducerStateInterface,
     FeatureConfigInterface,
     Footer,
     Header,
     ProtectedRoute,
     RouteUtils,
+    StrictAppViewTypes,
     UIConstants,
     getAdminViewRoutes,
     getDeveloperViewRoutes,
@@ -70,7 +71,7 @@ import {
     history,
     useUIElementSizes
 } from "../features/core";
-import { setDeveloperVisibility, setManageVisibility } from "../features/core/store/actions/acess-control";
+import { setActiveView, setDeveloperVisibility, setManageVisibility } from "../features/core/store/actions";
 import {
     GovernanceConnectorCategoryInterface,
     GovernanceConnectorUtils,
@@ -117,6 +118,8 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
     const governanceConnectorCategories: GovernanceConnectorCategoryInterface[] = useSelector(
         (state: AppState) => state.governanceConnector.categories);
+    const activeView: AppViewTypes = useSelector((state: AppState) => state.global.activeView);
+
     const [ governanceConnectorsEvaluated, setGovernanceConnectorsEvaluated ] = useState<boolean>(false);
     const [ governanceConnectorRoutesAdded, setGovernanceConnectorRoutesAdded ] = useState<boolean>(false);
     const [ developRoutes ] = useState<RouteInterface[]>(getDeveloperViewRoutes());
@@ -128,6 +131,18 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
     const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<boolean>(false);
     const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
     const [ accessControlledRoutes, setAccessControlledRoutes ] = useState<RouteInterface[]>([]);
+
+    /**
+     * Make sure `MANAGE` tab is highlighted when this layout is used.
+     */
+    useEffect(() => {
+
+        if (activeView === StrictAppViewTypes.MANAGE) {
+            return;
+        }
+
+        dispatch(setActiveView(StrictAppViewTypes.MANAGE));
+    }, []);
 
     useEffect(() => {
 
@@ -422,7 +437,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                 onLayoutOnUpdate={ handleLayoutOnUpdate }
                 header={ (
                     <Header
-                        activeView="ADMIN"
+                        activeView={ StrictAppViewTypes.MANAGE }
                         fluid={ !isMobileViewport ? fluid : false }
                         onSidePanelToggleClick={ handleSidePanelToggleClick }
                     />

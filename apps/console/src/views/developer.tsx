@@ -52,12 +52,14 @@ import {
     AppConstants,
     AppState,
     AppUtils,
+    AppViewTypes,
     ConfigReducerStateInterface,
     FeatureConfigInterface,
     Footer,
     Header,
     ProtectedRoute,
     RouteUtils,
+    StrictAppViewTypes,
     UIConstants,
     getAdminViewRoutes,
     getDeveloperViewRoutes,
@@ -66,7 +68,7 @@ import {
     history,
     useUIElementSizes
 } from "../features/core";
-import { setDeveloperVisibility, setManageVisibility } from "../features/core/store/actions/acess-control";
+import { setActiveView, setDeveloperVisibility, setManageVisibility } from "../features/core/store/actions";
 
 /**
  * Developer View Prop types.
@@ -106,6 +108,8 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const activeView: AppViewTypes = useSelector((state: AppState) => state.global.activeView);
+
     const [ manageRoutes ] = useState<RouteInterface[]>(getAdminViewRoutes());
     const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(getDeveloperViewRoutes());
     const [
@@ -114,6 +118,18 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     ] = useState<RouteInterface | ChildRouteInterface>(getDeveloperViewRoutes()[0]);
     const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<boolean>(false);
     const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
+
+    /**
+     * Make sure `DEVELOP` tab is highlighted when this layout is used.
+     */
+    useEffect(() => {
+
+        if (activeView === StrictAppViewTypes.DEVELOP) {
+            return;
+        }
+
+        dispatch(setActiveView(StrictAppViewTypes.DEVELOP));
+    }, []);
 
     /**
      * Listen to location changes and set the active route accordingly.
@@ -315,7 +331,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
                 onLayoutOnUpdate={ handleLayoutOnUpdate }
                 header={ (
                     <Header
-                        activeView="DEVELOPER"
+                        activeView={ StrictAppViewTypes.DEVELOP }
                         fluid={ !isMobileViewport ? fluid : false }
                         onSidePanelToggleClick={ handleSidePanelToggleClick }
                     />
