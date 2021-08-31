@@ -18,12 +18,12 @@
 
 import { Certificate, TestableComponentInterface } from "@wso2is/core/models";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
-import { GenericIcon } from "@wso2is/react-components";
+import { GenericIcon, Message } from "@wso2is/react-components";
 import { KJUR, X509 } from "jsrsasign";
 import * as forge from "node-forge";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Divider, Form, Icon, Message, Segment, Tab, TextArea } from "semantic-ui-react";
+import { Button, Divider, Form, Icon, Segment, Tab, TextArea } from "semantic-ui-react";
 import { getCertificateIllustrations } from "../configs";
 
 // This is a polyfill to support `File.arrayBuffer()` in Safari and IE.
@@ -100,6 +100,10 @@ interface UploadCertificatePropsInterface extends TestableComponentInterface {
      * Hides the alias input.
      */
     hideAliasInput?: boolean;
+    /**
+     * Sets the visibility of the finish button
+     */
+    setShowFinishButton?: (buttonState: boolean) => void;
 }
 
 /**
@@ -123,6 +127,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
         fileData,
         forgeCertificateData,
         hideAliasInput,
+        setShowFinishButton,
         [ "data-testid" ]: testId
     } = props;
 
@@ -208,6 +213,17 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
             setFileError(false);
         }
     }, [ file ]);
+
+    /**
+     * Sets the visibility of the Finish button.
+     */
+    useEffect(() => {
+        if (!file && !pem) {
+            setShowFinishButton(false);
+        } else {
+            setShowFinishButton(true);
+        }
+    }, [file, pem])
 
     /**
      * Gets the forge certificate data from the wizard on coming back from the following step.
@@ -567,12 +583,15 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
 
             {
                 (fileError || certEmpty) &&
-                <Message error attached="bottom" data-testid={ `${ testId }-error-message` }>
-                    { fileError
-                        ? t("console:manage.features.certificates.keystore.errorCertificate")
-                        : t("console:manage.features.certificates.keystore.errorEmpty")
-                    }
-                </Message>
+                <Message
+                    negative
+                    data-testid={ `${ testId }-error-message` }
+                    content =
+                        { fileError
+                            ? t("console:manage.features.certificates.keystore.errorCertificate")
+                            : t("console:manage.features.certificates.keystore.errorEmpty")
+                        }
+                />
             }
         </>
 
