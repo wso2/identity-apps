@@ -396,20 +396,9 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                         type="warning"
                         open={ showDeleteConfirmationModal }
                         assertion={ deletingScope.name }
-                        assertionHint={ (
-                            <p>
-                                <Trans
-                                    i18nKey={
-                                        "console:manage.features.oidcScopes.confirmationModals.deleteScope" +
-                                        ".assertionHint"
-                                    }
-                                    tOptions={ { name: deletingScope.name } }
-                                >
-                                    Please type <strong>{ deletingScope.name }</strong> to confirm.
-                                </Trans>
-                            </p>
-                        ) }
-                        assertionType="input"
+                        assertionHint={ t("console:manage.features.oidcScopes.confirmationModals.deleteScope" +
+                        ".assertionHint") }
+                        assertionType="checkbox"
                         primaryAction={ t("common:confirm") }
                         secondaryAction={ t("common:cancel") }
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }

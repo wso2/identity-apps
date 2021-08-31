@@ -2785,7 +2785,7 @@ export const console: ConsoleNS = {
                         message: "Cette action est irréversible et supprimera définitivement le connecteur."
                     },
                     deleteIDP: {
-                        assertionHint: "Veuillez taper <1>{{ name }}</1> pour confirmer.",
+                        assertionHint: "Veuillez confirmer votre action.",
                         content: "Si vous supprimez ce fournisseur d'identité, vous ne pourrez pas le récupérer. " +
                             "Veuillez procéder avec prudence.",
                         header: "Etes-vous sûr ?",
@@ -5094,7 +5094,7 @@ export const console: ConsoleNS = {
                         message: "Cette action est irréversible et supprimera définitivement la claim OIDC."
                     },
                     deleteScope: {
-                        assertionHint: "Veuillez taper <1>{{ name }}</1> pour confirmer.",
+                        assertionHint: "Veuillez confirmer votre action.",
                         content: "Si vous supprimez ce scope, vous ne pourrez pas le récupérer.." +
                             "Veuillez procéder avec prudence.",
                         header: "Etes-vous sûr ?",
@@ -5996,7 +5996,7 @@ export const console: ConsoleNS = {
                 },
                 disableUser: {
                     confirmationModal: {
-                        assertionHint: "Veuillez saisir <1>{{ userName }}</1> pour confirmer.",
+                        assertionHint: "Veuillez confirmer votre action.",
                         content: "Si vous désactivez cet utilisateur, l'utilisateur ne pourra pas se connecter à" +
                             " Mon compte ou à toute autre application à laquelle l'utilisateur était abonné auparavant.",
                         header: "Êtes-vous sûr?",
