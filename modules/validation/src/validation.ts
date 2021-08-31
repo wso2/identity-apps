@@ -226,7 +226,7 @@ export const isValidClientId = (value: string): boolean => {
 export const isValidDescription = (value: string): boolean => {
     try {
         const result: ValidationResult = Joi.string()
-            .min(2).max(1024)
+            .min(3).max(1024)
             .validate(value);
         return !result.error;
     } catch (e) {
