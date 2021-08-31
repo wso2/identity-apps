@@ -18,9 +18,11 @@
 
 import React, {
     Children,
+    Fragment,
     FunctionComponent,
     PropsWithChildren,
     ReactElement,
+    ReactNode,
     cloneElement,
     isValidElement
 } from "react";
@@ -41,7 +43,7 @@ export interface AccessControlShowInterface {
     /**
      * Fallback elements which will be rendered if permission is not matched.
      */
-    fallback?: ReactElement;
+    fallback?: ReactNode;
     /**
      * Granular level resource permissions.
      */
@@ -81,18 +83,20 @@ export const Show: FunctionComponent<PropsWithChildren<AccessControlShowInterfac
         if (hideOn) {
             return null;
         } else {
-            return ( <> {
-                Children.map(children, child => {
-                    if (isValidElement(child)) {
-                        return cloneElement(child, rest);
+            return (
+                <Fragment>
+                    {
+                        Children.map(children, child => {
+                            if (isValidElement(child)) {
+                                return cloneElement(child, rest);
+                            }
+                        })
                     }
-                })
-            }
-            </>);
+                </Fragment>
+            );
         }
 
     }
 
-    return fallback || null;
-
+    return <Fragment>{ fallback }</Fragment> || null;
 };
