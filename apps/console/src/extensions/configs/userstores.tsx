@@ -19,6 +19,12 @@
 import { UserstoresConfig } from "./models";
 
 export const userstoresConfig: UserstoresConfig = {
+    isCustomerUserstore: () => {
+        return false;
+    },
+    userstoreDomain: {
+        appendToUsername: true
+    },
     userstoreEdit: {
         basicDetails: {
             showType: true
@@ -34,8 +40,5 @@ export const userstoresConfig: UserstoresConfig = {
     },
     userstoreList: {
         allowAddingUserstores: true
-    },
-    userstoreDomain: {
-        appendToUsername: true
     }
 };
