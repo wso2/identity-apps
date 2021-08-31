@@ -30,20 +30,15 @@ import {
 import compact from "lodash-es/compact";
 import isEmpty from "lodash-es/isEmpty";
 import sortBy from "lodash-es/sortBy";
-import React, {
-    FunctionComponent,
-    ReactElement,
-    useEffect,
-    useState
-} from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Container, Menu } from "semantic-ui-react";
 import { commonConfig } from "../../../extensions/configs";
 import { AppSwitcherIcons } from "../configs";
 import { history } from "../helpers";
-import { ConfigReducerStateInterface } from "../models";
-import { AppState } from "../store";
+import { AppViewTypes, ConfigReducerStateInterface, StrictAppViewTypes } from "../models";
+import { AppState, setActiveView } from "../store";
 import { CommonUtils, EventPublisher } from "../utils";
 
 /**
@@ -53,7 +48,7 @@ interface HeaderPropsInterface extends Omit<ReusableHeaderPropsInterface, "basic
     /**
      * Active view.
      */
-    activeView?: "ADMIN" | "DEVELOPER";
+    activeView?: AppViewTypes;
 }
 
 /**
@@ -67,7 +62,7 @@ export interface HeaderSubPanelItemInterface {
     /**
      * Component to render.
      */
-    component: ReactElement;
+    component: (currentActiveView?: AppViewTypes, onClickCb?: (newActiveView: AppViewTypes) => void) => ReactElement;
     /**
      * Display order.
      */
@@ -85,7 +80,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 ): ReactElement => {
 
     const {
-        activeView,
+        activeView: externallyProvidedActiveView,
         fluid,
         onSidePanelToggleClick,
         [ "data-testid" ]: testId,
@@ -93,6 +88,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
+    const dispatch = useDispatch();
 
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
     const isProfileInfoLoading: boolean = useSelector(
@@ -103,6 +99,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const showAppSwitchButton: boolean = useSelector((state: AppState) => state.config.ui.showAppSwitchButton);
     const accountAppURL: string = useSelector((state: AppState) => state.config.deployment.accountApp.path);
     const consoleAppURL: string = useSelector((state: AppState) => state.config.deployment.appHomePath);
+    const activeView: AppViewTypes = useSelector((state: AppState) => state.global.activeView);
 
     const isDevelopAllowed: boolean = 
         useSelector((state: AppState) => state.accessControl.isDevelopAllowed);
@@ -113,6 +110,21 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
+    /**
+     * Listens to  the changes in the `externallyProvidedActiveView` and sets the `activeView`.
+     */
+    useEffect(() => {
+
+        if (activeView) {
+            return;
+        }
+
+        dispatch(setActiveView(externallyProvidedActiveView));
+    }, [ externallyProvidedActiveView ]);
+
+    /**
+     * Listens to `config` changes and set the announcement.
+     */
     useEffect(() => {
         if (isEmpty(config)) {
             return;
@@ -215,15 +227,15 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         const itemExtensions: HeaderSubPanelItemInterface[] = commonConfig?.header?.getHeaderSubPanelExtensions();
         const defaultItems: HeaderSubPanelItemInterface[] = [
             {
-                component: (
+                component: () => (
                     <Menu.Item
                         name={ config.deployment.developerApp.displayName }
-                        active={ activeView === "DEVELOPER" }
-                        className="portal-switch"
+                        active={ activeView === StrictAppViewTypes.DEVELOP }
+                        className="secondary-panel-item portal-switch"
                         onClick={ () => {
                             eventPublisher.publish("console-click-develop-menu-item");
-
                             history.push(config.deployment.developerApp.path);
+                            dispatch(setActiveView(StrictAppViewTypes.DEVELOP));
                         } }
                         data-testid={ `${ testId }-developer-portal-switch` }
                     />
@@ -232,15 +244,15 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 order: 1
             },
             {
-                component: (
+                component: () => (
                     <Menu.Item
                         name={ config.deployment.adminApp.displayName }
-                        active={ activeView === "ADMIN" }
-                        className="portal-switch"
+                        active={ activeView === StrictAppViewTypes.MANAGE }
+                        className="secondary-panel-item portal-switch"
                         onClick={ () => {
                             eventPublisher.publish("console-click-manage-menu-item");
-
                             history.push(config.deployment.adminApp.path);
+                            dispatch(setActiveView(StrictAppViewTypes.MANAGE));
                         } }
                         data-testid={ `${ testId }-admin-portal-switch` }
                     />
@@ -252,7 +264,15 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
         sortBy([ ...itemExtensions, ...defaultItems ], [ "order"]).filter((item: HeaderSubPanelItemInterface) => {
             if (item.floated === floated) {
-                moderatedItemsToRender.push(item.component);
+                const {
+                    component: Component
+                } = item;
+
+                moderatedItemsToRender.push(
+                    Component(activeView, (newActiveView: AppViewTypes) => {
+                        dispatch(setActiveView(newActiveView));
+                    })
+                );
             }
         });
 
