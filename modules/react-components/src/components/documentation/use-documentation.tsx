@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,12 +16,21 @@
  * under the License.
  */
 
+import get from "lodash-es/get";
+import { useContext } from "react";
+import { DocumentationContext } from "./documentation-context";
+
 /**
- * @remarks
- * Always keep the `app.ts` import at the top of the order, to avoid
- * potential circular dependencies.
+ * Provides documentation links as context
  */
-export * from "./app";
-export * from "./documentation";
-export * from "./routes";
-export * from "./ui";
+const useDocumentation = ():(key: string) => string => {
+
+    const config = useContext(DocumentationContext);
+
+    const getLink = (key: string):string => get(config.links, key);
+
+    return getLink;
+};
+
+export default useDocumentation;
+

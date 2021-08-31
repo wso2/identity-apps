@@ -27,12 +27,13 @@ import {
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
 import {
-    Code,
     ChunkErrorModal,
+    Code,
     NetworkErrorModal,
     SessionManagementProvider,
     SessionTimeoutModalTypes
 } from "@wso2is/react-components";
+import { DocumentationProvider } from "@wso2is/react-components/src";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
@@ -43,6 +44,7 @@ import { initializeAuthentication } from "./features/authentication";
 import { EventPublisher, PreLoader } from "./features/core";
 import { ProtectedRoute } from "./features/core/components";
 import { Config, getBaseRoutes } from "./features/core/configs";
+import documentationLinks from "./features/core/configs/documentation";
 import { AppConstants } from "./features/core/constants";
 import { history } from "./features/core/helpers";
 import {
@@ -218,97 +220,101 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
                         <Router history={ history }>
                             <div className="container-fluid">
                                 <I18nextProvider i18n={ I18n.instance }>
-                                    <Suspense fallback={ <PreLoader /> }>
-                                        <SessionManagementProvider
-                                            onSessionTimeoutAbort={ handleSessionTimeoutAbort }
-                                            onSessionLogout={ handleSessionLogout }
-                                            onLoginAgain={ handleStayLoggedIn }
-                                            modalOptions={ {
-                                                description: (
-                                                    <Trans
-                                                        i18nKey={
-                                                            "console:common.modals.sessionTimeoutModal.description"
+                                    <DocumentationProvider links={ documentationLinks }>
+                                        <Suspense fallback={ <PreLoader /> }>
+                                            <SessionManagementProvider
+                                                onSessionTimeoutAbort={ handleSessionTimeoutAbort }
+                                                onSessionLogout={ handleSessionLogout }
+                                                onLoginAgain={ handleStayLoggedIn }
+                                                modalOptions={ {
+                                                    description: (
+                                                        <Trans
+                                                            i18nKey={
+                                                                "console:common.modals.sessionTimeoutModal.description"
+                                                            }
+                                                        >
+                                                            When you click on the <Code>Go back</Code> button, we will
+                                                            try to recover the session if it exists. If you don&apos;t
+                                                            have an active session, you will be redirected to the login
+                                                            page
+                                                        </Trans>
+                                                    ),
+                                                    headingI18nKey: "console:common.modals.sessionTimeoutModal.heading",
+                                                    loginAgainButtonText: I18n.instance.t("console:common:modals" +
+                                                        ".sessionTimeoutModal.loginAgainButton"),
+                                                    primaryButtonText: I18n.instance.t("console:common.modals" +
+                                                        ".sessionTimeoutModal.primaryButton"),
+                                                    secondaryButtonText: I18n.instance.t("console:common.modals" +
+                                                        ".sessionTimeoutModal.secondaryButton"),
+                                                    sessionTimedOutDescription: I18n.instance.t("console:common:" +
+                                                        "modals.sessionTimeoutModal.sessionTimedOutDescription"),
+                                                    sessionTimedOutHeadingI18nKey: "console:common:modals" +
+                                                        ".sessionTimeoutModal.sessionTimedOutHeading"
+                                                } }
+                                                type={ SessionTimeoutModalTypes.DEFAULT }
+                                            >
+                                                <>
+                                                    <Helmet>
+                                                        <title>{ appTitle }</title>
+                                                    </Helmet>
+                                                    <NetworkErrorModal
+                                                        heading={ I18n.instance.t("common:networkErrorMessage" +
+                                                        ".heading") }
+                                                        description={ I18n.instance.t("common:networkErrorMessage" +
+                                                            ".description") }
+                                                        primaryActionText={ I18n.instance.t("common:" +
+                                                            "networkErrorMessage.primaryActionText") }
+                                                    />
+                                                    <ChunkErrorModal
+                                                        heading={ I18n.instance.t("common:chunkLoadErrorMessage" +
+                                                        ".heading") }
+                                                        description={ I18n.instance.t("common:chunkLoadErrorMessage" +
+                                                            ".description") }
+                                                        primaryActionText={ I18n.instance.t("common:" +
+                                                            "chunkLoadErrorMessage.primaryActionText") }
+                                                    />
+                                                    <Switch>
+                                                        <Redirect
+                                                            exact={ true }
+                                                            path={ AppConstants.getAppBasePath() }
+                                                            to={ AppConstants.getAppLoginPath() }
+                                                        />
+                                                        <Redirect
+                                                            exact={ true }
+                                                            path={ AppConstants.getTenantQualifiedAppBasePath() }
+                                                            to={ AppConstants.getAppLoginPath() }
+                                                        />
+                                                        {
+                                                            baseRoutes.map((route, index) => {
+                                                                return (
+                                                                    route.protected ?
+                                                                        (
+                                                                            <ProtectedRoute
+                                                                                component={ route.component }
+                                                                                path={ route.path }
+                                                                                key={ index }
+                                                                                exact={ route.exact }
+                                                                            />
+                                                                        )
+                                                                        :
+                                                                        (
+                                                                            <Route
+                                                                                path={ route.path }
+                                                                                render={ (props) =>
+                                                                                    (<route.component { ...props } />)
+                                                                                }
+                                                                                key={ index }
+                                                                                exact={ route.exact }
+                                                                            />
+                                                                        )
+                                                                );
+                                                            })
                                                         }
-                                                    >
-                                                        When you click on the <Code>Go back</Code> button, we will
-                                                        try to recover the session if it exists. If you don&apos;t
-                                                        have an active session, you will be redirected to the login
-                                                        page
-                                                    </Trans>
-                                                ),
-                                                headingI18nKey: "console:common.modals.sessionTimeoutModal.heading",
-                                                loginAgainButtonText: I18n.instance.t("console:common:modals" +
-                                                    ".sessionTimeoutModal.loginAgainButton"),
-                                                primaryButtonText: I18n.instance.t("console:common.modals" +
-                                                    ".sessionTimeoutModal.primaryButton"),
-                                                secondaryButtonText: I18n.instance.t("console:common.modals" +
-                                                    ".sessionTimeoutModal.secondaryButton"),
-                                                sessionTimedOutDescription: I18n.instance.t("console:common:modals" +
-                                                    ".sessionTimeoutModal.sessionTimedOutDescription"),
-                                                sessionTimedOutHeadingI18nKey: "console:common:modals" +
-                                                    ".sessionTimeoutModal.sessionTimedOutHeading"
-                                            } }
-                                            type={ SessionTimeoutModalTypes.DEFAULT }
-                                        >
-                                            <>
-                                                <Helmet>
-                                                    <title>{ appTitle }</title>
-                                                </Helmet>
-                                                <NetworkErrorModal
-                                                    heading={ I18n.instance.t("common:networkErrorMessage.heading") }
-                                                    description={ I18n.instance.t("common:networkErrorMessage" +
-                                                        ".description") }
-                                                    primaryActionText={ I18n.instance.t("common:networkErrorMessage" +
-                                                        ".primaryActionText") }
-                                                />
-                                                <ChunkErrorModal
-                                                    heading={ I18n.instance.t("common:chunkLoadErrorMessage.heading") }
-                                                    description={ I18n.instance.t("common:chunkLoadErrorMessage" +
-                                                        ".description") }
-                                                    primaryActionText={ I18n.instance.t("common:chunkLoadErrorMessage" +
-                                                        ".primaryActionText") }
-                                                />
-                                                <Switch>
-                                                    <Redirect
-                                                        exact={ true }
-                                                        path={ AppConstants.getAppBasePath() }
-                                                        to={ AppConstants.getAppLoginPath() }
-                                                    />
-                                                    <Redirect
-                                                        exact={ true }
-                                                        path={ AppConstants.getTenantQualifiedAppBasePath() }
-                                                        to={ AppConstants.getAppLoginPath() }
-                                                    />
-                                                    {
-                                                        baseRoutes.map((route, index) => {
-                                                            return (
-                                                                route.protected ?
-                                                                    (
-                                                                        <ProtectedRoute
-                                                                            component={ route.component }
-                                                                            path={ route.path }
-                                                                            key={ index }
-                                                                            exact={ route.exact }
-                                                                        />
-                                                                    )
-                                                                    :
-                                                                    (
-                                                                        <Route
-                                                                            path={ route.path }
-                                                                            render={ (props) =>
-                                                                                (<route.component { ...props } />)
-                                                                            }
-                                                                            key={ index }
-                                                                            exact={ route.exact }
-                                                                        />
-                                                                    )
-                                                            );
-                                                        })
-                                                    }
-                                                </Switch>
-                                            </>
-                                        </SessionManagementProvider>
-                                    </Suspense>
+                                                    </Switch>
+                                                </>
+                                            </SessionManagementProvider>
+                                        </Suspense>
+                                    </DocumentationProvider>
                                 </I18nextProvider>
                             </div>
                         </Router>
