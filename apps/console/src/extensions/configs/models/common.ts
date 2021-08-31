@@ -23,6 +23,7 @@ export interface CommonConfig {
     advancedSearchWithBasicFilters: {
         enableQuerySearch: boolean;
     };
+    checkForUIResourceScopes: boolean;
     header: {
         /**
          * Get the extensions for the header.
@@ -45,7 +46,6 @@ export interface CommonConfig {
          */
         renderAppSwitcherAsDropdown: boolean;
     };
-    checkForUIResourceScopes: boolean;
     leftNavigation: {
         /**
          * Should the side panel be categorized for different views.
