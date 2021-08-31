@@ -109,7 +109,7 @@ export const identifier: ValidationFunction = (value: string): boolean => {
 
 /**
  * This validates resource names. Returns true if valid. False if not valid.
- * @param value
+ * @param value {string}
  * @deprecated please use {@link isValidResourceName}
  */
 export const resourceName: ValidationFunction = (value: string): boolean => {
@@ -158,20 +158,28 @@ export const isInteger = (value: number): boolean => {
  * This function does not handle lengths! You should have
  * the logic in place to do that.
  *
- * isValidResourceName("2myapp") // => false
- * isValidResourceName("_myapp") // => false
- * isValidResourceName(".myapp") // => false
- * isValidResourceName("-myapp") // => false
- * isValidResourceName(" myapp") // => false
- * isValidResourceName("2-myapp") // => false
- * isValidResourceName("myapp2") // => true
- * isValidResourceName("my-app2") // => true
- * isValidResourceName("My_app2") // => true
- * isValidResourceName("my.app2") // => true
- * isValidResourceName("My App2") // => true
+ * Some examples:
+ *
+ * +---------+--------+
+ * |  Input  | Output |
+ * +---------+--------+
+ * | 2myapp  | false  |
+ * | _myapp  | false  |
+ * | .myapp  | false  |
+ * | -myapp  | false  |
+ * | myapp   | false  |
+ * | 2-myapp | false  |
+ * | myapp2  | true   |
+ * | my-app2 | true   |
+ * | My_app2 | true   |
+ * | my.app2 | true   |
+ * | My App2 | true   |
+ * +---------+--------+
  *
  * See Sandbox for examples {@link https://regex101.com/r/cz6cUb/1}
- * @param value {string}
+ *
+ * @param value {string} Input to validate
+ * @return valid {boolean} Whether input is accepted or not.
  */
 export const isValidResourceName = (value: string): boolean => {
     try {
@@ -180,6 +188,48 @@ export const isValidResourceName = (value: string): boolean => {
             .validate(value);
         return !result.error;
     } catch (error) {
+        return false;
+    }
+};
+
+/**
+ * The specification [1] does not have a exact format for client IDs.
+ * They can be different from provider to provider. However, the
+ * we have enforced this validation a bit by saying , "a client id
+ * must not have line breaks or spaces.
+ *
+ * Disallowed characters ∊ {\r\n\t\f\v \u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff}
+ *
+ * [1] {@link https://datatracker.ietf.org/doc/html/rfc6749#section-2.2}
+ *
+ * @param value {string} Input to validate.
+ * @return valid {boolean} Whether input is accepted or not
+ */
+export const isValidClientId = (value: string): boolean => {
+    try {
+        const result: ValidationResult = Joi.string()
+            .regex(new RegExp("^[^\\s]*$"))
+            .validate(value);
+        return !result.error;
+    } catch (e) {
+        return false;
+    }
+};
+
+/**
+ * This function validates long or short descriptions.This is useful
+ * for text areas and other generic input description fields.
+ *
+ * @param value {string} Input to validate.
+ * @return valid {boolean} Whether input is accepted or not
+ */
+export const isValidDescription = (value: string): boolean => {
+    try {
+        const result: ValidationResult = Joi.string()
+            .min(2).max(1024)
+            .validate(value);
+        return !result.error;
+    } catch (e) {
         return false;
     }
 };
