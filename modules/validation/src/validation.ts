@@ -167,7 +167,7 @@ export const isInteger = (value: number): boolean => {
  * | _myapp  | false  |
  * | .myapp  | false  |
  * | -myapp  | false  |
- * | myapp   | false  |
+ * |  myapp  | false  |
  * | 2-myapp | false  |
  * | myapp2  | true   |
  * | my-app2 | true   |
