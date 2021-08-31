@@ -17,14 +17,11 @@
  */
 
 import React, {
-    Children,
     Fragment,
     FunctionComponent,
     PropsWithChildren,
     ReactElement,
     ReactNode,
-    cloneElement,
-    isValidElement
 } from "react";
 import { useAccess } from "react-access-control";
 
@@ -67,8 +64,7 @@ export const Show: FunctionComponent<PropsWithChildren<AccessControlShowInterfac
         notWhen,
         fallback,
         resource,
-        children,
-        ...rest
+        children
     } = props;
 
     const show = hasPermission(when, { resource });
@@ -85,13 +81,7 @@ export const Show: FunctionComponent<PropsWithChildren<AccessControlShowInterfac
         } else {
             return (
                 <Fragment>
-                    {
-                        Children.map(children, child => {
-                            if (isValidElement(child)) {
-                                return cloneElement(child, rest);
-                            }
-                        })
-                    }
+                    { children }
                 </Fragment>
             );
         }
