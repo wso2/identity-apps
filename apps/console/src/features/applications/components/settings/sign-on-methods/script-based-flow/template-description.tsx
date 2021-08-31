@@ -126,7 +126,7 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
                     )
                 }
                 {
-                    isObject(template.parametersDescription) && (
+                    isObject(template.defaultStepsDescription) && (
                         <>
                             <h4>
                                 {
