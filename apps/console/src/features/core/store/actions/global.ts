@@ -17,16 +17,17 @@
  */
 
 import { GlobalActionTypes, SetActiveViewAction } from "./types";
+import { AppViewTypes } from "../../models";
 
 /**
  * Set the active view of the Application.
  * Whether it's DEVELOP, MANAGE etc.
  *
- * @param {string} payload - Active view.
+ * @param {AppViewTypes} payload - Active view.
  *
  * @return {SetActiveViewAction}
  */
-export const setActiveView = (payload: "DEVELOPER" | "ADMIN" | string): SetActiveViewAction => ({
+export const setActiveView = (payload: AppViewTypes): SetActiveViewAction => ({
     payload,
     type: GlobalActionTypes.SET_ACTIVE_VIEW
 });

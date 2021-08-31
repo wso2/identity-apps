@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AppViewTypes } from "../../../models";
+
 /**
  * Enum for Global action types.
  */
@@ -40,7 +42,7 @@ interface GlobalBaseAction {
  * ex: DEVELOPER, ADMIN etc.
  */
 export interface SetActiveViewAction extends GlobalBaseAction {
-    payload: string;
+    payload: AppViewTypes;
     type: GlobalActionTypes.SET_ACTIVE_VIEW;
 }
 
