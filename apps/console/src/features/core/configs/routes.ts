@@ -541,17 +541,23 @@ export const getFullScreenViewRoutes = (): RouteInterface[] => {
  */
 export const getDefaultLayoutRoutes = (): RouteInterface[] => {
 
-    return [
-        {
-            component: lazy(() => import("../pages/privacy")),
-            icon: null,
-            id: "privacy",
-            name: "console:common.sidePanel.privacy",
-            path: AppConstants.getPaths().get("PRIVACY"),
-            protected: true,
-            showOnSidePanel: false
-        }
-    ];
+    const routes: RouteInterface[] = values(
+        merge(
+            keyBy(EXTENSION_ROUTES().default, "id")
+        )
+    );
+
+    routes.push({
+        component: lazy(() => import("../pages/privacy")),
+        icon: null,
+        id: "privacy",
+        name: "console:common.sidePanel.privacy",
+        path: AppConstants.getPaths().get("PRIVACY"),
+        protected: true,
+        showOnSidePanel: false
+    });
+
+    return routes;
 };
 
 /**

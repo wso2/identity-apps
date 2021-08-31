@@ -19,7 +19,9 @@
 import { RouteInterface } from "@wso2is/core/models";
 import { ReactElement } from "react";
 import { ApplicationTemplatesConfigInterface } from "../features/applications/data/application-templates";
-import { IdentityProviderTemplatesConfigInterface } from "../features/identity-providers/data/identity-provider-templates";
+import {
+    IdentityProviderTemplatesConfigInterface
+} from "../features/identity-providers/data/identity-provider-templates";
 
 /**
  * Interface for the core extensions config.
@@ -35,6 +37,7 @@ export interface ExtensionsConfigInterface {
  * Interface for routes extensions.
  */
 export interface ExtensionRoutesInterface {
+    default?: RouteInterface[];
     develop?: RouteInterface[];
     fullscreen?: RouteInterface[];
     manage?: RouteInterface[];
