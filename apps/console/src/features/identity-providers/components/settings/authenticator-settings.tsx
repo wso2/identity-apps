@@ -582,10 +582,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                         prop.maxLength = OIDC_CLIENT_ID_SECRET_MAX_LENGTH;
                     } else if (prop.key === "callbackUrl") {
                         prop.displayName = "Authorized redirect URL";
-                        prop.description = "The Asgardeo URL to which the user needs to be redirected " +
-                            "after completing the authentication at the identity provider. The " +
-                            "identity provider needs to send the authorization code to this URL upon " +
-                            "successful authentication.";
+                        prop.description = `The ${ config.ui.productName } URL to which the user needs to be redirected
+                            after completing the authentication at the identity provider. The
+                            identity provider needs to send the authorization code to this URL upon
+                            successful authentication.`;
                         prop.readOnly = true;
                     } else if (prop.key === "OAuth2AuthzEPUrl") {
                         prop.displayName = "Authorization endpoint URL";
@@ -620,8 +620,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 };
                 authenticator.data.properties.push(logoutUrlData);
                 const logoutUrlMeta: CommonPluggableComponentMetaPropertyInterface = {
-                    description: "The URL of the identity provider to which Asgardeo will send session " +
-                        "invalidation requests.",
+                    description: `The URL of the identity provider to which ${ config.ui.productName } will send session
+                        invalidation requests.`,
                     displayName: "Logout URL",
                     displayOrder: 7,
                     isConfidential: false,
