@@ -186,7 +186,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         "app-header",
         {
             [ "fluid-header" ]: fluid,
-            [ "has-announcement" ]: announcement !== undefined
+            [ "has-announcement" ]: announcement !== undefined,
+            "show-hamburger": showSidePanelToggle
         }
         , className
     );
