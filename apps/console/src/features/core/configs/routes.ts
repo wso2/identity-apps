@@ -20,7 +20,7 @@ import { RouteInterface } from "@wso2is/core/models";
 import keyBy from "lodash-es/keyBy";
 import merge from "lodash-es/merge";
 import values from "lodash-es/values";
-import { lazy } from "react";
+import { FunctionComponent, lazy } from "react";
 import { getSidePanelIcons } from "./ui";
 import { EXTENSION_ROUTES, identityProviderConfig } from "../../../extensions";
 import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout } from "../../../layouts";
@@ -564,6 +564,7 @@ export const getErrorLayoutRoutes = (): RouteInterface[] => {
     return [
         {
             component: lazy(() => import("../pages/errors/unauthorized")),
+            exact: true,
             icon: null,
             id: "unauthorized",
             name: "Unauthorized",
@@ -573,6 +574,7 @@ export const getErrorLayoutRoutes = (): RouteInterface[] => {
         },
         {
             component: lazy(() => import("../pages/errors/404")),
+            exact: true,
             icon: null,
             id: "pageNotFound",
             name: "404",
@@ -582,6 +584,7 @@ export const getErrorLayoutRoutes = (): RouteInterface[] => {
         },
         {
             component: lazy(() => import("../pages/errors/storage-disabled")),
+            exact: true,
             icon: null,
             id: "storingDataDisabled",
             name: "storingDataDisabled",
@@ -622,6 +625,42 @@ export const getAuthLayoutRoutes = (): RouteInterface[] => {
 };
 
 /**
+ * If a layout doesn't use a sub base path i.e `console`, `manage`, then all the routes in that layout
+ * has to be registered in the root layout path (`getAppLayoutRoutes`). This function will help inject the
+ * proper layout by reusing the defined routes rather than duplicating.
+ *
+ * @example
+ *     Without this, we'll have to manually let the app know to use the `AuthLayout` if someone hits `/login`.
+ *     {
+ *          component: AuthLayout,
+ *          icon: null,
+ *          id: "appRouteLogin",
+ *          name: "Login",
+ *          path: AppConstants.getPaths().get("LOGIN"),
+ *          protected: false,
+ *          showOnSidePanel: false
+ *    },
+ *
+ * @param {RouteInterface[]} routes - Set of routes in the layout.
+ * @param {React.FunctionComponent} layout - Layout to be used.
+ *
+ * @return {RouteInterface[]}
+ */
+const getLayoutAssignedToRoutes = (routes: RouteInterface[], layout: FunctionComponent) => {
+
+    let modifiedRoutes: RouteInterface[] = [ ...routes ];
+
+    modifiedRoutes = modifiedRoutes.map((route: RouteInterface) => {
+        return {
+            ...route,
+            component: layout
+        };
+    });
+
+    return modifiedRoutes;
+};
+
+/**
  * Get all the app layout routes.
  *
  * @return {RouteInterface[]}
@@ -629,63 +668,9 @@ export const getAuthLayoutRoutes = (): RouteInterface[] => {
 export const getAppLayoutRoutes = (): RouteInterface[] => {
 
     return [
-        {
-            component: AuthLayout,
-            icon: null,
-            id: "appRouteLogin",
-            name: "Login",
-            path: AppConstants.getPaths().get("LOGIN"),
-            protected: false,
-            showOnSidePanel: false
-        },
-        {
-            component: AuthLayout,
-            icon: null,
-            id: "appRouteLogout",
-            name: "Logout",
-            path: AppConstants.getPaths().get("LOGOUT"),
-            protected: false,
-            showOnSidePanel: false
-        },
-        {
-            component: DefaultLayout,
-            icon: null,
-            id: "appRoutePrivacy",
-            name: "Privacy",
-            path: AppConstants.getPaths().get("PRIVACY"),
-            protected: true,
-            showOnSidePanel: false
-        },
-        {
-            component: ErrorLayout,
-            exact: true,
-            icon: null,
-            id: "unauthorized",
-            name: "Unauthorized",
-            path: AppConstants.getPaths().get("UNAUTHORIZED"),
-            protected: true,
-            showOnSidePanel: false
-        },
-        {
-            component: ErrorLayout,
-            exact: true,
-            icon: null,
-            id: "appRoute404",
-            name: "Error",
-            path: AppConstants.getPaths().get("PAGE_NOT_FOUND"),
-            protected: true,
-            showOnSidePanel: false
-        },
-        {
-            component: ErrorLayout,
-            exact: true,
-            icon: null,
-            id: "storageDisabled",
-            name: "storageDisabled",
-            path: AppConstants.getPaths().get("STORING_DATA_DISABLED"),
-            protected: false,
-            showOnSidePanel: false
-        },
+        ...getLayoutAssignedToRoutes(getAuthLayoutRoutes(), AuthLayout),
+        ...getLayoutAssignedToRoutes(getDefaultLayoutRoutes(), DefaultLayout),
+        ...getLayoutAssignedToRoutes(getErrorLayoutRoutes(), ErrorLayout),
         {
             component: FullScreenView,
             icon: null,
