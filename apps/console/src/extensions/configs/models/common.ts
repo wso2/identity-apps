@@ -60,3 +60,11 @@ export interface CommonConfig {
         showEmail: boolean;
     };
 }
+
+/**
+ * Types of views that are extended.
+ * @remarks Any views other thant `DEVELOP` and `MANAGE` can go here.
+ * @readonly
+ * @enum {string}
+ */
+export enum AppViewExtensionTypes { }
