@@ -416,89 +416,87 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
     };
 
     return (
-        <AccessControlProvider allowedScopes={ allowedScopes } featureConfig={ featureConfig }>
-            <DashboardLayoutSkeleton
-                alert={ (
-                    <Alert
-                        dismissInterval={ UIConstants.ALERT_DISMISS_INTERVAL }
-                        alertsPosition="br"
-                        alertSystem={ alertSystem }
-                        alert={ alert }
-                        onAlertSystemInitialize={ handleAlertSystemInitialize }
-                        withIcon={ true }
-                    />
-                ) }
-                topLoadingBar={ (
-                    <TopLoadingBar
-                        height={ UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT }
-                        visibility={ isAJAXTopLoaderVisible }
-                    />
-                ) }
-                onLayoutOnUpdate={ handleLayoutOnUpdate }
-                header={ (
-                    <Header
-                        activeView={ StrictAppViewTypes.MANAGE }
-                        fluid={ !isMobileViewport ? fluid : false }
-                        onSidePanelToggleClick={ handleSidePanelToggleClick }
-                    />
-                ) }
-                sidePanel={ (
-                    <SidePanel
-                        categorized={
-                            config?.ui?.isLeftNavigationCategorized !== undefined
-                                ? config.ui.isLeftNavigationCategorized
-                                    && commonConfig?.leftNavigation?.isLeftNavigationCategorized?.manage
-                                : true
-                        }
-                        caretIcon={ getSidePanelMiscIcons().caretRight }
-                        desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
-                        fluid={ !isMobileViewport ? fluid : false }
-                        footerHeight={ footerHeight }
-                        headerHeight={ headerHeight }
-                        hoverType="background"
-                        mobileSidePanelVisibility={ mobileSidePanelVisibility }
-                        onSidePanelItemClick={ handleSidePanelItemClick }
-                        onSidePanelPusherClick={ handleSidePanelPusherClick }
-                        routes={ CommonRouteUtils.sanitizeForUI(cloneDeep(filteredRoutes),
-                            AppUtils.getHiddenRoutes()) }
-                        selected={ selectedRoute }
-                        translationHook={ t }
-                        allowedScopes={ allowedScopes }
-                    />
-                ) }
-                footer={ (
-                    <Footer
-                        fluid={ !isMobileViewport ? fluid : false }
+        <DashboardLayoutSkeleton
+            alert={ (
+                <Alert
+                    dismissInterval={ UIConstants.ALERT_DISMISS_INTERVAL }
+                    alertsPosition="br"
+                    alertSystem={ alertSystem }
+                    alert={ alert }
+                    onAlertSystemInitialize={ handleAlertSystemInitialize }
+                    withIcon={ true }
+                />
+            ) }
+            topLoadingBar={ (
+                <TopLoadingBar
+                    height={ UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT }
+                    visibility={ isAJAXTopLoaderVisible }
+                />
+            ) }
+            onLayoutOnUpdate={ handleLayoutOnUpdate }
+            header={ (
+                <Header
+                    activeView={ StrictAppViewTypes.MANAGE }
+                    fluid={ !isMobileViewport ? fluid : false }
+                    onSidePanelToggleClick={ handleSidePanelToggleClick }
+                />
+            ) }
+            sidePanel={ (
+                <SidePanel
+                    categorized={
+                        config?.ui?.isLeftNavigationCategorized !== undefined
+                            ? config.ui.isLeftNavigationCategorized
+                                && commonConfig?.leftNavigation?.isLeftNavigationCategorized?.manage
+                            : true
+                    }
+                    caretIcon={ getSidePanelMiscIcons().caretRight }
+                    desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
+                    fluid={ !isMobileViewport ? fluid : false }
+                    footerHeight={ footerHeight }
+                    headerHeight={ headerHeight }
+                    hoverType="background"
+                    mobileSidePanelVisibility={ mobileSidePanelVisibility }
+                    onSidePanelItemClick={ handleSidePanelItemClick }
+                    onSidePanelPusherClick={ handleSidePanelPusherClick }
+                    routes={ CommonRouteUtils.sanitizeForUI(cloneDeep(filteredRoutes),
+                        AppUtils.getHiddenRoutes()) }
+                    selected={ selectedRoute }
+                    translationHook={ t }
+                    allowedScopes={ allowedScopes }
+                />
+            ) }
+            footer={ (
+                <Footer
+                    fluid={ !isMobileViewport ? fluid : false }
+                />
+            ) }
+        >
+            <ErrorBoundary
+                onChunkLoadError={ AppUtils.onChunkLoadError }
+                fallback={ (
+                    <EmptyPlaceholder
+                        action={ (
+                            <LinkButton onClick={ () => CommonUtils.refreshPage() }>
+                                { t("console:common.placeholders.brokenPage.action") }
+                            </LinkButton>
+                        ) }
+                        image={ getEmptyPlaceholderIllustrations().brokenPage }
+                        imageSize="tiny"
+                        subtitle={ [
+                            t("console:common.placeholders.brokenPage.subtitles.0"),
+                            t("console:common.placeholders.brokenPage.subtitles.1")
+                        ] }
+                        title={ t("console:common.placeholders.brokenPage.title") }
                     />
                 ) }
             >
-                <ErrorBoundary
-                    onChunkLoadError={ AppUtils.onChunkLoadError }
-                    fallback={ (
-                        <EmptyPlaceholder
-                            action={ (
-                                <LinkButton onClick={ () => CommonUtils.refreshPage() }>
-                                    { t("console:common.placeholders.brokenPage.action") }
-                                </LinkButton>
-                            ) }
-                            image={ getEmptyPlaceholderIllustrations().brokenPage }
-                            imageSize="tiny"
-                            subtitle={ [
-                                t("console:common.placeholders.brokenPage.subtitles.0"),
-                                t("console:common.placeholders.brokenPage.subtitles.1")
-                            ] }
-                            title={ t("console:common.placeholders.brokenPage.title") }
-                        />
-                    ) }
-                >
-                    <Suspense fallback={ <ContentLoader dimmer/> }>
-                        <Switch>
-                            { resolveRoutes() }
-                        </Switch>
-                    </Suspense>
-                </ErrorBoundary>
-            </DashboardLayoutSkeleton>
-        </AccessControlProvider>
+                <Suspense fallback={ <ContentLoader dimmer/> }>
+                    <Switch>
+                        { resolveRoutes() }
+                    </Switch>
+                </Suspense>
+            </ErrorBoundary>
+        </DashboardLayoutSkeleton>
     );
 };
 
