@@ -118,7 +118,7 @@ let triggerPreviousForm: () => void;
             />
             <Field.Input
                 ariaLabel="displayName"
-                inputType="resourceName"
+                inputType="resource_name"
                 data-testid={ `${ testId }-oidc-scope-form-name-input` }
                 name="displayName"
                 label={ t("console:manage.features.oidcScopes.forms.addScopeForm." +
@@ -135,7 +135,7 @@ let triggerPreviousForm: () => void;
             <Field.Input
                 data-testid={ `${ testId }-oidc-scope-form-name-input` }
                 ariaLabel="description"
-                inputType="resourceName"
+                inputType="description"
                 name="description"
                 label={ t("console:manage.features.oidcScopes.forms.addScopeForm." +
                     "inputs.description.label") }

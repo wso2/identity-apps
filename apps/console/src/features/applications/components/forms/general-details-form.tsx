@@ -163,7 +163,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             { !UIConfig.systemAppsIdentifiers.includes(name) && (
                 <Field.Input
                     ariaLabel="Application name"
-                    inputType="resourceName"
+                    inputType="resource_name"
                     name="name"
                     label={
                         t("console:develop.features.applications.forms.generalDetails.fields.name" +

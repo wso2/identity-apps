@@ -289,7 +289,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     />
                     <Field.Textarea
                         ariaLabel="description"
-                        inputType="resourceName"
+                        inputType="description"
                         name="description"
                         label={ t("console:manage.features.claims.local.forms.description.label") }
                         required={ false }
@@ -308,7 +308,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     { attributeConfig.localAttributes.createWizard.showRegularExpression &&
                         <Field.Input
                             ariaLabel="regularExpression"
-                            inputType="resourceName"
+                            inputType="default"
                             name="regularExpression"
                             label={ t("console:manage.features.claims.local.forms.regEx.label") }
                             required={ false }
