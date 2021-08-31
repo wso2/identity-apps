@@ -23,10 +23,12 @@ import {
     identifier,
     imageUrl,
     isInteger,
+    isValidClientId,
+    isValidDescription,
+    isValidResourceName,
     mobileNumber,
     resourceName,
-    url,
-    isValidResourceName
+    url
 } from "./validation";
 
 export const FormValidation = {
@@ -34,8 +36,10 @@ export const FormValidation = {
     identifier,
     imageUrl,
     isInteger,
+    isValidClientId,
+    isValidDescription,
+    isValidResourceName,
     mobileNumber,
     resourceName,
-    url,
-    isValidResourceName
+    url
 };

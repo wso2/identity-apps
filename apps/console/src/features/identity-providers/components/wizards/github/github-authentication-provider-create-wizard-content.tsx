@@ -218,7 +218,7 @@ export const GitHubAuthenticationProviderCreateWizardContent: FunctionComponent<
                         />
                         <Field.Input
                             ariaLabel="GitHub Client ID"
-                            inputType="resourceName"
+                            inputType="client_id"
                             name="clientId"
                             label={
                                 t("console:develop.features.authenticationProvider.forms" +
