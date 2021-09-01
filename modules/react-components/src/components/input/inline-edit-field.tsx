@@ -29,6 +29,7 @@ export interface InlineEditInputPropsInterface extends TestableComponentInterfac
     inputPlaceholderText?: string;
     onChangesSaved: (changedValue: string) => void;
     onEdit?: (editMode: boolean) => void;
+    maxLength?: number;
 }
 
 /**
@@ -50,6 +51,7 @@ export const InlineEditInput: FunctionComponent<InlineEditInputPropsInterface> =
         validation,
         onChangesSaved,
         onEdit,
+        maxLength,
         [ "data-testid" ]: testId
     } = props;
 
@@ -82,6 +84,7 @@ export const InlineEditInput: FunctionComponent<InlineEditInputPropsInterface> =
                             placeholder={ inputPlaceholderText }
                             value={ textValue }
                             error={ fieldError }
+                            maxLength={ maxLength }
                             onChange={ (
                                 event: React.ChangeEvent<HTMLInputElement>, 
                                 data: InputOnChangeData ) => {
