@@ -20,7 +20,7 @@ import { getAllLocalClaims } from "@wso2is/core/api";
 import { AlertLevels, Claim, ClaimsGetParams, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
-import { PrimaryButton } from "@wso2is/react-components";
+import { ContentLoader, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -101,6 +101,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
     const [ localClaimsSearchResults, setLocalClaimsSearchResults ] = useState<Claim[]>();
     const [ localClaimsSet, setLocalClaimsSet ] = useState(false);
     const [ claim, setClaim ] = useState<string>("");
+    const [ isLocalClaimsLoading, setIsLocalClaimsLoading ] = useState<boolean>(true);
 
     const [ reset, setReset ] = useTrigger();
 
@@ -119,14 +120,15 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
             offset: null,
             sort: null
         };
+        setIsLocalClaimsLoading(true);
         getAllLocalClaims(params).then(response => {
             const sortedClaims = response.sort((a: Claim, b: Claim) => {
                 return a.displayName > b.displayName ? 1 : -1;
             });
 
             setLocalClaims(sortedClaims);
-            setFilteredLocalClaims(sortedClaims);
             setLocalClaimsSearchResults(sortedClaims);
+            setIsLocalClaimsLoading(false);
         }).catch(error => {
             dispatch(addAlert(
                 {
@@ -137,6 +139,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                         || t("console:manage.features.claims.local.notifications.getClaims.genericError.message")
                 }
             ));
+            setIsLocalClaimsLoading(false);
         });
     }, []);
 
@@ -149,8 +152,8 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
             externalClaims.forEach((externalClaim: ExternalClaim) => {
                 tempLocalClaims = [ ...removeMappedLocalClaim(externalClaim.mappedLocalClaimURI, tempLocalClaims) ];
             });
-            setFilteredLocalClaims(tempLocalClaims);
             setLocalClaimsSearchResults(tempLocalClaims);
+            setFilteredLocalClaims(tempLocalClaims);
         }
     }, [ externalClaims, localClaimsSet ]);
 
@@ -165,12 +168,12 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
      * This removes the mapped local claims from the local claims list.
      *
      * @param {string} claimURI The claim URI of the mapped local claim.
-     * @param {Claim[]} filteredLocalClaims - Filtered claims.
+     * @param {Claim[]} claimListToFilter - Claims to filter.
      *
      * @returns {Claim[]} The array of filtered Claims.
      */
-    const removeMappedLocalClaim = (claimURI: string, filteredLocalClaims?: Claim[]): Claim[] => {
-        const claimsToFilter = filteredLocalClaims ? filteredLocalClaims : localClaims;
+    const removeMappedLocalClaim = (claimURI: string, claimListToFilter?: Claim[]): Claim[] => {
+        const claimsToFilter = claimListToFilter ? claimListToFilter : localClaims;
 
         return claimsToFilter?.filter((claim: Claim) => {
             return claim.claimURI !== claimURI;
@@ -178,6 +181,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
     };
 
     return (
+        !isLocalClaimsLoading ?
         <Forms
             onSubmit={ (values: Map<string, FormValue>) => {
                 if (wizard) {
@@ -259,7 +263,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                 }
                             } }
                         />
-                        
+
                     </Grid.Column>
                     <Grid.Column width={ 8 } className="select-attribute">
                         <Field
@@ -325,7 +329,8 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                     )
                 }
             </Grid>
-        </Forms>
+        </Forms> :
+        <ContentLoader/>
     );
 };
 
