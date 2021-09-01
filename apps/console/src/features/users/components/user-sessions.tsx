@@ -476,24 +476,27 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                             }
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column width={ 16 }>
-                                    <Show when={ AccessControlConstants.USER_EDIT }>
-                                        <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
-                                            <DangerZone
-                                                actionTitle={ t("console:manage.features.users.userSessions." +
-                                                    "dangerZones.terminate." +
-                                                    "actionTitle") }
-                                                header={ t("console:manage.features.users.userSessions.dangerZones." +
-                                                    "terminate.header") }
-                                                subheader={ t("console:manage.features.users.userSessions." +
-                                                    "dangerZones.terminate.subheader") }
-                                                onActionClick={ () => {
-                                                    setTerminatingSession(session);
-                                                    setShowSessionTerminateConfirmationModal(true);
-                                                } }
-                                                data-testid={ `${ testId }-terminate-button` }
-                                            />
-                                        </DangerZoneGroup>
-                                    </Show>
+                                    { showSessionTerminationButton && (
+                                        <Show when={ AccessControlConstants.USER_EDIT }>
+                                            <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
+                                                <DangerZone
+                                                    actionTitle={ t("console:manage.features.users.userSessions." +
+                                                        "dangerZones.terminate." +
+                                                        "actionTitle") }
+                                                    header={
+                                                        t("console:manage.features.users.userSessions.dangerZones." +
+                                                        "terminate.header") }
+                                                    subheader={ t("console:manage.features.users.userSessions." +
+                                                        "dangerZones.terminate.subheader") }
+                                                    onActionClick={ () => {
+                                                        setTerminatingSession(session);
+                                                        setShowSessionTerminateConfirmationModal(true);
+                                                    } }
+                                                    data-testid={ `${ testId }-terminate-button` }
+                                                />
+                                            </DangerZoneGroup>
+                                        </Show>
+                                    ) }
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>
