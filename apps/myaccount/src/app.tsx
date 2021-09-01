@@ -72,7 +72,7 @@ export const App = (): ReactElement => {
     const UUID: string = useSelector((state: AppState) => state.authenticationInformation.profileInfo.id);
 
     const [ appRoutes, setAppRoutes ] = useState<RouteInterface[]>(getAppRoutes());
-    
+
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     /**
@@ -142,7 +142,7 @@ export const App = (): ReactElement => {
         }
 
     }, [ config?.deployment?.tenant, userName ]);
-    
+
     /**
     * Publish page visit when the UUID is set.
     */
@@ -287,29 +287,34 @@ export const App = (): ReactElement => {
                                                             ? filterRoutes(appRoutes, config)
                                                                 .map((route, index) => {
                                                                     return (
-                                                                        route.protected ?
-                                                                            (
-                                                                                <ProtectedRoute
-                                                                                    component={ route.component }
-                                                                                    path={ route.path }
-                                                                                    key={ index }
-                                                                                    route={ route }
-                                                                                    exact={ route.exact }
-                                                                                />
-                                                                            )
-                                                                            :
-                                                                            (
-                                                                                <Route
-                                                                                    path={ route.path }
-                                                                                    render={ (props) => (
-                                                                                        <route.component
-                                                                                            { ...props }
-                                                                                        />
-                                                                                    ) }
-                                                                                    key={ index }
-                                                                                    exact={ route.exact }
-                                                                                />
-                                                                            )
+                                                                        route.redirectTo
+                                                                            ? <Redirect
+                                                                                to={ route.redirectTo }
+                                                                                path={ route.path }
+                                                                            />
+                                                                            : route.protected ?
+                                                                                (
+                                                                                    <ProtectedRoute
+                                                                                        component={ route.component }
+                                                                                        path={ route.path }
+                                                                                        key={ index }
+                                                                                        route={ route }
+                                                                                        exact={ route.exact }
+                                                                                    />
+                                                                                )
+                                                                                :
+                                                                                (
+                                                                                    <Route
+                                                                                        path={ route.path }
+                                                                                        render={ (props) => (
+                                                                                            <route.component
+                                                                                                { ...props }
+                                                                                            />
+                                                                                        ) }
+                                                                                        key={ index }
+                                                                                        exact={ route.exact }
+                                                                                    />
+                                                                                )
                                                                     );
                                                                 })
                                                             : null
