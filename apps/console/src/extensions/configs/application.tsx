@@ -78,7 +78,8 @@ export const applicationConfig: ApplicationConfig = {
     inboundSAMLForm: {
         showApplicationQualifier: true,
         showAttributeConsumingServiceIndex: true,
-        showQueryRequestProfile: true
+        showQueryRequestProfile: true,
+        artifactBindingAllowed:true
     },
     signInMethod: {
         authenticatorSelection: {
