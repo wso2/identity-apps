@@ -419,17 +419,9 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                         type="warning"
                         open={ showDeleteConfirmationModal }
                         assertion={ deletingIDP?.name }
-                        assertionHint={ (
-                            <p>
-                                <Trans
-                                    i18nKey={ "console:develop.features.idp.confirmations.deleteIDP.assertionHint" }
-                                    tOptions={ { name: deletingIDP?.name } }
-                                >
-                                    Please type <strong>{ deletingIDP?.name }</strong> to confirm.
-                                </Trans>
-                            </p>
-                        ) }
-                        assertionType="input"
+                        assertionHint={ t("console:develop.features.authenticationProvider."+
+                        "confirmations.deleteIDP.assertionHint") }
+                        assertionType="checkbox"
                         primaryAction={ t("common:confirm") }
                         secondaryAction={ t("common:cancel") }
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
