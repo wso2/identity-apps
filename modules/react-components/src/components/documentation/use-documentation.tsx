@@ -23,14 +23,11 @@ import { DocumentationContext } from "./documentation-context";
 /**
  * Provides documentation links as context
  */
-const useDocumentation = ():(key: string) => string => {
+export const useDocumentation = ():{ getLink: (key: string) => string; } => {
 
     const config = useContext(DocumentationContext);
 
     const getLink = (key: string):string => get(config?.links, key);
 
-    return getLink;
+    return { getLink };
 };
-
-export default useDocumentation;
-

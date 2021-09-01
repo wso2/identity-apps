@@ -16,18 +16,17 @@
  * under the License.
  */
 
-import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
+import React, { PropsWithChildren, ReactElement } from "react";
 import { DocumentationContext } from "./documentation-context";
-import { ConsoleDocumentationLinksInterface } from "./models";
 
 /**
  * Documentation provider props interface.
  */
-interface DocumentationProviderPropsInterface {
+interface DocumentationProviderPropsInterface<T> {
     /**
      * Initial reducer state.
      */
-    links?: ConsoleDocumentationLinksInterface;
+    links?: T;
 }
 
 /**
@@ -36,8 +35,8 @@ interface DocumentationProviderPropsInterface {
  * @param {React.PropsWithChildren<DocumentationProviderPropsInterface>} props - Wrap content/elements.
  * @returns { React.ReactElement } - DocumentationContext Provider.
  */
-export const DocumentationProvider: FunctionComponent<PropsWithChildren<DocumentationProviderPropsInterface>> = (
-    props: PropsWithChildren<DocumentationProviderPropsInterface>
+export const DocumentationProvider = <T extends unknown>(
+    props: PropsWithChildren<DocumentationProviderPropsInterface<T>>
 ): ReactElement => {
 
     const {
@@ -54,4 +53,3 @@ export const DocumentationProvider: FunctionComponent<PropsWithChildren<Document
         </DocumentationContext.Provider>
     );
 };
-

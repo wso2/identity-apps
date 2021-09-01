@@ -29,11 +29,11 @@ import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
 import {
     ChunkErrorModal,
     Code,
+    DocumentationProvider,
     NetworkErrorModal,
     SessionManagementProvider,
     SessionTimeoutModalTypes
 } from "@wso2is/react-components";
-import { DocumentationProvider } from "@wso2is/react-components/src";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
@@ -43,13 +43,13 @@ import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { initializeAuthentication } from "./features/authentication";
 import { EventPublisher, PreLoader } from "./features/core";
 import { ProtectedRoute } from "./features/core/components";
-import { Config, getBaseRoutes } from "./features/core/configs";
-import documentationLinks from "./features/core/configs/documentation";
+import { Config, DocumentationLinks, getBaseRoutes } from "./features/core/configs";
 import { AppConstants } from "./features/core/constants";
 import { history } from "./features/core/helpers";
 import {
     ConfigReducerStateInterface,
     DeploymentConfigInterface,
+    DocumentationLinksInterface,
     FeatureConfigInterface,
     ServiceResourceEndpointsInterface,
     UIConfigInterface
@@ -220,7 +220,7 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
                         <Router history={ history }>
                             <div className="container-fluid">
                                 <I18nextProvider i18n={ I18n.instance }>
-                                    <DocumentationProvider links={ documentationLinks }>
+                                    <DocumentationProvider<DocumentationLinksInterface> links={ DocumentationLinks }>
                                         <Suspense fallback={ <PreLoader /> }>
                                             <SessionManagementProvider
                                                 onSessionTimeoutAbort={ handleSessionTimeoutAbort }
