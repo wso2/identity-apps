@@ -282,6 +282,28 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
         }, []
     );
 
+    const renderSSOProfileCheckBox = () => {
+        const ssoCheckBox = [
+            {
+                label: "HTTP Post",
+                readOnly: true,
+                value: "HTTP_POST"
+            },
+            {
+                label: "HTTP Redirect",
+                readOnly: true,
+                value: "HTTP_REDIRECT"
+            }
+        ]
+        const artBindingCheckbox = { label: "Artifact", readOnly: false, value: "ARTIFACT" }
+
+        if (isArtifactBindingAllowed) {
+            ssoCheckBox.push(artBindingCheckbox);
+        }
+
+        return ssoCheckBox;
+    }
+
     /**
      * Scrolls to the first field that throws an error.
      *
@@ -860,24 +882,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             ".ssoProfile.fields.bindings.validations.empty")
                                     }
                                     default={ ["HTTP_POST", "HTTP_REDIRECT"] }
-                                    children={ [
-                                        {
-                                            label: "HTTP Post",
-                                            readOnly: true,
-                                            value: "HTTP_POST"
-                                        },
-                                        {
-                                            label: "HTTP Redirect",
-                                            readOnly: true,
-                                            value: "HTTP_REDIRECT"
-                                        },
-                                        (isArtifactBindingAllowed
-                                             ?
-                                                { label: "Artifact", value: "ARTIFACT" }
-                                            :
-                                            { label: "Artifact (Not Available)", value: "ARTIFACT", disabled:true}
-                                        )
-                                    ] }
+                                    children={ renderSSOProfileCheckBox()}
                                     value={
                                         union(initialValues?.singleSignOnProfile?.bindings,
                                             [ "HTTP_POST", "HTTP_REDIRECT" ])
