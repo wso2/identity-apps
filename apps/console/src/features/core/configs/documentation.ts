@@ -20,7 +20,7 @@ import { ConsoleDocumentationLinksInterface } from "@wso2is/react-components/src
 import ExtensionsDocumentationLinks from "../../../extensions/configs/documentation";
 
 /**
- * Get all the Admin View Routes.
+ * Get all the Features documentation links.
  *
  * @return {ConsoleDocumentationLinksInterface}
  */

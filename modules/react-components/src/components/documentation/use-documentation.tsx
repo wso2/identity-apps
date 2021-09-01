@@ -27,7 +27,7 @@ const useDocumentation = ():(key: string) => string => {
 
     const config = useContext(DocumentationContext);
 
-    const getLink = (key: string):string => get(config.links, key);
+    const getLink = (key: string):string => get(config?.links, key);
 
     return getLink;
 };

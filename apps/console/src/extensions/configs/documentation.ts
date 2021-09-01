@@ -18,9 +18,14 @@
 
 import { ConsoleDocumentationLinksInterface } from "@wso2is/react-components/src/components/documentation/models";
 
+/**
+ * Get all the Extensions documentation links.
+ *
+ * @return {ConsoleDocumentationLinksInterface}
+ */
 const documentationLinks: ConsoleDocumentationLinksInterface = {
     common: {
-        docsHomePage: "this is a test"
+        docsHomePage: undefined
     },
     develop: {
         applications: {

@@ -48,7 +48,7 @@ export const DocumentationProvider: FunctionComponent<PropsWithChildren<Document
     /**
      * Render state, dispatch and special case actions.
      */
-     return (
+    return (
         <DocumentationContext.Provider value={ { links } }>
             { children }
         </DocumentationContext.Provider>
