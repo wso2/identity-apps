@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { UserAgentParser } from "@wso2is/core/helpers";
 import {
     AlertInterface,
@@ -52,7 +53,6 @@ import { userstoresConfig } from "../../../extensions";
 import { FeatureConfigInterface, getEmptyPlaceholderIllustrations, history } from "../../core";
 import { getUserSessions, terminateAllUserSessions, terminateUserSession } from "../api";
 import { ApplicationSessionInterface, UserSessionInterface, UserSessionsInterface } from "../models";
-import { Show, AccessControlConstants } from "@wso2is/access-control";
 
 /**
  * Proptypes for the user sessions component.
@@ -70,6 +70,10 @@ interface UserSessionsPropsInterface extends SBACInterface<FeatureConfigInterfac
      * User profile
      */
     user: ProfileInfoInterface;
+    /**
+     * Specifies if the session termination button should be shown
+     */
+    showSessionTerminationButton?: boolean;
 }
 
 /**
@@ -86,6 +90,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
         defaultActiveIndexes,
         isLoading,
         user,
+        showSessionTerminationButton,
         [ "data-testid" ]: testId
     } = props;
 
@@ -688,18 +693,20 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                     <Grid data-testid={ testId }>
                         <Grid.Row>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Show when={ AccessControlConstants.USER_EDIT }>
-                                    <DangerButton
-                                        floated="right"
-                                        data-testid={ `${ testId }-terminate-all-button` }
-                                        onClick={ () => setShowAllSessionsTerminateConfirmationModal(true) }
-                                    >
-                                        {
-                                            t("console:manage.features.users.userSessions.components.sessionDetails" +
-                                                ".actions.terminateAllSessions")
-                                        }
-                                    </DangerButton>
-                                </Show>
+                                { showSessionTerminationButton && (
+                                    <Show when={ AccessControlConstants.USER_EDIT }>
+                                        <DangerButton
+                                            floated="right"
+                                            data-testid={ `${ testId }-terminate-all-button` }
+                                            onClick={ () => setShowAllSessionsTerminateConfirmationModal(true) }
+                                        >
+                                            {
+                                                t("console:manage.features.users.userSessions." +
+                                                    "components.sessionDetails.actions.terminateAllSessions")
+                                                }
+                                            </DangerButton>
+                                    </Show>
+                                ) }
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row>
@@ -845,5 +852,6 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
  */
 UserSessions.defaultProps = {
     "data-testid": "user-sessions",
-    defaultActiveIndexes: [ -1 ]
+    defaultActiveIndexes: [ -1 ],
+    showSessionTerminationButton: true
 };
