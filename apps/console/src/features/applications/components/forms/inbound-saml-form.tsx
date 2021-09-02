@@ -923,8 +923,10 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                                 type="checkbox"
                                                 value={
                                                     isArtifactBindingEnabled && initialValues?.singleSignOnProfile
-                                                        .enableSignatureValidationForArtifactBinding ?
-                                                        ["enableSignatureValidationForArtifactBinding"] : []}
+                                                        .enableSignatureValidationForArtifactBinding 
+                                                            ? ["enableSignatureValidationForArtifactBinding"] 
+                                                            : []
+                                                }
                                                 children={[
                                                     {
                                                         label: t("console:develop.features.applications.forms.inboundSAML" +
