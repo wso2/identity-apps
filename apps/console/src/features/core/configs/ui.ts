@@ -40,6 +40,7 @@ import { ReactComponent as DatabaseIcon } from "../../../themes/default/assets/i
 import { ReactComponent as DragSquaresIcon } from "../../../themes/default/assets/images/icons/drag-squares-icon.svg";
 import { ReactComponent as ForbiddenIcon } from "../../../themes/default/assets/images/icons/forbidden-icon.svg";
 import { ReactComponent as GearsIcon } from "../../../themes/default/assets/images/icons/gears-icon.svg";
+import { ReactComponent as LockIcon } from "../../../themes/default/assets/images/icons/lock-icon.svg";
 import { ReactComponent as MaximizeIcon } from "../../../themes/default/assets/images/icons/maximize-icon.svg";
 import { ReactComponent as IDPMetadataIcon } from "../../../themes/default/assets/images/icons/metadata.svg";
 import { ReactComponent as MinimizeIcon } from "../../../themes/default/assets/images/icons/minimize-icon.svg";
@@ -175,6 +176,7 @@ export const getSidePanelIcons = () => {
         remoteFetch: CodeForkIcon,
         roles: BriefcaseIcon,
         scopes: ScopeIcon,
+        secrets: LockIcon,
         serverConfigurations: GearsIcon,
         userStore: DatabaseIcon,
         users: UserIcon
