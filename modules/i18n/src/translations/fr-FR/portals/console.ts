@@ -6126,12 +6126,11 @@ export const console: ConsoleNS = {
                 },
                 lockUser: {
                     confirmationModal: {
-                        assertionHint: "Veuillez saisir <1>{{ userName }}</1> pour confirmer.",
-                        content: "Si vous verrouillez cet utilisateur, l'utilisateur ne pourra pas se connecter à Mon " +
-                            "compte ou à toute autre application à laquelle l'utilisateur était abonné auparavant. " +
-                            "Veuillez procéder avec prudence.",
+                        assertionHint: "Veuillez confirmer votre action.",
+                        content: "Si vous verrouillez ce compte, l'utilisateur ne pourra pas se connecter à " +
+                            "Mon compte ou à l'une des applications commerciales. Veuillez procéder avec prudence.",
                         header: "Êtes-vous sûr?",
-                        message: "Assurez-vous que cet utilisateur ne doit pas être autorisé à se connecter au système."
+                        message: "Cette action verrouille le compte utilisateur."
                     }
                 },
                 modals: {
