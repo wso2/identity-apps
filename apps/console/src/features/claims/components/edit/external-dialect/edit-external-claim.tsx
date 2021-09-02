@@ -104,12 +104,14 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
     const [ localClaims, setLocalClaims ] = useState<Claim[]>();
     const [ claim, setClaim ] = useState<ExternalClaim>(null);
     const [ filteredLocalClaims, setFilteredLocalClaims ] = useState<Claim[]>();
+    const [ isClaimsLoading, setIsClaimsLoading ] = useState<boolean>(false); 
 
     const dispatch = useDispatch();
 
     const { t } = useTranslation();
 
     useEffect(() => {
+        setIsClaimsLoading(true);
         const params: ClaimsGetParams = {
             "exclude-identity-claims": true,
             filter: null,
@@ -118,6 +120,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
             sort: null
         };
         getAllLocalClaims(params).then(response => {
+            setIsClaimsLoading(false);
             setLocalClaims(sortList(response, "displayName", true));
         }).catch(error => {
             dispatch(addAlert(
@@ -278,6 +281,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                                 "localAttribute.requiredErrorMessage") }
                             placeholder={ t("console:manage.features.claims.external.forms.attributeURI.placeholder") }
                             search
+                            loading={ isClaimsLoading }
                             value={ wizard ? addedClaim.mappedLocalClaimURI : claim?.mappedLocalClaimURI }
                             children={
                                 filteredLocalClaims?.map((claim: Claim, index) => {
