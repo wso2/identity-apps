@@ -69,6 +69,7 @@ export interface ApplicationConfig {
         showApplicationQualifier: boolean;
         showAttributeConsumingServiceIndex: boolean;
         showQueryRequestProfile: boolean;
+        artifactBindingAllowed: boolean;
     };
     signInMethod: {
         authenticatorSelection: {
