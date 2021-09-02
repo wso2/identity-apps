@@ -23,6 +23,7 @@ import { store } from "../../core";
 import {
     CreateGroupInterface,
     GroupListInterface,
+    GroupsInterface,
     PatchGroupDataInterface,
     SearchGroupInterface
 } from "../models";
@@ -122,7 +123,7 @@ export const getGroupById = (groupId: string): Promise<any> => {
  *
  * @param groupId group id to retrieve group details
  */
-export const getGroupByIdExcludingMembers = (groupId: string): Promise<any> => {
+export const getGroupByIdExcludingMembers = (groupId: string): Promise<AxiosResponse<GroupsInterface>> => {
     const requestConfig = {
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
