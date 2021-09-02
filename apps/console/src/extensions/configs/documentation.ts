@@ -23,6 +23,6 @@ import { DocumentationLinksExtensionInterface } from "./models";
  *
  * @return {DocumentationExtensionLinksInterface}
  */
-export const DocumentationExtensionLinks: DocumentationLinksExtensionInterface = {
-   undefined
-};
+const DocumentationExtensionLinks: DocumentationLinksExtensionInterface = {};
+
+export default DocumentationExtensionLinks;

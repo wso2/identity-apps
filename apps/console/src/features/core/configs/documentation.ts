@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { DocumentationExtensionLinks } from "../../../extensions/";
+import DocumentationExtensionLinks from "../../../extensions/configs/documentation";
 import { DocumentationLinksInterface } from "../models";
 
 /**
@@ -24,6 +24,8 @@ import { DocumentationLinksInterface } from "../models";
  *
  * @return {DocumentationLinksInterface}
  */
-export const DocumentationLinks: DocumentationLinksInterface = {
+const DocumentationLinks: DocumentationLinksInterface = {
     ...DocumentationExtensionLinks
 };
+
+export default DocumentationLinks;
