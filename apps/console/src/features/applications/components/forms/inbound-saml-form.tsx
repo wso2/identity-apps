@@ -918,8 +918,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                                 ref={signatureValidationForArtifactBinding}
                                                 name="signatureValidationForArtifactBinding"
                                                 label=""
-                                                required={false}
-                                                requiredErrorMessage="this is needed"
+                                                required={ false }
+                                                requiredErrorMessage=""
                                                 type="checkbox"
                                                 value={
                                                     isArtifactBindingEnabled && initialValues?.singleSignOnProfile
@@ -932,7 +932,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                                         value: "enableSignatureValidationForArtifactBinding"
                                                     }
                                                 ]}
-                                                readOnly={readOnly}
+                                                readOnly={ readOnly }
                                                 disabled={!isArtifactBindingEnabled}
                                                 data-testid={`${testId}-artifact-binding-signature-validation-checkbox`}
                                             />
