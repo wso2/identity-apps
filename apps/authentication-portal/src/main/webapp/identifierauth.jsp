@@ -39,6 +39,7 @@
     String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
     Boolean isEmailUsernameEnabled = false;
     String usernameLabel = "username";
+    Boolean isMultiAttributeLoginEnabledInTenant = false;
 
     if (StringUtils.isNotBlank(emailUsernameEnable)) {
         isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable);
@@ -46,8 +47,22 @@
         isEmailUsernameEnabled = isEmailUsernameEnabled();
     }
 
+    try {
+        PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+        isMultiAttributeLoginEnabledInTenant = preferenceRetrievalClient.checkMultiAttributeLogin(tenantDomain);
+    } catch (PreferenceRetrievalClientException e) {
+        request.setAttribute("error", true);
+        request.setAttribute("errorMsg", AuthenticationEndpointUtil
+                .i18n(resourceBundle, "something.went.wrong.contact.admin"));
+        IdentityManagementEndpointUtil.addErrorInformation(request, e);
+        request.getRequestDispatcher("error.jsp").forward(request, response);
+        return;
+    }
+
     if (isEmailUsernameEnabled == true) {
         usernameLabel = "email.username";
+    } else if (isMultiAttributeLoginEnabledInTenant) {
+        usernameLabel = "identifier.username";
     }
 %>
 
