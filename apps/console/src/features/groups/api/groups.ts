@@ -40,7 +40,7 @@ const httpClient = IdentityClient.getInstance()
  *
  * @param domain user store
  */
-export const getGroupList = (domain: string): Promise<GroupListInterface | any> => {
+export const getGroupList = (domain: string, excludedAttributes?: string): Promise<GroupListInterface | any> => {
 
     const requestConfig = {
         headers: {
@@ -49,7 +49,8 @@ export const getGroupList = (domain: string): Promise<GroupListInterface | any> 
         },
         method: HttpMethods.GET,
         params: {
-            domain
+            domain,
+            excludedAttributes
         },
         url: store.getState().config.endpoints.groups
     };
@@ -66,12 +67,11 @@ export const getGroupList = (domain: string): Promise<GroupListInterface | any> 
 };
 
 /**
- * Retrieve the list of groups in the system excluding members in those groups.
+ * Retrieve Group details for a given group id.
  *
- * @param domain user store
+ * @param groupId group id to retrieve group details
  */
-export const getGroupListExcludingMembers = (domain: string): Promise<GroupListInterface | any> => {
-
+export const getGroupById = (groupId: string, excludedAttributes?: string): Promise<AxiosResponse<GroupsInterface>> => {
     const requestConfig = {
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -79,58 +79,9 @@ export const getGroupListExcludingMembers = (domain: string): Promise<GroupListI
         },
         method: HttpMethods.GET,
         params: {
-            domain
+            excludedAttributes
         },
-        url: store.getState().config.endpoints.groups + "?excludedAttributes=members"
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            if (response.status == 200) {
-                return Promise.resolve(response);
-            }
-            return Promise.reject();
-        })
-        .catch((error: AxiosError) => {
-            return Promise.reject(error);
-        });
-};
-
-/**
- * Retrieve Group details for a given group id.
- *
- * @param groupId group id to retrieve group details
- */
-export const getGroupById = (groupId: string): Promise<any> => {
-    const requestConfig = {
-        headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
         url: store.getState().config.endpoints.groups + "/" + groupId
-    };
-
-    return httpClient(requestConfig).then((response) => {
-        return Promise.resolve(response);
-    }).catch((error) => {
-        return Promise.reject(error);
-    });
-};
-
-/**
- * Retrieve Group details for a given group id excluding members.
- *
- * @param groupId group id to retrieve group details
- */
-export const getGroupByIdExcludingMembers = (groupId: string): Promise<AxiosResponse<GroupsInterface>> => {
-    const requestConfig = {
-        headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: store.getState().config.endpoints.groups + "/" + groupId + "?excludedAttributes=members"
     };
 
     return httpClient(requestConfig).then((response) => {
