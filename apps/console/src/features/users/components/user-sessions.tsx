@@ -725,23 +725,12 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                         || showAllSessionsTerminateConfirmationModal
                                     }
                                     assertion={ getUsername(user.userName) }
-                                    assertionHint={ (
-                                        <p>
-                                            <Trans
-                                                i18nKey={
-                                                    showSessionTerminateConfirmationModal
-                                                        ? "console:manage.features.users.confirmations." +
-                                                        "terminateSession.assertionHint"
-                                                        : "console:manage.features.users.confirmations." +
-                                                        "terminateAllSessions.assertionHint"
-                                                }
-                                                tOptions={ { name: getUsername(user.userName) } }
-                                            >
-                                                Please type <strong>{ getUsername(user.userName) }</strong> to confirm.
-                                            </Trans>
-                                        </p>
-                                    ) }
-                                    assertionType="input"
+                                    assertionHint={ showSessionTerminateConfirmationModal
+                                        ? t("console:manage.features.users.confirmations." +
+                                        "terminateSession.assertionHint")
+                                        : t("console:manage.features.users.confirmations." +
+                                        "terminateAllSessions.assertionHint") }
+                                    assertionType="checkbox"
                                     primaryAction={ t("common:confirm") }
                                     secondaryAction={ t("common:cancel") }
                                     onSecondaryActionClick={ (): void => {

@@ -6673,7 +6673,7 @@ export const console: ConsoleNS = {
                 },
                 confirmations: {
                     terminateAllSessions: {
-                        assertionHint: "Veuillez taper <1>{{ name }}</1> pour confirmer.",
+                        assertionHint: "Veuillez confirmer votre action.",
                         content: "Si vous procédez à cette action, l'utilisateur sera déconnecté de toutes les " +
                             "sessions actives. Ils perdront la progression de toutes les tâches en cours. " +
                             "Veuillez procéder avec prudence.",
@@ -6682,7 +6682,7 @@ export const console: ConsoleNS = {
                             "actives."
                     },
                     terminateSession: {
-                        assertionHint: "Veuillez taper <1>{{ name }}</1> pour confirmer.",
+                        assertionHint: "Veuillez confirmer votre action.",
                         content: "Si vous procédez à cette action, l'utilisateur sera déconnecté de la session " +
                             "sélectionnée. Ils perdront la progression de toutes les tâches en cours. Veuillez " +
                             "procéder avec prudence.",

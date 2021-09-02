@@ -7941,14 +7941,14 @@ export const console: ConsoleNS = {
                 },
                 confirmations: {
                     terminateAllSessions: {
-                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        assertionHint: "Please confirm your action.",
                         content: "If you proceed with this action, the user will be logged out of all active " +
                             "sessions. They will loose the progress of any ongoing tasks. Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action is irreversible and will permanently terminate all the active sessions."
                     },
                     terminateSession: {
-                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        assertionHint: "Please confirm your action.",
                         content: "If you proceed with this action, the user will be logged out of the selected " +
                             "session. They will loose the progress of any ongoing tasks. Please proceed with caution.",
                         header: "Are you sure?",
