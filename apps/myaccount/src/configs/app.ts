@@ -98,8 +98,8 @@ export class Config {
             token: `${this.getDeploymentConfig().serverHost}/oauth2/token`,
             totp: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/totp`,
             totpSecret: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/totp/secret`,
-            typingDNAMe: `${this.getDeploymentConfig().serverHost}/api/typingdna/v1.0/me/typingpatterns`,
-            typingDNAServer: `${this.getDeploymentConfig().serverHost}/api/typingdna/v1.0/server/typingdnaConfig`,
+            typingDNAMe: `${this.getDeploymentConfig().serverHost}/api/identity/typingdna/v1.0/me/typingpatterns`,
+            typingDNAServer: `${this.getDeploymentConfig().serverHost}/api/identity/typingdna/v1.0/server/typingdnaConfig`,
             user: `${this.getDeploymentConfig().serverHost}/api/identity/user/v1.0/me`,
             wellKnown: `${this.getDeploymentConfig().serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`,
             consentManagement: {
