@@ -325,14 +325,14 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                             } }
                                                             onChangesSaved={ async (value: string) => {
                                                                 if (value) {
+                                                                    setOidcMapping(value);
                                                                     await attributeConfig
                                                                         .localAttributes
                                                                         .checkAttributeNameAvailability(value, "OIDC")
                                                                         .then(response => {
                                                                             setNoUniqueOIDCAttrib(response.get("OIDC"));
-                                                                            setShowOIDCMappingError(false);
-                                                                            setOidcMapping(value);
                                                                         });
+                                                                    setShowOIDCMappingError(false);
                                                                 }
                                                             } }
                                                         />
@@ -367,14 +367,14 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                             } }
                                                             onChangesSaved={ async (value: string) => {
                                                                 if (value) {
+                                                                    setScimMapping(value);
                                                                     await attributeConfig
                                                                         .localAttributes
                                                                         .checkAttributeNameAvailability(value, "SCIM")
                                                                         .then(response => {
                                                                             setNoUniqueSCIMAttrib(response.get("SCIM"));
-                                                                            setShowScimMappingError(false);
-                                                                            setScimMapping(value);
                                                                         });
+                                                                    setShowScimMappingError(false);
                                                                 }
                                                                 
                                                             } }
