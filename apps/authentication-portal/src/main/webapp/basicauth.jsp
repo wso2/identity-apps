@@ -118,10 +118,10 @@
     Boolean isEmailUsernameEnabled = false;
     String usernameLabel = "username";
 
-    Boolean isSelfSignUpEnabledInTenant = false;
-    Boolean isUsernameRecoveryEnabledInTenant = false;
-    Boolean isPasswordRecoveryEnabledInTenant = false;
-    Boolean isMultiAttributeLoginEnabledInTenant = false;
+    Boolean isSelfSignUpEnabledInTenant;
+    Boolean isUsernameRecoveryEnabledInTenant;
+    Boolean isPasswordRecoveryEnabledInTenant;
+    Boolean isMultiAttributeLoginEnabledInTenant;
 
     if (StringUtils.isNotBlank(emailUsernameEnable)) {
         isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable);
@@ -147,7 +147,7 @@
     if (isEmailUsernameEnabled == true) {
         usernameLabel = "email.username";
     } else if (isMultiAttributeLoginEnabledInTenant) {
-        usernameLabel = "identifier.username";
+        usernameLabel = "user.identifier";
     }
 
     String resendUsername = request.getParameter("resend_username");

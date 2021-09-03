@@ -38,7 +38,7 @@
         tenantDomain = IdentityManagementEndpointConstants.SUPER_TENANT;
     }
 
-    Boolean isMultiAttributeLoginEnabledInTenant = false;
+    Boolean isMultiAttributeLoginEnabledInTenant;
     try {
         PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
         isMultiAttributeLoginEnabledInTenant = preferenceRetrievalClient.checkMultiAttributeLogin(tenantDomain);
@@ -48,13 +48,14 @@
                 .i18n(recoveryResourceBundle, "something.went.wrong.contact.admin"));
         IdentityManagementEndpointUtil.addErrorInformation(request, e);
         request.getRequestDispatcher("error.jsp").forward(request, response);
+        return;
     }
 
     String usernameLabel = "Username";
     String enterUsernameHereText = "Enter.your.username.here";
     if (isMultiAttributeLoginEnabledInTenant) {
-        usernameLabel = "Identifier";
-        enterUsernameHereText = "Enter.your.identifier.here";
+        usernameLabel = "User.identifier";
+        enterUsernameHereText = "Enter.your.user.identifier.here";
     }
 %>
 

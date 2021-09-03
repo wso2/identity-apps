@@ -86,9 +86,9 @@
         reCaptchaEnabled = true;
     }
 
-    Boolean isQuestionBasedPasswordRecoveryEnabledByTenant = false;
-    Boolean isNotificationBasedPasswordRecoveryEnabledByTenant = false;
-    Boolean isMultiAttributeLoginEnabledInTenant = false;
+    Boolean isQuestionBasedPasswordRecoveryEnabledByTenant;
+    Boolean isNotificationBasedPasswordRecoveryEnabledByTenant;
+    Boolean isMultiAttributeLoginEnabledInTenant;
     try {
         PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
         isQuestionBasedPasswordRecoveryEnabledByTenant = preferenceRetrievalClient.checkQuestionBasedPasswordRecovery(tenantDomain);
@@ -100,11 +100,12 @@
                         .i18n(recoveryResourceBundle, "something.went.wrong.contact.admin"));
         IdentityManagementEndpointUtil.addErrorInformation(request, e);
         request.getRequestDispatcher("error.jsp").forward(request, response);
+        return;
     }
 
     String enterUsernameHereText = "Enter.your.username.here";
     if (isMultiAttributeLoginEnabledInTenant) {
-        enterUsernameHereText = "Enter.your.identifier.here";
+        enterUsernameHereText = "Enter.your.user.identifier.here";
     }
 %>
 

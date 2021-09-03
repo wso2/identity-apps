@@ -37,9 +37,9 @@
 
 <%
     String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
-    Boolean isEmailUsernameEnabled = false;
+    Boolean isEmailUsernameEnabled;
     String usernameLabel = "username";
-    Boolean isMultiAttributeLoginEnabledInTenant = false;
+    Boolean isMultiAttributeLoginEnabledInTenant;
 
     if (StringUtils.isNotBlank(emailUsernameEnable)) {
         isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable);
@@ -62,7 +62,7 @@
     if (isEmailUsernameEnabled == true) {
         usernameLabel = "email.username";
     } else if (isMultiAttributeLoginEnabledInTenant) {
-        usernameLabel = "identifier.username";
+        usernameLabel = "user.identifier";
     }
 %>
 
