@@ -252,9 +252,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         attributeConsumingServiceIndex: values.get("attributeConsumingServiceIndex"),
                         bindings: values.get("bindings"),
                         enableIdpInitiatedSingleSignOn: values.get("idPInitiatedSSO").includes("enableIdPInitiatedSSO"),
-                        enableSignatureValidationForArtifactBinding:
-                            values.get("signatureValidationForArtifactBinding")
-                                .includes("enableSignatureValidationForArtifactBinding")
+                        enableSignatureValidationForArtifactBinding: isArtifactBindingAllowed &&
+                            values.get("signatureValidationForArtifactBinding")?.includes("enableSignatureValidationForArtifactBinding")
                     }
                 }
             }
