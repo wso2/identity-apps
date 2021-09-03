@@ -16,6 +16,7 @@
  * under the License.
  */
 
+// DO NOT SHORTEN THE IMPORT PATH as it could lead to circular dependencies.
 import { DocumentationLinksExtension } from "../../../extensions/configs";
 import { DocumentationLinksInterface } from "../models";
 
