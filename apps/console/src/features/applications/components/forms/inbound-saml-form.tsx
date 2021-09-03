@@ -915,7 +915,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     <Grid.Row columns={1}>
                                         <Grid.Column mobile={16} tablet={16} computer={16}>
                                             <Field
-                                                ref={signatureValidationForArtifactBinding}
+                                                ref={ signatureValidationForArtifactBinding }
                                                 name="signatureValidationForArtifactBinding"
                                                 label=""
                                                 required={ false }
@@ -933,10 +933,10 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                                     }
                                                 ]}
                                                 readOnly={ readOnly }
-                                                disabled={!isArtifactBindingEnabled}
+                                                disabled={ !isArtifactBindingEnabled }
                                                 data-testid={`${testId}-artifact-binding-signature-validation-checkbox`}
                                             />
-                                            <Hint disabled={!isArtifactBindingEnabled}>
+                                            <Hint disabled={ !isArtifactBindingEnabled }>
                                                 {t("console:develop.features.applications.forms.inboundSAML.sections" +
                                                     ".ssoProfile.fields.artifactBinding.hint")}
                                             </Hint>
