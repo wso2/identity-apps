@@ -242,8 +242,7 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (props): ReactE
                 "data-componentid": `${ testId }-edit-cert-${ index }-button`,
                 icon: "eye",
                 onClick: () => handleViewCertificate(certificate),
-                popupText: t("console:manage.features.users.usersList.list." +
-                    "iconPopups.edit"),
+                popupText: "Preview",
                 type: "button"
             },
             {

@@ -7416,11 +7416,11 @@ export const console: ConsoleNS = {
                 },
                 lockUser: {
                     confirmationModal: {
-                        assertionHint: "Please type <1>{{ userName }}</1> to confirm.",
-                        content: "If you lock this user, the user will not be able to login to the My Account " +
-                            "or any other application the user was subscribed before. Please proceed with caution.",
+                        assertionHint: "Please confirm your action.",
+                        content: "If you lock this account, the user will not be able to sign in to " +
+                            "My Account or any of the business applications. Please proceed with caution.",
                         header: "Are you sure?",
-                        message: "Make sure that this user should be prevented from logging into the system."
+                        message: "This action locks the user account."
                     }
                 },
                 modals: {
