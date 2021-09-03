@@ -22,6 +22,8 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
@@ -34,6 +36,26 @@
 
     if (StringUtils.isBlank(tenantDomain)) {
         tenantDomain = IdentityManagementEndpointConstants.SUPER_TENANT;
+    }
+
+    Boolean isMultiAttributeLoginEnabledInTenant;
+    try {
+        PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+        isMultiAttributeLoginEnabledInTenant = preferenceRetrievalClient.checkMultiAttributeLogin(tenantDomain);
+    } catch (PreferenceRetrievalClientException e) {
+        request.setAttribute("error", true);
+        request.setAttribute("errorMsg", IdentityManagementEndpointUtil
+                .i18n(recoveryResourceBundle, "something.went.wrong.contact.admin"));
+        IdentityManagementEndpointUtil.addErrorInformation(request, e);
+        request.getRequestDispatcher("error.jsp").forward(request, response);
+        return;
+    }
+
+    String usernameLabel = "Username";
+    String enterUsernameHereText = "Enter.your.username.here";
+    if (isMultiAttributeLoginEnabledInTenant) {
+        usernameLabel = "User.identifier";
+        enterUsernameHereText = "Enter.your.user.identifier.here";
     }
 %>
 
@@ -84,11 +106,11 @@
                             </div>
                             <% } %>
                             <p>
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.your.username.here")%>
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, enterUsernameHereText)%>
                             </p>
                             <div class="field">
                                 <label>
-                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Username")%>
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, usernameLabel)%>
                                 </label>
                                 <input id="username" name="username" type="text" tabindex="0" required>
                                 <%

@@ -118,14 +118,36 @@
     Boolean isEmailUsernameEnabled = false;
     String usernameLabel = "username";
 
+    Boolean isSelfSignUpEnabledInTenant;
+    Boolean isUsernameRecoveryEnabledInTenant;
+    Boolean isPasswordRecoveryEnabledInTenant;
+    Boolean isMultiAttributeLoginEnabledInTenant;
+
     if (StringUtils.isNotBlank(emailUsernameEnable)) {
         isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable);
     } else {
         isEmailUsernameEnabled = isEmailUsernameEnabled();
     }
 
+    try {
+        PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+        isSelfSignUpEnabledInTenant = preferenceRetrievalClient.checkSelfRegistration(tenantDomain);
+        isUsernameRecoveryEnabledInTenant = preferenceRetrievalClient.checkUsernameRecovery(tenantDomain);
+        isPasswordRecoveryEnabledInTenant = preferenceRetrievalClient.checkPasswordRecovery(tenantDomain);
+        isMultiAttributeLoginEnabledInTenant = preferenceRetrievalClient.checkMultiAttributeLogin(tenantDomain);
+    } catch (PreferenceRetrievalClientException e) {
+        request.setAttribute("error", true);
+        request.setAttribute("errorMsg", AuthenticationEndpointUtil
+                .i18n(resourceBundle, "something.went.wrong.contact.admin"));
+        IdentityManagementEndpointUtil.addErrorInformation(request, e);
+        request.getRequestDispatcher("error.jsp").forward(request, response);
+        return;
+    }
+
     if (isEmailUsernameEnabled == true) {
         usernameLabel = "email.username";
+    } else if (isMultiAttributeLoginEnabledInTenant) {
+        usernameLabel = "user.identifier";
     }
 
     String resendUsername = request.getParameter("resend_username");
@@ -358,24 +380,6 @@
             if (StringUtils.isBlank(accountRegistrationEndpointURL)) {
                 accountRegistrationEndpointURL = identityMgtEndpointContext + ACCOUNT_RECOVERY_ENDPOINT_REGISTER;
             }
-        }
-
-        Boolean isSelfSignUpEnabledInTenant = false;
-        Boolean isUsernameRecoveryEnabledInTenant = false;
-        Boolean isPasswordRecoveryEnabledInTenant = false;
-
-        try {
-            PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
-            isSelfSignUpEnabledInTenant = preferenceRetrievalClient.checkSelfRegistration(tenantDomain);
-            isUsernameRecoveryEnabledInTenant = preferenceRetrievalClient.checkUsernameRecovery(tenantDomain);
-            isPasswordRecoveryEnabledInTenant = preferenceRetrievalClient.checkPasswordRecovery(tenantDomain);
-        } catch (PreferenceRetrievalClientException e) {
-            request.setAttribute("error", true);
-            request.setAttribute("errorMsg", AuthenticationEndpointUtil
-                            .i18n(resourceBundle, "something.went.wrong.contact.admin"));
-            IdentityManagementEndpointUtil.addErrorInformation(request, e);
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-            return;
         }
     %>
 
