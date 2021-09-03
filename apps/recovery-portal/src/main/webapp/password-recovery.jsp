@@ -86,18 +86,26 @@
         reCaptchaEnabled = true;
     }
 
-    Boolean isQuestionBasedPasswordRecoveryEnabledByTenant = false;
-    Boolean isNotificationBasedPasswordRecoveryEnabledByTenant = false;
+    Boolean isQuestionBasedPasswordRecoveryEnabledByTenant;
+    Boolean isNotificationBasedPasswordRecoveryEnabledByTenant;
+    Boolean isMultiAttributeLoginEnabledInTenant;
     try {
         PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
         isQuestionBasedPasswordRecoveryEnabledByTenant = preferenceRetrievalClient.checkQuestionBasedPasswordRecovery(tenantDomain);
         isNotificationBasedPasswordRecoveryEnabledByTenant = preferenceRetrievalClient.checkNotificationBasedPasswordRecovery(tenantDomain);
+        isMultiAttributeLoginEnabledInTenant = preferenceRetrievalClient.checkMultiAttributeLogin(tenantDomain);
     } catch (PreferenceRetrievalClientException e) {
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", IdentityManagementEndpointUtil
                         .i18n(recoveryResourceBundle, "something.went.wrong.contact.admin"));
         IdentityManagementEndpointUtil.addErrorInformation(request, e);
         request.getRequestDispatcher("error.jsp").forward(request, response);
+        return;
+    }
+
+    String enterUsernameHereText = "Enter.your.username.here";
+    if (isMultiAttributeLoginEnabledInTenant) {
+        enterUsernameHereText = "Enter.your.user.identifier.here";
     }
 %>
 
@@ -153,7 +161,7 @@
                         %>
                         <div class="field">
                             <label for="username">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.your.username.here")%>
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, enterUsernameHereText)%>
                             </label>
                             <input id="username" name="username" value="<%=username%>" type="text" tabindex="0" required>
                             <%
@@ -171,7 +179,7 @@
 
                         <div class="field">
                             <label for="username">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.your.username.here")%>
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, enterUsernameHereText)%>
                             </label>
                             <input id="username" name="username" type="text" tabindex="0" required>
                             <%

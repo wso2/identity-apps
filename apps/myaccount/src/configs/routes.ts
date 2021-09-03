@@ -119,10 +119,19 @@ export const getAppRoutes = (): RouteInterface[] => {
         },
         {
             component: lazy(() => import("../pages/errors/404")),
+            id: "appRoute404",
+            name: "Page Not Found",
+            path: AppConstants.getPaths().get("PAGE_NOT_FOUND"),
+            protected: true,
+            showOnSidePanel: false
+        },
+        {
+            component: null,
             id: "404",
             name: "404",
             path: "*",
             protected: true,
+            redirectTo: AppConstants.getPaths().get("PAGE_NOT_FOUND"),
             showOnSidePanel: false
         }
     ];

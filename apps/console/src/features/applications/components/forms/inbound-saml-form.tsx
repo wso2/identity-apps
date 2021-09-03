@@ -128,6 +128,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
     const [isAssertionEncryptionEnabled, setAssertionEncryptionEnabled] = useState(false);
     const [isSignSAMLResponsesEnabled, setSignSAMLResponsesEnabled] = useState(false);
     const [isArtifactBindingEnabled, setIsArtifactBindingEnabled] = useState(false);
+    const [isArtifactBindingAllowed, setIsArtifactBindingAllowed] = useState(true);
 
     const [ isPEMSelected, setPEMSelected ] = useState<boolean>(true);
     const [ showCertificateModal, setShowCertificateModal ] = useState<boolean>(false);
@@ -251,9 +252,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         attributeConsumingServiceIndex: values.get("attributeConsumingServiceIndex"),
                         bindings: values.get("bindings"),
                         enableIdpInitiatedSingleSignOn: values.get("idPInitiatedSSO").includes("enableIdPInitiatedSSO"),
-                        enableSignatureValidationForArtifactBinding:
-                            values.get("signatureValidationForArtifactBinding")
-                                .includes("enableSignatureValidationForArtifactBinding")
+                        enableSignatureValidationForArtifactBinding: isArtifactBindingAllowed &&
+                            values.get("signatureValidationForArtifactBinding")?.includes("enableSignatureValidationForArtifactBinding")
                     }
                 }
             }
@@ -275,6 +275,32 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
             }
         }, [initialValues]
     );
+
+    useEffect(() => {
+        setIsArtifactBindingAllowed(applicationConfig.inboundSAMLForm.artifactBindingAllowed);
+    }, []);
+
+    const renderSSOProfileCheckBox = () => {
+        const ssoCheckBox = [
+            {
+                label: "HTTP Post",
+                readOnly: true,
+                value: "HTTP_POST"
+            },
+            {
+                label: "HTTP Redirect",
+                readOnly: true,
+                value: "HTTP_REDIRECT"
+            }
+        ]
+        const artBindingCheckbox = { label: "Artifact", readOnly: false, value: "ARTIFACT" }
+
+        if (isArtifactBindingAllowed) {
+            ssoCheckBox.push(artBindingCheckbox);
+        }
+
+        return ssoCheckBox;
+    }
 
     /**
      * Scrolls to the first field that throws an error.
@@ -854,19 +880,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             ".ssoProfile.fields.bindings.validations.empty")
                                     }
                                     default={ ["HTTP_POST", "HTTP_REDIRECT"] }
-                                    children={ [
-                                        {
-                                            label: "HTTP Post",
-                                            readOnly: true,
-                                            value: "HTTP_POST"
-                                        },
-                                        {
-                                            label: "HTTP Redirect",
-                                            readOnly: true,
-                                            value: "HTTP_REDIRECT"
-                                        },
-                                        { label: "Artifact", value: "ARTIFACT" }
-                                    ] }
+                                    children={ renderSSOProfileCheckBox()}
                                     value={
                                         union(initialValues?.singleSignOnProfile?.bindings,
                                             [ "HTTP_POST", "HTTP_REDIRECT" ])
@@ -890,36 +904,42 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Field
-                                    ref={ signatureValidationForArtifactBinding }
-                                    name="signatureValidationForArtifactBinding"
-                                    label=""
-                                    required={ false }
-                                    requiredErrorMessage="this is needed"
-                                    type="checkbox"
-                                    value={
-                                        isArtifactBindingEnabled && initialValues?.singleSignOnProfile
-                                            .enableSignatureValidationForArtifactBinding ?
-                                            ["enableSignatureValidationForArtifactBinding"] : [] }
-                                    children={ [
-                                        {
-                                            label: t("console:develop.features.applications.forms.inboundSAML" +
-                                                ".sections.ssoProfile.fields.artifactBinding.label"),
-                                            value: "enableSignatureValidationForArtifactBinding"
-                                        }
-                                    ] }
-                                    readOnly={ readOnly }
-                                    disabled={ !isArtifactBindingEnabled }
-                                    data-testid={ `${ testId }-artifact-binding-signature-validation-checkbox` }
-                                />
-                                <Hint disabled={ !isArtifactBindingEnabled }>
-                                   { t("console:develop.features.applications.forms.inboundSAML.sections" +
-                                           ".ssoProfile.fields.artifactBinding.hint") }
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
+                        {
+                            isArtifactBindingAllowed
+                            ? (
+                                <Grid.Row columns={1}>
+                                    <Grid.Column mobile={16} tablet={16} computer={16}>
+                                        <Field
+                                            ref={signatureValidationForArtifactBinding}
+                                            name="signatureValidationForArtifactBinding"
+                                            label=""
+                                            required={false}
+                                            requiredErrorMessage="this is needed"
+                                            type="checkbox"
+                                            value={
+                                                isArtifactBindingEnabled && initialValues?.singleSignOnProfile
+                                                    .enableSignatureValidationForArtifactBinding ?
+                                                    ["enableSignatureValidationForArtifactBinding"] : []}
+                                            children={[
+                                                {
+                                                    label: t("console:develop.features.applications.forms.inboundSAML" +
+                                                        ".sections.ssoProfile.fields.artifactBinding.label"),
+                                                    value: "enableSignatureValidationForArtifactBinding"
+                                                }
+                                            ]}
+                                            readOnly={readOnly}
+                                            disabled={!isArtifactBindingEnabled}
+                                            data-testid={`${testId}-artifact-binding-signature-validation-checkbox`}
+                                        />
+                                        <Hint disabled={!isArtifactBindingEnabled}>
+                                            {t("console:develop.features.applications.forms.inboundSAML.sections" +
+                                                ".ssoProfile.fields.artifactBinding.hint")}
+                                        </Hint>
+                                    </Grid.Column>
+                                </Grid.Row>
+                             )
+                             : null
+                        }
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
