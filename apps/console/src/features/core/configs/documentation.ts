@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { DocumentationLinksExtension } from "../../../extensions/configs/documentation";
+import { DocumentationLinksExtension } from "../../../extensions/configs";
 import { DocumentationLinksInterface } from "../models";
 
 /**

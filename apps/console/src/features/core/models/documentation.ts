@@ -1,3 +1,3 @@
-import { DocumentationLinksExtensionInterface } from "../../../extensions";
+import { DocumentationLinksExtensionInterface } from "../../../extensions/configs";
 
 export type DocumentationLinksInterface = DocumentationLinksExtensionInterface;
