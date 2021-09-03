@@ -918,7 +918,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             name="signatureValidationForArtifactBinding"
                                             label=""
                                             required={ false }
-                                            requiredErrorMessage="this is needed"
+                                            requiredErrorMessage=""
                                             type="checkbox"
                                             value={
                                                 isArtifactBindingEnabled && initialValues?.singleSignOnProfile
