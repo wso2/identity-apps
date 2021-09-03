@@ -18,11 +18,6 @@
 
 import { DocumentationLinksExtensionInterface } from "./models";
 
-/**
- * Get all the Extensions documentation links.
- *
- * @return {DocumentationExtensionLinksInterface}
- */
-const DocumentationExtensionLinks: DocumentationLinksExtensionInterface = {};
+const DocumentationLinksExtension: DocumentationLinksExtensionInterface = {};
 
-export default DocumentationExtensionLinks;
+export default DocumentationLinksExtension;

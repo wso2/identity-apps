@@ -43,8 +43,7 @@ import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { initializeAuthentication } from "./features/authentication";
 import { EventPublisher, PreLoader } from "./features/core";
 import { ProtectedRoute } from "./features/core/components";
-import { Config, getBaseRoutes } from "./features/core/configs";
-import DocumentationLinks from "./features/core/configs/documentation";
+import { Config, DocumentationLinks, getBaseRoutes } from "./features/core/configs";
 import { AppConstants } from "./features/core/constants";
 import { history } from "./features/core/helpers";
 import {
