@@ -30,7 +30,7 @@ module.exports = {
     moduleFileExtensions: ["js", "jsx", "ts", "tsx", "json", "node"],
     moduleNameMapper: {
         "\\.(css|less)$": "<rootDir>/test-configs/style-mock.js",
-        "\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
+        "\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|md)$":
             "<rootDir>/test-configs/file-mock.js",
         "\\.svg": "<rootDir>/test-configs/svgrMock.js",
         "^lodash-es": "<rootDir>/../../node_modules/lodash",
