@@ -181,7 +181,11 @@ module.exports = (env) => {
                             loader: "@svgr/webpack",
                             options: {
                                 svgoConfig: {
-                                    plugins: [{ prefixIds: false }]
+                                    plugins: [
+                                        { prefixIds: false },
+                                        { cleanupIDs: false },
+                                        { removeViewBox: false }
+                                    ]
                                 }
                             }
                         },
