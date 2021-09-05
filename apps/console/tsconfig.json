@@ -13,7 +13,7 @@
             "@wso2is/core/store": ["node_modules/@wso2is/core/dist/src/store"],
             "@wso2is/core/utils": ["node_modules/@wso2is/core/dist/src/utils"],
             "@wso2is/core/workers/timer.worker": ["node_modules/@wso2is/core/dist/src/workers/timer.worker"],
-            "test-utils": ["./test-configs/utils"]
+            "@unit-testing": ["test-configs/utils"]
         },
         "types": [ "node", "webpack-env", "jest", "@testing-library/jest-dom" ]
     },

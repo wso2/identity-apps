@@ -490,6 +490,9 @@ module.exports = (env) => {
         ].filter(Boolean),
         resolve: {
             alias: {
+                // Can get rid of the relative paths when using the custom render function.
+                // https://testing-library.com/docs/react-testing-library/setup/#configuring-jest-with-test-utils
+                "@unit-testing": path.resolve(__dirname, "test-configs/utils"),
                 // Workaround to fix the invariant hook call exception, due to a
                 // 3rd library lib using `react` as a dependency.
                 // https://github.com/facebook/react/issues/13991#issuecomment-435587809
