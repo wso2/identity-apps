@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,19 @@
  * under the License.
  */
 
-export * from "./help-panel";
-export * from "./access-control";
-export * from "./global";
+import { AppViewExtensionTypes } from "../../../extensions";
+
+/**
+ * Types of views supported by default in the application.
+ * @readonly
+ * @enum {string}
+ */
+export enum StrictAppViewTypes {
+    DEVELOP = "DEVELOP",
+    MANAGE = "MANAGE"
+}
+
+/**
+ * Combination of views in the application with extensions.
+ */
+export type AppViewTypes = StrictAppViewTypes | AppViewExtensionTypes;

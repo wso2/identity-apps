@@ -16,18 +16,26 @@
  * under the License.
  */
 
-import { HeaderLinkCategoryInterface, HeaderExtension } from "@wso2is/react-components";
+import { HeaderExtension, HeaderLinkCategoryInterface } from "@wso2is/react-components";
+import { HeaderSubPanelItemInterface } from "../../../features/core/components";
 
 export interface CommonConfig {
     advancedSearchWithBasicFilters: {
         enableQuerySearch: boolean;
     };
+    checkForUIResourceScopes: boolean;
     header: {
         /**
          * Get the extensions for the header.
          * @return {HeaderExtension[]}
          */
         getHeaderExtensions: () => HeaderExtension[];
+        /**
+         * Get the extensions for the Header sub panel.
+         * These will come along with the `Manage` & `Develop` links.
+         * @return {{aligned: "left" | "right"; component: React.ReactElement; order: number}[]}
+         */
+        getHeaderSubPanelExtensions: () => HeaderSubPanelItemInterface[];
         /**
          * Get the user dropdown link extensions.
          * @return {HeaderLinkCategoryInterface[]}
@@ -38,7 +46,6 @@ export interface CommonConfig {
          */
         renderAppSwitcherAsDropdown: boolean;
     };
-    checkForUIResourceScopes: boolean;
     leftNavigation: {
         /**
          * Should the side panel be categorized for different views.
@@ -53,3 +60,11 @@ export interface CommonConfig {
         showEmail: boolean;
     };
 }
+
+/**
+ * Types of views that are extended.
+ * @remarks Any views other thant `DEVELOP` and `MANAGE` can go here.
+ * @readonly
+ * @enum {string}
+ */
+export enum AppViewExtensionTypes { }

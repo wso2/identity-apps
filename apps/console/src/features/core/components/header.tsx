@@ -29,20 +29,16 @@ import {
 } from "@wso2is/react-components";
 import compact from "lodash-es/compact";
 import isEmpty from "lodash-es/isEmpty";
-import React, {
-    FunctionComponent,
-    ReactElement,
-    useEffect,
-    useState
-} from "react";
+import sortBy from "lodash-es/sortBy";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Container, Menu } from "semantic-ui-react";
 import { commonConfig } from "../../../extensions/configs";
 import { AppSwitcherIcons } from "../configs";
 import { history } from "../helpers";
-import { ConfigReducerStateInterface } from "../models";
-import { AppState } from "../store";
+import { AppViewTypes, ConfigReducerStateInterface, StrictAppViewTypes } from "../models";
+import { AppState, setActiveView } from "../store";
 import { CommonUtils, EventPublisher } from "../utils";
 
 /**
@@ -52,7 +48,25 @@ interface HeaderPropsInterface extends Omit<ReusableHeaderPropsInterface, "basic
     /**
      * Active view.
      */
-    activeView?: "ADMIN" | "DEVELOPER";
+    activeView?: AppViewTypes;
+}
+
+/**
+ * Interface for the Header sub panel.
+ */
+export interface HeaderSubPanelItemInterface {
+    /**
+     * Floated direction.
+     */
+    floated: "left" | "right";
+    /**
+     * Component to render.
+     */
+    component: (currentActiveView?: AppViewTypes, onClickCb?: (newActiveView: AppViewTypes) => void) => ReactElement;
+    /**
+     * Display order.
+     */
+    order: number;
 }
 
 /**
@@ -66,7 +80,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 ): ReactElement => {
 
     const {
-        activeView,
+        activeView: externallyProvidedActiveView,
         fluid,
         onSidePanelToggleClick,
         [ "data-testid" ]: testId,
@@ -74,6 +88,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
+    const dispatch = useDispatch();
 
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
     const isProfileInfoLoading: boolean = useSelector(
@@ -84,6 +99,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const showAppSwitchButton: boolean = useSelector((state: AppState) => state.config.ui.showAppSwitchButton);
     const accountAppURL: string = useSelector((state: AppState) => state.config.deployment.accountApp.path);
     const consoleAppURL: string = useSelector((state: AppState) => state.config.deployment.appHomePath);
+    const activeView: AppViewTypes = useSelector((state: AppState) => state.global.activeView);
 
     const isDevelopAllowed: boolean = 
         useSelector((state: AppState) => state.accessControl.isDevelopAllowed);
@@ -94,6 +110,21 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
+    /**
+     * Listens to  the changes in the `externallyProvidedActiveView` and sets the `activeView`.
+     */
+    useEffect(() => {
+
+        if (activeView) {
+            return;
+        }
+
+        dispatch(setActiveView(externallyProvidedActiveView));
+    }, [ externallyProvidedActiveView ]);
+
+    /**
+     * Listens to `config` changes and set the announcement.
+     */
     useEffect(() => {
         if (isEmpty(config)) {
             return;
@@ -181,6 +212,79 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
         window.open(window[ "AppUtils" ].getConfig().accountApp.path,
             "_blank", "noopener");
+    };
+
+    /**
+     * Renders the sub header panel items merging extended ones.
+     *
+     * @param {HeaderSubPanelItemInterface["floated"]} floated - Floated direction.
+     *
+     * @return {React.ReactElement}
+     */
+    const renderSubHeaderPanelItems = (floated: HeaderSubPanelItemInterface[ "floated" ]): ReactElement => {
+
+        const moderatedItemsToRender: ReactElement[] = [];
+        const itemExtensions: HeaderSubPanelItemInterface[] = commonConfig?.header?.getHeaderSubPanelExtensions();
+        const defaultItems: HeaderSubPanelItemInterface[] = [
+            {
+                component: () => (
+                    <Menu.Item
+                        name={ config.deployment.developerApp.displayName }
+                        active={ activeView === StrictAppViewTypes.DEVELOP }
+                        className="secondary-panel-item portal-switch"
+                        onClick={ () => {
+                            eventPublisher.publish("console-click-develop-menu-item");
+                            history.push(config.deployment.developerApp.path);
+                            dispatch(setActiveView(StrictAppViewTypes.DEVELOP));
+                        } }
+                        data-testid={ `${ testId }-developer-portal-switch` }
+                    />
+                ),
+                floated: "left",
+                order: 1
+            },
+            {
+                component: () => (
+                    <Menu.Item
+                        name={ config.deployment.adminApp.displayName }
+                        active={ activeView === StrictAppViewTypes.MANAGE }
+                        className="secondary-panel-item portal-switch"
+                        onClick={ () => {
+                            eventPublisher.publish("console-click-manage-menu-item");
+                            history.push(config.deployment.adminApp.path);
+                            dispatch(setActiveView(StrictAppViewTypes.MANAGE));
+                        } }
+                        data-testid={ `${ testId }-admin-portal-switch` }
+                    />
+                ),
+                floated: "left",
+                order: 2
+            }
+        ];
+
+        sortBy([ ...itemExtensions, ...defaultItems ], [ "order"]).filter((item: HeaderSubPanelItemInterface) => {
+            if (item.floated === floated) {
+                const {
+                    component: Component
+                } = item;
+
+                moderatedItemsToRender.push(
+                    Component(activeView, (newActiveView: AppViewTypes) => {
+                        dispatch(setActiveView(newActiveView));
+                    })
+                );
+            }
+        });
+
+        if (moderatedItemsToRender.length > 0) {
+            return (
+                <Menu floated={ floated === "right" ? "right" : undefined } className="inner-menu">
+                    { moderatedItemsToRender }
+                </Menu>
+            );
+        }
+
+        return null;
     };
 
     return (
@@ -290,30 +394,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 isDevelopAllowed && isManageAllowed && (
                     <div className="secondary-panel" data-testid={ `${ testId }-secondary-panel` }>
                         <Container fluid={ fluid }>
-                            <Menu className="inner-menu">
-                                <Menu.Item
-                                    name={ config.deployment.developerApp.displayName }
-                                    active={ activeView === "DEVELOPER" }
-                                    className="portal-switch"
-                                    onClick={ () => {
-                                        eventPublisher.publish("console-click-develop-menu-item");
-
-                                        history.push(config.deployment.developerApp.path);
-                                    } }
-                                    data-testid={ `${ testId }-developer-portal-switch` }
-                                />
-                                <Menu.Item
-                                    name={ config.deployment.adminApp.displayName }
-                                    active={ activeView === "ADMIN" }
-                                    className="portal-switch"
-                                    onClick={ () => {
-                                        eventPublisher.publish("console-click-manage-menu-item");
-                                        
-                                        history.push(config.deployment.adminApp.path);
-                                    } }
-                                    data-testid={ `${ testId }-admin-portal-switch` }
-                                />
-                            </Menu>
+                            { renderSubHeaderPanelItems("left") }
+                            { renderSubHeaderPanelItems("right") }
                         </Container>
                     </div>
                 )
