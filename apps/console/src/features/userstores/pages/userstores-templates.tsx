@@ -22,12 +22,12 @@ import { EmptyPlaceholder, PageLayout, TemplateGrid } from "@wso2is/react-compon
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { userstoresConfig } from "../../../extensions";
 import { AppConstants, getEmptyPlaceholderIllustrations, history } from "../../core";
 import { getAType, getUserstoreTypes } from "../api";
 import { AddUserStore } from "../components";
 import { getUserstoreTemplateIllustrations } from "../configs";
 import {
-    CONSUMER_USERSTORE_TYPE,
     USERSTORE_TYPE_DISPLAY_NAMES,
     USERSTORE_TYPE_IMAGES,
     USER_STORE_TYPE_DESCRIPTIONS
@@ -110,7 +110,7 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
             const uniqueUserstoreTypes: UserstoreTypeListItem[] = [];
             const rawUserstoreTypes: UserstoreType[] = [];
             results.forEach((type: UserstoreType) => {
-                if (type && type.typeName != CONSUMER_USERSTORE_TYPE) {
+                if (type && !userstoresConfig.shouldShowUserstore(type.typeName)) {
                     rawUserstoreTypes.push(type);
                     if (type.typeName.toLowerCase().includes("unique")) {
                         uniqueUserstoreTypes.push(
@@ -176,7 +176,7 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
                     },
                     text: t("console:manage.features.userstores.pageLayout.templates.back")
                 }
-                } 
+                }
                 titleTextAlign="left"
                 bottomMargin={ false }
                 showBottomDivider
