@@ -16,11 +16,15 @@
  * under the License.
  */
 
-export * from "./attribute";
-export * from "./documentation";
-export * from "./identity-providers";
-export * from "./application";
-export * from "./group";
-export * from "./common";
-export * from "./userstores";
-export * from "./user";
+// DO NOT SHORTEN THE IMPORT PATH as it could lead to circular dependencies.
+import { DocumentationLinksExtension } from "../../../extensions/configs";
+import { DocumentationLinksInterface } from "../models";
+
+/**
+ * Get all the Features documentation links.
+ *
+ * @return {DocumentationLinksInterface}
+ */
+export const DocumentationLinks: DocumentationLinksInterface = {
+    ...DocumentationLinksExtension
+};

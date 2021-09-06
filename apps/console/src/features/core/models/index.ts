@@ -17,6 +17,7 @@
  */
 
 export * from "./config";
+export * from "./documentation";
 export * from "./help-panel";
 export * from "./reducer-state";
 export * from "./user-store";

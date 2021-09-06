@@ -16,11 +16,4 @@
  * under the License.
  */
 
-export * from "./attribute";
-export * from "./documentation";
-export * from "./identity-providers";
-export * from "./application";
-export * from "./group";
-export * from "./common";
-export * from "./userstores";
-export * from "./user";
+export type DocumentationLinksExtensionInterface = Record<string, unknown>;

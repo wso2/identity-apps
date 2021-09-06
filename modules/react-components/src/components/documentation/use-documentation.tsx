@@ -16,11 +16,18 @@
  * under the License.
  */
 
-export * from "./attribute";
-export * from "./documentation";
-export * from "./identity-providers";
-export * from "./application";
-export * from "./group";
-export * from "./common";
-export * from "./userstores";
-export * from "./user";
+import get from "lodash-es/get";
+import { useContext } from "react";
+import { DocumentationContext } from "./documentation-context";
+
+/**
+ * Provides documentation links as context
+ */
+export const useDocumentation = ():{ getLink: (key: string) => string } => {
+
+    const config = useContext(DocumentationContext);
+
+    const getLink = (key: string):string => get(config?.links, key);
+
+    return { getLink };
+};
