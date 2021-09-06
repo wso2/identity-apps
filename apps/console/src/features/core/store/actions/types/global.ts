@@ -16,25 +16,37 @@
  * under the License.
  */
 
-export enum FieldInputTypes {
-    INPUT_DEFAULT = "default",
-    INPUT_IDENTIFIER = "identifier",
-    INPUT_PHONE_NUMBER = "phone_number",
-    INPUT_NAME = "name",
-    INPUT_NUMBER = "number",
-    INPUT_RESOURCE_NAME = "resource_name",
-    INPUT_CLIENT_ID = "client_id",
-    INPUT_DESCRIPTION = "description",
-    INPUT_EMAIL = "email",
-    INPUT_URL = "url",
-    INPUT_COPY = "copy_input",
-    INPUT_PASSWORD = "password"
+import { AppViewTypes } from "../../../models";
+
+/**
+ * Enum for Global action types.
+ */
+export enum GlobalActionTypes {
+    /**
+     * Action type to set the current active view.
+     *
+     * @type {string}
+     */
+    SET_ACTIVE_VIEW = "SET_ACTIVE_VIEW"
 }
 
-export enum FieldButtonTypes {
-    BUTTON_PRIMARY = "primary_btn",
-    BUTTON_CANCEL = "cancel_btn",
-    BUTTON_LINK = "link_btn",
-    BUTTON_DANGER= "danger_btn",
-    BUTTON_DEFAULT = "default_btn",
+/**
+ * Global base action interface.
+ */
+interface GlobalBaseAction {
+    type: GlobalActionTypes;
 }
+
+/**
+ * Set the active view for the Console content.
+ * ex: DEVELOPER, ADMIN etc.
+ */
+export interface SetActiveViewAction extends GlobalBaseAction {
+    payload: AppViewTypes;
+    type: GlobalActionTypes.SET_ACTIVE_VIEW;
+}
+
+/**
+ * Export action interfaces.
+ */
+export type GlobalActions = SetActiveViewAction;

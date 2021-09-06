@@ -223,7 +223,7 @@ export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
                         />
                         <Field.Input
                             ariaLabel="Google Client ID"
-                            inputType="resourceName"
+                            inputType="client_id"
                             name="clientId"
                             label={
                                 t("console:develop.features.authenticationProvider.templates.google" +

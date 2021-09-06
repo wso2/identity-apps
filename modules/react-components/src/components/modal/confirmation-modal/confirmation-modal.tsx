@@ -334,7 +334,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                                     <LinkButton
                                         data-testid={ testId + "-cancel-button" }
                                         positive={ type === "positive" }
-                                        neagtive={ type === "negative" }
+                                        negative={ type === "negative" }
                                         warning={ type === "warning" }
                                         info={ type === "info" }
                                         onClick={ handleSecondaryActionClick }

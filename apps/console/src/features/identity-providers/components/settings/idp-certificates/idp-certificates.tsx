@@ -205,7 +205,10 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
     };
 
     const jwksInputForm: ReactNode = (
-        <Form uncontrolledForm={ true } onSubmit={ onJWKSFormSubmit }>
+        <Form
+            uncontrolledForm={ true }
+            initialValues={ { jwks_endpoint: editingIDP?.certificate?.jwksUri } }
+            onSubmit={ onJWKSFormSubmit }>
 
             <Field.Input
                 required

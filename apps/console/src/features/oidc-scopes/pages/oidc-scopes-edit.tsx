@@ -454,7 +454,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                         />
                                         <Field.Input
                                             ariaLabel="description"
-                                            inputType="resourceName"
+                                            inputType="description"
                                             name="description"
                                             label={ t(
                                                 "console:manage.features.oidcScopes.forms.addScopeForm." +

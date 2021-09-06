@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -14,32 +14,21 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-import "fastestsmallesttextencoderdecoder";
-import {
-    email,
-    identifier,
-    imageUrl,
-    isInteger,
-    isValidClientId,
-    isValidDescription,
-    isValidResourceName,
-    mobileNumber,
-    resourceName,
-    url
-} from "./validation";
+import { AppViewExtensionTypes } from "../../../extensions";
 
-export const FormValidation = {
-    email,
-    identifier,
-    imageUrl,
-    isInteger,
-    isValidClientId,
-    isValidDescription,
-    isValidResourceName,
-    mobileNumber,
-    resourceName,
-    url
-};
+/**
+ * Types of views supported by default in the application.
+ * @readonly
+ * @enum {string}
+ */
+export enum StrictAppViewTypes {
+    DEVELOP = "DEVELOP",
+    MANAGE = "MANAGE"
+}
+
+/**
+ * Combination of views in the application with extensions.
+ */
+export type AppViewTypes = StrictAppViewTypes | AppViewExtensionTypes;

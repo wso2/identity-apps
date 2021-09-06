@@ -214,7 +214,7 @@ export const FacebookAuthenticationProviderCreateWizardContent: FunctionComponen
                         />
                         <Field.Input
                             ariaLabel="Facebook Client ID"
-                            inputType="resourceName"
+                            inputType="client_id"
                             name="clientId"
                             label={
                                 t("console:develop.features.authenticationProvider.forms" +

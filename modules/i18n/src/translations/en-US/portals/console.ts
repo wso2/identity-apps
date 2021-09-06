@@ -2769,7 +2769,7 @@ export const console: ConsoleNS = {
                         message: "This action is irreversible and will permanently delete the connector."
                     },
                     deleteIDP: {
-                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        assertionHint: "Please confirm your action.",
                         content: "If you delete this connection, you will not be able to recover it. " +
                             "Please proceed with caution.",
                         header: "Are you sure?",
@@ -6400,7 +6400,7 @@ export const console: ConsoleNS = {
                         message: "This action is irreversible and will permanently delete the OIDC claim."
                     },
                     deleteScope: {
-                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        assertionHint: "Please confirm your action.",
                         content: "If you delete this scope, you will not be able to get it back. " +
                             "Please proceed with caution.",
                         header: "Are you sure?",
@@ -7294,7 +7294,7 @@ export const console: ConsoleNS = {
                 },
                 disableUser: {
                     confirmationModal: {
-                        assertionHint: "Please type <1>{{ userName }}</1> to confirm.",
+                        assertionHint: "Please confirm your action.",
                         content: "If you disable this user, the user will not be able to log in to My Account or " +
                             "any other application the user was subscribed to before.",
                         header: "Are you sure?",
@@ -7416,11 +7416,11 @@ export const console: ConsoleNS = {
                 },
                 lockUser: {
                     confirmationModal: {
-                        assertionHint: "Please type <1>{{ userName }}</1> to confirm.",
-                        content: "If you lock this user, the user will not be able to login to the My Account " +
-                            "or any other application the user was subscribed before. Please proceed with caution.",
+                        assertionHint: "Please confirm your action.",
+                        content: "If you lock this account, the user will not be able to sign in to " +
+                            "My Account or any of the business applications. Please proceed with caution.",
                         header: "Are you sure?",
-                        message: "Make sure that this user should be prevented from logging into the system."
+                        message: "This action locks the user account."
                     }
                 },
                 modals: {
@@ -7946,14 +7946,14 @@ export const console: ConsoleNS = {
                 },
                 confirmations: {
                     terminateAllSessions: {
-                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        assertionHint: "Please confirm your action.",
                         content: "If you proceed with this action, the user will be logged out of all active " +
                             "sessions. They will loose the progress of any ongoing tasks. Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action is irreversible and will permanently terminate all the active sessions."
                     },
                     terminateSession: {
-                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        assertionHint: "Please confirm your action.",
                         content: "If you proceed with this action, the user will be logged out of the selected " +
                             "session. They will loose the progress of any ongoing tasks. Please proceed with caution.",
                         header: "Are you sure?",
@@ -8443,15 +8443,15 @@ export const console: ConsoleNS = {
                 },
                 confirmationModal: {
                     deleteInvite: {
-                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        assertionHint: "Please confirm your action.",
                         content: "If you revoke this invite, the user will not be able to onboard your organization. " +
                             "Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action is irreversible and will permanently revoke the invite."
                     },
                     resendInvite: {
-                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
-                        content: "If you send this invite, Earlier invite link will be expired. " +
+                        assertionHint: "Please confirm your action.",
+                        content: "If you send this invite, earlier invite link will be expired. " +
                             "Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action is  will permanently revoke the earlier invite."
@@ -8513,7 +8513,7 @@ export const console: ConsoleNS = {
             onboarded: {
                 confirmationModal: {
                     removeUser: {
-                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        assertionHint: "Please confirm your action.",
                         content: "If you remove this user, the user will not be able to access the console " +
                             "within your organization. Please proceed with caution.",
                         header: "Are you sure?",

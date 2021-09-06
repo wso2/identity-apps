@@ -70,10 +70,31 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (props): ReactE
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
 
     /**
+     * When component initialize check the IdP model and set
+     * the available certificates if exists.
+     */
+    useEffect(() => {
+        bindCertificatesToState();
+    }, []);
+
+    /**
      * Create {@link DisplayCertificate} objects for all
      * available certificates.
      */
     useEffect(() => {
+        bindCertificatesToState();
+    }, [ currentlyEditingIdP?.certificate?.certificates ]);
+
+    /**
+     * Why call this in two places?
+     *
+     * 1) First, this func checks whether this IdP has certificates and
+     *    re-binds the new state to the component as {@link DisplayCertificate[]}.
+     *
+     * 2) Initially, when the component renders and when user adds a new certificate
+     *    we need to refresh the state.
+     */
+    const bindCertificatesToState = (): void => {
         if (currentlyEditingIdP?.certificate?.certificates?.length > 0) {
             const certificatesList: DisplayCertificate[] = [];
             currentlyEditingIdP?.certificate?.certificates?.map((certificate) => {
@@ -81,7 +102,7 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (props): ReactE
             });
             setDisplayingCertificates([ ...certificatesList ]);
         }
-    }, [ currentlyEditingIdP?.certificate?.certificates ]);
+    };
 
     /**
      * Remove the certificate from the certificated list.
@@ -221,16 +242,14 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (props): ReactE
                 "data-componentid": `${ testId }-edit-cert-${ index }-button`,
                 icon: "eye",
                 onClick: () => handleViewCertificate(certificate),
-                popupText: t("console:manage.features.users.usersList.list." +
-                    "iconPopups.edit"),
+                popupText: "Preview",
                 type: "button"
             },
             {
                 "data-componentid": `${ testId }-delete-cert-${ index }-button`,
                 icon: "trash alternate",
                 onClick: () => deleteCertificate(index),
-                popupText: t("console:manage.features.users.usersList.list." +
-                    "iconPopups.delete"),
+                popupText: "Delete",
                 type: "button"
             }
         ] as (ResourceListActionInterface & IdentifiableComponentInterface)[];

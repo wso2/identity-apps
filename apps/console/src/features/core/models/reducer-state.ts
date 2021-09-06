@@ -17,8 +17,14 @@
  */
 
 import { AuthenticatedUserInterface } from "@wso2/identity-oidc-js";
-import { CommonAuthReducerStateInterface, CommonConfigReducerStateInterface } from "@wso2is/core/models";
-import { I18nModuleOptionsInterface } from "@wso2is/i18n";
+import {
+    AlertInterface,
+    CommonAuthReducerStateInterface,
+    CommonConfigReducerStateInterface,
+    CommonGlobalReducerStateInterface
+} from "@wso2is/core/models";
+import { I18nModuleOptionsInterface, SupportedLanguagesMeta } from "@wso2is/i18n";
+import { System } from "react-notification-system";
 import {
     DeploymentConfigInterface,
     FeatureConfigInterface,
@@ -26,6 +32,7 @@ import {
     UIConfigInterface
 } from "./config";
 import { PortalDocumentationStructureInterface } from "./help-panel";
+import { AppViewTypes } from "./ui";
 
 /**
  * Portal config reducer state interface.
@@ -36,6 +43,17 @@ export type ConfigReducerStateInterface = CommonConfigReducerStateInterface<
     FeatureConfigInterface,
     I18nModuleOptionsInterface,
     UIConfigInterface>;
+
+/**
+ * Global reducer state interface.
+ */
+export interface GlobalReducerStateInterface extends CommonGlobalReducerStateInterface<
+    AlertInterface,
+    System,
+    SupportedLanguagesMeta> {
+
+    activeView: AppViewTypes;
+}
 
 /**
  * Help panel reducer state interface.

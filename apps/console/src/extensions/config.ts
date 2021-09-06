@@ -21,6 +21,7 @@ import { ExtensionsConfigInterface } from "./models";
 export const ExtensionsConfig = (): ExtensionsConfigInterface => ({
     componentExtensions: [],
     routes: {
+        default: [],
         develop: [],
         fullscreen: [],
         manage: []

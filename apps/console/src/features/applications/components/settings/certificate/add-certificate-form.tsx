@@ -31,6 +31,10 @@ interface AddApplicationCertificateFormProps extends TestableComponentInterface 
     triggerCertificateUpload: boolean;
     triggerSubmit: boolean;
     onSubmit: (values: any) => void;
+    /**
+     * Sets the visibility of the finish button
+     */
+    setShowFinishButton?: (buttonState: boolean) => void;
 }
 
 /**
@@ -44,6 +48,7 @@ export const AddApplicationCertificateFormComponent: React.FunctionComponent<Add
     const {
         triggerCertificateUpload,
         onSubmit,
+        setShowFinishButton,
         ["data-testid"]: testId
     } = props;
 
@@ -108,6 +113,7 @@ export const AddApplicationCertificateFormComponent: React.FunctionComponent<Add
                             forgeCertificateData={ certificate }
                             data-testid={ `${testId}-upload` }
                             hideAliasInput={ true }
+                            setShowFinishButton={ setShowFinishButton }
                         />
                     </Grid.Column>
                 </Grid.Row>

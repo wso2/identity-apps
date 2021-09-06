@@ -203,7 +203,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 >
                     <Field.Input
                         ariaLabel="name"
-                        inputType="resourceName"
+                        inputType="resource_name"
                         name="name"
                         label={ t("console:develop.features.authenticationProvider.forms." +
                             "generalDetails.name.label") }

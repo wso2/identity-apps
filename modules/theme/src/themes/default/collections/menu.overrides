@@ -63,7 +63,7 @@
                     }
                 }
             }
-            .item.portal-switch {
+            .item.secondary-panel-item {
                 background: @appHeaderPortalSwitchExtensionBackgroundColor;
                 color: @appHeaderPortalSwitchExtensionColor;
 
@@ -286,7 +286,7 @@
                 background: @appHeaderSecondaryPanelInnerMenuBackground;
                 height: @appHeaderSecondaryPanelInnerMenuHeight;
                 
-                .item.portal-switch {
+                .item.secondary-panel-item {
                     background: @appHeaderSecondaryPanelPortalSwitchBackground;
                     color: @appHeaderSecondaryPanelPortalSwitchColor;
                     border-bottom: @appHeaderSecondaryPanelPortalSwitchBorderBottom;

@@ -219,7 +219,13 @@
                 "disabledFeatures": [
                     {% if myaccount.security.disabled_features is defined %}
                     {% for feature in myaccount.security.disabled_features %}
+                    {% if myaccount.security.enabled_features is defined %}
+                    {% if not (feature in myaccount.security.enabled_features) %}
                     "{{ feature }}"{{ "," if not loop.last }}
+                    {% endif %}
+                    {% else %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endif %}
                     {% endfor %}
                     {% endif %}
                 ],

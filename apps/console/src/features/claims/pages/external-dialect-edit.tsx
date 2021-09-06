@@ -63,7 +63,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
     const { attributeType, attributeUri, [ "data-testid" ]: testId, id: dialectId } = props;
 
     const [ dialect, setDialect ] = useState<ClaimDialect>(null);
-    const [ claims, setClaims ] = useState<ExternalClaim[]>([]);
+    const [ claims, setClaims ] = useState<ExternalClaim[]>(undefined);
     const [ isLoading, setIsLoading ] = useState(true);
     const [ confirmDelete, setConfirmDelete ] = useState(false);
 
@@ -147,7 +147,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
      */
     const getExternalClaims = (limit?: number, offset?: number, sort?: string, filter?: string) => {
         dialectId && setIsLoading(true);
-        dialectId && setClaims([]);
+        dialectId && setClaims(undefined);
         dialectId &&
             getAllExternalClaims(dialectId, {
                 filter,

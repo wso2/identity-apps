@@ -18,6 +18,7 @@
 
 import { FormValidation } from "@wso2is/validation";
 import { FieldConstants } from "../constants";
+import { FieldInputTypes } from "../models";
 
 /**
  * Util method to apply default validations to the fields.
@@ -26,7 +27,11 @@ import { FieldConstants } from "../constants";
  * @param fieldType string - Usage type of the field
  * @param value - value of the field.
  */
-export const getDefaultValidation = (field: string, fieldType: string, value: any): string => {
+export const getDefaultValidation = (
+    field: string,
+    fieldType: typeof FieldInputTypes | string,
+    value: string | number | any
+): string => {
 
     if (field === "text") {
         switch (fieldType) {
@@ -35,9 +40,19 @@ export const getDefaultValidation = (field: string, fieldType: string, value: an
                     return FieldConstants.INVALID_NAME_ERROR;
                 }
                 break;
-            case "resourceName":
+            case "resource_name":
                 if (!FormValidation.isValidResourceName(value)) {
                     return FieldConstants.INVALID_RESOURCE_ERROR;
+                }
+                break;
+            case "client_id":
+                if (!FormValidation.isValidClientId(value)) {
+                    return FieldConstants.INVALID_CLIENT_ID_ERROR;
+                }
+                break;
+            case "description":
+                if (!FormValidation.isValidDescription(value)) {
+                    return FieldConstants.INVALID_DESCRIPTION_ERROR;
                 }
                 break;
             case "email":
