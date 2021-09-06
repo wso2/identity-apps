@@ -400,9 +400,9 @@ Writing unit tests for every component that you develop is mandatory.
 Take a look at the following example test case where we test if the component that we are writing mounts and renders as expected.
 
 ```tsx
+import { render } from "@unit-testing";
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { render } from "test-utils";
 import { ApplicationList } from "../../../components/applications";
 
 describe("Test if the Application List is working as expected", () => {
@@ -413,10 +413,10 @@ describe("Test if the Application List is working as expected", () => {
 });
 ```
 
-Note that we use a custom `render` function here rather than from the `@testing-library/react` module. The reason for 
+:bulb: Note that we use a custom `render` function here rather than from the `@testing-library/react` module. The reason for 
 this is that we need to wrap our components with providers like `Redux` etc. And doing this in every test case is a 
 tedious task. So we have written a custom renderer following the guide in 
-[official documentation][react-testing-library-custom-renderer].
+[official documentation][react-testing-library-custom-renderer]. `@unit-testing` is a webpack alias added to avoid importing this function using relative paths.
 
 ##### Snapshot Testing
 

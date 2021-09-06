@@ -273,7 +273,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         }
         setKeepFocus(true);
         setPredictValue(predictions);
-        setChangeUrl(changeValue);
+        setChangeUrl(changeValue.toString().trim());
     };
 
     /**

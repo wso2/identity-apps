@@ -128,22 +128,26 @@ export const AddIdpCertificateModal: FC<AddIdPCertificateModalV2Props> = (props)
                 "value": pemBase64String
             },
             /**
-             * What is this?
+             * What is the goal of below array spread operation?
              *
-             * The goal of the below array spread operation is: if we have a JWKS url
-             * in place; then, REPLACE it as null and proceed to add above certificate
-             * to the model. But why though right? good question!.
+             * If we have a JWKS URL in place; then, send a REPLACE operation
+             * along with the ADD operation to persist above certificate
+             * correctly. But why though right? good question!.
              *
              * TLDR; Use one option at a time. If JWKS already configured, then
              * remove it first.
              *
-             * Answer: consider this; you configured a OIDC IdP with a JWKS url from the
-             * create wizard it self. Now for some reason user wants to use a certificate
-             * instead of a JWKS url. In this case API requires only one option to be
-             * configured. So that, we can't send only above ADD operation. We also have
-             * to explicitly say, "remove this jwksUri and Add this" otherwise the API
-             * won't do anything because the logic in the backend assumes you want to
-             * keep the jwksUrl.
+             * Answer: consider this; a user configured an OIDC IdP with a JWKS url from the
+             * create wizard itself. Now for some reason user wants to use a certificate
+             * instead of the JWKS url. In this case API allows only one option to be
+             * configured. So that, we can't send an individual ADD operation when we have a
+             * JWKS configured. We have to explicitly say, "Remove this jwksUri and add this"
+             * otherwise the API won't do anything because the logic in the backend assumes
+             * you want to keep the jwksUrl. It is the expected behaviour of this function.
+             * For more info you can have a look at [1,2]
+             *
+             * [1] {@link https://github.com/wso2/identity-api-server/pull/264#discussion_r568688778}
+             * [2] {@link https://github.com/wso2/product-is/issues/12361}
              */
             ...[ !isEmpty(currentlyEditingIdP?.certificate?.jwksUri) ? {
                 "operation": "REPLACE",

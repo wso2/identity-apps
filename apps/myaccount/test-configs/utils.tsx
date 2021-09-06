@@ -19,7 +19,7 @@
 import { RenderResult, render as rtlRender } from "@testing-library/react";
 import React, { ComponentType, PropsWithChildren, ReactElement } from "react";
 import { Provider } from "react-redux";
-import ReduxStoreStateMock from "./__mocks__/redux-store-state-mock.json";
+import ReduxStoreStateMock from "./__mocks__/redux-store-state-mock";
 import { mockStore } from "./redux-store-mock";
 
 /**

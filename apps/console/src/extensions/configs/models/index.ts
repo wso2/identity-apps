@@ -17,6 +17,7 @@
  */
 
 export * from "./attribute";
+export * from "./documentation";
 export * from "./identity-providers";
 export * from "./application";
 export * from "./group";

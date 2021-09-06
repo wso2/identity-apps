@@ -16,8 +16,9 @@
  * under the License.
  */
 
-import { CommonConfig } from "./models";
 import { HeaderExtension, HeaderLinkCategoryInterface } from "@wso2is/react-components";
+import { CommonConfig } from "./models";
+import { HeaderSubPanelItemInterface } from "../../features/core/components";
 
 export const commonConfig: CommonConfig = {
     advancedSearchWithBasicFilters: {
@@ -26,6 +27,7 @@ export const commonConfig: CommonConfig = {
     checkForUIResourceScopes: false,
     header: {
         getHeaderExtensions: (): HeaderExtension[] => [],
+        getHeaderSubPanelExtensions: (): HeaderSubPanelItemInterface[] => [],
         getUserDropdownLinkExtensions: (): HeaderLinkCategoryInterface[] => [],
         renderAppSwitcherAsDropdown: false
     },

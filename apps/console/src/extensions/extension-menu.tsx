@@ -28,11 +28,13 @@ import { ExtensionRoutesInterface } from "./models";
  */
 export const EXTENSION_ROUTES = (): ExtensionRoutesInterface  => {
 
+    const defaultRoutes: RouteInterface[]  =  [ ...ExtensionsManager.getConfig().routes.default ];
     const developRoutes: RouteInterface[]  =  [ ...ExtensionsManager.getConfig().routes.develop ];
     const manageRoutes: RouteInterface[]  =  [ ...ExtensionsManager.getConfig().routes.manage ];
     const fullscreenRoutes: RouteInterface[]  = [ ...ExtensionsManager.getConfig().routes.fullscreen ];
 
     return {
+        default: loadRouteComponents(defaultRoutes),
         develop: loadRouteComponents(developRoutes),
         fullscreen: loadRouteComponents(fullscreenRoutes),
         manage: loadRouteComponents(manageRoutes)
