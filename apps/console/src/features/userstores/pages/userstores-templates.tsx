@@ -110,7 +110,7 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
             const uniqueUserstoreTypes: UserstoreTypeListItem[] = [];
             const rawUserstoreTypes: UserstoreType[] = [];
             results.forEach((type: UserstoreType) => {
-                if (type && !userstoresConfig.isCustomerUserstore(type.typeName)) {
+                if (type && !userstoresConfig.shouldShowUserstore(type.typeName)) {
                     rawUserstoreTypes.push(type);
                     if (type.typeName.toLowerCase().includes("unique")) {
                         uniqueUserstoreTypes.push(

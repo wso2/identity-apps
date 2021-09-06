@@ -36,5 +36,5 @@ export interface UserstoresConfig {
     userstoreDomain: {
         appendToUsername: boolean;
     };
-    isCustomerUserstore: (typeName: string) => boolean;
+    shouldShowUserstore: (typeName: string) => boolean;
 }

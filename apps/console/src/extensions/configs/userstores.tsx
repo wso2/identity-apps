@@ -19,7 +19,7 @@
 import { UserstoresConfig } from "./models";
 
 export const userstoresConfig: UserstoresConfig = {
-    isCustomerUserstore: () => {
+    shouldShowUserstore: () => {
         return false;
     },
     userstoreDomain: {
