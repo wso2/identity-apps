@@ -34,6 +34,7 @@ import { getUserstoreResourceEndpoints } from "../../userstores";
 import { getApprovalsResourceEndpoints } from "../../workflow-approvals";
 import { I18nConstants } from "../constants";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
+import { getSecretsManagementEndpoints } from "../../secrets/configs/endpoints";
 
 /**
  * Class to handle application config operations.
@@ -135,6 +136,7 @@ export class Config {
             ...getScopesResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getGroupsResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getRemoteFetchConfigResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getSecretsManagementEndpoints(this.getDeploymentConfig().serverHost),
             CORSOrigins: `${this.getDeploymentConfig().serverHost}/api/server/v1/cors/origins`,
             documentationContent: this.getDeploymentConfig().documentation.contentBaseURL,
             documentationStructure: this.getDeploymentConfig().documentation.structureFileURL,

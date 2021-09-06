@@ -135,6 +135,46 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
                         path: AppConstants.getPaths().get("IDP"),
                         protected: true,
                         showOnSidePanel: true
+                    },
+                    {
+                        category: "secrets",
+                        children: [
+                            /*{
+                                component: lazy(() =>
+                                    import("../../identity-providers/pages/identity-provider-template")
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "identityProviderTemplate",
+                                name: "Identity Provider Templates",
+                                path: AppConstants.getPaths().get("IDP_TEMPLATES"),
+                                protected: true,
+                                showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() => import("../../identity-providers/pages/identity-provider-edit")),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "identityProvidersEdit",
+                                name: "Identity Providers Edit",
+                                path: AppConstants.getPaths().get("IDP_EDIT"),
+                                protected: true,
+                                showOnSidePanel: false
+                            }*/
+                        ],
+                        component: lazy(() => import("../../secrets/pages/secrets")),
+                        exact: true,
+                        icon: { icon: getSidePanelIcons().secrets },
+                        id: "secrets-management",
+                        name: "Secrets", // FIXME: Add i18n keys instead.
+                        order: 3,
+                        path: AppConstants.getPaths().get("SECRETS"),
+                        protected: true,
+                        showOnSidePanel: true
                     }
                 ], "id"
             ),
