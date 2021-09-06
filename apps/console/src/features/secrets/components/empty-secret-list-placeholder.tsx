@@ -34,8 +34,7 @@ export type EmptySecretListPlaceholderProps = {
  * added to it. It can be either adaptive script secrets or custom
  * created secret-types.
  *
- * TODO: Add event publishers & i18n Support & Access control
- *       https://github.com/wso2/product-is/issues/12447
+ * TODO: Address https://github.com/wso2/product-is/issues/12447
  * @constructor
  */
 export const EmptySecretListPlaceholder: FC<EmptySecretListPlaceholderProps> = (
@@ -58,13 +57,19 @@ export const EmptySecretListPlaceholder: FC<EmptySecretListPlaceholderProps> = (
             }
             image={ getEmptyPlaceholderIllustrations().newList }
             imageSize="tiny"
-            subtitle={ [ "There are no secrets added for this secret type." ] }
+            subtitle={ [
+                "There are no secrets added for this secret type.",
+                <>Click <strong>New Secret</strong> to start adding secrets!</>
+            ] }
             data-testid={ testId }
         />
     );
 
 };
 
+/**
+ * Default props of {@link EmptySecretListPlaceholder}
+ */
 EmptySecretListPlaceholder.defaultProps = {
     "data-componentid": "empty-secret-list-placeholder"
 };

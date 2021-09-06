@@ -16,48 +16,138 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Message, PageLayout, PrimaryButton, Text } from "@wso2is/react-components";
-import React, { FC, ReactElement, useState } from "react";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { PageLayout, PrimaryButton } from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
+import React, { FC, ReactElement, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Icon } from "semantic-ui-react";
+import { getSecretList } from "../api/secret";
 import AddSecretWizard from "../components/add-secret-wizard";
 import SecretsList from "../components/secrets-list";
-
-export type SecretsPageProps = {} & IdentifiableComponentInterface;
+import { ADAPTIVE_SCRIPT_SECRETS } from "../constants/secrets.common";
+import { GetSecretListResponse, SecretModel } from "../models/secret";
 
 /**
- * TODO: Add <Show> component & Event publishers & i18n strings.
+ * Props interface of {@link SecretsPage}
+ */
+export type SecretsPageProps = IdentifiableComponentInterface;
+
+/**
+ * TODO: Address https://github.com/wso2/product-is/issues/12447
+ *      Add <Show> component & Event publishers & i18n strings.
+ *
  * The secrets list of page.
  * @constructor
  */
 const SecretsPage: FC<SecretsPageProps> = (props: SecretsPageProps): ReactElement => {
 
-    const [ showAddSecretModal, setShowAddSecretModal ] = useState<boolean>(false);
+    const {
+        ["data-componentid"]: testId
+    } = props;
 
-    const onAddNewSecret = (): void => {
+    const dispatch = useDispatch();
+
+    /**
+     * List of secrets for the selected {@code secretType}. It can hold secrets of
+     * either a custom one or the static type "ADAPTIVE_AUTH_CALL_CHOREO"
+     */
+    const [ secretList, setSecretList ] = useState<SecretModel[]>([]);
+    const [ isSecretListLoading, setIsSecretListLoading ] = useState<boolean>(true);
+    const [ showAddSecretModal, setShowAddSecretModal ] = useState<boolean>(false);
+    const [ selectedSecretType ] = useState<string>(ADAPTIVE_SCRIPT_SECRETS);
+
+    useEffect(() => {
+        loadSecretListForSecretType();
+    }, []);
+
+    const loadSecretListForSecretType = () => {
+
+        setIsSecretListLoading(true);
+
+        getSecretList({
+            params: { secretType: selectedSecretType }
+        }).then((axiosResponse: AxiosResponse<GetSecretListResponse>) => {
+            setSecretList(axiosResponse.data);
+        }).catch((error) => {
+            if (error.response && error.response.data && error.response.data.description) {
+                dispatch(addAlert({
+                    description: error.response.data.description,
+                    level: AlertLevels.ERROR,
+                    message: error.response.data?.message
+                }));
+                return;
+            }
+            dispatch(addAlert({
+                description: "Something went wrong!",
+                level: AlertLevels.ERROR,
+                message: `We were unable to get the list of secrets for ${ selectedSecretType }`
+            }));
+        }).finally(() => {
+            setIsSecretListLoading(false);
+        });
+
+    };
+
+    const refreshSecretList = async () => {
+        loadSecretListForSecretType();
+    };
+
+    /**
+     * @event-handler of Add Secret Button
+     */
+    const onAddNewSecretButtonClick = (): void => {
         setShowAddSecretModal(true);
     };
 
-    const onAddNewSecretModalClose: () => void = (): void => {
+    /**
+     * This will be called when secret add wizard closed.
+     * It will tell us to refresh the secret list or not.
+     * @param shouldRefresh {boolean}
+     */
+    const whenAddNewSecretModalClosed = (shouldRefresh: boolean): void => {
         setShowAddSecretModal(false);
+        if (shouldRefresh) {
+            refreshSecretList();
+        }
+    };
+
+    /**
+     * This will be called when a secret is deleted from the list.
+     * It will also tell us whether we should refresh the secret list or not.
+     * @param deletedSecret {SecretModel}
+     * @param shouldRefresh {boolean}
+     */
+    const whenSecretDeleted = (deletedSecret: SecretModel, shouldRefresh: boolean): void => {
+        if (shouldRefresh) {
+            refreshSecretList();
+        }
     };
 
     return (
         <PageLayout
+            isLoading={ isSecretListLoading }
             title={ "Secrets" }
             description={ "Create and manage secrets for External APIs or Adaptive Authentication" }
-            action={ <AddNewSecretActionButton onClick={ onAddNewSecret }/> }>
-
-            <Message>
-                <Text>
-                    These secrets can be used in the Adaptive Authentication script of a registered application
-                    when accessing external APIs.
-                </Text>
-            </Message>
-            <SecretsList secretType="ADAPTIVE_AUTH_CALL_CHOREO"/>
+            action={ secretList?.length > 0 && (
+                <PrimaryButton
+                    onClick={ onAddNewSecretButtonClick }
+                    data-testid={ `${ testId }-add-button` }>
+                    <Icon name="add"/>
+                    New Secret
+                </PrimaryButton>
+            ) }>
+            <SecretsList
+                whenSecretDeleted={ whenSecretDeleted }
+                isSecretListLoading={ isSecretListLoading }
+                secretList={ secretList }
+                selectedSecretType={ selectedSecretType }
+                onAddNewSecretButtonClick={ onAddNewSecretButtonClick }
+            />
             { showAddSecretModal && (
                 <AddSecretWizard
-                    onClose={ onAddNewSecretModalClose }
+                    onClose={ whenAddNewSecretModalClosed }
                 />
             ) }
         </PageLayout>
@@ -65,43 +155,9 @@ const SecretsPage: FC<SecretsPageProps> = (props: SecretsPageProps): ReactElemen
 
 };
 
-SecretsPage.defaultProps = {};
-
-// --
-
-export type AddNewSecretActionButtonProps = {
-    onClick: () => void;
-} & IdentifiableComponentInterface;
-
-/**
- * TODO: Add <Show> component & Event publishers & i18n strings.
- * @constructor
- */
-export const AddNewSecretActionButton: FC<AddNewSecretActionButtonProps> = (
-    props: AddNewSecretActionButtonProps
-): ReactElement => {
-
-    const {
-        onClick,
-        ["data-componentid"]: testId
-    } = props;
-
-    return (
-        <PrimaryButton
-            onClick={ onClick }
-            data-testid={ `${ testId }-add-button` }>
-            <Icon name="add"/>
-            New Secret
-        </PrimaryButton>
-    );
-
+SecretsPage.defaultProps = {
+    "data-componentid": "secrets-page"
 };
-
-AddNewSecretActionButton.defaultProps = {
-    "data-componentid": "add-new-secret-action-button"
-};
-
-// --
 
 /**
  * A default export was added to support React.lazy.

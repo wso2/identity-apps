@@ -32,7 +32,7 @@ import { SECRET_DESCRIPTION_LENGTH, SECRET_NAME_LENGTH, SECRET_VALUE_LENGTH } fr
  * Props interface of {@link AddSecretWizard}
  */
 export type AddSecretWizardProps = {
-    onClose: () => void;
+    onClose: (shouldRefresh?: boolean) => void;
 } & IdentifiableComponentInterface;
 
 /**
@@ -169,7 +169,7 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                 level: AlertLevels.SUCCESS,
                 message: `Created Secret for ${ values.secret_type }`
             }));
-            onWizardClose();
+            onWizardClose(true);
             setRequestInProgress(false);
         } catch (error) {
             setRequestInProgress(false);
@@ -183,9 +183,9 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
         }
     };
 
-    const onWizardClose = (): void => {
+    const onWizardClose = (shouldRefreshTheSecretListOnClose?: boolean): void => {
         if (onClose)
-            onClose();
+            onClose(shouldRefreshTheSecretListOnClose);
         else
             setShowWizard(false);
     };
@@ -230,7 +230,7 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
             scrolling
             size="tiny"
             open={ showWizard }
-            onClose={ onClose }
+            onClose={ () => onClose(false) }
             data-testid={ `${ testId }-view-certificate-modal` }>
             <Modal.Header className="wizard-header">
                 Create Secret
@@ -284,7 +284,7 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                                     SECRET_NAME_LENGTH.max
                                 } characters!`;
                             }
-                            if (!FormValidation.resourceName(value)) {
+                            if (!FormValidation.isValidResourceName(value)) {
                                 return FieldConstants.INVALID_RESOURCE_ERROR;
                             }
                             if (listOfSecretNamesForSecretType?.size && listOfSecretNamesForSecretType.has(value)) {
@@ -306,9 +306,8 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                         inputType="password"
                         hint={
                             <Fragment>
-                                This is the value of the secret. You can enter a value length between
-                                &nbsp;<Code>{ SECRET_VALUE_LENGTH.min }</Code> to
-                                <Code>{ SECRET_VALUE_LENGTH.max }</Code>.
+                                This is the value of the secret. You can enter a value length between&nbsp;
+                                <Code>{ SECRET_VALUE_LENGTH.min }</Code> to <Code>{ SECRET_VALUE_LENGTH.max }</Code>.
                             </Fragment>
                         }
                         validate={ (value): string | undefined => {
@@ -350,7 +349,7 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <LinkButton
                                 floated="left"
-                                onClick={ onWizardClose }
+                                onClick={ () => onWizardClose(false) }
                                 data-testid={ `${ testId }-form-cancel-button` }>
                                 Cancel
                             </LinkButton>
