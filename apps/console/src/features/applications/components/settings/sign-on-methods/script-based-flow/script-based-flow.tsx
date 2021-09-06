@@ -671,6 +671,33 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                                 defaultIcon
                                                                 size="micro"
                                                                 hoverType="rounded"
+                                                                icon={ getOperationIcons().keyIcon }
+                                                                onClick={ () => {
+                                                                    setIsEditorFullScreen(!isEditorFullScreen);
+                                                                } }
+                                                                data-testid={
+                                                                    `${ testId }-code-editor-secret-selection`
+                                                                }
+                                                            />
+                                                        </div>
+                                                    ) }
+                                                    content={ () => {
+                                                        return t("common:addKey");
+                                                    } }
+                                                    size="mini"
+                                                />
+                                            </Menu.Item>
+                                            <Menu.Item className="action">
+                                                <Tooltip
+                                                    compact
+                                                    trigger={ (
+                                                        <div>
+                                                            <GenericIcon
+                                                                hoverable
+                                                                transparent
+                                                                defaultIcon
+                                                                size="micro"
+                                                                hoverType="rounded"
                                                                 icon={ getOperationIcons().maximize }
                                                                 onClick={ () => {
                                                                     setIsEditorFullScreen(!isEditorFullScreen);

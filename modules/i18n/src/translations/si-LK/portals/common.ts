@@ -24,6 +24,7 @@ export const common: CommonNS = {
     activate: "සක්‍රිය කරන්න",
     active: "සක්\u200Dරීයයි",
     add: "එකතු කරන්න",
+    addKey: "යතුර එකතු කරන්න",
     addURL: "URL එක් කරන්න",
     all: "සියලුම",
     applicationName: "ඇප් එකේ නම",
