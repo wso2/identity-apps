@@ -17,7 +17,7 @@
  *
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import get from "lodash-es/get";
 import isEqual from "lodash-es/isEqual";
@@ -273,7 +273,8 @@ export interface DynamicTableColumnInterface {
 /**
  * Table Actions Interface.
  */
-export interface TableActionsInterface<T = {}> extends TestableComponentInterface {
+export interface TableActionsInterface<T = {}>
+    extends TestableComponentInterface, Partial<IdentifiableComponentInterface> {
     /**
      * Component render node.
      */
