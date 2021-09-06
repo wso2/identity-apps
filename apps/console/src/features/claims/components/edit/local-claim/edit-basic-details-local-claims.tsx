@@ -81,6 +81,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     const [ isShowDisplayOrder, setIsShowDisplayOrder ] = useState(false);
     const [ confirmDelete, setConfirmDelete ] = useState(false);
+    const [ isClaimReadOnly , setIsClaimReadOnly ] = useState<boolean>(false);
 
     const nameField = useRef<HTMLElement>(null);
     const regExField = useRef<HTMLElement>(null);
@@ -96,6 +97,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     useEffect(() => {
         if (claim?.supportedByDefault) {
             setIsShowDisplayOrder(true);
+        }
+        if (claim?.readOnly) {
+            setIsClaimReadOnly(true);
         }
     }, [ claim ]);
 
@@ -206,7 +210,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             properties: claim.properties,
             readOnly: values?.readOnly !== undefined ? !!values.readOnly : claim?.readOnly,
             regEx:  values?.regularExpression !== undefined ? values.regularExpression?.toString() : claim?.regEx,
-            required: values?.required !== undefined ? !!values.required : claim?.required,
+            required: values?.required !== undefined && !values?.readOnly ? !!values.required : claim?.required,
             supportedByDefault: values?.supportedByDefault !== undefined
                 ? !!values.supportedByDefault : claim?.supportedByDefault
         };
@@ -377,7 +381,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 defaultValue={ claim?.required }
                                 data-testid={ `${ testId }-form-required-checkbox` }
                                 readOnly={ isReadOnly }
+                                value={ !isClaimReadOnly }
                                 hint={ t("console:manage.features.claims.local.forms.requiredHint") }
+                                disabled={ isClaimReadOnly }
                             />
                     }
                     {
@@ -395,6 +401,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 data-testid={ `${ testId }-form-readonly-checkbox` }
                                 readOnly={ isReadOnly }
                                 hint={ t("console:manage.features.claims.local.forms.readOnlyHint") }
+                                listen={ (value) => {
+                                    setIsClaimReadOnly(value);
+                                } }
                             />
                         )
                     }
