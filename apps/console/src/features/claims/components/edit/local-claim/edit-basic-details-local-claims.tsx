@@ -81,7 +81,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     const [ isShowDisplayOrder, setIsShowDisplayOrder ] = useState(false);
     const [ confirmDelete, setConfirmDelete ] = useState(false);
-    const [ isClaimReadOnly , setIsClaimReadOnly ] = useState<boolean>(false);
+    const [ isClaimReadOnly, setIsClaimReadOnly ] = useState<boolean>(false);
 
     const nameField = useRef<HTMLElement>(null);
     const regExField = useRef<HTMLElement>(null);
