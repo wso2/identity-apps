@@ -242,16 +242,14 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (props): ReactE
                 "data-componentid": `${ testId }-edit-cert-${ index }-button`,
                 icon: "eye",
                 onClick: () => handleViewCertificate(certificate),
-                popupText: t("console:manage.features.users.usersList.list." +
-                    "iconPopups.edit"),
+                popupText: "Preview",
                 type: "button"
             },
             {
                 "data-componentid": `${ testId }-delete-cert-${ index }-button`,
                 icon: "trash alternate",
                 onClick: () => deleteCertificate(index),
-                popupText: t("console:manage.features.users.usersList.list." +
-                    "iconPopups.delete"),
+                popupText: "Delete",
                 type: "button"
             }
         ] as (ResourceListActionInterface & IdentifiableComponentInterface)[];
