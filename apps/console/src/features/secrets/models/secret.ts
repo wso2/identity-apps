@@ -61,6 +61,8 @@ export type GetSecretRequest = {
 export type UpdateSecretRequest = {
     params: CommonRequestParams;
     body: {
+        // Part of: these values should be marked as optional.
+        // TODO: https://github.com/wso2/product-is/issues/12447
         value: string;
         description: string;
     };

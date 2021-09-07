@@ -16,14 +16,16 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
 import { Code, EmphasizedSegment } from "@wso2is/react-components";
 import React, { FC, Fragment, ReactElement, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Message } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface } from "../../core";
+import { updateSecret } from "../api/secret";
 import { SecretModel } from "../models/secret";
 import {
     SECRET_DESCRIPTION_LENGTH,
@@ -31,8 +33,15 @@ import {
     secretValueValidator
 } from "../utils/secrets.validation.utils";
 
+
+/**
+ * Local storage key.
+ */
 const LOCAL_STORAGE_KEY = "showInfoMessage";
 
+/**
+ * Interface indicates what will be stored in the localstorage.
+ */
 type EditSecretLocalStorage = {
     hideInfoMessage: boolean;
 }
@@ -60,15 +69,19 @@ const EditSecret: FC<EditSecretProps> = (props: EditSecretProps): ReactElement =
         ["data-componentid"]: testId
     } = props;
 
+    const dispatch = useDispatch();
+
     const [ showInfoMessage, setShowInfoMessage ] = useState<boolean>(false);
     const [ secretValueInvalid, setSecretValueInvalid ] = useState<boolean>(false);
     const [ initialFormValues, setInitialFormValues ] = useState<Record<string, any>>({});
+    // const [ secretFieldValue, setSecretFieldValue ] = useState<string>("");
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     useEffect(() => {
         if (editingSecret) {
             setInitialFormValues({
-                secret_description: editingSecret.description
+                secret_description: editingSecret.description,
+                secret_value: ""
             });
         }
         checkAndRenderInfoMessage();
@@ -88,6 +101,64 @@ const EditSecret: FC<EditSecretProps> = (props: EditSecretProps): ReactElement =
         } catch (e) {
             setShowInfoMessage(true);
         }
+    };
+
+    const updateFormSubmission = (values: Record<string, any>): void => {
+
+        // Inline and block commented codes are part of
+        // TODO: issue https://github.com/wso2/product-is/issues/12447
+        //
+        // let body: Record<string, any> = {
+        //    description: values?.secret_description,
+        // };
+
+        /**
+         * If and only if the value is edited and valid, update
+         * the secret value. otherwise don't. However, the API currently require
+         */
+
+        // if (secretFieldValue && !secretValueInvalid) {
+        //     body = {
+        //         ...body,
+        //         value: values?.secret_description
+        //     };
+        // }
+
+        updateSecret({
+            body: {
+                description: values?.secret_description,
+                value: values?.secret_value
+            },
+            params: {
+                secretName: editingSecret?.secretName,
+                secretType: editingSecret?.type
+            }
+        }).then(({ data }): void => {
+            setInitialFormValues({
+                secret_description: data?.description,
+                secret_value: ""
+            });
+            dispatch(addAlert({
+                description: `Updated ${ editingSecret?.secretName } in ${ editingSecret?.type }`,
+                level: AlertLevels.SUCCESS,
+                message: "Successfully updated the Secret"
+            }));
+        }).catch((error): void => {
+            if (error.response && error.response.data && error.response.data.description) {
+                dispatch(addAlert({
+                    description: error.response.data.description,
+                    level: AlertLevels.ERROR,
+                    message: error.response.data.message
+                }));
+                return;
+            }
+            dispatch(addAlert({
+                description: "Something went wrong",
+                level: AlertLevels.ERROR,
+                message: "We were unable to update this secret. Please try again."
+            }));
+        });
+
     };
 
     const InfoMessage: ReactElement = (
@@ -127,12 +198,13 @@ const EditSecret: FC<EditSecretProps> = (props: EditSecretProps): ReactElement =
 
             <Form
                 uncontrolledForm={ false }
-                onSubmit={ () => ({}) }
+                onSubmit={ updateFormSubmission }
                 initialValues={ initialFormValues }>
                 <Field.Input
-                    required
+                    required/*={ secretFieldValue }*/
                     label="Secret Value"
                     name="secret_value"
+                    value={ initialFormValues?.secret_value }
                     ariaLabel="Secret value"
                     placeholder="Enter a Secret Value"
                     minLength={ SECRET_VALUE_LENGTH.min }
@@ -146,16 +218,21 @@ const EditSecret: FC<EditSecretProps> = (props: EditSecretProps): ReactElement =
                         </Fragment>
                     }
                     validate={ (value): string | undefined => {
+                        // if (!secretFieldValue || !value) {
+                        //     return undefined;
+                        // }
                         const error = secretValueValidator(value);
                         setSecretValueInvalid(Boolean(error));
                         return error;
                     } }
+                    // listen={ (value: string) => setSecretFieldValue(value) }
                 />
                 <Field.Textarea
                     label="Secret Description"
                     ariaLabel="Secret's description"
                     placeholder="Enter a Secret Description"
                     name="secret_description"
+                    value={ initialFormValues?.secret_description }
                     minLength={ SECRET_DESCRIPTION_LENGTH.min }
                     maxLength={ SECRET_DESCRIPTION_LENGTH.max }
                     hint={
@@ -166,7 +243,7 @@ const EditSecret: FC<EditSecretProps> = (props: EditSecretProps): ReactElement =
                     }
                 />
                 <Field.Button
-                    disabled={ secretValueInvalid }
+                    disabled={ secretValueInvalid /*(secretValueInvalid || secretFieldValue?.length > 0)*/ }
                     type="submit"
                     buttonType="primary_btn"
                     ariaLabel="Submit Secret Update Form"
