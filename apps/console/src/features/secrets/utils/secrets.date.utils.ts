@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,7 +24,9 @@ import moment from "moment";
  * @return {string}  ͌ "A day ago 👻"
  */
 export const humanizeDateString = (dateString: string): string => {
-    return moment(dateString).fromNow();
+    return moment(dateString)
+        .utc(true)
+        .fromNow();
 };
 
 /**
@@ -33,5 +35,7 @@ export const humanizeDateString = (dateString: string): string => {
  * @return {string}  ͌ "Sunday, February 14th 2010, 3:25 pm"
  */
 export const formatDateString = (dateString: string): string => {
-    return moment().format("dddd, MMMM Do YYYY, h:mm a")
+    return moment(dateString)
+        .utc(false)
+        .format("dddd, MMMM Do YYYY");
 };
