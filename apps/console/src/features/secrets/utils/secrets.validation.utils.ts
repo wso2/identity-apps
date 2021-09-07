@@ -1,3 +1,6 @@
+import { FieldConstants } from "@wso2is/form";
+import { FormValidation } from "@wso2is/validation";
+
 /**
  * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
@@ -16,6 +19,46 @@
  * under the License.
  */
 
-export const SECRET_NAME_LENGTH = { min: 3, max: 18 };
-export const SECRET_VALUE_LENGTH = { min: 4, max: 1024 };
-export const SECRET_DESCRIPTION_LENGTH = { min: 0, max: 256 };
+export const SECRET_NAME_LENGTH = { max: 64, min: 3 };
+export const SECRET_VALUE_LENGTH = { max: 1024, min: 4 };
+export const SECRET_DESCRIPTION_LENGTH = { max: 256, min: 0 };
+
+export type ValidationResult = string | undefined;
+
+export const secretNameValidator = (
+    value: string,
+    listOfTakenSecretNamesForSecretType: Set<string> = new Set()
+): ValidationResult => {
+    if (!value) {
+        return "You cannot leave secret name empty!";
+    }
+    if (value.length > SECRET_NAME_LENGTH.max || value.length < SECRET_NAME_LENGTH.min) {
+        return `You have to enter a name between ${
+            SECRET_NAME_LENGTH.min
+        } to ${
+            SECRET_NAME_LENGTH.max
+        } characters!`;
+    }
+    if (!FormValidation.isValidResourceName(value)) {
+        return FieldConstants.INVALID_RESOURCE_ERROR;
+    }
+    if (listOfTakenSecretNamesForSecretType?.size &&
+        listOfTakenSecretNamesForSecretType.has(value)) {
+        return "This Secret name is already added!";
+    }
+    return undefined;
+};
+
+export const secretValueValidator = (value: string): ValidationResult => {
+    if (!value) {
+        return "You cannot leave secret value empty!";
+    }
+    if (value.length > SECRET_VALUE_LENGTH.max || value.length < SECRET_VALUE_LENGTH.min) {
+        return `You have to enter a value between ${
+            SECRET_VALUE_LENGTH.min
+        } to ${
+            SECRET_VALUE_LENGTH.max
+        } characters!`;
+    }
+    return undefined;
+};

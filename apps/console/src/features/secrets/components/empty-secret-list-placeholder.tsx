@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,16 +17,17 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
+import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FC, ReactElement } from "react";
 import { Icon } from "semantic-ui-react";
-import { getEmptyPlaceholderIllustrations } from "../../core";
+import { AppConstants, getEmptyPlaceholderIllustrations, history } from "../../core";
 
 /**
  * Props interface of {@link EmptySecretListPlaceholder}
  */
 export type EmptySecretListPlaceholderProps = {
     onAddNewSecret: () => void;
+    resourceNotFound?: boolean;
 } & IdentifiableComponentInterface;
 
 /**
@@ -43,8 +44,34 @@ export const EmptySecretListPlaceholder: FC<EmptySecretListPlaceholderProps> = (
 
     const {
         onAddNewSecret,
+        resourceNotFound,
         ["data-componentid"]: testId
     } = props;
+
+    const whenTheRequestedResourceIsNotFound = (): void => {
+        history.push(AppConstants.getPaths().get("SECRETS"));
+    };
+
+    if (resourceNotFound) {
+        return (
+            <EmptyPlaceholder
+                action={
+                    <LinkButton
+                        onClick={ whenTheRequestedResourceIsNotFound }>
+                        <Icon name="backward"/>
+                        Take me back to Secrets
+                    </LinkButton>
+                }
+                image={ getEmptyPlaceholderIllustrations().pageNotFound }
+                imageSize="tiny"
+                subtitle={ [
+                    "Oops! we couldn't find the requested secret!",
+                    <>Perhaps you have landed on to a invalid URL</>
+                ] }
+                data-testid={ testId }
+            />
+        );
+    }
 
     return (
         <EmptyPlaceholder

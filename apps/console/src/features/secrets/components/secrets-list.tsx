@@ -33,10 +33,11 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Header, Message, SemanticICONS } from "semantic-ui-react";
 import { EmptySecretListPlaceholder } from "./empty-secret-list-placeholder";
+import { AppConstants, history } from "../../core";
 import { deleteSecret } from "../api/secret";
+import { ADAPTIVE_SCRIPT_SECRETS } from "../constants/secrets.common";
 import { SecretModel } from "../models/secret";
 import { formatDateString, humanizeDateString } from "../utils/secrets.date.utils";
-import { ADAPTIVE_SCRIPT_SECRETS } from "../constants/secrets.common";
 
 /**
  * Props interface of {@link SecretsList}
@@ -73,9 +74,18 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
 
     const onSecretEditClick = (event: React.SyntheticEvent, item: SecretModel) => {
         event?.preventDefault();
-        // FIXME: stash key 'edit_section`
+        const pathname = AppConstants
+            .getPaths()
+            .get("SECRET_EDIT")
+            .replace(":type", item?.type)
+            .replace(":name", item?.secretName);
+        history.push({ pathname });
     };
 
+    /**
+     * This will be only called when user gives their consent.
+     * @see {@code SecretDeleteConfirmationModal}
+     */
     const onSecretDeleteClick = async (): Promise<void> => {
         if (deletingSecret) {
             try {

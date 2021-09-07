@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,15 +18,20 @@
 
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, FieldConstants, Form } from "@wso2is/form";
+import { Field, Form } from "@wso2is/form";
 import { Code, ContentLoader, Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
-import { FormValidation } from "@wso2is/validation";
 import React, { FC, Fragment, ReactElement, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Grid, Modal } from "semantic-ui-react";
 import { createSecret, getSecretList } from "../api/secret";
 import { SecretModel } from "../models/secret";
-import { SECRET_DESCRIPTION_LENGTH, SECRET_NAME_LENGTH, SECRET_VALUE_LENGTH } from "../utils/secrets.validation.utils";
+import {
+    SECRET_DESCRIPTION_LENGTH,
+    SECRET_NAME_LENGTH,
+    SECRET_VALUE_LENGTH,
+    secretNameValidator,
+    secretValueValidator
+} from "../utils/secrets.validation.utils";
 
 /**
  * Props interface of {@link AddSecretWizard}
@@ -216,9 +221,9 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
         } catch (error) {
             if (error.response && error.response.data && error.response.data.description) {
                 setAlert({
-                    description: error.response.data.description,
+                    description: error.response.data?.description,
                     level: AlertLevels.ERROR,
-                    message: error.response.data.message
+                    message: error.response.data?.message
                 });
             }
         }
@@ -256,6 +261,7 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                         ariaLabel="Select an Secret Type"
                         name="secret_type"
                         hint={ "Select a Secret Type which this secret falls into." }
+                        // TODO: implement validation here if above improvement added.
                     />
                     <Field.Input
                         required
@@ -273,25 +279,9 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                             </Fragment>
                         }
                         validate={ (value): string | undefined => {
-                            setSecretNameInvalid(true);
-                            if (!value) {
-                                return "You cannot leave secret name empty!";
-                            }
-                            if (value.length > SECRET_NAME_LENGTH.max || value.length < SECRET_NAME_LENGTH.min) {
-                                return `You have to enter a name between ${
-                                    SECRET_NAME_LENGTH.min
-                                } to ${
-                                    SECRET_NAME_LENGTH.max
-                                } characters!`;
-                            }
-                            if (!FormValidation.isValidResourceName(value)) {
-                                return FieldConstants.INVALID_RESOURCE_ERROR;
-                            }
-                            if (listOfSecretNamesForSecretType?.size && listOfSecretNamesForSecretType.has(value)) {
-                                return "This Secret name is already added!";
-                            }
-                            setSecretNameInvalid(false);
-                            return undefined;
+                            const error = secretNameValidator(value, listOfSecretNamesForSecretType);
+                            setSecretNameInvalid(Boolean(error));
+                            return error;
                         } }
                     />
                     <Field.Input
@@ -306,24 +296,14 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                         inputType="password"
                         hint={
                             <Fragment>
-                                This is the value of the secret. You can enter a value length between&nbsp;
+                                This is the value of the secret. You can enter a value between length&nbsp;
                                 <Code>{ SECRET_VALUE_LENGTH.min }</Code> to <Code>{ SECRET_VALUE_LENGTH.max }</Code>.
                             </Fragment>
                         }
                         validate={ (value): string | undefined => {
-                            setSecretValueInvalid(true);
-                            if (!value) {
-                                return "You cannot leave secret value empty!";
-                            }
-                            if (value.length > SECRET_VALUE_LENGTH.max || value.length < SECRET_VALUE_LENGTH.min) {
-                                return `You have to enter a value between ${
-                                    SECRET_VALUE_LENGTH.min
-                                } to ${
-                                    SECRET_VALUE_LENGTH.max
-                                } characters!`;
-                            }
-                            setSecretValueInvalid(false);
-                            return undefined;
+                            const error = secretValueValidator(value);
+                            setSecretValueInvalid(Boolean(error));
+                            return error;
                         } }
                     />
                     <Field.Textarea

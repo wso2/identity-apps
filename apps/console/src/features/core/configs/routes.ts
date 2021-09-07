@@ -137,40 +137,24 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
                         showOnSidePanel: true
                     },
                     {
-                        category: "secrets",
+                        category: "secrets", // TODO: https://github.com/wso2/product-is/issues/12447
                         children: [
-                            /*{
-                                component: lazy(() =>
-                                    import("../../identity-providers/pages/identity-provider-template")
-                                ),
-                                exact: true,
-                                icon: {
-                                    icon: getSidePanelIcons().childIcon
-                                },
-                                id: "identityProviderTemplate",
-                                name: "Identity Provider Templates",
-                                path: AppConstants.getPaths().get("IDP_TEMPLATES"),
-                                protected: true,
-                                showOnSidePanel: false
-                            },
                             {
-                                component: lazy(() => import("../../identity-providers/pages/identity-provider-edit")),
-                                exact: true,
-                                icon: {
-                                    icon: getSidePanelIcons().childIcon
-                                },
-                                id: "identityProvidersEdit",
-                                name: "Identity Providers Edit",
-                                path: AppConstants.getPaths().get("IDP_EDIT"),
+                                component: lazy(() => import("../../secrets/pages/secret-edit")),
+                                exact: false,
+                                icon: { icon: getSidePanelIcons().childIcon },
+                                id: "secret-management-edit",
+                                name: "Secret Edit", // TODO: https://github.com/wso2/product-is/issues/12447
+                                path: AppConstants.getPaths().get("SECRET_EDIT"),
                                 protected: true,
                                 showOnSidePanel: false
-                            }*/
+                            }
                         ],
                         component: lazy(() => import("../../secrets/pages/secrets")),
                         exact: true,
                         icon: { icon: getSidePanelIcons().secrets },
                         id: "secrets-management",
-                        name: "Secrets", // FIXME: Add i18n keys instead.
+                        name: "Secrets", // TODO: https://github.com/wso2/product-is/issues/12447
                         order: 3,
                         path: AppConstants.getPaths().get("SECRETS"),
                         protected: true,
