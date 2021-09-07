@@ -251,8 +251,33 @@ const ADMIN_VIEW_ROUTES: RouteInterface[] = [
         path: AppConstants.PATHS.get("USERS"),
         protected: true,
         showOnSidePanel: true
-    },
-    {
+    },{
+        category: "adminPortal:components.sidePanel.categories.users",
+        children: [
+            {
+                component: lazy(() => import("../../organisation/pages/organisation-edit")),
+                exact: true,
+                icon: {
+                    icon: SidePanelIcons.childIcon
+                },
+                id: "organisationEdit",
+                name: "EditOrganisation",
+                path: AppConstants.PATHS.get("ORGANISATION_EDIT"),
+                protected: true,
+                showOnSidePanel: false
+            }
+        ],
+        component: lazy(() => import("../../organisation/pages/organisation")),
+        icon: {
+            icon: SidePanelIcons.organisation
+        },
+        id: "organisation",
+        name: "Organisations",
+        order: 3,
+        path: AppConstants.PATHS.get("ORGANISATIONS"),
+        protected: true,
+        showOnSidePanel: true
+    },{
         category: "adminPortal:components.sidePanel.categories.users",
         children: [
             {

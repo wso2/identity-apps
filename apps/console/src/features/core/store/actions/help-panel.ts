@@ -70,3 +70,9 @@ export const setHelpPanelActiveTabIndex = (tabIndex: number): SetHelpPanelActive
     payload: tabIndex,
     type: HelpPanelActionTypes.SET_HELP_PANEL_ACTIVE_TAB_INDEX
 });
+
+export const searchActionOrganisation = (searchQuery: string) => ({
+    payload: searchQuery,
+    type: "ORGANISATION_SEARCH"
+});
+

@@ -1,0 +1,110 @@
+.search-btn {
+  margin-top: 30px !important;
+  cursor: pointer;
+}
+
+.radioStyle {
+  display: block !important;
+  height: 50px;
+  line-height: 50px !important;
+  border-bottom: 1px solid #ccc !important;
+  margin-right: 0 !important;
+  padding: 0 20px 0 20px !important;
+}
+
+.width--100 {
+  width: 100% !important;
+}
+
+.radio-group {
+  border: 1px solid #ccc !important;
+  border-radius: 5px;
+  max-height: 300px;
+  overflow: auto;
+}
+
+.advanced-caret button {
+  display: none !important;
+}
+
+.advanced-caret {
+  width: 95%;
+}
+
+.error-label {
+  white-space: normal;
+  background: #fff !important;
+  border: 1px solid #e0b4b4 !important;
+  color: #9f3a38 !important;
+  margin-top: 0 !important;
+}
+
+.ui.small.primary.button.edit-button {
+  margin-top: 5px;
+  margin-left: 8px;
+}
+
+.pageWidth .padded {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+
+.manager-section .manager-label {
+  position: absolute;
+  top: 30px;
+  left: 26px;
+  z-index: 9;
+  background: transparent !important;
+}
+
+.assign-member-list .ant-checkbox-wrapper {
+  display: block;
+  margin-left: 0;
+  padding: 10px 10px;
+  border-bottom: 0px solid #ddd !important;
+}
+
+/* new css */
+
+.table {
+  border : 1px solid transparent;
+}
+
+.mng-serch-wrapper-search {
+  border: solid 1px #eee;
+  padding: 7px 5px;
+  background: #fff;
+  margin-bottom: 20px;
+  color: #222;
+}
+
+.steps-container.user-update-search-wrapper.content .view-user-dp-wrapper .dropdown.icon {
+  position: relative;
+  left: 540px;
+}
+
+.primary-button-view-members {
+ margin-right: 0px;
+ float: right;
+}
+
+.list-item-meta-column {
+  padding-top: 10px;
+  max-width: 100%;
+  color: black;
+  font-weight: bold;
+  padding-bottom: 10px;
+  font-size: 13px;
+}
+
+.view-admin-resource-list-item {
+  padding-top: 0px;
+}
+
+.application-create-wizard-medium {
+  width: 900px !important;
+}
+
+.organisation-list-view-members{
+  overflow: visible;
+}

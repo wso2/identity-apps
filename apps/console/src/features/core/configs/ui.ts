@@ -58,6 +58,7 @@ import { ReactComponent as FileUploadIllustration } from "../../../themes/defaul
 import { ReactComponent as UserConfigIcon } from "../../../themes/default/assets/images/icons/user-config-icon.svg";
 import { ReactComponent as UserGroupIcon } from "../../../themes/default/assets/images/icons/user-group-icon.svg";
 import { ReactComponent as UserIcon } from "../../../themes/default/assets/images/icons/user-icon.svg";
+import { ReactComponent as OrganisationIcon } from "../../../themes/default/assets/images/icons/organisation.svg";
 import { ReactComponent as CertificateBadge } from "../../../themes/default/assets/images/illustrations/badge.svg";
 import {
     ReactComponent as CertificateIllustration
@@ -129,6 +130,7 @@ export const SidePanelIcons = {
     scopes: ScopeIcon,
     serverConfigurations: GearsIcon,
     userStore: DatabaseIcon,
+    organisation: OrganisationIcon,
     users: UserIcon
 };
 

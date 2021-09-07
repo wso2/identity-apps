@@ -81,6 +81,8 @@ export class AppConstants {
         .set("UNAUTHORIZED", "/unauthorized")
         .set("USERS", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/users`)
         .set("USER_EDIT", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/users/:id`)
+        .set("ORGANISATIONS", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/organisations`)
+        .set("ORGANISATION_EDIT", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/organisation/:id`)
         .set("USERSTORES", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/user-stores`)
         .set("USERSTORES_EDIT", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/edit-user-store/:id`)
         .set("USERSTORE_TEMPLATES", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/userstore-templates`);

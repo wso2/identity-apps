@@ -27,6 +27,7 @@ import { getIDPResourceEndpoints } from "../../identity-providers";
 import { getRolesResourceEndpoints } from "../../roles";
 import { getServerConfigurationsResourceEndpoints } from "../../server-configurations";
 import { getUsersResourceEndpoints } from "../../users";
+import { getOrganisationResourceEndpoints } from "../../organisation";
 import { getUserstoreResourceEndpoints } from "../../userstores";
 import { I18nConstants } from "../constants";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
@@ -119,6 +120,7 @@ export class Config {
             ...getEmailTemplatesResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getRolesResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getServerConfigurationsResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getOrganisationResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getUsersResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getUserstoreResourceEndpoints(this.getDeploymentConfig().serverHost),
             documentationContent: this.getDeploymentConfig().documentation.contentBaseURL,

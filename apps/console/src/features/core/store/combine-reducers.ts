@@ -33,6 +33,7 @@ import { I18nModuleOptionsInterface, SupportedLanguagesMeta } from "@wso2is/i18n
 import { System } from "react-notification-system";
 import { combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
+import { organisationsReducer } from "../../organisation";
 import {
     commonConfigReducerInitialState,
     commonGlobalReducerInitialState,
@@ -70,6 +71,7 @@ export const reducers = combineReducers({
     global: commonGlobalReducer<AlertInterface, System, SupportedLanguagesMeta>(commonGlobalReducerInitialState),
     governanceConnector: governanceConnectorReducer,
     helpPanel: helpPanelReducer,
+    organisations:organisationsReducer,
     identityProvider: identityProviderReducer,
     loaders: commonRequestLoadersReducer(commonRequestLoadersInitialState),
     profile: commonProfileReducer<

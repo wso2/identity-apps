@@ -23,3 +23,5 @@ export * from "./header";
 export * from "./modal-with-side-panel";
 export * from "./protected-route";
 export * from "./upload-certificate";
+export * from "./organisation-advanced-search";
+export * from "./pagination";
