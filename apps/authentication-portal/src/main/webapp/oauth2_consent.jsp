@@ -48,14 +48,13 @@
 
     Map<String, String> queryParamMap = new HashMap<String, String>();
     String queryString = request.getParameter("spQueryParams");
-        if (StringUtils.isNotBlank(queryString)) {
-            StringTokenizer stringTokenizer = new StringTokenizer(queryString, "&");
-            while (stringTokenizer.hasMoreTokens()) {
-                String queryParam = stringTokenizer.nextToken();
-                String[] queryParamKeyValueArray = queryParam.split("=", 2);
+    if (StringUtils.isNotBlank(queryString)) {
+        String[] queryParams = queryString.split("&");
+        for (String queryParam : queryParams) {
+            String[] queryParamKeyValueArray = queryParam.split("=", 2);
                 queryParamMap.put(queryParamKeyValueArray[0], queryParamKeyValueArray[1]);
-            }
         }
+    }
 
     String clientId = queryParamMap.get("client_id");
     String[] requestedClaimList = new String[0];
