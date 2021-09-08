@@ -289,6 +289,8 @@ export const getCopyInputField = (eachProp: CommonPluggableComponentPropertyInte
                 <label>{ propertyMetadata?.displayName }</label>
             </div>
             <CopyInputField
+                key={ propertyMetadata?.key }
+                data-testid={ `${ testId }-${ propertyMetadata?.key }` }
                 value={ eachProp?.value }
             />
             { propertyMetadata?.description && (
