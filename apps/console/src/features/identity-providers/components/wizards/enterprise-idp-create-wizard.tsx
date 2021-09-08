@@ -721,7 +721,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         data-testid={ `${ testId }-form-wizard-oidc-jwks-endpoint-url` }
                     />
                     <Hint>
-                        Asgardeo will use this URL to obtain keys to verify the signed
+                        { config.ui.productName } will use this URL to obtain keys to verify the signed
                         responses from your external IdP
                     </Hint>
                 </>
@@ -758,7 +758,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         data-testid={ `${ testId }-form-wizard-${ selectedProtocol }-pem-certificate` }
                     />
                     <Hint>
-                        Asgardeo will use this certificate to verify the signed
+                        { config.ui.productName } will use this certificate to verify the signed
                         responses from your external IdP.
                     </Hint>
                 </>
