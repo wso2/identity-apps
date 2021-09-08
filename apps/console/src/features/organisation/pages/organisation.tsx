@@ -32,6 +32,7 @@ import { deleteOrganisation, getOrganisationList } from "../api";
 import { AddOrganization, OrganisationList } from "../components";
 import { OrganisationConstants } from "../constants";
 import { OrganisationListInterface } from "../models";
+import "../css/index.css"
 
 /**
  * Users info page.
