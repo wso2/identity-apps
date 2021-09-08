@@ -22,7 +22,7 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import {
-    DocumentationLinkTag,
+    DocumentationLink,
     GridLayout,
     ListLayout,
     PageLayout,
@@ -281,11 +281,11 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             description={ 
                 <p>
                     { t("console:develop.pages.applications.subTitle") }
-                    <DocumentationLinkTag
+                    <DocumentationLink
                         link={ getLink("develop.applications.learnMore") }
                     >
                         { t("common:learnMore") }
-                    </DocumentationLinkTag>
+                    </DocumentationLink>
                 </p> 
             }
             data-testid={ `${ testId }-page-layout` }

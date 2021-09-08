@@ -19,9 +19,9 @@
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { Icon } from "semantic-ui-react";
 /**
- * DocumentationLinkTag component Prop types.
+ * DocumentationLink component Prop types.
  */
-interface DocumentationLinkTagPropsInterface { 
+interface DocumentationLinkPropsInterface { 
     /**
      * Documentation URL.
      */
@@ -35,12 +35,12 @@ interface DocumentationLinkTagPropsInterface {
 /**
  * Documentation link anchor tag component.
  *
- * @param {React.PropsWithChildren<DocumentationLinkTagPropsInterface>} props - Props injected to the component.
+ * @param {React.PropsWithChildren<DocumentationLinkPropsInterface>} props - Props injected to the component.
  *
  * @return {React.ReactElement}
  */
-export const DocumentationLinkTag: FunctionComponent<PropsWithChildren<DocumentationLinkTagPropsInterface>> = (
-    props: PropsWithChildren<DocumentationLinkTagPropsInterface>
+export const DocumentationLink: FunctionComponent<PropsWithChildren<DocumentationLinkPropsInterface>> = (
+    props: PropsWithChildren<DocumentationLinkPropsInterface>
 ): ReactElement => {
 
     const { 
@@ -69,8 +69,8 @@ export const DocumentationLinkTag: FunctionComponent<PropsWithChildren<Documenta
 };
 
 /**
- * Prop types for the DocumentationLinkTag component.
+ * Prop types for the DocumentationLink component.
  */
-DocumentationLinkTag.defaultProps = {
+DocumentationLink.defaultProps = {
     target: "_blank"
 };
