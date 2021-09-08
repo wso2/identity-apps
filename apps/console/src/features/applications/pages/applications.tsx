@@ -22,10 +22,12 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import {
+    DocumentationLinkTag,
     GridLayout,
     ListLayout,
     PageLayout,
-    PrimaryButton
+    PrimaryButton,
+    useDocumentation
 } from "@wso2is/react-components";
 import find from "lodash-es/find";
 import React, {
@@ -106,6 +108,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const dispatch = useDispatch();
 
@@ -275,7 +278,15 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 )
             }
             title={ t("console:develop.pages.applications.title") }
-            description={ t("console:develop.pages.applications.subTitle") }
+            description={ 
+                <p>
+                    { t("console:develop.pages.applications.subTitle") }
+                    <DocumentationLinkTag
+                        link={ getLink("develop.applications.learnMore") }
+                        text={ t("common:learnMore") }
+                    />
+                </p> 
+            }
             data-testid={ `${ testId }-page-layout` }
         >
         { !isLoading? (
