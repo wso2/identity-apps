@@ -35,7 +35,5 @@ export const humanizeDateString = (dateString: string): string => {
  * @return {string}  ͌ "Sunday, February 14th 2010, 3:25 pm"
  */
 export const formatDateString = (dateString: string): string => {
-    return moment(dateString)
-        .utc(false)
-        .format("dddd, MMMM Do YYYY");
+    return moment(dateString).format("dddd, MMMM Do YYYY");
 };
