@@ -247,3 +247,38 @@ export const isValidDescription = (value: string): boolean => {
         return false;
     }
 };
+
+/**
+ * This function validates whether a given string is resource key
+ * like value or not. Basically, it have to start with a alphabetic
+ * letter and rest can contain only alphanumeric with underscores or
+ * dashes within them. This is a custom enforced rule and
+ * yet not finalized on the implementation.
+ *
+ * +-----------------+
+ * |  Valid Inputs   |
+ * +-----------------+
+ * | a-resource-key  |
+ * | A-resource_key  |
+ * | A_re-source-key |
+ * | WOO_ANOTHER_KEY |
+ * | MY_SECRET       |
+ * | YOUR-SECRET     |
+ * | OuR-S3C_ReT     |
+ * | Whoo_o-oo333223 |
+ * +-----------------+
+ *
+ * {@see Sandbox https://regex101.com/r/keIxpy/1}
+ * @param value {string} user input
+ * @return {boolean} input valid or not.
+ */
+export const isValidResourceKey = (value: string): boolean => {
+    try {
+        const result: ValidationResult = Joi.string()
+            .regex(new RegExp("^[a-zA-Z][a-zA-Z0-9-_]+$"))
+            .validate(value);
+        return !result.error;
+    } catch (error) {
+        return false;
+    }
+};
