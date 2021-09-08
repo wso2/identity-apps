@@ -16,13 +16,12 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { Icon } from "semantic-ui-react";
 /**
  * DocumentationLinkTag component Prop types.
  */
-export interface DocumentationLinkTagPropsInterface extends  TestableComponentInterface { 
+interface DocumentationLinkTagPropsInterface { 
     /**
      * Documentation URL.
      */
@@ -31,49 +30,47 @@ export interface DocumentationLinkTagPropsInterface extends  TestableComponentIn
      * Documentation URL target property. Opens in a new window by default.
      */
     target?: string;
-    /**
-     * Text on the anchor tag. Defaults to Learn More.
-     */
-    text?: string;
 }
 
 /**
  * Documentation link anchor tag component.
  *
- * @param {DocumentationLinkTagPropsInterface} props - Props injected to the component.
+ * @param {React.PropsWithChildren<DocumentationLinkTagPropsInterface>} props - Props injected to the component.
  *
  * @return {React.ReactElement}
  */
-export const DocumentationLinkTag: FunctionComponent<DocumentationLinkTagPropsInterface> = (
-    props: DocumentationLinkTagPropsInterface
+export const DocumentationLinkTag: FunctionComponent<PropsWithChildren<DocumentationLinkTagPropsInterface>> = (
+    props: PropsWithChildren<DocumentationLinkTagPropsInterface>
 ): ReactElement => {
 
     const { 
+        children,
         link,
-        target,
-        text
+        target
     } = props;
 
+    if (link === undefined) {
+        return null;
+    }
+
     return (
-        (link === undefined) ?
-            null :
-            <strong>
-                <a
-                    href={ link }
-                    target={ target }
-                    rel="noopener noreferrer"
-                    className="link external no-wrap"
-                > { text }
-                    <Icon className="ml-7" name="caret right"/>
-                </a>
-            </strong> 
+        <strong>
+            <a
+                href={ link }
+                target={ target }
+                rel="noopener noreferrer"
+                className="link external no-wrap"
+            >
+                { children }
+                <Icon className="ml-7" name="caret right"/>
+            </a>
+        </strong>
     );
 };
 
 /**
  * Prop types for the DocumentationLinkTag component.
  */
- DocumentationLinkTag.defaultProps = {
-    target: "_blank",
-    text: "Learn More"
+DocumentationLinkTag.defaultProps = {
+    target: "_blank"
 };
