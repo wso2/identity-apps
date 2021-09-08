@@ -115,6 +115,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
 
         const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
         const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+        const SCOPE_DESCRIPTION_MAX_LENGTH: number = 100;
 
         const isReadOnly = useMemo(() => (
             !hasRequiredScopes(
@@ -467,7 +468,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                             ) }
                                             value={ scope.description }
                                             required={ false }
-                                            maxLength={ 300 }
+                                            maxLength={ SCOPE_DESCRIPTION_MAX_LENGTH }
                                             minLength={ 3 }
                                             readOnly={ isReadOnly }
                                         />
