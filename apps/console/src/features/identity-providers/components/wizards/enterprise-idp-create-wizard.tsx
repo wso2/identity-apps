@@ -388,7 +388,6 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     "templates.enterprise.validation.name");
             }
             setNextShouldBeDisabled(ifFieldsHave(errors));
-            return errors;
         } }>
             <Field.Input
                 data-testid={ `${ testId }-form-wizard-idp-name` }
@@ -402,6 +401,25 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 minLength={ IDP_NAME_LENGTH.min }
                 required={ true }
                 width={ 15 }
+                validation={ async (values: any) => {
+                    let errors: "";
+                    errors = composeValidators(required, length(IDP_NAME_LENGTH))(values);
+                    if (isIdpNameAlreadyTaken(values)) {
+                        errors = t("console:develop.features.authenticationProvider." +
+                            "forms.generalDetails.name.validations.duplicate");
+                    }
+                    if (!FormValidation.isValidResourceName(values)) {
+                        errors = t("console:develop.features.authenticationProvider." +
+                            "templates.enterprise.validation.invalidName",
+                            { idpName: values});
+                    }
+
+                    if (errors === "" || errors === undefined) {
+                        setNextShouldBeDisabled(false);
+                    }
+                    return errors;
+                }
+                }
             />
             <Grid>
                 <Grid.Row>
@@ -703,7 +721,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         data-testid={ `${ testId }-form-wizard-oidc-jwks-endpoint-url` }
                     />
                     <Hint>
-                        { config.ui.productName } will use this URL to obtain keys to verify the signed
+                        Asgardeo will use this URL to obtain keys to verify the signed
                         responses from your external IdP
                     </Hint>
                 </>
@@ -740,7 +758,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         data-testid={ `${ testId }-form-wizard-${ selectedProtocol }-pem-certificate` }
                     />
                     <Hint>
-                        { config.ui.productName } will use this certificate to verify the signed
+                        Asgardeo will use this certificate to verify the signed
                         responses from your external IdP.
                     </Hint>
                 </>

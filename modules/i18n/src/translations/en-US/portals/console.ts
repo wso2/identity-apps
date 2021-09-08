@@ -3968,7 +3968,9 @@ export const console: ConsoleNS = {
                     },
                     enterprise: {
                         validation: {
-                            name: "Please enter a valid name"
+                            name: "Please enter a valid name",
+                            invalidName: "{{idpName}} is not a valid name. It should not contain any other" +
+                                " alphanumerics except for periods (.), dashes (-), underscores (_) and spaces."
                         }
                     }
                 },
