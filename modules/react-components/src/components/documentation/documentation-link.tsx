@@ -59,7 +59,7 @@ export const DocumentationLinkTag: FunctionComponent<PropsWithChildren<Documenta
                 href={ link }
                 target={ target }
                 rel="noopener noreferrer"
-                className="link external no-wrap"
+                className="ml-1 link external no-wrap"
             >
                 { children }
                 <Icon className="ml-7" name="caret right"/>

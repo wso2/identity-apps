@@ -283,8 +283,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     { t("console:develop.pages.applications.subTitle") }
                     <DocumentationLinkTag
                         link={ getLink("develop.applications.learnMore") }
-                        text={ t("common:learnMore") }
-                    />
+                    >
+                        { t("common:learnMore") }
+                    </DocumentationLinkTag>
                 </p> 
             }
             data-testid={ `${ testId }-page-layout` }
