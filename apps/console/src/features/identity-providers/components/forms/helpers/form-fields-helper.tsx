@@ -22,7 +22,7 @@ import {
     Validation
 } from "@wso2is/forms";
 import { I18n } from "@wso2is/i18n";
-import { GenericIcon, Hint } from "@wso2is/react-components";
+import { CopyInputField, GenericIcon, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { ReactElement } from "react";
 import { Grid } from "semantic-ui-react";
@@ -30,6 +30,8 @@ import {
     CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface
 } from "../../../models";
+
+const AUTHORIZATION_REDIRECT_URL: string = "callbackUrl";
 
 export const getConfidentialField = (eachProp: CommonPluggableComponentPropertyInterface,
                                      propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
@@ -278,6 +280,26 @@ export const getURLField = (eachProp: CommonPluggableComponentPropertyInterface,
     );
 };
 
+export const getCopyInputField = (eachProp: CommonPluggableComponentPropertyInterface,
+                            propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+                            testId?: string): ReactElement => {
+    return (
+        <>
+            <div className={ `field ${ propertyMetadata?.isMandatory ? "required" : "" }` }>
+                <label>{ propertyMetadata?.displayName }</label>
+            </div>
+            <CopyInputField
+                key={ propertyMetadata?.key }
+                data-testid={ `${ testId }-${ propertyMetadata?.key }` }
+                value={ eachProp?.value }
+            />
+            { propertyMetadata?.description && (
+                <Hint disabled={ propertyMetadata?.isDisabled }>{ propertyMetadata?.description }</Hint>
+            ) }
+        </>
+    );
+};
+
 export const getQueryParamsField = (eachProp: CommonPluggableComponentPropertyInterface,
                                     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
                                     testId?: string): ReactElement => {
@@ -448,7 +470,8 @@ export enum FieldType {
     URL = "URL",
     QUERY_PARAMS = "QueryParameters",
     DROP_DOWN = "DropDown",
-    RADIO = "Radio"
+    RADIO = "Radio",
+    COPY_INPUT = "CopyInput"
 }
 
 /**
@@ -475,8 +498,12 @@ export const getFieldType = (propertyMetadata: CommonPluggableComponentMetaPrope
     } else if (propertyMetadata?.key === CommonConstants.SCOPE_KEY) {
         return FieldType.TABLE;
     } else if (propertyMetadata?.key.toUpperCase().includes(CommonConstants.FIELD_COMPONENT_KEYWORD_URL)) {
-        // todo Need proper backend support to identity URL fields.
-        return FieldType.URL;
+        if (propertyMetadata?.key === AUTHORIZATION_REDIRECT_URL) {
+            return  FieldType.COPY_INPUT;
+        } else {
+            // todo Need proper backend support to identity URL fields.
+            return FieldType.URL;
+        }
     } else if (propertyMetadata?.key.toUpperCase().includes(
         CommonConstants.FIELD_COMPONENT_KEYWORD_QUERY_PARAMETER)) {
         // todo Need proper backend support to identity Query parameter fields.
@@ -522,6 +549,9 @@ export const getPropertyField = (property: CommonPluggableComponentPropertyInter
         }
         case FieldType.URL : {
             return getURLField(property, propertyMetadata, testId);
+        }
+        case FieldType.COPY_INPUT : {
+            return getCopyInputField(property, propertyMetadata, testId);
         }
         case FieldType.QUERY_PARAMS : {
             return getQueryParamsField(property, propertyMetadata, testId);
