@@ -446,10 +446,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     };
 
     return (
-        <GridLayout
-            showTopActionPanel={ false }
-            isLoading={ (isLoading || isApplicationTemplateRequestLoading) }
-        >
+        <>
             <DataTable<ApplicationListItemInterface>
                 className="applications-table"
                 externalSearch={ advancedSearch }
@@ -511,7 +508,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     </ConfirmationModal>
                 )
             }
-        </GridLayout>
+        </>
     );
 };
 
