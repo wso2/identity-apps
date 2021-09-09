@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { AuthenticatedUserInterface } from "@wso2/identity-oidc-js";
 import {
     LinkedAccountInterface,
     ProfileInfoInterface,
