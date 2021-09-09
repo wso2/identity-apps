@@ -50,6 +50,7 @@ import {
     ServiceResourceEndpointsInterface,
     UIConfigInterface
 } from "../models";
+import { AuthenticatedUserInfo } from "@asgardeo/auth-react";
 
 /**
  * Combines all the reducers.
@@ -61,7 +62,7 @@ export const reducers = combineReducers({
     application: applicationReducer,
     auth: commonAuthenticateReducer<
         AuthReducerStateInterface,
-        AuthenticatedUserInterface>(commonAuthenticateReducerInitialState),
+        AuthenticatedUserInfo>(commonAuthenticateReducerInitialState),
     config: commonConfigReducer<
         DeploymentConfigInterface,
         ServiceResourceEndpointsInterface,
