@@ -28,14 +28,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { Divider, DropdownProps, Grid, Icon, Modal, PaginationProps } from "semantic-ui-react";
 import { ClaimsList, ListType } from "../../";
 import { attributeConfig } from "../../../../../extensions";
-import { 
-    AdvancedSearchWithBasicFilters, 
-    AppState, 
+import {
+    AdvancedSearchWithBasicFilters,
+    AppState,
     EventPublisher,
-    FeatureConfigInterface, 
-    UIConstants, 
-    filterList, 
-    sortList 
+    FeatureConfigInterface,
+    UIConstants,
+    filterList,
+    sortList
 } from "../../../../core";
 import { addExternalClaim } from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";
@@ -107,7 +107,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
     ];
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ offset, setOffset ] = useState(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
@@ -376,7 +376,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                                     eventPublisher.publish("manage-attribute-mappings-add-new-attribute", {
                                         "type": kebabCase(attributeType)
                                     });
-                                    
+
                                     setTriggerAddExternalClaim();
                                 } }
                                 data-testid={ `${ testId }-add-external-claim-modal-save-button` }
