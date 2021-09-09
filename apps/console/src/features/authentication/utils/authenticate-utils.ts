@@ -16,15 +16,15 @@
  * under the License.
  */
 
-import {
-    IdentityClient
-} from "@wso2/identity-oidc-js";
-import { AlertInterface, AlertLevels } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
-import { I18n } from "@wso2is/i18n";
-import { AxiosError } from "axios";
-import { store } from "../../core";
-import { handleSignOut } from "../store/actions";
+import { AuthClientConfig, Config, ResponseMode, Storage } from "@asgardeo/auth-react";
+import { TokenConstants } from "@wso2is/core/constants";
+import UAParser from "ua-parser-js";
+
+/**
+ * Response mode fallback.
+ */
+const responseModeFallback: ResponseMode =
+    process.env.NODE_ENV === "production" ? ResponseMode.formPost : ResponseMode.query;
 
 /**
  * Utility class for authenticate operations.
@@ -39,39 +39,102 @@ export class AuthenticateUtils {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() {}
 
+    public static initializeConfig: AuthClientConfig<Config> = {
+        clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
+        clientID: window["AppUtils"].getConfig().clientID,
+        clockTolerance: window["AppUtils"].getConfig().idpConfigs?.clockTolerance,
+        enablePKCE: window["AppUtils"].getConfig().idpConfigs?.enablePKCE ?? true,
+        endpoints: {
+            authorizationEndpoint: window["AppUtils"].getConfig().idpConfigs?.authorizeEndpointURL,
+            checkSessionIframe: window["AppUtils"].getConfig().idpConfigs?.oidcSessionIFrameEndpointURL,
+            endSessionEndpoint: window["AppUtils"].getConfig().idpConfigs?.logoutEndpointURL,
+            jwksUri: window["AppUtils"].getConfig().idpConfigs?.jwksEndpointURL,
+            revocationEndpoint: window["AppUtils"].getConfig().idpConfigs?.tokenRevocationEndpointURL,
+            tokenEndpoint: window["AppUtils"].getConfig().idpConfigs?.tokenEndpointURL,
+            wellKnownEndpoint: window["AppUtils"].getConfig().idpConfigs?.wellKnownEndpointURL
+        },
+        overrideWellEndpointConfig: true,
+        resourceServerURLs: AuthenticateUtils.resolveBaseUrls(),
+        responseMode: window["AppUtils"].getConfig().idpConfigs?.responseMode ?? responseModeFallback,
+        scope: window["AppUtils"].getConfig().idpConfigs?.scope ?? [TokenConstants.SYSTEM_SCOPE],
+        //sendCookiesInRequests: true,
+        serverOrigin:
+            window["AppUtils"].getConfig().idpConfigs?.serverOrigin ??
+            window["AppUtils"].getConfig().idpConfigs.serverOrigin,
+        signInRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
+        signOutRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
+        storage: AuthenticateUtils.resolveStorage(),
+        validateIDToken: false
+    };
+
     /**
-     * Clears the session related information and sign out from the session.
+     * Determines what storage type should be used to store session information.
+     *
+     * @returns {Storage}
      */
-    public static endUserSession(): void {
-        const auth = IdentityClient.getInstance();
+    public static resolveStorage(): Storage {
+        const storageFallback: Storage =
+            new UAParser().getBrowser().name === "IE" ? Storage.SessionStorage : Storage.WebWorker;
 
-        auth.endUserSession()
-            .then(() => {
-                store.dispatch(handleSignOut());
-            })
-            .catch((error: AxiosError) => {
-                if (error.response && error.response.data && error.response.data.detail) {
-                    store.dispatch(
-                        addAlert<AlertInterface>({
-                            description: I18n.instance.t("console:manage.notifications.endSession.error.description", {
-                                description: error.response.data.detail
-                            }),
-                            level: AlertLevels.ERROR,
-                            message: I18n.instance.t("console:manage.notifications.endSession.error.message")
-                        })
-                    );
+        if (window["AppUtils"].getConfig().idpConfigs?.storage) {
+            if (
+                window["AppUtils"].getConfig().idpConfigs?.storage === Storage.WebWorker &&
+                new UAParser().getBrowser().name === "IE"
+            ) {
+                return Storage.SessionStorage;
+            }
 
-                    return;
+            return window["AppUtils"].getConfig().idpConfigs?.storage;
+        }
+
+        return storageFallback;
+    }
+
+    /**
+     * By specifying the base URL, we are restricting the endpoints to which the requests could be sent.
+     * So, an attacker can't obtain the token by sending a request to their endpoint. This is mandatory
+     * when the storage is set to Web Worker.
+     *
+     * @return {string[]}
+     */
+    public static resolveBaseUrls(): string[] {
+        let baseUrls = window["AppUtils"].getConfig().idpConfigs?.baseUrls;
+        const serverOrigin = window["AppUtils"].getConfig().serverOrigin;
+
+        if (baseUrls) {
+            // If the server origin is not specified in the overridden config, append it.
+            if (!baseUrls.includes(serverOrigin)) {
+                baseUrls = [...baseUrls, serverOrigin];
+            }
+
+            return baseUrls;
+        }
+
+        return [serverOrigin];
+    }
+
+    /**
+     * Resolves IDP URLs when the tenant resolves. Returns
+     *
+     * @param {string} originalURL - Original URL.
+     * @param {string} overriddenURL - Overridden URL from config.
+     * @return {string}
+     */
+    public static resolveIdpURLSAfterTenantResolves(originalURL: string, overriddenURL: string): string {
+        const parsedOriginalURL: URL = new URL(originalURL);
+        const parsedOverrideURL: URL = new URL(overriddenURL);
+
+        // If the override URL & original URL has search params, try to moderate the URL.
+        if (parsedOverrideURL.search && parsedOriginalURL.search) {
+            for (const [key, value] of parsedOriginalURL.searchParams.entries()) {
+                if (!parsedOverrideURL.searchParams.has(key)) {
+                    parsedOverrideURL.searchParams.append(key, value);
                 }
+            }
 
-                store.dispatch(
-                    addAlert<AlertInterface>({
-                        description: I18n.instance.t("console:manage.notifications.endSession.genericError" +
-                            ".description"),
-                        level: AlertLevels.ERROR,
-                        message: I18n.instance.t("console:manage.notifications.endSession.genericError.message")
-                    })
-                );
-            });
+            return parsedOverrideURL.toString();
+        }
+
+        return overriddenURL + parsedOriginalURL.search;
     }
 }
