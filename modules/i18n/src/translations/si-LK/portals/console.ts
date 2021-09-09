@@ -3595,7 +3595,8 @@ export const console: ConsoleNS = {
                 templates: {
                     enterprise: {
                         validation: {
-                            name: "වලංගු නමක් ඇතුළත් කරන්න"
+                            name: "වලංගු නමක් ඇතුළත් කරන්න",
+                            invalidName: "වලංගු නමක් ඇතුළත් කරන්න"
                         }
                     }
                 }

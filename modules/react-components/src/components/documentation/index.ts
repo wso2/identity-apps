@@ -17,5 +17,6 @@
  *
  */
 
+export * from "./documentation-link";
 export * from "./documentation-provider";
 export * from "./use-documentation";
