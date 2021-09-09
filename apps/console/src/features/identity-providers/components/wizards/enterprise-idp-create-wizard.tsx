@@ -401,7 +401,10 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 minLength={ IDP_NAME_LENGTH.min }
                 required={ true }
                 width={ 15 }
-                validation={ async (values: any) => {
+                format = { (values: any) => {
+                    return values.toString().trimStart();
+                }}
+                validation={ (values: any) => {
                     let errors: "";
                     errors = composeValidators(required, length(IDP_NAME_LENGTH))(values);
                     if (isIdpNameAlreadyTaken(values)) {
