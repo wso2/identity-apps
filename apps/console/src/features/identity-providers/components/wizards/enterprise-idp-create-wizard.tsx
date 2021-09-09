@@ -388,7 +388,6 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     "templates.enterprise.validation.name");
             }
             setNextShouldBeDisabled(ifFieldsHave(errors));
-            return errors;
         } }>
             <Field.Input
                 data-testid={ `${ testId }-form-wizard-idp-name` }
@@ -402,6 +401,28 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 minLength={ IDP_NAME_LENGTH.min }
                 required={ true }
                 width={ 15 }
+                format = { (values: any) => {
+                    return values.toString().trimStart();
+                }}
+                validation={ (values: any) => {
+                    let errors: "";
+                    errors = composeValidators(required, length(IDP_NAME_LENGTH))(values);
+                    if (isIdpNameAlreadyTaken(values)) {
+                        errors = t("console:develop.features.authenticationProvider." +
+                            "forms.generalDetails.name.validations.duplicate");
+                    }
+                    if (!FormValidation.isValidResourceName(values)) {
+                        errors = t("console:develop.features.authenticationProvider." +
+                            "templates.enterprise.validation.invalidName",
+                            { idpName: values});
+                    }
+
+                    if (errors === "" || errors === undefined) {
+                        setNextShouldBeDisabled(false);
+                    }
+                    return errors;
+                }
+                }
             />
             <Grid>
                 <Grid.Row>
