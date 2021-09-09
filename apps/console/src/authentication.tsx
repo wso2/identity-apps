@@ -16,17 +16,25 @@
  * under the License.
  */
 
-import React, { FunctionComponent, lazy, ReactElement, Suspense, useEffect } from "react";
-import { useAuthContext, BasicUserInfo, AuthenticatedComponent, Hooks, OIDCEndpoints, AuthenticatedUserInfo } from "@asgardeo/auth-react";
-import axios from "axios";
-import { AuthenticateUtils as CommonAuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
-import { useDispatch } from "react-redux";
+import {
+    AuthenticatedComponent,
+    AuthenticatedUserInfo,
+    BasicUserInfo,
+    Hooks,
+    OIDCEndpoints,
+    useAuthContext
+} from "@asgardeo/auth-react";
+import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
 import { TenantListInterface } from "@wso2is/core/models";
-import { AuthenticateUtils, getProfileInformation } from "./features/authentication";
-import { AppConstants, CommonConstants } from "./features/core/constants";
-import { AppConstants as CommonAppConstants, TokenConstants } from "@wso2is/core/constants";
 import { setSignIn } from "@wso2is/core/store";
-import { Config, HttpUtils } from "./features/core";
+import { AuthenticateUtils as CommonAuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
+import axios from "axios";
+import React, { FunctionComponent, ReactElement, Suspense, lazy, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { Loader } from "semantic-ui-react";
+import { AuthenticateUtils, getProfileInformation } from "./features/authentication";
+import { Config, HttpUtils, PreLoader } from "./features/core";
+import { AppConstants, CommonConstants } from "./features/core/constants";
 import { history } from "./features/core/helpers";
 
 const AUTHORIZATION_ENDPOINT = "authorization_endpoint";
@@ -37,7 +45,14 @@ const LOGOUT_URL = "sign_out_url";
 export const Authentication: FunctionComponent<Record<string, never>> = (): ReactElement => {
     const AuthenticatedApp = lazy(() => import("./authenticated-app"));
 
-    const { signIn, trySignInSilently, on, getDecodedIDToken, getOIDCServiceEndpoints, state: {isAuthenticated} } = useAuthContext();
+    const {
+        signIn,
+        trySignInSilently,
+        on,
+        getDecodedIDToken,
+        getOIDCServiceEndpoints,
+        state: { isAuthenticated }
+    } = useAuthContext();
 
     const dispatch = useDispatch();
 
@@ -48,7 +63,6 @@ export const Authentication: FunctionComponent<Record<string, never>> = (): Reac
         on(Hooks.HttpRequestSuccess, HttpUtils.onHttpRequestSuccess);
 
         on(Hooks.SignIn, (response: BasicUserInfo) => {
-            console.log("On Sign in", response);
             // Update the app base name with the newly resolved tenant.
             window[ "AppUtils" ].updateTenantQualifiedBaseName(response.tenantDomain);
 
@@ -57,8 +71,12 @@ export const Authentication: FunctionComponent<Record<string, never>> = (): Reac
             // We can skip clearing the callback for super tenant since we do not put it in the path.
             if (response.tenantDomain !== AppConstants.getSuperTenant()) {
                 // If the auth callback already has the logged in tenant's path, we can skip the reset.
-                if (!CommonAuthenticateUtils.isValidAuthenticationCallbackUrl(CommonAppConstants.CONSOLE_APP,
-                    AppConstants.getTenantPath())) {
+                if (
+                    !CommonAuthenticateUtils.isValidAuthenticationCallbackUrl(
+                        CommonAppConstants.CONSOLE_APP,
+                        AppConstants.getTenantPath()
+                    )
+                ) {
                     CommonAuthenticateUtils.removeAuthenticationCallbackUrl(CommonAppConstants.CONSOLE_APP);
                 }
             }
@@ -68,25 +86,30 @@ export const Authentication: FunctionComponent<Record<string, never>> = (): Reac
 
             // Update post_logout_redirect_uri of logout_url with tenant qualified url
             if (sessionStorage.getItem(LOGOUT_URL)) {
-
                 let logoutUrl = sessionStorage.getItem(LOGOUT_URL);
 
                 if (!window[ "AppUtils" ].getConfig().accountApp.commonPostLogoutUrl) {
                     // If there is a base name, replace the `post_logout_redirect_uri` with the tenanted base name.
                     if (window[ "AppUtils" ].getConfig().appBase) {
-                        logoutUrl = logoutUrl.replace(window[ "AppUtils" ].getAppBase(),
-                            window[ "AppUtils" ].getAppBaseWithTenant());
+                        logoutUrl = logoutUrl.replace(
+                            window[ "AppUtils" ].getAppBase(),
+                            window[ "AppUtils" ].getAppBaseWithTenant()
+                        );
                     } else {
-                        logoutUrl = logoutUrl.replace(window[ "AppUtils" ].getConfig().logoutCallbackURL,
-                            (window[ "AppUtils" ].getConfig()
-                                .clientOrigin + window[ "AppUtils" ].getConfig().routes.login));
+                        logoutUrl = logoutUrl.replace(
+                            window[ "AppUtils" ].getConfig().logoutCallbackURL,
+                            window[ "AppUtils" ].getConfig().clientOrigin
+                            + window[ "AppUtils" ].getConfig().routes.login
+                        );
                     }
                 }
 
                 // If an override URL is defined in config, use that instead.
                 if (window[ "AppUtils" ].getConfig().idpConfigs?.logoutEndpointURL) {
-                    logoutUrl = AuthenticateUtils.resolveIdpURLSAfterTenantResolves(logoutUrl,
-                        window[ "AppUtils" ].getConfig().idpConfigs.logoutEndpointURL);
+                    logoutUrl = AuthenticateUtils.resolveIdpURLSAfterTenantResolves(
+                        logoutUrl,
+                        window[ "AppUtils" ].getConfig().idpConfigs.logoutEndpointURL
+                    );
                 }
 
                 sessionStorage.setItem(LOGOUT_URL, logoutUrl);
@@ -96,12 +119,12 @@ export const Authentication: FunctionComponent<Record<string, never>> = (): Reac
                 .then((idToken) => {
                     dispatch(
                         setSignIn<AuthenticatedUserInfo & TenantListInterface>({
+                            allowedScopes: response.allowedScopes,
                             associatedTenants: idToken?.associated_tenants,
                             defaultTenant: idToken?.default_tenant,
                             displayName: response.displayName,
                             display_name: response.displayName,
                             email: response.email,
-                            allowedScopes: response.allowedScopes,
                             tenantDomain: response.tenantDomain,
                             username: response.username
                         })
@@ -115,7 +138,6 @@ export const Authentication: FunctionComponent<Record<string, never>> = (): Reac
 
             getOIDCServiceEndpoints()
                 .then((response: OIDCEndpoints) => {
-
                     let authorizationEndpoint: string = response.authorizationEndpoint;
                     let oidcSessionIframeEndpoint: string = response.checkSessionIframe;
                     let tokenEndpoint: string = response.tokenEndpoint;
@@ -124,20 +146,24 @@ export const Authentication: FunctionComponent<Record<string, never>> = (): Reac
                     if (window[ "AppUtils" ].getConfig().idpConfigs?.authorizeEndpointURL) {
                         authorizationEndpoint = AuthenticateUtils.resolveIdpURLSAfterTenantResolves(
                             authorizationEndpoint,
-                            window[ "AppUtils" ].getConfig().idpConfigs.authorizeEndpointURL);
+                            window[ "AppUtils" ].getConfig().idpConfigs.authorizeEndpointURL
+                        );
                     }
 
                     // If `oidc session iframe` endpoint is overridden, save that in the session.
                     if (window[ "AppUtils" ].getConfig().idpConfigs?.oidcSessionIFrameEndpointURL) {
                         oidcSessionIframeEndpoint = AuthenticateUtils.resolveIdpURLSAfterTenantResolves(
                             oidcSessionIframeEndpoint,
-                            window[ "AppUtils" ].getConfig().idpConfigs.oidcSessionIFrameEndpointURL);
+                            window[ "AppUtils" ].getConfig().idpConfigs.oidcSessionIFrameEndpointURL
+                        );
                     }
 
                     // If `token` endpoint is overridden, save that in the session.
                     if (window[ "AppUtils" ].getConfig().idpConfigs?.tokenEndpointURL) {
-                        tokenEndpoint = AuthenticateUtils.resolveIdpURLSAfterTenantResolves(tokenEndpoint,
-                            window[ "AppUtils" ].getConfig().idpConfigs.tokenEndpointURL);
+                        tokenEndpoint = AuthenticateUtils.resolveIdpURLSAfterTenantResolves(
+                            tokenEndpoint,
+                            window[ "AppUtils" ].getConfig().idpConfigs.tokenEndpointURL
+                        );
                     }
 
                     sessionStorage.setItem(AUTHORIZATION_ENDPOINT, authorizationEndpoint);
@@ -151,32 +177,34 @@ export const Authentication: FunctionComponent<Record<string, never>> = (): Reac
                     throw error;
                 });
 
-            dispatch(getProfileInformation(Config.getServiceResourceEndpoints().me,
-                window[ "AppUtils" ].getConfig().clientOriginWithTenant));
+            dispatch(
+                getProfileInformation(
+                    Config.getServiceResourceEndpoints().me,
+                    window[ "AppUtils" ].getConfig().clientOriginWithTenant
+                )
+            );
         });
     }, []);
 
     const loginSuccessRedirect = () => {
-        const AuthenticationCallbackUrl = CommonAuthenticateUtils.getAuthenticationCallbackUrl(CommonAppConstants.CONSOLE_APP);
+        const AuthenticationCallbackUrl = CommonAuthenticateUtils.getAuthenticationCallbackUrl(
+            CommonAppConstants.CONSOLE_APP
+        );
 
-        const location = !AuthenticationCallbackUrl
-            || AuthenticationCallbackUrl === AppConstants.getAppLoginPath()
-            ? AppConstants.getAppHomePath()
-            : AuthenticationCallbackUrl;
+        const location =
+            !AuthenticationCallbackUrl || AuthenticationCallbackUrl === AppConstants.getAppLoginPath()
+                ? AppConstants.getAppHomePath()
+                : AuthenticationCallbackUrl;
 
         history.push(location);
     };
 
     useEffect(() => {
-        //console.log("isAuth", isAuthenticated)
         const error = new URLSearchParams(location.search).get("error_description");
 
         if (!isAuthenticated && !error) {
-            /* (async () => {
-                console.log("Signing in")
+            (async () => {
                 const response = await trySignInSilently();
-                debugger;
-                console.log("Response from try", response, window?.top?.origin);
                 if (!response) {
                     if (process.env.NODE_ENV === "production") {
                         const contextPath: string = window[ "AppUtils" ].getConfig().appBase
@@ -187,17 +215,12 @@ export const Authentication: FunctionComponent<Record<string, never>> = (): Reac
                             signIn(null, response?.data?.authCode, response?.data?.sessionState);
                         });
                     } else {
-                        console.log(" Sign in by redirection")
                         await signIn();
                     }
                 }
 
                 await signIn({ callOnlyOnRedirect: true });
-            })(); */
-
-            signIn();
-
-            return;
+            })();
         }
 
         if (error === AppConstants.USER_DENIED_CONSENT_SERVER_ERROR) {
@@ -213,8 +236,8 @@ export const Authentication: FunctionComponent<Record<string, never>> = (): Reac
     }, [ isAuthenticated ]);
 
     return (
-        <AuthenticatedComponent fallback={ <div>Sign In</div> }>
-            <Suspense fallback={ <div>Loading...</div> }>
+        <AuthenticatedComponent fallback={ <PreLoader /> }>
+            <Suspense fallback={ <Loader /> }>
                 <AuthenticatedApp />
             </Suspense>
         </AuthenticatedComponent>
