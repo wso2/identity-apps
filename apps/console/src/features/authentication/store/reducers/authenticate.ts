@@ -29,6 +29,7 @@ export const commonAuthenticateReducerInitialState: AuthReducerStateInterface = 
     isAuthenticated: false,
     loginInit: false,
     logoutInit: false,
-    scope: "",
+    allowedScopes: "",
+    sessionState: "",
     username: ""
 };
