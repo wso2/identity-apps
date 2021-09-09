@@ -21,6 +21,7 @@ import { Code, Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { AppState, ConfigReducerStateInterface } from "../../../../../core";
 import { useSelector } from "react-redux";
+import {Divider} from "semantic-ui-react";
 
 /**
  * No component specific props. Hence unnecessary
@@ -40,6 +41,13 @@ const SAMLIdPWizardFileBasedHelp: FunctionComponent<Props> = (props: Props): Rea
 
     return (
         <div data-testid={ testId }>
+            <Heading as="h5">Service provider entity ID</Heading>
+            <p>
+                This value will be used as the <Code>&lt;saml2:Issuer&gt;</Code> in the SAML requests initiated from
+                { " " }{ config.ui.productName } to external Identity Provider (IdP). You need to provide a unique value
+                as the service provider entity ID.
+            </p>
+            <Divider/>
             <Heading as="h5">Metadata file</Heading>
             <p>
                 { config.ui.productName } allows you to upload SAML configuration data using a
