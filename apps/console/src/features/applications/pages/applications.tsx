@@ -123,6 +123,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const [ isLoading, setLoading ] = useState<boolean>(true);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
+    const [ isApplicationsNextPageAvailable, setIsApplicationsNextPageAvailable ] = useState<boolean>(undefined);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
@@ -146,6 +147,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
 
         getApplicationList(limit, offset, filter)
             .then((response) => {
+                handleNextButtonVisibility(response);
                 setAppList(response);
             })
             .catch((error) => {
@@ -185,6 +187,21 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         setListSortingStrategy(find(APPLICATIONS_LIST_SORTING_OPTIONS, (option) => {
             return data.value === option.value;
         }));
+    };
+
+    /**
+     *
+     * Sets the Next button visibility.
+     *
+     * @param appList - List of applications.
+     */
+    const handleNextButtonVisibility = (appList: ApplicationListInterface): void => {
+
+        if (appList.startIndex + appList.count === appList.totalResults + 1) {
+            setIsApplicationsNextPageAvailable(false);
+        } else {
+            setIsApplicationsNextPageAvailable(true);
+        }
     };
 
     /**
@@ -316,7 +333,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                     onPageChange={ handlePaginationChange }
                     onSortStrategyChange={ handleListSortingStrategyOnChange }
-                    showPagination={ (!isApplicationListRequestLoading && appList?.totalResults !== 0) }
+                    showPagination={ true }
                     showTopActionPanel={ 
                         isApplicationListRequestLoading 
                         || !(!searchQuery && appList?.totalResults <= 0) }
@@ -324,6 +341,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     sortStrategy={ listSortingStrategy }
                     totalPages={ Math.ceil(appList.totalResults / listItemLimit) }
                     totalListSize={ appList.totalResults }
+                    paginationOptions={ {
+                        disableNextButton: !isApplicationsNextPageAvailable
+                    } }
                     data-testid={ `${ testId }-list-layout` }
                 >
                     <ApplicationList
