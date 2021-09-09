@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient } from "@wso2/identity-oidc-js";
+import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { AxiosError, AxiosResponse } from "axios";
 import { CommonServiceResourcesEndpoints } from "../configs";
 import { UserstoreConstants } from "../constants";
@@ -29,7 +29,7 @@ import { ContextUtils } from "../utils";
  * Get an axios instance.
  *
  */
-const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
+const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Retrieve the list of user stores that are currently in the system.

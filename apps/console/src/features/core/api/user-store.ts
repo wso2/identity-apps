@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient } from "@wso2/identity-oidc-js";
+import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
 import { UserStoreDetails } from "../models";
 import { store } from "../store";
@@ -26,9 +26,9 @@ import { store } from "../store";
  *
  * @type { AxiosHttpClientInstance }
  */
-const httpClient = IdentityClient.getInstance()
-    .httpRequest.bind(IdentityClient.getInstance())
-    .bind(IdentityClient.getInstance());
+const httpClient = AsgardeoSPAClient.getInstance()
+    .httpRequest.bind(AsgardeoSPAClient.getInstance())
+    .bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Gets details of the primary user store.
