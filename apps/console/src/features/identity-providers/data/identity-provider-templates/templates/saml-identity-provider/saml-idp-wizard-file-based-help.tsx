@@ -21,7 +21,7 @@ import { Code, Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { AppState, ConfigReducerStateInterface } from "../../../../../core";
 import { useSelector } from "react-redux";
-import {Divider} from "semantic-ui-react";
+import { Divider } from "semantic-ui-react";
 
 /**
  * No component specific props. Hence unnecessary
