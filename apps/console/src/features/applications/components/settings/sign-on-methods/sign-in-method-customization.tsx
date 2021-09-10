@@ -321,17 +321,23 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             setIsDefaultScript(true);
         }
 
-        const eventPublisherProperties = {
+        const eventPublisherProperties : {
+            "script-based": boolean,
+            "step-based": Array<Record<number, string>>
+        } = {
             "script-based": !AdaptiveScriptUtils.isDefaultScript(adaptiveScript, steps),
             "step-based": []
         };
 
         updatedSteps.forEach((updatedStep) => {
-            const step = {};
-            updatedStep.options.forEach((element,id) => {
-                step[id] = kebabCase(element?.authenticator);
-            });
-            eventPublisherProperties["step-based"].push(step);
+            const step : Record<number, string> = {};
+
+            if (Array.isArray(updatedStep?.options) && updatedStep.options.length > 0) {
+                updatedStep.options.forEach((element,id) => {
+                    step[id] = kebabCase(element?.authenticator);
+                });
+                eventPublisherProperties["step-based"].push(step);
+            }
         });
 
         eventPublisher.publish("application-sign-in-method-click-update-button", {
