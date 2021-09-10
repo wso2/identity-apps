@@ -98,7 +98,7 @@ interface AuthenticationFlowPropsInterface extends TestableComponentInterface {
     /**
      * Callback to update the button disable state change.
      */
-    onAuthenticationSequenceChange: (isDisabled: boolean) => void;
+    onAuthenticationSequenceChange: (isDisabled: boolean, updatedSteps: AuthenticationStepInterface[]) => void;
 }
 
 /**
@@ -266,10 +266,10 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         const hasStepsWithOptions: boolean = steps.some((step: AuthenticationStepInterface) => !isEmpty(step.options));
 
         if (hasStepsWithOptions) {
-            onAuthenticationSequenceChange(false);
+            onAuthenticationSequenceChange(false, authenticationSteps);
             return;
         }
-        onAuthenticationSequenceChange(true);
+        onAuthenticationSequenceChange(true, authenticationSteps);
     }, [ authenticationSteps ]);
 
     /**

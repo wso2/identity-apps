@@ -20,6 +20,7 @@ import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms } from "@wso2is/forms";
 import { Heading, Hint, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -116,6 +117,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
     const [ steps, setSteps ] = useState<number>(1);
     const [ isDefaultScript, setIsDefaultScript ] = useState<boolean>(true);
     const [ isButtonDisabled, setIsButtonDisabled ] = useState<boolean>(false);
+    const [ updatedSteps, setUpdatedSteps ] = useState<AuthenticationStepInterface[]>();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -314,12 +316,34 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
      * Handles the update button click event.
      */
     const handleUpdateClick = (): void => {
-        eventPublisher.publish("application-sign-in-method-click-update-button");
-        
         if (AdaptiveScriptUtils.isEmptyScript(adaptiveScript)) {
             setAdaptiveScript(AdaptiveScriptUtils.generateScript(steps + 1).join("\n"));
             setIsDefaultScript(true);
         }
+
+        const eventPublisherProperties : {
+            "script-based": boolean,
+            "step-based": Array<Record<number, string>>
+        } = {
+            "script-based": !AdaptiveScriptUtils.isDefaultScript(adaptiveScript, steps),
+            "step-based": []
+        };
+
+        updatedSteps.forEach((updatedStep) => {
+            const step : Record<number, string> = {};
+
+            if (Array.isArray(updatedStep?.options) && updatedStep.options.length > 0) {
+                updatedStep.options.forEach((element,id) => {
+                    step[id] = kebabCase(element?.authenticator);
+                });
+                eventPublisherProperties["step-based"].push(step);
+            }
+        });
+
+        eventPublisher.publish("application-sign-in-method-click-update-button", {
+            "type": eventPublisherProperties
+        });
+
         setUpdateTrigger(true);
     };
 
@@ -447,7 +471,10 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 data-testid={ `${ testId }-step-based-flow` }
                 updateSteps={ updateSteps }
                 onIDPCreateWizardTrigger={ onIDPCreateWizardTrigger }
-                onAuthenticationSequenceChange={ handleButtonDisabledStateChange }
+                onAuthenticationSequenceChange={ (isDisabled, updatedSteps) => {
+                    handleButtonDisabledStateChange(isDisabled);
+                    setUpdatedSteps(updatedSteps);
+                } }
             />
             <Divider className="x2"/>
             <ScriptBasedFlow
