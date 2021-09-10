@@ -6334,6 +6334,12 @@ export const console: ConsoleNS = {
                     placeholders: {
                         SCIMDisabled: {
                             heading: "මෙම අංගය ඔබගේ ගිණුමට ලබා ගත නොහැක"
+                        },
+                        userProfile: {
+                            emptyListPlaceholder: {
+                                subtitles: "මෙම පරිශීලකයා සඳහා පැතිකඩ තොරතුරු නොමැත.",
+                                title: "පැතිකඩ තොරතුරු නොමැත"
+                            }
                         }
                     }
                 },
