@@ -3654,7 +3654,8 @@ export const console: ConsoleNS = {
                 templates: {
                     enterprise: {
                         validation: {
-                            name: "Merci d'entrer un nom valide"
+                            name: "Merci d'entrer un nom valide",
+                            invalidName: "Merci d'entrer un nom valide"
                         }
                     }
                 }
@@ -6414,6 +6415,12 @@ export const console: ConsoleNS = {
                     placeholders: {
                         SCIMDisabled: {
                             heading: "Cette fonctionnalité n'est pas disponible pour votre compte"
+                        },
+                        userProfile: {
+                            emptyListPlaceholder: {
+                                subtitles: "Les informations de profil ne sont pas disponibles pour cet utilisateur.",
+                                title: "Aucune information de profil"
+                            }
                         }
                     }
                 },

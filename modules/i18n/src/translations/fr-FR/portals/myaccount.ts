@@ -1459,8 +1459,8 @@ export const myAccount: MyAccountNS = {
             actionTitles: {
                 create: "Créer un mot de passe"
             },
-            description: "Créez un mot de passe dans Asgardeo. Vous pouvez utiliser ce mot de passe pour vous " +
-                "connecter à Asgardeo en plus de la connexion sociale.\n",
+            description: "Créez un mot de passe dans {{productName}}. Vous pouvez utiliser ce mot de passe pour vous " +
+                "connecter à {{productName}} en plus de la connexion sociale.\n",
             heading: "Créer un mot de passe"
         },
         consentManagement: {

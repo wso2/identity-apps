@@ -68,6 +68,12 @@
     boolean isPasswordProvisionEnabled = Boolean.parseBoolean(request.getParameter("passwordProvisionEnabled"));
     boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
     String callback = Encode.forHtmlAttribute(request.getParameter("callback"));
+    String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
+    if (StringUtils.isNotBlank(emailUsernameEnable) && Boolean.parseBoolean(emailUsernameEnable)) {
+        if (StringUtils.countMatches(username, IdentityManagementEndpointConstants.TENANT_DOMAIN_SEPARATOR) == 1) {
+            username = username + IdentityManagementEndpointConstants.TENANT_DOMAIN_SEPARATOR + tenantDomain;
+        }
+    }
     User user = IdentityManagementServiceUtil.getInstance().resolveUser(username, tenantDomain, isSaaSApp);
 
     if (skipSignUpEnableCheck) {

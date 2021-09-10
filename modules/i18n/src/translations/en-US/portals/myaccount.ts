@@ -1446,7 +1446,8 @@ export const myAccount: MyAccountNS = {
             actionTitles: {
                 create: "Create password"
             },
-            description: "Create a password in Asgardeo. You can use this password to sign in to Asgardeo in addition " +
+            description: "Create a password in {{productName}}. " +
+                "You can use this password to sign in to {{productName}} in addition " +
                 "to social login.",
             heading: "Create Password"
         },

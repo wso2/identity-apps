@@ -1422,6 +1422,7 @@ export interface ConsoleNS {
                     enterprise?: {
                         validation: {
                             name: string;
+                            invalidName: string;
                         };
                     };
                 };
@@ -3559,6 +3560,9 @@ export interface ConsoleNS {
                         SCIMDisabled: {
                             heading: string;
                         };
+                        userProfile: {
+                            emptyListPlaceholder: Placeholder;
+                        }
                     };
                 };
                 updateUser: {

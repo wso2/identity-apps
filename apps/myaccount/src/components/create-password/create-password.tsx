@@ -19,8 +19,9 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, Suspense, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AlertInterface } from "../../models";
+import { AppState } from "../../store";
 import { EditSection, SettingsSection } from "../shared";
 
 /**
@@ -51,11 +52,12 @@ export const CreatePassword: FunctionComponent<CreatePasswordPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
+    const config = useSelector((state: AppState) => state.config);
 
     return (
         <SettingsSection
             data-testid={ `${testId}-settings-section` }
-            description={ t("myAccount:sections.createPassword.description") }
+            description={ t("myAccount:sections.createPassword.description", { productName: config.ui.productName }) }
             header={ t("myAccount:sections.createPassword.heading") }
             primaryAction={ t("myAccount:sections.createPassword.actionTitles.create") }
             primaryActionIcon="key"

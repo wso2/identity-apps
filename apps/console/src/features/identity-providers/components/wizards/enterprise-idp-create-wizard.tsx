@@ -53,9 +53,17 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dimmer, Divider, Grid, Icon } from "semantic-ui-react";
-import { AppConstants, EventPublisher, ModalWithSidePanel, getCertificateIllustrations, store } from "../../../core";
+import {
+    AppConstants,
+    AppState,
+    ConfigReducerStateInterface,
+    EventPublisher,
+    ModalWithSidePanel,
+    getCertificateIllustrations,
+    store
+} from "../../../core";
 import { createIdentityProvider, getIdentityProviderList } from "../../api";
 import { getIdPIcons, getIdentityProviderWizardStepIcons } from "../../configs";
 import { IdentityProviderManagementConstants } from "../../constants";
@@ -137,6 +145,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(true);
     const [ idpList, setIdPList ] = useState<StrictIdentityProviderInterface[]>([]);
     const [ isIDPListLoading, setIsIDPListLoading ] = useState<boolean>(false);
+
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -381,7 +391,6 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     "templates.enterprise.validation.name");
             }
             setNextShouldBeDisabled(ifFieldsHave(errors));
-            return errors;
         } }>
             <Field.Input
                 data-testid={ `${ testId }-form-wizard-idp-name` }
@@ -395,6 +404,28 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 minLength={ IDP_NAME_LENGTH.min }
                 required={ true }
                 width={ 15 }
+                format = { (values: any) => {
+                    return values.toString().trimStart();
+                }}
+                validation={ (values: any) => {
+                    let errors: "";
+                    errors = composeValidators(required, length(IDP_NAME_LENGTH))(values);
+                    if (isIdpNameAlreadyTaken(values)) {
+                        errors = t("console:develop.features.authenticationProvider." +
+                            "forms.generalDetails.name.validations.duplicate");
+                    }
+                    if (!FormValidation.isValidResourceName(values)) {
+                        errors = t("console:develop.features.authenticationProvider." +
+                            "templates.enterprise.validation.invalidName",
+                            { idpName: values});
+                    }
+
+                    if (errors === "" || errors === undefined) {
+                        setNextShouldBeDisabled(false);
+                    }
+                    return errors;
+                }
+                }
             />
             <Grid>
                 <Grid.Row>
@@ -696,7 +727,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         data-testid={ `${ testId }-form-wizard-oidc-jwks-endpoint-url` }
                     />
                     <Hint>
-                        Asgardeo will use this URL to obtain keys to verify the signed
+                        { config.ui.productName } will use this URL to obtain keys to verify the signed
                         responses from your external IdP
                     </Hint>
                 </>
@@ -733,7 +764,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         data-testid={ `${ testId }-form-wizard-${ selectedProtocol }-pem-certificate` }
                     />
                     <Hint>
-                        Asgardeo will use this certificate to verify the signed
+                        { config.ui.productName } will use this certificate to verify the signed
                         responses from your external IdP.
                     </Hint>
                 </>
