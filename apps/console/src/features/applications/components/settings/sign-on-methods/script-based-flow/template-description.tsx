@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { CodeEditor, LinkButton } from "@wso2is/react-components";
+import { CodeEditor, DocumentationLink, LinkButton, useDocumentation } from "@wso2is/react-components";
 import isObject from "lodash-es/isObject";
 import React, {
     FunctionComponent,
@@ -62,12 +62,83 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
     } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
+
+    const resolveDocumentationLink = (): ReactElement => {
+        const templateName = template?.name;
+
+        if ( templateName === "User-Age-Based" ) {
+            const docLink = getLink("develop.applications.editApplication.common." + 
+                "signInMethod.conditionalAuthenticaion.template.userAgeBased.learnMore");
+            
+            if ( docLink !== undefined) {
+                return (
+                    <DocumentationLink
+                        link={ docLink }
+                    >
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                );
+            }
+        }
+
+        if ( templateName === "Group-Based" ) {
+            const docLink = getLink("develop.applications.editApplication.common." + 
+                "signInMethod.conditionalAuthenticaion.template.groupBased.learnMore");
+            
+            if ( docLink !== undefined) {
+                return (
+                    <DocumentationLink
+                        link={ docLink }
+                    >
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                );
+            }
+        }
+
+        if ( templateName === "IP-Based" ) {
+            const docLink = getLink("develop.applications.editApplication.common." + 
+                "signInMethod.conditionalAuthenticaion.template.ipBased.learnMore");
+            
+            if ( docLink !== undefined) {
+                return (
+                    <DocumentationLink
+                        link={ docLink }
+                    >
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                );
+            }
+        }
+
+        if ( templateName === "New-Device-Based" ) {
+            const docLink = getLink("develop.applications.editApplication.common." + 
+                "signInMethod.conditionalAuthenticaion.template.deviceBased.learnMore");
+            
+            if ( docLink !== undefined) {
+                return (
+                    <DocumentationLink
+                        link={ docLink }
+                    >
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                );
+            }
+        }
+
+        return null;
+    };
+    
 
     return (
         <Modal open={ open } onClose={ onClose } dimmer="blurring" size="small">
             <Modal.Header>{ template.title }</Modal.Header>
             <Modal.Content scrolling>
-                <p>{ template.summary }</p>
+                <p>
+                    { template.summary }
+                    { resolveDocumentationLink() }
+                </p>
                 {
                     Array.isArray(template?.preRequisites) && template.preRequisites.length > 0 && (
                         <>

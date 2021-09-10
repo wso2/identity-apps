@@ -21,7 +21,7 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, Claim, ClaimsGetParams, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import { DocumentationLink, ListLayout, PageLayout, PrimaryButton, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -61,6 +61,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
     } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     /**
      * Sets the attributes by which the list can be sorted
@@ -302,7 +303,16 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
                 }
                 isLoading={ isLoading }
                 title={ t("console:manage.features.claims.local.pageLayout.local.title") }
-                description={ t(attributeConfig.attributes.description) }
+                description={ 
+                    <p>
+                        { t(attributeConfig.attributes.description) }
+                        <DocumentationLink
+                            link={ getLink("manage.attributes.attributes.learnMore") }
+                        >
+                            { t("common:learnMore") }
+                        </DocumentationLink>
+                    </p>
+                }
                 backButton={ {
                     onClick: () => { history.push(AppConstants.getPaths().get("CLAIM_DIALECTS")); },
                     text: t("console:manage.features.claims.local.pageLayout.local.back")

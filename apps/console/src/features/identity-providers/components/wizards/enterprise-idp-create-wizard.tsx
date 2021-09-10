@@ -22,6 +22,7 @@ import { Field, Wizard2, WizardPage } from "@wso2is/form";
 import {
     CertFileStrategy,
     ContentLoader,
+    DocumentationLink,
     FilePicker,
     GenericIcon,
     Heading,
@@ -32,6 +33,7 @@ import {
     Steps,
     Switcher,
     XMLFileStrategy,
+    useDocumentation,
     useWizardAlert
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -138,6 +140,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -798,6 +801,30 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     };
 
+    const resolveDocumentationLink = (): ReactElement => {    
+        if ( selectedProtocol === "saml" ) {
+            return (
+                <DocumentationLink
+                    link={ getLink("develop.connections.newConnection.enterprise.samlLearnMore") }
+                >
+                    { t("common:learnMore") }
+                </DocumentationLink>
+            );
+        }
+
+        if ( selectedProtocol === "oidc" ) {
+            return (
+                <DocumentationLink
+                    link={ getLink("develop.connections.newConnection.enterprise.oidcLearnMore") }
+                >
+                    { t("common:learnMore") }
+                </DocumentationLink>
+            );
+        }
+
+        return null;
+    };
+
     // Start: Modal
 
     return (
@@ -823,7 +850,12 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             data-testid={ `${ testId }-image` }/>
                         <div>
                             { title }
-                            { subTitle && <Heading as="h6">{ subTitle }</Heading> }
+                            { subTitle && 
+                                <Heading as="h6">
+                                    { subTitle }
+                                    { resolveDocumentationLink() }
+                                </Heading>
+                            }
                         </div>
                     </div>
                 </ModalWithSidePanel.Header>

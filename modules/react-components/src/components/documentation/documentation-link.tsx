@@ -62,7 +62,7 @@ export const DocumentationLink: FunctionComponent<PropsWithChildren<Documentatio
                 className="ml-1 link external no-wrap"
             >
                 { children }
-                <Icon className="ml-7" name="caret right"/>
+                <Icon className="ml-1" name="external alternate"/>
             </a>
         </strong>
     );

@@ -21,14 +21,17 @@ import { AlertLevels, StorageIdentityAppsSettingsInterface, TestableComponentInt
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
 import {
+    Button,
     Code,
     CodeEditor,
     ConfirmationModal,
+    DocumentationLink,
     GenericIcon,
     Heading,
     SegmentedAccordion,
     Text,
-    Tooltip
+    Tooltip,
+    useDocumentation
 } from "@wso2is/react-components";
 import beautify from "js-beautify";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -53,6 +56,7 @@ import {
     AuthenticationSequenceInterface
 } from "../../../../models";
 import { AdaptiveScriptUtils } from "../../../../utils";
+import { LinkButton } from "@wso2is/react-components/src";
 
 /**
  * Proptypes for the adaptive scripts component.
@@ -123,6 +127,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const dispatch = useDispatch();
 
@@ -525,6 +530,47 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             ApplicationManagementConstants.CONDITIONAL_AUTH_TOUR_STATUS_STORAGE_KEY, false);
     };
 
+
+    /**
+     * Renders API Documentation link.
+     *
+     * @return {React.ReactElement}
+     */
+    const resolveApiDocumentationLink = (): ReactElement => {
+        const apiDocLink = getLink("develop.applications.editApplication.common." + 
+            "signInMethod.conditionalAuthenticaion.apiReference");
+
+        if ( apiDocLink !== undefined ) {
+            return (
+                <Menu.Menu position="left">
+                    <Menu.Item 
+                        className="action ml-2"
+                        href={ apiDocLink }
+                        target="_blank"
+                    >
+                        <Tooltip
+                            compact
+                            trigger={ (
+                                <Button>
+                                    { t("console:develop.features.applications.edit.sections" +
+                                            ".signOnMethod.sections.authenticationFlow.sections" +
+                                            ".scriptBased.editor.apiDocumentation") }
+                                    <Icon name="external alternate" className="ml-2" />
+                                </Button>
+                            ) }
+                            content={ t("console:develop.features.applications.edit.sections" +
+                                ".signOnMethod.sections.authenticationFlow.sections" +
+                                ".scriptBased.editor.goToApiDocumentation") }
+                            size="mini"
+                        />
+                    </Menu.Item>
+                </Menu.Menu>
+            );
+        }
+
+        return null;
+    };
+
     return (
         <>
             <div className="conditional-auth-section">
@@ -564,6 +610,12 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                     "sections.authenticationFlow.sections.scriptBased.accordion." +
                                                     "title.description")
                                             }
+                                            <DocumentationLink
+                                                link={ getLink("develop.applications.editApplication.common." + 
+                                                    "signInMethod.conditionalAuthenticaion.learnMore") }
+                                            >
+                                                { t("common:learnMore") }
+                                            </DocumentationLink>
                                         </Text>
                                     </div>
                                 </div>
@@ -599,6 +651,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                             <Sidebar.Pusher>
                                 <div className="script-editor-container" ref={ scriptEditorSectionRef }>
                                     <Menu attached="top" className="action-panel" secondary>
+                                        { resolveApiDocumentationLink() }
                                         <Menu.Menu position="right">
                                             <Menu.Item className="action">
                                                 <Tooltip

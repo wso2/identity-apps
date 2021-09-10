@@ -19,7 +19,14 @@
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ConfirmationModal, ContentLoader, EmphasizedSegment, GenericIcon } from "@wso2is/react-components";
+import {
+    ConfirmationModal,
+    ContentLoader,
+    DocumentationLink,
+    EmphasizedSegment,
+    GenericIcon,
+    useDocumentation
+} from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import get from "lodash-es/get";
 import sortBy from "lodash-es/sortBy";
@@ -164,6 +171,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const dispatch = useDispatch();
 
@@ -685,9 +693,41 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                         {/*}*/}
                     </Header.Content>
                 </Header>
+                { resolveProtocolDescription() }
                 <Divider hidden/>
             </>
         );
+    };
+
+    const resolveProtocolDescription =(): ReactElement => {
+        // Description for SAML Protocol tab.
+        if (selectedProtocol === SupportedAuthProtocolTypes.OIDC) {
+            return(
+                <Header as="h6" color="grey" compact>
+                    { t("console:develop.features.applications.forms.inboundOIDC.description") }
+                    <DocumentationLink
+                        link={ getLink("develop.applications.editApplication.oidcApplication.protocol.learnMore") }
+                    >
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                </Header>
+            );
+        }
+        // Description for OIDC Protocol tab.
+        if (selectedProtocol === SupportedAuthProtocolTypes.SAML) {
+            return(
+                <Header as="h6" color="grey" compact>
+                    { t("console:develop.features.applications.forms.inboundSAML.description") }
+                    <DocumentationLink
+                        link={ getLink("develop.applications.editApplication.samlApplication.protocol.learnMore") }
+                    >
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                </Header>
+            );
+        }
+        // Description for other types.
+        return null;
     };
 
     /**

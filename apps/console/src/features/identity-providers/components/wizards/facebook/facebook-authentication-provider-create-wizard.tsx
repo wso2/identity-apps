@@ -18,7 +18,15 @@
 
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { GenericIcon, Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
+import {
+    DocumentationLink,
+    GenericIcon,
+    Heading,
+    LinkButton,
+    PrimaryButton,
+    useDocumentation,
+    useWizardAlert
+} from "@wso2is/react-components";
 import { ContentLoader } from "@wso2is/react-components/src/components/loader/content-loader";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
@@ -119,6 +127,7 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
     const dispatch = useDispatch();
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
@@ -436,7 +445,16 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
                         />
                         <div className="ml-1">
                             { title }
-                            { subTitle && <Heading as="h6">{ subTitle }</Heading> }
+                            { subTitle && 
+                                <Heading as="h6">
+                                    { subTitle }
+                                    <DocumentationLink
+                                        link={ getLink("develop.connections.newConnection.facebook.learnMore") }
+                                    >
+                                        { t("common:learnMore") }
+                                    </DocumentationLink>
+                                </Heading> 
+                            }
                         </div>
                     </div>
                 </ModalWithSidePanel.Header>

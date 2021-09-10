@@ -19,7 +19,14 @@
 import { getDialects } from "@wso2is/core/api";
 import { AlertLevels, ClaimDialect, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { AnimatedAvatar, GenericIcon, PageLayout, ResourceTab } from "@wso2is/react-components";
+import {
+    AnimatedAvatar,
+    DocumentationLink,
+    GenericIcon,
+    PageLayout,
+    ResourceTab,
+    useDocumentation
+} from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -58,6 +65,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
             (state: AppState) => state.config.ui.listAllAttributeDialects
         );
         const { t } = useTranslation();
+        const { getLink } = useDocumentation();
 
         const [ isLoading, setIsLoading ] = useState(true);
         const [ dialects, setDialects ] = useState<ClaimDialect[]>(null);
@@ -91,17 +99,31 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
         /**
          * Resolves page description based on the `type`.
          *
-         * @return {string} - The page description.
+         * @return {ReactElement} - The page description.
          */
-        const resolvePageDescription = (): string => {
+        const resolvePageDescription = (): ReactElement => {
             switch (type) {
                 case ClaimManagementConstants.OIDC:
-                    return t(
-                        "console:manage.features.claims.attributeMappings.oidc.description"
+                    return (
+                        <p>
+                            { t("console:manage.features.claims.attributeMappings.oidc.description") }
+                            <DocumentationLink
+                                link={ getLink("manage.attributes.oidcAttributes.learnMore") }
+                            >
+                                { t("common:learnMore") }
+                            </DocumentationLink>
+                        </p>
                     );
                 case ClaimManagementConstants.SCIM:
-                    return t(
-                        "console:manage.features.claims.attributeMappings.scim.description"
+                    return (
+                        <p>
+                            { t("console:manage.features.claims.attributeMappings.scim.description") }
+                            <DocumentationLink
+                                link={ getLink("manage.attributes.scimAttributes.learnMore") }
+                            >
+                                { t("common:learnMore") }
+                            </DocumentationLink>
+                        </p>
                     );
                 default:
                     return t(
