@@ -7688,6 +7688,12 @@ export const console: ConsoleNS = {
                     placeholders: {
                         SCIMDisabled: {
                             heading: "This feature is not available for your account"
+                        },
+                        userProfile: {
+                            emptyListPlaceholder: {
+                                subtitles: "The profile information is not available for this user.",
+                                title: "No profile information"
+                            }
                         }
                     }
                 },

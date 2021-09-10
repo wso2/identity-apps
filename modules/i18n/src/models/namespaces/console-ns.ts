@@ -3554,6 +3554,9 @@ export interface ConsoleNS {
                         SCIMDisabled: {
                             heading: string;
                         };
+                        userProfile: {
+                            emptyListPlaceholder: Placeholder;
+                        }
                     };
                 };
                 updateUser: {
