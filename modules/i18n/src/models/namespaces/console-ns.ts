@@ -1417,6 +1417,7 @@ export interface ConsoleNS {
                     enterprise?: {
                         validation: {
                             name: string;
+                            invalidName: string;
                         };
                     };
                 };

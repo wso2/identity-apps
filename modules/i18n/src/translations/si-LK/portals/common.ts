@@ -97,6 +97,7 @@ export const common: CommonNS = {
     lastModified: "අවසන් වෙනස් කළ දිනය",
     lastSeen: "අවසන් වරට",
     lastUpdatedOn: "අවසන් වරට යාවත්කාලීන කළ දිනය",
+    learnMore: "තවත් හදාරන්න",
     lightMode: "දීප්තිමත් තේමාව",
     loading: "පූරණය වෙමින් පවතී",
     loginTime: "පිවිසුම් කාලය",

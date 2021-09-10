@@ -45,7 +45,7 @@ const SamlIDPWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement
                 as the service provider entity ID.
             </p>
             <Divider/>
-            <Heading as="h5">SSO URL</Heading>
+            <Heading as="h5">Identity provider Single sign-on URL</Heading>
             <p>
                 Single sign-on URL of the external IdP. { config.ui.productName } will send SAML authentication
                 requests to this endpoint.

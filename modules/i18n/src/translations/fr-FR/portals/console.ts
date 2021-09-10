@@ -3647,7 +3647,8 @@ export const console: ConsoleNS = {
                 templates: {
                     enterprise: {
                         validation: {
-                            name: "Merci d'entrer un nom valide"
+                            name: "Merci d'entrer un nom valide",
+                            invalidName: "Merci d'entrer un nom valide"
                         }
                     }
                 }
