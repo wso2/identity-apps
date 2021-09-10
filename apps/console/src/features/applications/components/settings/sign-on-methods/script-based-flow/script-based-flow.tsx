@@ -530,7 +530,6 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             ApplicationManagementConstants.CONDITIONAL_AUTH_TOUR_STATUS_STORAGE_KEY, false);
     };
 
-
     /**
      * Renders API Documentation link.
      *

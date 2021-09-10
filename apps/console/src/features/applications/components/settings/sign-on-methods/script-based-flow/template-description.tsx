@@ -130,7 +130,6 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
         return null;
     };
     
-
     return (
         <Modal open={ open } onClose={ onClose } dimmer="blurring" size="small">
             <Modal.Header>{ template.title }</Modal.Header>
