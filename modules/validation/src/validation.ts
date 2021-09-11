@@ -124,6 +124,20 @@ export const resourceName: ValidationFunction = (value: string): boolean => {
 };
 
 /**
+ * Validates if the length of the value is less than the character limit.
+ * @param value {string}
+ * @param limit {number}
+ */
+export const maxLengthReached = (value: string, limit: number): boolean => {
+
+    const result: ValidationResult = Joi.string()
+        .max(limit)
+        .validate(value);
+
+    return !result.error;
+};
+
+/**
  * Checks if the passed in value is an integer.
  *
  * @example

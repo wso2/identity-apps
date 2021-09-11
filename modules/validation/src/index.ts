@@ -28,7 +28,8 @@ import {
     isValidResourceName,
     mobileNumber,
     resourceName,
-    url
+    url,
+    maxLengthReached
 } from "./validation";
 
 export const FormValidation = {
@@ -41,5 +42,6 @@ export const FormValidation = {
     isValidResourceName,
     mobileNumber,
     resourceName,
-    url
+    url,
+    maxLengthReached
 };
