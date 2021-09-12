@@ -128,7 +128,7 @@ export const resourceName: ValidationFunction = (value: string): boolean => {
  * @param value {string}
  * @param limit {number}
  */
-export const maxLengthReached = (value: string, limit: number): boolean => {
+export const isLengthValid = (value: string, limit: number): boolean => {
 
     const result: ValidationResult = Joi.string()
         .max(limit)
