@@ -463,6 +463,7 @@ export interface ConsoleNS {
                                 heading: string;
                                 attributeComponentHint: string;
                                 attributeComponentHintAlt: string;
+                                description: string;
                                 mandatoryAttributeHint: string;
                                 mappingTable: {
                                     actions: {
@@ -577,6 +578,8 @@ export interface ConsoleNS {
                                             heading: string;
                                             hint: string;
                                             editor: {
+                                                apiDocumentation: string;
+                                                goToApiDocumentation: string;
                                                 resetConfirmation: {
                                                     content: string;
                                                     heading: string;
@@ -734,6 +737,7 @@ export interface ConsoleNS {
                         };
                     };
                     inboundOIDC: {
+                        description: string;
                         fields: {
                             allowedOrigins: FormAttributes;
                             callBackUrls: FormAttributes;
@@ -806,6 +810,7 @@ export interface ConsoleNS {
                         };
                     };
                     inboundSAML: {
+                        description: string;
                         fields: {
                             assertionURLs: FormAttributes;
                             defaultAssertionURL: FormAttributes;
@@ -3312,6 +3317,7 @@ export interface ConsoleNS {
                         deleteUserZone: DangerZone;
                         disableUserZone: DangerZone;
                         lockUserZone: DangerZone;
+                        passwordResetZone: DangerZone;
                     };
                 };
                 forms: {
@@ -3555,6 +3561,9 @@ export interface ConsoleNS {
                         SCIMDisabled: {
                             heading: string;
                         };
+                        userProfile: {
+                            emptyListPlaceholder: Placeholder;
+                        }
                     };
                 };
                 updateUser: {

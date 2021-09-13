@@ -789,6 +789,8 @@ export const console: ConsoleNS = {
                                     "by navigating to <3>Attribute Mappings.</3>",
                                 attributeComponentHintAlt: "Manage the user attributes you want to share with this" +
                                     " application.",
+                                description: "Add the user attributes that are allowed to be shared with this " +
+                                    "application.",
                                 mandatoryAttributeHint: "Mark which user attributes are mandatory to be shared " +
                                     "with the application. At login, {{productName}} prompts the user to enter these " +
                                     "attribute values, if not already provided in the user's profile.",
@@ -884,7 +886,7 @@ export const console: ConsoleNS = {
                                         scriptBased: {
                                             accordion: {
                                                 title: {
-                                                    description: "Define your log-in flow using a script.",
+                                                    description: "Add conditions to your login flow.",
                                                     heading: "Conditional Authentication"
                                                 }
                                             },
@@ -917,6 +919,8 @@ export const console: ConsoleNS = {
                                                 }
                                             },
                                             editor: {
+                                                apiDocumentation: "API Documentation",
+                                                goToApiDocumentation: "Go to API Documentation",
                                                 resetConfirmation: {
                                                     content: "This action will reset the adaptive authentication" +
                                                         " script back to default. Click 'Confirm' to proceed.",
@@ -1343,6 +1347,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     inboundOIDC: {
+                        description: "Given below are the OpenID Connect settings for your application.",
                         fields: {
                             allowedOrigins: {
                                 hint: "Allowed origins are URLs that will be allowed to make requests from cross " +
@@ -1638,6 +1643,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     inboundSAML: {
+                        description: "Given below are the SAML settings for your application.",
                         fields: {
                             assertionURLs: {
                                 hint: "The Assertion Consumer Service (ACS) URL determines where to " +
@@ -5006,7 +5012,7 @@ export const console: ConsoleNS = {
                 title: null
             },
             authenticationProvider: {
-                subTitle: "Create and manage connections to authenticate users in your applications.",
+                subTitle: "Connections that can be used to authenticate users in applications.",
                 title: "Connections"
             },
             authenticationProviderTemplate: {
@@ -5014,7 +5020,7 @@ export const console: ConsoleNS = {
                 search: {
                     placeholder: "Search by name"
                 },
-                subTitle: "Choose one of the following connection types.",
+                subTitle: "Select a connection type and create a new connection.",
                 supportServices: {
                     authenticationDisplayName: "Authentication",
                     provisioningDisplayName: "Provisioning"
@@ -7322,6 +7328,12 @@ export const console: ConsoleNS = {
                             header: "Lock user",
                             subheader: "Once you lock the account, the user can no longer log in to the system. " +
                                 "Please be certain."
+                        },
+                        passwordResetZone: {
+                            actionTitle: "Reset Password",
+                            header: "Reset password",
+                            subheader: "Once you change the password, the user will no longer be able to log in to " +
+                                "any application using the current password. Please be certain."
                         }
                     }
                 },
@@ -7690,6 +7702,12 @@ export const console: ConsoleNS = {
                     placeholders: {
                         SCIMDisabled: {
                             heading: "This feature is not available for your account"
+                        },
+                        userProfile: {
+                            emptyListPlaceholder: {
+                                subtitles: "The profile information is not available for this user.",
+                                title: "No profile information"
+                            }
                         }
                     }
                 },

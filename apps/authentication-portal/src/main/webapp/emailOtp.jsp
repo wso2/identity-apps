@@ -42,7 +42,7 @@
             errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
             
             if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
-                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry.code.invalid");
             }
         }
     }
