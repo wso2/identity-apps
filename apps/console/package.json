@@ -23,6 +23,7 @@
         "start": "npx run-script-os",
         "start:win32": "..\\..\\node_modules\\.bin\\webpack serve --mode development --inline --hot --open --env NODE_ENV=development",
         "start:default": "../../node_modules/.bin/webpack serve --mode development --inline --hot --open --env NODE_ENV=development",
+        "start:lite": "npm run start --env DISABLE_ESLINT_PLUGIN=true",
         "test": "npx jest --passWithNoTests",
         "test:watch": "npm run test -- --watch",
         "compile:i18n": "npx run-script-os",
