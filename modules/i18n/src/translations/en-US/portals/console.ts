@@ -4926,11 +4926,11 @@ export const console: ConsoleNS = {
                         message: "Successfully Created Secret."
                     },
                     updatedSecret: {
-                        description: "Updated {{secretName}} of {{secretType}}",
+                        description: "Updated {{secretName}} of {{secretType}}.",
                         message: "Successfully Updated Secret."
                     },
                     deleteSecret: {
-                        description: "Deleted {{secretName}} of {{secretType}}",
+                        description: "Deleted {{secretName}} of {{secretType}}.",
                         message: "Successfully Deleted Secret."
                     }
                 },
@@ -4955,7 +4955,7 @@ export const console: ConsoleNS = {
                 },
                 modals: {
                     deleteSecret: {
-                        assertionHint: "Yes I understand. I want to delete it.",
+                        assertionHint: "Yes, I understand. I want to delete it.",
                         primaryActionButtonText: "Confirm",
                         secondaryActionButtonText: "Cancel",
                         title: "Are you sure?",
@@ -5013,7 +5013,7 @@ export const console: ConsoleNS = {
                         title: "Why can't I see the secret?",
                         content: "When you are creating a secret, you need to make sure you " +
                             "copy your secret somewhere secure. Because {{productName}} " +
-                            "securely encrypt and stores these information and you won’t be " +
+                            "securely encrypt and stores this information and you won’t be " +
                             "able to see it again!"
                     },
                     adaptiveAuthSecretType: {
@@ -5050,7 +5050,7 @@ export const console: ConsoleNS = {
                     resourceNotFound: {
                         messages: [
                             "Oops! we couldn't find the requested secret!",
-                            "Perhaps you have landed on to a invalid URL..."
+                            "Perhaps you have landed on an invalid URL..."
                         ]
                     },
                     emptyListOfSecrets: {

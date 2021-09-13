@@ -3623,6 +3623,156 @@ export const console: ConsoleNS = {
                     }
                 }
             },
+            secrets: {
+                alerts: {
+                    createdSecret: {
+                        description: "Créé {{secretName}} pour {{secretType}}.",
+                        message: "Secret créé avec succès."
+                    },
+                    updatedSecret: {
+                        description: "{{secretName}} mis à jour de {{secretType}}.",
+                        message: "Secret mis à jour avec succès."
+                    },
+                    deleteSecret: {
+                        description: "{{secretName}} supprimé de {{secretType}}.",
+                        message: "Secret supprimé avec succès."
+                    }
+                },
+                errors: {
+                    generic: {
+                        description: "Nous n'avons pas pu répondre à cette demande. Veuillez réessayer.",
+                        message: "Quelque chose ne tourne pas rond."
+                    }
+                },
+                page: {
+                    description: "Créer et gérer des secrets pour l'authentification adaptative",
+                    primaryActionButtonText: "Nouveau secret",
+                    title: "Secrets",
+                    subFeatureBackButton: "Retourner à Secrets"
+                },
+                routes: {
+                    category: "secrets",
+                    name: "Secrets",
+                    sidePanelChildrenNames: [
+                        "Modifier le secret"
+                    ]
+                },
+                modals: {
+                    deleteSecret: {
+                        assertionHint: "Oui je comprends. Je veux le supprimer.",
+                        primaryActionButtonText: "Confirmer",
+                        secondaryActionButtonText: "Annuler",
+                        title: "Es-tu sûr?",
+                        content: "Cette action est irréversible et supprimera définitivement le secret.",
+                        warningMessage: "Si vous supprimez ce secret, les scripts d'authentification adaptative " +
+                            "en fonction de cette valeur cesseront de fonctionner. Veuillez procéder avec prudence.",
+                    }
+                },
+                wizards: {
+                    addSecret: {
+                        heading: "Créer un secret",
+                        subheading: "Créer un nouveau secret pour les scripts d'authentification adaptative",
+                        form: {
+                            secretTypeField: {
+                                ariaLabel: "Sélectionnez le type de secret",
+                                hint: "Sélectionnez un type de secret auquel appartient ce secret.",
+                                label: "Sélectionnez le type de secret"
+                            },
+                            secretNameField: {
+                                ariaLabel: "Nom secret pour le type de secret",
+                                hint: "Donnez un nom significatif à ce secret. Notez qu'une fois que vous avez créé " +
+                                    "ce secret avec le nom ci-dessus, vous ne pouvez plus le modifier par la suite.",
+                                placeholder: "Entrez un nom secret",
+                                label: "Nom secret"
+                            },
+                            secretValueField: {
+                                ariaLabel: "Entrez une valeur secrète",
+                                hint: "C'est la valeur du secret. Vous pouvez saisir une valeur comprise entre " +
+                                    "{{minLength}} et {{maxLength}}.",
+                                placeholder: "Entrez une valeur secrète",
+                                label: "Valeur secrète"
+                            },
+                            secretDescriptionField: {
+                                ariaLabel: "Description secrète",
+                                hint: "Donnez une description de ce secret (c'est-à-dire, quand utiliser ce secret). " +
+                                    "Notez que vous pouvez mettre à jour cette description à tout moment.",
+                                placeholder: "Entrez une description secrète",
+                                label: "Description secrète"
+                            }
+                        }
+                    },
+                    actions: {
+                        finishButton: {
+                            label: "Finir",
+                            ariaLabel: "Terminer et soumettre"
+                        },
+                        cancelButton: {
+                            label: "Annuler",
+                            ariaLabel: "Annuler et fermer le modal"
+                        }
+                    }
+                },
+                banners: {
+                    secretIsHidden: {
+                        title: "Pourquoi ne puis-je pas voir le secret ?",
+                        content: "Lorsque vous créez un secret, vous devez vous assurer de copier votre secret dans " +
+                            "un endroit sûr. Parce que {{productName}} crypte et stocke ces informations en toute " +
+                            "sécurité et vous ne pourrez plus les voir !"
+                    },
+                    adaptiveAuthSecretType: {
+                        title: "Secrets d'authentification adaptative",
+                        content: "Ces secrets peuvent être utilisés dans le script d'authentification adaptative " +
+                            "d'une application enregistrée lors de l'accès à des API externes."
+                    }
+                },
+                forms: {
+                    editSecret: {
+                        secretValueField: {
+                            ariaLabel: "Entrez une valeur secrète",
+                            label: "Valeur secrète",
+                            hint: "C'est la valeur du secret. Vous pouvez saisir une valeur comprise " +
+                                "entre {{minLength}} et {{maxLength}}.",
+                            placeholder: "Entrez une valeur secrète",
+                        },
+                        secretDescriptionField: {
+                            ariaLabel: "Description secrète",
+                            hint: "Donnez une description de ce secret (c'est-à-dire, quand utiliser ce secret). " +
+                                "Notez que vous pouvez mettre à jour cette description à tout moment.",
+                            placeholder: "Entrez une description secrète",
+                            label: "Description secrète"
+                        }
+                    },
+                    actions: {
+                        submitButton: {
+                            label: "Mettre à jour",
+                            ariaLabel: "Mettre à jour pour enregistrer le formulaire",
+                        }
+                    }
+                },
+                emptyPlaceholders: {
+                    resourceNotFound: {
+                        messages: [
+                            "Oups! nous n'avons pas pu trouver le secret demandé !",
+                            "Peut-être avez-vous atterri sur une URL invalide..."
+                        ]
+                    },
+                    emptyListOfSecrets: {
+                        messages: [
+                            "Nous n'avons pu trouver aucun secret pour ce type de secret."
+                        ]
+                    },
+                    buttons: {
+                        backToSecrets: {
+                            label: "Ramène-moi à Secrets",
+                            ariaLabel: "Accédez à la liste des secrets.",
+                        },
+                        addSecret: {
+                            label: "Nouveau secret",
+                            ariaLabel: "Ajoutez un nouveau secret.",
+                        }
+                    }
+                }
+            },
             sidePanel: {
                 applicationEdit: "Édition des applications",
                 applicationTemplates: "Modèles d'application",
