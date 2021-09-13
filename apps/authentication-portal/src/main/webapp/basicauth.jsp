@@ -220,7 +220,7 @@
         </div>
     <% }
 } else if (Boolean.parseBoolean(loginFailed) &&
-        !IdentityCoreConstants.USER_ACCOUNT_NOT_CONFIRMED_ERROR_CODE.equals(errorCode)) { %>
+        !(IdentityCoreConstants.USER_ACCOUNT_NOT_CONFIRMED_ERROR_CODE).equals(errorCode)) { %>
 <div class="ui visible negative message" id="error-msg" data-testid="login-page-error-message">
     <%= AuthenticationEndpointUtil.i18n(resourceBundle, errorMessage) %>
 </div>
