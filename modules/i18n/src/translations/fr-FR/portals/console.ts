@@ -6037,6 +6037,13 @@ export const console: ConsoleNS = {
                             header: "Supprimer l'utilisateur",
                             subheader: "Cette action est irréversible et supprimera définitivement l'utilisateur. " +
                                 "Êtes-vous ABSOLUMENT certain de vouloir supprimer cet utilisateur ?"
+                        },
+                        passwordResetZone: {
+                            actionTitle: "Réinitialiser le mot de passe",
+                            header: "Réinitialiser le mot de passe",
+                            subheader: "Une fois le mot de passe modifié, l'utilisateur ne pourra plus se " +
+                                "connecter à aucune application en utilisant le mot de passe actuel. " +
+                                "S'il vous plaît soyez certain."
                         }
                     }
                 },
