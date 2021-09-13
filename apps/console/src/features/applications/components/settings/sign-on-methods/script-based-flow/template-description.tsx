@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { CodeEditor, LinkButton } from "@wso2is/react-components";
+import { CodeEditor, DocumentationLink, LinkButton, useDocumentation } from "@wso2is/react-components";
 import isObject from "lodash-es/isObject";
 import React, {
     FunctionComponent,
@@ -24,7 +24,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Icon, List, Message, Modal, Table } from "semantic-ui-react";
-import { AdaptiveAuthTemplateInterface } from "../../../../models";
+import { AdaptiveAuthTemplateInterface, AdaptiveAuthTemplateTypes } from "../../../../models";
 
 /**
  * Proptypes of `TemplateDescription` component.
@@ -62,12 +62,58 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
     } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
+    /**
+     * Resolves the documentation link when a template is selected.
+     * @return {React.ReactElement}
+     */
+    const resolveDocumentationLink = (): ReactElement => {
+        const templateName: string = template?.name;
+        let docLink: string = undefined;
+
+        if (templateName === AdaptiveAuthTemplateTypes.USER_AGE_BASED) {
+            docLink = getLink("develop.applications.editApplication.common." + 
+                "signInMethod.conditionalAuthenticaion.template.userAgeBased.learnMore");
+        }
+
+        if (templateName === AdaptiveAuthTemplateTypes.GROUP_BASED) {
+            docLink = getLink("develop.applications.editApplication.common." + 
+                "signInMethod.conditionalAuthenticaion.template.groupBased.learnMore");
+        }
+
+        if (templateName === AdaptiveAuthTemplateTypes.IP_BASED) {
+            docLink = getLink("develop.applications.editApplication.common." + 
+                "signInMethod.conditionalAuthenticaion.template.ipBased.learnMore");
+        }
+
+        if (templateName === AdaptiveAuthTemplateTypes.NEW_DEVICE_BASED) {
+            docLink = getLink("develop.applications.editApplication.common." + 
+                "signInMethod.conditionalAuthenticaion.template.deviceBased.learnMore");
+        }
+
+        if (docLink === undefined) {
+            return null;
+        }
+
+        return (
+            <DocumentationLink
+                link={ docLink }
+            >
+                { t("common:learnMore") }
+            </DocumentationLink>
+        );
+
+    };
+    
     return (
         <Modal open={ open } onClose={ onClose } dimmer="blurring" size="small">
             <Modal.Header>{ template.title }</Modal.Header>
             <Modal.Content scrolling>
-                <p>{ template.summary }</p>
+                <p>
+                    { template.summary }
+                    { resolveDocumentationLink() }
+                </p>
                 {
                     Array.isArray(template?.preRequisites) && template.preRequisites.length > 0 && (
                         <>

@@ -21,10 +21,12 @@ import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import {
     ContentLoader,
+    DocumentationLink,
     GenericIcon,
     Heading,
     LinkButton,
     PrimaryButton,
+    useDocumentation,
     useWizardAlert
 } from "@wso2is/react-components";
 import get from "lodash-es/get";
@@ -96,6 +98,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const availableAuthenticators = useSelector((state: AppState) =>
         state.identityProvider.meta.authenticators);
@@ -423,7 +426,16 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
                         />
                         <div className="ml-1">
                             { title }
-                            { subTitle && <Heading as="h6">{ subTitle }</Heading> }
+                            { subTitle && 
+                                <Heading as="h6">
+                                    { subTitle }
+                                    <DocumentationLink
+                                        link={ getLink("develop.connections.newConnection.google.learnMore") }
+                                    >
+                                        { t("common:learnMore") }
+                                    </DocumentationLink>
+                                </Heading> 
+                            }
                         </div>
                     </div>
                 </ModalWithSidePanel.Header>

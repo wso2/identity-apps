@@ -22,6 +22,7 @@ import { Field, Wizard2, WizardPage } from "@wso2is/form";
 import {
     CertFileStrategy,
     ContentLoader,
+    DocumentationLink,
     FilePicker,
     GenericIcon,
     Heading,
@@ -32,6 +33,7 @@ import {
     Steps,
     Switcher,
     XMLFileStrategy,
+    useDocumentation,
     useWizardAlert
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -67,6 +69,7 @@ import { getIdPIcons, getIdentityProviderWizardStepIcons } from "../../configs";
 import { IdentityProviderManagementConstants } from "../../constants";
 import { AuthenticatorMeta } from "../../meta";
 import {
+    AuthProtocolTypes,
     GenericIdentityProviderCreateWizardPropsInterface,
     IdentityProviderTemplateInterface,
     StrictIdentityProviderInterface
@@ -148,6 +151,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -829,6 +833,34 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     };
 
+    /**
+     * Resolves the documentation link when a protocol is selected.
+     * @return {React.ReactElement}
+     */
+    const resolveDocumentationLink = (): ReactElement => {    
+        if (selectedProtocol === AuthProtocolTypes.SAML) {
+            return (
+                <DocumentationLink
+                    link={ getLink("develop.connections.newConnection.enterprise.samlLearnMore") }
+                >
+                    { t("common:learnMore") }
+                </DocumentationLink>
+            );
+        }
+
+        if (selectedProtocol === AuthProtocolTypes.OIDC) {
+            return (
+                <DocumentationLink
+                    link={ getLink("develop.connections.newConnection.enterprise.oidcLearnMore") }
+                >
+                    { t("common:learnMore") }
+                </DocumentationLink>
+            );
+        }
+
+        return null;
+    };
+
     // Start: Modal
 
     return (
@@ -854,7 +886,12 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             data-testid={ `${ testId }-image` }/>
                         <div>
                             { title }
-                            { subTitle && <Heading as="h6">{ subTitle }</Heading> }
+                            { subTitle && 
+                                <Heading as="h6">
+                                    { subTitle }
+                                    { resolveDocumentationLink() }
+                                </Heading>
+                            }
                         </div>
                     </div>
                 </ModalWithSidePanel.Header>
