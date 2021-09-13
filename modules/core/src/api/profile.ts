@@ -248,7 +248,7 @@ export const getProfileSchemas = (): Promise<ProfileSchemaInterface[]> => {
                         const modifiedSubAttributes = [];
                         if(attribute.type === "COMPLEX") {
                             attribute.subAttributes.map((subAttribute) => {
-                                modifiedSubAttributes.push({ ...subAttribute,  extended: true});
+                                modifiedSubAttributes.push({ ...subAttribute,  extended: true, schemaId: schema.id });
                             }
                         );
                         attribute.subAttributes = modifiedSubAttributes;
