@@ -39,7 +39,7 @@ export const secretNameValidator = (
             SECRET_NAME_LENGTH.max
         } characters!`;
     }
-    if (!FormValidation.isValidResourceName(value)) {
+    if (!FormValidation.isValidResourceKey(value)) {
         return FieldConstants.INVALID_RESOURCE_ERROR;
     }
     if (listOfTakenSecretNamesForSecretType?.size &&

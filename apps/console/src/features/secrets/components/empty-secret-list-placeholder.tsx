@@ -21,6 +21,8 @@ import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-compo
 import React, { FC, ReactElement } from "react";
 import { Icon } from "semantic-ui-react";
 import { AppConstants, getEmptyPlaceholderIllustrations, history } from "../../core";
+import { useTranslation } from "react-i18next";
+import { FEATURE_BASE_PATH } from "../constants/secrets.common";
 
 /**
  * Props interface of {@link EmptySecretListPlaceholder}
@@ -35,8 +37,9 @@ export type EmptySecretListPlaceholderProps = {
  * added to it. It can be either adaptive script secrets or custom
  * created secret-types.
  *
- * TODO: Address https://github.com/wso2/product-is/issues/12447
+ * TODO: https://github.com/wso2/product-is/issues/12447
  * @constructor
+ * @return {ReactElement}
  */
 export const EmptySecretListPlaceholder: FC<EmptySecretListPlaceholderProps> = (
     props: EmptySecretListPlaceholderProps
@@ -48,8 +51,13 @@ export const EmptySecretListPlaceholder: FC<EmptySecretListPlaceholderProps> = (
         ["data-componentid"]: testId
     } = props;
 
+    const { t } = useTranslation();
+
+    /**
+     * Navigate back to feature base.
+     */
     const whenTheRequestedResourceIsNotFound = (): void => {
-        history.push(AppConstants.getPaths().get("SECRETS"));
+        history.push(AppConstants.getPaths().get(FEATURE_BASE_PATH));
     };
 
     if (resourceNotFound) {
@@ -57,16 +65,18 @@ export const EmptySecretListPlaceholder: FC<EmptySecretListPlaceholderProps> = (
             <EmptyPlaceholder
                 action={
                     <LinkButton
+                        aria-label={ t("console:develop.features.secrets.emptyPlaceholders" +
+                            ".buttons.backToSecrets.ariaLabel") }
                         onClick={ whenTheRequestedResourceIsNotFound }>
                         <Icon name="backward"/>
-                        Take me back to Secrets
+                        { t("console:develop.features.secrets.emptyPlaceholders.buttons.backToSecrets.label") }
                     </LinkButton>
                 }
                 image={ getEmptyPlaceholderIllustrations().pageNotFound }
                 imageSize="tiny"
                 subtitle={ [
-                    "Oops! we couldn't find the requested secret!",
-                    <>Perhaps you have landed on to a invalid URL</>
+                    t("console:develop.features.secrets.emptyPlaceholders.resourceNotFound.messages.0"),
+                    t("console:develop.features.secrets.emptyPlaceholders.resourceNotFound.messages.1")
                 ] }
                 data-testid={ testId }
             />
@@ -77,17 +87,15 @@ export const EmptySecretListPlaceholder: FC<EmptySecretListPlaceholderProps> = (
         <EmptyPlaceholder
             action={
                 <PrimaryButton
+                    aria-label={ t("console:develop.features.secrets.emptyPlaceholders.buttons.addSecret.ariaLabel") }
                     onClick={ onAddNewSecret }>
                     <Icon name="add"/>
-                    New Secret
+                    { t("console:develop.features.secrets.emptyPlaceholders.buttons.addSecret.label") }
                 </PrimaryButton>
             }
             image={ getEmptyPlaceholderIllustrations().newList }
             imageSize="tiny"
-            subtitle={ [
-                "There are no secrets added for this secret type.",
-                <>Click <strong>New Secret</strong> to start adding secrets!</>
-            ] }
+            subtitle={ [ t("console:develop.features.secrets.emptyPlaceholders.emptyListOfSecrets.messages") ] }
             data-testid={ testId }
         />
     );

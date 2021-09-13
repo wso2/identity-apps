@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,6 +28,8 @@ import { getSecret } from "../api/secret";
 import EditSecret from "../components/edit-secret";
 import { EmptySecretListPlaceholder } from "../components/empty-secret-list-placeholder";
 import { SecretModel } from "../models/secret";
+import { useTranslation } from "react-i18next";
+import { FEATURE_BASE_PATH } from "../constants/secrets.common";
 
 /**
  * Props interface of {@link SecretEdit}
@@ -35,8 +37,9 @@ import { SecretModel } from "../models/secret";
 export type SecretEditProps = RouteComponentProps & IdentifiableComponentInterface;
 
 /**
- * Need to address i18n and access-control
- * TODO: https://github.com/wso2/product-is/issues/12447
+ * TODO: Need to implement access-control and event publishers
+ *  https://github.com/wso2/product-is/issues/12447
+ *
  * @param props
  * @constructor
  */
@@ -46,17 +49,17 @@ const SecretEdit: FC<SecretEditProps> = (props: SecretEditProps): ReactElement =
         ["data-componentid"]: testId
     } = props;
 
+    const { t } = useTranslation();
+    const dispatch = useDispatch();
+
     const [ loading, setLoading ] = useState<boolean>(true);
     const [ resourceNotFound, setResourceNotFound ] = useState<boolean>(false);
     const [ editingSecret, setEditingSecret ] = useState<SecretModel>(undefined);
     const [ secretType, setSecretType ] = useState<string>();
     const [ secretName, setSecretName ] = useState<string>();
 
-    const dispatch = useDispatch();
-
     /**
-     * Fetch the secret details on initial
-     * component load.
+     * Fetch the secret details on initial component load.
      */
     useEffect(() => {
 
@@ -75,16 +78,16 @@ const SecretEdit: FC<SecretEditProps> = (props: SecretEditProps): ReactElement =
                 setResourceNotFound(true);
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
-                        description: error.response.data.description,
+                        description: error.response.data?.description,
                         level: AlertLevels.ERROR,
-                        message: error.response.data.description
+                        message: error.response.data?.message
                     }));
                     return;
                 }
                 dispatch(addAlert({
-                    description: "We were unable to find that secret.",
+                    description: t("console:develop.features.secrets.errors.generic.description"),
                     level: AlertLevels.ERROR,
-                    message: "Something went wrong"
+                    message: t("console:develop.features.secrets.errors.generic.message")
                 }));
             })
             .finally(() => {
@@ -92,7 +95,6 @@ const SecretEdit: FC<SecretEditProps> = (props: SecretEditProps): ReactElement =
             });
 
     }, []);
-
 
     return (
         resourceNotFound
@@ -121,8 +123,8 @@ const SecretEdit: FC<SecretEditProps> = (props: SecretEditProps): ReactElement =
                         />
                     }
                     backButton={ {
-                        onClick: () => history.push(AppConstants.getPaths().get("SECRETS")),
-                        text: "Go back to Secrets" // TODO: https://github.com/wso2/product-is/issues/12447
+                        onClick: () => history.push(AppConstants.getPaths().get(FEATURE_BASE_PATH)),
+                        text: t("console:develop.features.secrets.page.subFeatureBackButton")
                     } }>
                     {
                         (loading && !resourceNotFound)

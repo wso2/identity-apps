@@ -19,8 +19,8 @@
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
-import { Code, ContentLoader, Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
-import React, { FC, Fragment, ReactElement, useEffect, useRef, useState } from "react";
+import { ContentLoader, Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
+import React, { FC, ReactElement, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Grid, Modal } from "semantic-ui-react";
 import { createSecret, getSecretList } from "../api/secret";
@@ -32,6 +32,7 @@ import {
     secretNameValidator,
     secretValueValidator
 } from "../utils/secrets.validation.utils";
+import { useTranslation } from "react-i18next";
 
 /**
  * Props interface of {@link AddSecretWizard}
@@ -54,9 +55,10 @@ type FieldDropDownOption = {
  * given `secret-type`.
  *
  * Known Issue TODO: https://github.com/wso2/product-is/issues/12447
- *                   Need to add i18n strings, access-control, event-publishers
+ *                   Need to add access-control and event-publishers
  * @param props {AddSecretWizardProps}
  * @constructor
+ * @return {ReactElement}
  */
 const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps): ReactElement => {
 
@@ -67,6 +69,7 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     /** Form reference to trigger the form submit externally this modal. */
     const formRef = useRef(null);
@@ -76,12 +79,8 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
     const [ submitShouldBeDisabled, setSubmitShouldBeDisabled ] = useState<boolean>(false);
     const [ secretTypes, setSecretTypes ] = useState<FieldDropDownOption[]>([]);
     const [ listOfSecretNamesForSecretType, setListOfSecretNamesForSecretType ] = useState<Set<string>>(new Set());
-
-    // const [ selectedSecretTypeInvalid, setSelectedSecretTypeInvalid ] = useState<boolean>(false);
-    // const [ secretDescriptionInvalid, setSecretDescriptionInvalid ] = useState<boolean>(false);
     const [ secretNameInvalid, setSecretNameInvalid ] = useState<boolean>(false);
     const [ secretValueInvalid, setSecretValueInvalid ] = useState<boolean>(false);
-
     const [ initialFormValues, setInitialFormValues ] = useState<Record<string, any>>({});
 
     /**
@@ -120,17 +119,17 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
             .catch((error): void => {
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
-                        description: error.response.data.description,
+                        description: error.response.data?.description,
                         level: AlertLevels.ERROR,
-                        message: "Cannot get available secret types."
+                        message: error.response.data?.message
                     });
                     setRequestInProgress(false);
                     return;
                 }
                 setAlert({
-                    description: "Something went wrong",
+                    description: t("console:develop.features.secrets.errors.generic.description"),
                     level: AlertLevels.ERROR,
-                    message: "This wasn't suppose to happen. Try refreshing the page."
+                    message: t("console:develop.features.secrets.errors.generic.message")
                 });
             })
             .finally((): void => {
@@ -139,19 +138,23 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
 
     }, []);
 
+    /**
+     * Triggered whenever {@code secretNameInvalid} or
+     * {@code secretValueInvalid} changes.
+     */
     useEffect(() => {
         setSubmitShouldBeDisabled(secretNameInvalid || secretValueInvalid);
     }, [ secretNameInvalid, secretValueInvalid ]);
 
     // TODO: show the secret_type field and listen for its value changes,
-    //       onChange, re-fetch the secrets for that type using
-    //       {@link fetchAllSecretsForSecretType}
+    //  onChange, re-fetch the secrets for that type using
+    //  {@link fetchAllSecretsForSecretType}
 
     // TODO: As an UX feature we can directly offer the functionality to
-    //       add a secret-type from the dropdown it self. In that way we don't
-    //       have to develop another interface for managing the secret-types.
-    //       Backend should have the logic to check: "if a secret CRUD operation
-    //       is last record of it's type then simply delete it".
+    //  add a secret-type from the dropdown it self. In that way we don't
+    //  have to develop another interface for managing the secret-types.
+    //  Backend should have the logic to check: "if a secret CRUD operation
+    //  is last record of it's type then simply delete it".
 
     /**
      * Called when the wizard is successfully submitted.
@@ -170,9 +173,12 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                 }
             });
             dispatch(addAlert({
-                description: `Successfully created Secret ${ values.secret_name }`,
+                description: t("console:develop.features.secrets.alerts.createdSecret.description", {
+                    secretName: values.secret_name,
+                    secretType: values.secret_type
+                }),
                 level: AlertLevels.SUCCESS,
-                message: `Created Secret for ${ values.secret_type }`
+                message: t("console:develop.features.secrets.alerts.createdSecret.message")
             }));
             onWizardClose(true);
             setRequestInProgress(false);
@@ -182,12 +188,18 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                 setAlert({
                     description: error.response.data.description,
                     level: AlertLevels.ERROR,
-                    message: error.response.data.message
+                    message: error.response.data?.message
                 });
             }
         }
     };
 
+    /**
+     * Called when wizard Cancel button click and when after a
+     * successful submission of the wizard. {@see onWizardSubmission}
+     *
+     * @param shouldRefreshTheSecretListOnClose {boolean}
+     */
     const onWizardClose = (shouldRefreshTheSecretListOnClose?: boolean): void => {
         if (onClose)
             onClose(shouldRefreshTheSecretListOnClose);
@@ -204,7 +216,8 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
      */
     const fetchSecretTypes = async (): Promise<FieldDropDownOption[]> => {
         // FIXME: Practically, this should be a API call that fetches all the available
-        //        Secret-Types. Currently, our API does not have a get-all route.
+        //  Secret-Types. Currently, our API does not have a get-all route.
+        //  https://github.com/wso2/product-is/issues/12447
         return Promise.resolve([
             {
                 key: 1,
@@ -214,6 +227,10 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
         ]);
     };
 
+    /**
+     * Fetches all the secrets for the {@param secretType}.
+     * @param secretType {string}
+     */
     const fetchAllSecretsForSecretType = async (secretType: string): Promise<SecretModel[]> => {
         try {
             const response = await getSecretList({ params: { secretType } });
@@ -236,11 +253,11 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
             size="tiny"
             open={ showWizard }
             onClose={ () => onClose(false) }
-            data-testid={ `${ testId }-view-certificate-modal` }>
+            data-componentid={ `${ testId }-view-certificate-modal` }>
             <Modal.Header className="wizard-header">
-                Create Secret
+                { t("console:develop.features.secrets.wizards.addSecret.heading") }
                 <Heading as="h6">
-                    Create a new Secret for External APIs or Adaptive Authentication script
+                    { t("console:develop.features.secrets.wizards.addSecret.subheading") }
                 </Heading>
             </Modal.Header>
             <Modal.Content className="content-container">
@@ -255,29 +272,28 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                         search
                         disabled
                         hidden
-                        value={ secretTypes.length && secretTypes[0].value }
-                        options={ secretTypes }
-                        label="Select Secret Type"
-                        ariaLabel="Select an Secret Type"
                         name="secret_type"
-                        hint={ "Select a Secret Type which this secret falls into." }
+                        options={ secretTypes }
+                        value={ secretTypes.length && secretTypes[0].value }
+                        label={ t("console:develop.features.secrets.wizards.addSecret.form.secretTypeField.label") }
+                        ariaLabel={ t("console:develop.features.secrets.wizards" +
+                            ".addSecret.form.secretTypeField.ariaLabel") }
+                        hint={ t("console:develop.features.secrets.wizards.addSecret.form.secretTypeField.hint") }
                         // TODO: implement validation here if above improvement added.
+                        // https://github.com/wso2/product-is/issues/12447
                     />
                     <Field.Input
                         required
                         name="secret_name"
-                        label="Secret Name"
-                        ariaLabel="Secret Name for the secret type"
-                        placeholder="Enter a Secret Name for the Secret Type"
+                        label={ t("console:develop.features.secrets.wizards.addSecret.form.secretNameField.label") }
+                        ariaLabel={ t("console:develop.features.secrets.wizards.addSecret." +
+                            "form.secretNameField.ariaLabel") }
+                        placeholder={ t("console:develop.features.secrets.wizards.addSecret." +
+                            "form.secretNameField.placeholder") }
                         minLength={ SECRET_NAME_LENGTH.min }
                         maxLength={ SECRET_NAME_LENGTH.max }
                         inputType="name"
-                        hint={
-                            <Fragment>
-                                Give a meaningful name for this secret. Note that once you create this secret with the
-                                name above, you <strong>cannot change</strong> it afterwards.
-                            </Fragment>
-                        }
+                        hint={ t("console:develop.features.secrets.wizards.addSecret.form.secretNameField.hint") }
                         validate={ (value): string | undefined => {
                             const error = secretNameValidator(value, listOfSecretNamesForSecretType);
                             setSecretNameInvalid(Boolean(error));
@@ -286,19 +302,22 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                     />
                     <Field.Input
                         required
-                        label="Secret Value"
                         name="secret_value"
-                        ariaLabel="Secret value"
-                        placeholder="Enter a Secret Value"
+                        ariaLabel={ t("console:develop.features.secrets.wizards.addSecret." +
+                            "form.secretValueField.ariaLabel") }
+                        label={ t("console:develop.features.secrets.wizards" +
+                            ".addSecret.form.secretValueField.label") }
+                        placeholder={ t("console:develop.features.secrets.wizards.addSecret" +
+                            ".form.secretValueField.placeholder") }
                         minLength={ SECRET_VALUE_LENGTH.min }
                         maxLength={ SECRET_VALUE_LENGTH.max }
                         type="password"
                         inputType="password"
                         hint={
-                            <Fragment>
-                                This is the value of the secret. You can enter a value between length&nbsp;
-                                <Code>{ SECRET_VALUE_LENGTH.min }</Code> to <Code>{ SECRET_VALUE_LENGTH.max }</Code>.
-                            </Fragment>
+                            t("console:develop.features.secrets.wizards.addSecret.form.secretValueField.hint", {
+                                minLength: SECRET_VALUE_LENGTH.min,
+                                maxLength: SECRET_VALUE_LENGTH.max
+                            })
                         }
                         validate={ (value): string | undefined => {
                             const error = secretValueValidator(value);
@@ -307,18 +326,17 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                         } }
                     />
                     <Field.Textarea
-                        label="Secret Description"
-                        ariaLabel="Secret's description"
-                        placeholder="Enter a Secret Description"
+                        hint={ t("console:develop.features.secrets.wizards" +
+                            ".addSecret.form.secretDescriptionField.hint") }
+                        label={ t("console:develop.features.secrets.wizards.addSecret" +
+                            ".form.secretDescriptionField.label") }
+                        ariaLabel={ t("console:develop.features.secrets.wizards.addSecret" +
+                            ".form.secretDescriptionField.ariaLabel") }
+                        placeholder={ t("console:develop.features.secrets.wizards.addSecret.form" +
+                            ".secretDescriptionField.placeholder") }
                         name="secret_description"
                         minLength={ SECRET_DESCRIPTION_LENGTH.min }
                         maxLength={ SECRET_DESCRIPTION_LENGTH.max }
-                        hint={
-                            <Fragment>
-                                Give a description for this secret (i.e., When to use this secret).
-                                Note that you <strong>can update</strong> this description anytime.
-                            </Fragment>
-                        }
                     />
                 </Form>
                 { requestInProgress && <ContentLoader/> }
@@ -328,21 +346,26 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                     <Grid.Row column={ 1 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <LinkButton
+                                aria-label={
+                                    t("console:develop.features.secrets.wizards.actions.cancelButton.ariaLabel")
+                                }
                                 floated="left"
                                 onClick={ () => onWizardClose(false) }
                                 data-testid={ `${ testId }-form-cancel-button` }>
-                                Cancel
+                                { t("console:develop.features.secrets.wizards.actions.cancelButton.label") }
                             </LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <PrimaryButton
-                                aria-label="Submission Button"
+                                aria-label={
+                                    t("console:develop.features.secrets.wizards.actions.finishButton.ariaLabel")
+                                }
                                 disabled={ submitShouldBeDisabled }
                                 floated="right"
                                 onClick={ () => formRef?.current?.triggerSubmit() }
                                 loading={ requestInProgress }
                                 data-testid={ `${ testId }-form-submit-button` }>
-                                Finish
+                                { t("console:develop.features.secrets.wizards.actions.finishButton.label") }
                             </PrimaryButton>
                         </Grid.Column>
                     </Grid.Row>
@@ -360,4 +383,9 @@ AddSecretWizard.defaultProps = {
     "data-componentid": "add-secret-wizard"
 };
 
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
 export default AddSecretWizard;

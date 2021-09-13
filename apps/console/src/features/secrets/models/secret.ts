@@ -38,8 +38,6 @@ export interface SecretModel {
     description: string;
 }
 
-// Request DTOs
-
 type CommonRequestParams = {
     secretType: string;
     secretName: string;
@@ -76,12 +74,7 @@ export type DeleteSecretRequest = {
     params: CommonRequestParams;
 };
 
-// Response DTOs
-
 export type CreateSecretResponse = SecretModel;
-
 export type GetSecretResponse = SecretModel;
-
 export type UpdateSecretResponse = SecretModel;
-
 export type GetSecretListResponse = Array<SecretModel>;

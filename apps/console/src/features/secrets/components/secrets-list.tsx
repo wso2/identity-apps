@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,7 +35,7 @@ import { Header, Message, SemanticICONS } from "semantic-ui-react";
 import { EmptySecretListPlaceholder } from "./empty-secret-list-placeholder";
 import { AppConstants, history } from "../../core";
 import { deleteSecret } from "../api/secret";
-import { ADAPTIVE_SCRIPT_SECRETS } from "../constants/secrets.common";
+import { ADAPTIVE_SCRIPT_SECRETS, FEATURE_EDIT_PATH } from "../constants/secrets.common";
 import { SecretModel } from "../models/secret";
 import { formatDateString, humanizeDateString } from "../utils/secrets.date.utils";
 
@@ -51,9 +51,10 @@ export type SecretsListProps = {
 } & IdentifiableComponentInterface;
 
 /**
- * TODO: Address https://github.com/wso2/product-is/issues/12447
+ * TODO: https://github.com/wso2/product-is/issues/12447
  * @param props {SecretsListProps}
  * @constructor
+ * @return {ReactElement}
  */
 const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElement => {
 
@@ -76,7 +77,7 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
         event?.preventDefault();
         const pathname = AppConstants
             .getPaths()
-            .get("SECRET_EDIT")
+            .get(FEATURE_EDIT_PATH)
             .replace(":type", item?.type)
             .replace(":name", item?.secretName);
         history.push({ pathname });
@@ -96,9 +97,12 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
                     }
                 });
                 dispatch(addAlert({
-                    description: `Deleted the secret ${ deletingSecret.secretName }`,
+                    description: t("console:develop.features.secrets.alerts.deleteSecret.description", {
+                        secretName: deletingSecret.secretName,
+                        secretType: deletingSecret.type,
+                    }),
                     level: AlertLevels.SUCCESS,
-                    message: "Secret Deleted Successfully"
+                    message: t("console:develop.features.secrets.alerts.deleteSecret.message")
                 }));
             } catch (error) {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -110,9 +114,9 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
                     return;
                 }
                 dispatch(addAlert({
-                    description: "Something went wrong",
+                    description: t("console:develop.features.secrets.errors.generic.description"),
                     level: AlertLevels.ERROR,
-                    message: "We were unable to delete this secret. Please try again."
+                    message: t("console:develop.features.secrets.errors.generic.message")
                 }));
             } finally {
                 whenSecretDeleted(deletingSecret, /*refresh the secret list?*/true);
@@ -238,25 +242,24 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
             onPrimaryActionClick={ onSecretDeleteClick }
             open={ showDeleteConfirmationModal }
             type="warning"
-            assertionHint={ "Yes I understand. I want to delete it." }
+            assertionHint={ t("console:develop.features.secrets.modals.deleteSecret.assertionHint") }
             assertionType="checkbox"
-            primaryAction={ "Confirm" }
-            secondaryAction={ "Cancel" }
+            primaryAction={ t("console:develop.features.secrets.modals.deleteSecret.primaryActionButtonText") }
+            secondaryAction={ t("console:develop.features.secrets.modals.deleteSecret.secondaryActionButtonText") }
             data-testid={ `${ testId }-delete-confirmation-modal` }
             closeOnDimmerClick={ false }>
             <ConfirmationModal.Header data-testid={ `${ testId }-delete-confirmation-modal-header` }>
-                Are you sure?
+                { t("console:develop.features.secrets.modals.deleteSecret.title") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
                 warning
                 data-testid={ `${ testId }-delete-confirmation-modal-message` }>
                 { /*TODO: Dynamically switch the message based on the secret-type. Adaptive or Custom */ }
-                If you delete this secret, <strong>Adaptive Authentication Scripts</strong> depending on this
-                value will stop working. Please proceed with caution.
+                { t("console:develop.features.secrets.modals.deleteSecret.warningMessage") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content data-testid={ `${ testId }-delete-confirmation-modal-content` }>
-                This action is irreversible and will permanently delete the secret.
+                { t("console:develop.features.secrets.modals.deleteSecret.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );
@@ -267,11 +270,12 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
                 selectedSecretType === ADAPTIVE_SCRIPT_SECRETS && (
                     <Message data-componentid={ `${ testId }-page-message` }>
                         <Message.Header>
-                            <strong>Adaptive Authentication Secrets</strong>
+                            <strong>
+                                { t("console:develop.features.secrets.banners.adaptiveAuthSecretType.title") }
+                            </strong>
                         </Message.Header>
                         <Text>
-                            These secrets can be used in the Adaptive Authentication script of
-                            a registered application when accessing external APIs.
+                            { t("console:develop.features.secrets.banners.adaptiveAuthSecretType.content") }
                         </Text>
                     </Message>
                 )

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,6 +21,7 @@ import { addAlert } from "@wso2is/core/store";
 import { PageLayout, PrimaryButton } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import React, { FC, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Icon } from "semantic-ui-react";
 import { getSecretList } from "../api/secret";
@@ -35,9 +36,8 @@ import { GetSecretListResponse, SecretModel } from "../models/secret";
 export type SecretsPageProps = IdentifiableComponentInterface;
 
 /**
- * TODO: Address https://github.com/wso2/product-is/issues/12447
- *      Add <Show> component & Event publishers & i18n strings.
- *
+ * There are couple of things missing in this component:
+ * TODO: https://github.com/wso2/product-is/issues/12447
  * The secrets list of page.
  * @constructor
  */
@@ -48,6 +48,7 @@ const SecretsPage: FC<SecretsPageProps> = (props: SecretsPageProps): ReactElemen
     } = props;
 
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     /**
      * List of secrets for the selected {@code secretType}. It can hold secrets of
@@ -62,7 +63,7 @@ const SecretsPage: FC<SecretsPageProps> = (props: SecretsPageProps): ReactElemen
         loadSecretListForSecretType();
     }, []);
 
-    const loadSecretListForSecretType = () => {
+    const loadSecretListForSecretType = async (): Promise<void> => {
 
         setIsSecretListLoading(true);
 
@@ -73,16 +74,16 @@ const SecretsPage: FC<SecretsPageProps> = (props: SecretsPageProps): ReactElemen
         }).catch((error) => {
             if (error.response && error.response.data && error.response.data.description) {
                 dispatch(addAlert({
-                    description: error.response.data.description,
+                    description: error.response.data?.description,
                     level: AlertLevels.ERROR,
                     message: error.response.data?.message
                 }));
                 return;
             }
             dispatch(addAlert({
-                description: "Something went wrong!",
+                description: t("console:develop.features.secrets.errors.generic.description"),
                 level: AlertLevels.ERROR,
-                message: `We were unable to get the list of secrets for ${ selectedSecretType }`
+                message: t("console:develop.features.secrets.errors.generic.message")
             }));
         }).finally(() => {
             setIsSecretListLoading(false);
@@ -128,14 +129,14 @@ const SecretsPage: FC<SecretsPageProps> = (props: SecretsPageProps): ReactElemen
     return (
         <PageLayout
             isLoading={ isSecretListLoading }
-            title={ "Secrets" }
-            description={ "Create and manage secrets for External APIs or Adaptive Authentication" }
+            title={ t("console:develop.features.secrets.page.title") }
+            description={ t("console:develop.features.secrets.page.description") }
             action={ secretList?.length > 0 && (
                 <PrimaryButton
                     onClick={ onAddNewSecretButtonClick }
                     data-testid={ `${ testId }-add-button` }>
                     <Icon name="add"/>
-                    New Secret
+                    { t("console:develop.features.secrets.page.primaryActionButtonText") }
                 </PrimaryButton>
             ) }>
             <SecretsList
@@ -155,6 +156,9 @@ const SecretsPage: FC<SecretsPageProps> = (props: SecretsPageProps): ReactElemen
 
 };
 
+/**
+ * Default props of {@link SecretsPage}
+ */
 SecretsPage.defaultProps = {
     "data-componentid": "secrets-page"
 };

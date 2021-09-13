@@ -138,3 +138,13 @@ export enum ContentTypeHeaderValues {
      */
     APP_SCIM = "application/scim+json"
 }
+
+/**
+ * HTTP Response Codes.
+ * https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#successful_responses
+ */
+export enum HttpCodes {
+    CREATED = 201,
+    OK = 200,
+    NO_CONTENT = 204,
+}

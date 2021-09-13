@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,10 +17,9 @@
  */
 
 import { IdentityClient } from "@wso2/identity-oidc-js";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods, HttpCodes } from "@wso2is/core/models";
 import { AxiosResponse } from "axios";
 import { store } from "../../core";
-import { HttpCodes } from "../configs/http-codes";
 import {
     CreateSecretTypeRequestModel,
     DeleteSecretTypeRequestModel,
@@ -30,6 +29,7 @@ import {
     UpdateSecretTypeRequestModel,
     UpdateSecretTypeResponseModel
 } from "../models/secret-type";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 
 const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
 
@@ -55,7 +55,7 @@ export const createSecretType = async (
     try {
         const response: AxiosResponse<SecretTypeModel> = await httpClient(requestConfig);
         if (response.status !== HttpCodes.CREATED) {
-            return Promise.reject(new Error(`Failed to create the secret type ${ body.name }.`));
+            return Promise.reject(new IdentityAppsApiException(`Failed to create the secret type ${ body.name }.`));
         }
         return response;
     } catch (error) {
@@ -85,7 +85,7 @@ export const getSecretType = async (
     try {
         const response: AxiosResponse<SecretTypeModel> = await httpClient(requestConfig);
         if (response.status !== HttpCodes.OK) {
-            return Promise.reject(new Error(`Failed to get the secret type ${ params.secretType }.`));
+            return Promise.reject(new IdentityAppsApiException(`Failed to get the secret type ${ params.secretType }.`));
         }
         return response;
     } catch (error) {
@@ -112,7 +112,7 @@ export const updateSecretType = async (
     try {
         const response: AxiosResponse<SecretTypeModel> = await httpClient(requestConfig);
         if (response.status !== HttpCodes.OK) {
-            return Promise.reject(new Error(`Failed to update the secret type ${ params.secretType }.`));
+            return Promise.reject(new IdentityAppsApiException(`Failed to update the secret type ${ params.secretType }.`));
         }
         return response;
     } catch (error) {
@@ -138,7 +138,7 @@ export const deleteSecretType = async (
     try {
         const response: AxiosResponse<SecretTypeModel> = await httpClient(requestConfig);
         if (response.status !== HttpCodes.NO_CONTENT) {
-            return Promise.reject(new Error(`Failed to delete the secret type ${ params.secretType }.`));
+            return Promise.reject(new IdentityAppsApiException(`Failed to delete the secret type ${ params.secretType }.`));
         }
         return response;
     } catch (error) {

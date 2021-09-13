@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,3 +17,9 @@
  */
 
 export const ADAPTIVE_SCRIPT_SECRETS = "ADAPTIVE_AUTH_CALL_CHOREO";
+export const EMPTY_STRING = "";
+export const EMPTY_JSON_OBJECT_STRING = "{}";
+export const FEATURE_LOCAL_STORAGE_KEY = btoa("secret-management");
+
+export const FEATURE_BASE_PATH = "SECRETS";
+export const FEATURE_EDIT_PATH = "SECRET_EDIT";

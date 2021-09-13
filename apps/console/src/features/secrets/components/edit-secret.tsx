@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,8 +20,8 @@ import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models
 import { addAlert } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
-import { Code, EmphasizedSegment } from "@wso2is/react-components";
-import React, { FC, Fragment, ReactElement, useEffect, useState } from "react";
+import { EmphasizedSegment } from "@wso2is/react-components";
+import React, { FC, ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Message } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface } from "../../core";
@@ -32,12 +32,8 @@ import {
     SECRET_VALUE_LENGTH,
     secretValueValidator
 } from "../utils/secrets.validation.utils";
-
-
-/**
- * Local storage key.
- */
-const LOCAL_STORAGE_KEY = "showInfoMessage";
+import { useTranslation } from "react-i18next";
+import { EMPTY_JSON_OBJECT_STRING, EMPTY_STRING, FEATURE_LOCAL_STORAGE_KEY } from "../constants/secrets.common";
 
 /**
  * Interface indicates what will be stored in the localstorage.
@@ -53,12 +49,12 @@ export type EditSecretProps = {
     editingSecret: SecretModel
 } & IdentifiableComponentInterface;
 
-
 /**
  * Don't get confused with the component {@link SecretEdit}. This component
- * is basically the inner component that actually does the editing.
+ * is basically the inner component that actually does the editing. The
+ * other one {@link SecretEdit} is the page.
  *
- * TODO: https://github.com/wso2/product-is/issues/12447
+ * TODO(yasinmiran): https://github.com/wso2/product-is/issues/12447
  * @param props {EditSecretProps}
  * @constructor
  */
@@ -70,18 +66,18 @@ const EditSecret: FC<EditSecretProps> = (props: EditSecretProps): ReactElement =
     } = props;
 
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const [ showInfoMessage, setShowInfoMessage ] = useState<boolean>(false);
     const [ secretValueInvalid, setSecretValueInvalid ] = useState<boolean>(false);
     const [ initialFormValues, setInitialFormValues ] = useState<Record<string, any>>({});
-    // const [ secretFieldValue, setSecretFieldValue ] = useState<string>("");
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     useEffect(() => {
         if (editingSecret) {
             setInitialFormValues({
                 secret_description: editingSecret.description,
-                secret_value: ""
+                secret_value: EMPTY_STRING
             });
         }
         checkAndRenderInfoMessage();
@@ -89,9 +85,10 @@ const EditSecret: FC<EditSecretProps> = (props: EditSecretProps): ReactElement =
 
     const checkAndRenderInfoMessage = (): void => {
         try {
-            // If message dismissed already shown don't show it again.
+            // If message dismissed already shown, then don't show it again :xD:.
             const local = JSON.parse(
-                LocalStorageUtils.getValueFromLocalStorage(LOCAL_STORAGE_KEY) ?? "{}"
+                LocalStorageUtils.getValueFromLocalStorage(FEATURE_LOCAL_STORAGE_KEY)
+                ?? EMPTY_JSON_OBJECT_STRING
             ) as EditSecretLocalStorage;
             if (local && local.hideInfoMessage === true) {
                 setShowInfoMessage(false);
@@ -103,26 +100,12 @@ const EditSecret: FC<EditSecretProps> = (props: EditSecretProps): ReactElement =
         }
     };
 
+    /**
+     * Updates a secret. To update both `value` and `description` must
+     * be in the form values otherwise the API will complain with 400.
+     * @param values {Record<string, any>}
+     */
     const updateFormSubmission = (values: Record<string, any>): void => {
-
-        // Inline and block commented codes are part of
-        // TODO: issue https://github.com/wso2/product-is/issues/12447
-        //
-        // let body: Record<string, any> = {
-        //    description: values?.secret_description,
-        // };
-
-        /**
-         * If and only if the value is edited and valid, update
-         * the secret value. otherwise don't. However, the API currently require
-         */
-
-        // if (secretFieldValue && !secretValueInvalid) {
-        //     body = {
-        //         ...body,
-        //         value: values?.secret_description
-        //     };
-        // }
 
         updateSecret({
             body: {
@@ -136,31 +119,38 @@ const EditSecret: FC<EditSecretProps> = (props: EditSecretProps): ReactElement =
         }).then(({ data }): void => {
             setInitialFormValues({
                 secret_description: data?.description,
-                secret_value: ""
+                secret_value: EMPTY_STRING
             });
             dispatch(addAlert({
-                description: `Updated ${ editingSecret?.secretName } in ${ editingSecret?.type }`,
+                description: t("console:develop.features.secrets.alerts.updatedSecret.description", {
+                    secretName: editingSecret?.secretName,
+                    secretType: editingSecret?.type
+                }),
                 level: AlertLevels.SUCCESS,
-                message: "Successfully updated the Secret"
+                message: t("console:develop.features.secrets.alerts.updatedSecret.message")
             }));
         }).catch((error): void => {
             if (error.response && error.response.data && error.response.data.description) {
                 dispatch(addAlert({
                     description: error.response.data.description,
                     level: AlertLevels.ERROR,
-                    message: error.response.data.message
+                    message: error.response.data?.message
                 }));
                 return;
             }
             dispatch(addAlert({
-                description: "Something went wrong",
+                description: t("console:develop.features.secrets.errors.generic.description"),
                 level: AlertLevels.ERROR,
-                message: "We were unable to update this secret. Please try again."
+                message: t("console:develop.features.secrets.errors.generic.message")
             }));
         });
 
     };
 
+    /**
+     * Information banner explaining why the user cannot see the
+     * secret value.
+     */
     const InfoMessage: ReactElement = (
         <Grid>
             <Grid.Row columns={ 1 }>
@@ -170,19 +160,22 @@ const EditSecret: FC<EditSecretProps> = (props: EditSecretProps): ReactElement =
                         info
                         onDismiss={ () => {
                             LocalStorageUtils.setValueInLocalStorage(
-                                LOCAL_STORAGE_KEY,
+                                FEATURE_LOCAL_STORAGE_KEY,
                                 JSON.stringify({ hideInfoMessage: true } as EditSecretLocalStorage)
                             );
                             setShowInfoMessage(false);
                         } }>
-                        <Message.Header>
-                            <strong>Why can&apos;t I see the secret?</strong>
+                        <Message.Header
+                            data-componentid={ `${ testId }-page-message-header` }>
+                            <strong>{ t("console:develop.features.secrets.banners.secretIsHidden.title") }</strong>
                         </Message.Header>
-                        <Message.Content className="mt-2">
-                            When you are creating a secret, you need to make sure you copy your
-                            secret somewhere secure. Because { config.ui.productName }&nbsp;
-                            will securely encrypt these information and
-                            you won’t be able to see it again!
+                        <Message.Content
+                            className="mt-2"
+                            data-componentid={ `${ testId }-page-message-content` }>
+                            { t(
+                                "console:develop.features.secrets.banners.secretIsHidden.content",
+                                { productName: config.ui?.productName }
+                            ) }
                         </Message.Content>
                     </Message>
                     <Divider hidden/>
@@ -201,53 +194,45 @@ const EditSecret: FC<EditSecretProps> = (props: EditSecretProps): ReactElement =
                 onSubmit={ updateFormSubmission }
                 initialValues={ initialFormValues }>
                 <Field.Input
-                    required/*={ secretFieldValue }*/
-                    label="Secret Value"
-                    name="secret_value"
+                    ariaLabel={ t("console:develop.features.secrets.forms.editSecret.secretValueField.ariaLabel") }
+                    label={ t("console:develop.features.secrets.forms.editSecret.secretValueField.label") }
+                    placeholder={ t("console:develop.features.secrets.forms.editSecret.secretValueField.placeholder") }
                     value={ initialFormValues?.secret_value }
-                    ariaLabel="Secret value"
-                    placeholder="Enter a Secret Value"
+                    name="secret_value"
                     minLength={ SECRET_VALUE_LENGTH.min }
                     maxLength={ SECRET_VALUE_LENGTH.max }
                     type="password"
                     inputType="password"
                     hint={
-                        <Fragment>
-                            This is the value of the secret. You can enter a value between length&nbsp;
-                            <Code>{ SECRET_VALUE_LENGTH.min }</Code> to <Code>{ SECRET_VALUE_LENGTH.max }</Code>.
-                        </Fragment>
+                        t("console:develop.features.secrets.forms.editSecret.secretValueField.hint", {
+                            minLength: SECRET_VALUE_LENGTH.min,
+                            maxLength: SECRET_VALUE_LENGTH.max
+                        })
                     }
                     validate={ (value): string | undefined => {
-                        // if (!secretFieldValue || !value) {
-                        //     return undefined;
-                        // }
                         const error = secretValueValidator(value);
                         setSecretValueInvalid(Boolean(error));
                         return error;
                     } }
-                    // listen={ (value: string) => setSecretFieldValue(value) }
                 />
                 <Field.Textarea
+                    ariaLabel={ t("console:develop.features.secrets.forms.editSecret.secretDescriptionField.ariaLabel") }
                     label="Secret Description"
-                    ariaLabel="Secret's description"
-                    placeholder="Enter a Secret Description"
+                    placeholder={
+                        t("console:develop.features.secrets.forms.editSecret.secretDescriptionField.placeholder")
+                    }
+                    hint={ t("console:develop.features.secrets.forms.editSecret.secretDescriptionField.hint") }
                     name="secret_description"
                     value={ initialFormValues?.secret_description }
                     minLength={ SECRET_DESCRIPTION_LENGTH.min }
                     maxLength={ SECRET_DESCRIPTION_LENGTH.max }
-                    hint={
-                        <Fragment>
-                            Give a description for this secret (i.e., When to use this secret).
-                            Note that you <strong>can update</strong> this description anytime.
-                        </Fragment>
-                    }
                 />
                 <Field.Button
-                    disabled={ secretValueInvalid /*(secretValueInvalid || secretFieldValue?.length > 0)*/ }
+                    disabled={ secretValueInvalid }
                     type="submit"
                     buttonType="primary_btn"
-                    ariaLabel="Submit Secret Update Form"
-                    label="Update"
+                    ariaLabel={ t("console:develop.features.secrets.forms.actions.submitButton.ariaLabel") }
+                    label={ t("console:develop.features.secrets.forms.actions.submitButton.label") }
                     name="submit"/>
             </Form>
 
@@ -263,4 +248,9 @@ EditSecret.defaultProps = {
     "data-componentid": "edit-secret"
 };
 
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
 export default EditSecret;

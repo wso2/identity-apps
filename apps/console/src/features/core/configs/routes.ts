@@ -137,14 +137,14 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
                         showOnSidePanel: true
                     },
                     {
-                        category: "secrets", // TODO: https://github.com/wso2/product-is/issues/12447
+                        category: "console:develop.features.secrets.routes.category",
                         children: [
                             {
                                 component: lazy(() => import("../../secrets/pages/secret-edit")),
                                 exact: false,
                                 icon: { icon: getSidePanelIcons().childIcon },
                                 id: "secret-management-edit",
-                                name: "Secret Edit", // TODO: https://github.com/wso2/product-is/issues/12447
+                                name: "console:develop.features.secrets.routes.sidePanelChildrenNames.0",
                                 path: AppConstants.getPaths().get("SECRET_EDIT"),
                                 protected: true,
                                 showOnSidePanel: false
@@ -154,7 +154,7 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
                         exact: true,
                         icon: { icon: getSidePanelIcons().secrets },
                         id: "secrets-management",
-                        name: "Secrets", // TODO: https://github.com/wso2/product-is/issues/12447
+                        name: "console:develop.features.secrets.routes.name",
                         order: 3,
                         path: AppConstants.getPaths().get("SECRETS"),
                         protected: true,
