@@ -40,13 +40,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Menu } from "semantic-ui-react";
 import { AppSwitcherIcons } from "../../configs";
 import { AppConstants } from "../../constants";
-import { history } from "../../helpers";
-import { ConfigReducerStateInterface } from "../../models";
+import { history, resolveUserstore } from "../../helpers";
+import { AuthStateInterface, ConfigReducerStateInterface } from "../../models";
 import { AppState } from "../../store";
 import { getProfileInformation, getProfileLinkedAccounts, handleAccountSwitching } from "../../store/actions";
 import { CommonUtils, refreshPage } from "../../utils";
 import compact from "lodash-es/compact";
-import { commonConfig } from "../../extensions/configs";
+import { commonConfig } from "../../extensions";
 
 /**
  * Dashboard layout Prop types.
@@ -85,6 +85,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const showAppSwitchButton: boolean = useSelector((state: AppState) => state.config.ui.showAppSwitchButton);
     const consoleAppURL: string = useSelector((state: AppState) => state.config.deployment.consoleApp.path);
     const accountAppURL: string = useSelector((state: AppState) => state.config.deployment.appHomePath);
+    const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
+    const [ userStore, setUserstore ] = useState<string> (null);
 
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>(undefined);
 
@@ -97,6 +99,16 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             dispatch(getProfileLinkedAccounts());
         }
     }, []);
+
+    /**
+     * Sets user store of the user.
+     */
+    useEffect(() => {
+        if (profileDetails?.profileInfo?.userName) {
+            const userstore: string = resolveUserstore(profileDetails.profileInfo.userName);
+            setUserstore(userstore);
+        }
+    }, [profileDetails?.profileInfo]);
 
     useEffect(() => {
         if (isEmpty(config)) {
@@ -170,6 +182,38 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         }
 
         setAnnouncement(validAnnouncement);
+    };
+
+    /**
+     * Based on the authenticated user type,
+     * decide which navigation links to provide.
+     *
+     */
+    const getLinks = () => {
+        const links = [];
+
+        !commonConfig.utils.isBusinessUser(userStore) ?
+            links.push(
+            {
+                "data-testid": "app-switch-console",
+                icon: AppSwitcherIcons().console,
+                name: t("myAccount:components.header.appSwitch.console.name"),
+                onClick: () => {
+                    window.open(consoleAppURL, "_blank", "noopener");
+                }
+            })
+            : null
+
+        links.push({
+            "data-testid": "app-switch-myaccount",
+            icon: AppSwitcherIcons().myAccount,
+            name: t("myAccount:components.header.appSwitch.myAccount.name"),
+            onClick: () => {
+                window.open(accountAppURL, "_self");
+            }
+        });
+
+        return links;
     };
 
     /**
@@ -270,24 +314,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     showAppSwitchButton && !commonConfig?.header?.renderAppSwitcherAsDropdown && {
                         category: "APPS",
                         categoryLabel: t("common:apps"),
-                        links: [
-                            {
-                                "data-testid": "app-switch-console",
-                                icon: AppSwitcherIcons().console,
-                                name: t("myAccount:components.header.appSwitch.console.name"),
-                                onClick: () => {
-                                    window.open(consoleAppURL, "_blank", "noopener");
-                                }
-                            },
-                            {
-                                "data-testid": "app-switch-myaccount",
-                                icon: AppSwitcherIcons().myAccount,
-                                name: t("myAccount:components.header.appSwitch.myAccount.name"),
-                                onClick: () => {
-                                    window.open(accountAppURL, "_self");
-                                }
-                            }
-                        ]
+                        links: getLinks()
                     },
                     {
                         category: "GENERAL",
