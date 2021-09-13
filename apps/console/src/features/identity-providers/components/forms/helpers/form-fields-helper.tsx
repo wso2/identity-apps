@@ -475,7 +475,7 @@ export const getFieldType = (propertyMetadata: CommonPluggableComponentMetaPrope
     } else if (propertyMetadata?.key === CommonConstants.SCOPE_KEY) {
         return FieldType.TABLE;
     } else if (propertyMetadata?.key.toUpperCase().includes(CommonConstants.FIELD_COMPONENT_KEYWORD_URL)) {
-        // todo Need proper backend support to identity URL fields.
+        // todo Need proper backend support to identity URL fields: https://github.com/wso2/product-is/issues/12501.
         return FieldType.URL;
     } else if (propertyMetadata?.key.toUpperCase().includes(
         CommonConstants.FIELD_COMPONENT_KEYWORD_QUERY_PARAMETER)) {

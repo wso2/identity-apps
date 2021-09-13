@@ -354,7 +354,9 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
      */
     const handleRemoveAllowOrigin = (url: string): void => {
         const allowedURLs = [ ...allowCORSUrls ];
-        allowedURLs.splice(allowedURLs.indexOf(url), 1);
+        if (allowedURLs.includes(url)) {
+            allowedURLs.splice(allowedURLs.indexOf(url), 1);
+        }
         setAllowCORSUrls(allowedURLs);
     };
 
@@ -515,6 +517,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         required={ true }
                                         showPredictions={ false }
                                         customLabel={ callbackURLsErrorLabel }
+                                        isAllowEnabled={ false }
+                                        addOriginByDefault={ true }
                                     />
                                     {
                                         (callBackURLFromTemplate) && (
