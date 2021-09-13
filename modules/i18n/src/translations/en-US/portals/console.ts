@@ -919,7 +919,7 @@ export const console: ConsoleNS = {
                                                 }
                                             },
                                             editor: {
-                                                apiDocumentation: "API Documentation",
+                                                apiDocumentation: "API",
                                                 goToApiDocumentation: "Go to API Documentation",
                                                 resetConfirmation: {
                                                     content: "This action will reset the adaptive authentication" +

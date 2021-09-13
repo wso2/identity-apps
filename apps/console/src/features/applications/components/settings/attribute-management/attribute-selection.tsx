@@ -593,26 +593,24 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
      * Resolves the documentation link when a claim is selected.
      * @return {React.ReactElement}
      */
-    const resolveClaimDocumentationLink = (): ReactElement => {      
+    const resolveClaimDocumentationLink = (): ReactElement => { 
+        let docLink: string = undefined;
+
         if (selectedDialect.localDialect) {
-            return (
-                <DocumentationLink
-                    link={ getLink("develop.applications.editApplication.samlApplication.attributes" +
-                        ".learnMore") }
-                >
-                    { t("common:learnMore") }
-                </DocumentationLink>
-            );
+            docLink = getLink("develop.applications.editApplication.samlApplication.attributes" +
+            ".learnMore");
         } else {
-            return (
-                <DocumentationLink
-                    link={ getLink("develop.applications.editApplication.oidcApplication.attributes" +
-                        ".learnMore") }
-                >
-                    { t("common:learnMore") }
-                </DocumentationLink>
-            );
-        }   
+            docLink = getLink("develop.applications.editApplication.oidcApplication.attributes" +
+            ".learnMore");
+        }
+        
+        return (
+            <DocumentationLink
+                link={ docLink }
+            >
+                { t("common:learnMore") }
+            </DocumentationLink>
+        );
     };
 
     return (

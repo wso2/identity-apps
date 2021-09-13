@@ -543,21 +543,31 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         }
         
         return (
-            <Menu.Menu position="left">
                 <Menu.Item
-                    className="action ml-2"
+                    className="action p-3"
                     href={ apiDocLink }
                     target="_blank"
                 >
                     <Tooltip
                         compact
                         trigger={ (
-                            <Button>
-                                { t("console:develop.features.applications.edit.sections" +
-                                        ".signOnMethod.sections.authenticationFlow.sections" +
-                                        ".scriptBased.editor.apiDocumentation") }
-                                <Icon name="external alternate" className="ml-2" />
-                            </Button>
+                            <Button labelPosition="left">
+                                <GenericIcon
+                                    className="p-1 mr-1"
+                                    transparent
+                                    defaultIcon
+                                    size="micro"
+                                    icon={ getOperationIcons().openBookIcon }
+                                    data-testid={
+                                        `${ testId }-code-editor-open-documentation`
+                                    }
+                                />
+                                <p>
+                                    { t("console:develop.features.applications.edit.sections" +
+                                            ".signOnMethod.sections.authenticationFlow.sections" +
+                                            ".scriptBased.editor.apiDocumentation") }
+                                </p>
+                          </Button>
                         ) }
                         content={ t("console:develop.features.applications.edit.sections" +
                             ".signOnMethod.sections.authenticationFlow.sections" +
@@ -565,7 +575,6 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                         size="mini"
                     />
                 </Menu.Item>
-            </Menu.Menu>
         );
     };
 
@@ -649,8 +658,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                             <Sidebar.Pusher>
                                 <div className="script-editor-container" ref={ scriptEditorSectionRef }>
                                     <Menu attached="top" className="action-panel" secondary>
-                                        { resolveApiDocumentationLink() }
                                         <Menu.Menu position="right">
+                                            { resolveApiDocumentationLink() }
                                             <Menu.Item className="action">
                                                 <Tooltip
                                                     compact

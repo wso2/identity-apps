@@ -81,6 +81,9 @@ import {
 import {
     ReactComponent as LightModeIcon
 } from "../../../themes/default/assets/images/icons/solid-icons/light-icon.svg";
+import { 
+    ReactComponent as OpenBookIcon 
+} from "../../../themes/default/assets/images/icons/solid-icons/oidc.svg";
 import { ReactComponent as UnPinIcon } from "../../../themes/default/assets/images/icons/unpin-icon.svg";
 import { ReactComponent as FileUploadIllustration } from "../../../themes/default/assets/images/icons/upload.svg";
 import { ReactComponent as UserGroupIcon } from "../../../themes/default/assets/images/icons/user-group-icon.svg";
@@ -218,7 +221,8 @@ export const getOperationIcons = () => {
         drag: DragSquaresIcon,
         lightMode: LightModeIcon,
         maximize: MaximizeIcon,
-        minimize: MinimizeIcon
+        minimize: MinimizeIcon,
+        openBookIcon: OpenBookIcon
     };
 };
 

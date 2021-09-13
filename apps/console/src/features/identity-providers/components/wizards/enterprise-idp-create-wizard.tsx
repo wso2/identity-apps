@@ -837,28 +837,25 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
      * Resolves the documentation link when a protocol is selected.
      * @return {React.ReactElement}
      */
-    const resolveDocumentationLink = (): ReactElement => {    
+    const resolveDocumentationLink = (): ReactElement => {   
+        let docLink: string = undefined;
+
         if (selectedProtocol === AuthProtocolTypes.SAML) {
-            return (
-                <DocumentationLink
-                    link={ getLink("develop.connections.newConnection.enterprise.samlLearnMore") }
-                >
-                    { t("common:learnMore") }
-                </DocumentationLink>
-            );
+            docLink = getLink("develop.connections.newConnection.enterprise.samlLearnMore");
         }
-
+        
         if (selectedProtocol === AuthProtocolTypes.OIDC) {
-            return (
-                <DocumentationLink
-                    link={ getLink("develop.connections.newConnection.enterprise.oidcLearnMore") }
-                >
-                    { t("common:learnMore") }
-                </DocumentationLink>
-            );
+            docLink = getLink("develop.connections.newConnection.enterprise.oidcLearnMore");
+ 
         }
 
-        return null;
+        return (
+            <DocumentationLink
+                link={ docLink }
+            >
+                { t("common:learnMore") }
+            </DocumentationLink>
+        );
     };
 
     // Start: Modal
