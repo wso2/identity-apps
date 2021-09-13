@@ -105,7 +105,7 @@ function handleTimeOut(_idleSecondsCounter: number, _sessionAgeCounter: number,
 
         window.history.pushState(state, null, searchParam);
 
-        dispatchEvent(new PopStateEvent("popstate", { state: state }));
+        dispatchEvent(new MessageEvent("session-timeout", { data: state }));
     }
 
     // Keep user session intact if the user is active
@@ -118,86 +118,67 @@ function handleTimeOut(_idleSecondsCounter: number, _sessionAgeCounter: number,
 
 const config = window["AppUtils"]?.getConfig();
 
-const state = new URL(window.location.href).searchParams.get("state");
-if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
-    // Prompt none response.
-    const code = new URL(window.location.href).searchParams.get("code");
+// Tracking user interactions
+let IDLE_TIMEOUT = 600;
+if (config?.session != null && config.session.userIdleTimeOut != null && config.session.userIdleTimeOut > 1) {
+    IDLE_TIMEOUT = config.session.userIdleTimeOut;
+}
+let IDLE_WARNING_TIMEOUT = 580;
+if (
+    config?.session != null &&
+    config.session.userIdleWarningTimeOut != null &&
+    config.session.userIdleWarningTimeOut > 1
+) {
+    IDLE_WARNING_TIMEOUT = config.session.userIdleWarningTimeOut;
+}
+let SESSION_REFRESH_TIMEOUT = 300;
+if (
+    config?.session != null &&
+    config.session.sessionRefreshTimeOut != null &&
+    config.session.sessionRefreshTimeOut > 1
+) {
+    SESSION_REFRESH_TIMEOUT = config.session.sessionRefreshTimeOut;
+}
 
-    if (code !== null && code.length !== 0) {
-        const newSessionState = new URL(window.location.href).searchParams.get("session_state");
+let _idleSecondsCounter = 0;
+let _sessionAgeCounter = 0;
 
-        sessionStorage.setItem("session_state", newSessionState);
+document.onclick = function() {
+    _idleSecondsCounter = 0;
+};
+document.onmousemove = function() {
+    _idleSecondsCounter = 0;
+};
+document.onkeypress = function() {
+    _idleSecondsCounter = 0;
+};
 
-        // Stop loading rest of the page inside the iFrame
-        if (new UAParser().getBrowser().name === "IE") {
-            document.execCommand("Stop");
-        } else {
-            window.stop();
-        }
-    } else {
-
-        let logoutPath = config.clientOrigin + config.appBaseWithTenant + config.routes.logout;
-
-        // SaaS app paths already contains the tenant and basename.
-        if (config.isSaas) {
-            logoutPath = config.clientOrigin + config.routes.logout;
-        }
-
-        window.top.location.href = logoutPath;
-    }
+// Run the timer in main thread if the browser is Internet Explorer.
+if (new UAParser().getBrowser().name === "IE") {
+    window.setInterval(() => {
+        _idleSecondsCounter++;
+        _sessionAgeCounter++;
+        _sessionAgeCounter = handleTimeOut(
+            _idleSecondsCounter,
+            _sessionAgeCounter,
+            SESSION_REFRESH_TIMEOUT,
+            IDLE_TIMEOUT,
+            IDLE_WARNING_TIMEOUT
+        );
+    }, 1000);
 } else {
-    // Tracking user interactions
-    let IDLE_TIMEOUT = 600;
-    if (config?.session != null && config.session.userIdleTimeOut != null && config.session.userIdleTimeOut > 1) {
-        IDLE_TIMEOUT = config.session.userIdleTimeOut;
-    }
-    let IDLE_WARNING_TIMEOUT = 580;
-    if (
-        config?.session != null &&
-        config.session.userIdleWarningTimeOut != null &&
-        config.session.userIdleWarningTimeOut > 1
-    ) {
-        IDLE_WARNING_TIMEOUT = config.session.userIdleWarningTimeOut;
-    }
-    let SESSION_REFRESH_TIMEOUT = 300;
-    if (
-        config?.session != null &&
-        config.session.sessionRefreshTimeOut != null &&
-        config.session.sessionRefreshTimeOut > 1
-    ) {
-        SESSION_REFRESH_TIMEOUT = config.session.sessionRefreshTimeOut;
-    }
-
-    let _idleSecondsCounter = 0;
-    let _sessionAgeCounter = 0;
-
-    document.onclick = function() {
-        _idleSecondsCounter = 0;
+    const worker = new TimerWorker();
+    worker.onmessage = () => {
+        _idleSecondsCounter++;
+        _sessionAgeCounter++;
+        _sessionAgeCounter = handleTimeOut(
+            _idleSecondsCounter,
+            _sessionAgeCounter,
+            SESSION_REFRESH_TIMEOUT,
+            IDLE_TIMEOUT,
+            IDLE_WARNING_TIMEOUT
+        );
     };
-    document.onmousemove = function() {
-        _idleSecondsCounter = 0;
-    };
-    document.onkeypress = function() {
-        _idleSecondsCounter = 0;
-    };
-
-    // Run the timer in main thread if the browser is Internet Explorer.
-    if (new UAParser().getBrowser().name === "IE") {
-        window.setInterval(() => {
-            _idleSecondsCounter++;
-            _sessionAgeCounter++;
-            _sessionAgeCounter = handleTimeOut(_idleSecondsCounter, _sessionAgeCounter, SESSION_REFRESH_TIMEOUT,
-                IDLE_TIMEOUT, IDLE_WARNING_TIMEOUT);
-        }, 1000);
-    } else {
-        const worker = new TimerWorker();
-        worker.onmessage = () => {
-            _idleSecondsCounter++;
-            _sessionAgeCounter++;
-            _sessionAgeCounter = handleTimeOut(_idleSecondsCounter, _sessionAgeCounter, SESSION_REFRESH_TIMEOUT,
-                IDLE_TIMEOUT, IDLE_WARNING_TIMEOUT);
-        };
-    }
 }
 
 /**
@@ -206,7 +187,6 @@ if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
  * And sends a prompt none request to restore the session.
  */
 window.addEventListener("popstate", (e) => {
-
     const { state } = e;
 
     if (!state || !state.stayLoggedIn) {
@@ -215,5 +195,5 @@ window.addEventListener("popstate", (e) => {
 
     sendPromptNoneRequest();
 
-    window.history.replaceState(null, null, window.location.pathname); 
+    window.history.replaceState(null, null, window.location.pathname);
 });
