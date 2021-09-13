@@ -790,6 +790,7 @@ export const console: ConsoleNS = {
                                     " කළමනාකරණය කරන්න.",
                                 attributeComponentHintAlt: "මෙම යෙදුම සමඟ ඔබට බෙදා ගැනීමට අවශ්‍ය පරිශීලක ගුණාංග" +
                                     " කළමනාකරණය කරන්න.",
+                                description: "මෙම යෙදුම සමඟ බෙදා ගැනීමට අවසර දී ඇති පරිශීලක ගුණාංග එකතු කරන්න.",
                                 mandatoryAttributeHint: "යෙදුම සමඟ බෙදා ගැනීමට අනිවාර්යය වන පරිශීලක ගුණාංග මොනවාදැයි " +
                                     "ලකුණු කරන්න. පුරනය වීමේ දී, පරිශීලකයාගේ පැතිකඩෙහි දැනටමත් සපයා නොමැති නම්, මෙම " +
                                     "ගුණාංග අගයන් ඇතුළත් කිරීමට {{productName}} පරිශීලකයාගෙන් ඉල්ලා සිටී.",
@@ -914,6 +915,8 @@ export const console: ConsoleNS = {
                                                 }
                                             },
                                             editor: {
+                                                apiDocumentation: "API ප්‍රලේඛනය",
+                                                goToApiDocumentation: "API ප්‍රලේඛනය වෙත යන්න",
                                                 resetConfirmation: {
                                                     content: "මෙම ක්‍රියාව අනුවර්තී සත්‍යාපන ස්ක්‍රිප්ට් නැවත" +
                                                         " පෙරනිමියට යලි " +
@@ -1333,6 +1336,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     inboundOIDC: {
+                        description: "ඔබේ OpenID Connect සම්බන්ධක සැකසුම් පහත දක්වා ඇත",
                         messages: {
                             revokeDisclaimer: {
                                 content: "යෙදුම අවලංගු කර ඇත. ඔබට යෙදුම නැවත සක්‍රිය කිරීමට අවශ්‍ය නම් " +
@@ -1618,6 +1622,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     inboundSAML: {
+                        description: "ඔබේ අයදුම්පත සඳහා වූ SAML සැකසුම් පහත දක්වා ඇත.",
                         fields: {
                             assertionURLs: {
                                 hint: "සත්‍යාපනය සාර්ථක වූ පසු බ්‍රව්සරය යළි හරවා යැවිය යුතු බවට පාරිභෝගික " +
@@ -3595,7 +3600,8 @@ export const console: ConsoleNS = {
                 templates: {
                     enterprise: {
                         validation: {
-                            name: "වලංගු නමක් ඇතුළත් කරන්න"
+                            name: "වලංගු නමක් ඇතුළත් කරන්න",
+                            invalidName: "වලංගු නමක් ඇතුළත් කරන්න"
                         }
                     }
                 }
@@ -6333,6 +6339,12 @@ export const console: ConsoleNS = {
                     placeholders: {
                         SCIMDisabled: {
                             heading: "මෙම අංගය ඔබගේ ගිණුමට ලබා ගත නොහැක"
+                        },
+                        userProfile: {
+                            emptyListPlaceholder: {
+                                subtitles: "මෙම පරිශීලකයා සඳහා පැතිකඩ තොරතුරු නොමැත.",
+                                title: "පැතිකඩ තොරතුරු නොමැත"
+                            }
                         }
                     }
                 },

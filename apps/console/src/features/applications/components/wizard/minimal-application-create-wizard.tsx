@@ -21,10 +21,12 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
 import {
     ContentLoader,
+    DocumentationLink,
     Heading,
     LinkButton,
     PrimaryButton,
     SelectionCard,
+    useDocumentation,
     useWizardAlert
 } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -63,7 +65,12 @@ import { getInboundProtocolLogos } from "../../configs";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
-import { ApplicationTemplateInterface, MainApplicationInterface, SupportedAuthProtocolTypes } from "../../models";
+import {
+    ApplicationTemplateIdTypes,
+    ApplicationTemplateInterface,
+    MainApplicationInterface,
+    SupportedAuthProtocolTypes
+} from "../../models";
 
 /**
  * Prop types of the `MinimalAppCreateWizard` component.
@@ -113,6 +120,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const dispatch = useDispatch();
 
@@ -716,6 +724,30 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         );
     };
 
+    /**
+     * Returns the documentation links based on the application type.
+     *
+     * @return {string}
+     */
+    const resolveDocumentationLink = (): string => {
+
+        if (selectedTemplate?.templateId === ApplicationTemplateIdTypes.SPA) {
+            return getLink("develop.applications.newApplication.singlePageApplication.learnMore");
+        }
+
+        if (selectedTemplate?.templateId === ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION) {
+            return getLink("develop.applications.newApplication.oidcApplication.learnMore");
+        }
+
+        if (selectedTemplate?.templateId === ApplicationTemplateIdTypes.SAML_WEB_APPLICATION) {
+            return getLink("develop.applications.newApplication.samlApplication.learnMore");
+        }        
+        
+        // Returns undefined for application which does not have doc links.
+        // Used to hide the learn more link.
+        return undefined;
+    };
+
     return (
         <ModalWithSidePanel
             open={ true }
@@ -729,7 +761,16 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             <ModalWithSidePanel.MainPanel>
                 <ModalWithSidePanel.Header className="wizard-header">
                     { title }
-                    { subTitle && <Heading as="h6">{ subTitle }</Heading> }
+                    { subTitle && 
+                        <Heading as="h6">
+                            { subTitle }
+                            <DocumentationLink
+                                link={ resolveDocumentationLink() }
+                            >
+                                { t("common:learnMore") }
+                            </DocumentationLink>
+                        </Heading> 
+                    }
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content>{ resolveContent() }</ModalWithSidePanel.Content>
                 <ModalWithSidePanel.Actions>

@@ -782,13 +782,16 @@ export const console: ConsoleNS = {
                                             }
                                         }
                                     },
-                                    subHeading: "Sélectionnez les attributs utilisateur à inclure dans la réponse d'authentification."
+                                    subHeading: "Sélectionnez les attributs utilisateur à inclure dans la " +
+                                        "réponse d'authentification."
                                 },
                                 heading: "Sélection des attributs utilisateur",
                                 attributeComponentHint: "Gérez les attributs utilisateur que vous souhaitez partager" +
                                     " avec cette application.",
                                 attributeComponentHintAlt: "Gérez les attributs utilisateur que vous souhaitez" +
                                     " partager avec cette application.",
+                                description: "Ajoutez les attributs utilisateur autorisés à être partagés avec cette " +
+                                    "application.",
                                 mandatoryAttributeHint: "Marquez les attributs utilisateur qui doivent " +
                                     "obligatoirement être partagés avec l'application. Lors de la connexion, " +
                                     "{{productName}} invite l'utilisateur à saisir ces valeurs d'attribut, si elles " +
@@ -923,6 +926,8 @@ export const console: ConsoleNS = {
                                                 }
                                             },
                                             editor: {
+                                                apiDocumentation: "Documentation API",
+                                                goToApiDocumentation: "Accéder à la documentation API",
                                                 resetConfirmation: {
                                                     content: "Cette action réinitialisera le script d'authentification" +
                                                         " adaptative par défaut. Cliquez sur «Confirmer» pour" +
@@ -1357,6 +1362,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     inboundOIDC: {
+                        description: "Ci-dessous sont les paramètres OpenID Connect pour votre application",
                         fields: {
                             allowedOrigins: {
                                 hint: "Les origines autorisées sont des URL qui seront autorisées à effectuer des requêtes " +
@@ -1663,6 +1669,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     inboundSAML: {
+                        description: "Vous trouverez ci-dessous les paramètres SAML de votre application.",
                         fields: {
                             assertionURLs: {
                                 hint: "Elle précise les URL des consommateurs vers lesquels le navigateur " +
@@ -3647,7 +3654,8 @@ export const console: ConsoleNS = {
                 templates: {
                     enterprise: {
                         validation: {
-                            name: "Merci d'entrer un nom valide"
+                            name: "Merci d'entrer un nom valide",
+                            invalidName: "Merci d'entrer un nom valide"
                         }
                     }
                 }
@@ -6407,6 +6415,12 @@ export const console: ConsoleNS = {
                     placeholders: {
                         SCIMDisabled: {
                             heading: "Cette fonctionnalité n'est pas disponible pour votre compte"
+                        },
+                        userProfile: {
+                            emptyListPlaceholder: {
+                                subtitles: "Les informations de profil ne sont pas disponibles pour cet utilisateur.",
+                                title: "Aucune information de profil"
+                            }
                         }
                     }
                 },

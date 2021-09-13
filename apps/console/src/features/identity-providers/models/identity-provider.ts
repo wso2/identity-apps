@@ -774,3 +774,17 @@ export enum AuthenticatorTypes {
     FEDERATED = "FEDERATED",
     LOCAL = "LOCAL"
 }
+
+/**
+ * Enum for the supported auth protocol types.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum AuthProtocolTypes {
+    SAML = "saml",
+    OIDC = "oidc",
+    WS_FEDERATION = "passive-sts",
+    WS_TRUST = "ws-trust",
+    CUSTOM= "custom"
+}

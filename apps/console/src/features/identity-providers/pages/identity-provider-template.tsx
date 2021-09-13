@@ -19,11 +19,13 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
+    DocumentationLink,
     EmptyPlaceholder,
     GridLayout,
     PageLayout,
     ResourceGrid,
-    SearchWithFilterLabels
+    SearchWithFilterLabels,
+    useDocumentation
 } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
@@ -81,6 +83,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     const dispatch = useDispatch();
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const availableAuthenticators = useSelector((state: AppState) => state.identityProvider.meta.authenticators);
@@ -407,8 +410,15 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
             contentTopMargin={ true }
             description={
                 useNewConnectionsView
-                    ? t("console:develop.pages.authenticationProviderTemplate.subTitle")
-                    : t("console:develop.pages.idpTemplate.subTitle")
+                    ?   <>
+                            { t("console:develop.pages.authenticationProviderTemplate.subTitle") }
+                            <DocumentationLink
+                                link={ getLink("develop.connections.newConnection.learnMore") }
+                            >
+                                { t("common:learnMore") }
+                            </DocumentationLink>
+                        </>
+                    :   t("console:develop.pages.idpTemplate.subTitle")
             }
             backButton={ {
                 "data-testid": `${ testId }-page-back-button`,

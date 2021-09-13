@@ -91,6 +91,7 @@ export interface CommonNS {
     lastModified: string;
     lastSeen: string;
     lastUpdatedOn: string;
+    learnMore: string;
     lightMode: string;
     loading: string;
     loginTime: string;
