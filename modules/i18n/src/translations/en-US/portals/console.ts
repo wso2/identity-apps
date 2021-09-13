@@ -7322,6 +7322,12 @@ export const console: ConsoleNS = {
                             header: "Lock user",
                             subheader: "Once you lock the account, the user can no longer log in to the system. " +
                                 "Please be certain."
+                        },
+                        passwordResetZone: {
+                            actionTitle: "Reset Password",
+                            header: "Reset password",
+                            subheader: "Once you change the password, the user will no longer be able to log in to " +
+                                "any application using the current password. Please be certain."
                         }
                     }
                 },

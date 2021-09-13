@@ -3312,6 +3312,7 @@ export interface ConsoleNS {
                         deleteUserZone: DangerZone;
                         disableUserZone: DangerZone;
                         lockUserZone: DangerZone;
+                        passwordResetZone: DangerZone;
                     };
                 };
                 forms: {
