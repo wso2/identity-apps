@@ -843,10 +843,9 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         if (selectedProtocol === AuthProtocolTypes.SAML) {
             docLink = getLink("develop.connections.newConnection.enterprise.samlLearnMore");
         }
-        
+
         if (selectedProtocol === AuthProtocolTypes.OIDC) {
             docLink = getLink("develop.connections.newConnection.enterprise.oidcLearnMore");
- 
         }
 
         return (

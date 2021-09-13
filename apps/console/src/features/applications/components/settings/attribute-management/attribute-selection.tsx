@@ -598,10 +598,10 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
         if (selectedDialect.localDialect) {
             docLink = getLink("develop.applications.editApplication.samlApplication.attributes" +
-            ".learnMore");
+                ".learnMore");
         } else {
             docLink = getLink("develop.applications.editApplication.oidcApplication.attributes" +
-            ".learnMore");
+                ".learnMore");
         }
         
         return (
