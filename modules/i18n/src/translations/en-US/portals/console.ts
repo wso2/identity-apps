@@ -4919,6 +4919,157 @@ export const console: ConsoleNS = {
                     }
                 }
             },
+            secrets: {
+                alerts: {
+                    createdSecret: {
+                        description: "Created {{secretName}} for {{secretType}}.",
+                        message: "Successfully Created Secret."
+                    },
+                    updatedSecret: {
+                        description: "Updated {{secretName}} of {{secretType}}",
+                        message: "Successfully Updated Secret."
+                    },
+                    deleteSecret: {
+                        description: "Deleted {{secretName}} of {{secretType}}",
+                        message: "Successfully Deleted Secret."
+                    }
+                },
+                errors: {
+                    generic: {
+                        description: "We were unable to complete this request. Please retry again.",
+                        message: "Something is not right."
+                    }
+                },
+                page: {
+                    description: "Create and manage secrets for Adaptive Authentication",
+                    primaryActionButtonText: "New Secret",
+                    title: "Secrets",
+                    subFeatureBackButton: "Go back to Secrets"
+                },
+                routes: {
+                    category: "secrets",
+                    name: "Secrets",
+                    sidePanelChildrenNames: [
+                        "Secret Edit"
+                    ]
+                },
+                modals: {
+                    deleteSecret: {
+                        assertionHint: "Yes I understand. I want to delete it.",
+                        primaryActionButtonText: "Confirm",
+                        secondaryActionButtonText: "Cancel",
+                        title: "Are you sure?",
+                        content: "This action is irreversible and will permanently delete the secret.",
+                        warningMessage: "If you delete this secret, Adaptive Authentication Scripts " +
+                            "depending on this value will stop working. Please proceed with caution.",
+                    }
+                },
+                wizards: {
+                    addSecret: {
+                        heading: "Create Secret",
+                        subheading: "Create a new Secret for Adaptive Authentication Scripts",
+                        form: {
+                            secretTypeField: {
+                                ariaLabel: "Select Secret Type",
+                                hint: "Select a Secret Type which this Secret falls into.",
+                                label: "Select Secret Type"
+                            },
+                            secretNameField: {
+                                ariaLabel: "Secret Name for the Secret Type",
+                                hint: "Give a meaningful name for this secret. Note that once " +
+                                    "you create this secret with the name above, you cannot change it afterwards.",
+                                placeholder: "Enter a Secret Name",
+                                label: "Secret Name"
+                            },
+                            secretValueField: {
+                                ariaLabel: "Enter a Secret Value",
+                                hint: "This is the value of the secret. You can enter a value between length" +
+                                    " {{minLength}} to {{maxLength}}.",
+                                placeholder: "Enter a Secret Value",
+                                label: "Secret Value"
+                            },
+                            secretDescriptionField: {
+                                ariaLabel: "Secret Description",
+                                hint: "Give a description for this secret (i.e., When to use this secret)." +
+                                    " Note that you can update this description anytime.",
+                                placeholder: "Enter a Secret Description",
+                                label: "Secret Description"
+                            }
+                        }
+                    },
+                    actions: {
+                        finishButton: {
+                            label: "Finish",
+                            ariaLabel: "Finish and Submit"
+                        },
+                        cancelButton: {
+                            label: "Cancel",
+                            ariaLabel: "Cancel and Close Modal"
+                        }
+                    }
+                },
+                banners: {
+                    secretIsHidden: {
+                        title: "Why can't I see the secret?",
+                        content: "When you are creating a secret, you need to make sure you " +
+                            "copy your secret somewhere secure. Because {{productName}} " +
+                            "securely encrypt and stores these information and you won’t be " +
+                            "able to see it again!"
+                    },
+                    adaptiveAuthSecretType: {
+                        title: "Adaptive Authentication Secrets",
+                        content: "These secrets can be used in the Adaptive Authentication script of a " +
+                            "registered application when accessing external APIs."
+                    }
+                },
+                forms: {
+                    editSecret: {
+                        secretValueField: {
+                            ariaLabel: "Enter a Secret Value",
+                            label: "Secret Value",
+                            hint: "This is the value of the secret. You can enter a value between length" +
+                                " {{minLength}} to {{maxLength}}.",
+                            placeholder: "Enter a Secret Value",
+                        },
+                        secretDescriptionField: {
+                            ariaLabel: "Secret Description",
+                            hint: "Give a description for this secret (i.e., When to use this secret)." +
+                                " Note that you can update this description anytime.",
+                            placeholder: "Enter a Secret Description",
+                            label: "Secret Description"
+                        }
+                    },
+                    actions: {
+                        submitButton: {
+                            label: "Update",
+                            ariaLabel: "Update to save the form",
+                        }
+                    }
+                },
+                emptyPlaceholders: {
+                    resourceNotFound: {
+                        messages: [
+                            "Oops! we couldn't find the requested secret!",
+                            "Perhaps you have landed on to a invalid URL..."
+                        ]
+                    },
+                    emptyListOfSecrets: {
+                        messages: [
+                            "We couldn't find any secrets for this secret type."
+                        ]
+                    },
+                    buttons: {
+                        backToSecrets: {
+                            label: "Take me back to Secrets",
+                            ariaLabel: "Navigate to Secrets list.",
+                        },
+                        addSecret: {
+                            label: "New Secret",
+                            ariaLabel: "Add a new Secret.",
+                        }
+                    }
+                }
+            },
             sidePanel: {
                 applicationEdit: "Application Edit",
                 applicationTemplates: "Application Templates",
