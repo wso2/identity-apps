@@ -110,6 +110,8 @@ export interface URLInputPropsInterface extends TestableComponentInterface {
      * Checks validity using provided validator
      */
     skipInternalValidation?: boolean;
+    isCustom?: boolean;
+    addOriginByDefault?: boolean;
 }
 
 /**
@@ -157,6 +159,8 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         onlyOrigin,
         skipValidation,
         skipInternalValidation,
+        isCustom,
+        addOriginByDefault,
         [ "data-testid" ]: testId
     } = props;
 
@@ -195,6 +199,10 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         setValidURL(urlValid);
         if (urlValid && (urlState === "" || urlState === undefined)) {
             setURLState(url);
+            if (addOriginByDefault) {
+                handleAddAllowedOrigin(url);
+                allowedOrigins.push(url);
+            }
             setChangeUrl("");
 
             return url;
@@ -209,6 +217,10 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
             if (urlValid && !duplicate) {
                 setURLState((url + "," + urlState));
+                if (addOriginByDefault) {
+                    handleAddAllowedOrigin(url);
+                    allowedOrigins.push(url);
+                }
                 setChangeUrl("");
                 return url + "," + urlState;
             }
@@ -391,84 +403,88 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     const resolveCORSStatusLabel = (url: string) => {
         const { origin, href } = URLUtils.urlComponents(url);
         const positive = isOriginIsKnownAndAllowed(url);
+        const isValid = (URLUtils.isURLValid(url, true) && (URLUtils.isHttpUrl(url) ||
+            URLUtils.isHttpsUrl(url)));
         /**
          * TODO : React Components should not depend on the product
          * locale bundles.
          * Issue to track. {@link https://github.com/wso2/product-is/issues/10693}
          */
         return (
-            <LabelWithPopup
-                className="cors-details-popup"
-                trigger={
-                    <Icon
-                        className={ "p-1" }
-                        name={ positive ? "check" : "exclamation triangle" }
-                        color={ positive ? "green" : "grey" }
-                    />
-                }
-                popupHeader={
-                    positive ?
-                        t("console:develop.features.URLInput.withLabel.positive.header") :
-                        t("console:develop.features.URLInput.withLabel.negative.header")
-                }
-                popupSubHeader={
-                    <React.Fragment>
-                        <Icon name={ positive ? "check" : "times" } color={ positive ? "green" : "red" }/>
-                        { origin && origin !== "null" ? origin : href }
-                    </React.Fragment>
-                }
-                popupContent={
-                    <React.Fragment>
-                        {
-                            positive ?
-                                t("console:develop.features.URLInput.withLabel.positive.content", {
-                                    productName: productName
-                                }) :
-                                t("console:develop.features.URLInput.withLabel.negative.content", {
-                                    productName: productName, urlLink: origin
-                                })
-                        }
-                        { !restrictSecondaryContent &&
-                            <>
-                                <a onClick={ () => setShowMore(!showMore) }>
-                                    &nbsp;{ showMore ? t("common:showLess") : t("common:showMore") }
-                                </a><br/>
-                                {
-                                    showMore && (
-                                        <React.Fragment>
-                                            {
-                                                positive ?
-                                                    t("console:develop.features.URLInput." +
-                                                        "withLabel.positive.detailedContent.0") :
-                                                    t("console:develop.features.URLInput." +
-                                                        "withLabel.negative.detailedContent.0")
-                                            }
-                                            <br/>
-                                            <Trans
-                                                i18nKey={
+            (!isCustom || isValid) ?
+                <LabelWithPopup
+                    className="cors-details-popup"
+                    trigger={
+                        <Icon
+                            className={ "p-1" }
+                            name={ positive ? "check" : "exclamation triangle" }
+                            color={ positive ? "green" : "grey" }
+                        />
+                    }
+                    popupHeader={
+                        positive ?
+                            t("console:develop.features.URLInput.withLabel.positive.header") :
+                            t("console:develop.features.URLInput.withLabel.negative.header")
+                    }
+                    popupSubHeader={
+                        <React.Fragment>
+                            <Icon name={ positive ? "check" : "times" } color={ positive ? "green" : "red" }/>
+                            { origin && origin !== "null" ? origin : href }
+                        </React.Fragment>
+                    }
+                    popupContent={
+                        <React.Fragment>
+                            {
+                                positive ?
+                                    t("console:develop.features.URLInput.withLabel.positive.content", {
+                                        productName: productName
+                                    }) :
+                                    t("console:develop.features.URLInput.withLabel.negative.content", {
+                                        productName: productName, urlLink: origin
+                                    })
+                            }
+                            { !restrictSecondaryContent &&
+                                <>
+                                    <a onClick={ () => setShowMore(!showMore) }>
+                                        &nbsp;{ showMore ? t("common:showLess") : t("common:showMore") }
+                                    </a><br/>
+                                    {
+                                        showMore && (
+                                            <React.Fragment>
+                                                {
                                                     positive ?
-                                                        "console:develop.features.URLInput." +
-                                                        "withLabel.positive.detailedContent.1" :
-                                                        "console:develop.features.URLInput." +
-                                                        "withLabel.negative.detailedContent.1"
+                                                        t("console:develop.features.URLInput." +
+                                                            "withLabel.positive.detailedContent.0") :
+                                                        t("console:develop.features.URLInput." +
+                                                            "withLabel.negative.detailedContent.0")
                                                 }
-                                                tOptions={ { tenantName: tenantDomain } }
-                                            >
-                                                Therefore enabling CORS for this origin will allow you to access
-                                                Identity Server APIs from the applications registered in the
-                                                <strong>{ tenantDomain }</strong> organization.
-                                            </Trans>
-                                        </React.Fragment>
-                                    )
-                                }
-                            </>
-                        }
+                                                <br/>
+                                                <Trans
+                                                    i18nKey={
+                                                        positive ?
+                                                            "console:develop.features.URLInput." +
+                                                            "withLabel.positive.detailedContent.1" :
+                                                            "console:develop.features.URLInput." +
+                                                            "withLabel.negative.detailedContent.1"
+                                                    }
+                                                    tOptions={ { tenantName: tenantDomain } }
+                                                >
+                                                    Therefore enabling CORS for this origin will allow you to access
+                                                    Identity Server APIs from the applications registered in the
+                                                    <strong>{ tenantDomain }</strong> organization.
+                                                </Trans>
+                                            </React.Fragment>
+                                        )
+                                    }
+                                </>
+                            }
 
-                    </React.Fragment>
-                }
-                popupOptions={ { basic: true, on: "hover" } }
-                labelColor={ positive ? "green" : "red" }
-            />
+                        </React.Fragment>
+                    }
+                    popupOptions={ { basic: true, on: "hover" } }
+                    labelColor={ positive ? "green" : "red" }
+                />
+            : null
         );
     };
 
@@ -561,7 +577,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
         return (
             <span>
-                { (!URLUtils.isHTTPS(url)) ? (
+                { (!URLUtils.isHTTPS(url) && !onlyOrigin && !isCustom) ? (
                     <Popup
                         trigger={
                             <span style={ { color: "red", textDecoration: "line-through" } }>{ protocol }</span>
@@ -765,4 +781,6 @@ URLInput.defaultProps = {
     showPredictions: true,
     onlyOrigin: false,
     restrictSecondaryContent: true,
+    isCustom: false,
+    addOriginByDefault: false,
 };

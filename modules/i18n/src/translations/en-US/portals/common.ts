@@ -24,7 +24,7 @@ export const common: CommonNS = {
     activate: "Activate",
     active: "Active",
     add: "Add",
-    addURL: "Add value",
+    addURL: "Add URL",
     all: "All",
     applicationName: "Application name",
     applications: "Applications",
