@@ -626,6 +626,31 @@ export const emptySAMLAppConfiguration = (): SAMLApplicationConfigurationInterfa
 });
 
 /**
+ * Enum for adaptive auth template types.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum AdaptiveAuthTemplateTypes {
+    GROUP_BASED = "Group-Based",
+    IP_BASED = "IP-Based",
+    NEW_DEVICE_BASED = "New-Device-Based",
+    USER_AGE_BASED = "User-Age-Based"
+}
+
+/**
+ * Enum for application template types.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum ApplicationTemplateIdTypes {
+    SPA = "single-page-application",
+    OIDC_WEB_APPLICATION = "oidc-web-application",
+    SAML_WEB_APPLICATION = "saml-web-application"
+}
+
+/**
  * Enum for default application template group ids.
  *
  * @readonly

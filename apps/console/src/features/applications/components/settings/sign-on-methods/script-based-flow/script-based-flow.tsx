@@ -56,7 +56,6 @@ import {
     AuthenticationSequenceInterface
 } from "../../../../models";
 import { AdaptiveScriptUtils } from "../../../../utils";
-import { LinkButton } from "@wso2is/react-components/src";
 
 /**
  * Proptypes for the adaptive scripts component.
@@ -536,38 +535,38 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      * @return {React.ReactElement}
      */
     const resolveApiDocumentationLink = (): ReactElement => {
-        const apiDocLink = getLink("develop.applications.editApplication.common." + 
+        const apiDocLink: string = getLink("develop.applications.editApplication.common." + 
             "signInMethod.conditionalAuthenticaion.apiReference");
 
-        if ( apiDocLink !== undefined ) {
-            return (
-                <Menu.Menu position="left">
-                    <Menu.Item 
-                        className="action ml-2"
-                        href={ apiDocLink }
-                        target="_blank"
-                    >
-                        <Tooltip
-                            compact
-                            trigger={ (
-                                <Button>
-                                    { t("console:develop.features.applications.edit.sections" +
-                                            ".signOnMethod.sections.authenticationFlow.sections" +
-                                            ".scriptBased.editor.apiDocumentation") }
-                                    <Icon name="external alternate" className="ml-2" />
-                                </Button>
-                            ) }
-                            content={ t("console:develop.features.applications.edit.sections" +
-                                ".signOnMethod.sections.authenticationFlow.sections" +
-                                ".scriptBased.editor.goToApiDocumentation") }
-                            size="mini"
-                        />
-                    </Menu.Item>
-                </Menu.Menu>
-            );
+        if (apiDocLink === undefined) {
+            return null;
         }
-
-        return null;
+        
+        return (
+            <Menu.Menu position="left">
+                <Menu.Item
+                    className="action ml-2"
+                    href={ apiDocLink }
+                    target="_blank"
+                >
+                    <Tooltip
+                        compact
+                        trigger={ (
+                            <Button>
+                                { t("console:develop.features.applications.edit.sections" +
+                                        ".signOnMethod.sections.authenticationFlow.sections" +
+                                        ".scriptBased.editor.apiDocumentation") }
+                                <Icon name="external alternate" className="ml-2" />
+                            </Button>
+                        ) }
+                        content={ t("console:develop.features.applications.edit.sections" +
+                            ".signOnMethod.sections.authenticationFlow.sections" +
+                            ".scriptBased.editor.goToApiDocumentation") }
+                        size="mini"
+                    />
+                </Menu.Item>
+            </Menu.Menu>
+        );
     };
 
     return (

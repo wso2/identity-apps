@@ -25,7 +25,8 @@ import {
     LinkButton,
     PrimaryButton,
     useDocumentation,
-    useWizardAlert } from "@wso2is/react-components";
+    useWizardAlert
+} from "@wso2is/react-components";
 import { ContentLoader } from "@wso2is/react-components/src/components/loader/content-loader";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";

@@ -304,14 +304,14 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
                 isLoading={ isLoading }
                 title={ t("console:manage.features.claims.local.pageLayout.local.title") }
                 description={ 
-                    <p>
+                    <>
                         { t(attributeConfig.attributes.description) }
                         <DocumentationLink
                             link={ getLink("manage.attributes.attributes.learnMore") }
                         >
                             { t("common:learnMore") }
                         </DocumentationLink>
-                    </p>
+                    </>
                 }
                 backButton={ {
                     onClick: () => { history.push(AppConstants.getPaths().get("CLAIM_DIALECTS")); },

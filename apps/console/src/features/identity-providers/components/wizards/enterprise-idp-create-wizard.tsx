@@ -69,6 +69,7 @@ import { getIdPIcons, getIdentityProviderWizardStepIcons } from "../../configs";
 import { IdentityProviderManagementConstants } from "../../constants";
 import { AuthenticatorMeta } from "../../meta";
 import {
+    AuthProtocolTypes,
     GenericIdentityProviderCreateWizardPropsInterface,
     IdentityProviderTemplateInterface,
     StrictIdentityProviderInterface
@@ -832,8 +833,12 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     };
 
+    /**
+     * Resolves the documentation link when a protocol is selected.
+     * @return {React.ReactElement}
+     */
     const resolveDocumentationLink = (): ReactElement => {    
-        if ( selectedProtocol === "saml" ) {
+        if (selectedProtocol === AuthProtocolTypes.SAML) {
             return (
                 <DocumentationLink
                     link={ getLink("develop.connections.newConnection.enterprise.samlLearnMore") }
@@ -843,7 +848,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             );
         }
 
-        if ( selectedProtocol === "oidc" ) {
+        if (selectedProtocol === AuthProtocolTypes.OIDC) {
             return (
                 <DocumentationLink
                     link={ getLink("develop.connections.newConnection.enterprise.oidcLearnMore") }

@@ -65,7 +65,12 @@ import { getInboundProtocolLogos } from "../../configs";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
-import { ApplicationTemplateInterface, MainApplicationInterface, SupportedAuthProtocolTypes } from "../../models";
+import {
+    ApplicationTemplateIdTypes,
+    ApplicationTemplateInterface,
+    MainApplicationInterface,
+    SupportedAuthProtocolTypes
+} from "../../models";
 
 /**
  * Prop types of the `MinimalAppCreateWizard` component.
@@ -726,15 +731,15 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
      */
     const resolveDocumentationLink = (): string => {
 
-        if (selectedTemplate?.templateId === "single-page-application") {
+        if (selectedTemplate?.templateId === ApplicationTemplateIdTypes.SPA) {
             return getLink("develop.applications.newApplication.singlePageApplication.learnMore");
         }
 
-        if (selectedTemplate?.templateId === "oidc-web-application") {
+        if (selectedTemplate?.templateId === ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION) {
             return getLink("develop.applications.newApplication.oidcApplication.learnMore");
         }
 
-        if (selectedTemplate?.templateId === "saml-web-application") {
+        if (selectedTemplate?.templateId === ApplicationTemplateIdTypes.SAML_WEB_APPLICATION) {
             return getLink("develop.applications.newApplication.samlApplication.learnMore");
         }        
         

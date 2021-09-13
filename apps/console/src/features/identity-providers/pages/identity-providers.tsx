@@ -455,14 +455,14 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
             }
             description={
                 useNewConnectionsView
-                    ?   <p>
+                    ?   <>
                             { t("console:develop.pages.authenticationProvider.subTitle") }
                             <DocumentationLink
                                 link={ getLink("develop.connections.learnMore") }
                             >
                                 { t("common:learnMore") }
                             </DocumentationLink>
-                        </p>
+                        </>
                     :   t("console:develop.pages.idp.subTitle")
             }
             data-testid={ `${ testId }-page-layout` }

@@ -24,7 +24,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Icon, List, Message, Modal, Table } from "semantic-ui-react";
-import { AdaptiveAuthTemplateInterface } from "../../../../models";
+import { AdaptiveAuthTemplateInterface, AdaptiveAuthTemplateTypes } from "../../../../models";
 
 /**
  * Proptypes of `TemplateDescription` component.
@@ -64,70 +64,46 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
+    /**
+     * Resolves the documentation link when a template is selected.
+     * @return {React.ReactElement}
+     */
     const resolveDocumentationLink = (): ReactElement => {
-        const templateName = template?.name;
+        const templateName: string = template?.name;
+        let docLink: string = undefined;
 
-        if ( templateName === "User-Age-Based" ) {
-            const docLink = getLink("develop.applications.editApplication.common." + 
+        if (templateName === AdaptiveAuthTemplateTypes.USER_AGE_BASED) {
+            docLink = getLink("develop.applications.editApplication.common." + 
                 "signInMethod.conditionalAuthenticaion.template.userAgeBased.learnMore");
-            
-            if ( docLink !== undefined) {
-                return (
-                    <DocumentationLink
-                        link={ docLink }
-                    >
-                        { t("common:learnMore") }
-                    </DocumentationLink>
-                );
-            }
         }
 
-        if ( templateName === "Group-Based" ) {
-            const docLink = getLink("develop.applications.editApplication.common." + 
+        if (templateName === AdaptiveAuthTemplateTypes.GROUP_BASED) {
+            docLink = getLink("develop.applications.editApplication.common." + 
                 "signInMethod.conditionalAuthenticaion.template.groupBased.learnMore");
-            
-            if ( docLink !== undefined) {
-                return (
-                    <DocumentationLink
-                        link={ docLink }
-                    >
-                        { t("common:learnMore") }
-                    </DocumentationLink>
-                );
-            }
         }
 
-        if ( templateName === "IP-Based" ) {
-            const docLink = getLink("develop.applications.editApplication.common." + 
+        if (templateName === AdaptiveAuthTemplateTypes.IP_BASED) {
+            docLink = getLink("develop.applications.editApplication.common." + 
                 "signInMethod.conditionalAuthenticaion.template.ipBased.learnMore");
-            
-            if ( docLink !== undefined) {
-                return (
-                    <DocumentationLink
-                        link={ docLink }
-                    >
-                        { t("common:learnMore") }
-                    </DocumentationLink>
-                );
-            }
         }
 
-        if ( templateName === "New-Device-Based" ) {
-            const docLink = getLink("develop.applications.editApplication.common." + 
+        if (templateName === AdaptiveAuthTemplateTypes.NEW_DEVICE_BASED) {
+            docLink = getLink("develop.applications.editApplication.common." + 
                 "signInMethod.conditionalAuthenticaion.template.deviceBased.learnMore");
-            
-            if ( docLink !== undefined) {
-                return (
-                    <DocumentationLink
-                        link={ docLink }
-                    >
-                        { t("common:learnMore") }
-                    </DocumentationLink>
-                );
-            }
         }
 
-        return null;
+        if (docLink === undefined) {
+            return null;
+        }
+
+        return (
+            <DocumentationLink
+                link={ docLink }
+            >
+                { t("common:learnMore") }
+            </DocumentationLink>
+        );
+
     };
     
     return (

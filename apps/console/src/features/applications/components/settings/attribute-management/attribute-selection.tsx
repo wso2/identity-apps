@@ -589,6 +589,10 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         );
     };
 
+    /**
+     * Resolves the documentation link when a claim is selected.
+     * @return {React.ReactElement}
+     */
     const resolveClaimDocumentationLink = (): ReactElement => {      
         if (selectedDialect.localDialect) {
             return (

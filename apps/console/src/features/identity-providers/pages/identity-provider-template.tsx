@@ -410,14 +410,14 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
             contentTopMargin={ true }
             description={
                 useNewConnectionsView
-                    ?   <p>
+                    ?   <>
                             { t("console:develop.pages.authenticationProviderTemplate.subTitle") }
                             <DocumentationLink
                                 link={ getLink("develop.connections.newConnection.learnMore") }
                             >
                                 { t("common:learnMore") }
                             </DocumentationLink>
-                        </p>
+                        </>
                     :   t("console:develop.pages.idpTemplate.subTitle")
             }
             backButton={ {

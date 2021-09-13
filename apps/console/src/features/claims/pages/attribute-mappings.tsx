@@ -105,25 +105,25 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
             switch (type) {
                 case ClaimManagementConstants.OIDC:
                     return (
-                        <p>
+                        <>
                             { t("console:manage.features.claims.attributeMappings.oidc.description") }
                             <DocumentationLink
                                 link={ getLink("manage.attributes.oidcAttributes.learnMore") }
                             >
                                 { t("common:learnMore") }
                             </DocumentationLink>
-                        </p>
+                        </>
                     );
                 case ClaimManagementConstants.SCIM:
                     return (
-                        <p>
+                        <>
                             { t("console:manage.features.claims.attributeMappings.scim.description") }
                             <DocumentationLink
                                 link={ getLink("manage.attributes.scimAttributes.learnMore") }
                             >
                                 { t("common:learnMore") }
                             </DocumentationLink>
-                        </p>
+                        </>
                     );
                 default:
                     return t(

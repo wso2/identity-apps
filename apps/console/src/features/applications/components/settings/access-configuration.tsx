@@ -699,6 +699,10 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         );
     };
 
+    /**
+     * Resolves the corresponding protocol description and documentation link when a protocol is selected.
+     * @return {React.ReactElement}
+     */
     const resolveProtocolDescription =(): ReactElement => {
         // Description for SAML Protocol tab.
         if (selectedProtocol === SupportedAuthProtocolTypes.OIDC) {
