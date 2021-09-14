@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useAuthContext } from "@asgardeo/auth-react";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
 import { RouteInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
 import {
@@ -27,8 +28,8 @@ import {
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
 import {
-    Code,
     ChunkErrorModal,
+    Code,
     NetworkErrorModal,
     SessionManagementProvider,
     SessionTimeoutModalTypes
@@ -72,6 +73,15 @@ export const AuthenticatedApp: FunctionComponent<Record<string, never>> = (): Re
     const [ baseRoutes, setBaseRoutes ] = useState<RouteInterface[]>(getBaseRoutes());
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    const { trySignInSilently } = useAuthContext();
+
+    /**
+     * Set the deployment configs in redux state.
+     */
+    useEffect(() => {
+        sessionStorageDisabled();
+    }, []);
 
     /**
      * Set the deployment configs in redux state.
@@ -185,20 +195,13 @@ export const AuthenticatedApp: FunctionComponent<Record<string, never>> = (): Re
      * do the necessary actions.
      */
     const handleStayLoggedIn = (): void => {
-
-        const urlSearchParams: URLSearchParams = new URLSearchParams();
-        urlSearchParams.set("stay_logged_in", "true");
-
-        history.push({
-            pathname: window.location.pathname,
-            search: urlSearchParams.toString()
-        });
-
-        dispatchEvent(new PopStateEvent("popstate", {
-            state: {
-                stayLoggedIn: true
+        trySignInSilently().then((response) => {
+            if (response === false) {
+                history.push(AppConstants.getAppLogoutPath());
             }
-        }));
+        }).catch(() => {
+            history.push(AppConstants.getAppLogoutPath());
+        });
     };
 
     return (
