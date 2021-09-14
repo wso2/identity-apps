@@ -157,7 +157,7 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
     const [ sessionTimedOut, setSessionTimedOut ] = useState<boolean>(false);
 
     useEffect(() => {
-        window.addEventListener("session-timeout", (e :MessageEventInit) => {
+        const sessionTimeoutListener = (e: MessageEventInit) => {
             const state = e.data;
 
             if (!state) {
@@ -183,9 +183,13 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
             }
 
             setShowSessionTimeoutModal(JSON.parse(timeout));
-        });
+        };
+
+        window.addEventListener("session-timeout", sessionTimeoutListener);
+
         return () => {
             performCleanupTasks();
+            window.removeEventListener("session-timeout",sessionTimeoutListener);
         };
     }, []);
 
