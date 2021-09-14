@@ -42,7 +42,8 @@ export class AuthenticateUtils {
     public static initializeConfig: AuthClientConfig<Config> = {
         clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
         clientID: window["AppUtils"].getConfig().clientID,
-        clockTolerance: window["AppUtils"].getConfig().idpConfigs?.clockTolerance,
+        clockTolerance: window[ "AppUtils" ].getConfig().idpConfigs?.clockTolerance,
+        enableOIDCSessionManagement: true,
         enablePKCE: window["AppUtils"].getConfig().idpConfigs?.enablePKCE ?? true,
         endpoints: {
             authorizationEndpoint: window["AppUtils"].getConfig().idpConfigs?.authorizeEndpointURL,
