@@ -20,6 +20,7 @@ import { AnalyticsConfig } from "./models/analytics";
   
 export const analyticsConfig: AnalyticsConfig = {
     EventPublisherExtension: {
+        compute: (computation) => null,
         init: () => null,
         publish: (eventId, customProperties?) => null
     }

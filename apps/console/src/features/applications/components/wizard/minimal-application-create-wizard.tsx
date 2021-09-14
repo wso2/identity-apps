@@ -237,15 +237,17 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         }
         createApplication(application)
             .then((response) => {
-                if (selectedTemplate.id === CustomApplicationTemplate.id) {
-                    eventPublisher.publish("application-register-new-application", {
-                        "type": application.templateId
-                    });
-                } else {
-                    eventPublisher.publish("application-register-new-application", {
-                        "type": selectedTemplate.templateId
-                    });
-                }
+                eventPublisher.compute(() => {
+                    if (selectedTemplate.id === CustomApplicationTemplate.id) {
+                        eventPublisher.publish("application-register-new-application", {
+                            "type": application.templateId
+                        });
+                    } else {
+                        eventPublisher.publish("application-register-new-application", {
+                            "type": selectedTemplate.templateId
+                        });
+                    }
+                });
                 
                 dispatch(
                     addAlert({
