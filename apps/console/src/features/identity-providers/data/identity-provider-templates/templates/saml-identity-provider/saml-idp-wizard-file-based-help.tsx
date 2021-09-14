@@ -21,7 +21,7 @@ import { Code, CopyInputField, Heading, useDocumentation } from "@wso2is/react-c
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Divider, Message } from "semantic-ui-react";
+import { Divider, Icon, Message } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface } from "../../../../../core";
 
 /**
@@ -46,12 +46,6 @@ const SAMLIdPWizardFileBasedHelp: FunctionComponent<Props> = (props: Props): Rea
     return (
         <div data-testid={ testId }>
             <Message info>
-                <Heading as="h5" className="mb-3">
-                    {
-                        t("console:develop.features.authenticationProvider.templates.enterprise.saml." +
-                            "preRequisites.heading")
-                    }
-                </Heading>
                 <p>
 
                     <Trans
@@ -66,7 +60,15 @@ const SAMLIdPWizardFileBasedHelp: FunctionComponent<Props> = (props: Props): Rea
                         className="copy-input-dark spaced"
                         value={ config?.deployment?.serverHost + "/commonauth" }
                     />
-                    
+                    <Icon name="info circle" />
+                    {
+                        t("console:develop.features.authenticationProvider.templates.enterprise.saml." +
+                            "preRequisites.hint", {
+                            productName: config.ui.productName
+                        })
+                    }
+                    <br/>
+                    <br/>
                     { getLink("develop.connections.newConnection.enterprise.samlLearnMore") === undefined ?
                         null :
                         <a
@@ -78,7 +80,7 @@ const SAMLIdPWizardFileBasedHelp: FunctionComponent<Props> = (props: Props): Rea
                                     "preRequisites.configureIdp")
                             }
                         </a>
-                }
+                    }
                 </p>
             </Message>
             <Heading as="h5">Service provider entity ID</Heading>

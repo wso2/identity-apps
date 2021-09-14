@@ -1426,6 +1426,7 @@ export interface ConsoleNS {
                                 configureIdp: string;
                                 configureRedirectURL: string;
                                 heading: string;
+                                hint: string;
                             }
                         }
                         validation: {

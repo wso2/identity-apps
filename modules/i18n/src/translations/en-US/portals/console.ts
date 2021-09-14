@@ -3086,12 +3086,12 @@ export const console: ConsoleNS = {
                         },
                         saml: {
                             AuthRedirectUrl: {
-                                ariaLabel: "SAML authorized redirect URL",
-                                hint: "The {{productName}} URL to which the user needs to be redirected after" +
-                                    " completing the authentication at the identity provider. The identity provider" +
-                                    " needs to send the authorization code to this URL upon successful authentication.",
-                                label: "Authorized Redirect URL",
-                                placeholder: "Authorized Redirect URL"
+                                ariaLabel: "SAML assertion consumer service URL",
+                                hint: "The Assertion Consumer Service (ACS) URL determines where" +
+                                    " {{productName}} expects the external identity provider to send the" + 
+                                    " SAML response.",
+                                label: "Assertion Consumer Service (ACS) URL",
+                                placeholder: "Assertion Consumer Service (ACS) URL"
                             },
                             SPEntityId: {
                                 placeholder: "Enter service provider entity ID",
@@ -3121,16 +3121,16 @@ export const console: ConsoleNS = {
                                 placeholder: "Select identity provider NameIDFormat",
                                 ariaLabel: "Choose NameIDFormat for SAML 2.0 assertion",
                                 label: "Identity provider NameID format",
-                                hint: "Name ID defines the name identifier formats supported by the external " +
-                                    "IdP. Name identifier is how {{productName}} communicates with" +
-                                    " external IdP regarding a user."
+                                hint: "This specifies the name identifier format that is used to " +
+                                    "exchange information regarding the user in the SAML " +
+                                    "assertion sent from the external IdP."
                             },
                             RequestMethod: {
                                 placeholder: "Select HTTP protocol binding",
                                 ariaLabel: "HTTP protocol for SAML 2.0 bindings",
                                 label: "HTTP protocol binding",
-                                hint: "Protocol binding to use when sending requests. HTTP redirect for simple" +
-                                    " requests or HTTP POST if requests are signed, which is recommended."
+                                hint: "This specifies the mechanisms to transport SAML" +
+                                " messages in communication protocols."
                             },
                             IsSLORequestAccepted: {
                                 ariaLabel: "Specify whether logout is enabled for IdP",
@@ -3890,8 +3890,12 @@ export const console: ConsoleNS = {
                         saml: {
                             preRequisites: {
                                 configureIdp: "See Asgardeo guide on configuring SAML IdP.",
-                                configureRedirectURL: "Use the following URL as the <1>Authorized Redirect URI</1>.",
-                                heading: "Prerequisite"
+                                configureRedirectURL: "Use the following URL as the " + 
+                                    "<1>Assertion Consumer Service (ACS) URL</1>.",
+                                heading: "Prerequisite",
+                                hint: "The Assertion Consumer Service (ACS) URL determines" +
+                                    " where {{productName}} expects the external identity" + 
+                                    " provider to send the SAML response."
                             }
                         },
                         validation: {

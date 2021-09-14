@@ -21,7 +21,7 @@ import { Code, CopyInputField, Heading, useDocumentation } from "@wso2is/react-c
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Divider, Message } from "semantic-ui-react";
+import { Divider, Icon, Message } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface } from "../../../../../core";
 
 type Props = TestableComponentInterface;
@@ -43,12 +43,6 @@ const SamlIDPWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement
     return (
         <div data-testid={ testId }>
             <Message info>
-                <Heading as="h5" className="mb-3">
-                    {
-                        t("console:develop.features.authenticationProvider.templates.enterprise.saml." +
-                            "preRequisites.heading")
-                    }
-                </Heading>
                 <p>
 
                     <Trans
@@ -63,7 +57,15 @@ const SamlIDPWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement
                         className="copy-input-dark spaced"
                         value={ config?.deployment?.serverHost + "/commonauth" }
                     />
-                    
+                    <Icon name="info circle" />
+                    {
+                        t("console:develop.features.authenticationProvider.templates.enterprise.saml." +
+                            "preRequisites.hint", {
+                            productName: config.ui.productName
+                        })
+                    }
+                    <br/>
+                    <br/>
                     { getLink("develop.connections.newConnection.enterprise.samlLearnMore") === undefined ?
                         null :
                         <a
@@ -75,7 +77,7 @@ const SamlIDPWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement
                                     "preRequisites.configureIdp")
                             }
                         </a>
-                }
+                    }
                 </p>
             </Message>
             <Heading as="h5">Service provider entity ID</Heading>
@@ -99,17 +101,6 @@ const SamlIDPWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement
                 organization.
             </p>
             <p>E.g., https://ENTERPRISE_DOMAIN</p>
-            <Divider/>
-            <Heading as="h5">Name ID format</Heading>
-            <p>
-                This specifies the name identifier format that is used to exchange information regarding the user
-                in the SAML assertion sent from the external IdP.
-            </p>
-            <Divider/>
-            <Heading as="h5">Protocol binding</Heading>
-            <p>
-                This specifies the mechanisms to transport SAML messages in communication protocols.
-            </p>
         </div>
     );
 
