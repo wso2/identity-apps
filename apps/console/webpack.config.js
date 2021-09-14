@@ -471,15 +471,6 @@ module.exports = (env) => {
                         : "/",
                     template: path.join(__dirname, "src", "index.html")
                 }),
-            new HtmlWebpackPlugin({
-                excludeChunks: [ "main", "init" ],
-                filename: path.join(distFolder, "rpIFrame.html"),
-                hash: true,
-                publicPath: !isRootContext
-                    ? publicPath
-                    : "/",
-                template: path.join(__dirname, "src", "rpIFrame.html")
-            }),
             new webpack.DefinePlugin({
                 "process.env": {
                     NODE_ENV: JSON.stringify(env.NODE_ENV)
