@@ -1238,7 +1238,7 @@ export interface ConsoleNS {
                             };
                         };
                         saml: {
-                            AuthRedirectUrl: FormAttributes,
+                            AuthRedirectUrl: FormAttributes;
                             SPEntityId: FormAttributes;
                             SSOUrl: FormAttributes;
                             IdPEntityId: FormAttributes;

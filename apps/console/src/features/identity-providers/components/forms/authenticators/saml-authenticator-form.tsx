@@ -277,7 +277,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 ariaLabel={ t(`${ I18N_TARGET_KEY }.AuthRedirectUrl.ariaLabel`) }
                 data-testid={ `${ testId }-authorized-redirect-url` }
                 label={ (
-                    <FormInputLabel htmlFor="IdPEntityId" disabled={ true }>
+                    <FormInputLabel htmlFor="AuthRedirectUrl" disabled={ true }>
                         { t(`${ I18N_TARGET_KEY }.AuthRedirectUrl.label`) }
                     </FormInputLabel>
                 ) }
