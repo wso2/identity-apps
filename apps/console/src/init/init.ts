@@ -22,13 +22,6 @@ import "core-js/stable";
 import "regenerator-runtime/runtime";
 import TimerWorker from "@wso2is/core/src/workers/timer.worker";
 
-const getItemFromSessionStorage = (key: string): string => {
-    try {
-        return sessionStorage.getItem(key);
-    } catch {
-        return "";
-    }
-};
 
 if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
     AppUtils.init({
@@ -40,38 +33,6 @@ if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
     });
 
     window["AppUtils"] = AppUtils;
-}
-
-function getRandomPKCEChallenge() {
-    const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz-_";
-    const stringLength = 43;
-    let randomString = "";
-    for (let i = 0; i < stringLength; i++) {
-        const rnum = Math.floor(Math.random() * chars.length);
-        randomString += chars.substring(rnum, rnum + 1);
-    }
-    return randomString;
-}
-
-function sendPromptNoneRequest() {
-    const rpIFrame: HTMLIFrameElement = document.getElementById("rpIFrame") as HTMLIFrameElement;
-    const promptNoneIFrame: HTMLIFrameElement = rpIFrame.contentWindow.document.getElementById(
-        "promptNoneIFrame"
-    ) as HTMLIFrameElement;
-    const config = window.parent["AppUtils"].getConfig();
-
-    const parsedAuthorizationEndpointURL: URL = new URL(getItemFromSessionStorage("authorization_endpoint"));
-
-    parsedAuthorizationEndpointURL.searchParams.append("response_type", "code");
-    parsedAuthorizationEndpointURL.searchParams.append("client_id", config.clientID);
-    parsedAuthorizationEndpointURL.searchParams.append("scope", "openid");
-    parsedAuthorizationEndpointURL.searchParams.append("redirect_uri", config.loginCallbackURL);
-    parsedAuthorizationEndpointURL.searchParams.append("state", "Y2hlY2tTZXNzaW9u");
-    parsedAuthorizationEndpointURL.searchParams.append("prompt", "none");
-    parsedAuthorizationEndpointURL.searchParams.append("code_challenge_method", "S256");
-    parsedAuthorizationEndpointURL.searchParams.append("code_challenge", getRandomPKCEChallenge());
-
-    promptNoneIFrame.src = parsedAuthorizationEndpointURL.toString();
 }
 
 function handleTimeOut(_idleSecondsCounter: number, _sessionAgeCounter: number,
@@ -108,11 +69,6 @@ function handleTimeOut(_idleSecondsCounter: number, _sessionAgeCounter: number,
         dispatchEvent(new MessageEvent("session-timeout", { data: state }));
     }
 
-    // Keep user session intact if the user is active
-    if (_sessionAgeCounter > SESSION_REFRESH_TIMEOUT) {
-        sendPromptNoneRequest();
-        _sessionAgeCounter = 0;
-    }
     return _sessionAgeCounter;
 }
 
@@ -180,20 +136,3 @@ if (new UAParser().getBrowser().name === "IE") {
         );
     };
 }
-
-/**
- * Listens to the `popstate` event fired from the app to notify
- * that the user has selected the try stay logged in option.
- * And sends a prompt none request to restore the session.
- */
-window.addEventListener("popstate", (e) => {
-    const { state } = e;
-
-    if (!state || !state.stayLoggedIn) {
-        return;
-    }
-
-    sendPromptNoneRequest();
-
-    window.history.replaceState(null, null, window.location.pathname);
-});
