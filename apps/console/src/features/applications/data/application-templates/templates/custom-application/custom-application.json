@@ -1,8 +1,8 @@
 {
     "id": "custom-application",
     "templateId": "custom-application",
-    "name": "Custom Application",
-    "description": "Register your application manually.",
+    "name": "Standard Based Application",
+    "description": "Applications built on top of standard auth protocols.",
     "image": "customApp",
     "authenticationProtocol": "",
     "category": "DEFAULT",
@@ -11,6 +11,9 @@
     "subTemplates": [],
     "subTemplatesSectionTitle": "",
     "templateGroup": "",
-    "types": [],
+    "types": [
+        "oidc",
+        "saml"
+    ],
     "application": null
 }
