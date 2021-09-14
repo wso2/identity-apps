@@ -420,9 +420,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      * @param {React.SyntheticEvent} e - Click event.
      * @param {TabProps} data - 
      */
-     const handleTabChange = (e: SyntheticEvent, data: TabProps): void => {
-        eventPublisher.publish("application-switch-edit-application-tabs", {
-            "type": data.panes[data.activeIndex].componentId
+    const handleTabChange = (e: SyntheticEvent, data: TabProps): void => {
+        eventPublisher.compute(() => {
+            eventPublisher.publish("application-switch-edit-application-tabs", {
+                "type": data.panes[data.activeIndex].componentId
+            });
         });
 
         handleActiveTabIndexChange(data.activeIndex as number);

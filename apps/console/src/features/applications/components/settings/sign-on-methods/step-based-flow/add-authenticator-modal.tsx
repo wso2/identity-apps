@@ -254,9 +254,11 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
      */
     const handleModalSubmit = (): void => {
 
-        selectedAuthenticators.forEach(element => {
-            eventPublisher.publish("application-sign-in-method-add-new-authenticator", {
-                "type": kebabCase(element["defaultAuthenticator"]["name"])
+        eventPublisher.compute(() => {
+            selectedAuthenticators.forEach(element => {
+                eventPublisher.publish("application-sign-in-method-add-new-authenticator", {
+                    "type": kebabCase(element["defaultAuthenticator"]["name"])
+                });
             });
         });
 

@@ -53,6 +53,16 @@ export class EventPublisher {
     }
 
     /**
+     * Function to perform event publisher related computations.
+     * 
+     * @param {any} computation - Computation to perform.
+    */
+    public compute = (computation: () => void): void => {
+        analyticsConfig.EventPublisherExtension.compute &&
+            analyticsConfig.EventPublisherExtension.compute(computation);
+    }
+
+    /**
      * Function to publish event logs.
      * 
      * @param {string} eventId - Publishing event identifier.
