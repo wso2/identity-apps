@@ -192,7 +192,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const getLinks = () => {
         const links = [];
 
-        !commonConfig.utils.isBusinessUser(userStore) ?
+        commonConfig.utils.isConsoleNavigationAllowed(userStore)
+            ?
             links.push(
             {
                 "data-testid": "app-switch-console",

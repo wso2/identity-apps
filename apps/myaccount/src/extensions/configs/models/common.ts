@@ -41,6 +41,6 @@ export interface CommonConfig {
     utils: {
         isManageConsentAllowedForUser: (userstore: string) => boolean;
         isShowAdditionalWidgetAllowed: (userstore: string) => boolean;
-        isBusinessUser: (userstore: string) => boolean;
+        isConsoleNavigationAllowed: (userstore: string) => boolean;
     }
 }

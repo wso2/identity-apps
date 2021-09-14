@@ -44,8 +44,8 @@ export const commonConfig: CommonConfig = {
         isShowAdditionalWidgetAllowed(userstore: string): boolean {
             return false;
         },
-        isBusinessUser(userstore: string): boolean {
-            return false;
+        isConsoleNavigationAllowed(userstore: string): boolean {
+            return true;
         }
     }
 };
