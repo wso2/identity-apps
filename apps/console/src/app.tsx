@@ -21,6 +21,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { Authentication } from "./authentication";
 import { AuthenticateUtils } from "./features/authentication";
 import { PreLoader } from "./features/core";
+
 export const App: FunctionComponent<Record<string, never>> = (): ReactElement => {
     return (
         <AuthProvider config={ AuthenticateUtils.initializeConfig } fallback={ <PreLoader /> }>
