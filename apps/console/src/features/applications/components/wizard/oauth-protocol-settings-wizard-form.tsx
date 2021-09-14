@@ -88,6 +88,7 @@ interface OAuthProtocolSettingsWizardFormPropsInterface extends TestableComponen
      * creation modal.
      */
     isProtocolConfig?: boolean;
+    addOriginByDefault?: boolean;
 }
 
 /**
@@ -113,6 +114,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         templateValues,
         showCallbackURL,
         tenantDomain,
+        addOriginByDefault,
         [ "data-testid" ]: testId
     } = props;
 
@@ -518,7 +520,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         showPredictions={ false }
                                         customLabel={ callbackURLsErrorLabel }
                                         isAllowEnabled={ false }
-                                        addOriginByDefault={ true }
+                                        addOriginByDefault={ addOriginByDefault }
                                     />
                                     {
                                         (callBackURLFromTemplate) && (
