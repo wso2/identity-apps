@@ -42,8 +42,8 @@ const TOKEN_ENDPOINT = "token_endpoint";
 const OIDC_SESSION_IFRAME_ENDPOINT = "oidc_session_iframe_endpoint";
 const LOGOUT_URL = "sign_out_url";
 
+const AuthenticatedApp = lazy(() => import("./authenticated-app"));
 export const Authentication: FunctionComponent<Record<string, never>> = (): ReactElement => {
-    const AuthenticatedApp = lazy(() => import("./authenticated-app"));
 
     const {
         signIn,
