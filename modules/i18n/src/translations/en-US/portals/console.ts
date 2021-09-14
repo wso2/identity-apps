@@ -3085,6 +3085,14 @@ export const console: ConsoleNS = {
                             }
                         },
                         saml: {
+                            AuthRedirectUrl: {
+                                ariaLabel: "SAML authorized redirect URL",
+                                hint: "The {{productName}} URL to which the user needs to be redirected after" +
+                                    " completing the authentication at the identity provider. The identity provider" +
+                                    " needs to send the authorization code to this URL upon successful authentication.",
+                                label: "Authorized Redirect URL",
+                                placeholder: "Authorized Redirect URL"
+                            },
                             SPEntityId: {
                                 placeholder: "Enter service provider entity ID",
                                 ariaLabel: "Service provider entity ID",
@@ -3878,6 +3886,20 @@ export const console: ConsoleNS = {
                     }
                 },
                 templates: {
+                    enterprise: {
+                        saml: {
+                            preRequisites: {
+                                configureIdp: "See Asgardeo guide on configuring SAML IdP.",
+                                configureRedirectURL: "Use the following URL as the <1>Authorized Redirect URI</1>.",
+                                heading: "Prerequisite"
+                            }
+                        },
+                        validation: {
+                            invalidName: "{{idpName}} is not a valid name. It should not contain any other" +
+                                " alphanumerics except for periods (.), dashes (-), underscores (_) and spaces.",
+                            name: "Please enter a valid name"
+                        }
+                    },
                     facebook: {
                         wizardHelp: {
                             clientId: {
@@ -3892,9 +3914,9 @@ export const console: ConsoleNS = {
                             },
                             heading: "Help",
                             name: {
-                                idpDescription: "Provide a unique name for the identity provider.",
                                 connectionDescription: "Provide a unique name for the connection.",
-                                heading: "Name"
+                                heading: "Name",
+                                idpDescription: "Provide a unique name for the identity provider."
                             },
                             preRequisites: {
                                 configureOAuthApps: "See Facebooks's guide on configuring apps.",
@@ -3971,13 +3993,6 @@ export const console: ConsoleNS = {
                     quickSetup: {
                         heading: "Quick Setup",
                         subHeading: "Predefined set of templates to speed up your identity provider creation."
-                    },
-                    enterprise: {
-                        validation: {
-                            name: "Please enter a valid name",
-                            invalidName: "{{idpName}} is not a valid name. It should not contain any other" +
-                                " alphanumerics except for periods (.), dashes (-), underscores (_) and spaces."
-                        }
                     }
                 },
                 wizards: {

@@ -1238,6 +1238,7 @@ export interface ConsoleNS {
                             };
                         };
                         saml: {
+                            AuthRedirectUrl: FormAttributes,
                             SPEntityId: FormAttributes;
                             SSOUrl: FormAttributes;
                             IdPEntityId: FormAttributes;
@@ -1420,6 +1421,13 @@ export interface ConsoleNS {
                         }
                     };
                     enterprise?: {
+                        saml?: {
+                            preRequisites: {
+                                configureIdp: string;
+                                configureRedirectURL: string;
+                                heading: string;
+                            }
+                        }
                         validation: {
                             name: string;
                             invalidName: string;

@@ -274,6 +274,7 @@ export const SSO_URL_LENGTH: MinMaxLength = { max: 2048, min: 10 };
 export const LOGOUT_URL_LENGTH: MinMaxLength = { max: 2048, min: 10 };
 export const IDENTITY_PROVIDER_ENTITY_ID_LENGTH: MinMaxLength = { max: 2048, min: 5 };
 export const IDENTITY_PROVIDER_NAME_LENGTH: MinMaxLength = { max: 120, min: 3 };
+export const IDENTITY_PROVIDER_AUTHORIZED_REDIRECT_URL_LENGTH: MinMaxLength = { max: 2048, min: 10 };
 
 /**
  * Given a {@link FormErrors} object, it will check whether

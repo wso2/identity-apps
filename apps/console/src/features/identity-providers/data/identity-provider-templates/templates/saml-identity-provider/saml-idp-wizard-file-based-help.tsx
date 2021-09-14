@@ -17,11 +17,12 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Code, Heading } from "@wso2is/react-components";
+import { Code, CopyInputField, Heading, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { AppState, ConfigReducerStateInterface } from "../../../../../core";
+import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Divider } from "semantic-ui-react";
+import { Divider, Message } from "semantic-ui-react";
+import { AppState, ConfigReducerStateInterface } from "../../../../../core";
 
 /**
  * No component specific props. Hence unnecessary
@@ -39,8 +40,47 @@ const SAMLIdPWizardFileBasedHelp: FunctionComponent<Props> = (props: Props): Rea
     const { [ "data-testid" ]: testId } = props;
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
+    const { t } = useTranslation();
+    const { getLink } = useDocumentation();
+
     return (
         <div data-testid={ testId }>
+            <Message info>
+                <Heading as="h5" className="mb-3">
+                    {
+                        t("console:develop.features.authenticationProvider.templates.enterprise.saml." +
+                            "preRequisites.heading")
+                    }
+                </Heading>
+                <p>
+
+                    <Trans
+                        i18nKey={
+                            "console:develop.features.authenticationProvider.templates.enterprise.saml." +
+                            "preRequisites.configureRedirectURL"
+                        }
+                    >
+                        Use the following URL as the <strong>Authorized Redirect URI</strong>.
+                    </Trans>
+                    <CopyInputField
+                        className="copy-input-dark spaced"
+                        value={ config?.deployment?.serverHost + "/commonauth" }
+                    />
+                    
+                    { getLink("develop.connections.newConnection.enterprise.samlLearnMore") === undefined ?
+                        null :
+                        <a
+                            href={ getLink("develop.connections.newConnection.enterprise.samlLearnMore") }
+                            target="_blank"
+                            rel="noopener noreferrer">
+                            {
+                                t("console:develop.features.authenticationProvider.templates.enterprise.saml." +
+                                    "preRequisites.configureIdp")
+                            }
+                        </a>
+                }
+                </p>
+            </Message>
             <Heading as="h5">Service provider entity ID</Heading>
             <p>
                 This value will be used as the <Code>&lt;saml2:Issuer&gt;</Code> in the SAML requests initiated from
