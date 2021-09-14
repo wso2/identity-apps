@@ -51,7 +51,7 @@ export const Authentication: FunctionComponent<Record<string, never>> = (): Reac
         on,
         getDecodedIDToken,
         getOIDCServiceEndpoints,
-        state: { isAuthenticated }
+        state: { isAuthenticated, isSigningOut }
     } = useAuthContext();
 
     const dispatch = useDispatch();
@@ -169,9 +169,6 @@ export const Authentication: FunctionComponent<Record<string, never>> = (): Reac
                     sessionStorage.setItem(AUTHORIZATION_ENDPOINT, authorizationEndpoint);
                     sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, oidcSessionIframeEndpoint);
                     sessionStorage.setItem(TOKEN_ENDPOINT, tokenEndpoint);
-
-                    const rpIFrame: HTMLIFrameElement = document.getElementById("rpIFrame") as HTMLIFrameElement;
-                    rpIFrame?.contentWindow.postMessage("loadTimer", location.origin);
                 })
                 .catch((error) => {
                     throw error;
@@ -201,28 +198,6 @@ export const Authentication: FunctionComponent<Record<string, never>> = (): Reac
 
     useEffect(() => {
         const error = new URLSearchParams(location.search).get("error_description");
-
-        if (!isAuthenticated && !error) {
-            (async () => {
-                const response = await trySignInSilently();
-                if (!response) {
-                    if (process.env.NODE_ENV === "production") {
-                        const contextPath: string = window[ "AppUtils" ].getConfig().appBase
-                            ? `/${ window[ "AppUtils" ].getConfig().appBase }`
-                            : "";
-
-                        axios.get(contextPath + "/auth").then((response) => {
-                            signIn(null, response?.data?.authCode, response?.data?.sessionState);
-                        });
-                    } else {
-                        await signIn();
-                    }
-                }
-
-                await signIn({ callOnlyOnRedirect: true });
-            })();
-        }
-
         if (error === AppConstants.USER_DENIED_CONSENT_SERVER_ERROR) {
             history.push({
                 pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
@@ -230,6 +205,26 @@ export const Authentication: FunctionComponent<Record<string, never>> = (): Reac
             });
 
             return;
+        }
+
+        if (!isAuthenticated && !isSigningOut) {
+            (async () => {
+                const response = await trySignInSilently();
+                if (response === false) {
+                    if (process.env.NODE_ENV === "production") {
+                        const contextPath: string = window[ "AppUtils" ].getConfig().appBase
+                            ? `/${ window[ "AppUtils" ].getConfig().appBase }`
+                            : "";
+
+                        await axios.get(contextPath + "/auth").then((response) => {
+                            signIn(null, response?.data?.authCode, response?.data?.sessionState);
+                        });
+                    } else {
+                        await signIn();
+                    }
+                }
+                await signIn({ callOnlyOnRedirect: true });
+            })();
         }
 
         isAuthenticated && loginSuccessRedirect();
