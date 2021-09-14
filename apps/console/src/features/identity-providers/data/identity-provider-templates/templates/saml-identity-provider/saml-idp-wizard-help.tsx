@@ -44,7 +44,6 @@ const SamlIDPWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement
         <div data-testid={ testId }>
             <Message info>
                 <p>
-
                     <Trans
                         i18nKey={
                             "console:develop.features.authenticationProvider.templates.enterprise.saml." +
