@@ -4924,8 +4924,7 @@ export const console: ConsoleNS = {
                         },
                         authenticationProviders: {
                             heading: "Connections",
-                            subHeading: "Create and manage connections that can be used for the login experience " +
-                                "in your applications."
+                            subHeading: "Create and manage connections to use in the login flow of your applications."
                         },
                         idps: {
                             heading: "Identity Providers",
@@ -5032,8 +5031,7 @@ export const console: ConsoleNS = {
                 title: null
             },
             authenticationProvider: {
-                subTitle: "Create and manage connections that can be used for the login experience in your " +
-                    "applications.",
+                subTitle: "Create and manage connections to use in the login flow of your applications.",
                 title: "Connections"
             },
             authenticationProviderTemplate: {
