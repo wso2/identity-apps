@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AuthProvider } from "@asgardeo/auth-react";
 import { ContextUtils, StringUtils } from "@wso2is/core/utils";
 import {
     I18n,
@@ -24,6 +25,7 @@ import {
     LanguageChangeException,
     isLanguageSupported
 } from "@wso2is/i18n";
+import { ContentLoader } from "@wso2is/react-components";
 import axios from "axios";
 import * as React from "react";
 // tslint:disable:no-submodule-imports
@@ -34,12 +36,13 @@ import "react-app-polyfill/stable";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import { App } from "./app";
 import { Config } from "./configs";
+import { ProtectedApp } from "./protected-app";
 import { store } from "./store";
 import { setSupportedI18nLanguages } from "./store/actions";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
+import { getAuthInitializeConfig } from "./utils";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
@@ -93,7 +96,9 @@ ReactDOM.render(
     (
         <Provider store={ store }>
             <BrowserRouter>
-                <App/>
+                <AuthProvider config={ getAuthInitializeConfig() } fallback={ <ContentLoader dimmer /> }>
+                    <ProtectedApp />
+                </AuthProvider>
             </BrowserRouter>
         </Provider>
     ),
