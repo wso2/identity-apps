@@ -3889,7 +3889,7 @@ export const console: ConsoleNS = {
                     enterprise: {
                         saml: {
                             preRequisites: {
-                                configureIdp: "See Asgardeo guide on configuring SAML IdP.",
+                                configureIdp: "See Asgardeo guide on configuring SAML IdP",
                                 configureRedirectURL: "Use the following URL as the " + 
                                     "<1>Assertion Consumer Service (ACS) URL</1>.",
                                 heading: "Prerequisite",

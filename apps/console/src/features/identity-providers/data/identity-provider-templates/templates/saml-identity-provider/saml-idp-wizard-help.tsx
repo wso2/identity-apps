@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Code, CopyInputField, Heading, useDocumentation } from "@wso2is/react-components";
+import { Code, CopyInputField, DocumentationLink, Heading, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -63,20 +63,18 @@ const SamlIDPWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement
                             productName: config.ui.productName
                         })
                     }
-                    <br/>
-                    <br/>
-                    { getLink("develop.connections.newConnection.enterprise.samlLearnMore") === undefined ?
-                        null :
-                        <a
-                            href={ getLink("develop.connections.newConnection.enterprise.samlLearnMore") }
-                            target="_blank"
-                            rel="noopener noreferrer">
-                            {
-                                t("console:develop.features.authenticationProvider.templates.enterprise.saml." +
-                                    "preRequisites.configureIdp")
-                            }
-                        </a>
+                    { getLink("develop.connections.newConnection.enterprise.samlLearnMore") === undefined
+                        ? null
+                        : <Divider hidden/>
                     }
+                    <DocumentationLink
+                        link={ getLink("develop.connections.newConnection.enterprise.samlLearnMore") }
+                    >
+                        {
+                            t("console:develop.features.authenticationProvider.templates.enterprise.saml." +
+                                "preRequisites.configureIdp")
+                        }
+                    </DocumentationLink>
                 </p>
             </Message>
             <Heading as="h5">Service provider entity ID</Heading>
