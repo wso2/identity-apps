@@ -559,7 +559,10 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
                                                                 {
                                                                     (profileInfo.emails !== undefined
-                                                                        && profileInfo.emails !== null) && (
+                                                                        && profileInfo.emails !== null
+                                                                        && resolveAuthenticatedUserEmail() !==
+                                                                            resolveUserDisplayName(
+                                                                                profileInfo, basicProfileInfo)) && (
                                                                         <div
                                                                             className="email"
                                                                             data-testid={
