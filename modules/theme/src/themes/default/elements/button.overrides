@@ -21,7 +21,8 @@
     &.link-button {
         // Remove outline.
         box-shadow: none !important;
-        
+
+        // Override outline in primary variation.
         &.primary {
             box-shadow: none !important;
         }
