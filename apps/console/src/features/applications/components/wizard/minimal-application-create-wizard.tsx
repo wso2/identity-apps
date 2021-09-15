@@ -65,6 +65,9 @@ import { getInboundProtocolLogos } from "../../configs";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
+import SinglePageApplicationTemplate
+    from "../../data/application-templates/templates/single-page-application/single-page-application.json";
+
 import {
     ApplicationTemplateIdTypes,
     ApplicationTemplateInterface,
@@ -411,6 +414,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     templateValues={ templateSettings?.application }
                     onSubmit={ (values): void => setProtocolFormValues(values) }
                     showCallbackURL={ true }
+                    addOriginByDefault={ selectedTemplate.id === SinglePageApplicationTemplate.id }
                     data-testid={ `${ testId }-oauth-protocol-settings-form` }
                 />
             );
