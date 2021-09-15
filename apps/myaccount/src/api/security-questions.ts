@@ -25,12 +25,12 @@ import { store } from "../store";
  *
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
+const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Method that sends multiple api requests at once.
  */
-const httpRequestAll = IdentityClient.getInstance().httpRequestAll.bind(IdentityClient.getInstance());
+const httpRequestAll = AsgardeoSPAClient.getInstance().httpRequestAll.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Fetch the configured security questions of the user.

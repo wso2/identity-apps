@@ -33,8 +33,8 @@ import { AxiosRequestConfig, AxiosResponse } from "axios";
  * Initialize an axios Http client.
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
-const httpClientAll = IdentityClient.getInstance().httpRequestAll.bind(IdentityClient.getInstance());
+const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+const httpClientAll = AsgardeoSPAClient.getInstance().httpRequestAll.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Fetches a list of consented applications of the currently authenticated user.

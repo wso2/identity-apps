@@ -25,7 +25,7 @@ import { store } from "../store";
  *
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
+const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Validate the user-entered verification code.

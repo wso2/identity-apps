@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient, SignInResponse } from "@wso2/identity-oidc-js";
+import { AsgardeoSPAClient, BasicUserInfo } from "@asgardeo/auth-react";
 import { HttpMethods, LinkedAccountInterface } from "../models";
 import { store } from "../store";
 
@@ -25,7 +25,7 @@ import { store } from "../store";
  *
  * @type {OAuthSingletonInterface}
  */
-const oAuth = IdentityClient.getInstance();
+const oAuth = AsgardeoSPAClient.getInstance();
 
 /**
  * Get an axios instance.
@@ -154,7 +154,7 @@ export const removeAllLinkedAccounts = (): Promise<any> => {
 export const switchAccount = (account: LinkedAccountInterface): Promise<any> => {
 
     return oAuth
-        .customGrant({
+        .requestCustomGrant({
             attachToken: false,
             data: {
                 client_id: "{{clientId}}",
@@ -166,11 +166,10 @@ export const switchAccount = (account: LinkedAccountInterface): Promise<any> => 
                 "userstore-domain": account.userStoreDomain
             },
             id: "account-switch",
-            returnResponse: true,
             returnsSession: true,
             signInRequired: true
         })
-        .then((response: SignInResponse) => {
+        .then((response: BasicUserInfo) => {
             return Promise.resolve(response?.data);
         })
         .catch((error) => {

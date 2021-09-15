@@ -33,7 +33,7 @@ import { toggleSCIMEnabled } from "../store/actions";
  *
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
+const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Retrieve the user information of the currently authenticated user.

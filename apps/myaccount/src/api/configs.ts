@@ -22,10 +22,10 @@ import { HttpMethods } from "../models";
 import { store } from "../store";
 
 /**
- * @see IdentityClient
+ * @see AsgardeoSPAClient
  */
-const httpClient = IdentityClient.getInstance().httpRequest.bind(
-    IdentityClient.getInstance()
+const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(
+    AsgardeoSPAClient.getInstance()
 );
 
 /**
