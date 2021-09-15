@@ -3085,6 +3085,14 @@ export const console: ConsoleNS = {
                             }
                         },
                         saml: {
+                            AuthRedirectUrl: {
+                                ariaLabel: "SAML assertion consumer service URL",
+                                hint: "The Assertion Consumer Service (ACS) URL determines where" +
+                                    " {{productName}} expects the external identity provider to send the" + 
+                                    " SAML response.",
+                                label: "Assertion Consumer Service (ACS) URL",
+                                placeholder: "Assertion Consumer Service (ACS) URL"
+                            },
                             SPEntityId: {
                                 placeholder: "Enter service provider entity ID",
                                 ariaLabel: "Service provider entity ID",
@@ -3113,16 +3121,16 @@ export const console: ConsoleNS = {
                                 placeholder: "Select identity provider NameIDFormat",
                                 ariaLabel: "Choose NameIDFormat for SAML 2.0 assertion",
                                 label: "Identity provider NameID format",
-                                hint: "Name ID defines the name identifier formats supported by the external " +
-                                    "IdP. Name identifier is how {{productName}} communicates with" +
-                                    " external IdP regarding a user."
+                                hint: "This specifies the name identifier format that is used to " +
+                                    "exchange information regarding the user in the SAML " +
+                                    "assertion sent from the external IdP."
                             },
                             RequestMethod: {
                                 placeholder: "Select HTTP protocol binding",
                                 ariaLabel: "HTTP protocol for SAML 2.0 bindings",
                                 label: "HTTP protocol binding",
-                                hint: "Protocol binding to use when sending requests. HTTP redirect for simple" +
-                                    " requests or HTTP POST if requests are signed, which is recommended."
+                                hint: "This specifies the mechanisms to transport SAML" +
+                                " messages in communication protocols."
                             },
                             IsSLORequestAccepted: {
                                 ariaLabel: "Specify whether logout is enabled for IdP",
@@ -3878,6 +3886,24 @@ export const console: ConsoleNS = {
                     }
                 },
                 templates: {
+                    enterprise: {
+                        saml: {
+                            preRequisites: {
+                                configureIdp: "See Asgardeo guide on configuring SAML IdP",
+                                configureRedirectURL: "Use the following URL as the " + 
+                                    "<1>Assertion Consumer Service (ACS) URL</1>.",
+                                heading: "Prerequisite",
+                                hint: "The Assertion Consumer Service (ACS) URL determines" +
+                                    " where {{productName}} expects the external identity" + 
+                                    " provider to send the SAML response."
+                            }
+                        },
+                        validation: {
+                            invalidName: "{{idpName}} is not a valid name. It should not contain any other" +
+                                " alphanumerics except for periods (.), dashes (-), underscores (_) and spaces.",
+                            name: "Please enter a valid name"
+                        }
+                    },
                     facebook: {
                         wizardHelp: {
                             clientId: {
@@ -3892,9 +3918,9 @@ export const console: ConsoleNS = {
                             },
                             heading: "Help",
                             name: {
-                                idpDescription: "Provide a unique name for the identity provider.",
                                 connectionDescription: "Provide a unique name for the connection.",
-                                heading: "Name"
+                                heading: "Name",
+                                idpDescription: "Provide a unique name for the identity provider."
                             },
                             preRequisites: {
                                 configureOAuthApps: "See Facebooks's guide on configuring apps.",
@@ -3971,13 +3997,6 @@ export const console: ConsoleNS = {
                     quickSetup: {
                         heading: "Quick Setup",
                         subHeading: "Predefined set of templates to speed up your identity provider creation."
-                    },
-                    enterprise: {
-                        validation: {
-                            name: "Please enter a valid name",
-                            invalidName: "{{idpName}} is not a valid name. It should not contain any other" +
-                                " alphanumerics except for periods (.), dashes (-), underscores (_) and spaces."
-                        }
                     }
                 },
                 wizards: {

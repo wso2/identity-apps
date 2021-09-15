@@ -545,28 +545,6 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             placeholder={ "Enter SAML 2.0 entity id (saml issuer)" }
                             data-testid={ `${ testId }-form-wizard-saml-idp-entity-id` }
                         />
-                        <Field.Dropdown
-                            ariaLabel="Name ID format"
-                            name="NameIDType"
-                            label="Name ID format"
-                            required={ true }
-                            width={ 15 }
-                            options={ getAvailableNameIDFormats() }
-                            value={ initialValues.NameIDType }
-                            placeholder="Select an available name identifier"
-                            data-testid={ `${ testId }-form-wizard-saml-nameid-format` }
-                        />
-                        <Field.Dropdown
-                            ariaLabel="SAML 2.0 protocol binding"
-                            name="RequestMethod"
-                            label="SAML 2.0 protocol binding"
-                            required={ true }
-                            options={ getAvailableProtocolBindingTypes() }
-                            width={ 15 }
-                            value={ initialValues.RequestMethod }
-                            placeholder={ "Select mode of protocol binding" }
-                            data-testid={ `${ testId }-form-wizard-saml-protocol-binding` }
-                        />
                     </div>
                 )
                 : (
