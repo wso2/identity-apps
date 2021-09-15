@@ -174,8 +174,6 @@ export const ProtectedApp: FunctionComponent<Record<string, never>> = (): ReactE
                     sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, oidcSessionIframeEndpoint);
                     sessionStorage.setItem(TOKEN_ENDPOINT, tokenEndpoint);
 
-                    const rpIFrame: HTMLIFrameElement = document.getElementById("rpIFrame") as HTMLIFrameElement;
-                    rpIFrame?.contentWindow.postMessage("loadTimer", location.origin);
                 })
                 .catch((error) => {
                     throw error;
