@@ -959,7 +959,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                             ] }
                                             action={
                                                 !readOnly && (
-                                                    <PrimaryButton onClick={ handleOpenSelectionModal }>
+                                                    <PrimaryButton basic onClick={ handleOpenSelectionModal }>
                                                         <Icon name="plus" />
                                                         { t("console:develop.features.applications.placeholders" +
                                                             ".emptyAttributesList.action") }
