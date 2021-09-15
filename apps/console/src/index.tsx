@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AuthProvider } from "@asgardeo/auth-react";
 import { setSupportedI18nLanguages } from "@wso2is/core/store";
 import { ContextUtils, StringUtils } from "@wso2is/core/utils";
 import {
@@ -30,8 +31,9 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import { App } from "./app";
-import { Config, store } from "./features/core";
+import { AuthenticateUtils } from "./features/authentication";
+import { Config, PreLoader, store } from "./features/core";
+import { ProtectedApp } from "./protected-app";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
@@ -87,7 +89,9 @@ ReactDOM.render(
     (
         <Provider store={ store }>
             <BrowserRouter>
-                <App/>
+                <AuthProvider config={ AuthenticateUtils.initializeConfig } fallback={ <PreLoader /> }>
+                    <ProtectedApp />
+                </AuthProvider>
             </BrowserRouter>
         </Provider>
     ),
