@@ -40,6 +40,7 @@ export class AuthenticateUtils {
     private constructor() {}
 
     public static initializeConfig: AuthClientConfig<Config> = {
+        checkSessionInterval: window[ "AppUtils" ].getConfig()?.session?.checkSessionInterval,
         clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
         clientID: window["AppUtils"].getConfig().clientID,
         clockTolerance: window[ "AppUtils" ].getConfig().idpConfigs?.clockTolerance,
@@ -58,10 +59,11 @@ export class AuthenticateUtils {
         resourceServerURLs: AuthenticateUtils.resolveBaseUrls(),
         responseMode: window["AppUtils"].getConfig().idpConfigs?.responseMode ?? responseModeFallback,
         scope: window["AppUtils"].getConfig().idpConfigs?.scope ?? [TokenConstants.SYSTEM_SCOPE],
-        //sendCookiesInRequests: true,
+        sendCookiesInRequests: true,
         serverOrigin:
             window["AppUtils"].getConfig().idpConfigs?.serverOrigin ??
-            window["AppUtils"].getConfig().idpConfigs.serverOrigin,
+            window[ "AppUtils" ].getConfig().idpConfigs.serverOrigin,
+        sessionRefreshInterval: window[ "AppUtils" ].getConfig()?.session?.sessionRefreshTimeOut,
         signInRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
         signOutRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
         storage: AuthenticateUtils.resolveStorage(),
