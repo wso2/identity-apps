@@ -250,7 +250,13 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                     } }
                     triggerSubmit={ (submitFunction) => triggerSubmission(submitFunction) }
                 >
-                    <Heading hidden={ onlyOIDCConfigured } as="h4">
+                    <Heading
+                        hidden={
+                            onlyOIDCConfigured &&
+                            !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute
+                        }
+                        as="h4"
+                    >
                         { t("console:develop.features.applications.forms.advancedAttributeSettings." +
                             "sections.subject.heading") }
                     </Heading>
@@ -265,7 +271,10 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         required={ claimMappingOn }
                         value={ selectedSubjectValue }
                         children={ dropDownOptions }
-                        hidden={ onlyOIDCConfigured }
+                        hidden={
+                            onlyOIDCConfigured &&
+                            !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute
+                        }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-subject-attribute-dropdown` }
                         listen={ subjectAttributeChangeListener }
