@@ -52,7 +52,6 @@ import {
     UIConfigInterface
 } from "./models";
 import { AppState } from "./store";
-import { initializeAuthentication } from "./store/actions";
 import { EventPublisher, filterRoutes } from "./utils";
 
 /**
@@ -79,7 +78,6 @@ export const App = (): ReactElement => {
      * Set the deployment configs in redux state.
      */
     useEffect(() => {
-        dispatch(initializeAuthentication());
         sessionStorageDisabled();
     }, []);
 
@@ -267,21 +265,7 @@ export const App = (): ReactElement => {
                                                         ".primaryActionText") }
                                                 />
                                                 <Switch>
-                                                    <Redirect
-                                                        exact={ true }
-                                                        path={ AppConstants.getPaths().get("ROOT") }
-                                                        to={ AppConstants.getAppLoginPath() }
-                                                    />
-                                                    <Redirect
-                                                        exact={ true }
-                                                        path={ AppConstants.getAppBasePath() }
-                                                        to={ AppConstants.getAppLoginPath() }
-                                                    />
-                                                    <Redirect
-                                                        exact={ true }
-                                                        path={ AppConstants.getTenantQualifiedAppBasePath() }
-                                                        to={ AppConstants.getAppLoginPath() }
-                                                    />
+                                                    <Redirect exact from="/" to={ AppConstants.getAppHomePath() } />
                                                     {
                                                         config
                                                             ? filterRoutes(appRoutes, config)
@@ -332,3 +316,10 @@ export const App = (): ReactElement => {
         </>
     );
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default App;
