@@ -4924,7 +4924,7 @@ export const console: ConsoleNS = {
                         },
                         authenticationProviders: {
                             heading: "Connections",
-                            subHeading: "Create and manage connections to authenticate users in your applications."
+                            subHeading: "Create and manage connections to use in the login flow of your applications."
                         },
                         idps: {
                             heading: "Identity Providers",
@@ -5017,8 +5017,8 @@ export const console: ConsoleNS = {
         pages: {
             applicationTemplate: {
                 backButton: "Go back to Applications",
-                subTitle: "Register an application using one of the templates given below. " +
-                    "If you don't find a matching template, create a custom application.",
+                subTitle: "Register an application using one of the templates given below. If nothing matches your " +
+                    "application type, start with the Standard-based Application template.",
                 title: "Register New Application"
             },
             applications: {
@@ -5031,7 +5031,7 @@ export const console: ConsoleNS = {
                 title: null
             },
             authenticationProvider: {
-                subTitle: "Connections that can be used to authenticate users in applications.",
+                subTitle: "Create and manage connections to use in the login flow of your applications.",
                 title: "Connections"
             },
             authenticationProviderTemplate: {

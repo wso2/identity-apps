@@ -102,7 +102,7 @@ Recent Application Card
           Template Card
 --------------------------------*/
 
-@templateCardDefaultWidth: 220px;
+@templateCardDefaultWidth: 250px;
 @templateCardRightSpacing: 30px;
 @templateCardHoverBoxShadow: @defaultCardHoverBoxShadow;
 @templateCardTransition: @defaultCardTransition;
