@@ -196,7 +196,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
             if(urlSearchParams.get(ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY) !==
                 ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE) {
-
                 handleDefaultTabIndexChange(defaultTabIndex);
 
                 return;
@@ -233,12 +232,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     return;
                 }
                 handleActiveTabIndexChange(tabIndex);
-
             } else {
                 // Change the tab index to defaultActiveIndex for invalid URL fragments.
                 handleDefaultTabIndexChange(defaultActiveIndex);
             }
-
         } else {
             // Change the tab index to defaultActiveIndex for invalid URL fragments.
             handleDefaultTabIndexChange(defaultActiveIndex);
@@ -392,7 +389,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
         if (template.id === CustomApplicationTemplate.id && defaultActiveIndex > 0) {
             handleActiveTabIndexChange(defaultActiveIndex - 1);
-
             return;
         }
 
@@ -410,7 +406,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             hash: `#${ URLFragmentTypes.TAB_INDEX }${ tabIndex }`,
             pathname: window.location.pathname
         });
-
         setActiveTabIndex(tabIndex);
     };
 
