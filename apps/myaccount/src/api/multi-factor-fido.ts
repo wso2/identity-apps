@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient } from "@wso2/identity-oidc-js";
+import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { Decode, Encode } from "../helpers/base64-utils";
 import { HttpMethods } from "../models";
 import { store } from "../store";
