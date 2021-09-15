@@ -140,7 +140,6 @@ module.exports = (env) => {
                 : false
             : isDevelopment && "eval-cheap-module-source-map",
         entry: {
-            init: [ "@babel/polyfill", "./src/init/init.ts" ],
             main: "./src/index.tsx"
         },
         infrastructureLogging: {
