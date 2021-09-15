@@ -140,7 +140,9 @@ module.exports = (env) => {
                 : false
             : isDevelopment && "eval-cheap-module-source-map",
         entry: {
-            main: "./src/index.tsx"
+            init: [ "@babel/polyfill", "./src/init/init.ts" ],
+            main: "./src/index.tsx",
+            rpIFrame: "./src/init/rpIFrame-script.ts"
         },
         infrastructureLogging: {
             // Log level is set to `none` by default to get rid of un-necessary logs from persistent cache etc.
@@ -400,6 +402,7 @@ module.exports = (env) => {
                     authorizationCode: "<%=request.getParameter(\"code\")%>",
                     contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" " +
                         "pageEncoding=\"UTF-8\" %>",
+                    excludeChunks: [ "rpIFrame" ],
                     filename: path.join(distFolder, "index.jsp"),
                     hash: true,
                     importSuperTenantConstant: !isDeployedOnExternalServer
@@ -435,6 +438,7 @@ module.exports = (env) => {
                     vwoSystemVariable: "<% String vwo_ac_id = System.getenv(\"vwo_account_id\"); %>"
                 })
                 : new HtmlWebpackPlugin({
+                    excludeChunks: [ "rpIFrame" ],
                     filename: path.join(distFolder, "index.html"),
                     hash: true,
                     publicPath: !isRootContext
@@ -443,11 +447,13 @@ module.exports = (env) => {
                     template: path.join(__dirname, "src", "index.html")
                 }),
             new HtmlWebpackPlugin({
-                excludeChunks: [ "main" ],
+                excludeChunks: [ "main", "init" ],
+                filename: path.join(distFolder, "rpIFrame.html"),
                 hash: true,
                 publicPath: !isRootContext
                     ? publicPath
-                    : "/"
+                    : "/",
+                template: path.join(__dirname, "src", "rpIFrame.html")
             }),
             new webpack.DefinePlugin({
                 "process.env": {
