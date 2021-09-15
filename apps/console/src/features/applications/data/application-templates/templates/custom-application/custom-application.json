@@ -2,7 +2,7 @@
     "id": "custom-application",
     "templateId": "custom-application",
     "name": "Standard Based Application",
-    "description": "Applications built on top of standard auth protocols.",
+    "description": "Applications built using standard protocols.",
     "image": "customApp",
     "authenticationProtocol": "",
     "category": "DEFAULT",
