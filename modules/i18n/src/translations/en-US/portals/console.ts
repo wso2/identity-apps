@@ -5017,8 +5017,8 @@ export const console: ConsoleNS = {
         pages: {
             applicationTemplate: {
                 backButton: "Go back to Applications",
-                subTitle: "Register an application using one of the templates given below. " +
-                    "If you don't find a matching template, create a custom application.",
+                subTitle: "Register an application using one of the templates given below. If you don't find a " +
+                    "matching template for your application type, start with the Standard-based Application template.",
                 title: "Register New Application"
             },
             applications: {

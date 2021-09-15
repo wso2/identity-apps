@@ -3708,8 +3708,9 @@ export const console: ConsoleNS = {
         pages: {
             applicationTemplate: {
                 backButton: "Retour aux applications",
-                subTitle: "Enregistrez une demande en utilisant l'un des modèles ci-dessous. " +
-                    "Si vous ne trouvez pas de modèle correspondant, créez une application personnalisée.",
+                subTitle: "Enregistrez une demande en utilisant l'un des modèles ci-dessous. Si vous ne trouvez " +
+                    "pas de modèle correspondant à votre type d'application, commencez par le modèle d'application " +
+                    "standard.",
                 title: "Enregistrer une nouvelle candidature"
             },
             applications: {
