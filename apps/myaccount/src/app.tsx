@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useAuthContext } from "@asgardeo/auth-react";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
 import { RouteInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
 import {
@@ -73,6 +74,8 @@ export const App = (): ReactElement => {
     const [ appRoutes, setAppRoutes ] = useState<RouteInterface[]>(getAppRoutes());
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    const { trySignInSilently } = useAuthContext();
 
     /**
      * Set the deployment configs in redux state.
@@ -190,20 +193,15 @@ export const App = (): ReactElement => {
      * do the necessary actions.
      */
     const handleStayLoggedIn = (): void => {
-
-        const urlSearchParams: URLSearchParams = new URLSearchParams();
-        urlSearchParams.set("stay_logged_in", "true");
-
-        history.push({
-            pathname: window.location.pathname,
-            search: urlSearchParams.toString()
-        });
-
-        dispatchEvent(new PopStateEvent("popstate", {
-            state: {
-                stayLoggedIn: true
+        trySignInSilently().then((response) => {
+            if (response === false) {
+                history.push(AppConstants.getAppLogoutPath());
+            } else {
+                window.history.replaceState(null, null, window.location.pathname);
             }
-        }));
+        }).catch(() => {
+            history.push(AppConstants.getAppLogoutPath());
+        });
     };
 
     return (
