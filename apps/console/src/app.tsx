@@ -201,6 +201,8 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
         trySignInSilently().then((response) => {
             if (response === false) {
                 history.push(AppConstants.getAppLogoutPath());
+            } else {
+                window.history.replaceState(null, null, window.location.pathname);
             }
         }).catch(() => {
             history.push(AppConstants.getAppLogoutPath());
