@@ -748,7 +748,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         setIsClaimRequestLoading(true);
 
         if (onlyOIDCConfigured) {
-            setIsClaimRequestLoading(false);
             changeSelectedDialect("http://wso2.org/oidc/claim");
 
             return;
