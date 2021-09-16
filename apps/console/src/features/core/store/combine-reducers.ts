@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AuthenticatedUserInfo } from "@asgardeo/auth-react";
 import {
     LinkedAccountInterface,
     ProfileInfoInterface,
@@ -49,7 +50,6 @@ import {
     ServiceResourceEndpointsInterface,
     UIConfigInterface
 } from "../models";
-import { AuthenticatedUserInfo } from "@asgardeo/auth-react";
 
 /**
  * Combines all the reducers.
