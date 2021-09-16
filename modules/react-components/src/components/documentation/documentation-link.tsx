@@ -16,8 +16,10 @@
  * under the License.
  */
 
+import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { Icon } from "semantic-ui-react";
+
 /**
  * DocumentationLink component Prop types.
  */
@@ -30,6 +32,10 @@ interface DocumentationLinkPropsInterface {
      * Documentation URL target property. Opens in a new window by default.
      */
     target?: string;
+    /**
+     * Additional CSS classes.
+     */
+    className?: string;
 }
 
 /**
@@ -45,6 +51,7 @@ export const DocumentationLink: FunctionComponent<PropsWithChildren<Documentatio
 
     const { 
         children,
+        className,
         link,
         target
     } = props;
@@ -53,8 +60,10 @@ export const DocumentationLink: FunctionComponent<PropsWithChildren<Documentatio
         return null;
     }
 
+    const classes = classNames("documentation-link", className);
+
     return (
-        <strong>
+        <strong className={ classes }>
             <a
                 href={ link }
                 target={ target }
