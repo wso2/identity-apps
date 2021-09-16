@@ -54,17 +54,15 @@ export const DocumentationLink: FunctionComponent<PropsWithChildren<Documentatio
     }
 
     return (
-        <strong>
-            <a
-                href={ link }
-                target={ target }
-                rel="noopener noreferrer"
-                className="ml-1 link external no-wrap"
-            >
-                { children }
-                <Icon className="ml-1" name="external alternate"/>
-            </a>
-        </strong>
+        <a
+            href={ link }
+            target={ target }
+            rel="noopener noreferrer"
+            className="ml-1 link external no-wrap"
+        >
+            { children }
+            <Icon className="ml-1" name="external alternate"/>
+        </a>
     );
 };
 
