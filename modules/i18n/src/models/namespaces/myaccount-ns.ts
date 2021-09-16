@@ -343,8 +343,10 @@ export interface MyAccountNS {
             };
             authenticatorApp: {
                 description: string;
+                configuredDescription:string;
                 heading: string;
                 hint: string;
+                deleteHint: string;
                 modals: {
                     heading: string;
                     scan: {
@@ -362,6 +364,10 @@ export interface MyAccountNS {
                         requiredError: string;
                         reScanQuestion: string;
                         reScan: string;
+                    };
+                    delete: {
+                        heading: string;
+                        message: string;
                     };
                     done: string;
                     toolTip: string;

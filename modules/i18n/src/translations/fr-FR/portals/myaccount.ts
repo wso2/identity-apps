@@ -556,7 +556,12 @@ export const myAccount: MyAccountNS = {
                     "d'authentification pour utiliser des codes d'accès " +
                     "à usage unique basés sur le temps (également appelés TOTP) " +
                     "comme deuxième facteur lors de la connexion aux applications.",
+                configuredDescription: "Vous pouvez utiliser les codes TOTP de votre application " +
+                    " d'authentification configurée pour une authentification à deux facteurs. " +
+                    "Si vous n'avez pas accès à l'application, vous pouvez en supprimer ou en " +
+                    "créer une nouvelle à partir d'ici.",
                 heading: "Application d'authentification",
+                deleteHint: "Supprimez votre TOTP Authenticator",
                 hint: "Afficher le code QR",
                 modals: {
                     heading: "Set Up An Authenticator App",
@@ -576,6 +581,11 @@ export const myAccount: MyAccountNS = {
                         reScan: "Re-scanner",
                         reScanQuestion: "Voulez-vous scanner le code QR à nouveau ?",
                         requiredError: "Veuillez entrer votre code de vérification"
+                    },
+                    delete : {
+                        heading: "Confirmation",
+                        message: "Cette action supprimera l'authentificateur TOTP configuré. " +
+                            "Souhaitez-vous continuer ? "
                     },
                     toolTip: "Vous n'avez pas d'application? Téléchargez une application d'authentification " +
                     "telle que Google Authenticator depuis <3> App Store </3> ou <3> Google Play </3>"

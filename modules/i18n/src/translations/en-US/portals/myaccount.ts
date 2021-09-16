@@ -554,8 +554,12 @@ export const myAccount: MyAccountNS = {
                 description: " Scan the QR code using an Authenticator App to use " +
                     "time-based , one-time passcodes (also known as TOTP) as a " +
                     "second factor when logging in to applications.",
+                configuredDescription: "You can use TOTP codes from your configured " +
+                "authenticator app for two-factor authentication. If you don't have " +
+                "access to the application you can delete or set up a new one from here.",
                 heading: "Authenticator App",
                 hint: "Show the QR Code",
+                deleteHint: "Delete your TOTP Authenticator",
                 modals: {
                     heading: "Setup an Authenticator App",
                     done: "Success! Now you can use your Authenticator App for two-factor authentication",
@@ -574,6 +578,10 @@ export const myAccount: MyAccountNS = {
                         reScan: "Re-scan",
                         reScanQuestion: "Want to scan the QR code again?",
                         requiredError: "Enter the verification code"
+                    },
+                    delete : {
+                        heading: "Confirmation",
+                        message: "This action will remove the configured TOTP Authenticator. Do you wish to continue ? "
                     },
                     toolTip: "Don't have an app? Download an authenticator application like " +
                     "Google Authenticator from <3>App Store</3> or <3>Google Play</3>"
