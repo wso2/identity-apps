@@ -19,14 +19,8 @@
 import { useAuthContext } from "@asgardeo/auth-react";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
 import { RouteInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
-import {
-    setDeploymentConfigs,
-    setI18nConfigs,
-    setServiceResourceEndpoints,
-    setUIConfigs
-} from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
-import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
+import { I18n } from "@wso2is/i18n";
 import {
     ChunkErrorModal,
     Code,
@@ -39,18 +33,15 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement, Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { I18nextProvider, Trans } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { ProtectedRoute } from "./components";
-import { Config, getAppRoutes } from "./configs";
+import { getAppRoutes } from "./configs";
 import { AppConstants } from "./constants";
 import { history } from "./helpers";
 import {
     ConfigReducerStateInterface,
-    DeploymentConfigInterface,
-    FeatureConfigInterface,
-    ServiceResourceEndpointsInterface,
-    UIConfigInterface
+    FeatureConfigInterface
 } from "./models";
 import { AppState } from "./store";
 import { EventPublisher, filterRoutes } from "./utils";
@@ -61,8 +52,6 @@ import { EventPublisher, filterRoutes } from "./utils";
  * @return {React.Element}
  */
 export const App = (): ReactElement => {
-
-    const dispatch = useDispatch();
 
     const userName: string = useSelector((state: AppState) => state.authenticationInformation.username);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
