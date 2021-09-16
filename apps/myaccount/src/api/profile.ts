@@ -128,7 +128,7 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
             "Content-Type": "application/scim+json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.me
+        url: store.getState().config?.endpoints?.me
     };
 
     return httpClient(requestConfig)
