@@ -34,7 +34,7 @@ const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAC
 export const getFederatedAssociations = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -62,7 +62,7 @@ export const getFederatedAssociations = (): Promise<any> => {
 export const deleteFederatedAssociation = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
@@ -85,7 +85,7 @@ export const deleteFederatedAssociation = (id: string): Promise<any> => {
 export const deleteAllFederatedAssociation = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,

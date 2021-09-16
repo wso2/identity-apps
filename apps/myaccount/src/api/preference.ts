@@ -37,7 +37,7 @@ export const getPreference = (data: object): Promise<any> => {
         data,
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost
         },
         method: HttpMethods.POST,
         url: store.getState().config.endpoints.preference

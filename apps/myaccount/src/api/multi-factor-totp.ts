@@ -42,7 +42,7 @@ enum PostTOTPActions {
 export const getTotpQrCode = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -72,7 +72,7 @@ export const validateTOTPCode = (code: string): Promise<any> => {
             verificationCode: code
         },
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
@@ -100,7 +100,7 @@ export const refreshTOTPCode = (): Promise<any> => {
             action: PostTOTPActions.REFRESH
         },
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
@@ -129,7 +129,7 @@ export const initTOTPCode = (): Promise<any> => {
             action: PostTOTPActions.INIT
         },
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
@@ -154,7 +154,7 @@ export const initTOTPCode = (): Promise<any> => {
 export const deleteTOTP = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
@@ -179,7 +179,7 @@ export const deleteTOTP = (): Promise<any> => {
 export const getTOTPSecret = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,

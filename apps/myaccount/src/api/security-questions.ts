@@ -41,7 +41,7 @@ const httpRequestAll = AsgardeoSPAClient.getInstance().httpRequestAll.bind(Asgar
 export const getSecurityQs = (): Promise<any> => {
     const headers = {
         "Accept": "application/json",
-        "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost
+        "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost
     };
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -85,7 +85,7 @@ export const addSecurityQs = (data: object): Promise<any> => {
         data,
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost
         },
         method: HttpMethods.POST,
         url: store.getState().config.endpoints.challengeAnswers
@@ -115,7 +115,7 @@ export const updateSecurityQs = (data: object): Promise<any> => {
         data,
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost
         },
         method: HttpMethods.PUT,
         url: store.getState().config.endpoints.challengeAnswers
