@@ -17,11 +17,11 @@
  */
 
 import {
-    AuthenticatedComponent,
     AuthenticatedUserInfo,
     BasicUserInfo,
     Hooks,
     OIDCEndpoints,
+    SecureApp,
     useAuthContext
 } from "@asgardeo/auth-react";
 import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
@@ -36,9 +36,8 @@ import { AuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { ContentLoader } from "@wso2is/react-components";
 import axios from "axios";
-import React, { FunctionComponent, ReactElement, Suspense, lazy, useEffect } from "react";
+import React, { FunctionComponent, ReactElement, lazy, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Loader } from "semantic-ui-react";
 import { Config } from "./configs";
 import { AppConstants, CommonConstants } from "./constants";
 import { history } from "./helpers";
@@ -55,11 +54,10 @@ const App = lazy(() => import("./app"));
 export const ProtectedApp: FunctionComponent<Record<string, never>> = (): ReactElement => {
     const {
         signIn,
-        trySignInSilently,
         on,
         getOIDCServiceEndpoints,
         getDecodedIDToken,
-        state: { isAuthenticated, isSigningOut }
+        state: { isAuthenticated }
     } = useAuthContext();
 
     const dispatch = useDispatch();
@@ -208,7 +206,7 @@ export const ProtectedApp: FunctionComponent<Record<string, never>> = (): ReactE
         });
     }, []);
 
-    const loginSuccessRedirect = () => {
+    const loginSuccessRedirect = (): void => {
         const AuthenticationCallbackUrl = AuthenticateUtils.getAuthenticationCallbackUrl(
             AppConstantsCore.MY_ACCOUNT_APP
         );
@@ -229,26 +227,6 @@ export const ProtectedApp: FunctionComponent<Record<string, never>> = (): ReactE
             return;
         }
 
-        if (!isAuthenticated && !isSigningOut) {
-            (async () => {
-                const response = await trySignInSilently();
-                if (response === false) {
-                    if (process.env.NODE_ENV === "production") {
-                        const contextPath: string = window[ "AppUtils" ].getConfig().appBase
-                            ? `/${ window[ "AppUtils" ].getConfig().appBase }`
-                            : "";
-
-                        await axios.get(contextPath + "/auth").then((response) => {
-                            signIn(null, response?.data?.authCode, response?.data?.sessionState);
-                        });
-                    } else {
-                        await signIn();
-                    }
-                }
-                await signIn({ callOnlyOnRedirect: true });
-            })();
-        }
-
         if (isAuthenticated) {
             if (
                 sessionStorage.getItem("request_params") &&
@@ -257,17 +235,29 @@ export const ProtectedApp: FunctionComponent<Record<string, never>> = (): ReactE
             ) {
                 sessionStorage.clear();
                 window.location.reload();
-            } else {
-                loginSuccessRedirect();
             }
         }
     }, [ isAuthenticated ]);
 
     return (
-        <AuthenticatedComponent fallback={ <ContentLoader dimmer /> }>
-            <Suspense fallback={ <Loader /> }>
-                <App />
-            </Suspense>
-        </AuthenticatedComponent>
+        <SecureApp
+            fallback={ <ContentLoader dimmer /> }
+            onSignIn={ loginSuccessRedirect }
+            overrideSignIn={ async () => {
+                if (process.env.NODE_ENV === "production") {
+                    const contextPath: string = window[ "AppUtils" ].getConfig().appBase
+                        ? `/${ window[ "AppUtils" ].getConfig().appBase }`
+                        : "";
+
+                    await axios.get(contextPath + "/auth").then((response) => {
+                        signIn(null, response?.data?.authCode, response?.data?.sessionState);
+                    });
+                } else {
+                    await signIn();
+                }
+            } }
+        >
+            <App />
+        </SecureApp>
     );
 };

@@ -17,11 +17,11 @@
  */
 
 import {
-    AuthenticatedComponent,
     AuthenticatedUserInfo,
     BasicUserInfo,
     Hooks,
     OIDCEndpoints,
+    SecureApp,
     useAuthContext
 } from "@asgardeo/auth-react";
 import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
@@ -29,9 +29,8 @@ import { TenantListInterface } from "@wso2is/core/models";
 import { setSignIn } from "@wso2is/core/store";
 import { AuthenticateUtils as CommonAuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
 import axios from "axios";
-import React, { FunctionComponent, ReactElement, Suspense, lazy, useEffect } from "react";
+import React, { FunctionComponent, ReactElement, lazy, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Loader } from "semantic-ui-react";
 import { AuthenticateUtils, getProfileInformation } from "./features/authentication";
 import { Config, HttpUtils, PreLoader } from "./features/core";
 import { AppConstants, CommonConstants } from "./features/core/constants";
@@ -47,11 +46,9 @@ export const ProtectedApp: FunctionComponent<Record<string, never>> = (): ReactE
 
     const {
         signIn,
-        trySignInSilently,
         on,
         getDecodedIDToken,
-        getOIDCServiceEndpoints,
-        state: { isAuthenticated, isSigningOut }
+        getOIDCServiceEndpoints
     } = useAuthContext();
 
     const dispatch = useDispatch();
@@ -186,7 +183,7 @@ export const ProtectedApp: FunctionComponent<Record<string, never>> = (): ReactE
         });
     }, []);
 
-    const loginSuccessRedirect = () => {
+    const loginSuccessRedirect = (): void  => {
         const AuthenticationCallbackUrl = CommonAuthenticateUtils.getAuthenticationCallbackUrl(
             CommonAppConstants.CONSOLE_APP
         );
@@ -209,11 +206,14 @@ export const ProtectedApp: FunctionComponent<Record<string, never>> = (): ReactE
 
             return;
         }
+    }, []);
 
-        if (!isAuthenticated && !isSigningOut) {
-            (async () => {
-                const response = await trySignInSilently();
-                if (response === false) {
+    return (
+        <SecureApp
+            fallback={ <PreLoader /> }
+            onSignIn={ loginSuccessRedirect }
+            overrideSignIn={
+                async () => {
                     if (process.env.NODE_ENV === "production") {
                         const contextPath: string = window[ "AppUtils" ].getConfig().appBase
                             ? `/${ window[ "AppUtils" ].getConfig().appBase }`
@@ -226,18 +226,9 @@ export const ProtectedApp: FunctionComponent<Record<string, never>> = (): ReactE
                         await signIn();
                     }
                 }
-                await signIn({ callOnlyOnRedirect: true });
-            })();
-        }
-
-        isAuthenticated && loginSuccessRedirect();
-    }, [ isAuthenticated ]);
-
-    return (
-        <AuthenticatedComponent fallback={ <PreLoader /> }>
-            <Suspense fallback={ <Loader /> }>
-                <App />
-            </Suspense>
-        </AuthenticatedComponent>
+            }
+        >
+            <App />
+        </SecureApp>
     );
 };
