@@ -286,10 +286,10 @@ export const handleAccountSwitching = (account: LinkedAccountInterface) => (disp
         .then((response) => {
             dispatch(
                 setSignIn({
-                    display_name: response.displayName,
-                    email: response.email,
-                    scope: response.allowedScopes,
-                    username: response.username
+                    display_name: response?.displayName,
+                    email: response?.email,
+                    scope: response?.allowedScopes,
+                    username: response?.username
                 })
             );
 
