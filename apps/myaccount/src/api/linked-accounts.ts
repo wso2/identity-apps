@@ -157,7 +157,7 @@ export const switchAccount = (account: LinkedAccountInterface): Promise<any> => 
         .requestCustomGrant({
             attachToken: false,
             data: {
-                client_id: "{{clientId}}",
+                client_id: "{{clientID}}",
                 grant_type: "account_switch",
                 scope: "{{scope}}",
                 "tenant-domain": account.tenantDomain,
@@ -170,7 +170,7 @@ export const switchAccount = (account: LinkedAccountInterface): Promise<any> => 
             signInRequired: true
         })
         .then((response: BasicUserInfo) => {
-            return Promise.resolve(response?.data);
+            return Promise.resolve(response);
         })
         .catch((error) => {
             return Promise.reject(error);
