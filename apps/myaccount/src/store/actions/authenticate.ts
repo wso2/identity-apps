@@ -118,7 +118,6 @@ export const getScimSchemas = (profileInfo: BasicProfileInterface = null,
  */
 export const getProfileInformation = (updateProfileCompletion = false) => (dispatch): void => {
     let isCompletionCalculated = false;
-
     dispatch(setProfileInfoLoader(true));
 
     getUserReadOnlyStatus()
@@ -215,6 +214,7 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                 });
         })
         .catch((error) => {
+            dispatch(setProfileInfoLoader(false));
             dispatch(
                 addAlert({
                     description:
