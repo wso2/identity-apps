@@ -86,6 +86,9 @@ export type DeleteSecretRequest = {
 };
 
 export type CreateSecretResponse = SecretModel;
+
 export type GetSecretResponse = SecretModel;
+
 export type UpdateSecretResponse = SecretModel;
+
 export type GetSecretListResponse = Array<SecretModel>;
