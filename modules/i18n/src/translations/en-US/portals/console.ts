@@ -3677,6 +3677,20 @@ export const console: ConsoleNS = {
                             message: ""
                         }
                     },
+                    updateAttributes: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Update error"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating Identity Provider attributes.",
+                            message: "Update error"
+                        },
+                        success: {
+                            description: "Successfully updated Identity Provider attributes.",
+                            message: "Update successful"
+                        }
+                    },
                     updateClaimsConfigs: {
                         error: {
                             description: "{{ description }}",
