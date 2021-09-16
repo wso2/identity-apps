@@ -66,8 +66,7 @@ export class AuthenticateUtils {
         sessionRefreshInterval: window[ "AppUtils" ].getConfig()?.session?.sessionRefreshTimeOut,
         signInRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
         signOutRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
-        storage: AuthenticateUtils.resolveStorage(),
-        validateIDToken: false
+        storage: AuthenticateUtils.resolveStorage()
     };
 
     /**

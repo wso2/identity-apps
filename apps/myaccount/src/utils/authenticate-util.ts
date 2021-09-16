@@ -109,7 +109,6 @@ export const getAuthInitializeConfig = (): AuthSPAClientConfig => {
 
     return {
         clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
-
         clientID: window["AppUtils"].getConfig().clientID,
         clockTolerance: window["AppUtils"].getConfig().idpConfigs?.clockTolerance,
         enablePKCE: window["AppUtils"].getConfig().idpConfigs?.enablePKCE ?? true,
@@ -131,6 +130,10 @@ export const getAuthInitializeConfig = (): AuthSPAClientConfig => {
             window["AppUtils"].getConfig().idpConfigs.serverOrigin,
         signInRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
         signOutRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
-        storage: resolveStorage()
+        storage: resolveStorage(),
+        checkSessionInterval: window[ "AppUtils" ].getConfig()?.session?.checkSessionInterval,
+        enableOIDCSessionManagement: true,
+        overrideWellEndpointConfig: true,
+        sessionRefreshInterval: window[ "AppUtils" ].getConfig()?.session?.sessionRefreshTimeOut
     };
 };
