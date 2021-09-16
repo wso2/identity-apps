@@ -117,6 +117,9 @@ export const ProtectedApp: FunctionComponent<Record<string, never>> = (): ReactE
 
             getDecodedIDToken()
                 .then((idToken) => {
+                    const subParts = idToken.sub.split("@");
+                    const tenantDomain = subParts[ subParts.length - 1 ];
+
                     dispatch(
                         setSignIn<AuthenticatedUserInfo & TenantListInterface>({
                             allowedScopes: response.allowedScopes,
@@ -125,7 +128,7 @@ export const ProtectedApp: FunctionComponent<Record<string, never>> = (): ReactE
                             displayName: response.displayName,
                             display_name: response.displayName,
                             email: response.email,
-                            tenantDomain: response.tenantDomain,
+                            tenantDomain: response.tenantDomain ?? tenantDomain,
                             username: response.username
                         })
                     );

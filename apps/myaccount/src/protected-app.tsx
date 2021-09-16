@@ -16,7 +16,14 @@
  * under the License.
  */
 
-import { AuthenticatedComponent, BasicUserInfo, Hooks, OIDCEndpoints, useAuthContext } from "@asgardeo/auth-react";
+import {
+    AuthenticatedComponent,
+    AuthenticatedUserInfo,
+    BasicUserInfo,
+    Hooks,
+    OIDCEndpoints,
+    useAuthContext
+} from "@asgardeo/auth-react";
 import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
 import {
     setDeploymentConfigs,
@@ -51,6 +58,7 @@ export const ProtectedApp: FunctionComponent<Record<string, never>> = (): ReactE
         trySignInSilently,
         on,
         getOIDCServiceEndpoints,
+        getDecodedIDToken,
         state: { isAuthenticated, isSigningOut }
     } = useAuthContext();
 
@@ -127,16 +135,25 @@ export const ProtectedApp: FunctionComponent<Record<string, never>> = (): ReactE
                 sessionStorage.setItem(LOGOUT_URL, logoutUrl);
             }
 
-            dispatch(
-                setSignIn({
-                    displayName: response.displayName,
-                    display_name: response.displayName,
-                    email: response.email,
-                    scope: response.allowedScopes,
-                    tenantDomain: response.tenantDomain,
-                    username: response.username
+            getDecodedIDToken()
+                .then((idToken) => {
+                    const subParts = idToken.sub.split("@");
+                    const tenantDomain = subParts[ subParts.length - 1 ];
+
+                    dispatch(
+                        setSignIn<AuthenticatedUserInfo>({
+                            displayName: response.displayName,
+                            display_name: response.displayName,
+                            email: response.email,
+                            scope: response.allowedScopes,
+                            tenantDomain: response.tenantDomain ?? tenantDomain,
+                            username: response.username
+                        })
+                    );
                 })
-            );
+                .catch((error) => {
+                    throw error;
+                });
 
             sessionStorage.setItem(CommonConstants.SESSION_STATE, response?.sessionState);
 
