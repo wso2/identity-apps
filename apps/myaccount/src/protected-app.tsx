@@ -16,16 +16,17 @@
  * under the License.
  */
 
-import {
-    AuthenticatedComponent,
-    BasicUserInfo,
-    Hooks,
-    OIDCEndpoints,
-    useAuthContext
-} from "@asgardeo/auth-react";
+import { AuthenticatedComponent, BasicUserInfo, Hooks, OIDCEndpoints, useAuthContext } from "@asgardeo/auth-react";
 import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
-import { setSignIn } from "@wso2is/core/store";
+import {
+    setDeploymentConfigs,
+    setI18nConfigs,
+    setServiceResourceEndpoints,
+    setSignIn,
+    setUIConfigs
+} from "@wso2is/core/store";
 import { AuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
+import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { ContentLoader } from "@wso2is/react-components";
 import axios from "axios";
 import React, { FunctionComponent, ReactElement, Suspense, lazy, useEffect } from "react";
@@ -34,6 +35,7 @@ import { Loader } from "semantic-ui-react";
 import { Config } from "./configs";
 import { AppConstants, CommonConstants } from "./constants";
 import { history } from "./helpers";
+import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "./models";
 import { getProfileInformation, resolveIdpURLSAfterTenantResolves } from "./store/actions";
 import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "./utils";
 
@@ -63,6 +65,13 @@ export const ProtectedApp: FunctionComponent<Record<string, never>> = (): ReactE
         on(Hooks.SignIn, (response: BasicUserInfo) => {
             // Update the app base name with the newly resolved tenant.
             window[ "AppUtils" ].updateTenantQualifiedBaseName(response.tenantDomain);
+
+            dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
+            dispatch(
+                setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(Config.getServiceResourceEndpoints())
+            );
+            dispatch(setI18nConfigs<I18nModuleOptionsInterface>(Config.getI18nConfig()));
+            dispatch(setUIConfigs<UIConfigInterface>(Config.getUIConfig()));
 
             // When the tenant domain changes, we have to reset the auth callback in session storage.
             // If not, it will hang and the app will be unresponsive with in the tab.
@@ -173,7 +182,6 @@ export const ProtectedApp: FunctionComponent<Record<string, never>> = (): ReactE
                     sessionStorage.setItem(AUTHORIZATION_ENDPOINT, authorizationEndpoint);
                     sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, oidcSessionIframeEndpoint);
                     sessionStorage.setItem(TOKEN_ENDPOINT, tokenEndpoint);
-
                 })
                 .catch((error) => {
                     throw error;
@@ -225,10 +233,11 @@ export const ProtectedApp: FunctionComponent<Record<string, never>> = (): ReactE
         }
 
         if (isAuthenticated) {
-            if (sessionStorage.getItem("request_params") &&
+            if (
+                sessionStorage.getItem("request_params") &&
                 JSON.parse(sessionStorage.getItem("request_params")).clientId &&
-                JSON.parse(sessionStorage.getItem("request_params")).clientId !== AppConstants.getClientID()) {
-
+                JSON.parse(sessionStorage.getItem("request_params")).clientId !== AppConstants.getClientID()
+            ) {
                 sessionStorage.clear();
                 window.location.reload();
             } else {

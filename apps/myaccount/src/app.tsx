@@ -85,16 +85,6 @@ export const App = (): ReactElement => {
     }, []);
 
     /**
-     * Set the deployment configs in redux state.
-     */
-    useEffect(() => {
-        dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
-        dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(Config.getServiceResourceEndpoints()));
-        dispatch(setI18nConfigs<I18nModuleOptionsInterface>(Config.getI18nConfig()));
-        dispatch(setUIConfigs<UIConfigInterface>(Config.getUIConfig()));
-    }, [ AppConstants.getTenantQualifiedAppBasename() ]);
-
-    /**
      * Listen for base name changes and updated the routes.
      */
     useEffect(() => {
