@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -56,13 +56,24 @@ export type GetSecretRequest = {
     params: CommonRequestParams;
 };
 
+/**
+ * API supports one value patch at a time. So it's either
+ * value or description. Simple as below.
+ *
+ * {
+ *  "operation":"REPLACE",
+ *  "path":"/description", // or /value
+ *  "value": "{value}"
+ * }
+ *
+ * {@see https://github.com/wso2/identity-api-server/pull/310}
+ */
 export type UpdateSecretRequest = {
     params: CommonRequestParams;
     body: {
-        // Part of: these values should be marked as optional.
-        // TODO: https://github.com/wso2/product-is/issues/12447
+        operation: "REPLACE";
+        path: "/value" | "/description";
         value: string;
-        description: string;
     };
 };
 
@@ -75,6 +86,9 @@ export type DeleteSecretRequest = {
 };
 
 export type CreateSecretResponse = SecretModel;
+
 export type GetSecretResponse = SecretModel;
+
 export type UpdateSecretResponse = SecretModel;
+
 export type GetSecretListResponse = Array<SecretModel>;

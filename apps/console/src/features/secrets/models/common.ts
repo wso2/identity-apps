@@ -16,11 +16,9 @@
  * under the License.
  */
 
-export const ADAPTIVE_SCRIPT_SECRETS = "ADAPTIVE_AUTH_CALL_CHOREO";
-export const EMPTY_STRING = "";
-export const EMPTY_JSON_OBJECT_STRING = "{}";
-export const FEATURE_LOCAL_STORAGE_KEY = btoa("secret-management");
-export const ASTERISKS_PLACEHOLDER = "*".repeat(80);
-
-export const FEATURE_BASE_PATH = "SECRETS";
-export const FEATURE_EDIT_PATH = "SECRET_EDIT";
+/**
+ * Interface indicates what will be stored in the localstorage.
+ */
+export type EditSecretLocalStorage = {
+    hideInfoMessage: boolean;
+}

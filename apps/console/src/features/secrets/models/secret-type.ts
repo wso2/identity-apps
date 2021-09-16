@@ -61,5 +61,7 @@ export type DeleteSecretTypeRequestModel = {
 };
 
 export type CreateSecretTypeResponseModel = SecretTypeModel;
+
 export type GetSecretTypeResponseModel = SecretTypeModel;
+
 export type UpdateSecretTypeResponseModel = SecretTypeModel;

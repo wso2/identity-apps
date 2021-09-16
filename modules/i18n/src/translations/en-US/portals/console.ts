@@ -4990,8 +4990,7 @@ export const console: ConsoleNS = {
                             },
                             secretDescriptionField: {
                                 ariaLabel: "Secret Description",
-                                hint: "Give a description for this secret (i.e., When to use this secret)." +
-                                    " Note that you can update this description anytime.",
+                                hint: "Give a description for this secret (i.e., When to use this secret).",
                                 placeholder: "Enter a Secret Description",
                                 label: "Secret Description"
                             }
@@ -5030,11 +5029,13 @@ export const console: ConsoleNS = {
                             hint: "This is the value of the secret. You can enter a value between length" +
                                 " {{minLength}} to {{maxLength}}.",
                             placeholder: "Enter a Secret Value",
+                            editButton: "Change Secret Value",
+                            cancelButton: "Cancel",
+                            updateButton: "Update Secret Value"
                         },
                         secretDescriptionField: {
                             ariaLabel: "Secret Description",
-                            hint: "Give a description for this secret (i.e., When to use this secret)." +
-                                " Note that you can update this description anytime.",
+                            hint: "Give a description for this secret (i.e., When to use this secret).",
                             placeholder: "Enter a Secret Description",
                             label: "Secret Description"
                         }

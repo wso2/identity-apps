@@ -17,7 +17,7 @@
  */
 
 import { IdentityClient } from "@wso2/identity-oidc-js";
-import { HttpMethods, HttpCodes } from "@wso2is/core/models";
+import { HttpCodes, HttpMethods } from "@wso2is/core/models";
 import { AxiosResponse } from "axios";
 import { store } from "../../core";
 import {
@@ -89,7 +89,7 @@ export const getSecret = async (
 
 };
 
-export const updateSecret = async (
+export const patchSecret = async (
     { body, params }: UpdateSecretRequest
 ): Promise<AxiosResponse<UpdateSecretResponse>> => {
 
@@ -100,7 +100,7 @@ export const updateSecret = async (
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
-        method: HttpMethods.PUT,
+        method: HttpMethods.PATCH,
         url: store.getState().config.endpoints.updateSecret + `/${ params.secretType }/${ params.secretName }`
     };
 

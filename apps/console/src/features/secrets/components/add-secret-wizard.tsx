@@ -21,6 +21,7 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { ContentLoader, Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
 import React, { FC, ReactElement, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Modal } from "semantic-ui-react";
 import { createSecret, getSecretList } from "../api/secret";
@@ -32,7 +33,6 @@ import {
     secretNameValidator,
     secretValueValidator
 } from "../utils/secrets.validation.utils";
-import { useTranslation } from "react-i18next";
 
 /**
  * Props interface of {@link AddSecretWizard}
@@ -249,7 +249,6 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
     return (
         <Modal
             dimmer="blurring"
-            scrolling
             size="tiny"
             open={ showWizard }
             onClose={ () => onClose(false) }
@@ -300,7 +299,7 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                             return error;
                         } }
                     />
-                    <Field.Input
+                    <Field.Textarea
                         required
                         name="secret_value"
                         ariaLabel={ t("console:develop.features.secrets.wizards.addSecret." +
@@ -311,12 +310,11 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                             ".form.secretValueField.placeholder") }
                         minLength={ SECRET_VALUE_LENGTH.min }
                         maxLength={ SECRET_VALUE_LENGTH.max }
-                        type="password"
-                        inputType="password"
+                        type="textarea"
                         hint={
                             t("console:develop.features.secrets.wizards.addSecret.form.secretValueField.hint", {
-                                minLength: SECRET_VALUE_LENGTH.min,
-                                maxLength: SECRET_VALUE_LENGTH.max
+                                maxLength: SECRET_VALUE_LENGTH.max,
+                                minLength: SECRET_VALUE_LENGTH.min
                             })
                         }
                         validate={ (value): string | undefined => {
@@ -326,8 +324,6 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                         } }
                     />
                     <Field.Textarea
-                        hint={ t("console:develop.features.secrets.wizards" +
-                            ".addSecret.form.secretDescriptionField.hint") }
                         label={ t("console:develop.features.secrets.wizards.addSecret" +
                             ".form.secretDescriptionField.label") }
                         ariaLabel={ t("console:develop.features.secrets.wizards.addSecret" +
@@ -371,6 +367,20 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                     </Grid.Row>
                 </Grid>
             </Modal.Actions>
+            { /* <ModalWithSidePanel.SidePanel>
+                <ModalWithSidePanel.Header
+                    data-testid={ `${ testId }-modal-side-panel-header` }
+                    className="wizard-header help-panel-header muted">
+                    <div className="help-panel-header-text">
+                        Help
+                    </div>
+                </ModalWithSidePanel.Header>
+                <ModalWithSidePanel.Content>
+                    <Suspense fallback={ <ContentLoader/> }>
+                        <HelpPanel/>
+                    </Suspense>
+                </ModalWithSidePanel.Content>
+            </ModalWithSidePanel.SidePanel> */ }
         </Modal>
     );
 

@@ -19,9 +19,9 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FC, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { Icon } from "semantic-ui-react";
 import { AppConstants, getEmptyPlaceholderIllustrations, history } from "../../core";
-import { useTranslation } from "react-i18next";
 import { FEATURE_BASE_PATH } from "../constants/secrets.common";
 
 /**
@@ -95,7 +95,7 @@ export const EmptySecretListPlaceholder: FC<EmptySecretListPlaceholderProps> = (
             }
             image={ getEmptyPlaceholderIllustrations().newList }
             imageSize="tiny"
-            subtitle={ [ t("console:develop.features.secrets.emptyPlaceholders.emptyListOfSecrets.messages") ] }
+            subtitle={ [ t("console:develop.features.secrets.emptyPlaceholders.emptyListOfSecrets.messages.0") ] }
             data-testid={ testId }
         />
     );

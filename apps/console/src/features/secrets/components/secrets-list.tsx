@@ -48,6 +48,7 @@ export type SecretsListProps = {
     selectedSecretType: string;
     secretList: SecretModel[];
     onAddNewSecretButtonClick: () => void;
+    showAdaptiveAuthSecretBanner?: boolean;
 } & IdentifiableComponentInterface;
 
 /**
@@ -64,7 +65,8 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
         secretList,
         ["data-componentid"]: testId,
         onAddNewSecretButtonClick,
-        selectedSecretType
+        selectedSecretType,
+        showAdaptiveAuthSecretBanner
     } = props;
 
     const { t } = useTranslation();
@@ -99,7 +101,7 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
                 dispatch(addAlert({
                     description: t("console:develop.features.secrets.alerts.deleteSecret.description", {
                         secretName: deletingSecret.secretName,
-                        secretType: deletingSecret.type,
+                        secretType: deletingSecret.type
                     }),
                     level: AlertLevels.SUCCESS,
                     message: t("console:develop.features.secrets.alerts.deleteSecret.message")
@@ -119,7 +121,8 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
                     message: t("console:develop.features.secrets.errors.generic.message")
                 }));
             } finally {
-                whenSecretDeleted(deletingSecret, /*refresh the secret list?*/true);
+                const refreshSecretList = true;
+                whenSecretDeleted(deletingSecret, refreshSecretList);
                 setShowDeleteConfirmationModal(false);
                 setDeletingSecret(undefined);
             }
@@ -255,7 +258,6 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
                 attached
                 warning
                 data-testid={ `${ testId }-delete-confirmation-modal-message` }>
-                { /*TODO: Dynamically switch the message based on the secret-type. Adaptive or Custom */ }
                 { t("console:develop.features.secrets.modals.deleteSecret.warningMessage") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content data-testid={ `${ testId }-delete-confirmation-modal-content` }>
@@ -267,7 +269,7 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
     return (
         <GridLayout isLoading={ isSecretListLoading } showTopActionPanel={ false }>
             {
-                selectedSecretType === ADAPTIVE_SCRIPT_SECRETS && (
+                showAdaptiveAuthSecretBanner && selectedSecretType === ADAPTIVE_SCRIPT_SECRETS && (
                     <Message data-componentid={ `${ testId }-page-message` }>
                         <Message.Header>
                             <strong>
@@ -307,7 +309,8 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
  * Default props of {@link SecretsList}
  */
 SecretsList.defaultProps = {
-    "data-componentid": "secrets-list"
+    "data-componentid": "secrets-list",
+    showAdaptiveAuthSecretBanner: false
 };
 
 /**

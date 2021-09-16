@@ -1,8 +1,5 @@
-import { FieldConstants } from "@wso2is/form";
-import { FormValidation } from "@wso2is/validation";
-
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,8 +16,11 @@ import { FormValidation } from "@wso2is/validation";
  * under the License.
  */
 
+import { FieldConstants } from "@wso2is/form";
+import { FormValidation } from "@wso2is/validation";
+
 export const SECRET_NAME_LENGTH = { max: 64, min: 3 };
-export const SECRET_VALUE_LENGTH = { max: 1024, min: 4 };
+export const SECRET_VALUE_LENGTH = { max: 1024 * 2, min: 4 };
 export const SECRET_DESCRIPTION_LENGTH = { max: 256, min: 0 };
 
 export type ValidationResult = string | undefined;

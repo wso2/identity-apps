@@ -20,6 +20,7 @@ import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models
 import { addAlert } from "@wso2is/core/store";
 import { AnimatedAvatar, ContentLoader, PageLayout } from "@wso2is/react-components";
 import React, { FC, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Label } from "semantic-ui-react";
@@ -27,9 +28,8 @@ import { AppConstants, history } from "../../core";
 import { getSecret } from "../api/secret";
 import EditSecret from "../components/edit-secret";
 import { EmptySecretListPlaceholder } from "../components/empty-secret-list-placeholder";
-import { SecretModel } from "../models/secret";
-import { useTranslation } from "react-i18next";
 import { FEATURE_BASE_PATH } from "../constants/secrets.common";
+import { SecretModel } from "../models/secret";
 
 /**
  * Props interface of {@link SecretEdit}
@@ -63,13 +63,12 @@ const SecretEdit: FC<SecretEditProps> = (props: SecretEditProps): ReactElement =
      */
     useEffect(() => {
 
-        const path = history.location.pathname.split("/");
-        const TYPE = path.length - 2, NAME = path.length - 1;
+        const { secretType, secretName } = extractDataFromPath();
 
-        setSecretName(path[NAME]);
-        setSecretType(path[TYPE]);
+        setSecretName(secretName);
+        setSecretType(secretType);
 
-        getSecret({ params: { secretName: path[NAME], secretType: path[TYPE] } })
+        getSecret({ params: { secretName, secretType } })
             .then(({ data }) => {
                 setEditingSecret(data);
                 setResourceNotFound(false);
@@ -95,6 +94,15 @@ const SecretEdit: FC<SecretEditProps> = (props: SecretEditProps): ReactElement =
             });
 
     }, []);
+
+    const extractDataFromPath = (): { secretType: string, secretName: string } => {
+        const path = history.location.pathname.split("/");
+        const TYPE = path.length - 2, NAME = path.length - 1;
+        return {
+            secretName: path[NAME],
+            secretType: path[TYPE]
+        };
+    };
 
     return (
         resourceNotFound
