@@ -381,6 +381,10 @@ export interface MyAccountNS {
                         genericError: NotificationItem;
                         error: NotificationItem;
                     };
+                    deleteError: {
+                        genericError: NotificationItem;
+                        error: NotificationItem;
+                    };
                 };
             };
         };

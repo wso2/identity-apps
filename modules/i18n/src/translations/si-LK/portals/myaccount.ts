@@ -605,6 +605,16 @@ export const myAccount: MyAccountNS = {
                             description: "නව QR කේතයක් ලබා ගැනීමට උත්සාහ කිරීමේදී දෝෂයකි",
                             message: "මොකක්හරි වැරැද්දක් වෙලා"
                         }
+                    },
+                    deleteError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        genericError: {
+                            description: "TOTP සත්‍යාපනකාරක වින්‍යාසය මැකීමේදී දෝෂයක් සිදු විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        }
                     }
                 }
             },

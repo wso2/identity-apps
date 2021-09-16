@@ -611,6 +611,16 @@ export const myAccount: MyAccountNS = {
                             description: "புதிய QR குறியீட்டினை பெறும் பொழுது தவறேற்பட்டுவிட்டது",
                             message: "ஏதோ தவறேற்பட்டுவிட்டது"
                         }
+                    },
+                    deleteError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "ஏதோ தவறேற்பட்டுவிட்டது"
+                        },
+                        genericError: {
+                            description: "TOTP அங்கீகரிப்பு உள்ளமைவை நீக்கும் போது பிழை ஏற்பட்டது",
+                            message: "ஏதோ தவறேற்பட்டுவிட்டது"
+                        }
                     }
                 }
             },

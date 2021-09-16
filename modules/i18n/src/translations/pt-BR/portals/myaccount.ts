@@ -605,6 +605,16 @@ export const myAccount: MyAccountNS = {
                             description: "Erro ao tentar obter um novo código QR",
                             message: "Algo deu errado"
                         }
+                    },
+                    deleteError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Algo deu errado"
+                        },
+                        genericError: {
+                            description: "Ocorreu um erro ao excluir a configuração do Autenticador TOTP",
+                            message: "Algo deu errado"
+                        }
                     }
                 }
             },

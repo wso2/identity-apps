@@ -167,11 +167,11 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
             return;
         }).catch((errorMessage) => {
             onAlertFired({
-                description: t(translateKey + "notifications.initError.error.description", {
+                description: t(translateKey + "notifications.deleteError.error.description", {
                     error: errorMessage
                 }),
                 level: AlertLevels.ERROR,
-                message: "error message here"
+                message: t(translateKey + "notifications.deleteError.error.message")
             });
         }).finally(() => {
             setRevokeTOTPAuthnModalVisibility(false);

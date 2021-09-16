@@ -610,6 +610,17 @@ export const myAccount: MyAccountNS = {
                             description: "Une erreur s'est produite lors de la récupération d'un nouveau code QR",
                             message: "Quelque chose s'est mal passé"
                         }
+                    },
+                    deleteError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la suppression de la " +
+                                "configuration de l'authentificateur TOTP",
+                            message: "Quelque chose s'est mal passé"
+                        }
                     }
                 }
             },
