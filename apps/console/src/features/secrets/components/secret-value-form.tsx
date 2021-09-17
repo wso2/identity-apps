@@ -37,12 +37,7 @@ import {
 } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface } from "../../core";
 import { patchSecret } from "../api/secret";
-import {
-    ASTERISKS_PLACEHOLDER,
-    EMPTY_JSON_OBJECT_STRING,
-    EMPTY_STRING,
-    FEATURE_LOCAL_STORAGE_KEY
-} from "../constants/secrets.common";
+import { EMPTY_JSON_OBJECT_STRING, EMPTY_STRING, FEATURE_LOCAL_STORAGE_KEY } from "../constants/secrets.common";
 import { EditSecretLocalStorage } from "../models/common";
 import { SecretModel } from "../models/secret";
 import { SECRET_VALUE_LENGTH, secretValueValidator } from "../utils/secrets.validation.utils";
@@ -74,7 +69,7 @@ const SecretValueForm: FC<SecretValueFormProps> = (props: SecretValueFormProps):
     const [ secretFieldTouched, setSecretFieldTouched ] = useState<boolean>(false);
     const [ secretFieldModified, setSecretFieldModified ] = useState<boolean>(false);
     const [ isEditingSecretValue, setIsEditingSecretValue ] = useState<boolean>(false);
-    const [ secretValue, setSecretValue ] = useState<string | undefined>(ASTERISKS_PLACEHOLDER);
+    const [ secretValue, setSecretValue ] = useState<string | undefined>(EMPTY_STRING);
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
@@ -202,7 +197,7 @@ const SecretValueForm: FC<SecretValueFormProps> = (props: SecretValueFormProps):
         setSecretFieldTouched(false);
         setSecretFieldModified(false);
         setIsEditingSecretValue(false);
-        setSecretValue(ASTERISKS_PLACEHOLDER);
+        setSecretValue(EMPTY_STRING);
     };
 
     /**
@@ -267,9 +262,14 @@ const SecretValueForm: FC<SecretValueFormProps> = (props: SecretValueFormProps):
                         <Grid.Column width={ 15 }>
                             <Form.TextArea
                                 type="textarea"
+                                className="with-lock-icon"
                                 label={ t(`${ FIELD_I18N_KEY }.label`) }
                                 aria-label={ t(`${ FIELD_I18N_KEY }.ariaLabel`) }
-                                placeholder={ t(`${ FIELD_I18N_KEY }.placeholder`) }
+                                placeholder={
+                                    isEditingSecretValue
+                                        ? t(`${ FIELD_I18N_KEY }.placeholder`)
+                                        : EMPTY_STRING
+                                }
                                 required={ isEditingSecretValue }
                                 readOnly={ !isEditingSecretValue }
                                 disabled={ !isEditingSecretValue }
@@ -295,7 +295,7 @@ const SecretValueForm: FC<SecretValueFormProps> = (props: SecretValueFormProps):
                                     <Button
                                         type="submit"
                                         loading={ loading }
-                                        positive={ isEditingSecretValue && secretValue && !fieldError }
+                                        primary={ isEditingSecretValue && secretValue && !fieldError }
                                         disabled={
                                             loading || isEditingSecretValue && (!!fieldError || !(secretValue?.trim()))
                                         }

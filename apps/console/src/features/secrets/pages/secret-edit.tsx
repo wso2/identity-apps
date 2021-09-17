@@ -18,13 +18,13 @@
 
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { AnimatedAvatar, ContentLoader, PageLayout } from "@wso2is/react-components";
+import { ContentLoader, GenericIcon, PageLayout } from "@wso2is/react-components";
 import React, { FC, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Label } from "semantic-ui-react";
-import { AppConstants, history } from "../../core";
+import { AppConstants, getSecretManagementIllustrations, history } from "../../core";
 import { getSecret } from "../api/secret";
 import EditSecret from "../components/edit-secret";
 import { EmptySecretListPlaceholder } from "../components/empty-secret-list-placeholder";
@@ -124,10 +124,13 @@ const SecretEdit: FC<SecretEditProps> = (props: SecretEditProps): ReactElement =
                         </div>
                     }
                     image={
-                        <AnimatedAvatar
-                            name={ secretName }
-                            size="tiny"
-                            floated="left"
+                        <GenericIcon
+                            size="x60"
+                            shape="rounded"
+                            colored
+                            background={ true }
+                            hoverable={ false }
+                            icon={ getSecretManagementIllustrations().editingSecretIcon }
                         />
                     }
                     backButton={ {

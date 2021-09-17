@@ -143,21 +143,25 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
                             as="h6"
                             className="header-with-icon"
                             data-testid={ `${ testId }-first-column` }>
-                            <Header.Content
-                                data-testid={ `${ testId }-first-column-item-header` }>
-                                <AppAvatar
-                                    image={ (
-                                        <AnimatedAvatar
-                                            name={ data.secretName }
-                                            size="mini"
-                                            data-testid={ `${ testId }-item-image-inner` }
-                                        />
-                                    ) }
-                                    size="mini"
-                                    spaced="right"
-                                    data-testid={ `${ testId }-item-image` }
-                                />
+                            <AppAvatar
+                                image={ (
+                                    <AnimatedAvatar
+                                        name={ data.secretName }
+                                        size="mini"
+                                        data-testid={ `${ testId }-item-image-inner` }
+                                    />
+                                ) }
+                                size="mini"
+                                spaced="right"
+                                data-testid={ `${ testId }-item-image` }
+                            />
+                            <Header.Content data-testid={ `${ testId }-first-column-item-header` }>
                                 { data.secretName }
+                                <Header.Subheader
+                                    className="truncate ellipsis"
+                                    data-testid={ `${ testId }-item-sub-heading` }>
+                                    { data.description }
+                                </Header.Subheader>
                             </Header.Content>
                         </Header>
                     );
@@ -287,6 +291,7 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
                     <Fragment>
                         <DataTable<SecretModel>
                             data={ secretList }
+                            showHeader={ false }
                             onRowClick={ onSecretEditClick }
                             actions={ createDatatableActions() }
                             columns={ createDatatableColumns() }>

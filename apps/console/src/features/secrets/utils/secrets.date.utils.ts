@@ -21,9 +21,10 @@ import moment from "moment";
 /**
  * https://momentjs.com/docs/#/durations/humanize/
  * @param dateString {string}
- * @return {string}  ͌ "A day ago 👻"
+ * @return {string} i.e., "A day ago"
  */
 export const humanizeDateString = (dateString: string): string => {
+    if (!dateString) return "N/A";
     return moment(dateString)
         .utc(true)
         .fromNow();
@@ -32,8 +33,9 @@ export const humanizeDateString = (dateString: string): string => {
 /**
  * https://momentjs.com/docs/#/displaying/format/
  * @param dateString {string}
- * @return {string}  ͌ "Sunday, February 14th 2010, 3:25 pm"
+ * @return {string}  ͌ "Sunday, February 14th 2010"
  */
 export const formatDateString = (dateString: string): string => {
+    if (!dateString) return "N/A";
     return moment(dateString).format("dddd, MMMM Do YYYY");
 };
