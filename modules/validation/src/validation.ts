@@ -252,8 +252,7 @@ export const isValidDescription = (value: string): boolean => {
  * This function validates whether a given string is resource key
  * like value or not. Basically, it have to start with a alphabetic
  * letter and rest can contain only alphanumeric with underscores or
- * dashes within them. This is a custom enforced rule and
- * yet not finalized on the implementation.
+ * dashes within them.
  *
  * +-----------------+
  * |  Valid Inputs   |
