@@ -161,7 +161,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     /**
      *  Initiate deletion of TOTP configuration.
      */
-    const initDeleteTOTP = () => {
+    const initDeleteTOTP = (): void => {
         deleteTOTP().then((response) => {
             setIsTOTPConfigured(false);
             return;
