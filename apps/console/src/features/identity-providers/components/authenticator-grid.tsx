@@ -363,7 +363,30 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                     onEdit={ (e: MouseEvent<HTMLButtonElement>) => {
                                         // If edit flow override is defined, set the custom edit view flag to true.
                                         if (authenticatorConfig?.editFlowOverrides) {
-                                            eventPublisher.publish("connections-click-template-connect", { "type":
+                                            eventPublisher.compute(() => {
+                                                eventPublisher.publish("connections-click-template-connect", { "type":
+                                                    isIdP 
+                                                        ? AuthenticatorMeta.getAuthenticatorTemplateName(
+                                                            (authenticator as IdentityProviderInterface)
+                                                                .federatedAuthenticators?.defaultAuthenticatorId)
+                                                            ? AuthenticatorMeta.getAuthenticatorTemplateName(
+                                                                (authenticator as IdentityProviderInterface)
+                                                                    .federatedAuthenticators?.defaultAuthenticatorId) 
+                                                            : "other"
+                                                        : AuthenticatorMeta
+                                                            .getAuthenticatorTemplateName(authenticator.id)
+                                                            ? AuthenticatorMeta
+                                                                .getAuthenticatorTemplateName(authenticator.id) 
+                                                            : ""
+                                                });
+                                            });
+
+                                            setShowCustomEditView(true);
+                                            return;
+                                        }
+
+                                        eventPublisher.compute(() => {
+                                            eventPublisher.publish("connections-click-template-setup", { "type":
                                                 isIdP 
                                                     ? AuthenticatorMeta.getAuthenticatorTemplateName(
                                                         (authenticator as IdentityProviderInterface)
@@ -373,27 +396,10 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                                                 .federatedAuthenticators?.defaultAuthenticatorId) 
                                                         : "other"
                                                     : AuthenticatorMeta.getAuthenticatorTemplateName(authenticator.id)
-                                                        ? AuthenticatorMeta
-                                                            .getAuthenticatorTemplateName(authenticator.id) 
+                                                        ? AuthenticatorMeta.
+                                                            getAuthenticatorTemplateName(authenticator.id) 
                                                         : ""
                                             });
-
-                                            setShowCustomEditView(true);
-                                            return;
-                                        }
-
-                                        eventPublisher.publish("connections-click-template-setup", { "type":
-                                            isIdP 
-                                                ? AuthenticatorMeta.getAuthenticatorTemplateName(
-                                                    (authenticator as IdentityProviderInterface)
-                                                        .federatedAuthenticators?.defaultAuthenticatorId)
-                                                    ? AuthenticatorMeta.getAuthenticatorTemplateName(
-                                                        (authenticator as IdentityProviderInterface)
-                                                            .federatedAuthenticators?.defaultAuthenticatorId) 
-                                                    : "other"
-                                                : AuthenticatorMeta.getAuthenticatorTemplateName(authenticator.id)
-                                                    ? AuthenticatorMeta.getAuthenticatorTemplateName(authenticator.id) 
-                                                    : ""
                                         });
 
                                         handleGridItemOnClick(e, authenticator);

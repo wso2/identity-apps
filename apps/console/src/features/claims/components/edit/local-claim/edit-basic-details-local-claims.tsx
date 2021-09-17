@@ -159,6 +159,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         || t("console:manage.features.claims.local.notifications.deleteClaim.genericError.message")
                 }
             ));
+        }).finally(() => {
+            setConfirmDelete(false);
         });
     };
 
@@ -210,7 +212,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             properties: claim.properties,
             readOnly: values?.readOnly !== undefined ? !!values.readOnly : claim?.readOnly,
             regEx:  values?.regularExpression !== undefined ? values.regularExpression?.toString() : claim?.regEx,
-            required: values?.required !== undefined && !values?.readOnly ? !!values.required : claim?.required,
+            required: values?.required !== undefined && !values?.readOnly ? !!values.required : false,
             supportedByDefault: values?.supportedByDefault !== undefined
                 ? !!values.supportedByDefault : claim?.supportedByDefault
         };
@@ -378,12 +380,13 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 required={ false }
                                 requiredErrorMessage=""
                                 label={ t("console:manage.features.claims.local.forms.required.label") }
-                                defaultValue={ claim?.required }
                                 data-testid={ `${ testId }-form-required-checkbox` }
                                 readOnly={ isReadOnly }
-                                value={ !isClaimReadOnly }
                                 hint={ t("console:manage.features.claims.local.forms.requiredHint") }
                                 disabled={ isClaimReadOnly }
+                                { ...( isClaimReadOnly ? 
+                                    { value: false } : 
+                                    { defaultValue : claim?.required } ) }
                             />
                     }
                     {

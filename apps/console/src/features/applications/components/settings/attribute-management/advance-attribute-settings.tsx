@@ -43,6 +43,7 @@ interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterf
      */
     readOnly?: boolean;
     applicationTemplateId?: string;
+    onlyOIDCConfigured?:boolean;
 }
 
 export const SubjectAttributeFieldName = "subjectAttribute";
@@ -70,6 +71,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         claimMappingOn,
         readOnly,
         technology,
+        onlyOIDCConfigured,
         [ "data-testid" ]: testId
     } = props;
 
@@ -248,7 +250,13 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                     } }
                     triggerSubmit={ (submitFunction) => triggerSubmission(submitFunction) }
                 >
-                    <Heading as="h4">
+                    <Heading
+                        hidden={
+                            onlyOIDCConfigured &&
+                            !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute
+                        }
+                        as="h4"
+                    >
                         { t("console:develop.features.applications.forms.advancedAttributeSettings." +
                             "sections.subject.heading") }
                     </Heading>
@@ -263,6 +271,10 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         required={ claimMappingOn }
                         value={ selectedSubjectValue }
                         children={ dropDownOptions }
+                        hidden={
+                            onlyOIDCConfigured &&
+                            !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute
+                        }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-subject-attribute-dropdown` }
                         listen={ subjectAttributeChangeListener }

@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Card, CardProps, Dimmer, Icon, Label, Popup } from "semantic-ui-react";
+import { Card, CardProps, Icon, Label, Popup } from "semantic-ui-react";
 import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
 
 /**
@@ -109,6 +109,10 @@ export interface TemplateCardPropsInterface extends TestableComponentInterface {
      * Inline mode.
      */
     inline?: boolean;
+    /**
+     * Show an attached label as a ribbon.
+     */
+    ribbon?: ReactNode;
 }
 
 /**
@@ -153,6 +157,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
         onClick,
         overlayOpacity,
         renderDisabledItemsAsGrayscale,
+        ribbon,
         selected,
         showTags,
         showTagIcon,
@@ -274,19 +279,18 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
             onMouseLeave={ () => setDimmerState(false) }
         >
             {
-                // TODO: This should pass as prop, where this component is used,
-                disabled && (
-                    <Dimmer className="lighter" active={ dimmerState }>
-                        { t("common:featureAvailable" ) }
-                    </Dimmer>
-                )
-            }
-            {
                 image && (
                     <Card.Content
                         style={ imageContainerStyles() }
                         className="card-image-container"
                     >
+                        {
+                            ribbon && (
+                                <div className="ribbon">
+                                    { ribbon }
+                                </div>
+                            )
+                        }
                         <GenericIcon
                             square
                             transparent

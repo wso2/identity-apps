@@ -47,10 +47,10 @@ import React, {
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Grid, Icon, Label, List, SemanticICONS } from "semantic-ui-react";
 import { userstoresConfig } from "../../../extensions";
-import { FeatureConfigInterface, getEmptyPlaceholderIllustrations, history } from "../../core";
+import { AppState, FeatureConfigInterface, getEmptyPlaceholderIllustrations, history } from "../../core";
 import { getUserSessions, terminateAllUserSessions, terminateUserSession } from "../api";
 import { ApplicationSessionInterface, UserSessionInterface, UserSessionsInterface } from "../models";
 
@@ -112,6 +112,10 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
         showAllSessionsTerminateConfirmationModal,
         setShowAllSessionsTerminateConfirmationModal
     ] = useState<boolean>(false);
+    const authenticatedUserTenanted: string = useSelector((state: AppState) => state?.auth?.username);
+    const authenticatedUserComponents = authenticatedUserTenanted.split("@");
+    authenticatedUserComponents.pop();
+    const authenticatedUser = authenticatedUserComponents.join("@");
 
     /**
      * Fetches the active sessions once the user prop is avaiable.
@@ -312,7 +316,6 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
             username = splitComponents[1];
         }
         if (username.split("@").length > 1) {
-
             return username.split("@")[0].concat("@").concat(username.split("@")[1]);
         }
 
@@ -514,7 +517,9 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
         terminateAllUserSessions(user.id)
             .then(() => {
                 // Redirect to login page if all the sessions are terminated.
-                history.push(window["AppUtils"].getConfig().routes.logout);
+                if (authenticatedUser === user?.userName) {
+                    history.push(window["AppUtils"].getConfig().routes.logout);
+                }
                 dispatch(addAlert<AlertInterface>({
                     description: t(
                         "console:manage.features.users.userSessions.notifications.terminateAllUserSessions." +
@@ -555,6 +560,9 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                         "genericError.message"
                     )
                 }));
+            })
+            .finally(() => {
+                fetchUserSessions(user.id);
             });
     };
 

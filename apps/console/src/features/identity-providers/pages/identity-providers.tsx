@@ -18,7 +18,15 @@
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { GridLayout, ListLayout, PageLayout, PrimaryButton, SearchWithFilterLabels } from "@wso2is/react-components";
+import {
+    DocumentationLink,
+    GridLayout,
+    ListLayout,
+    PageLayout,
+    PrimaryButton,
+    SearchWithFilterLabels,
+    useDocumentation
+} from "@wso2is/react-components";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
@@ -81,6 +89,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
@@ -446,8 +455,15 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
             }
             description={
                 useNewConnectionsView
-                    ? t("console:develop.pages.authenticationProvider.subTitle")
-                    : t("console:develop.pages.idp.subTitle")
+                    ?   <>
+                            { t("console:develop.pages.authenticationProvider.subTitle") }
+                            <DocumentationLink
+                                link={ getLink("develop.connections.learnMore") }
+                            >
+                                { t("common:learnMore") }
+                            </DocumentationLink>
+                        </>
+                    :   t("console:develop.pages.idp.subTitle")
             }
             data-testid={ `${ testId }-page-layout` }
         >

@@ -21,14 +21,17 @@ import { AlertLevels, StorageIdentityAppsSettingsInterface, TestableComponentInt
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
 import {
+    Button,
     Code,
     CodeEditor,
     ConfirmationModal,
+    DocumentationLink,
     GenericIcon,
     Heading,
     SegmentedAccordion,
     Text,
-    Tooltip
+    Tooltip,
+    useDocumentation
 } from "@wso2is/react-components";
 import beautify from "js-beautify";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -123,6 +126,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const dispatch = useDispatch();
 
@@ -525,6 +529,55 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             ApplicationManagementConstants.CONDITIONAL_AUTH_TOUR_STATUS_STORAGE_KEY, false);
     };
 
+    /**
+     * Renders API Documentation link.
+     *
+     * @return {React.ReactElement}
+     */
+    const resolveApiDocumentationLink = (): ReactElement => {
+        const apiDocLink: string = getLink("develop.applications.editApplication.common." + 
+            "signInMethod.conditionalAuthenticaion.apiReference");
+
+        if (apiDocLink === undefined) {
+            return null;
+        }
+        
+        return (
+                <Menu.Item
+                    className="action p-3"
+                    href={ apiDocLink }
+                    target="_blank"
+                >
+                    <Tooltip
+                        compact
+                        trigger={ (
+                            <Button labelPosition="left">
+                                <GenericIcon
+                                    className="p-1 mr-1"
+                                    transparent
+                                    defaultIcon
+                                    size="micro"
+                                    icon={ getOperationIcons().openBookIcon }
+                                    data-testid={
+                                        `${ testId }-code-editor-open-documentation`
+                                    }
+                                />
+                                <p>
+                                    { t("console:develop.features.applications.edit.sections" +
+                                            ".signOnMethod.sections.authenticationFlow.sections" +
+                                            ".scriptBased.editor.apiDocumentation") }
+                                </p>
+                          </Button>
+                        ) }
+                        content={ t("console:develop.features.applications.edit.sections" +
+                            ".signOnMethod.sections.authenticationFlow.sections" +
+                            ".scriptBased.editor.goToApiDocumentation") }
+                        size="mini"
+                    />
+                </Menu.Item>
+        );
+    };
+
     return (
         <>
             <div className="conditional-auth-section">
@@ -564,6 +617,12 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                     "sections.authenticationFlow.sections.scriptBased.accordion." +
                                                     "title.description")
                                             }
+                                            <DocumentationLink
+                                                link={ getLink("develop.applications.editApplication.common." + 
+                                                    "signInMethod.conditionalAuthenticaion.learnMore") }
+                                            >
+                                                { t("common:learnMore") }
+                                            </DocumentationLink>
                                         </Text>
                                     </div>
                                 </div>
@@ -600,6 +659,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                 <div className="script-editor-container" ref={ scriptEditorSectionRef }>
                                     <Menu attached="top" className="action-panel" secondary>
                                         <Menu.Menu position="right">
+                                            { resolveApiDocumentationLink() }
                                             <Menu.Item className="action">
                                                 <Tooltip
                                                     compact

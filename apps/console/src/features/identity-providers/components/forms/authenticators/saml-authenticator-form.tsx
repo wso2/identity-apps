@@ -38,6 +38,7 @@ import {
     getDigestAlgorithmOptionsMapped,
     getSignatureAlgorithmOptionsMapped,
     hasLength,
+    IDENTITY_PROVIDER_AUTHORIZED_REDIRECT_URL_LENGTH,
     IDENTITY_PROVIDER_ENTITY_ID_LENGTH,
     isUrl,
     LOGOUT_URL_LENGTH,
@@ -64,6 +65,7 @@ interface SamlSettingsFormPropsInterface extends TestableComponentInterface {
 }
 
 export interface SamlPropertiesInterface {
+    AuthRedirectUrl?: string;
     DigestAlgorithm?: string;
     IdPEntityId?: string;
     LogoutReqUrl?: string;
@@ -109,6 +111,8 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
     const [ isUserIdInClaims, setIsUserIdInClaims ] = useState<boolean>(false);
     const [ isLogoutEnabled, setIsLogoutEnabled ] = useState<boolean>(false);
 
+    const authorizedRedirectURL: string = config?.deployment?.serverHost + "/commonauth" ;
+
     /**
      * ISAuthnReqSigned, IsLogoutReqSigned these two fields states will be used by other
      * fields states. Basically, algorithms fields enable and disable states will be
@@ -128,6 +132,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
         const [ findPropVal, findMeta ] = fastSearch(authenticator);
 
         return {
+            AuthRedirectUrl: findPropVal<string>({ defaultValue: authorizedRedirectURL, key: "AuthRedirectUrl" }),
             DigestAlgorithm: findPropVal<string>({ defaultValue: "SHA1", key: "DigestAlgorithm" }),
             IdPEntityId: findPropVal<string>({ defaultValue: "", key: "IdPEntityId" }),
             NameIDType: findPropVal<string>({
@@ -259,6 +264,26 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                     hasLength(SSO_URL_LENGTH)
                 ) }
                 hint={ t(`${ I18N_TARGET_KEY }.SSOUrl.hint`, {
+                    productName: config.ui.productName
+                }) }
+                readOnly={ readOnly }
+            />
+
+            <Field.Input
+                name="AuthRedirectUrl"
+                value={ formValues?.AuthRedirectUrl }
+                inputType="copy_input"
+                placeholder={ t(`${ I18N_TARGET_KEY }.AuthRedirectUrl.placeholder`) }
+                ariaLabel={ t(`${ I18N_TARGET_KEY }.AuthRedirectUrl.ariaLabel`) }
+                data-testid={ `${ testId }-authorized-redirect-url` }
+                label={ (
+                    <FormInputLabel htmlFor="AuthRedirectUrl" disabled={ true }>
+                        { t(`${ I18N_TARGET_KEY }.AuthRedirectUrl.label`) }
+                    </FormInputLabel>
+                ) }
+                maxLength={ IDENTITY_PROVIDER_AUTHORIZED_REDIRECT_URL_LENGTH.max }
+                minLength={ IDENTITY_PROVIDER_AUTHORIZED_REDIRECT_URL_LENGTH.min }
+                hint={ t(`${ I18N_TARGET_KEY }.AuthRedirectUrl.hint`, {
                     productName: config.ui.productName
                 }) }
                 readOnly={ readOnly }

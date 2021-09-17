@@ -20,10 +20,12 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     ConfirmationModal,
     ContentLoader,
+    DocumentationLink,
     EmptyPlaceholder,
     Heading,
     Hint,
-    PrimaryButton
+    PrimaryButton,
+    useDocumentation
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -132,6 +134,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const [ availableClaims, setAvailableClaims ] = useState<ExtendedClaimInterface[]>([]);
     const [ availableExternalClaims, setAvailableExternalClaims ] = useState<ExtendedExternalClaimInterface[]>([]);
@@ -586,6 +589,30 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         );
     };
 
+    /**
+     * Resolves the documentation link when a claim is selected.
+     * @return {React.ReactElement}
+     */
+    const resolveClaimDocumentationLink = (): ReactElement => { 
+        let docLink: string = undefined;
+
+        if (selectedDialect.localDialect) {
+            docLink = getLink("develop.applications.editApplication.samlApplication.attributes" +
+                ".learnMore");
+        } else {
+            docLink = getLink("develop.applications.editApplication.oidcApplication.attributes" +
+                ".learnMore");
+        }
+        
+        return (
+            <DocumentationLink
+                link={ docLink }
+            >
+                { t("common:learnMore") }
+            </DocumentationLink>
+        );
+    };
+
     return (
         (!isUserAttributesLoading && claimConfigurations && initializationFinished)
             ?
@@ -594,6 +621,11 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                     <Grid.Column computer={ 16 } tablet={ 16 } largeScreen={ 12 } widescreen={ 12 } >
                         <Heading as="h4">
                             { t("console:develop.features.applications.edit.sections.attributes.selection.heading") }
+                        </Heading>
+                        <Heading as="h6" color="grey">
+                            { t("console:develop.features.applications.edit.sections.attributes.selection" +
+                                ".description") }
+                            { resolveClaimDocumentationLink() }
                         </Heading>
                         {
                             (selectedClaims.length > 0 || selectedExternalClaims.length > 0) ? (
@@ -925,7 +957,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                             ] }
                                             action={
                                                 !readOnly && (
-                                                    <PrimaryButton onClick={ handleOpenSelectionModal }>
+                                                    <PrimaryButton basic onClick={ handleOpenSelectionModal }>
                                                         <Icon name="plus" />
                                                         { t("console:develop.features.applications.placeholders" +
                                                             ".emptyAttributesList.action") }

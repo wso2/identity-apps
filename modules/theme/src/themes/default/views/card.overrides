@@ -523,6 +523,7 @@
             }
             &.disabled {
                 cursor: not-allowed;
+                box-shadow: none !important;
             }
             &.grayscale {
                 filter: grayscale(100%);
@@ -579,6 +580,23 @@
                         }
                     }
                 }
+            }
+            .ribbon {
+                font-size: 0.8em;
+                font-weight: 500;
+                color: @white;
+                right: 0;
+                height: 24px;
+                position: absolute;
+                min-width: 100px;
+                background: linear-gradient(270deg, lighten(@primaryColor, 15) 0%, @primaryColor 100%);
+                display: flex;
+                flex-direction: row;
+                align-content: center;
+                align-items: center;
+                justify-content: space-around;
+                clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
+                -webkit-clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
             }
         }
     }

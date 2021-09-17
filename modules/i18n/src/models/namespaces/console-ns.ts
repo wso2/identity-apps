@@ -463,6 +463,7 @@ export interface ConsoleNS {
                                 heading: string;
                                 attributeComponentHint: string;
                                 attributeComponentHintAlt: string;
+                                description: string;
                                 mandatoryAttributeHint: string;
                                 mappingTable: {
                                     actions: {
@@ -577,6 +578,8 @@ export interface ConsoleNS {
                                             heading: string;
                                             hint: string;
                                             editor: {
+                                                apiDocumentation: string;
+                                                goToApiDocumentation: string;
                                                 resetConfirmation: {
                                                     content: string;
                                                     heading: string;
@@ -734,6 +737,7 @@ export interface ConsoleNS {
                         };
                     };
                     inboundOIDC: {
+                        description: string;
                         fields: {
                             allowedOrigins: FormAttributes;
                             callBackUrls: FormAttributes;
@@ -806,6 +810,7 @@ export interface ConsoleNS {
                         };
                     };
                     inboundSAML: {
+                        description: string;
                         fields: {
                             assertionURLs: FormAttributes;
                             defaultAssertionURL: FormAttributes;
@@ -1233,6 +1238,7 @@ export interface ConsoleNS {
                             };
                         };
                         saml: {
+                            AuthRedirectUrl: FormAttributes;
                             SPEntityId: FormAttributes;
                             SSOUrl: FormAttributes;
                             IdPEntityId: FormAttributes;
@@ -1415,6 +1421,14 @@ export interface ConsoleNS {
                         }
                     };
                     enterprise?: {
+                        saml?: {
+                            preRequisites: {
+                                configureIdp: string;
+                                configureRedirectURL: string;
+                                heading: string;
+                                hint: string;
+                            };
+                        };
                         validation: {
                             name: string;
                             invalidName: string;
@@ -1481,6 +1495,7 @@ export interface ConsoleNS {
                     submitAttributeSettings: Notification;
                     deleteDefaultAuthenticator: Notification;
                     deleteDefaultConnector: Notification;
+                    updateAttributes: Notification;
                     updateClaimsConfigs: Notification;
                     updateFederatedAuthenticator: Notification;
                     updateFederatedAuthenticators: Notification;
@@ -3312,6 +3327,7 @@ export interface ConsoleNS {
                         deleteUserZone: DangerZone;
                         disableUserZone: DangerZone;
                         lockUserZone: DangerZone;
+                        passwordResetZone: DangerZone;
                     };
                 };
                 forms: {

@@ -17,7 +17,13 @@
  */
 
 import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { ContentLoader, EmphasizedSegment, Heading } from "@wso2is/react-components";
+import {
+    ContentLoader,
+    DocumentationLink,
+    EmphasizedSegment,
+    Heading,
+    useDocumentation
+} from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -79,6 +85,7 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
     const samlConfigurations: SAMLApplicationConfigurationInterface = useSelector(
         (state: AppState) => state.application.samlConfigurations);
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
     const [ isOIDC, setIsOIDC ] = useState<boolean>(false);
     const [ isSAML, setIsSAML ] = useState<boolean>(false);
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
@@ -118,6 +125,12 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                                     <Heading as="h6" color="grey" compact>
                                         { t("console:develop.features.applications.edit.sections.info." +
                                             "oidcSubHeading") }
+                                        <DocumentationLink
+                                            link={ getLink("develop.applications.editApplication." +
+                                                "oidcApplication.info.learnMore") }
+                                        >
+                                            { t("common:learnMore") }
+                                        </DocumentationLink>
                                     </Heading>
                                     <Divider hidden/>
                                     <OIDCConfigurations oidcConfigurations={ oidcConfigurations }/>
@@ -137,6 +150,12 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                                     <Heading as="h6" color="grey" compact>
                                         { t("console:develop.features.applications.edit.sections.info." +
                                             "samlSubHeading") }
+                                        <DocumentationLink
+                                            link={ getLink("develop.applications.editApplication." +
+                                                "samlApplication.info.learnMore") }
+                                        >
+                                            { t("common:learnMore") }
+                                        </DocumentationLink>
                                     </Heading>
                                     <Divider hidden/>
                                     <SAMLConfigurations samlConfigurations={ samlConfigurations }/>

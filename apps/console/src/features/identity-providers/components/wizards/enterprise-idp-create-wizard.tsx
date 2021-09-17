@@ -22,6 +22,7 @@ import { Field, Wizard2, WizardPage } from "@wso2is/form";
 import {
     CertFileStrategy,
     ContentLoader,
+    DocumentationLink,
     FilePicker,
     GenericIcon,
     Heading,
@@ -32,6 +33,7 @@ import {
     Steps,
     Switcher,
     XMLFileStrategy,
+    useDocumentation,
     useWizardAlert
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -67,6 +69,7 @@ import { getIdPIcons, getIdentityProviderWizardStepIcons } from "../../configs";
 import { IdentityProviderManagementConstants } from "../../constants";
 import { AuthenticatorMeta } from "../../meta";
 import {
+    AuthProtocolTypes,
     GenericIdentityProviderCreateWizardPropsInterface,
     IdentityProviderTemplateInterface,
     StrictIdentityProviderInterface
@@ -148,6 +151,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -541,28 +545,6 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             placeholder={ "Enter SAML 2.0 entity id (saml issuer)" }
                             data-testid={ `${ testId }-form-wizard-saml-idp-entity-id` }
                         />
-                        <Field.Dropdown
-                            ariaLabel="Name ID format"
-                            name="NameIDType"
-                            label="Name ID format"
-                            required={ true }
-                            width={ 15 }
-                            options={ getAvailableNameIDFormats() }
-                            value={ initialValues.NameIDType }
-                            placeholder="Select an available name identifier"
-                            data-testid={ `${ testId }-form-wizard-saml-nameid-format` }
-                        />
-                        <Field.Dropdown
-                            ariaLabel="SAML 2.0 protocol binding"
-                            name="RequestMethod"
-                            label="SAML 2.0 protocol binding"
-                            required={ true }
-                            options={ getAvailableProtocolBindingTypes() }
-                            width={ 15 }
-                            value={ initialValues.RequestMethod }
-                            placeholder={ "Select mode of protocol binding" }
-                            data-testid={ `${ testId }-form-wizard-saml-protocol-binding` }
-                        />
                     </div>
                 )
                 : (
@@ -829,6 +811,30 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     };
 
+    /**
+     * Resolves the documentation link when a protocol is selected.
+     * @return {React.ReactElement}
+     */
+    const resolveDocumentationLink = (): ReactElement => {   
+        let docLink: string = undefined;
+
+        if (selectedProtocol === AuthProtocolTypes.SAML) {
+            docLink = getLink("develop.connections.newConnection.enterprise.samlLearnMore");
+        }
+
+        if (selectedProtocol === AuthProtocolTypes.OIDC) {
+            docLink = getLink("develop.connections.newConnection.enterprise.oidcLearnMore");
+        }
+
+        return (
+            <DocumentationLink
+                link={ docLink }
+            >
+                { t("common:learnMore") }
+            </DocumentationLink>
+        );
+    };
+
     // Start: Modal
 
     return (
@@ -854,7 +860,12 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             data-testid={ `${ testId }-image` }/>
                         <div>
                             { title }
-                            { subTitle && <Heading as="h6">{ subTitle }</Heading> }
+                            { subTitle && 
+                                <Heading as="h6">
+                                    { subTitle }
+                                    { resolveDocumentationLink() }
+                                </Heading>
+                            }
                         </div>
                     </div>
                 </ModalWithSidePanel.Header>

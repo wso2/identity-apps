@@ -48,16 +48,16 @@ const WindowsDesktopApplicationCreateWizardHelp: FunctionComponent<
     return (
         <div data-testid={ testId }>
             <Heading as="h5">
-                { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.heading" +
-                    ".title") }
+                { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                    ".heading.title") }
             </Heading>
             <p>
-                { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.heading" +
-                    ".subTitle") }
+                { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                    ".heading.subTitle") }
             </p>
             <p>
-                { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.heading" +
-                ".example") }
+                { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                ".heading.example") }
             </p>
 
             <Divider />
