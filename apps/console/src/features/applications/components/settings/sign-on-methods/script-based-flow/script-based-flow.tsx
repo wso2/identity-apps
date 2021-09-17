@@ -226,7 +226,6 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             //If no selected text, secret name injected at the location of the cursor.
             const cursor = doc.getCursor();
             doc.replaceRange(secret.secretName, cursor);
-
         }
     };
 
