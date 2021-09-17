@@ -272,14 +272,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             });
         }
 
-        // Prepare subject for submission.
-        if (isEmpty(subjectClaimUri)) {
-            // Trigger form field validation on the empty subject uri.
-            setSubjectError(true);
-            canSubmit = false;
-        } else {
-            setSubjectError(false);
-        }
 
         const matchingLocalClaim = availableLocalClaims.find(element => element.uri === subjectClaimUri);
         claimConfigurations["userIdClaim"] = matchingLocalClaim ? matchingLocalClaim : { uri: subjectClaimUri } as
@@ -298,6 +290,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 const matchingLocalClaim = availableLocalClaims.find(element => element.uri === roleClaimUri);
                 claimConfigurations[ "roleClaim" ] = matchingLocalClaim ? matchingLocalClaim : { uri: roleClaimUri } as
                     IdentityProviderClaimInterface;
+            } else {
+                claimConfigurations[ "roleClaim" ] = { uri: "" } as IdentityProviderClaimInterface;
             }
         }
 

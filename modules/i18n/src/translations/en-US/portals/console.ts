@@ -3293,7 +3293,7 @@ export const console: ConsoleNS = {
                             heading: "Subject",
                             hint: "Specifies the attribute that identifies the user at the identity provider",
                             label: "Subject Attribute",
-                            placeHolder: "Select Attribute",
+                            placeHolder: "Default Subject",
                             validation: {
                                 empty: "Please select an attribute for subject"
                             }

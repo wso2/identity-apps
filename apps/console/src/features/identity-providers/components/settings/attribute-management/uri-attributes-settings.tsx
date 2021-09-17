@@ -78,9 +78,16 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                     <Divider hidden/>
                     <Form>
                         <Form.Select
-                            required
                             fluid
-                            options={ dropDownOptions }
+                            options={ 
+                                dropDownOptions.concat(
+                                    {
+                                        key: "default_subject",
+                                        text: "Default Subject",
+                                        value: ""
+                                    } as DropdownOptionsInterface 
+                                )
+                            }
                             value={ getValidatedInitialValue(initialSubjectUri) }
                             placeholder={ t("console:develop.features.authenticationProvider.forms." +
                                 "uriAttributeSettings.subject." +
@@ -102,6 +109,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                 pointing: "above"
                             } }
                             readOnly={ isReadOnly }
+                            disabled={ !claimMappingOn }
                         />
                     </Form>
                     <Hint>
