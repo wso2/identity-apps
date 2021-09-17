@@ -34,6 +34,7 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
+import * as codemirror from "codemirror";
 import beautify from "js-beautify";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
@@ -176,7 +177,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     /**
      * Loads secret list for adaptive auth secrets.
      */
-    const loadSecretListForSecretType = async (): Promise<void> => {
+    const loadSecretListForSecretType = (): void => {
 
         setIsSecretListLoading(true);
 
@@ -208,7 +209,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     /**
      * Calls method to load secrets to refresh secret list.
      */
-    const refreshSecretList = async () => {
+    const refreshSecretList = () => {
         loadSecretListForSecretType();
     };
 
@@ -636,7 +637,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                 setFilteredSecretList(secretList);
                             } else {
                                 setFilteredSecretList(secretList.
-                                filter(x => x.secretName.includes(
+                                filter((secret: SecretModel) => secret.secretName.includes(
                                     data.currentTarget.value)));
                             }
                         } }
