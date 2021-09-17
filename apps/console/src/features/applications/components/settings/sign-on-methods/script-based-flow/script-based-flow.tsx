@@ -40,11 +40,11 @@ import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
 import set from "lodash-es/set";
-import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
 import { useDispatch } from "react-redux";
-import { Checkbox, Dropdown, Icon, Input, Menu, Sidebar } from "semantic-ui-react";
+import { Checkbox, Dropdown, Header, Icon, Input, Menu, Sidebar } from "semantic-ui-react";
 import { stripSlashes } from "slashes";
 import { ScriptTemplatesSidePanel } from "./script-templates-side-panel";
 import { getOperationIcons, getSidePanelIcons } from "../../../../../core/configs";
@@ -61,7 +61,6 @@ import {
     AuthenticationSequenceInterface
 } from "../../../../models";
 import { AdaptiveScriptUtils } from "../../../../utils";
-import { AddAuthenticatorModal } from "../step-based-flow/add-authenticator-modal";
 
 /**
  * Proptypes for the adaptive scripts component.
@@ -107,10 +106,6 @@ interface AdaptiveScriptsPropsInterface extends TestableComponentInterface {
      * Make the form read only.
      */
     readOnly?: boolean;
-    // /**
-    //  * Callback to trigger Secret create wizard.
-    //  */
-    // onSecretCreateWizardTrigger: (cb: () => void) => void;
 
 }
 
@@ -133,7 +128,6 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         isDefaultScript,
         isMinimized,
         onAdaptiveScriptReset,
-        // onSecretCreateWizardTrigger,
         ["data-testid"]: testId
     } = props;
 
@@ -164,29 +158,48 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      * either a custom one or the static type "ADAPTIVE_AUTH_CALL_CHOREO"
      */
     const [ secretList, setSecretList ] = useState<SecretModel[]>([]);
-    const [ loadingSecretsList, setLoadingSecretsList ] = useState<boolean>(true);
+    const [ filteredSecretList, setFilteredSecretList ] = useState<SecretModel[]>([]);
+    const [ isSecretListLoading, setIsSecretListLoading ] = useState<boolean>(true);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     useEffect(() => {
+        loadSecretListForSecretType();
+    }, []);
 
-        setLoadingSecretsList(true);
+    const loadSecretListForSecretType = async (): Promise<void> => {
+
+        setIsSecretListLoading(true);
 
         getSecretList({
             params: { secretType: "ADAPTIVE_AUTH_CALL_CHOREO" }
         }).then((axiosResponse: AxiosResponse<GetSecretListResponse>) => {
-
             setSecretList(axiosResponse.data);
-            setLoadingSecretsList(false);
-
-            console.log(axiosResponse);
-        }).catch(() => {
-
-            setLoadingSecretsList(false);
-
+            setFilteredSecretList(axiosResponse.data);
+        }).catch((error) => {
+            if (error.response && error.response.data && error.response.data.description) {
+                debugger;
+                dispatch(addAlert({
+                    description: error.response.data?.description,
+                    level: AlertLevels.ERROR,
+                    message: error.response.data?.message
+                }));
+                return;
+            }
+            dispatch(addAlert({
+                description: t("console:develop.features.secrets.errors.generic.description"),
+                level: AlertLevels.ERROR,
+                message: t("console:develop.features.secrets.errors.generic.message")
+            }));
+        }).finally(() => {
+            setIsSecretListLoading(false);
         });
 
-    }, []);
+    };
+
+    const refreshSecretList = async () => {
+        loadSecretListForSecretType();
+    };
 
     useEffect(() => {
         getAdaptiveAuthTemplates()
@@ -643,23 +656,20 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      */
     const whenAddNewSecretModalClosed = (shouldRefresh: boolean): void => {
         setShowAddSecretModal(false);
-        // if (shouldRefresh) {
-        //     refreshSecretList();
-        // }
+        refreshSecretList();
     };
 
     /**
-     * Display Create Secret Modal.
+     * Display Add Secret Modal.
      *
      * @return {React.ReactElement}
      */
-    const displayCreateSecretModal = (): ReactElement => {
-        return;
-            { showAddSecretModal && (
+    const renderAddSecretModal = (): ReactElement => {
+        return(
                 <AddSecretWizard
                     onClose={ whenAddNewSecretModalClosed }
                 />
-            ); }
+        );
     };
 
     return (
@@ -748,13 +758,13 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                 <Tooltip
                                                     compact
                                                     trigger={ (
-                                                        // <div>
+                                                        <div>
                                                             <Dropdown
-                                                                floating
+                                                                defaultOpen={ !isSecretListLoading }
                                                                 labeled
                                                                 button
-                                                                scrolling
-                                                                options={ secretList }
+                                                                upward={ false }
+                                                                options={ filteredSecretList }
                                                                 icon ={
                                                                     <GenericIcon
                                                                         hoverable
@@ -775,37 +785,76 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                                         iconPosition="left"
                                                                         className="search"
                                                                         placeholder="Search for secrets"
+                                                                        onChange={ ( data:ChangeEvent<HTMLInputElement>
+                                                                        ) => {
+                                                                            debugger;
+                                                                            const val = data.currentTarget.value;
+                                                                            if(!data.currentTarget.value) {
+                                                                                setFilteredSecretList(secretList);
+                                                                            } else {
+                                                                                setFilteredSecretList(secretList.
+                                                                                filter(x => x.secretName.includes(
+                                                                                    data.currentTarget.value)));
+                                                                            }
+                                                                        } }
+                                                                        onClick={ e => e.stopPropagation() }
                                                                     />
+
                                                                     <Dropdown.Menu
                                                                         scrolling
+                                                                        className={ "custom-dropdown" }
                                                                     >
                                                                         {
-                                                                            secretList.map((
-                                                                                secret: SecretModel
-                                                                            )=> (
+                                                                            filteredSecretList.length>0 ? (
+
+                                                                                filteredSecretList.map((
+                                                                                    secret: SecretModel
+                                                                                ) => (
                                                                                     <Dropdown.Item
                                                                                         key={ secret.secretId }
-                                                                                        text={ secret.secretName }
-                                                                                        scrolling
                                                                                         onClick={ () => {
                                                                                             addSecretToScript(secret);
                                                                                         } }
-                                                                                    />
+                                                                                    >
+                                                                                        <Header
+                                                                                            as={ "h6" }
+                                                                                            className={ "header-with-icon" }
+                                                                                        >
+                                                                                            <Header.Content>
+                                                                                                { secret.secretName }
+                                                                                            </Header.Content>
+                                                                                            <Header.Subheader
+                                                                                                className="truncate ellipsis"
+                                                                                            >
+                                                                                                { secret.description }
+                                                                                            </Header.Subheader>
+                                                                                        </Header>
+                                                                                    </Dropdown.Item>
                                                                                 ))
+                                                                            ) : (
+                                                                                <Dropdown.Item
+                                                                                    key={ "dcdcac" }
+                                                                                    text={ "No Secrets available." }
+                                                                                    disabled
+                                                                                />
+                                                                            )
                                                                         }
-                                                                    { /*</Dropdown.Menu>*/ }
-                                                                    { /*<Dropdown.Menu>*/ }
-                                                                        <Dropdown.Divider/>
+                                                                    </Dropdown.Menu>
+                                                                    <Dropdown.Menu
+                                                                        scrolling
+                                                                    >
                                                                         <Dropdown.Item
                                                                             key={ "createSecret" }
                                                                             text={ "Create New Secret" }
-                                                                            oncClick={ displayCreateSecretModal }
+                                                                            onClick={ () => {
+                                                                                setShowAddSecretModal(true);
+                                                                            } }
                                                                         />
                                                                     </Dropdown.Menu>
                                                                 </Dropdown.Menu>
                                                             </Dropdown>
 
-                                                        // </div>
+                                                        </div>
                                                     ) }
                                                     content={ () => {
                                                         return t("common:addKey");
@@ -926,7 +975,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                         </Sidebar.Pushable>
                     </SegmentedAccordion.Content>
                 </SegmentedAccordion>
-                { /*{ showSecretAddModal && renderSecretAddModal() }*/ }
+                { showAddSecretModal && renderAddSecretModal() }
             </div>
             <ConfirmationModal
                 onClose={ (): void => setShowScriptResetWarning(false) }
