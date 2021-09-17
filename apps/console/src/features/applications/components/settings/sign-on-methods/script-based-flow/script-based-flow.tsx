@@ -50,7 +50,7 @@ import { stripSlashes } from "slashes";
 import { ScriptTemplatesSidePanel } from "./script-templates-side-panel";
 import { getOperationIcons } from "../../../../../core/configs";
 import { AppUtils, EventPublisher } from "../../../../../core/utils";
-import { getSecretList } from "../../../../../secrets/api";
+import { getSecretList } from "../../../../../secrets/api/secret";
 import AddSecretWizard from "../../../../../secrets/components/add-secret-wizard";
 import { ADAPTIVE_SCRIPT_SECRETS } from "../../../../../secrets/constants/secrets.common";
 import { GetSecretListResponse, SecretModel } from "../../../../../secrets/models/secret";
