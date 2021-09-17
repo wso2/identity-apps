@@ -179,6 +179,14 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
     };
 
     /**
+     * Reset the pagination page is the page limit changes.
+     */
+    const resetAll = () => {
+        setActivePage(1);
+        onPageChange(null, {activePage: 1, totalPages: totalPages});
+    }
+
+    /**
      * This is called when page change occurs.
      * 
      * @param {React.MouseEvent<HTMLAnchorElement, MouseEvent>} event Mouse event.
@@ -205,7 +213,10 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
                         compact
                         defaultValue={ itemsPerPageDropdownLowerLimit }
                         options={ generatePageCountDropdownOptions() }
-                        onChange={ onItemsPerPageDropdownChange }
+                        onChange={ (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
+                            resetAll();
+                            onItemsPerPageDropdownChange(event, data);
+                        }}
                         selection
                     />
                 </label>
