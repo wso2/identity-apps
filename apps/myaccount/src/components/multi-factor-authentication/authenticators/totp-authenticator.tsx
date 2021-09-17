@@ -525,14 +525,14 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     /**
      * Handle the revoke TOTP Configuration modal close event.
      */
-     const handleRevokeTOTPAuthnClick = () => {
+     const handleRevokeTOTPAuthnClick = (): void => {
         setRevokeTOTPAuthnModalVisibility(true);
     };
     
     /**
      * Handle the revoke TOTP Configuration modal close event.
      */
-     const handleRevokeTOTPAuthnModalClose = () => {
+     const handleRevokeTOTPAuthnModalClose = (): void => {
         setRevokeTOTPAuthnModalVisibility(false);
     };
 
