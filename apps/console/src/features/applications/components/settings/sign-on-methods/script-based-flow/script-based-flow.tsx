@@ -51,6 +51,7 @@ import { getOperationIcons, getSidePanelIcons } from "../../../../../core/config
 import { AppUtils, EventPublisher } from "../../../../../core/utils";
 import { AuthenticatorCategories, AuthenticatorMeta } from "../../../../../identity-providers";
 import { getSecretList } from "../../../../../secrets/api/secret";
+import AddSecretWizard from "../../../../../secrets/components/add-secret-wizard";
 import { GetSecretListResponse, SecretModel } from "../../../../../secrets/models/secret";
 import { getAdaptiveAuthTemplates } from "../../../../api";
 import { ApplicationManagementConstants } from "../../../../constants";
@@ -106,6 +107,11 @@ interface AdaptiveScriptsPropsInterface extends TestableComponentInterface {
      * Make the form read only.
      */
     readOnly?: boolean;
+    // /**
+    //  * Callback to trigger Secret create wizard.
+    //  */
+    // onSecretCreateWizardTrigger: (cb: () => void) => void;
+
 }
 
 /**
@@ -127,6 +133,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         isDefaultScript,
         isMinimized,
         onAdaptiveScriptReset,
+        // onSecretCreateWizardTrigger,
         ["data-testid"]: testId
     } = props;
 
@@ -149,7 +156,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const [ showScriptResetWarning, setShowScriptResetWarning ] = useState<boolean>(false);
     const [ showConditionalAuthContent, setShowConditionalAuthContent ] = useState<boolean>(isMinimized);
     const [ isEditorFullScreen, setIsEditorFullScreen ] = useState<boolean>(false);
-    const [ showSecretAddModal, setShowSecretAddModal ] = useState<boolean>(false);
+    const [ showAddSecretModal, setShowAddSecretModal ] = useState<boolean>(false);
     const [ editorInstance, setEditorInstance ] = useState(undefined);
 
     /**
@@ -630,15 +637,29 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     };
 
     /**
+     * This will be called when secret add wizard closed.
+     * It will tell us to refresh the secret list or not.
+     * @param shouldRefresh {boolean}
+     */
+    const whenAddNewSecretModalClosed = (shouldRefresh: boolean): void => {
+        setShowAddSecretModal(false);
+        // if (shouldRefresh) {
+        //     refreshSecretList();
+        // }
+    };
+
+    /**
      * Display Create Secret Modal.
      *
      * @return {React.ReactElement}
      */
     const displayCreateSecretModal = (): ReactElement => {
-        return (
-            <>
-            </>
-        );
+        return;
+            { showAddSecretModal && (
+                <AddSecretWizard
+                    onClose={ whenAddNewSecretModalClosed }
+                />
+            ); }
     };
 
     return (
@@ -778,6 +799,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                                         <Dropdown.Item
                                                                             key={ "createSecret" }
                                                                             text={ "Create New Secret" }
+                                                                            oncClick={ displayCreateSecretModal }
                                                                         />
                                                                     </Dropdown.Menu>
                                                                 </Dropdown.Menu>
