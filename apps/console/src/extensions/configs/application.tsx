@@ -38,7 +38,7 @@ export const applicationConfig: ApplicationConfig = {
             showRoleAttribute: true,
             showRoleMapping: true,
             showUseMappedLocalSubject: true,
-            showSubjectAttribute: true
+            showSubjectAttribute: false
         },
         attributeSelection: {
             getClaims: (claims: ExtendedClaimInterface[]): ExtendedClaimInterface[] => {
