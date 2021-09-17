@@ -590,7 +590,7 @@ export interface ConsoleNS {
                                                     darkMode: string;
                                                 };
                                             };
-                                            secrets: {
+                                            secretsList: {
                                                 create: string;
                                                 emptyPlaceholder: string;
                                                 search: string;

@@ -630,7 +630,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                         iconPosition="left"
                         className="search"
                         placeholder= { t("console:develop.features.applications.edit.sections.signOnMethod" +
-                                        ".sections.authenticationFlow.sections.scriptBased.secrets.search") }
+                                        ".sections.authenticationFlow.sections.scriptBased.secretsList.search") }
                         onChange={ ( data:ChangeEvent<HTMLInputElement>
                         ) => {
                             if(!data.currentTarget.value) {
@@ -681,7 +681,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                     data-testid={ `${ testId }-empty-placeholder` }
                                     key={ "secretEmptyPlaceholder" }
                                     text={ t("console:develop.features.applications.edit.sections.signOnMethod" +
-                                        ".sections.authenticationFlow.sections.scriptBased.secrets.emptyPlaceholder") }
+                                        ".sections.authenticationFlow.sections.scriptBased.secretsList.emptyPlaceholder") }
                                     disabled
                                 />
                             )
@@ -693,7 +693,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                         <Dropdown.Item
                             key={ "createSecret" }
                             text={ t("console:develop.features.applications.edit.sections.signOnMethod" +
-                                ".sections.authenticationFlow.sections.scriptBased.secrets.create") }
+                                ".sections.authenticationFlow.sections.scriptBased.secretsList.create") }
                             onClick={ () => {
                                 setShowAddSecretModal(true);
                             } }

@@ -940,7 +940,7 @@ export const console: ConsoleNS = {
                                                     heading: "Modèles"
                                                 }
                                             },
-                                            secrets: {
+                                            secretsList: {
                                                 create: "Créer un nouveau secret",
                                                 emptyPlaceholder: "Aucun secret disponible",
                                                 search: "Recherche par nom secret"

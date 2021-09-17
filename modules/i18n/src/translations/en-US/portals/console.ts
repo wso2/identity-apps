@@ -932,7 +932,7 @@ export const console: ConsoleNS = {
                                                     heading: "Templates"
                                                 }
                                             },
-                                            secrets: {
+                                            secretsList: {
                                                 create: "Create new secret",
                                                 emptyPlaceholder: "No secrets available",
                                                 search: "Search by secret name"
