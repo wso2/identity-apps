@@ -305,6 +305,8 @@ export class AppConstants {
             .set("GOVERNANCE_CONNECTOR", `${ AppConstants.getAdminViewBasePath() }/connector/:id`)
             .set("GOVERNANCE_CONNECTOR_EDIT", `${ 
                 AppConstants.getAdminViewBasePath() }/connector/:categoryId/:connectorId`)
+            .set("SECRETS", `${ AppConstants.getDeveloperViewBasePath() }/secrets`)
+            .set("SECRET_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/secrets/:type/:name`)
             .set("ATTRIBUTE_MAPPINGS", `${ AppConstants.getAdminViewBasePath() }/attribute-mappings/:type`);
             
     }

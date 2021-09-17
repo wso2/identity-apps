@@ -31,6 +31,7 @@ import { GroupsResourceEndpointsInterface } from "../../groups";
 import { IDPResourceEndpointsInterface, IdentityProviderTemplateLoadingStrategies } from "../../identity-providers";
 import { ScopesResourceEndpointsInterface } from "../../oidc-scopes";
 import { RolesResourceEndpointsInterface } from "../../roles";
+import { SecretsManagementEndpoints } from "../../secrets/models/endpoints";
 import { ServerConfigurationsResourceEndpointsInterface } from "../../server-configurations";
 import { UsersResourceEndpointsInterface } from "../../users";
 import { UserstoreResourceEndpointsInterface } from "../../userstores";
@@ -274,7 +275,8 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     RolesResourceEndpointsInterface,
     ApplicationsResourceEndpointsInterface,
     IDPResourceEndpointsInterface,
-    ScopesResourceEndpointsInterface {
+    ScopesResourceEndpointsInterface,
+    SecretsManagementEndpoints {
 
     CORSOrigins: string;
     documentationContent: string;

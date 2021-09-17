@@ -135,6 +135,30 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
                         path: AppConstants.getPaths().get("IDP"),
                         protected: true,
                         showOnSidePanel: true
+                    },
+                    {
+                        category: "console:develop.features.secrets.routes.category",
+                        children: [
+                            {
+                                component: lazy(() => import("../../secrets/pages/secret-edit")),
+                                exact: false,
+                                icon: { icon: getSidePanelIcons().childIcon },
+                                id: "secret-management-edit",
+                                name: "console:develop.features.secrets.routes.sidePanelChildrenNames.0",
+                                path: AppConstants.getPaths().get("SECRET_EDIT"),
+                                protected: true,
+                                showOnSidePanel: false
+                            }
+                        ],
+                        component: lazy(() => import("../../secrets/pages/secrets")),
+                        exact: true,
+                        icon: { icon: getSidePanelIcons().secrets },
+                        id: "secrets-management",
+                        name: "console:develop.features.secrets.routes.name",
+                        order: 3,
+                        path: AppConstants.getPaths().get("SECRETS"),
+                        protected: true,
+                        showOnSidePanel: true
                     }
                 ], "id"
             ),

@@ -1979,6 +1979,111 @@ export interface ConsoleNS {
             templates: {
                 emptyPlaceholder: Placeholder;
             };
+            secrets?: {
+                page?: {
+                    title: string;
+                    description: string;
+                    primaryActionButtonText: string;
+                    subFeatureBackButton: string;
+                };
+                errors?: {
+                    generic: {
+                        message: string;
+                        description: string;
+                    }
+                },
+                routes?: {
+                    name: string;
+                    category: string;
+                    sidePanelChildrenNames: string[];
+                },
+                alerts?: {
+                    createdSecret?: {
+                        description: string;
+                        message: string;
+                    },
+                    updatedSecret?: {
+                        description: string;
+                        message: string;
+                    },
+                    deleteSecret?: {
+                        description: string;
+                        message: string;
+                    }
+                },
+                modals: {
+                    deleteSecret: {
+                        assertionHint: string;
+                        primaryActionButtonText: string;
+                        secondaryActionButtonText: string;
+                        title: string;
+                        content: string;
+                        warningMessage: string;
+                    }
+                },
+                wizards?: {
+                    addSecret?: {
+                        heading?: string;
+                        subheading?: string;
+                        form?: {
+                            secretTypeField: Record<string, string>;
+                            secretNameField: Record<string, string>;
+                            secretValueField: Record<string, string>;
+                            secretDescriptionField: Record<string, string>;
+                        }
+                    },
+                    actions: {
+                        finishButton: {
+                            label: string;
+                            ariaLabel: string;
+                        };
+                        cancelButton: {
+                            label: string;
+                            ariaLabel: string;
+                        };
+                    }
+                },
+                banners?: {
+                    secretIsHidden: {
+                        title: string;
+                        content: string;
+                    },
+                    adaptiveAuthSecretType: {
+                        title: string;
+                        content: string;
+                    }
+                },
+                forms?: {
+                    editSecret?: {
+                        secretValueField: Record<string, string>;
+                        secretDescriptionField: Record<string, string>;
+                    },
+                    actions?: {
+                        submitButton: {
+                            label: string;
+                            ariaLabel: string;
+                        }
+                    }
+                },
+                emptyPlaceholders?: {
+                    resourceNotFound: {
+                        messages: string[];
+                    },
+                    emptyListOfSecrets: {
+                        messages: string[];
+                    },
+                    buttons?: {
+                        backToSecrets: {
+                            label: string;
+                            ariaLabel: string;
+                        },
+                        addSecret: {
+                            label: string;
+                            ariaLabel: string;
+                        }
+                    }
+                }
+            }
         };
         notifications: {
             endSession: Notification;
