@@ -44,6 +44,7 @@ import { ReactComponent as LockIcon } from "../../../themes/default/assets/image
 import {
     ReactComponent as LockIconFilled
 } from "../../../themes/default/assets/images/icons/lock.svg";
+import { ReactComponent as KeyIcon } from "../../../themes/default/assets/images/icons/key-icon.svg";
 import { ReactComponent as MaximizeIcon } from "../../../themes/default/assets/images/icons/maximize-icon.svg";
 import { ReactComponent as IDPMetadataIcon } from "../../../themes/default/assets/images/icons/metadata.svg";
 import { ReactComponent as MinimizeIcon } from "../../../themes/default/assets/images/icons/minimize-icon.svg";
@@ -85,8 +86,8 @@ import {
 import {
     ReactComponent as LightModeIcon
 } from "../../../themes/default/assets/images/icons/solid-icons/light-icon.svg";
-import { 
-    ReactComponent as OpenBookIcon 
+import {
+    ReactComponent as OpenBookIcon
 } from "../../../themes/default/assets/images/icons/solid-icons/oidc.svg";
 import { ReactComponent as UnPinIcon } from "../../../themes/default/assets/images/icons/unpin-icon.svg";
 import { ReactComponent as FileUploadIllustration } from "../../../themes/default/assets/images/icons/upload.svg";
@@ -227,6 +228,7 @@ export const getOperationIcons = () => {
         lightMode: LightModeIcon,
         maximize: MaximizeIcon,
         minimize: MinimizeIcon,
+        keyIcon: KeyIcon,
         openBookIcon: OpenBookIcon
     };
 };

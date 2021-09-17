@@ -25,6 +25,7 @@ export interface CommonNS {
     activate: string;
     active: string;
     add: string;
+    addKey: string;
     addURL: string;
     all: string;
     applicationName: string;

@@ -940,6 +940,11 @@ export const console: ConsoleNS = {
                                                     heading: "Modèles"
                                                 }
                                             },
+                                            secretsList: {
+                                                create: "Créer un nouveau secret",
+                                                emptyPlaceholder: "Aucun secret disponible",
+                                                search: "Recherche par nom secret"
+                                            },
                                             heading: "Configuration basée sur des scripts",
                                             hint: "Définissez le flux d'authentification via un script adaptatif. Vous pouvez " +
                                                 "sélectionner l'un des modèles du panneau pour commencer."
@@ -3665,7 +3670,7 @@ export const console: ConsoleNS = {
                         title: "Es-tu sûr?",
                         content: "Cette action est irréversible et supprimera définitivement le secret.",
                         warningMessage: "Si vous supprimez ce secret, les scripts d'authentification adaptative " +
-                            "en fonction de cette valeur cesseront de fonctionner. Veuillez procéder avec prudence.",
+                            "en fonction de cette valeur cesseront de fonctionner. Veuillez procéder avec prudence."
                     }
                 },
                 wizards: {
@@ -3746,7 +3751,7 @@ export const console: ConsoleNS = {
                     actions: {
                         submitButton: {
                             label: "Mettre à jour",
-                            ariaLabel: "Mettre à jour pour enregistrer le formulaire",
+                            ariaLabel: "Mettre à jour pour enregistrer le formulaire"
                         }
                     }
                 },
@@ -3765,11 +3770,11 @@ export const console: ConsoleNS = {
                     buttons: {
                         backToSecrets: {
                             label: "Ramène-moi à Secrets",
-                            ariaLabel: "Accédez à la liste des secrets.",
+                            ariaLabel: "Accédez à la liste des secrets."
                         },
                         addSecret: {
                             label: "Nouveau secret",
-                            ariaLabel: "Ajoutez un nouveau secret.",
+                            ariaLabel: "Ajoutez un nouveau secret."
                         }
                     }
                 }

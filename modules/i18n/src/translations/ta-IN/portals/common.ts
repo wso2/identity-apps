@@ -24,6 +24,7 @@ export const common: CommonNS = {
     activate: "செயல்படுத்த",
     active: "செயல்பாட்டில் உள்ள",
     add: "சேர்",
+    addKey: "ரகசியத்தைச் சேர்க்கவும்",
     addURL: "URL ஐச் சேர்க்கவும்",
     all: "அனைத்தும்",
     applicationName: "செயலியின் பெயர்",

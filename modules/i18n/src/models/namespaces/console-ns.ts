@@ -590,6 +590,11 @@ export interface ConsoleNS {
                                                     darkMode: string;
                                                 };
                                             };
+                                            secretsList: {
+                                                create: string;
+                                                emptyPlaceholder: string;
+                                                search: string;
+                                            }
                                         };
                                         stepBased: {
                                             actions: {

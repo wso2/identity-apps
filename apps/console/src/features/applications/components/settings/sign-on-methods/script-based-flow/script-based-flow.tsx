@@ -33,21 +33,27 @@ import {
     Tooltip,
     useDocumentation
 } from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
+import * as codemirror from "codemirror";
 import beautify from "js-beautify";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
 import set from "lodash-es/set";
-import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
 import { useDispatch } from "react-redux";
-import { Checkbox, Icon, Menu, Sidebar } from "semantic-ui-react";
+import { Checkbox, Dropdown, Header, Icon, Input, Menu, Sidebar } from "semantic-ui-react";
 import { stripSlashes } from "slashes";
 import { ScriptTemplatesSidePanel } from "./script-templates-side-panel";
 import { getOperationIcons } from "../../../../../core/configs";
 import { AppUtils, EventPublisher } from "../../../../../core/utils";
+import { getSecretList } from "../../../../../secrets/api/secret";
+import AddSecretWizard from "../../../../../secrets/components/add-secret-wizard";
+import { ADAPTIVE_SCRIPT_SECRETS } from "../../../../../secrets/constants/secrets.common";
+import { GetSecretListResponse, SecretModel } from "../../../../../secrets/models/secret";
 import { getAdaptiveAuthTemplates } from "../../../../api";
 import { ApplicationManagementConstants } from "../../../../constants";
 import {
@@ -101,6 +107,7 @@ interface AdaptiveScriptsPropsInterface extends TestableComponentInterface {
      * Make the form read only.
      */
     readOnly?: boolean;
+
 }
 
 /**
@@ -144,8 +151,107 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const [ showScriptResetWarning, setShowScriptResetWarning ] = useState<boolean>(false);
     const [ showConditionalAuthContent, setShowConditionalAuthContent ] = useState<boolean>(isMinimized);
     const [ isEditorFullScreen, setIsEditorFullScreen ] = useState<boolean>(false);
+    const [ showAddSecretModal, setShowAddSecretModal ] = useState<boolean>(false);
+    const [ editorInstance, setEditorInstance ] = useState<codemirror.Editor>(undefined);
+
+    /**
+     * List of secrets for the selected {@code secretType}. It can hold secrets of
+     * either a custom one or the static type "ADAPTIVE_AUTH_CALL_CHOREO"
+     */
+    const [ secretList, setSecretList ] = useState<SecretModel[]>([]);
+    /**
+     * List of secrets for facilitating secret list search function.
+     */
+    const [ filteredSecretList, setFilteredSecretList ] = useState<SecretModel[]>([]);
+    const [ isSecretListLoading, setIsSecretListLoading ] = useState<boolean>(true);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    /**
+     * Calls method to load secrets to secret list.
+     */
+    useEffect(() => {
+        loadSecretListForSecretType();
+    }, []);
+
+    /**
+     * Loads secret list for adaptive auth secrets.
+     */
+    const loadSecretListForSecretType = (): void => {
+
+        setIsSecretListLoading(true);
+
+        getSecretList({
+            params: { secretType: ADAPTIVE_SCRIPT_SECRETS }
+        }).then((axiosResponse: AxiosResponse<GetSecretListResponse>) => {
+            setSecretList(axiosResponse.data);
+            setFilteredSecretList(axiosResponse.data);
+        }).catch((error) => {
+            if (error.response && error.response.data && error.response.data.description) {
+                dispatch(addAlert({
+                    description: error.response.data?.description,
+                    level: AlertLevels.ERROR,
+                    message: error.response.data?.message
+                }));
+                return;
+            }
+            dispatch(addAlert({
+                description: t("console:develop.features.secrets.errors.generic.description"),
+                level: AlertLevels.ERROR,
+                message: t("console:develop.features.secrets.errors.generic.message")
+            }));
+        }).finally(() => {
+            setIsSecretListLoading(false);
+        });
+
+    };
+
+    /**
+     * Calls method to load secrets to refresh secret list.
+     */
+    const refreshSecretList = () => {
+        loadSecretListForSecretType();
+    };
+
+    /**
+     * Add secret name to adaptive script.
+     *
+     * @param secret
+     */
+    const addSecretToScript = (secret:SecretModel): void => {
+        const doc = editorInstance.getDoc();
+        //If a code segment is selected, the selected text is replaced.
+        if (doc.somethingSelected()) {
+            doc.replaceSelection(secret.secretName);
+        } else {
+            //If no selected text, secret name injected at the location of the cursor.
+            const cursor = doc.getCursor();
+            doc.replaceRange(secret.secretName, cursor);
+        }
+    };
+
+    /**
+     * This will be called when secret add wizard closed.
+     * It will tell us to refresh the secret list or not.
+     * @param shouldRefresh {boolean}
+     */
+    const whenAddNewSecretModalClosed = (shouldRefresh: boolean): void => {
+        setShowAddSecretModal(false);
+        refreshSecretList();
+    };
+
+    /**
+     * Display Add Secret Modal.
+     *
+     * @return {React.ReactElement}
+     */
+    const renderAddSecretModal = (): ReactElement => {
+        return(
+            <AddSecretWizard
+                onClose={ whenAddNewSecretModalClosed }
+            />
+        );
+    };
 
     useEffect(() => {
         getAdaptiveAuthTemplates()
@@ -493,6 +599,113 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     );
 
     /**
+     * Render the secret list dropdown.
+     */
+    const renderSecretListDropdown = (): ReactElement => {
+        return(
+            <Dropdown
+                defaultOpen={ !isSecretListLoading }
+                labeled
+                button
+                upward={ false }
+                options={ filteredSecretList }
+                icon ={
+                    <GenericIcon
+                        hoverable
+                        transparent
+                        defaultIcon
+                        size="micro"
+                        hoverType="rounded"
+                        icon={ getOperationIcons().keyIcon }
+                        data-testid={
+                            `${ testId }-code-editor-secret-selection`
+                        }
+                    />
+                }
+            >
+                <Dropdown.Menu>
+                    <Input
+                        data-testid={ `${ testId }-secret-search` }
+                        icon="search"
+                        iconPosition="left"
+                        className="search"
+                        placeholder= { t("console:develop.features.applications.edit.sections.signOnMethod" +
+                                        ".sections.authenticationFlow.sections.scriptBased.secretsList.search") }
+                        onChange={ ( data:ChangeEvent<HTMLInputElement>
+                        ) => {
+                            if(!data.currentTarget.value) {
+                                setFilteredSecretList(secretList);
+                            } else {
+                                setFilteredSecretList(secretList.
+                                filter((secret: SecretModel) => secret.secretName.includes(
+                                    data.currentTarget.value)));
+                            }
+                        } }
+                        onClick={ e => e.stopPropagation() }
+                    />
+
+                    <Dropdown.Menu
+                        data-testid={ `${ testId }-secret-list` }
+                        scrolling
+                        className={ "custom-dropdown" }
+                    >
+                        {
+                            filteredSecretList.length>0 ? (
+
+                                filteredSecretList.map((
+                                    secret: SecretModel
+                                ) => (
+                                    <Dropdown.Item
+                                        key={ secret.secretId }
+                                        onClick={ () => {
+                                            addSecretToScript(secret);
+                                        } }
+                                    >
+                                        <Header
+                                            as={ "h6" }
+                                            className={ "header-with-icon" }
+                                        >
+                                            <Header.Content>
+                                                { secret.secretName }
+                                            </Header.Content>
+                                            <Header.Subheader
+                                                className="truncate ellipsis"
+                                            >
+                                                { secret.description }
+                                            </Header.Subheader>
+                                        </Header>
+                                    </Dropdown.Item>
+                                ))
+                            ) : (
+                                <Dropdown.Item
+                                    data-testid={ `${ testId }-empty-placeholder` }
+                                    key={ "secretEmptyPlaceholder" }
+                                    text={ t("console:develop.features.applications.edit.sections.signOnMethod" +
+                                        ".sections.authenticationFlow.sections.scriptBased.secretsList.emptyPlaceholder") }
+                                    disabled
+                                />
+                            )
+                        }
+                    </Dropdown.Menu>
+                    <Dropdown.Menu
+                        scrolling
+                    >
+                        <Dropdown.Item
+                            key={ "createSecret" }
+                            text={ t("console:develop.features.applications.edit.sections.signOnMethod" +
+                                ".sections.authenticationFlow.sections.scriptBased.secretsList.create") }
+                            onClick={ () => {
+                                setShowAddSecretModal(true);
+                            } }
+                        />
+                    </Dropdown.Menu>
+                </Dropdown.Menu>
+            </Dropdown>
+        );
+
+    };
+
+    /**
      * Persist the Conditional Auth Tour seen status in Local Storage.
      *
      * @param {boolean} status - Status to set.
@@ -535,13 +748,13 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      * @return {React.ReactElement}
      */
     const resolveApiDocumentationLink = (): ReactElement => {
-        const apiDocLink: string = getLink("develop.applications.editApplication.common." + 
+        const apiDocLink: string = getLink("develop.applications.editApplication.common." +
             "signInMethod.conditionalAuthenticaion.apiReference");
 
         if (apiDocLink === undefined) {
             return null;
         }
-        
+
         return (
                 <Menu.Item
                     className="action p-3"
@@ -618,7 +831,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                     "title.description")
                                             }
                                             <DocumentationLink
-                                                link={ getLink("develop.applications.editApplication.common." + 
+                                                link={ getLink("develop.applications.editApplication.common." +
                                                     "signInMethod.conditionalAuthenticaion.learnMore") }
                                             >
                                                 { t("common:learnMore") }
@@ -660,6 +873,22 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                     <Menu attached="top" className="action-panel" secondary>
                                         <Menu.Menu position="right">
                                             { resolveApiDocumentationLink() }
+                                            <Menu.Item className="action">
+                                                <Tooltip
+                                                    compact
+                                                    trigger={ (
+                                                        <div>
+                                                            {
+                                                                renderSecretListDropdown()
+                                                            }
+                                                        </div>
+                                                    ) }
+                                                    content={ () => {
+                                                        return t("common:addKey");
+                                                    } }
+                                                    size="mini"
+                                                />
+                                            </Menu.Item>
                                             <Menu.Item className="action">
                                                 <Tooltip
                                                     compact
@@ -739,6 +968,9 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
 
                                     <div className="code-editor-wrapper">
                                         <CodeEditor
+                                            editorDidMount={ (editor,...args) => {
+                                                setEditorInstance(editor);
+                                            } }
                                             lint
                                             allowFullScreen
                                             controlledFullScreenMode={ false }
@@ -770,6 +1002,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                         </Sidebar.Pushable>
                     </SegmentedAccordion.Content>
                 </SegmentedAccordion>
+                { showAddSecretModal && renderAddSecretModal() }
             </div>
             <ConfirmationModal
                 onClose={ (): void => setShowScriptResetWarning(false) }

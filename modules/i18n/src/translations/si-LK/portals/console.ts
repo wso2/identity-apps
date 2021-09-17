@@ -929,6 +929,11 @@ export const console: ConsoleNS = {
                                                     heading: "සැකිලි"
                                                 }
                                             },
+                                            secretsList: {
+                                                create: "නව රහසක් සාදන්න",
+                                                emptyPlaceholder: "රහස් නොමැත",
+                                                search: "රහස් නාමයෙන් සොයන්න"
+                                            },
                                             heading: "ස්ක්‍රිප්ට් මත පදනම් වූ වින්‍යාසය",
                                             hint: "අනුවර්තන පිටපතක් හරහා සත්‍යාපන ප්‍රවාහය නිර්වචනය කරන්න. " +
                                                 "ආරම්භ කිරීම සඳහා ඔබට පුවරුවේ සිට සැකිලි වලින් එකක් තෝරා ගත හැකිය."
@@ -3666,7 +3671,7 @@ export const console: ConsoleNS = {
                     actions: {
                         submitButton: {
                             label: "යාවත්කාලීන කරන්න",
-                            ariaLabel: "පෝරමය සුරැකීම සඳහා යාවත්කාලීන කරන්න",
+                            ariaLabel: "පෝරමය සුරැකීම සඳහා යාවත්කාලීන කරන්න"
                         }
                     }
                 },
@@ -3685,11 +3690,11 @@ export const console: ConsoleNS = {
                     buttons: {
                         backToSecrets: {
                             label: "මාව නැවත රහස් වෙත ගෙන යන්න",
-                            ariaLabel: "රහස් ලැයිස්තුවට යන්න.",
+                            ariaLabel: "රහස් ලැයිස්තුවට යන්න."
                         },
                         addSecret: {
                             label: "නව රහස",
-                            ariaLabel: "නව රහසක් එකතු කරන්න.",
+                            ariaLabel: "නව රහසක් එකතු කරන්න."
                         }
                     }
                 }

@@ -932,6 +932,11 @@ export const console: ConsoleNS = {
                                                     heading: "Templates"
                                                 }
                                             },
+                                            secretsList: {
+                                                create: "Create new secret",
+                                                emptyPlaceholder: "No secrets available",
+                                                search: "Search by secret name"
+                                            },
                                             heading: "Script-based configuration",
                                             hint: "Define the authentication flow via an adaptive script. You can " +
                                                 "select one of the templates fom the panel to get started."
@@ -4994,7 +4999,7 @@ export const console: ConsoleNS = {
                         title: "Are you sure?",
                         content: "This action is irreversible and will permanently delete the secret.",
                         warningMessage: "If you delete this secret, Adaptive Authentication Scripts " +
-                            "depending on this value will stop working. Please proceed with caution.",
+                            "depending on this value will stop working. Please proceed with caution."
                     }
                 },
                 wizards: {
@@ -5076,7 +5081,7 @@ export const console: ConsoleNS = {
                     actions: {
                         submitButton: {
                             label: "Update",
-                            ariaLabel: "Update to save the form",
+                            ariaLabel: "Update to save the form"
                         }
                     }
                 },
@@ -5095,11 +5100,11 @@ export const console: ConsoleNS = {
                     buttons: {
                         backToSecrets: {
                             label: "Take me back to Secrets",
-                            ariaLabel: "Navigate to Secrets list.",
+                            ariaLabel: "Navigate to Secrets list."
                         },
                         addSecret: {
                             label: "New Secret",
-                            ariaLabel: "Add a new Secret.",
+                            ariaLabel: "Add a new Secret."
                         }
                     }
                 }
