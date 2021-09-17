@@ -37,6 +37,7 @@ export interface ApplicationConfig {
             showRoleAttribute: boolean;
             showRoleMapping: boolean;
             showUseMappedLocalSubject: boolean;
+            showSubjectAttribute: boolean;
         };
         attributeSelection: {
             getClaims: (claims: ExtendedClaimInterface[]) => ExtendedClaimInterface[];

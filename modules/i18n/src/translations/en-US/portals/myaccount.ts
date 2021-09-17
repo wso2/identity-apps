@@ -1368,7 +1368,7 @@ export const myAccount: MyAccountNS = {
             title: "Personal Info"
         },
         personalInfoWithoutExportProfile: {
-            subTitle: "Edit your personal profile",
+            subTitle: "View and manage your personal information",
             title: "Personal Info"
         },
         privacy: {
@@ -1482,7 +1482,7 @@ export const myAccount: MyAccountNS = {
             heading: "Multi-Factor Authentication"
         },
         profile: {
-            description: "Manage and update your personal details like name, email, mobile number, organization, etc.",
+            description: "Manage your personal profile",
             heading: "Profile"
         },
         profileExport: {

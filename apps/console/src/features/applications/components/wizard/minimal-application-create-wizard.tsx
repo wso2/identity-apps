@@ -65,6 +65,9 @@ import { getInboundProtocolLogos } from "../../configs";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
+import SinglePageApplicationTemplate
+    from "../../data/application-templates/templates/single-page-application/single-page-application.json";
+
 import {
     ApplicationTemplateIdTypes,
     ApplicationTemplateInterface,
@@ -237,15 +240,17 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         }
         createApplication(application)
             .then((response) => {
-                if (selectedTemplate.id === CustomApplicationTemplate.id) {
-                    eventPublisher.publish("application-register-new-application", {
-                        "type": application.templateId
-                    });
-                } else {
-                    eventPublisher.publish("application-register-new-application", {
-                        "type": selectedTemplate.templateId
-                    });
-                }
+                eventPublisher.compute(() => {
+                    if (selectedTemplate.id === CustomApplicationTemplate.id) {
+                        eventPublisher.publish("application-register-new-application", {
+                            "type": application.templateId
+                        });
+                    } else {
+                        eventPublisher.publish("application-register-new-application", {
+                            "type": selectedTemplate.templateId
+                        });
+                    }
+                });
                 
                 dispatch(
                     addAlert({
@@ -409,6 +414,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     templateValues={ templateSettings?.application }
                     onSubmit={ (values): void => setProtocolFormValues(values) }
                     showCallbackURL={ true }
+                    addOriginByDefault={ selectedTemplate.id === SinglePageApplicationTemplate.id }
                     data-testid={ `${ testId }-oauth-protocol-settings-form` }
                 />
             );

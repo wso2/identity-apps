@@ -748,7 +748,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         setIsClaimRequestLoading(true);
 
         if (onlyOIDCConfigured) {
-            setIsClaimRequestLoading(false);
             changeSelectedDialect("http://wso2.org/oidc/claim");
 
             return;
@@ -802,7 +801,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             ? (
                 <EmphasizedSegment padded="very">
                     <Grid className="claim-mapping">
-                        <Grid.Row columns={ 1 }>
+                        <div className="form-container with-max-width">
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
                                 <AttributeSelection
                                     claims={ claims }
@@ -840,7 +839,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                     data-testid={ `${ testId }-attribute-selection` }
                                 />
                             </Grid.Column>
-                        </Grid.Row>
+                        </div>
                     </Grid>
                     { !isUserAttributesLoading? (
                         <Grid>
@@ -865,6 +864,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                         }
                                         technology={ technology }
                                         applicationTemplateId={ applicationTemplateId }
+                                        onlyOIDCConfigured={ onlyOIDCConfigured }
                                         data-testid={ `${ testId }-advanced-attribute-settings-form` }
                                     />
                                 </Grid.Column>

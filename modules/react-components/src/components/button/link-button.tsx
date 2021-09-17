@@ -114,6 +114,8 @@ export const LinkButton: FunctionComponent<LinkButtonPropsInterface> = (
  * Prop types for the link button component.
  */
 LinkButton.defaultProps = {
+    basic: true,
     "data-testid": "link-button",
-    loaderSize: "mini"
+    loaderSize: "mini",
+    primary: true
 };

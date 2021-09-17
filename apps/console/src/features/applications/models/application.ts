@@ -379,6 +379,10 @@ export interface ApplicationTemplateListInterface {
 export interface ApplicationTemplateInterface extends ApplicationTemplateListItemInterface {
     application?: MainApplicationInterface;
     content?: TemplateContentInterface;
+    /**
+     * Should resource be listed as coming soon.
+     */
+    comingSoon?: boolean;
 }
 
 /**

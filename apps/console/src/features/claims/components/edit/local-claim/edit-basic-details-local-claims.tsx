@@ -159,6 +159,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         || t("console:manage.features.claims.local.notifications.deleteClaim.genericError.message")
                 }
             ));
+        }).finally(() => {
+            setConfirmDelete(false);
         });
     };
 

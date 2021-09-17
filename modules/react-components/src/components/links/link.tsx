@@ -16,14 +16,27 @@
  * under the License.
  */
 
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
-import { Icon } from "semantic-ui-react";
+import { Icon, SemanticICONS } from "semantic-ui-react";
 
 /**
- * DocumentationLink component Prop types.
+ * Link component Prop types interface.
  */
-interface DocumentationLinkPropsInterface { 
+interface LinkPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Does the link point to an external source.
+     */
+    external?: boolean;
+    /**
+     * Icon to be displayed.
+     */
+    icon?: SemanticICONS;
+    /**
+     * Icon position.
+     */
+    iconPosition?: "left" | "right";
     /**
      * Documentation URL.
      */
@@ -32,35 +45,37 @@ interface DocumentationLinkPropsInterface {
      * Documentation URL target property. Opens in a new window by default.
      */
     target?: string;
-    /**
-     * Additional CSS classes.
-     */
-    className?: string;
 }
 
 /**
- * Documentation link anchor tag component.
+ * Link component.
  *
- * @param {React.PropsWithChildren<DocumentationLinkPropsInterface>} props - Props injected to the component.
- *
+ * @param {React.PropsWithChildren<LinkPropsInterface>} props - Props injected to the component.
  * @return {React.ReactElement}
  */
-export const DocumentationLink: FunctionComponent<PropsWithChildren<DocumentationLinkPropsInterface>> = (
-    props: PropsWithChildren<DocumentationLinkPropsInterface>
+export const Link: FunctionComponent<PropsWithChildren<LinkPropsInterface>> = (
+    props: PropsWithChildren<LinkPropsInterface>
 ): ReactElement => {
 
-    const { 
+    const {
         children,
-        className,
+        external,
+        icon,
+        iconPosition,
         link,
         target
     } = props;
 
-    if (link === undefined) {
+    const classes = classNames(
+        "link pointing",
+        {
+            external
+        }
+    );
+
+    if (!link) {
         return null;
     }
-
-    const classes = classNames("documentation-link ml-1 link external no-wrap", className);
 
     return (
         <a
@@ -69,15 +84,20 @@ export const DocumentationLink: FunctionComponent<PropsWithChildren<Documentatio
             rel="noopener noreferrer"
             className={ classes }
         >
+            { icon && iconPosition === "left" && <Icon className="mr-1" name={ icon } /> }
             { children }
-            <Icon className="ml-1" name="external alternate"/>
+            { icon && iconPosition === "right" && <Icon className="ml-1" name={ icon } /> }
         </a>
     );
 };
 
 /**
- * Prop types for the DocumentationLink component.
+ * Prop types for the component.
  */
-DocumentationLink.defaultProps = {
+Link.defaultProps = {
+    "data-componentid": "link",
+    external: true,
+    icon: "external",
+    iconPosition: "right",
     target: "_blank"
 };

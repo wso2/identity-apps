@@ -1238,6 +1238,7 @@ export interface ConsoleNS {
                             };
                         };
                         saml: {
+                            AuthRedirectUrl: FormAttributes;
                             SPEntityId: FormAttributes;
                             SSOUrl: FormAttributes;
                             IdPEntityId: FormAttributes;
@@ -1420,6 +1421,14 @@ export interface ConsoleNS {
                         }
                     };
                     enterprise?: {
+                        saml?: {
+                            preRequisites: {
+                                configureIdp: string;
+                                configureRedirectURL: string;
+                                heading: string;
+                                hint: string;
+                            };
+                        };
                         validation: {
                             name: string;
                             invalidName: string;
@@ -1486,6 +1495,7 @@ export interface ConsoleNS {
                     submitAttributeSettings: Notification;
                     deleteDefaultAuthenticator: Notification;
                     deleteDefaultConnector: Notification;
+                    updateAttributes: Notification;
                     updateClaimsConfigs: Notification;
                     updateFederatedAuthenticator: Notification;
                     updateFederatedAuthenticators: Notification;

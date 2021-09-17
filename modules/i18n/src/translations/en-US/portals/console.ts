@@ -919,7 +919,7 @@ export const console: ConsoleNS = {
                                                 }
                                             },
                                             editor: {
-                                                apiDocumentation: "API Documentation",
+                                                apiDocumentation: "API",
                                                 goToApiDocumentation: "Go to API Documentation",
                                                 resetConfirmation: {
                                                     content: "This action will reset the adaptive authentication" +
@@ -3085,6 +3085,14 @@ export const console: ConsoleNS = {
                             }
                         },
                         saml: {
+                            AuthRedirectUrl: {
+                                ariaLabel: "SAML assertion consumer service URL",
+                                hint: "The Assertion Consumer Service (ACS) URL determines where" +
+                                    " {{productName}} expects the external identity provider to send the" + 
+                                    " SAML response.",
+                                label: "Assertion Consumer Service (ACS) URL",
+                                placeholder: "Assertion Consumer Service (ACS) URL"
+                            },
                             SPEntityId: {
                                 placeholder: "Enter service provider entity ID",
                                 ariaLabel: "Service provider entity ID",
@@ -3113,16 +3121,16 @@ export const console: ConsoleNS = {
                                 placeholder: "Select identity provider NameIDFormat",
                                 ariaLabel: "Choose NameIDFormat for SAML 2.0 assertion",
                                 label: "Identity provider NameID format",
-                                hint: "Name ID defines the name identifier formats supported by the external " +
-                                    "IdP. Name identifier is how {{productName}} communicates with" +
-                                    " external IdP regarding a user."
+                                hint: "This specifies the name identifier format that is used to " +
+                                    "exchange information regarding the user in the SAML " +
+                                    "assertion sent from the external IdP."
                             },
                             RequestMethod: {
                                 placeholder: "Select HTTP protocol binding",
                                 ariaLabel: "HTTP protocol for SAML 2.0 bindings",
                                 label: "HTTP protocol binding",
-                                hint: "Protocol binding to use when sending requests. HTTP redirect for simple" +
-                                    " requests or HTTP POST if requests are signed, which is recommended."
+                                hint: "This specifies the mechanisms to transport SAML" +
+                                " messages in communication protocols."
                             },
                             IsSLORequestAccepted: {
                                 ariaLabel: "Specify whether logout is enabled for IdP",
@@ -3669,6 +3677,20 @@ export const console: ConsoleNS = {
                             message: ""
                         }
                     },
+                    updateAttributes: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Update error"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating Identity Provider attributes.",
+                            message: "Update error"
+                        },
+                        success: {
+                            description: "Successfully updated Identity Provider attributes.",
+                            message: "Update successful"
+                        }
+                    },
                     updateClaimsConfigs: {
                         error: {
                             description: "{{ description }}",
@@ -3878,6 +3900,24 @@ export const console: ConsoleNS = {
                     }
                 },
                 templates: {
+                    enterprise: {
+                        saml: {
+                            preRequisites: {
+                                configureIdp: "See Asgardeo guide on configuring SAML IdP",
+                                configureRedirectURL: "Use the following URL as the " + 
+                                    "<1>Assertion Consumer Service (ACS) URL</1>.",
+                                heading: "Prerequisite",
+                                hint: "The Assertion Consumer Service (ACS) URL determines" +
+                                    " where {{productName}} expects the external identity" + 
+                                    " provider to send the SAML response."
+                            }
+                        },
+                        validation: {
+                            invalidName: "{{idpName}} is not a valid name. It should not contain any other" +
+                                " alphanumerics except for periods (.), dashes (-), underscores (_) and spaces.",
+                            name: "Please enter a valid name"
+                        }
+                    },
                     facebook: {
                         wizardHelp: {
                             clientId: {
@@ -3892,9 +3932,9 @@ export const console: ConsoleNS = {
                             },
                             heading: "Help",
                             name: {
-                                idpDescription: "Provide a unique name for the identity provider.",
                                 connectionDescription: "Provide a unique name for the connection.",
-                                heading: "Name"
+                                heading: "Name",
+                                idpDescription: "Provide a unique name for the identity provider."
                             },
                             preRequisites: {
                                 configureOAuthApps: "See Facebooks's guide on configuring apps.",
@@ -3971,13 +4011,6 @@ export const console: ConsoleNS = {
                     quickSetup: {
                         heading: "Quick Setup",
                         subHeading: "Predefined set of templates to speed up your identity provider creation."
-                    },
-                    enterprise: {
-                        validation: {
-                            name: "Please enter a valid name",
-                            invalidName: "{{idpName}} is not a valid name. It should not contain any other" +
-                                " alphanumerics except for periods (.), dashes (-), underscores (_) and spaces."
-                        }
                     }
                 },
                 wizards: {
@@ -4905,7 +4938,7 @@ export const console: ConsoleNS = {
                         },
                         authenticationProviders: {
                             heading: "Connections",
-                            subHeading: "Create and manage connections to authenticate users in your applications."
+                            subHeading: "Create and manage connections to use in the login flow of your applications."
                         },
                         idps: {
                             heading: "Identity Providers",
@@ -4998,8 +5031,8 @@ export const console: ConsoleNS = {
         pages: {
             applicationTemplate: {
                 backButton: "Go back to Applications",
-                subTitle: "Register an application using one of the templates given below. " +
-                    "If you don't find a matching template, create a custom application.",
+                subTitle: "Register an application using one of the templates given below. If nothing matches your " +
+                    "application type, start with the Standard-based Application template.",
                 title: "Register New Application"
             },
             applications: {
@@ -5012,7 +5045,7 @@ export const console: ConsoleNS = {
                 title: null
             },
             authenticationProvider: {
-                subTitle: "Connections that can be used to authenticate users in applications.",
+                subTitle: "Create and manage connections to use in the login flow of your applications.",
                 title: "Connections"
             },
             authenticationProviderTemplate: {

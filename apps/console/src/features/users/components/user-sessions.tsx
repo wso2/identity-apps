@@ -316,7 +316,6 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
             username = splitComponents[1];
         }
         if (username.split("@").length > 1) {
-
             return username.split("@")[0].concat("@").concat(username.split("@")[1]);
         }
 

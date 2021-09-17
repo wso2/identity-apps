@@ -17,9 +17,10 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { ContentLoader, EmptyPlaceholder, PageLayout, PrimaryButton, TemplateGrid } from "@wso2is/react-components";
+import { ContentLoader, EmptyPlaceholder, PageLayout, TemplateGrid } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import isEqual from "lodash-es/isEqual";
+import orderBy from "lodash-es/orderBy";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -285,8 +286,8 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
             ? templatesOverrides
             : templates;
 
-        templateToShow = templateToShow.filter(
-            (template) => template.id !== CustomApplicationTemplate.id);
+        // Order the templates by pushing coming soon items to the end.
+        templateToShow = orderBy(templateToShow, [ "comingSoon" ], [ "desc" ]);
 
         return (
             <TemplateGrid<ApplicationTemplateListItemInterface>
@@ -306,6 +307,8 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                     showLessButtonLabel: t("common:showLess"),
                     showMoreButtonLabel: t("common:showMore")
                 } }
+                comingSoonRibbonLabel={ t("common:comingSoon") }
+                renderDisabledItemsAsGrayscale={ true }
                 emptyPlaceholder={ placeholder }
                 { ...additionalProps }
             />
@@ -402,28 +405,6 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
             title={ t("console:develop.pages.applicationTemplate.title") }
             contentTopMargin={ true }
             description={ t("console:develop.pages.applicationTemplate.subTitle") }
-            action={
-                (
-                    <>
-                        <SemButton
-                            basic
-                            primary
-                            onClick={ () =>  {
-                                eventPublisher.publish("application-click-create-new", {
-                                    "type": "custom-application"
-                                });
-                                
-                                setSelectedTemplate(CustomApplicationTemplate);
-                                setShowWizard(true);
-                            }
-                            }
-                        >
-                            <Icon name="add"/>
-                            { t("console:develop.features.applications.list.actions.custom") }
-                        </SemButton>
-                    </>
-                )
-            }
             backButton={ {
                 "data-testid": `${ testId }-page-back-button`,
                 onClick: handleBackButtonClick,

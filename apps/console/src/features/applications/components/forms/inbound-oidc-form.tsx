@@ -1284,6 +1284,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     showPredictions={ false }
                                     customLabel={ callbackURLsErrorLabel }
                                     productName={ config.ui.productName }
+                                    isCustom={ CustomApplicationTemplate?.id === template?.id }
                                 />
                             </Grid.Column>
                         </Grid.Row>

@@ -17,14 +17,17 @@
  *
  */
 
-.ui.button {
+.ui.button.basic {
     &.link-button {
-        background: transparent !important;
-        color: @primaryColor;
+        // Remove outline.
+        box-shadow: none !important;
+
+        // Override outline in primary variation.
+        &.primary {
+            box-shadow: none !important;
+        }
 
         &:hover {
-            background: transparent;
-
             &.hover {
                 &-underline {
                     text-decoration: underline;

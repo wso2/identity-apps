@@ -501,7 +501,7 @@ export const getFieldType = (propertyMetadata: CommonPluggableComponentMetaPrope
         if (propertyMetadata?.key === AUTHORIZATION_REDIRECT_URL) {
             return  FieldType.COPY_INPUT;
         } else {
-            // todo Need proper backend support to identity URL fields.
+            // TODO: Need proper backend support to identity URL fields-https://github.com/wso2/product-is/issues/12501.
             return FieldType.URL;
         }
     } else if (propertyMetadata?.key.toUpperCase().includes(

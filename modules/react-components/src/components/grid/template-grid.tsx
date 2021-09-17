@@ -137,6 +137,10 @@ export interface TemplateGridPropsInterface<T> extends TestableComponentInterfac
      * Use initial as Image
      */
     useNameInitialAsImage?: boolean;
+    /**
+     * Coming soon ribbon label.
+     */
+    comingSoonRibbonLabel?: ReactNode;
 }
 
 /**
@@ -177,6 +181,10 @@ interface WithPropertiesInterface {
      * Template disabled or not.
      */
     disabled?: TemplateCardPropsInterface["disabled"];
+    /**
+     * Should resource be listed as coming soon.
+     */
+    comingSoon?: boolean;
 }
 
 
@@ -224,6 +232,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
         templateIconOptions,
         templateIconSize,
         useNameInitialAsImage,
+        comingSoonRibbonLabel,
         [ "data-testid" ]: testId
     } = props;
 
@@ -455,13 +464,18 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
                                                 showTagIcon={ showTagIcon }
                                                 name={ template.name }
                                                 id={ template.id }
-                                                onClick={ template.disabled ? null : onTemplateSelect }
+                                                onClick={
+                                                    (template.disabled || template.comingSoon)
+                                                        ? null
+                                                        : onTemplateSelect
+                                                }
                                                 overlayOpacity={ overlayOpacity }
                                                 imageSize={ templateIconSize }
                                                 renderDisabledItemsAsGrayscale={ renderDisabledItemsAsGrayscale }
                                                 tagSize={ tagSize }
                                                 data-testid={ template.id }
-                                                disabled={ template.disabled }
+                                                disabled={ template.disabled || template.comingSoon }
+                                                ribbon={ template.comingSoon ? comingSoonRibbonLabel : null }
                                             />
                                         ))
                                     }

@@ -89,7 +89,7 @@ interface IdentityProviderSettingsPropsInterface extends TestableComponentInterf
 const GOOGLE_CLIENT_ID_SECRET_MAX_LENGTH = 100;
 const OIDC_CLIENT_ID_SECRET_MAX_LENGTH = 100;
 const URL_MAX_LENGTH: number = 2048;
-
+const AUTHORIZED_REDIRECT_URL = "callbackUrl";
 
 /**
  *  Identity Provider and advance settings component.
@@ -136,6 +136,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      */
     const handleAuthenticatorConfigFormSubmit = (values: FederatedAuthenticatorListItemInterface): void => {
 
+        addCallbackUrl(values);
         setIsPageLoading(true);
         // Special checks on Google IDP
         if (values.authenticatorId === "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I") {
@@ -201,6 +202,25 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 }));
             });
     };
+
+    /**
+     *
+     * Add callback URL to the values.
+     *
+     * @param values
+     */
+    const addCallbackUrl = (values: FederatedAuthenticatorListItemInterface) => {
+
+        const authenticator: FederatedAuthenticatorWithMetaInterface =
+            availableAuthenticators.find(authenticator => (
+                identityProvider.federatedAuthenticators.defaultAuthenticatorId === authenticator.id
+            ));
+        const search = object => object.key === AUTHORIZED_REDIRECT_URL;
+        const index = authenticator?.data?.properties.findIndex(search);
+        if (index >= 0) {
+            values.properties.push(authenticator.data.properties[index]);
+        }
+    }
 
     const handleGetFederatedAuthenticatorAPICallError = (error) => {
         if (error.response && error.response.data && error.response.data.description) {

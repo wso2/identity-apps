@@ -72,6 +72,8 @@ module.exports = (env) => {
     // Dev Server Options.
     const isDevServerHostCheckDisabled = env.DISABLE_DEV_SERVER_HOST_CHECK === "true";
 
+    const isESLintPluginDisabled = env.DISABLE_ESLINT_PLUGIN === "true";
+
     // Log level.
     const logLevel = env.LOG_LEVEL
         ? env.LOG_LEVEL
@@ -476,7 +478,7 @@ module.exports = (env) => {
                 test: /\.(js|css|html|svg)$/,
                 threshold: 10240
             }),
-            new ESLintPlugin({
+            !isESLintPluginDisabled && new ESLintPlugin({
                 cache: true,
                 cacheLocation: path.resolve(
                     PATHS.appNodeModules,

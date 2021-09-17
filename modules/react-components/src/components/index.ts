@@ -40,6 +40,7 @@ export * from "./icon";
 export * from "./input";
 export * from "./label";
 export * from "./language-switcher";
+export * from "./links";
 export * from "./list";
 export * from "./loader";
 export * from "./message";
