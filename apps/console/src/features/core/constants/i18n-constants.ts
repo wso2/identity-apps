@@ -18,6 +18,7 @@
 
 import { I18nModuleConstants, I18nModuleInitOptions, generateBackendPaths } from "@wso2is/i18n";
 import { Config } from "../configs";
+
 /**
  * Class containing portal specific i18n constants.
  */
@@ -49,14 +50,6 @@ export class I18nConstants {
     public static readonly CONSOLE_PORTAL_NAMESPACE: string = I18nModuleConstants.CONSOLE_PORTAL_NAMESPACE;
 
     /**
-     * Console portal namespace.
-     * @constant
-     * @type {string}
-     * @default
-     */
-    public static readonly MYACCOUNT_PORTAL_NAMESPACE: string = I18nModuleConstants.MY_ACCOUNT_NAMESPACE;
-
-    /**
      * Extensions namespace.
      * @constant
      * @type {string}
@@ -73,7 +66,6 @@ export class I18nConstants {
     public static readonly BUNDLE_NAMESPACE_DIRECTORIES: Map<string, string> = new Map<string, string>([
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
-        [ I18nConstants.MYACCOUNT_PORTAL_NAMESPACE, "portals" ],
         [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ]
     ]);
 
@@ -109,7 +101,6 @@ export class I18nConstants {
         ns: [
             I18nConstants.COMMON_NAMESPACE,
             I18nConstants.CONSOLE_PORTAL_NAMESPACE,
-            I18nConstants.MYACCOUNT_PORTAL_NAMESPACE,
             I18nConstants.EXTENSIONS_NAMESPACE
         ]
     };
