@@ -151,7 +151,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const [ showConditionalAuthContent, setShowConditionalAuthContent ] = useState<boolean>(isMinimized);
     const [ isEditorFullScreen, setIsEditorFullScreen ] = useState<boolean>(false);
     const [ showAddSecretModal, setShowAddSecretModal ] = useState<boolean>(false);
-    const [ editorInstance, setEditorInstance ] = useState(undefined);
+    const [ editorInstance, setEditorInstance ] = useState<codemirror.Editor>(undefined);
 
     /**
      * List of secrets for the selected {@code secretType}. It can hold secrets of
