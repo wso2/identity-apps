@@ -662,7 +662,7 @@
         <carbon.identity.oauth.version>6.7.35</carbon.identity.oauth.version>
         <carbon.identity.oauth.imp.pkg.version.range>[6.1.0, 7.0.0)</carbon.identity.oauth.imp.pkg.version.range>
         <identity.governance.version>1.4.97</identity.governance.version>
-        <totp.authenticator.version>3.0.1</totp.authenticator.version>
+        <totp.authenticator.version>3.0.18</totp.authenticator.version>
 
         <commons-io.wso2.version>2.4.0.wso2v1</commons-io.wso2.version>
         <commons-lang.wso2.version>2.6.0.wso2v1</commons-lang.wso2.version>
