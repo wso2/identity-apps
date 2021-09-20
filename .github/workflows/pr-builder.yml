@@ -60,9 +60,8 @@ jobs:
       id: build-with-maven
       run: |
         URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${{ github.event.pull_request.number }}/files"
-        FILES=$(curl -s -X GET -G $URL | jq -r '.[] | .filename')
+        FILES=join($(curl -s -X GET -G $URL | jq -r '.[] | .filename'), ", ")
         echo -n "$FILES" >> $GITHUB_PATH
         echo -n "$FILES"
-        echo "${{toJson(env)}}"
-        mvn clean install -U -Dlint.exec.skip=false -Dlint.exec.pattern="$FILES"
+        mvn clean install -U -Dlint.exec.skip=false -Dlint.exec.pattern="{$FILES}"
 
