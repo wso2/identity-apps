@@ -21,14 +21,10 @@ jobs:
     - name: Checkout
       id: checkout
       uses: actions/checkout@v2.3.3
-      with:
-        fetch-depth: 0
-    - run: echo "CHANGED_FILES=$(git log --name-only --pretty="format:" ${{ github.event.pull_request.base.sha }}..${{ github.event.after }} | sort -u)<<EOF" >> $GITHUB_ENV
-    - run: echo "$CHANGED_FILES"
-    - name: Dump GitHub context
+    - name: Setup Environment Variables
       env:
-        GITHUB_CONTEXT: ${{ toJson(github) }}
-      run: echo "$GITHUB_CONTEXT"
+        CHANGED_FILES: $(git log --name-only --pretty="format:" ${{ github.event.pull_request.base.sha }}..${{ github.event.after }} | sort -u)
+      run: echo "$CHANGED_FILES"
     - name: Use Node.js ${{ matrix.node-version }}
       id: node-setup
       uses: actions/setup-node@v2.1.2
