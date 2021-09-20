@@ -61,4 +61,4 @@ jobs:
           ${{ runner.os }}-maven-
     - name: Build
       id: build-with-maven
-      run: mvn clean install -U -Dlint.exec.skip=false -Dlint.exec.pattern=${{env.CHANGED_FILES}}
+      run: mvn clean install -U -Dlint.exec.skip=false -Dlint.exec.pattern=$(git log --name-only --pretty="format:" ${{ github.event.pull_request.base.sha }}..${{ github.event.after }} | sort -u)
