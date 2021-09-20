@@ -16,6 +16,8 @@ jobs:
       matrix:
         node-version: [12.x]
         maven-version: [3.6.3]
+    env:
+      CHANGED_FILES: $(git log --name-only --pretty="format:" ${{ github.event.pull_request.base.sha }}..${{ github.event.after }} | sort -u)
 
     steps:
     - name: Checkout
@@ -25,7 +27,6 @@ jobs:
         fetch-depth: 0
     - name: Setup Environment Variables
       env:
-        CHANGED_FILES: $(git log --name-only --pretty="format:" ${{ github.event.pull_request.base.sha }}..${{ github.event.after }} | sort -u)
         GITHUB_CONTEXT: ${{ toJson(github) }}
       run: echo "$GITHUB_CONTEXT"
     - name: Use Node.js ${{ matrix.node-version }}
@@ -61,4 +62,4 @@ jobs:
           ${{ runner.os }}-maven-
     - name: Build
       id: build-with-maven
-      run: mvn clean install -U -Dlint.exec.skip=false -Dlint.exec.pattern=git log --name-only --pretty="format:" ${{ github.event.pull_request.base.sha }}..${{ github.event.after }} | sort -u
+      run: mvn clean install -U -Dlint.exec.skip=false -Dlint.exec.pattern=${{env.CHANGED_FILES}}
