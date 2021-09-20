@@ -575,6 +575,8 @@
 
                 .template-list {
                     > .item {
+                        display: flex;
+                        justify-content: space-between;
                         background: darken(@white, 1);
                         margin: 0;
                         text-overflow: ellipsis;
@@ -595,8 +597,6 @@
                         }
 
                         .template-name {
-                            display: inline-block;
-                            width: 120px;
                             text-overflow: ellipsis;
                             white-space: nowrap;
                             overflow: hidden;

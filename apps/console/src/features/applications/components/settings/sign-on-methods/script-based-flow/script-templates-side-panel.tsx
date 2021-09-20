@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Heading } from "@wso2is/react-components";
+import { Heading, Tooltip } from "@wso2is/react-components";
 import sortBy from "lodash-es/sortBy";
 import React, {
     FunctionComponent,
@@ -183,56 +183,58 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                                                     >
                                                         {
                                                             category.templates.map((template, index) => (
-                                                                <Menu.Item key={ index }>
+                                                                <Menu.Item
+                                                                    key={ index }
+                                                                    className="template-list-item"
+                                                                >
                                                                     <Popup
                                                                         trigger={ (
                                                                             <div className="template-name">
                                                                                 { template.name }
                                                                             </div>
                                                                         ) }
-                                                                        position="top center"
-                                                                        content={ template.name }
-                                                                        inverted
+                                                                        content={ template.title || template.name }
                                                                     />
-                                                                    {
-                                                                        !readOnly && (
-                                                                            <Popup
-                                                                                trigger={ (
-                                                                                    <Icon
-                                                                                        className="add-button"
-                                                                                        name="add"
-                                                                                        onClick={
-                                                                                            () => onTemplateSelect(
-                                                                                                template
-                                                                                            )
-                                                                                        }
-                                                                                    />
-                                                                                ) }
-                                                                                position="top center"
-                                                                                content={ t("common:add") }
-                                                                                inverted
-                                                                            />
-                                                                        )
-                                                                    }
-                                                                    <Popup
-                                                                        trigger={ (
-                                                                            <Icon
-                                                                                className="add-button"
-                                                                                name="info circle"
-                                                                                onClick={ () => {
-                                                                                    setSelectedTemplate(template);
-                                                                                } }
-                                                                            />
-                                                                        ) }
-                                                                        position="top center"
-                                                                        inverted
-                                                                        content={
-                                                                            t("console:develop.features.applications" +
-                                                                                ".edit.sections.signOnMethod." +
-                                                                                "sections.templateDescription" +
-                                                                                ".popupContent")
+                                                                    <div className="actions">
+                                                                        {
+                                                                            !readOnly && (
+                                                                                <Tooltip
+                                                                                    compact
+                                                                                    trigger={ (
+                                                                                        <Icon
+                                                                                            className="add-button"
+                                                                                            name="add"
+                                                                                            onClick={
+                                                                                                () => onTemplateSelect(
+                                                                                                    template
+                                                                                                )
+                                                                                            }
+                                                                                        />
+                                                                                    ) }
+                                                                                    content={ t("common:add") }
+                                                                                />
+                                                                            )
                                                                         }
-                                                                    />
+                                                                        <Tooltip
+                                                                            compact
+                                                                            trigger={ (
+                                                                                <Icon
+                                                                                    className="add-button"
+                                                                                    name="info circle"
+                                                                                    onClick={ () => {
+                                                                                        setSelectedTemplate(template);
+                                                                                    } }
+                                                                                />
+                                                                            ) }
+                                                                            content={
+                                                                                t("console:develop.features" +
+                                                                                    ".applications" +
+                                                                                    ".edit.sections.signOnMethod." +
+                                                                                    "sections.templateDescription" +
+                                                                                    ".popupContent")
+                                                                            }
+                                                                        />
+                                                                    </div>
                                                                 </Menu.Item>
                                                             ))
                                                         }
