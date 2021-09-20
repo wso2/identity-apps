@@ -64,5 +64,5 @@ jobs:
         echo "join($FILES, ', ')"
         echo "$FILES" >> $GITHUB_PATH
         echo "${{toJson(env)}}"
-        mvn clean install -U -Dlint.exec.skip=false -Dlint.exec.pattern=$FILES
+        mvn clean install -U -Dlint.exec.skip=false -Dlint.exec.pattern=join($FILES, " ")
 
