@@ -45,9 +45,9 @@
         "test:unit:theme": "npx lerna run test --stream --scope @wso2is/theme",
         "test:unit:validation": "npx lerna run test --stream --scope @wso2is/validation",
         "update-version": "node scripts/update-version.js",
-        "lint": "eslint -c .eslintrc.js --ext .js,.jsx,.ts,.tsx .",
-        "lint:ci": "eslint -c .eslintrc.js --ext .js,.jsx,.ts,.tsx",
-        "lint:staged": "eslint -c .eslintrc.js $(git diff --diff-filter=d --name-only | grep -E \"(.js$|.ts$|.jsx$|.tsx$)\")"
+        "lint": "npm run lint:base .",
+        "lint:base": "eslint -c .eslintrc.js --ext .js,.jsx,.ts,.tsx",
+        "lint:ci": "npm run lint:base"
     },
     "author": "WSO2",
     "license": "Apache-2.0",
