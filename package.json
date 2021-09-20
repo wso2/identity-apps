@@ -46,7 +46,7 @@
         "test:unit:validation": "npx lerna run test --stream --scope @wso2is/validation",
         "update-version": "node scripts/update-version.js",
         "lint": "eslint -c .eslintrc.js --ext .js,.jsx,.ts,.tsx .",
-        "lint:ci": "eslint -c .eslintrc.js $(git diff --diff-filter=d --name-only | grep -E \"(.js$|.ts$|.jsx$|.tsx$)\")",
+        "lint:ci": "eslint -c .eslintrc.js --ext .js,.jsx,.ts,.tsx",
         "lint:staged": "eslint -c .eslintrc.js $(git diff --diff-filter=d --name-only | grep -E \"(.js$|.ts$|.jsx$|.tsx$)\")"
     },
     "author": "WSO2",
