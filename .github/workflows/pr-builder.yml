@@ -63,3 +63,4 @@ jobs:
         FILES=$(curl -s -X GET -G $URL | jq -r '.[] | .filename')
         echo $FILES
         mvn clean install -U -Dlint.exec.skip=false -Dlint.exec.pattern=$FILES
+
