@@ -17,7 +17,7 @@ jobs:
         node-version: [12.x]
         maven-version: [3.6.3]
     env:
-      CHANGED_FILES: $(git log --name-only --pretty="format:" ${{ github.event.pull_request.base.sha }}..${{ github.event.after }} | sort -u)
+      CHANGED_FILES: $(git log --name-only --oneline ${{ github.event.pull_request.base.sha }}..${{ github.event.after }} | sort -u)
 
     steps:
     - name: Checkout
