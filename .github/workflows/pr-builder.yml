@@ -60,7 +60,7 @@ jobs:
       run: npm run bootstrap:hoist
     - name: Lint
       id: lint-with-eslint
-      run: npm run lint:ci 
+      run: npm run lint:ci $CHANGED_FILES
     - name: Build
       id: build-with-maven
       run: npm run build
