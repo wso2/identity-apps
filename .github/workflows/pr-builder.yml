@@ -22,9 +22,7 @@ jobs:
       id: checkout
       uses: actions/checkout@v2.3.3
     - name: Setup Environment Variables
-      env:
-        CHANGED_FILES: $(git log --name-only --pretty="format:" ${{ github.event.before }}..${{ github.event.after }} | sort -u)
-      run: echo "$CHANGED_FILES"
+      run: echo "CHANGED_FILES=$(git log --name-only --pretty="format:" ${{ github.pull_request.base.sha }}..${{ github.event.after }} | sort -u)" >> $GITHUB_ENV
     - name: Dump GitHub context
       env:
         GITHUB_CONTEXT: ${{ toJson(github) }}
