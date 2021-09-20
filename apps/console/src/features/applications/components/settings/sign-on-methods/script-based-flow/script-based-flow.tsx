@@ -141,6 +141,10 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const scriptEditorSectionRef = useRef(null);
 
     const [ scriptTemplates, setScriptTemplates ] = useState<AdaptiveAuthTemplatesListInterface>(undefined);
+    const [
+        selectedAdaptiveAuthTemplate,
+        setSelectedAdaptiveAuthTemplate
+    ] = useState<AdaptiveAuthTemplateInterface>(undefined);
     const [ showAuthTemplatesSidePanel, setAuthTemplatesSidePanelVisibility ] = useState<boolean>(true);
     const [ sourceCode, setSourceCode ] = useState<string | string[]>(undefined);
     const [ isEditorDarkMode, setIsEditorDarkMode ] = useState<boolean>(true);
@@ -149,6 +153,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const [ isScriptFromTemplate, setIsScriptFromTemplate ] = useState<boolean>(false);
     const [ isNewlyAddedScriptTemplate, setIsNewlyAddedScriptTemplate ] = useState<boolean>(false);
     const [ showScriptResetWarning, setShowScriptResetWarning ] = useState<boolean>(false);
+    const [ showScriptTemplateChangeWarning, setShowScriptTemplateChangeWarning ] = useState<boolean>(false);
     const [ showConditionalAuthContent, setShowConditionalAuthContent ] = useState<boolean>(isMinimized);
     const [ isEditorFullScreen, setIsEditorFullScreen ] = useState<boolean>(false);
     const [ showAddSecretModal, setShowAddSecretModal ] = useState<boolean>(false);
@@ -791,6 +796,110 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         );
     };
 
+    /**
+     * Renders a confirmation modal when the Adaptive auth template is being reset back to default.
+     * @return {ReactElement}
+     */
+    const renderAdaptiveScriptResetWarning = (): ReactElement => {
+
+        return (
+            <ConfirmationModal
+                onClose={ (): void => setShowScriptResetWarning(false) }
+                type="warning"
+                open={ showScriptResetWarning }
+                primaryAction={ t("common:confirm") }
+                secondaryAction={ t("common:cancel") }
+                onSecondaryActionClick={ (): void => setShowScriptResetWarning(false) }
+                onPrimaryActionClick={ (): void => {
+                    setShowScriptResetWarning(false);
+                    resetAdaptiveScriptTemplateToDefaultHandler();
+                } }
+                data-testid={ `${ testId }-delete-confirmation-modal` }
+                closeOnDimmerClick={ false }
+            >
+                <ConfirmationModal.Header data-testid={ `${ testId }-reset-confirmation-modal-header` }>
+                    { t("console:develop.features.applications.edit." +
+                        "sections.signOnMethod.sections.authenticationFlow." +
+                        "sections.scriptBased.editor.resetConfirmation.heading") }
+                </ConfirmationModal.Header>
+                <ConfirmationModal.Message
+                    attached
+                    warning
+                    data-testid={ `${ testId }-reset-confirmation-modal-message` }
+                >
+                    { t("console:develop.features.applications.edit." +
+                        "sections.signOnMethod.sections.authenticationFlow." +
+                        "sections.scriptBased.editor.resetConfirmation.message") }
+                </ConfirmationModal.Message>
+                <ConfirmationModal.Content data-testid={ `${ testId }-reset-confirmation-modal-content` }>
+                    <Trans
+                        i18nKey={
+                            "console:develop.features.applications.edit.sections.signOnMethod.sections" +
+                            ".authenticationFlow.sections.scriptBased.editor.resetConfirmation.content"
+                        }
+                    >
+                        This action will reset the adaptive authentication script back to default.
+                        Click <Code>Confirm</Code> to proceed.
+                    </Trans>
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
+        );
+    };
+
+    /**
+     * Renders a confirmation modal when the Adaptive auth template is being changed.
+     * @return {ReactElement}
+     */
+    const renderAdaptiveAuthTemplateChangeWarning = (): ReactElement => {
+
+        return (
+            <ConfirmationModal
+                onClose={ (): void => setShowScriptTemplateChangeWarning(false) }
+                type="warning"
+                open={ showScriptTemplateChangeWarning }
+                primaryAction={ t("common:confirm") }
+                secondaryAction={ t("common:cancel") }
+                onSecondaryActionClick={ (): void => {
+                    setShowScriptTemplateChangeWarning(false);
+                    setSelectedAdaptiveAuthTemplate(undefined);
+                } }
+                onPrimaryActionClick={ (): void => {
+                    setShowScriptTemplateChangeWarning(false);
+                    handleTemplateSelection(selectedAdaptiveAuthTemplate);
+                    setSelectedAdaptiveAuthTemplate(undefined);
+                } }
+                data-testid={ `${ testId }-adaptive-script-template-change-confirmation-modal` }
+                closeOnDimmerClick={ false }
+            >
+                <ConfirmationModal.Header data-testid={ `${ testId }-reset-confirmation-modal-header` }>
+                    { t("console:develop.features.applications.edit." +
+                        "sections.signOnMethod.sections.authenticationFlow." +
+                        "sections.scriptBased.editor.resetConfirmation.heading") }
+                </ConfirmationModal.Header>
+                <ConfirmationModal.Message
+                    attached
+                    warning
+                    data-testid={ `${ testId }-reset-confirmation-modal-message` }
+                >
+                    { t("console:develop.features.applications.edit." +
+                        "sections.signOnMethod.sections.authenticationFlow." +
+                        "sections.scriptBased.editor.resetConfirmation.message") }
+                </ConfirmationModal.Message>
+                <ConfirmationModal.Content data-testid={ `${ testId }-reset-confirmation-modal-content` }>
+                    <Trans
+                        i18nKey={
+                            "console:develop.features.applications.edit.sections.signOnMethod.sections" +
+                            ".authenticationFlow.sections.scriptBased.editor.changeConfirmation.content"
+                        }
+                    >
+                        The selected template will replace the existing script in the editor and the step
+                        configuration. Your current progress will be lost. Click <Code>Confirm</Code> to proceed.
+                    </Trans>
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
+        );
+    };
+
     return (
         <>
             <div className="conditional-auth-section">
@@ -858,7 +967,10 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                             ".authenticationFlow.sections.scriptBased.editor.templates.heading")
                                     }
                                     ref={ authTemplatesSidePanelRef }
-                                    onTemplateSelect={ handleTemplateSelection }
+                                    onTemplateSelect={ (template: AdaptiveAuthTemplateInterface) => {
+                                        setSelectedAdaptiveAuthTemplate(template);
+                                        setShowScriptTemplateChangeWarning(true);
+                                    } }
                                     templates={
                                         scriptTemplates?.templatesJSON &&
                                         Object.values(scriptTemplates.templatesJSON)
@@ -1004,39 +1116,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                 </SegmentedAccordion>
                 { showAddSecretModal && renderAddSecretModal() }
             </div>
-            <ConfirmationModal
-                onClose={ (): void => setShowScriptResetWarning(false) }
-                type="warning"
-                open={ showScriptResetWarning }
-                primaryAction={ t("common:confirm") }
-                secondaryAction={ t("common:cancel") }
-                onSecondaryActionClick={ (): void => setShowScriptResetWarning(false) }
-                onPrimaryActionClick={ (): void => {
-                    setShowScriptResetWarning(false);
-                    resetAdaptiveScriptTemplateToDefaultHandler();
-                } }
-                data-testid={ `${ testId }-delete-confirmation-modal` }
-                closeOnDimmerClick={ false }
-            >
-                <ConfirmationModal.Header data-testid={ `${ testId }-reset-confirmation-modal-header` }>
-                    { t("console:develop.features.applications.edit." +
-                        "sections.signOnMethod.sections.authenticationFlow." +
-                        "sections.scriptBased.editor.resetConfirmation.heading") }
-                </ConfirmationModal.Header>
-                <ConfirmationModal.Message
-                    attached
-                    warning
-                    data-testid={ `${ testId }-reset-confirmation-modal-message` }>
-                    { t("console:develop.features.applications.edit." +
-                        "sections.signOnMethod.sections.authenticationFlow." +
-                        "sections.scriptBased.editor.resetConfirmation.message") }
-                </ConfirmationModal.Message>
-                <ConfirmationModal.Content data-testid={ `${ testId }-reset-confirmation-modal-content` }>
-                    { t("console:develop.features.applications.edit." +
-                        "sections.signOnMethod.sections.authenticationFlow." +
-                        "sections.scriptBased.editor.resetConfirmation.content") }
-                </ConfirmationModal.Content>
-            </ConfirmationModal>
+            { showScriptResetWarning && renderAdaptiveScriptResetWarning() }
+            { showScriptTemplateChangeWarning && renderAdaptiveAuthTemplateChangeWarning() }
         </>
     );
 };

@@ -579,6 +579,11 @@ export interface ConsoleNS {
                                             hint: string;
                                             editor: {
                                                 apiDocumentation: string;
+                                                changeConfirmation: {
+                                                    content: string;
+                                                    heading: string;
+                                                    message: string;
+                                                };
                                                 goToApiDocumentation: string;
                                                 resetConfirmation: {
                                                     content: string;
