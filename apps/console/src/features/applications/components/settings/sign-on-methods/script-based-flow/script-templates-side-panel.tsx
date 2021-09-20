@@ -186,6 +186,7 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                                                                 <Menu.Item
                                                                     key={ index }
                                                                     className="template-list-item"
+                                                                    data-componentid={ template.name }
                                                                 >
                                                                     <Popup
                                                                         trigger={ (
@@ -209,6 +210,9 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                                                                                                     template
                                                                                                 )
                                                                                             }
+                                                                                            data-componentid={
+                                                                                                `${ template.name }-add`
+                                                                                            }
                                                                                         />
                                                                                     ) }
                                                                                     content={ t("common:add") }
@@ -224,6 +228,9 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                                                                                     onClick={ () => {
                                                                                         setSelectedTemplate(template);
                                                                                     } }
+                                                                                    data-componentid={
+                                                                                        `${ template.name }-info`
+                                                                                    }
                                                                                 />
                                                                             ) }
                                                                             content={
