@@ -21,6 +21,7 @@ jobs:
     - name: Checkout
       id: checkout
       uses: actions/checkout@v2.3.3
+      run: echo "CHANGED_FILES=$(git diff --name-only ${{ github.event.before }}..${{ github.event.after }})" >> $GITHUB_ENV
     - name: Use Node.js ${{ matrix.node-version }}
       id: node-setup
       uses: actions/setup-node@v2.1.2
@@ -52,9 +53,6 @@ jobs:
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           ${{ runner.os }}-maven-
-    - name: Lint
-      id: lint-with-eslint
-      run: echo "CHANGED_FILES=$(git diff --name-only ${{ github.event.before }}..${{ github.event.after }})" >> $GITHUB_ENV
     - name: Build
       id: build-with-maven
       run: mvn clean install -U -Dlint.exec.skip=true
