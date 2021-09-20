@@ -18,13 +18,15 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
+import isObject from "lodash-es/isObject";
 import React, { PropsWithChildren, ReactElement } from "react";
-import { Icon, Popup, PopupProps, SemanticICONS } from "semantic-ui-react";
+import { Icon, Popup, PopupProps, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 
 /**
  * Heading component prop types.
  */
 export interface HintPropsInterface extends TestableComponentInterface {
+
     /**
      * Additional classes.
      */
@@ -57,7 +59,19 @@ export interface HintPropsInterface extends TestableComponentInterface {
      * Popup options
      */
     popupOptions?: PopupProps;
+    /**
+     * Is the hint a warning?.
+     */
+    warning?: boolean;
 }
+
+/**
+ * Default Popup Options
+ */
+const DEFAULT_POPUP_OPTIONS: PopupProps = {
+    hoverable: true,
+    position: "top center"
+};
 
 /**
  * Hint component.
@@ -80,6 +94,7 @@ export const Hint: React.FunctionComponent<PropsWithChildren<HintPropsInterface>
         inline,
         popup,
         popupOptions,
+        warning,
         [ "data-testid" ]: testId
     } = props;
 
@@ -95,26 +110,52 @@ export const Hint: React.FunctionComponent<PropsWithChildren<HintPropsInterface>
         className
     );
 
+    /**
+     * Aggregated popup options.
+     *
+     * @return {PopupProps}
+     */
+    const resolvePopupOptions = (): PopupProps => {
+        
+        // If `popupOptions` are externally propvided, merge it with the default.
+        if (popupOptions && isObject(popupOptions)) {
+            return {
+                ...DEFAULT_POPUP_OPTIONS,
+                ...popupOptions
+            };
+        }
+
+        return DEFAULT_POPUP_OPTIONS;
+    };
+    
+    const resolveIcon = (): ReactElement => {
+
+        let iconType: SemanticICONS = icon || "info circle";
+        let iconColor: SemanticCOLORS = "grey";
+
+        if (warning) {
+            iconType = "warning sign";
+            iconColor = "yellow";
+        }
+
+        return <Icon color={ iconColor } floated="left" name={ iconType } />;
+    };
+
     return (
         <div className={ classes } data-testid={ testId }>
             {
                 popup
                     ? (
                         <Popup
-                            trigger={ <Icon color="grey" floated="left" name={ icon } /> }
+                            trigger={ resolveIcon() }
                             content={ children }
                             data-testid={ `${ testId }-popup` }
-                            { ...popupOptions }
+                            { ...resolvePopupOptions() }
                         />
                     )
                     : (
                         <div style={ { columnGap: ".2rem", display: "inline-flex" } }>
-                            { icon && (
-                                <Icon color="grey"
-                                      floated="left"
-                                      name={ icon }
-                                      data-testid={ `${ testId }-icon` }/>
-                            ) }
+                            { resolveIcon() }
                             <div>{ children }</div>
                         </div>
                     )
@@ -129,13 +170,6 @@ export const Hint: React.FunctionComponent<PropsWithChildren<HintPropsInterface>
 Hint.defaultProps = {
     compact: false,
     "data-testid": "hint",
-    icon: "info circle",
     inline: false,
-    popup: false,
-    popupOptions: {
-        basic: true,
-        hoverable: true,
-        inverted: true,
-        position: "bottom left"
-    }
+    popup: false
 };
