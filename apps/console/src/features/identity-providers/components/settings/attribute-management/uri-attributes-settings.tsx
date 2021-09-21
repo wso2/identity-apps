@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, Heading, Hint } from "@wso2is/react-components";
 import find from "lodash-es/find";
 import React, { FunctionComponent, ReactElement } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "../attribute-settings";
 
@@ -88,7 +88,9 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                 dropDownOptions.concat(
                                     {
                                         key: "default_subject",
-                                        text: "Default Subject",
+                                        text: t("console:develop.features.authenticationProvider.forms." +
+                                            "uriAttributeSettings.subject." +
+                                            "placeHolder"),
                                         value: ""
                                     } as DropdownOptionsInterface 
                                 )
@@ -118,10 +120,17 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                         />
                     </Form>
                     <Hint>
-                        The attribute that identifies the user at the enterprise identity provider. 
-                        When attributes are configured based on the authentication response of this IdP connection, 
-                        you can use one of them as the subject. Otherwise, the default <Code>SAML:Subject</Code> in 
-                        the SAML response is used as the subject attribute.
+                        <Trans
+                            i18nKey={
+                                "console:console:develop.features.authenticationProvider.forms.uriAttributeSettings" +
+                                ".subject.hint"
+                            }
+                        >
+                            The attribute that identifies the user at the enterprise identity provider. 
+                            When attributes are configured based on the authentication response of this IdP connection, 
+                            you can use one of them as the subject. Otherwise, the 
+                            default <Code>saml2:Subject</Code> in the SAML response is used as the subject attribute.
+                        </Trans>
                     </Hint>
                 </Grid.Column>
             </Grid.Row>
