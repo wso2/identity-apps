@@ -79,8 +79,6 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
 
     const { t } = useTranslation();
 
-    const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
-
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const identityProviderTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
         (state: AppState) => state.identityProvider.templates);
@@ -97,7 +95,6 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
         isConnectorDetailsFetchRequestLoading,
         setConnectorDetailFetchRequestLoading
     ] = useState<boolean>(undefined);
-    const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(0);
     const [ isExtensionsAvailable, setIsExtensionsAvailable ] = useState<boolean>(false);
     const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -145,22 +142,6 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     }, [ identityProviderConfig ]);
 
     /**
-     * Triggered when the IDP state search param in the URL changes.
-     */
-    useEffect(() => {
-
-        if (!urlSearchParams.get(IdentityProviderManagementConstants.IDP_STATE_URL_SEARCH_PARAM_KEY)) {
-            if (isExtensionsAvailable) {
-                setDefaultActiveIndex(1);
-            }
-            return;
-        }
-    }, [
-        urlSearchParams.get(IdentityProviderManagementConstants.IDP_STATE_URL_SEARCH_PARAM_KEY),
-        isExtensionsAvailable
-    ]);
-
-    /**
      *  Get IDP templates.
      */
     useEffect(() => {
@@ -198,8 +179,8 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
         }
 
         if (!(identityProviderTemplates
-                && identityProviderTemplates instanceof Array
-                && identityProviderTemplates.length > 0)) {
+            && identityProviderTemplates instanceof Array
+            && identityProviderTemplates.length > 0)) {
 
             return;
         }
@@ -478,7 +459,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                     { connector.name }
                     {
                         (isConnectorDetailsFetchRequestLoading === false
-                            && connector.name) &&  resolveStatusLabel(connector)
+                            && connector.name) && resolveStatusLabel(connector)
                     }
                 </Fragment>
             );
@@ -556,18 +537,17 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                             isSaml={
                                 (connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
                                     ? undefined
-                                    :(connector.federatedAuthenticators.defaultAuthenticatorId
-                                    === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID)
+                                    : (connector.federatedAuthenticators.defaultAuthenticatorId
+                                        === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID)
                             }
                             isOidc={
                                 (connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
                                     ? undefined
-                                    :(connector.federatedAuthenticators.defaultAuthenticatorId
-                                    === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID)
+                                    : (connector.federatedAuthenticators.defaultAuthenticatorId
+                                        === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID)
                             }
                             data-testid={ testId }
                             template={ identityProviderTemplate }
-                            defaultActiveIndex={ defaultActiveIndex }
                             isTabExtensionsAvailable={ (isAvailable) => setIsExtensionsAvailable(isAvailable) }
                             type={ identityProviderTemplate?.id }
                             isReadOnly={ isReadOnly }
