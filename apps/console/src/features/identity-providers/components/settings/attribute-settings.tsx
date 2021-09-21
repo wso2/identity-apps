@@ -272,7 +272,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             });
         }
 
-
         const matchingLocalClaim = availableLocalClaims.find(element => element.uri === subjectClaimUri);
         claimConfigurations["userIdClaim"] = matchingLocalClaim ? matchingLocalClaim : { uri: subjectClaimUri } as
             IdentityProviderClaimInterface;
