@@ -3304,9 +3304,13 @@ export const console: ConsoleNS = {
                         },
                         subject: {
                             heading: "Subject",
-                            hint: "Specifies the attribute that identifies the user at the identity provider",
+                            hint: "The attribute that identifies the user at the enterprise identity provider. " +
+                                "When attributes are configured based on the authentication response of " +
+                                "this IdP connection, you can use one of them as the subject. " +
+                                "Otherwise, the default <1>saml2:Subject</1> in the SAML response is used " +
+                                "as the subject attribute.",
                             label: "Subject Attribute",
-                            placeHolder: "Select Attribute",
+                            placeHolder: "Default Subject",
                             validation: {
                                 empty: "Please select an attribute for subject"
                             }

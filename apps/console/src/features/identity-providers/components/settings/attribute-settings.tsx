@@ -156,9 +156,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     // Sets role URI error.
     const [ roleError, setRoleError ] = useState<boolean>(false);
 
-    // Sets subject URI error.
-    const [ subjectError, setSubjectError ] = useState<boolean>(false);
-
     // Selected role mapping.
     const [roleMapping, setRoleMapping] = useState<IdentityProviderRoleMappingInterface[]>(undefined);
 
@@ -272,15 +269,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             });
         }
 
-        // Prepare subject for submission.
-        if (isEmpty(subjectClaimUri)) {
-            // Trigger form field validation on the empty subject uri.
-            setSubjectError(true);
-            canSubmit = false;
-        } else {
-            setSubjectError(false);
-        }
-
         const matchingLocalClaim = availableLocalClaims.find(element => element.uri === subjectClaimUri);
         claimConfigurations["userIdClaim"] = matchingLocalClaim ? matchingLocalClaim : { uri: subjectClaimUri } as
             IdentityProviderClaimInterface;
@@ -298,6 +286,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 const matchingLocalClaim = availableLocalClaims.find(element => element.uri === roleClaimUri);
                 claimConfigurations[ "roleClaim" ] = matchingLocalClaim ? matchingLocalClaim : { uri: roleClaimUri } as
                     IdentityProviderClaimInterface;
+            } else {
+                claimConfigurations[ "roleClaim" ] = { uri: "" } as IdentityProviderClaimInterface;
             }
         }
 
@@ -363,8 +353,9 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                             updateSubject={ setSubjectClaimUri }
                             data-testid={ `${ testId }-uri-attribute-settings` }
                             roleError={ isSubmitting && roleError && !roleClaimUri }
-                            subjectError={ isSubmitting && subjectError && !subjectClaimUri }
+                            subjectError={ isSubmitting && !subjectClaimUri }
                             isReadOnly={ isReadOnly }
+                            isMappingEmpty={ isEmpty(selectedClaimsWithMapping) }
                         /> }
 
                         { /* Select attributes for provisioning. */ }

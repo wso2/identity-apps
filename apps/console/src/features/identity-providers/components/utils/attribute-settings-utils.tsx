@@ -163,59 +163,51 @@ export const initSubjectAndRoleURIs = (initialClaims, setSubjectClaimUri, setRol
 export const handleAttributeSettingsFormSubmit = (idpId: string, values: IdentityProviderClaimsInterface,
                                                   roleMapping: IdentityProviderRoleMappingInterface[],
                                                   onUpdate: (idpId: string) => void): void => {
-    
-    Promise.all([
-        new Promise<void>((resolve, reject) => updateClaimsConfigs(idpId, values)
-            .then(() => {
-                onUpdate(idpId);
-                resolve();
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    store.dispatch(addAlert({
-                        description: I18n.instance.t("console:develop.features.authenticationProvider.notifications." +
-                            "updateClaimsConfigs.error.description",
-                            { description: error.response.data.description }),
-                        level: AlertLevels.ERROR,
-                        message: I18n.instance.t("console:develop.features.authenticationProvider" +
-                            ".notifications.updateClaimsConfigs." +
-                            "error.message")
-                    }));
-                }
 
+    updateClaimsConfigs(idpId, values)
+        .then(() => {
+            onUpdate(idpId);
+            // Update IDP Role Mappings on Successful Claim Config Update.
+            updateIDPRoleMappings(idpId, {
+                        mappings: roleMapping,
+                        outboundProvisioningRoles: [""]
+                    } as IdentityProviderRolesInterface
+                ).then(() => {
+                    onUpdate(idpId);
+                    // Show single alert message when both requests are successfully completed.
+                    store.dispatch(addAlert({
+                        description: I18n.instance.t("console:develop.features.authenticationProvider." +
+                            "notifications.updateAttributes.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: I18n.instance.t("console:develop.features.authenticationProvider." +
+                            "notifications.updateAttributes." +
+                            "success.message")
+                    }));
+                }).catch(error => {
+                    handleUpdateIDPRoleMappingsError(error);
+                });
+        })
+        .catch((error) => {
+            if (error.response && error.response.data && error.response.data.description) {
                 store.dispatch(addAlert({
                     description: I18n.instance.t("console:develop.features.authenticationProvider.notifications." +
-                        "updateClaimsConfigs.genericError.description"),
+                        "updateClaimsConfigs.error.description",
+                        { description: error.response.data.description }),
                     level: AlertLevels.ERROR,
-                    message: I18n.instance.t("console:develop.features.authenticationProvider.notifications." +
-                        "updateClaimsConfigs.genericError.message")
+                    message: I18n.instance.t("console:develop.features.authenticationProvider" +
+                        ".notifications.updateClaimsConfigs." +
+                        "error.message")
                 }));
-                reject();
-            })
-        ),
-        new Promise<void>((resolve, reject) => updateIDPRoleMappings(idpId, {
-                    mappings: roleMapping,
-                    outboundProvisioningRoles: [""]
-                } as IdentityProviderRolesInterface
-            ).then(() => {
-                onUpdate(idpId);
-                resolve();
-            }).catch(error => {
-                handleUpdateIDPRoleMappingsError(error);
-                reject();
-            })
-        )
-    ]).then(() => {
-        // Show single alert message when both requests are successfully completed.
-        store.dispatch(addAlert({
-            description: I18n.instance.t("console:develop.features.authenticationProvider.notifications." +
-                "updateAttributes.success.description"),
-            level: AlertLevels.SUCCESS,
-            message: I18n.instance.t("console:develop.features.authenticationProvider." +
-                "notifications.updateAttributes." +
-                "success.message")
-        }));
-    });
+            }
+
+            store.dispatch(addAlert({
+                description: I18n.instance.t("console:develop.features.authenticationProvider.notifications." +
+                    "updateClaimsConfigs.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: I18n.instance.t("console:develop.features.authenticationProvider.notifications." +
+                    "updateClaimsConfigs.genericError.message")
+            }));
+        });
 };
 
 export const handleGetAllLocalClaimsError = (error) => {
