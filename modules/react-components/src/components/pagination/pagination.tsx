@@ -181,10 +181,10 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
     /**
      * Reset the pagination page is the page limit changes.
      */
-    const resetAll = () => {
+    const resetAll = (): void => {
         setActivePage(1);
         onPageChange(null, {activePage: 1, totalPages: totalPages});
-    }
+    };
 
     /**
      * This is called when page change occurs.
@@ -216,7 +216,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
                         onChange={ (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
                             resetAll();
                             onItemsPerPageDropdownChange(event, data);
-                        }}
+                        } }
                         selection
                     />
                 </label>
