@@ -1805,8 +1805,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
             {
-                CustomApplicationTemplate?.id === template?.id
-                    && applicationConfig.inboundOIDCForm.showIdTokenEncryption &&
+                applicationConfig.inboundOIDCForm.showIdTokenEncryption &&
                 (
                     <>
                         <Grid.Row columns={ 1 }>
