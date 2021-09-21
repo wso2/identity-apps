@@ -28,10 +28,14 @@
 <%@ page import="org.wso2.carbon.identity.oauth.IdentityOAuthAdminException" %>
 <%@ page import="org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl" %>
 <%@ page import="java.io.File" %>
+<%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Map" %>
 <%@ page import="java.util.stream.Collectors" %>
 <%@ page import="java.util.stream.Stream" %>
 <%@ page import="java.util.Set" %>
+<%@ page import="java.util.StringTokenizer" %>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%@ include file="includes/localize.jsp" %>
@@ -42,6 +46,17 @@
     String scopeString = request.getParameter("scope");
     boolean displayScopes = Boolean.parseBoolean(getServletContext().getInitParameter("displayScopes"));
 
+    Map<String, String> queryParamMap = new HashMap<String, String>();
+    String queryString = request.getParameter("spQueryParams");
+    if (StringUtils.isNotBlank(queryString)) {
+        String[] queryParams = queryString.split("&");
+        for (String queryParam : queryParams) {
+            String[] queryParamKeyValueArray = queryParam.split("=", 2);
+                queryParamMap.put(queryParamKeyValueArray[0], queryParamKeyValueArray[1]);
+        }
+    }
+
+    String clientId = queryParamMap.get("client_id");
     String[] requestedClaimList = new String[0];
     String[] mandatoryClaimList = new String[0];
     if (request.getParameter(Constants.REQUESTED_CLAIMS) != null) {
@@ -222,7 +237,7 @@
                                             try {
                                                 String scopesAsString = String.join(" ", openIdScopes);
                                                 Set<Scope> scopes = new OAuth2ScopeService().getScopes(null, null,
-                                                        true, scopesAsString);
+                                                        true, scopesAsString, clientId);
 
                                                 for (Scope scope : scopes) {
                                                     String displayName = scope.getDisplayName();
