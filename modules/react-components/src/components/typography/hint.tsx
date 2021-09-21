@@ -127,7 +127,12 @@ export const Hint: React.FunctionComponent<PropsWithChildren<HintPropsInterface>
 
         return DEFAULT_POPUP_OPTIONS;
     };
-    
+
+    /**
+     * Resolves hit icon.
+     *
+     * @return {ReactElement}
+     */
     const resolveIcon = (): ReactElement => {
 
         let iconType: SemanticICONS = icon || "info circle";
