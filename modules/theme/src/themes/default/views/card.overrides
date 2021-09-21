@@ -564,6 +564,13 @@
                     }
                     
                     .tags {
+                        display: flex;
+                        flex-direction: row;
+                        flex-wrap: nowrap;
+                        align-content: center;
+                        justify-content: center;
+                        align-items: center;
+
                         .tag-icon {
                             color: @templateCardTagIconColor;
                         }
