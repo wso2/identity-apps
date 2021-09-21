@@ -94,6 +94,31 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
+                            icon={ getHelpPanelIcons().endpoints.wellKnown }
+                            size="micro"
+                            square
+                            transparent
+                            inline
+                            className="left-icon"
+                            verticalAlign="middle"
+                            spaced="right"
+                        />
+                        <label data-testid={ `${ testId }-introspection-label` }>
+                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                                "oidcConfigurations.labels.wellKnown") }
+                        </label>
+                    </Grid.Column>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
+                        <CopyInputField
+                            value={ oidcConfigurations?.wellKnownEndpoint  }
+                            className="panel-url-input"
+                            data-testid={ `${ testId }-introspection-readonly-input` }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 2 }>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
+                        <GenericIcon
                             icon={ getHelpPanelIcons().endpoints.authorize }
                             size="micro"
                             square
@@ -144,31 +169,6 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
-                            icon={ getHelpPanelIcons().endpoints.revoke }
-                            size="micro"
-                            square
-                            transparent
-                            inline
-                            className="left-icon"
-                            verticalAlign="middle"
-                            spaced="right"
-                        />
-                        <label data-testid={ `${ testId }-token-revoke-label` }>
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
-                                "oidcConfigurations.labels.revoke") }
-                        </label>
-                    </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
-                        <CopyInputField
-                            value={ oidcConfigurations?.tokenRevocationEndpoint }
-                            className="panel-url-input"
-                            data-testid={ `${ testId }-token-revoke-readonly-input` }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
-                        <GenericIcon
                             icon={ getHelpPanelIcons().endpoints.userInfo }
                             size="micro"
                             square
@@ -188,31 +188,6 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                             value={ oidcConfigurations?.userEndpoint }
                             className="panel-url-input"
                             data-testid={ `${ testId }-userInfo-readonly-input` }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
-                        <GenericIcon
-                            icon={ getHelpPanelIcons().endpoints.jwks }
-                            size="micro"
-                            square
-                            transparent
-                            inline
-                            className="left-icon"
-                            verticalAlign="middle"
-                            spaced="right"
-                        />
-                        <label data-testid={ `${ testId }-jwks-label` }>
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
-                                "oidcConfigurations.labels.jwks") }
-                        </label>
-                    </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
-                        <CopyInputField
-                            value={ oidcConfigurations?.jwksEndpoint }
-                            className="panel-url-input"
-                            data-testid={ `${ testId }-jwks-readonly-input` }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -244,7 +219,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
-                            icon={ getHelpPanelIcons().endpoints.wellKnown }
+                            icon={ getHelpPanelIcons().endpoints.jwks }
                             size="micro"
                             square
                             transparent
@@ -253,16 +228,41 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                             verticalAlign="middle"
                             spaced="right"
                         />
-                        <label data-testid={ `${ testId }-introspection-label` }>
+                        <label data-testid={ `${ testId }-jwks-label` }>
                             { t("console:develop.features.applications.helpPanel.tabs.start.content." +
-                                "oidcConfigurations.labels.wellKnown") }
+                                "oidcConfigurations.labels.jwks") }
                         </label>
                     </Grid.Column>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
                         <CopyInputField
-                            value={ oidcConfigurations?.wellKnownEndpoint  }
+                            value={ oidcConfigurations?.jwksEndpoint }
                             className="panel-url-input"
-                            data-testid={ `${ testId }-introspection-readonly-input` }
+                            data-testid={ `${ testId }-jwks-readonly-input` }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 2 }>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
+                        <GenericIcon
+                            icon={ getHelpPanelIcons().endpoints.revoke }
+                            size="micro"
+                            square
+                            transparent
+                            inline
+                            className="left-icon"
+                            verticalAlign="middle"
+                            spaced="right"
+                        />
+                        <label data-testid={ `${ testId }-token-revoke-label` }>
+                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                                "oidcConfigurations.labels.revoke") }
+                        </label>
+                    </Grid.Column>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
+                        <CopyInputField
+                            value={ oidcConfigurations?.tokenRevocationEndpoint }
+                            className="panel-url-input"
+                            data-testid={ `${ testId }-token-revoke-readonly-input` }
                         />
                     </Grid.Column>
                 </Grid.Row>
