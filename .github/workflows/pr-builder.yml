@@ -61,7 +61,7 @@ jobs:
       run: |
         URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${{ github.event.pull_request.number }}/files"
         FILES=$(curl -s -X GET -G $URL | jq -r '.[] | .filename')
-        FILES_STRING=join($FILES, ", ")
+        FILES_STRING=${{join($FILES, ", ")}}
         echo -n "$FILES" >> $GITHUB_PATH
         echo -n "$FILES"
         echo -n "$FILES_STRING"
