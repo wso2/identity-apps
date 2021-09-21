@@ -156,9 +156,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     // Sets role URI error.
     const [ roleError, setRoleError ] = useState<boolean>(false);
 
-    // Sets subject URI error.
-    const [ subjectError, setSubjectError ] = useState<boolean>(false);
-
     // Selected role mapping.
     const [roleMapping, setRoleMapping] = useState<IdentityProviderRoleMappingInterface[]>(undefined);
 
@@ -356,7 +353,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                             updateSubject={ setSubjectClaimUri }
                             data-testid={ `${ testId }-uri-attribute-settings` }
                             roleError={ isSubmitting && roleError && !roleClaimUri }
-                            subjectError={ isSubmitting && subjectError && !subjectClaimUri }
+                            subjectError={ isSubmitting && !subjectClaimUri }
                             isReadOnly={ isReadOnly }
                             isMappingEmpty={ isEmpty(selectedClaimsWithMapping) }
                         /> }
