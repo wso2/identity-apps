@@ -18,7 +18,7 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement, SyntheticEvent } from "react";
 import { Icon, SemanticICONS } from "semantic-ui-react";
 
 /**
@@ -40,7 +40,11 @@ interface LinkPropsInterface extends IdentifiableComponentInterface {
     /**
      * Documentation URL.
      */
-    link: string;
+    link?: string;
+    /**
+     * On Click callback.
+     */
+    onClick?: (e: SyntheticEvent) => void;
     /**
      * Documentation URL target property. Opens in a new window by default.
      */
@@ -63,6 +67,7 @@ export const Link: FunctionComponent<PropsWithChildren<LinkPropsInterface>> = (
         icon,
         iconPosition,
         link,
+        onClick,
         target
     } = props;
 
@@ -83,10 +88,11 @@ export const Link: FunctionComponent<PropsWithChildren<LinkPropsInterface>> = (
             target={ target }
             rel="noopener noreferrer"
             className={ classes }
+            onClick={ onClick }
         >
-            { icon && iconPosition === "left" && <Icon className="mr-1" name={ icon } /> }
+            { external && icon && iconPosition === "left" && <Icon className="mr-1" name={ icon } /> }
             { children }
-            { icon && iconPosition === "right" && <Icon className="ml-1" name={ icon } /> }
+            { external && icon && iconPosition === "right" && <Icon className="ml-1" name={ icon } /> }
         </a>
     );
 };
