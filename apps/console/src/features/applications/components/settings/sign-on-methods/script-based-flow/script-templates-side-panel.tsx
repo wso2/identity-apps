@@ -197,28 +197,6 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                                                                         content={ template.title || template.name }
                                                                     />
                                                                     <div className="actions">
-                                                                        {
-                                                                            !readOnly && (
-                                                                                <Tooltip
-                                                                                    compact
-                                                                                    trigger={ (
-                                                                                        <Icon
-                                                                                            className="add-button"
-                                                                                            name="add"
-                                                                                            onClick={
-                                                                                                () => onTemplateSelect(
-                                                                                                    template
-                                                                                                )
-                                                                                            }
-                                                                                            data-componentid={
-                                                                                                `${ template.name }-add`
-                                                                                            }
-                                                                                        />
-                                                                                    ) }
-                                                                                    content={ t("common:add") }
-                                                                                />
-                                                                            )
-                                                                        }
                                                                         <Tooltip
                                                                             compact
                                                                             trigger={ (
@@ -241,6 +219,28 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                                                                                     ".popupContent")
                                                                             }
                                                                         />
+                                                                        {
+                                                                            !readOnly && (
+                                                                                <Tooltip
+                                                                                    compact
+                                                                                    trigger={ (
+                                                                                        <Icon
+                                                                                            className="add-button"
+                                                                                            name="add"
+                                                                                            onClick={
+                                                                                                () => onTemplateSelect(
+                                                                                                    template
+                                                                                                )
+                                                                                            }
+                                                                                            data-componentid={
+                                                                                                `${ template.name }-add`
+                                                                                            }
+                                                                                        />
+                                                                                    ) }
+                                                                                    content={ t("common:add") }
+                                                                                />
+                                                                            )
+                                                                        }
                                                                     </div>
                                                                 </Menu.Item>
                                                             ))
