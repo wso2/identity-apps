@@ -44,7 +44,6 @@ import { ReactComponent as LockIcon } from "../../../themes/default/assets/image
 import {
     ReactComponent as LockIconFilled
 } from "../../../themes/default/assets/images/icons/lock.svg";
-import { ReactComponent as KeyIcon } from "../../../themes/default/assets/images/icons/key-icon.svg";
 import { ReactComponent as MaximizeIcon } from "../../../themes/default/assets/images/icons/maximize-icon.svg";
 import { ReactComponent as IDPMetadataIcon } from "../../../themes/default/assets/images/icons/metadata.svg";
 import { ReactComponent as MinimizeIcon } from "../../../themes/default/assets/images/icons/minimize-icon.svg";
@@ -83,6 +82,7 @@ import { ReactComponent as ScopeIcon } from "../../../themes/default/assets/imag
 import {
     ReactComponent as DarkModeIcon
 } from "../../../themes/default/assets/images/icons/solid-icons/crescent-icon.svg";
+import { ReactComponent as KeyIcon } from "../../../themes/default/assets/images/icons/solid-icons/key.svg";
 import {
     ReactComponent as LightModeIcon
 } from "../../../themes/default/assets/images/icons/solid-icons/light-icon.svg";
