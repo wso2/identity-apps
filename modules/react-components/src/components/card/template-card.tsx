@@ -209,7 +209,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
                     basic
                     key={ index }
                     trigger={ (
-                        <span
+                        <div
                             className="icon-wrapper"
                             data-testid={ `${ testId }-logo-wrapper` }
                         >
@@ -223,7 +223,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
                                 inline
                                 transparent
                             />
-                        </span>
+                        </div>
                     ) }
                     size="mini"
                     position="top center"

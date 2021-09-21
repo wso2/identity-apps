@@ -922,16 +922,16 @@ export const console: ConsoleNS = {
                                                 apiDocumentation: "API",
                                                 changeConfirmation: {
                                                     content: "The selected template will replace the existing " +
-                                                        "script in the editor and the step configuration. Your " +
-                                                        "current progress will be lost. Click <1>Confirm</1> to " +
-                                                        "proceed.",
+                                                        "script in the editor as well as the login steps you " +
+                                                        "configured. Click <1>Confirm</1> to proceed.",
                                                     heading: "Are you sure?",
                                                     message: "This action is irreversible."
                                                 },
                                                 goToApiDocumentation: "Go to API Documentation",
                                                 resetConfirmation: {
-                                                    content: "This action will reset the adaptive authentication" +
-                                                        " script back to default. Click <1>Confirm</1> to proceed.",
+                                                    content: "This action will reset the the existing script " +
+                                                        "in the editor back to default. Click <1>Confirm</1> " +
+                                                        "to proceed.",
                                                     heading: "Are you sure?",
                                                     message: "This action is irreversible."
                                                 },

@@ -6,7 +6,8 @@
     "image": "oidc",
     "authenticationProtocol": "oidc",
     "types": [
-        "java"
+        "java",
+        "dotNet"
     ],
     "category": "DEFAULT",
     "displayOrder": 1,
