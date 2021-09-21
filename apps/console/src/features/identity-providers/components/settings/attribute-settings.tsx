@@ -359,6 +359,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                             roleError={ isSubmitting && roleError && !roleClaimUri }
                             subjectError={ isSubmitting && subjectError && !subjectClaimUri }
                             isReadOnly={ isReadOnly }
+                            isMappingEmpty={ isEmpty(selectedClaimsWithMapping) }
                         /> }
 
                         { /* Select attributes for provisioning. */ }

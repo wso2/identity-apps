@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Heading, Hint } from "@wso2is/react-components";
+import { Code, Heading, Hint } from "@wso2is/react-components";
 import find from "lodash-es/find";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
@@ -34,6 +34,10 @@ interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterf
      * this {@code false}.
      */
     claimMappingOn: boolean;
+    /**
+     * Specifies if the IdP Attribute Mappings are available.
+     */  
+    isMappingEmpty: boolean;
     updateRole: (roleUri: string) => void;
     updateSubject: (subjectUri: string) => void;
     roleError?: boolean;
@@ -58,6 +62,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
         roleError,
         subjectError,
         isReadOnly,
+        isMappingEmpty,
         [ "data-testid" ]: testId
     } = props;
 
@@ -109,11 +114,14 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                 pointing: "above"
                             } }
                             readOnly={ isReadOnly }
-                            disabled={ !claimMappingOn }
+                            disabled={ isMappingEmpty }
                         />
                     </Form>
                     <Hint>
-                        { t("console:develop.features.authenticationProvider.forms.uriAttributeSettings.subject.hint") }
+                        The attribute that identifies the user at the enterprise identity provider. 
+                        When attributes are configured based on the authentication response of this IdP connection, 
+                        you can use one of them as the subject. Otherwise, the default <Code>SAML:Subject</Code> in 
+                        the SAML response is used as the subject attribute.
                     </Hint>
                 </Grid.Column>
             </Grid.Row>
