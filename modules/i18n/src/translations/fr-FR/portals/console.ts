@@ -927,11 +927,19 @@ export const console: ConsoleNS = {
                                             },
                                             editor: {
                                                 apiDocumentation: "Documentation API",
+                                                changeConfirmation: {
+                                                    content: "Le modèle sélectionné remplacera le script existant " +
+                                                        "dans l'éditeur et la configuration des étapes. Votre " +
+                                                        "progression actuelle sera perdue. Cliquez sur " +
+                                                        "<1>Confirmer</1> pour continuer.",
+                                                    heading: "Êtes-vous sûr?",
+                                                    message: "Cette action est irréversible."
+                                                },
                                                 goToApiDocumentation: "Accéder à la documentation API",
                                                 resetConfirmation: {
-                                                    content: "Cette action réinitialisera le script d'authentification" +
-                                                        " adaptative par défaut. Cliquez sur «Confirmer» pour" +
-                                                        " continuer.",
+                                                    content: "Cette action réinitialisera le script " +
+                                                        "d'authentification adaptative par défaut. Cliquez sur " +
+                                                        "<1>Confirmer</1> pour continuer.",
                                                     heading: "Êtes-vous sûr?",
                                                     message: "Cette action est irréversible."
                                                 },
