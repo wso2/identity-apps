@@ -247,6 +247,24 @@
                     ]
                 }
             },
+            "secretsManagement": {
+                "enabled": true,
+                "disabledFeatures": [],
+                "scopes": {
+                    "create": [
+                        "internal_secret_mgt_add"
+                    ],
+                    "read": [
+                        "internal_secret_mgt_view"
+                    ],
+                    "update": [
+                        "internal_secret_mgt_update"
+                    ],
+                    "delete": [
+                        "internal_secret_mgt_delete"
+                    ]
+                }
+            },
             "remoteFetchConfig": {
                 "enabled": true,
                 "disabledFeatures": [],
