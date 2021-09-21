@@ -21,6 +21,7 @@ import {
     BasicUserInfo,
     Hooks,
     OIDCEndpoints,
+    SPAUtils,
     SecureApp,
     useAuthContext
 } from "@asgardeo/auth-react";
@@ -244,7 +245,9 @@ export const ProtectedApp: FunctionComponent<Record<string, never>> = (): ReactE
             fallback={ <ContentLoader dimmer /> }
             onSignIn={ loginSuccessRedirect }
             overrideSignIn={ async () => {
-                if (process.env.NODE_ENV === "production") {
+                if (SPAUtils.hasAuthSearchParamsInURL() || process.env.NODE_ENV !== "production") {
+                    await signIn();
+                } else {
                     const contextPath: string = window[ "AppUtils" ].getConfig().appBase
                         ? `/${ window[ "AppUtils" ].getConfig().appBase }`
                         : "";
@@ -252,8 +255,6 @@ export const ProtectedApp: FunctionComponent<Record<string, never>> = (): ReactE
                     await axios.get(contextPath + "/auth").then((response) => {
                         signIn(null, response?.data?.authCode, response?.data?.sessionState);
                     });
-                } else {
-                    await signIn();
                 }
             } }
         >
