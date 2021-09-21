@@ -183,7 +183,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
      */
     const resetAll = (): void => {
         setActivePage(1);
-        onPageChange(null, {activePage: 1, totalPages: totalPages});
+        onPageChange(null, { activePage: 1, totalPages: totalPages });
     };
 
     /**
@@ -254,7 +254,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
                         } }
                     />
                 </>
-            )
+            );
         }
 
         return (
@@ -269,7 +269,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
                     onPageChange={ pageChangeHandler }
                 />
             </>
-        )
+        );
     };
 
     return (
