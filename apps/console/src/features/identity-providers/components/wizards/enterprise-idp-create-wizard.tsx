@@ -355,6 +355,21 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     return;
                 }
 
+                if (error?.response.status === 500 &&
+                    selectedProtocol === "saml" &&
+                    selectedSamlConfigMode === "file" &&
+                    error.response?.data.code === "IDP-65002") {
+                    setAlert({
+                        description: "The server encountered an unexpected error while adding the identity provider." +
+                            " Please make sure you are not trying to add a duplicate IdP Entity ID" +
+                            " or a SP Entity ID.",
+                        level: AlertLevels.ERROR,
+                        message: "Duplicate Entity ID"
+                    });
+                    setTimeout(() => setAlert(undefined), 8000);
+                    return;
+                }
+
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
                         description: t("console:develop.features.authenticationProvider.notifications." +
