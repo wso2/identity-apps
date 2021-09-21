@@ -552,8 +552,12 @@ export const myAccount: MyAccountNS = {
                     "Authenticator para usar senhas de uso único baseadas " +
                     "em tempo (também conhecidas como TOTP) como um segundo " +
                     "fator ao fazer login em aplicativos.",
+                configuredDescription: "Você pode usar códigos TOTP de seu " +
+                    "aplicativo autenticador configurado para autenticação de dois fatores. " +
+                    "Se você não tiver acesso ao aplicativo, pode excluir ou configurar um novo aqui.",
                 heading: "App autenticador",
                 hint: "Mostrar o QR Code",
+                deleteHint: "Exclua seu Autenticador TOTP",
                 modals: {
                     heading: "Set Up An Authenticator App",
                     done: "Sucesso! Agora você pode usar seu aplicativo de autenticação para autenticação de dois " +
@@ -573,6 +577,10 @@ export const myAccount: MyAccountNS = {
                         reScan: "Verificar novamente",
                         reScanQuestion: "Deseja digitalizar o código QR novamente?",
                         requiredError: "Insira o código de verificação"
+                    },
+                    delete: {
+                        heading: "Confirmação",
+                        message: "Esta ação removerá o Autenticador TOTP configurado. Você deseja continuar ?"
                     },
                     toolTip: "Não tem um aplicativo? Baixe um aplicativo autenticador como o " +
                     "Google Authenticator na <3> App Store </3> ou <3> Google Play </3>"
@@ -595,6 +603,16 @@ export const myAccount: MyAccountNS = {
                         },
                         genericError: {
                             description: "Erro ao tentar obter um novo código QR",
+                            message: "Algo deu errado"
+                        }
+                    },
+                    deleteError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Algo deu errado"
+                        },
+                        genericError: {
+                            description: "Ocorreu um erro ao excluir a configuração do Autenticador TOTP",
                             message: "Algo deu errado"
                         }
                     }

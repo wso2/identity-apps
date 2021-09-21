@@ -343,8 +343,10 @@ export interface MyAccountNS {
             };
             authenticatorApp: {
                 description: string;
+                configuredDescription:string;
                 heading: string;
                 hint: string;
+                deleteHint: string;
                 modals: {
                     heading: string;
                     scan: {
@@ -363,6 +365,10 @@ export interface MyAccountNS {
                         reScanQuestion: string;
                         reScan: string;
                     };
+                    delete: {
+                        heading: string;
+                        message: string;
+                    };
                     done: string;
                     toolTip: string;
                 };
@@ -372,6 +378,10 @@ export interface MyAccountNS {
                         error: NotificationItem;
                     };
                     refreshError: {
+                        genericError: NotificationItem;
+                        error: NotificationItem;
+                    };
+                    deleteError: {
                         genericError: NotificationItem;
                         error: NotificationItem;
                     };

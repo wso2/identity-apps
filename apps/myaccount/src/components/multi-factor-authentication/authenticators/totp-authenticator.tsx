@@ -34,9 +34,10 @@ import {
     Modal, 
     Popup, 
     Segment  } from "semantic-ui-react";
-import { initTOTPCode, refreshTOTPCode, validateTOTPCode } from "../../../api";
+import { deleteTOTP, initTOTPCode, refreshTOTPCode, validateTOTPCode } from "../../../api";
 import { getMFAIcons } from "../../../configs";
-import { AlertInterface, AlertLevels } from "../../../models";
+import { SCIMConfigs } from "../../../extensions/configs/scim";
+import { AlertInterface, AlertLevels, AuthStateInterface } from "../../../models";
 import { AppState } from "../../../store";
 
 /**
@@ -62,10 +63,13 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
         [ "data-testid" ]: testId
     } = props;
 
+    const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const [ openWizard, setOpenWizard ] = useState(false);
     const [ qrCode, setQrCode ] = useState("");
     const [ step, setStep ] = useState(0);
     const [ error, setError ] = useState(false);
+    const [ isTOTPConfigured, setIsTOTPConfigured ] = useState<boolean>(false);
+    const [ revokeTOTPAuthnModalVisibility, setRevokeTOTPAuthnModalVisibility ] = useState(false);
 
     const { t } = useTranslation();
 
@@ -108,6 +112,19 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
         });
     };
 
+    useEffect(() => {
+        // Verifies if the user has configured a TOTP Authenticator.
+        const totpEnabled = profileDetails?.profileInfo?.[SCIMConfigs.scim.customEnterpriseSchema]?.
+            ["totpEnabled"];
+
+        if (totpEnabled && totpEnabled == "true") {
+            setIsTOTPConfigured(true);
+        } else {
+            setIsTOTPConfigured(false);
+        }
+
+    }, [profileDetails?.profileInfo]);
+
     /**
      * Reset pin code value in Error state
      */
@@ -138,6 +155,26 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 level: AlertLevels.ERROR,
                 message: t(translateKey + "notifications.initError.error.message")
             });
+        });
+    };
+
+    /**
+     *  Initiate deletion of TOTP configuration.
+     */
+    const initDeleteTOTP = (): void => {
+        deleteTOTP().then((response) => {
+            setIsTOTPConfigured(false);
+            return;
+        }).catch((errorMessage) => {
+            onAlertFired({
+                description: t(translateKey + "notifications.deleteError.error.description", {
+                    error: errorMessage
+                }),
+                level: AlertLevels.ERROR,
+                message: t(translateKey + "notifications.deleteError.error.message")
+            });
+        }).finally(() => {
+            setRevokeTOTPAuthnModalVisibility(false);
         });
     };
 
@@ -486,6 +523,51 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
+     * Handle the revoke TOTP Configuration modal close event.
+     */
+     const handleRevokeTOTPAuthnClick = (): void => {
+        setRevokeTOTPAuthnModalVisibility(true);
+    };
+    
+    /**
+     * Handle the revoke TOTP Configuration modal close event.
+     */
+     const handleRevokeTOTPAuthnModalClose = (): void => {
+        setRevokeTOTPAuthnModalVisibility(false);
+    };
+
+    /**
+     * This renders the TOTP Authenticator delete Modal
+     */
+    const revokeTOTPAuthnModal = (
+        <Modal
+            data-testid={ `${testId}-termination-modal` }
+            size="mini"
+            open={ revokeTOTPAuthnModalVisibility }
+            onClose={ handleRevokeTOTPAuthnModalClose }
+            dimmer="blurring"
+        >
+            <Modal.Content data-testid={ `${testId}-termination-modal-content` }>
+                <Container>
+                    <h3>{ t(translateKey + "modals.delete.heading") }</h3>
+                </Container>
+                <br/>
+                <p>{ t(translateKey + "modals.delete.message" ) }</p>
+            </Modal.Content>
+            <Modal.Actions data-testid={ `${testId}-termination-modal-actions` }>
+                <Button className="link-button" onClick={ handleRevokeTOTPAuthnModalClose }
+                 data-testid={ `${testId}-termination-modal-actions-cancel-button` }>
+                    { t("common:cancel") }
+                </Button>
+                <Button primary={ true } onClick={ initDeleteTOTP }
+                 data-testid={ `${testId}-termination-modal-actions-terminate-button` }>
+                    { t("common:remove") }
+                </Button>
+            </Modal.Actions>
+        </Modal>
+    );
+
+    /**
      * This renders the TOTP wizard
      */
     const totpWizard = (): JSX.Element => {
@@ -536,7 +618,10 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                 primary
                                 className = "totp-verify-done-button"
                                 data-testid={ `${ testId }-modal-actions-primary-button` }
-                                onClick= { () => { setOpenWizard(false);} }
+                                onClick= { () => {
+                                    setOpenWizard(false);
+                                    setIsTOTPConfigured(true);
+                                } }
                             >
                                 { stepButtonText(step) }
                             </Button>
@@ -547,57 +632,131 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     return (
-        <>
-            { totpWizard() }
-            <Grid padded={ true } data-testid={ testId }>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column width={ 1 } className="first-column">
-                        <List.Content floated="left">
-                            <GenericIcon
-                                icon={ getMFAIcons().authenticatorApp }
-                                size="mini"
-                                twoTone={ true }
-                                transparent={ true }
-                                square={ true }
-                                rounded={ true }
-                                relaxed={ true }
-                            />
-                        </List.Content>
-                        </Grid.Column>
-                        <Grid.Column width={ 12 } className="first-column">
-                        <List.Content>
-                            <List.Header>
-                                { t(translateKey + "heading") }
-                            </List.Header>
-                            <List.Description>
-                                { t(translateKey + "description") }
-                            </List.Description>
-                        </List.Content>
-                    </Grid.Column>
-                    <Grid.Column width={ 3 } className="last-column">
-                        <List.Content floated="right">
-                            <Popup
-                                trigger={
-                                    (
-                                        <Icon
-                                            link={ true }
-                                            onClick={ initTOTPFlow }
-                                            className="list-icon"
-                                            size="small"
-                                            color="grey"
-                                            name="eye"
-                                            data-testid={ `${testId}-view-button` }
-                                        />
-                                    )
-                                }
-                                content={ t(translateKey + "hint") }
-                                inverted
-                            />
-                        </List.Content>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        </>
+        (!isTOTPConfigured
+                ?
+                <>
+                    { totpWizard() }
+                    <Grid padded={ true } data-testid={ testId }>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column width={ 1 } className="first-column">
+                                <List.Content floated="left">
+                                    <GenericIcon
+                                        icon={ getMFAIcons().authenticatorApp }
+                                        size="mini"
+                                        twoTone={ true }
+                                        transparent={ true }
+                                        square={ true }
+                                        rounded={ true }
+                                        relaxed={ true }
+                                    />
+                                </List.Content>
+                            </Grid.Column>
+                            <Grid.Column width={ 12 } className="first-column">
+                                <List.Content>
+                                    <List.Header>
+                                        { t(translateKey + "heading") }
+                                    </List.Header>
+                                    <List.Description>
+                                        { t(translateKey + "description") }
+                                    </List.Description>
+                                </List.Content>
+                            </Grid.Column>
+                            <Grid.Column width={ 3 } className="last-column">
+                                <List.Content floated="right">
+                                    <Popup
+                                        trigger={
+                                            (
+                                                <Icon
+                                                    link={ true }
+                                                    onClick={ initTOTPFlow }
+                                                    className="list-icon padded-icon"
+                                                    size="small"
+                                                    color="grey"
+                                                    name="plus"
+                                                    data-testid={ `${testId}-view-button` }
+                                                />
+                                            )
+                                        }
+                                        content={ t(translateKey + "hint") }
+                                        inverted
+                                    />
+                                </List.Content>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </>
+                :
+                <>
+                { revokeTOTPAuthnModal }
+                { totpWizard() }
+                    <Grid padded={ true } data-testid={ testId }>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column width={ 1 } className="first-column">
+                                <List.Content floated="left">
+                                    <GenericIcon
+                                        icon={ getMFAIcons().authenticatorApp }
+                                        size="mini"
+                                        twoTone={ true }
+                                        transparent={ true }
+                                        square={ true }
+                                        rounded={ true }
+                                        relaxed={ true }
+                                    />
+                                </List.Content>
+                            </Grid.Column>
+                            <Grid.Column width={ 12 } className="first-column">
+                            <List.Content>
+                                    <List.Header>
+                                        { t(translateKey + "heading") }
+                                    </List.Header>
+                                    <List.Description>
+                                        { t(translateKey + "configuredDescription") }
+                                    </List.Description>
+                                </List.Content>
+                            </Grid.Column>
+                            <Grid.Column width={ 3 } className="last-column">
+                                <List.Content floated="right">
+                                    <Popup
+                                        trigger={
+                                            (
+                                                <Icon
+                                                    link={ true }
+                                                    onClick={ () => {
+                                                        handleRevokeTOTPAuthnClick();
+                                                    } }
+                                                    className="list-icon padded-icon"
+                                                    size="small"
+                                                    color="grey"
+                                                    name="trash alternate"
+                                                />
+                                            )
+                                        }
+                                        inverted
+                                        content={ t(translateKey + "deleteHint") }
+                                    />
+                                    <Popup
+                                        trigger={
+                                            (
+                                                <Icon
+                                                    link={ true }
+                                                    onClick={ initTOTPFlow }
+                                                    className="list-icon padded-icon"
+                                                    size="small"
+                                                    color="grey"
+                                                    name="eye"
+                                                    data-testid={ `${testId}-view-button` }
+                                                />
+                                            )
+                                        }
+                                        content={ t(translateKey + "hint") }
+                                        inverted
+                                    />
+                                </List.Content>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </>
+        )
     );
 };
 
