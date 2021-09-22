@@ -19,7 +19,7 @@
 /**
  * Class containing profile operation constants.
  */
-export class ProfileConstants {
+ export class ProfileConstants {
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -75,6 +75,9 @@ export class ProfileConstants {
         .set("DOB", "dateOfBirth")
         .set("LOCAL_CREDENTIAL_EXISTS", "localCredentialExists")
         .set("USER_SOURCE_ID", "userSourceId")
+        .set("ACTIVE", "active")
+        .set("RESROUCE_TYPE", "ResourceType")
+        .set("EXTERNAL_ID", "ExternalID")
         .set("IDP_TYPE", "idpType");
 
     /**

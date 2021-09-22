@@ -1098,6 +1098,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_SOURCE_ID")
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("IDP_TYPE")
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("LOCAL_CREDENTIAL_EXISTS")
+                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACTIVE")
+                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("RESROUCE_TYPE")
+                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EXTERNAL_ID")
                             || (!commonConfig.userProfilePage.showEmail &&
                                 schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"))
                         )) {
