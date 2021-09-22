@@ -179,7 +179,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
     };
 
     /**
-     * Reset the pagination page is the page limit changes.
+     * Reset the pagination page if the page limit changes.
      */
     const resetAll = (): void => {
         setActivePage(1);
