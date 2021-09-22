@@ -110,7 +110,11 @@
                             %>
                                 <label for="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"
                                        data-testid="request-claims-page-form-field-<%=Encode.forHtmlAttribute(claim)%>-label">
-                                    <%=Encode.forHtmlContent(claim)%>
+                                <%  if (StringUtils.isNotBlank(claimDisplayName)) { %>
+                                    <%=Encode.forHtmlAttribute(claimDisplayName)%>
+                                <% } else { %>
+                                    <%=Encode.forHtmlAttribute(claim)%>
+                                <% } %>
                                 </label>
                                 <% if (claim.contains("claims/dob")) { %>
                                     <div class="field">
@@ -126,6 +130,13 @@
                                                        required="required">
                                             </div>
                                         </div>
+                                    </div>
+                                <% } else if (claim.contains("claims/country")) {  %>
+                                    <div class="field">
+                                        <jsp:include page="includes/country-dropdown.jsp">
+                                            <jsp:param name="required" value="required"/>
+                                            <jsp:param name="claim" value="<%=Encode.forHtmlAttribute(claim)%>"/>
+                                        </jsp:include>
                                     </div>
                                 <% } else { %>
                                     <div class="field">
