@@ -556,12 +556,12 @@ export const myAccount: MyAccountNS = {
                     "d'authentification pour utiliser des codes d'accès " +
                     "à usage unique basés sur le temps (également appelés TOTP) " +
                     "comme deuxième facteur lors de la connexion aux applications.",
-                configuredDescription: "Vous pouvez utiliser les codes TOTP de votre application " +
-                    " d'authentification configurée pour une authentification à deux facteurs. " +
-                    "Si vous n'avez pas accès à l'application, vous pouvez en supprimer ou en " +
-                    "créer une nouvelle à partir d'ici.",
+                configuredDescription: "Vous pouvez utiliser les codes TOTP de votre " +
+                    "application d'authentification configurée pour une authentification à " +
+                    "deux facteurs. Si vous n'avez pas accès à l'application, vous pouvez configurer " +
+                    "une nouvelle application d'authentification à partir d'ici",
                 heading: "Application d'authentification",
-                deleteHint: "Supprimez votre TOTP Authenticator",
+                deleteHint: "Supprime le code QR",
                 hint: "Afficher le code QR",
                 modals: {
                     heading: "Set Up An Authenticator App",
@@ -584,7 +584,7 @@ export const myAccount: MyAccountNS = {
                     },
                     delete : {
                         heading: "Confirmation",
-                        message: "Cette action supprimera l'authentificateur TOTP configuré. " +
+                        message: "Cette action supprimera le code QR ajouté à votre profil. " +
                             "Souhaitez-vous continuer ? "
                     },
                     toolTip: "Vous n'avez pas d'application? Téléchargez une application d'authentification " +
