@@ -186,7 +186,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     }
                     value={ name }
                     readOnly={ readOnly }
-                    validation ={ (value)=>appNameValidation(value.toString().trim()) }
+                    validation ={ (value) => appNameValidation(value.toString().trim()) }
                     maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
                     minLength={ 3 }
                     data-testid={ `${ testId }-application-name-input` }
