@@ -32,6 +32,11 @@
         border: none !important;
         box-shadow: none;
     }
+
+    .close.icon {
+        top: 1em;
+        right: 1em;
+    }
 }
 
 /*------------------------

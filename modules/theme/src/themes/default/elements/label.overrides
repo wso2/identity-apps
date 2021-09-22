@@ -69,6 +69,9 @@
             }
         }
     }
+    .detail {
+        font-size: x-small;
+    }
 }
 
 .ui.circular.label {
