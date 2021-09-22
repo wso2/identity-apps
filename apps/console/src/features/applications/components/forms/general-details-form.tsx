@@ -147,6 +147,16 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         return errors;
     };
 
+    /**
+     * Application name validation.
+     */
+    const appNameValidation= (name) => {
+        const isValid = name && !!name.match(ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_PATTERN);
+        if (!isValid) {
+            return "Please enter a valid input.";
+        }
+    };
+
     return (
         <Form
             uncontrolledForm={ false }
@@ -163,7 +173,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             { !UIConfig.systemAppsIdentifiers.includes(name) && (
                 <Field.Input
                     ariaLabel="Application name"
-                    inputType="resource_name"
+                    inputType="name"
                     name="name"
                     label={
                         t("console:develop.features.applications.forms.generalDetails.fields.name" +
@@ -176,6 +186,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     }
                     value={ name }
                     readOnly={ readOnly }
+                    validation ={ (value)=>appNameValidation(value.toString().trim()) }
                     maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
                     minLength={ 3 }
                     data-testid={ `${ testId }-application-name-input` }
