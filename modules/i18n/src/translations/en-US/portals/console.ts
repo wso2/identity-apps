@@ -7516,7 +7516,7 @@ export const console: ConsoleNS = {
                         deleteUserZone: {
                             actionTitle: "Delete User",
                             header: "Delete user",
-                            subheader: "Once you delete a user, there is no going back. Please be certain."
+                            subheader: "Delete user permanently from the organization."
                         },
                         disableUserZone: {
                             actionTitle: "Disable User",
@@ -7543,7 +7543,7 @@ export const console: ConsoleNS = {
                     addUserForm: {
                         buttons: {
                             radioButton: {
-                                label: "Select the method to set the user password",
+                                label: "Select the method to reset the user password",
                                 options: {
                                     askPassword: "Invite the user to set their own password",
                                     createPassword: "Set a temporary password for the user"
@@ -7676,13 +7676,13 @@ export const console: ConsoleNS = {
                     changePasswordModal: {
                         button: "Reset Password",
                         header: "Reset User Password",
-                        message: "NOTE: Please note that after changing the password the user will no longer be " +
+                        message: "WARNING: Please note that after changing the password the user will no longer be " +
                             "able to log into any application using the current password.",
                         hint: {
-                            forceReset: "NOTE: Please note that after inviting the user to change the password " +
+                            forceReset: "WARNING: Please note that after inviting the user to change the password " +
                                 "the user will no longer be able to log into any application using the current " +
                                 "password. The password reset link will be valid for {{codeValidityPeriod}} minutes.",
-                            setPassword: "NOTE: Please note that after changing the password the user will no longer be " +
+                            setPassword: "WARNING: Please note that after changing the password the user will no longer be " +
                                 "able to log into any application using the current password."
                         },
                         passwordOptions: {

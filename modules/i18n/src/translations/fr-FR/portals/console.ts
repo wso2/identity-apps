@@ -6186,8 +6186,7 @@ export const console: ConsoleNS = {
                         deleteUserZone: {
                             actionTitle: "Supprimer l'utilisateur",
                             header: "Supprimer l'utilisateur",
-                            subheader: "Cette action est irréversible et supprimera définitivement l'utilisateur. " +
-                                "Êtes-vous ABSOLUMENT certain de vouloir supprimer cet utilisateur ?"
+                            subheader: "Supprimer définitivement l'utilisateur de l'organisation."
                         },
                         disableUserZone: {
                             actionTitle: "Supprimer l'utilisateur",
@@ -6215,7 +6214,7 @@ export const console: ConsoleNS = {
                     addUserForm: {
                         buttons: {
                             radioButton: {
-                                label: "Sélectionner la méthode d'initialisation du mot de passe",
+                                label: "Sélectionnez la méthode pour réinitialiser le mot de passe utilisateur",
                                 options: {
                                     askPassword: "Invitez l'utilisateur à définir son propre mot de passe",
                                     createPassword: "Définissez un mot de passe temporaire pour l'utilisateur"
@@ -6349,14 +6348,14 @@ export const console: ConsoleNS = {
                     changePasswordModal: {
                         button: "réinitialiser le mot de passe",
                         header: "Réinitialiser le mot de passe de l'utilisateur",
-                        message: "REMARQUE: veuillez noter qu'après avoir modifié le mot de passe, l'utilisateur ne " +
+                        message: "ATTENTION: veuillez noter qu'après avoir modifié le mot de passe, l'utilisateur ne " +
                             "pourra plus se connecter à aucune application en utilisant le mot de passe actuel.",
                         hint: {
-                            forceReset: "REMARQUE: Veuillez noter qu'après avoir invité l'utilisateur à réinitialiser " +
+                            forceReset: "ATTENTION: Veuillez noter qu'après avoir invité l'utilisateur à réinitialiser " +
                                 "le mot de passe, l'utilisateur ne pourra plus se connecter à aucune application en " +
                                 "utilisant le mot de passe actuel. Le lien de réinitialisation du mot de passe sera " +
                                 "valide pendant {{codeValidityPeriod}} minutes.",
-                            setPassword: "REMARQUE: veuillez noter qu'après avoir modifié le mot de passe, l'utilisateur ne " +
+                            setPassword: "ATTENTION: veuillez noter qu'après avoir modifié le mot de passe, l'utilisateur ne " +
                                 "pourra plus se connecter à aucune application en utilisant le mot de passe actuel."
                         },
                         passwordOptions: {
