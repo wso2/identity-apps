@@ -556,17 +556,19 @@ export const myAccount: MyAccountNS = {
                     "second factor when logging in to applications.",
                 configuredDescription: "You can use TOTP codes from your configured " +
                 "authenticator app for two-factor authentication. If you don't have " +
-                "access to the application you can delete or set up a new one from here.",
+                "access to the application you can set up a new authenticator app from here.",
                 heading: "Authenticator App",
                 hint: "Show the QR Code",
-                deleteHint: "Delete your TOTP Authenticator",
+                addHint:"Adds new QR code",
+                deleteHint: "Deletes QR code",
                 modals: {
                     heading: "Setup an Authenticator App",
                     done: "Success! Now you can use your Authenticator App for two-factor authentication",
                     scan: {
                         authenticatorApps: "Authenticator Apps",
                         generate: "Generate a new code",
-                        heading: "Scan the QR code below using an anthenticator app",
+                        heading: "Scan the QR code below using an authenticator app",
+                        additionNote: "QR code has been successfully added to your profile!",
                         messageBody: "You can find a list of Authenticator Apps available here.",
                         messageHeading: "Don't have an Authenticator App installed?"
                     },
@@ -581,7 +583,7 @@ export const myAccount: MyAccountNS = {
                     },
                     delete : {
                         heading: "Confirmation",
-                        message: "This action will remove the configured TOTP Authenticator. Do you wish to continue ? "
+                        message: "This action will remove the QR code added to your profile. Do you wish to continue ? "
                     },
                     toolTip: "Don't have an app? Download an authenticator application like " +
                     "Google Authenticator from <3>App Store</3> or <3>Google Play</3>"
@@ -613,7 +615,7 @@ export const myAccount: MyAccountNS = {
                             message: "Something went wrong"
                         },
                         genericError: {
-                            description: "Error occurred while deleting TOTP Authenticator configuration",
+                            description: "Error occurred while deleting QR code",
                             message: "Something went wrong"
                         }
                     }

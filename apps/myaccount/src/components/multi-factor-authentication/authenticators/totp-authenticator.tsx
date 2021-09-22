@@ -22,17 +22,17 @@ import QRCode from "qrcode.react";
 import React, { PropsWithChildren, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { 
-    Button, 
-    Container, 
-    Divider, 
-    Form, 
-    Grid, 
-    Icon, 
-    List, 
-    Message, 
+import {
+    Button,
+    Container,
+    Divider,
+    Form,
+    Grid,
+    Icon,
+    List,
+    Message,
     Modal, 
-    Popup, 
+    Popup,
     Segment  } from "semantic-ui-react";
 import { deleteTOTP, initTOTPCode, refreshTOTPCode, validateTOTPCode } from "../../../api";
 import { getMFAIcons } from "../../../configs";
@@ -113,7 +113,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     useEffect(() => {
-        // Verifies if the user has configured a TOTP Authenticator.
+        // Verifies if the user has added a TOTP secret(QR) to his profile.
         const totpEnabled = profileDetails?.profileInfo?.[SCIMConfigs.scim.customEnterpriseSchema]?.
             ["totpEnabled"];
 
@@ -261,7 +261,20 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     const renderQRCode = (step: number): JSX.Element => {
         return (
             <Segment basic >
-                    <h5 className=" text-center" > { t(translateKey + "modals.scan.heading") }</h5>
+                { !isTOTPConfigured
+                    ?
+                    <Grid>
+                        <Grid.Row columns={ 1 } centered={ true }>
+                            <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 12 } >
+                                <Message info>
+                                        { t(translateKey+ "modals.scan.additionNote") }
+                                </Message>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                    : null
+                }
+                <h5 className=" text-center" > { t(translateKey + "modals.scan.heading") }</h5>
                         <Segment textAlign="center" basic className="qr-code">
                             <QRCode value={ qrCode } data-testid={ `${ testId }-modals-scan-qrcode` }/>
                             <Divider hidden />
@@ -447,7 +460,10 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                         <div className = "totp-verify-step-btn">
                                             <Grid.Row columns={ 1 }>
                                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                                    < Button onClick={ () => { setOpenWizard(false); } } 
+                                                    < Button onClick={ () => {
+                                                        setOpenWizard(false);
+                                                        setIsTOTPConfigured(true);
+                                                    } }
                                                     className="link-button totp-verify-action-button"
                                                     data-testid={ `${ testId }-modal-actions-cancel-button` }>
                                                     { t("common:cancel") }
@@ -677,7 +693,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                 />
                                             )
                                         }
-                                        content={ t(translateKey + "hint") }
+                                        content={ t(translateKey + "addHint") }
                                         inverted
                                     />
                                 </List.Content>

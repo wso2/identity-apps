@@ -346,12 +346,14 @@ export interface MyAccountNS {
                 configuredDescription:string;
                 heading: string;
                 hint: string;
+                addHint: string;
                 deleteHint: string;
                 modals: {
                     heading: string;
                     scan: {
                         heading: string;
                         generate: string;
+                        additionNote:string;
                         messageHeading: string;
                         messageBody: string;
                         authenticatorApps: string;
