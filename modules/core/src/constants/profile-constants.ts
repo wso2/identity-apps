@@ -19,7 +19,7 @@
 /**
  * Class containing profile operation constants.
  */
- export class ProfileConstants {
+export class ProfileConstants {
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -78,6 +78,7 @@
         .set("ACTIVE", "active")
         .set("RESROUCE_TYPE", "ResourceType")
         .set("EXTERNAL_ID", "ExternalID")
+        .set("META_DATA", "MetaData")
         .set("IDP_TYPE", "idpType");
 
     /**
