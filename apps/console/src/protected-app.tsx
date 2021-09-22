@@ -25,7 +25,7 @@ import {
     useAuthContext
 } from "@asgardeo/auth-react";
 import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
-import { TenantListInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TenantListInterface } from "@wso2is/core/models";
 import { setSignIn } from "@wso2is/core/store";
 import { AuthenticateUtils as CommonAuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
 import React, { FunctionComponent, ReactElement, lazy, useEffect } from "react";
@@ -41,7 +41,15 @@ const OIDC_SESSION_IFRAME_ENDPOINT = "oidc_session_iframe_endpoint";
 const LOGOUT_URL = "sign_out_url";
 
 const App = lazy(() => import("./app"));
-export const ProtectedApp: FunctionComponent<Record<string, never>> = (): ReactElement => {
+
+type AppPropsInterface = IdentifiableComponentInterface;
+
+/**
+ * This component warps the `App` component with the `SecureApp` component to provide automatic authentication.
+ *
+ * @returns {ReactElement} ProtectedApp component
+ */
+export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactElement => {
 
     const {
         on,
