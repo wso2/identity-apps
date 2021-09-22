@@ -41,6 +41,7 @@ const SignOut: FunctionComponent<Record<string, unknown>> = (): ReactElement => 
             dispatch(setSignOut());
         });
     }, []);
+
     useEffect(() => {
         if (!logoutInit) {
             signOut().catch(() => {

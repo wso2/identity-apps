@@ -27,6 +27,7 @@ import { handleSignOut } from "../../store/actions";
 const SignOut = (): ReactElement => {
     const dispatch = useDispatch();
     const logoutInit = useSelector((state: AppState) => state.authenticationInformation.logoutInit);
+
     useEffect(() => {
         if (!logoutInit) {
             dispatch(handleSignOut());
