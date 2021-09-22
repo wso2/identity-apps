@@ -702,8 +702,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     "deleteUserZone.actionTitle") }
                                 header={ t("console:manage.features.user.editUser.dangerZoneGroup." +
                                     "deleteUserZone.header") }
-                                subheader={ t("console:manage.features.user.editUser.dangerZoneGroup." +
-                                    "deleteUserZone.subheader") }
+                                subheader={ commonConfig.userEditSection.isGuestUser
+                                    ? t("extensions:manage.guest.editUser.dangerZoneGroup.deleteUserZone.subheader")
+                                    : t("console:manage.features.user.editUser.dangerZoneGroup.deleteUserZone." +
+                                        "subheader")
+                                }
                                 onActionClick={ (): void => {
                                     setShowDeleteConfirmationModal(true);
                                     setDeletingUser(user);
@@ -972,7 +975,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     <ConfirmationModal
                         data-testid={ `${ testId }-confirmation-modal` }
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                        type="warning"
+                        type="negative"
                         open={ showDeleteConfirmationModal }
                         assertionHint={ t("console:manage.features.user.deleteUser.confirmationModal." +
                             "assertionHint") }
@@ -992,7 +995,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         <ConfirmationModal.Message
                             data-testid={ `${ testId }-confirmation-modal-message` }
                             attached
-                            warning
+                            negative
                          >
                             { commonConfig.userEditSection.isGuestUser
                                 ? t("extensions:manage.guest.deleteUser.confirmationModal.message")

@@ -466,7 +466,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     <ConfirmationModal
                         data-testid={ `${ testId }-confirmation-modal` }
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                        type="warning"
+                        type="negative"
                         open={ showDeleteConfirmationModal }
                         assertionHint={ t("console:manage.features.user.deleteUser.confirmationModal." +
                             "assertionHint") }
@@ -486,7 +486,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         <ConfirmationModal.Message
                             data-testid={ `${ testId }-confirmation-modal-message` }
                             attached
-                            warning
+                            negative
                         >
                             { t("console:manage.features.user.deleteUser.confirmationModal.message") }
                         </ConfirmationModal.Message>
