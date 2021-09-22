@@ -21,7 +21,6 @@ import {
     BasicUserInfo,
     Hooks,
     OIDCEndpoints,
-    SPAUtils,
     SecureApp,
     useAuthContext
 } from "@asgardeo/auth-react";
@@ -36,7 +35,6 @@ import {
 import { AuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { ContentLoader } from "@wso2is/react-components";
-import axios from "axios";
 import React, { FunctionComponent, ReactElement, lazy, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Config } from "./configs";
@@ -54,7 +52,6 @@ const LOGOUT_URL = "sign_out_url";
 const App = lazy(() => import("./app"));
 export const ProtectedApp: FunctionComponent<Record<string, never>> = (): ReactElement => {
     const {
-        signIn,
         on,
         getOIDCServiceEndpoints,
         getDecodedIDToken,
@@ -244,19 +241,6 @@ export const ProtectedApp: FunctionComponent<Record<string, never>> = (): ReactE
         <SecureApp
             fallback={ <ContentLoader dimmer /> }
             onSignIn={ loginSuccessRedirect }
-            overrideSignIn={ async () => {
-                if (SPAUtils.hasAuthSearchParamsInURL() || process.env.NODE_ENV !== "production") {
-                    await signIn();
-                } else {
-                    const contextPath: string = window[ "AppUtils" ].getConfig().appBase
-                        ? `/${ window[ "AppUtils" ].getConfig().appBase }`
-                        : "";
-
-                    await axios.get(contextPath + "/auth").then((response) => {
-                        signIn(null, response?.data?.authCode, response?.data?.sessionState);
-                    });
-                }
-            } }
         >
             <App />
         </SecureApp>
