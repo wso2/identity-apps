@@ -172,15 +172,17 @@ export const App = (): ReactElement => {
      * do the necessary actions.
      */
     const handleStayLoggedIn = (): void => {
-        trySignInSilently().then((response) => {
-            if (response === false) {
+        trySignInSilently()
+            .then((response) => {
+                if (response === false) {
+                    history.push(AppConstants.getAppLogoutPath());
+                } else {
+                    window.history.replaceState(null, null, window.location.pathname);
+                }
+            })
+            .catch(() => {
                 history.push(AppConstants.getAppLogoutPath());
-            } else {
-                window.history.replaceState(null, null, window.location.pathname);
-            }
-        }).catch(() => {
-            history.push(AppConstants.getAppLogoutPath());
-        });
+            });
     };
 
     return (
