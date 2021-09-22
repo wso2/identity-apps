@@ -142,7 +142,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
     const { t } = useTranslation();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     /**
      * Redirects to the identity provider edit page when the edit button is clicked.

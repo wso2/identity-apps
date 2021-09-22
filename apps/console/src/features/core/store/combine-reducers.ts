@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AuthenticatedUserInterface } from "@wso2/identity-oidc-js";
+import { AuthenticatedUserInfo } from "@asgardeo/auth-react";
 import {
     LinkedAccountInterface,
     ProfileInfoInterface,
@@ -61,7 +61,7 @@ export const reducers = combineReducers({
     application: applicationReducer,
     auth: commonAuthenticateReducer<
         AuthReducerStateInterface,
-        AuthenticatedUserInterface>(commonAuthenticateReducerInitialState),
+        AuthenticatedUserInfo>(commonAuthenticateReducerInitialState),
     config: commonConfigReducer<
         DeploymentConfigInterface,
         ServiceResourceEndpointsInterface,

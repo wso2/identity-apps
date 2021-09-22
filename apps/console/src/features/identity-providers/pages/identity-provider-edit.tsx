@@ -99,7 +99,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     const [ isExtensionsAvailable, setIsExtensionsAvailable ] = useState<boolean>(false);
     const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const isReadOnly = useMemo(() => (
         !hasRequiredScopes(

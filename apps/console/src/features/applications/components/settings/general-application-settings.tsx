@@ -125,7 +125,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
 
     const { t } = useTranslation();
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
@@ -316,7 +316,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
             ) :
                 <EmphasizedSegment padded="very">
                     <ContentLoader inline="centered" active/>
-                </EmphasizedSegment>  
+                </EmphasizedSegment>
         );
 };
 

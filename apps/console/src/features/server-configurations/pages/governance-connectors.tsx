@@ -61,7 +61,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
     const { headerHeight, footerHeight } = useUIElementSizes();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ connectorCategory, setConnectorCategory ] = useState<GovernanceConnectorCategoryInterface>({});
     const [ connectors, setConnectors ] = useState<GovernanceConnectorWithRef[]>([]);

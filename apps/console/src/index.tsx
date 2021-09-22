@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AuthParams, AuthProvider, SPAUtils } from "@asgardeo/auth-react";
 import { setSupportedI18nLanguages } from "@wso2is/core/store";
 import { ContextUtils, StringUtils } from "@wso2is/core/utils";
 import {
@@ -30,8 +31,9 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import { App } from "./app";
-import { Config, store } from "./features/core";
+import { AuthenticateUtils } from "./features/authentication";
+import { Config, PreLoader, store } from "./features/core";
+import { ProtectedApp } from "./protected-app";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
@@ -83,11 +85,35 @@ I18n.init({
         throw new I18nInstanceInitException(error);
     });
 
+const getAuthParams = (): Promise<AuthParams> => {
+    if (!SPAUtils.hasAuthSearchParamsInURL() && process.env.NODE_ENV === "production") {
+
+        const contextPath: string = window[ "AppUtils" ].getConfig().appBase
+            ? `/${ window[ "AppUtils" ].getConfig().appBase }`
+            : "";
+
+        return axios.get(contextPath + "/auth").then((response) => {
+            return Promise.resolve({
+                authorizationCode: response?.data?.authCode,
+                sessionState: response?.data?.sessionState
+            });
+        });
+    }
+
+    return;
+};
+
 ReactDOM.render(
     (
         <Provider store={ store }>
             <BrowserRouter>
-                <App/>
+                <AuthProvider
+                    config={ AuthenticateUtils.initializeConfig }
+                    fallback={ <PreLoader /> }
+                    getAuthParams={ getAuthParams }
+                >
+                    <ProtectedApp />
+                </AuthProvider>
             </BrowserRouter>
         </Provider>
     ),

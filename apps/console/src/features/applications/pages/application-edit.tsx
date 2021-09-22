@@ -97,7 +97,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const dispatch = useDispatch();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const helpPanelDocURL: string = useSelector((state: AppState) => state.helpPanel.docURL);
     const helpPanelDocStructure: PortalDocumentationStructureInterface = useSelector(
         (state: AppState) => state.helpPanel.docStructure);
