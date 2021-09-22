@@ -559,6 +559,7 @@ export const myAccount: MyAccountNS = {
                 "access to the application you can set up a new authenticator app from here.",
                 heading: "Authenticator App",
                 hint: "Show the QR Code",
+                addHint:"Adds new QR code",
                 deleteHint: "Deletes QR code",
                 modals: {
                     heading: "Setup an Authenticator App",
@@ -566,7 +567,8 @@ export const myAccount: MyAccountNS = {
                     scan: {
                         authenticatorApps: "Authenticator Apps",
                         generate: "Generate a new code",
-                        heading: "Scan the QR code below using an anthenticator app",
+                        heading: "Scan the QR code below using an authenticator app",
+                        additionNote: "QR code has been successfully added to your profile!",
                         messageBody: "You can find a list of Authenticator Apps available here.",
                         messageHeading: "Don't have an Authenticator App installed?"
                     },

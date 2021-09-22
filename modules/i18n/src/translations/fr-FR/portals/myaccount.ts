@@ -561,6 +561,7 @@ export const myAccount: MyAccountNS = {
                     "deux facteurs. Si vous n'avez pas accès à l'application, vous pouvez configurer " +
                     "une nouvelle application d'authentification à partir d'ici",
                 heading: "Application d'authentification",
+                addHint: "Ajouter un nouveau code QR",
                 deleteHint: "Supprime le code QR",
                 hint: "Afficher le code QR",
                 modals: {
@@ -569,6 +570,7 @@ export const myAccount: MyAccountNS = {
                     scan: {
                         authenticatorApps: "Applications d'authentification",
                         generate: "Générer un nouveau code",
+                        additionNote: "Le code QR a été ajouté avec succès à votre profil",
                         heading: "Scannez ce code QR à l'aide d'une application d'authentification",
                         messageBody: "Vous pouvez utiliser une application d'authentification compatible dans cette liste :",
                         messageHeading: "Vous n'avez pas d'application d'authentification ?"

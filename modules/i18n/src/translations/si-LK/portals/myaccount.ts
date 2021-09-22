@@ -557,6 +557,7 @@ export const myAccount: MyAccountNS = {
                     "මෙතැනින් ඔබට නව සත්‍යාපන යෙදුමක් සැකසිය හැකිය",
                 heading: "සත්‍යාපන යෙදුම",
                 hint: "QR කේතය පෙන්වන්න",
+                addHint: "නව QR කේතය එකතු කරන්න",
                 deleteHint: "QR කේතය මකා දමයි",
                 modals: {
                     heading: "Set Up An Authenticator App",
@@ -564,6 +565,7 @@ export const myAccount: MyAccountNS = {
                     scan: {
                         authenticatorApps: "සත්‍යාපන යෙදුම්",
                         generate: "නව කේතයක් ජනනය කරන්න",
+                        additionNote: "QR කේතය ඔබේ පැතිකඩට සාර්ථකව එකතු කර ඇත!",
                         heading: "සත්‍යාපන යෙදුමක් භාවිතයෙන් මෙම QR කේතය පරිලෝකනය කරන්න",
                         messageBody: "ඔබට මෙහි ඇති සත්‍යාපන යෙදුම් ලැයිස්තුවක් සොයාගත හැකිය.",
                         messageHeading: "සත්‍යාපන යෙදුමක් ස්ථාපනය කර නොමැතිද?"

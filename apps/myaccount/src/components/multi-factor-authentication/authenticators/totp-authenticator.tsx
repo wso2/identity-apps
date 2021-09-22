@@ -267,7 +267,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                         <Grid.Row columns={ 1 } centered={ true }>
                             <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 12 } >
                                 <Message info>
-                                        { "QR code has been successfully added to your profile!" }
+                                        { t(translateKey+ "modals.scan.additionNote") }
                                 </Message>
                             </Grid.Column>
                         </Grid.Row>
@@ -693,7 +693,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                 />
                                             )
                                         }
-                                        content={ "Add new QR code" }
+                                        content={ t(translateKey + "addHint") }
                                         inverted
                                     />
                                 </List.Content>
