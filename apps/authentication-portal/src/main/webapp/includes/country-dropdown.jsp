@@ -16,7 +16,6 @@
   ~ under the License.
 --%>
 
-
 <%@ page import="java.util.Locale" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.TreeMap" %>
@@ -61,14 +60,10 @@
     </div>
 </div>
 
-<script defer>
+<script type="application/javascript">
 
     $(document).ready(function() {
         $("#country-dropdown").dropdown('hide');
     });
 
 </script>
-
-
-
-
