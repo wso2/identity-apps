@@ -360,11 +360,10 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     selectedSamlConfigMode === "file" &&
                     error.response?.data.code === "IDP-65002") {
                     setAlert({
-                        description: "The server encountered an unexpected error while adding the identity provider." +
-                            " Please make sure you are not trying to add a duplicate IdP Entity ID" +
-                            " or a SP Entity ID.",
+                        description: "You are trying to add a provider with an existing Identity" +
+                            " Provider Entity ID or a Service Provider Entity ID.",
                         level: AlertLevels.ERROR,
-                        message: "Duplicate Entity ID"
+                        message: "There's a Conflicting Entity"
                     });
                     setTimeout(() => setAlert(undefined), 8000);
                     return;
