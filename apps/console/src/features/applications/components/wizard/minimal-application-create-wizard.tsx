@@ -137,7 +137,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
     const [ templateSettings, setTemplateSettings ] = useState<ApplicationTemplateInterface>(null);
     const [ protocolFormValues, setProtocolFormValues ] = useState<object>(undefined);
-    const [ customApplicationProtocol, setCustomApplicationProtocol ] = useState<string>(SupportedAuthProtocolTypes.OIDC);
+    const [ customApplicationProtocol, setCustomApplicationProtocol ]
+        = useState<string>(SupportedAuthProtocolTypes.OIDC);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ generalFormValues, setGeneralFormValues ] = useState<Map<string, FormValue>>(undefined);
     const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateInterface>(template);
     const [ allowedOrigins, setAllowedOrigins ] = useState([]);
@@ -245,6 +247,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 application.templateId = ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS;
             }
         }
+
+        setIsSubmitting(true);
+
         createApplication(application)
             .then((response) => {
                 eventPublisher.compute(() => {
@@ -258,7 +263,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         });
                     }
                 });
-                
+
                 dispatch(
                     addAlert({
                         description: t(
@@ -292,10 +297,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     }
 
                     history.push({
-                        pathname: AppConstants.getPaths().get("APPLICATION_EDIT")
-                            .replace(":id", createdAppID),
-                        search: searchParams,
-                        hash: `#${ URLFragmentTypes.TAB_INDEX }${ defaultTabIndex }`
+                        hash: `#${URLFragmentTypes.TAB_INDEX}${defaultTabIndex}`,
+                        pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", createdAppID),
+                        search: searchParams
                     });
 
                     return;
@@ -369,6 +373,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 });
                 scrollToNotification();
             }).finally(() =>{
+                setIsSubmitting(false);
                 handleProtocolValueChange(false);
                 handleError("all", false);
         })
@@ -860,8 +865,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
         if (selectedTemplate?.templateId === ApplicationTemplateIdTypes.SAML_WEB_APPLICATION) {
             return getLink("develop.applications.newApplication.samlApplication.learnMore");
-        }        
-        
+        }
+
         // Returns undefined for application which does not have doc links.
         // Used to hide the learn more link.
         return undefined;
@@ -880,7 +885,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             <ModalWithSidePanel.MainPanel>
                 <ModalWithSidePanel.Header className="wizard-header">
                     { title }
-                    { subTitle && 
+                    { subTitle &&
                         <Heading as="h6">
                             { subTitle }
                             <DocumentationLink
@@ -888,7 +893,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                             >
                                 { t("common:learnMore") }
                             </DocumentationLink>
-                        </Heading> 
+                        </Heading>
                     }
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content>{ resolveContent() }</ModalWithSidePanel.Content>
@@ -908,6 +913,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                         setSubmit();
                                     } }
                                     data-testid={ `${ testId }-next-button` }
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting }
                                 >
                                     { t("common:register") }
                                 </PrimaryButton>
