@@ -28,7 +28,7 @@ export const getTokenRequestHeaders = (): any => {
     return {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/x-www-form-urlencoded"
         }
     };

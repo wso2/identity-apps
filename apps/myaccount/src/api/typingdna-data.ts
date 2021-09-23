@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { IdentityClient } from "@wso2/identity-oidc-js";
 import { HttpMethods } from "@wso2is/core/models";
 import { store } from "../store";
 
-const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
 
 /**
  * This function is used to delete users' typing patterns in TypingDNA.

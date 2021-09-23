@@ -50,7 +50,7 @@ const UserEditPage = (): ReactElement => {
     const dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
 
     const [ user, setUserProfile ] = useState<ProfileInfoInterface>(emptyProfileInfo);

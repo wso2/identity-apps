@@ -121,7 +121,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const dispatch = useDispatch();
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.username);
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());

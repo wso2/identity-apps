@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { IdentityClient } from "@wso2/identity-oidc-js";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { CommonUtils } from "@wso2is/core/utils";
 import axios from "axios";
@@ -33,7 +33,7 @@ import { toggleSCIMEnabled } from "../store/actions";
  *
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
 
 /**
  * Retrieve the user information of the currently authenticated user.
@@ -43,7 +43,7 @@ const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAC
 export const getUserInfo = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -71,7 +71,7 @@ export const getUserInfo = (): Promise<any> => {
 export const getUserReadOnlyStatus = (): Promise<ReadOnlyUserStatus> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -124,11 +124,11 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/scim+json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config?.endpoints?.me
+        url: store.getState().config.endpoints.me
     };
 
     return httpClient(requestConfig)
@@ -187,7 +187,7 @@ export const updateProfileInfo = (info: object): Promise<any> => {
     const requestConfig = {
         data: info,
         headers: {
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,

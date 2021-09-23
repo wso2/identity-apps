@@ -16,39 +16,27 @@
  * under the License.
  */
 
-import { Hooks, useAuthContext } from "@asgardeo/auth-react";
-import { AppConstants } from "@wso2is/core/constants";
-import { setSignOut } from "@wso2is/core/store";
-import { AuthenticateUtils } from "@wso2is/core/utils";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppState, PreLoader, history } from "../../core";
+import { AppState, PreLoader } from "../../core";
+import { handleSignOut } from "../store/actions";
 
 /**
  * Virtual component used to handle Sign in action.
  *
  * @return {React.ReactElement}
  */
-const SignOut: FunctionComponent<Record<string, unknown>> = (): ReactElement => {
+const SignOut: FunctionComponent<{}> = (): ReactElement => {
+
     const dispatch = useDispatch();
-    const { signOut, on } = useAuthContext();
 
     const logoutInit: boolean = useSelector((state: AppState) => state.auth.logoutInit);
-
-    useEffect(() => {
-        on(Hooks.SignOut, () => {
-            AuthenticateUtils.removeAuthenticationCallbackUrl(AppConstants.CONSOLE_APP);
-            dispatch(setSignOut());
-        });
-    }, []);
-
+    const isInitialized = useSelector((state: AppState) => state.auth.initialized);
     useEffect(() => {
         if (!logoutInit) {
-            signOut().catch(() => {
-                history.push(window[ "AppUtils" ].getConfig().routes.home);
-            });
+            isInitialized && dispatch(handleSignOut());
         }
-    }, [ logoutInit ]);
+    }, [ logoutInit, isInitialized ]);
 
     return <PreLoader />;
 };

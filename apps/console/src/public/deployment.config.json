@@ -37,13 +37,13 @@
     },
     "i18nResourcePath": "",
     "isSaas": true,
-    "loginCallbackPath": "",
-    "logoutCallbackPath": "",
+    "loginCallbackPath": "/login",
+    "logoutCallbackPath": "/login",
     "productVersion": "",
     "serverOrigin": "https://localhost:9443",
     "routePaths": {
         "home": "/develop/applications",
-        "login": "",
+        "login": "/login",
         "logout": "/logout"
     },
     "session": {

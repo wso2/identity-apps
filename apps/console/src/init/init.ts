@@ -22,6 +22,13 @@ import "core-js/stable";
 import "regenerator-runtime/runtime";
 import TimerWorker from "@wso2is/core/src/workers/timer.worker";
 
+const getItemFromSessionStorage = (key: string): string => {
+    try {
+        return sessionStorage.getItem(key);
+    } catch {
+        return "";
+    }
+};
 
 if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
     AppUtils.init({
@@ -33,6 +40,38 @@ if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
     });
 
     window["AppUtils"] = AppUtils;
+}
+
+function getRandomPKCEChallenge() {
+    const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz-_";
+    const stringLength = 43;
+    let randomString = "";
+    for (let i = 0; i < stringLength; i++) {
+        const rnum = Math.floor(Math.random() * chars.length);
+        randomString += chars.substring(rnum, rnum + 1);
+    }
+    return randomString;
+}
+
+function sendPromptNoneRequest() {
+    const rpIFrame: HTMLIFrameElement = document.getElementById("rpIFrame") as HTMLIFrameElement;
+    const promptNoneIFrame: HTMLIFrameElement = rpIFrame.contentWindow.document.getElementById(
+        "promptNoneIFrame"
+    ) as HTMLIFrameElement;
+    const config = window.parent["AppUtils"].getConfig();
+
+    const parsedAuthorizationEndpointURL: URL = new URL(getItemFromSessionStorage("authorization_endpoint"));
+
+    parsedAuthorizationEndpointURL.searchParams.append("response_type", "code");
+    parsedAuthorizationEndpointURL.searchParams.append("client_id", config.clientID);
+    parsedAuthorizationEndpointURL.searchParams.append("scope", "openid");
+    parsedAuthorizationEndpointURL.searchParams.append("redirect_uri", config.loginCallbackURL);
+    parsedAuthorizationEndpointURL.searchParams.append("state", "Y2hlY2tTZXNzaW9u");
+    parsedAuthorizationEndpointURL.searchParams.append("prompt", "none");
+    parsedAuthorizationEndpointURL.searchParams.append("code_challenge_method", "S256");
+    parsedAuthorizationEndpointURL.searchParams.append("code_challenge", getRandomPKCEChallenge());
+
+    promptNoneIFrame.src = parsedAuthorizationEndpointURL.toString();
 }
 
 function handleTimeOut(_idleSecondsCounter: number, _sessionAgeCounter: number,
@@ -66,73 +105,115 @@ function handleTimeOut(_idleSecondsCounter: number, _sessionAgeCounter: number,
 
         window.history.pushState(state, null, searchParam);
 
-        dispatchEvent(new MessageEvent("session-timeout", { data: state }));
+        dispatchEvent(new PopStateEvent("popstate", { state: state }));
     }
 
+    // Keep user session intact if the user is active
+    if (_sessionAgeCounter > SESSION_REFRESH_TIMEOUT) {
+        sendPromptNoneRequest();
+        _sessionAgeCounter = 0;
+    }
     return _sessionAgeCounter;
 }
 
 const config = window["AppUtils"]?.getConfig();
 
-// Tracking user interactions
-let IDLE_TIMEOUT = 600;
-if (config?.session != null && config.session.userIdleTimeOut != null && config.session.userIdleTimeOut > 1) {
-    IDLE_TIMEOUT = config.session.userIdleTimeOut;
-}
-let IDLE_WARNING_TIMEOUT = 580;
-if (
-    config?.session != null &&
-    config.session.userIdleWarningTimeOut != null &&
-    config.session.userIdleWarningTimeOut > 1
-) {
-    IDLE_WARNING_TIMEOUT = config.session.userIdleWarningTimeOut;
-}
-let SESSION_REFRESH_TIMEOUT = 300;
-if (
-    config?.session != null &&
-    config.session.sessionRefreshTimeOut != null &&
-    config.session.sessionRefreshTimeOut > 1
-) {
-    SESSION_REFRESH_TIMEOUT = config.session.sessionRefreshTimeOut;
-}
+const state = new URL(window.location.href).searchParams.get("state");
+if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
+    // Prompt none response.
+    const code = new URL(window.location.href).searchParams.get("code");
 
-let _idleSecondsCounter = 0;
-let _sessionAgeCounter = 0;
+    if (code !== null && code.length !== 0) {
+        const newSessionState = new URL(window.location.href).searchParams.get("session_state");
 
-document.onclick = function() {
-    _idleSecondsCounter = 0;
-};
-document.onmousemove = function() {
-    _idleSecondsCounter = 0;
-};
-document.onkeypress = function() {
-    _idleSecondsCounter = 0;
-};
+        sessionStorage.setItem("session_state", newSessionState);
 
-// Run the timer in main thread if the browser is Internet Explorer.
-if (new UAParser().getBrowser().name === "IE") {
-    window.setInterval(() => {
-        _idleSecondsCounter++;
-        _sessionAgeCounter++;
-        _sessionAgeCounter = handleTimeOut(
-            _idleSecondsCounter,
-            _sessionAgeCounter,
-            SESSION_REFRESH_TIMEOUT,
-            IDLE_TIMEOUT,
-            IDLE_WARNING_TIMEOUT
-        );
-    }, 1000);
+        // Stop loading rest of the page inside the iFrame
+        if (new UAParser().getBrowser().name === "IE") {
+            document.execCommand("Stop");
+        } else {
+            window.stop();
+        }
+    } else {
+
+        let logoutPath = config.clientOrigin + config.appBaseWithTenant + config.routes.logout;
+
+        // SaaS app paths already contains the tenant and basename.
+        if (config.isSaas) {
+            logoutPath = config.clientOrigin + config.routes.logout;
+        }
+
+        window.top.location.href = logoutPath;
+    }
 } else {
-    const worker = new TimerWorker();
-    worker.onmessage = () => {
-        _idleSecondsCounter++;
-        _sessionAgeCounter++;
-        _sessionAgeCounter = handleTimeOut(
-            _idleSecondsCounter,
-            _sessionAgeCounter,
-            SESSION_REFRESH_TIMEOUT,
-            IDLE_TIMEOUT,
-            IDLE_WARNING_TIMEOUT
-        );
+    // Tracking user interactions
+    let IDLE_TIMEOUT = 600;
+    if (config?.session != null && config.session.userIdleTimeOut != null && config.session.userIdleTimeOut > 1) {
+        IDLE_TIMEOUT = config.session.userIdleTimeOut;
+    }
+    let IDLE_WARNING_TIMEOUT = 580;
+    if (
+        config?.session != null &&
+        config.session.userIdleWarningTimeOut != null &&
+        config.session.userIdleWarningTimeOut > 1
+    ) {
+        IDLE_WARNING_TIMEOUT = config.session.userIdleWarningTimeOut;
+    }
+    let SESSION_REFRESH_TIMEOUT = 300;
+    if (
+        config?.session != null &&
+        config.session.sessionRefreshTimeOut != null &&
+        config.session.sessionRefreshTimeOut > 1
+    ) {
+        SESSION_REFRESH_TIMEOUT = config.session.sessionRefreshTimeOut;
+    }
+
+    let _idleSecondsCounter = 0;
+    let _sessionAgeCounter = 0;
+
+    document.onclick = function() {
+        _idleSecondsCounter = 0;
     };
+    document.onmousemove = function() {
+        _idleSecondsCounter = 0;
+    };
+    document.onkeypress = function() {
+        _idleSecondsCounter = 0;
+    };
+
+    // Run the timer in main thread if the browser is Internet Explorer.
+    if (new UAParser().getBrowser().name === "IE") {
+        window.setInterval(() => {
+            _idleSecondsCounter++;
+            _sessionAgeCounter++;
+            _sessionAgeCounter = handleTimeOut(_idleSecondsCounter, _sessionAgeCounter, SESSION_REFRESH_TIMEOUT,
+                IDLE_TIMEOUT, IDLE_WARNING_TIMEOUT);
+        }, 1000);
+    } else {
+        const worker = new TimerWorker();
+        worker.onmessage = () => {
+            _idleSecondsCounter++;
+            _sessionAgeCounter++;
+            _sessionAgeCounter = handleTimeOut(_idleSecondsCounter, _sessionAgeCounter, SESSION_REFRESH_TIMEOUT,
+                IDLE_TIMEOUT, IDLE_WARNING_TIMEOUT);
+        };
+    }
 }
+
+/**
+ * Listens to the `popstate` event fired from the app to notify
+ * that the user has selected the try stay logged in option.
+ * And sends a prompt none request to restore the session.
+ */
+window.addEventListener("popstate", (e) => {
+
+    const { state } = e;
+
+    if (!state || !state.stayLoggedIn) {
+        return;
+    }
+
+    sendPromptNoneRequest();
+
+    window.history.replaceState(null, null, window.location.pathname); 
+});

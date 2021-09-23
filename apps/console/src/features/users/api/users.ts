@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { IdentityClient } from "@wso2/identity-oidc-js";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods, ProfileInfoInterface } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
@@ -28,7 +28,7 @@ import { UserListInterface, UserSessionsInterface } from "../models";
  * Initialize an axios Http client.
  *
  */
-const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
 
 /**
  * Retrieve the list of users that are currently in the system.

@@ -72,7 +72,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
 
     const { t } = useTranslation();
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const [ isUsersFetchRequestLoading, setIsUsersFetchRequestLoading ] = useState<boolean>(true);
     const [ usersList, setUsersList ] = useState<UserBasicInterface[]>([]);

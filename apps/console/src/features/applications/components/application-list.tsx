@@ -156,7 +156,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
 
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state.application.templates);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);

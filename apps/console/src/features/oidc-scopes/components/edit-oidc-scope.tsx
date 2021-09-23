@@ -121,7 +121,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
 
     const init = useRef(true);
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const isReadOnly = useMemo(

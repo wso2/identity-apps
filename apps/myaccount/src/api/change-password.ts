@@ -24,7 +24,7 @@ import { store } from "../store";
 
 /**
  * Updates the user's password.
- *
+ * 
  * @remarks
  * We're currently using basic auth to validate the current password. If the password is
  * different, the server responds with a status code `401`. The callbacks handle 401 errors and
@@ -41,7 +41,7 @@ export const updatePassword = (currentPassword: string, newPassword: string): Pr
     // If the `httpRequest` method from SDK is used for the request, it causes the 401 to be handled by
     // the callbacks set fot the application which will log the user out. Hence, axios will be used
     // for now to send the request since bearer token is not used for authorization we can get away with axios.
-    // TODO: Implement a method in `AsgardeoSPAClient` http module to disable/enable the handler.
+    // TODO: Implement a method in `IdentityClient` http module to disable/enable the handler.
     // See https://github.com/asgardio/asgardio-js-oidc-sdk/issues/45 for progress.
     // httpRequest.disableHandler();
 
@@ -92,7 +92,7 @@ export const updatePassword = (currentPassword: string, newPassword: string): Pr
                 error.config);
         })
         .finally(() => {
-            // TODO: Implement a method in `AsgardeoSPAClient` http module to disable/enable the handler.
+            // TODO: Implement a method in `IdentityClient` http module to disable/enable the handler.
             // See https://github.com/asgardio/asgardio-js-oidc-sdk/issues/45 for progress.
             // httpRequest.enableHandler();
         });

@@ -27,7 +27,7 @@ import {
     GenericIcon,
     GridLayout,
     PageLayout,
-    PrimaryButton
+    PrimaryButton 
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -72,7 +72,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
     const [ scimAttributeMappings, setScimAttributeMappings ] = useState<ClaimDialect[]>([]);
     const [ otherAttributeMappings, setOtherAttributeMappings ] = useState<ClaimDialect[]>([]);
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
     const dispatch = useDispatch();
 
     const listAllAttributeDialects: boolean = useSelector(
@@ -204,7 +204,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                         ) && (
                                 <>
                                     <Header as="h4">
-                                        { t("console:manage.features.claims.dialects." +
+                                        { t("console:manage.features.claims.dialects." + 
                                             "sections.manageAttributes.heading") }
                                     </Header>
                                     <Divider hidden />
@@ -232,12 +232,12 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                             />
                                                             <List.Header>
                                                                 { t(
-                                                                    "console:manage.features." +
+                                                                    "console:manage.features." + 
                                                                     "claims.dialects.sections." +
                                                                     "manageAttributes.attributes.heading"
                                                                 ) }
                                                             </List.Header>
-                                                            <List.Description
+                                                            <List.Description 
                                                                 data-testid={ `${ testId }-local-dialect` }
                                                             >
                                                                 { t(
@@ -247,7 +247,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                 ) }
                                                             </List.Description>
                                                         </Grid.Column>
-                                                        <Grid.Column
+                                                        <Grid.Column 
                                                             width={ 4 }
                                                             verticalAlign="middle"
                                                             textAlign="right"
@@ -296,7 +296,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                     <Divider hidden />
                     {
                         oidcAttributeMappings?.length > 0 && (
-                            <EmphasizedSegment
+                            <EmphasizedSegment 
                                 className="clickable"
                                 data-testid={ `${ testId }-oidc-dialect-container` }
                             >
@@ -496,7 +496,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                     </List.Item>
                                 </List>
                             </EmphasizedSegment>
-                        )
+                        ) 
                     }
                 </GridLayout>
             </PageLayout>

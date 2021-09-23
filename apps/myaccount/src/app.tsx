@@ -16,11 +16,16 @@
  * under the License.
  */
 
-import { useAuthContext } from "@asgardeo/auth-react";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
 import { RouteInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
+import {
+    setDeploymentConfigs,
+    setI18nConfigs,
+    setServiceResourceEndpoints,
+    setUIConfigs
+} from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
-import { I18n } from "@wso2is/i18n";
+import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
 import {
     ChunkErrorModal,
     Code,
@@ -33,17 +38,21 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement, Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { I18nextProvider, Trans } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { ProtectedRoute } from "./components";
-import { getAppRoutes } from "./configs";
+import { Config, getAppRoutes } from "./configs";
 import { AppConstants } from "./constants";
 import { history } from "./helpers";
 import {
     ConfigReducerStateInterface,
-    FeatureConfigInterface
+    DeploymentConfigInterface,
+    FeatureConfigInterface,
+    ServiceResourceEndpointsInterface,
+    UIConfigInterface
 } from "./models";
 import { AppState } from "./store";
+import { initializeAuthentication } from "./store/actions";
 import { EventPublisher, filterRoutes } from "./utils";
 
 /**
@@ -52,6 +61,8 @@ import { EventPublisher, filterRoutes } from "./utils";
  * @return {React.Element}
  */
 export const App = (): ReactElement => {
+
+    const dispatch = useDispatch();
 
     const userName: string = useSelector((state: AppState) => state.authenticationInformation.username);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
@@ -64,14 +75,23 @@ export const App = (): ReactElement => {
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const { trySignInSilently } = useAuthContext();
+    /**
+     * Set the deployment configs in redux state.
+     */
+    useEffect(() => {
+        dispatch(initializeAuthentication());
+        sessionStorageDisabled();
+    }, []);
 
     /**
      * Set the deployment configs in redux state.
      */
     useEffect(() => {
-        sessionStorageDisabled();
-    }, []);
+        dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
+        dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(Config.getServiceResourceEndpoints()));
+        dispatch(setI18nConfigs<I18nModuleOptionsInterface>(Config.getI18nConfig()));
+        dispatch(setUIConfigs<UIConfigInterface>(Config.getUIConfig()));
+    }, [ AppConstants.getTenantQualifiedAppBasename() ]);
 
     /**
      * Listen for base name changes and updated the routes.
@@ -172,17 +192,20 @@ export const App = (): ReactElement => {
      * do the necessary actions.
      */
     const handleStayLoggedIn = (): void => {
-        trySignInSilently()
-            .then((response) => {
-                if (response === false) {
-                    history.push(AppConstants.getAppLogoutPath());
-                } else {
-                    window.history.replaceState(null, null, window.location.pathname);
-                }
-            })
-            .catch(() => {
-                history.push(AppConstants.getAppLogoutPath());
-            });
+
+        const urlSearchParams: URLSearchParams = new URLSearchParams();
+        urlSearchParams.set("stay_logged_in", "true");
+
+        history.push({
+            pathname: window.location.pathname,
+            search: urlSearchParams.toString()
+        });
+
+        dispatchEvent(new PopStateEvent("popstate", {
+            state: {
+                stayLoggedIn: true
+            }
+        }));
     };
 
     return (
@@ -244,7 +267,21 @@ export const App = (): ReactElement => {
                                                         ".primaryActionText") }
                                                 />
                                                 <Switch>
-                                                    <Redirect exact from="/" to={ AppConstants.getAppHomePath() } />
+                                                    <Redirect
+                                                        exact={ true }
+                                                        path={ AppConstants.getPaths().get("ROOT") }
+                                                        to={ AppConstants.getAppLoginPath() }
+                                                    />
+                                                    <Redirect
+                                                        exact={ true }
+                                                        path={ AppConstants.getAppBasePath() }
+                                                        to={ AppConstants.getAppLoginPath() }
+                                                    />
+                                                    <Redirect
+                                                        exact={ true }
+                                                        path={ AppConstants.getTenantQualifiedAppBasePath() }
+                                                        to={ AppConstants.getAppLoginPath() }
+                                                    />
                                                     {
                                                         config
                                                             ? filterRoutes(appRoutes, config)
@@ -295,10 +332,3 @@ export const App = (): ReactElement => {
         </>
     );
 };
-
-/**
- * A default export was added to support React.lazy.
- * TODO: Change this to a named export once react starts supporting named exports for code splitting.
- * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
- */
-export default App;

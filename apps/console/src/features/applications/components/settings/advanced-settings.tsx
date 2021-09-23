@@ -79,7 +79,7 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
 
     const dispatch = useDispatch();
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     /**
      * Handles the advanced config form submit action.

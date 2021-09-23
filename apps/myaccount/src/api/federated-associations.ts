@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { IdentityClient } from "@wso2/identity-oidc-js";
 import { HttpMethods } from "../models";
 import { store } from "../store";
 
@@ -25,7 +25,7 @@ import { store } from "../store";
  *
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
 
 /**
  * This function calls the federated association API endpoint and gets the list of federated associations
@@ -34,7 +34,7 @@ const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAC
 export const getFederatedAssociations = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -62,7 +62,7 @@ export const getFederatedAssociations = (): Promise<any> => {
 export const deleteFederatedAssociation = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
@@ -85,7 +85,7 @@ export const deleteFederatedAssociation = (id: string): Promise<any> => {
 export const deleteAllFederatedAssociation = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,

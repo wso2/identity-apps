@@ -164,7 +164,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
     const authTenantDomain: string = useSelector<AppState, string>(
         (state: AppState) => state.auth.tenantDomain
     );
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const dispatch = useDispatch();
 
