@@ -44,12 +44,6 @@ const httpClientAll = IdentityClient.getInstance().httpRequestAll.bind(IdentityC
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const fetchConsentedApps = async (state: ConsentState, username): Promise<ConsentInterface[]> => {
 
-    const userName = username.split("@");
-
-    if (userName.length > 1) {
-        userName.pop();
-    }
-
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -58,7 +52,7 @@ export const fetchConsentedApps = async (state: ConsentState, username): Promise
         },
         method: HttpMethods.GET,
         params: {
-            piiPrincipalId: userName.join("@"),
+            piiPrincipalId: username,
             state
         },
         url: store.getState().config.endpoints.consentManagement.consent.listAllConsents
