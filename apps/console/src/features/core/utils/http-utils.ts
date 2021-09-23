@@ -96,7 +96,7 @@ export class HttpUtils {
         }
 
         // If the user doesn't have login permission, redirect to login error page.
-        if (!AuthenticateUtils.hasLoginPermission(store.getState()?.auth?.allowedScopes)) {
+        if (!AuthenticateUtils.hasLoginPermission(store.getState()?.auth?.scope)) {
             history.push({
                 pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
                 search: "?error=" + AppConstants.LOGIN_ERRORS.get("NO_LOGIN_PERMISSION")

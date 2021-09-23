@@ -83,7 +83,7 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
 
     const tenantDomain: string = useSelector<AppState, string>((state: AppState) => state.config.deployment.tenant);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const [ resetPagination, setResetPagination ] = useTrigger();
 

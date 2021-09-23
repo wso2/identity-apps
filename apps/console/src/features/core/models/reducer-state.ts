@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AuthenticatedUserInfo } from "@asgardeo/auth-react";
+import { AuthenticatedUserInterface } from "@wso2/identity-oidc-js";
 import {
     AlertInterface,
     CommonAuthReducerStateInterface,
@@ -70,4 +70,4 @@ export interface AccessControlReducerStateInterface {
     isManageAllowed: boolean
 }
 
-export interface AuthReducerStateInterface extends CommonAuthReducerStateInterface, AuthenticatedUserInfo { }
+export interface AuthReducerStateInterface extends CommonAuthReducerStateInterface, AuthenticatedUserInterface { }

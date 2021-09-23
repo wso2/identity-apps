@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { IdentityClient } from "@wso2/identity-oidc-js";
 import { HttpMethods } from "@wso2is/core/models";
 import { CORSOriginsListInterface } from "../models";
 import { store } from "../store";
@@ -25,9 +25,9 @@ import { store } from "../store";
  * Get an axios instance.
  *
  */
-const httpClient = AsgardeoSPAClient.getInstance()
-    .httpRequest.bind(AsgardeoSPAClient.getInstance())
-    .bind(AsgardeoSPAClient.getInstance());
+const httpClient = IdentityClient.getInstance()
+    .httpRequest.bind(IdentityClient.getInstance())
+    .bind(IdentityClient.getInstance());
 
 /**
  * Gets the CORS origins for the tenant.

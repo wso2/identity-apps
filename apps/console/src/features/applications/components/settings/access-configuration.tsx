@@ -176,7 +176,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const dispatch = useDispatch();
 
     const authProtocolMeta = useSelector((state: AppState) => state.application.meta.protocolMeta);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
     const tenantName = store.getState().config.deployment.tenant;
     const allowMultipleProtocol: boolean = useSelector(
         (state: AppState) => state.config.deployment.allowMultipleAppProtocols);
@@ -604,7 +604,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         if (!supportedProtocolList) {
             return null;
         }
-
+        
         if (allowMultipleProtocol) {
             return (
                 <Grid.Row>

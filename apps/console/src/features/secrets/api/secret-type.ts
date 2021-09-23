@@ -16,9 +16,8 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpCodes, HttpMethods } from "@wso2is/core/models";
+import { IdentityClient } from "@wso2/identity-oidc-js";
+import { HttpMethods, HttpCodes } from "@wso2is/core/models";
 import { AxiosResponse } from "axios";
 import { store } from "../../core";
 import {
@@ -30,8 +29,9 @@ import {
     UpdateSecretTypeRequestModel,
     UpdateSecretTypeResponseModel
 } from "../models/secret-type";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 
-const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
 
 /**
  * Create a secret type.
@@ -85,8 +85,7 @@ export const getSecretType = async (
     try {
         const response: AxiosResponse<SecretTypeModel> = await httpClient(requestConfig);
         if (response.status !== HttpCodes.OK) {
-            return Promise.reject(
-                new IdentityAppsApiException(`Failed to get the secret type ${ params.secretType }.`));
+            return Promise.reject(new IdentityAppsApiException(`Failed to get the secret type ${ params.secretType }.`));
         }
         return response;
     } catch (error) {
@@ -113,8 +112,7 @@ export const updateSecretType = async (
     try {
         const response: AxiosResponse<SecretTypeModel> = await httpClient(requestConfig);
         if (response.status !== HttpCodes.OK) {
-            return Promise.reject(
-                new IdentityAppsApiException(`Failed to update the secret type ${ params.secretType }.`));
+            return Promise.reject(new IdentityAppsApiException(`Failed to update the secret type ${ params.secretType }.`));
         }
         return response;
     } catch (error) {
@@ -140,8 +138,7 @@ export const deleteSecretType = async (
     try {
         const response: AxiosResponse<SecretTypeModel> = await httpClient(requestConfig);
         if (response.status !== HttpCodes.NO_CONTENT) {
-            return Promise.reject(
-                new IdentityAppsApiException(`Failed to delete the secret type ${ params.secretType }.`));
+            return Promise.reject(new IdentityAppsApiException(`Failed to delete the secret type ${ params.secretType }.`));
         }
         return response;
     } catch (error) {

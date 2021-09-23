@@ -16,16 +16,16 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { IdentityClient } from "@wso2/identity-oidc-js";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { HttpMethods } from "../models";
 import { store } from "../store";
 
 /**
- * @see AsgardeoSPAClient
+ * @see IdentityClient
  */
-const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(
-    AsgardeoSPAClient.getInstance()
+const httpClient = IdentityClient.getInstance().httpRequest.bind(
+    IdentityClient.getInstance()
 );
 
 /**

@@ -126,7 +126,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
     const [ deleteID, setDeleteID ] = useState<string>(null);
     const [ deleteName, setDeleteName ] = useState<string>("");
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const dispatch = useDispatch();
 

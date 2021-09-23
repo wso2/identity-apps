@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ReactElement, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../store";
 import { handleSignOut } from "../../store/actions";
@@ -24,15 +24,15 @@ import { handleSignOut } from "../../store/actions";
 /**
  * This component handles the sign-out function
  */
-const SignOut = (): ReactElement => {
+const SignOut = () => {
     const dispatch = useDispatch();
     const logoutInit = useSelector((state: AppState) => state.authenticationInformation.logoutInit);
-
+    const isInitialized = useSelector((state: AppState) => state.authenticationInformation.initialized);
     useEffect(() => {
         if (!logoutInit) {
-            dispatch(handleSignOut());
+            isInitialized && dispatch(handleSignOut());
         }
-    }, [ logoutInit]);
+    }, [ logoutInit, isInitialized]);
 
     return null;
 };

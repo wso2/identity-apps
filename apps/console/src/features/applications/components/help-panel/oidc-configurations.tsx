@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { IdentityClient } from "@wso2/identity-oidc-js";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CopyInputField, GenericIcon } from "@wso2is/react-components";
@@ -35,7 +35,7 @@ import {
  * Get an identity client instance.
  *
  */
-const identityClient = AsgardeoSPAClient.getInstance();
+const identityClient = IdentityClient.getInstance();
 
 /**
  * Proptypes for the OIDC application configurations component.
@@ -73,17 +73,9 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
         }
 
         // Fetch the server endpoints for OIDC applications.
-        identityClient.getOIDCServiceEndpoints()
+        identityClient.getServiceEndpoints()
             .then((response) => {
-                setEndpoints({
-                    authorize: response?.authorizationEndpoint,
-                    jwks: response?.jwksUri,
-                    logout: response?.endSessionEndpoint,
-                    oidcSessionIFrame: response?.checkSessionIframe,
-                    revoke: response?.revocationEndpoint,
-                    token: response?.tokenEndpoint,
-                    wellKnown: response?.wellKnownEndpoint
-                });
+                setEndpoints(response);
             })
             .catch(() => {
                 dispatch(addAlert({

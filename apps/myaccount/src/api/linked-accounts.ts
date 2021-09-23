@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient, BasicUserInfo } from "@asgardeo/auth-react";
+import { IdentityClient, SignInResponse } from "@wso2/identity-oidc-js";
 import { HttpMethods, LinkedAccountInterface } from "../models";
 import { store } from "../store";
 
@@ -25,7 +25,7 @@ import { store } from "../store";
  *
  * @type {OAuthSingletonInterface}
  */
-const oAuth = AsgardeoSPAClient.getInstance();
+const oAuth = IdentityClient.getInstance();
 
 /**
  * Get an axios instance.
@@ -43,7 +43,7 @@ const httpClient = oAuth.httpRequest.bind(oAuth);
 export const getAssociations = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -72,7 +72,7 @@ export const addAccountAssociation = (data: object): Promise<any> => {
     const requestConfig = {
         data,
         headers: {
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
@@ -97,7 +97,7 @@ export const addAccountAssociation = (data: object): Promise<any> => {
 export const removeLinkedAccount = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
@@ -127,7 +127,7 @@ export const removeLinkedAccount = (id: string): Promise<any> => {
 export const removeAllLinkedAccounts = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
@@ -154,10 +154,10 @@ export const removeAllLinkedAccounts = (): Promise<any> => {
 export const switchAccount = (account: LinkedAccountInterface): Promise<any> => {
 
     return oAuth
-        .requestCustomGrant({
+        .customGrant({
             attachToken: false,
             data: {
-                client_id: "{{clientID}}",
+                client_id: "{{clientId}}",
                 grant_type: "account_switch",
                 scope: "{{scope}}",
                 "tenant-domain": account.tenantDomain,
@@ -166,11 +166,12 @@ export const switchAccount = (account: LinkedAccountInterface): Promise<any> => 
                 "userstore-domain": account.userStoreDomain
             },
             id: "account-switch",
+            returnResponse: true,
             returnsSession: true,
             signInRequired: true
         })
-        .then((response: BasicUserInfo) => {
-            return Promise.resolve(response);
+        .then((response: SignInResponse) => {
+            return Promise.resolve(response?.data);
         })
         .catch((error) => {
             return Promise.reject(error);

@@ -70,8 +70,8 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
         [ "data-testid" ]: testId
     } = props;
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    
     return (
         <Grid>
             <Grid.Row columns={ 1 }>

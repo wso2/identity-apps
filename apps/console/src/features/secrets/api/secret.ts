@@ -16,8 +16,7 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { IdentityClient } from "@wso2/identity-oidc-js";
 import { HttpCodes, HttpMethods } from "@wso2is/core/models";
 import { AxiosResponse } from "axios";
 import { store } from "../../core";
@@ -33,8 +32,9 @@ import {
     UpdateSecretResponse
 } from "../models/secret";
 import { SecretTypeModel } from "../models/secret-type";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 
-const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
 
 export const createSecret = async (
     { body, params }: CreateSecretRequest

@@ -79,7 +79,7 @@ const DynamicConnectorForm = (props) => {
     const { t } = useTranslation();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const isReadOnly = useMemo(() => (
         !hasRequiredScopes(

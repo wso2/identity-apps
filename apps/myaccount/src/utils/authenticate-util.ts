@@ -17,9 +17,10 @@
  *
  */
 
-import { AsgardeoSPAClient, AuthSPAClientConfig, ResponseMode, Storage } from "@asgardeo/auth-react";
-import { TokenConstants } from "@wso2is/core/constants";
-import UAParser from "ua-parser-js";
+import {
+    IdentityClient
+} from "@wso2/identity-oidc-js";
+import * as TokenConstants from "../constants";
 import { store } from "../store";
 import { handleSignOut } from "../store/actions";
 
@@ -27,8 +28,8 @@ import { handleSignOut } from "../store/actions";
  * Clears the session related information and sign out from the session.
  */
 export const endUserSession = (): void => {
-    const auth = AsgardeoSPAClient.getInstance();
-    auth.revokeAccessToken()
+    const auth = IdentityClient.getInstance();
+    auth.endUserSession()
         .then(() => {
             store.dispatch(handleSignOut());
         })
@@ -55,85 +56,4 @@ export const hasLoginPermission = (): boolean => {
 export const hasScope = (scope: string): boolean => {
     const scopes = store.getState().authenticationInformation.scope;
     return scopes.includes(scope);
-};
-
-/**
- * By specifying the base URL, we are restricting the endpoints to which the requests could be sent.
- * So, an attacker can't obtain the token by sending a request to their endpoint. This is mandatory
- * when the storage is set to Web Worker.
- *
- * @return {string[]}
- */
-const resolveBaseUrls = (): string[] => {
-    let baseUrls = window["AppUtils"].getConfig().idpConfigs?.baseUrls;
-    const serverOrigin = window["AppUtils"].getConfig().serverOrigin;
-
-    if (baseUrls) {
-        // If the server origin is not specified in the overridden config, append it.
-        if (!baseUrls.includes(serverOrigin)) {
-            baseUrls = [...baseUrls, serverOrigin];
-        }
-
-        return baseUrls;
-    }
-
-    return [serverOrigin];
-};
-
-const resolveStorage = (): Storage => {
-    const storageFallback: Storage =
-        new UAParser().getBrowser().name === "IE" ? Storage.SessionStorage : Storage.WebWorker;
-
-    if (window["AppUtils"].getConfig().idpConfigs?.storage) {
-        if (
-            window["AppUtils"].getConfig().idpConfigs?.storage === Storage.WebWorker &&
-            new UAParser().getBrowser().name === "IE"
-        ) {
-            return Storage.SessionStorage;
-        }
-
-        return window["AppUtils"].getConfig().idpConfigs?.storage;
-    }
-
-    return storageFallback;
-};
-
-/**
- * Generates the initialize config.
- *
- * @returns {AuthSPAClientConfig} Initialize Config.
- */
-export const getAuthInitializeConfig = (): AuthSPAClientConfig => {
-    const responseModeFallback: ResponseMode =
-        process.env.NODE_ENV === "production" ? ResponseMode.formPost : ResponseMode.query;
-
-    return {
-        clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
-        clientID: window["AppUtils"].getConfig().clientID,
-        clockTolerance: window["AppUtils"].getConfig().idpConfigs?.clockTolerance,
-        enablePKCE: window["AppUtils"].getConfig().idpConfigs?.enablePKCE ?? true,
-        endpoints: {
-            authorizationEndpoint: window["AppUtils"].getConfig().idpConfigs?.authorizeEndpointURL,
-            checkSessionIframe: window["AppUtils"].getConfig().idpConfigs?.oidcSessionIFrameEndpointURL,
-            endSessionEndpoint: window["AppUtils"].getConfig().idpConfigs?.logoutEndpointURL,
-            jwksUri: window["AppUtils"].getConfig().idpConfigs?.jwksEndpointURL,
-            revocationEndpoint: window["AppUtils"].getConfig().idpConfigs?.tokenRevocationEndpointURL,
-            tokenEndpoint: window["AppUtils"].getConfig().idpConfigs?.tokenEndpointURL,
-            wellKnownEndpoint: window["AppUtils"].getConfig().idpConfigs?.wellKnownEndpointURL
-        },
-        resourceServerURLs: resolveBaseUrls(),
-        responseMode: window["AppUtils"].getConfig().idpConfigs?.responseMode ?? responseModeFallback,
-        scope: window["AppUtils"].getConfig().idpConfigs?.scope ?? [TokenConstants.SYSTEM_SCOPE],
-        sendCookiesInRequests: true,
-        serverOrigin:
-            window["AppUtils"].getConfig().idpConfigs?.serverOrigin ??
-            window["AppUtils"].getConfig().idpConfigs.serverOrigin,
-        signInRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
-        signOutRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
-        storage: resolveStorage(),
-        checkSessionInterval: window[ "AppUtils" ].getConfig()?.session?.checkSessionInterval,
-        enableOIDCSessionManagement: true,
-        overrideWellEndpointConfig: true,
-        sessionRefreshInterval: window[ "AppUtils" ].getConfig()?.session?.sessionRefreshTimeOut
-    };
 };
