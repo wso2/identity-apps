@@ -182,10 +182,11 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                 selected.push(OIDCAttributes.find((item) => item?.claimURI == claim));
             });
 
-            const sortedSelected = sortBy(selected, "localClaimDisplayName");
+            const filteredSelected = selected.filter(item => !!item)
+            const sortedSelected = sortBy(filteredSelected, "localClaimDisplayName");
             setSelectedAttributes(sortedSelected);
             setTempSelectedAttributes(sortedSelected);
-            setUnselectedAttributes(OIDCAttributes.filter((x) => !selected?.includes(x)));
+            setUnselectedAttributes(OIDCAttributes.filter((x) => !filteredSelected?.includes(x)));
         };
 
         /**
