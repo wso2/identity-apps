@@ -7522,21 +7522,19 @@ export const console: ConsoleNS = {
                         disableUserZone: {
                             actionTitle: "Disable User",
                             header: "Disable user",
-                            subheader: "Once you disable an account, the user can not access the system. Please " +
-                                "be certain."
+                            subheader: "Once you disable an account, the user cannot access the system."
                         },
                         header: "Danger Zone",
                         lockUserZone: {
                             actionTitle: "Lock User",
                             header: "Lock user",
-                            subheader: "Once you lock the account, the user can no longer log in to the system. " +
-                                "Please be certain."
+                            subheader: "Once you lock the account, the user can no longer log in to the system."
                         },
                         passwordResetZone: {
                             actionTitle: "Reset Password",
                             header: "Reset password",
                             subheader: "Once you change the password, the user will no longer be able to log in to " +
-                                "any application using the current password. Please be certain."
+                                "any application using the current password."
                         }
                     }
                 },
