@@ -160,7 +160,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
     const [finishSubmit, setFinishSubmit] = useTrigger();
     const [selectedTemplate, setSelectedTemplate] = useState<ApplicationTemplateListItemInterface>(template);
     const [triggerProtocolSelectionSubmit, setTriggerProtocolSelectionSubmit] = useTrigger();
-    const [selectedCustomInboundProtocol, setSelectedCustomInboundProtocol] = useState<boolean>(false);
+    const [ selectedCustomInboundProtocol, setSelectedCustomInboundProtocol ] = useState<boolean>(false);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const [selectedSAMLMetaFile, setSelectedSAMLMetaFile] = useState<boolean>(false);
 
@@ -220,6 +221,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
             templateId: selectedTemplate.id
         };
 
+        setIsSubmitting(true);
+
         createApplication(submittingApplication)
             .then((response) => {
                 dispatch(addAlert({
@@ -269,8 +272,11 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                     description: t("console:develop.features.applications.notifications.addApplication.genericError" +
                         ".description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.addApplication.genericError.message")
+                    message: t(
+                        "console:develop.features.applications.notifications.addApplication.genericError.message")
                 });
+            }).finally(() => {
+                setIsSubmitting(false);
             });
     };
 
@@ -280,6 +286,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
      * @param values - Form values.
      */
     const handleApplicationProtocolsUpdate = (values: any): void => {
+        setIsSubmitting(true);
+
         updateAuthProtocolConfig(appId, values, selectedTemplate.authenticationProtocol)
             .then(() => {
                 dispatch(addAlert({
@@ -309,6 +317,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                     level: AlertLevels.ERROR,
                     message: t("console:develop.features.applications.notifications.updateProtocol.error.message")
                 });
+            }).finally(() => {
+                setIsSubmitting(false);
             });
     };
 
@@ -797,6 +807,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                             floated="right"
                                             onClick={ navigateToNext }
                                             data-testid={ `${ testId }-finish-button` }
+                                            loading={ isSubmitting }
+                                            disabled= { isSubmitting }
                                         >
                                             { t("common:finish") }
                                         </PrimaryButton>
