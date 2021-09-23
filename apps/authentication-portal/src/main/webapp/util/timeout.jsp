@@ -29,7 +29,7 @@
 
 <%--Include the reusable modal component--%>
 <jsp:include page="modal.jsp">
-    <jsp:param name="title" value="Heads Up!"/>
+    <jsp:param name="title" value="This login instance is about to timeout!"/>
     <jsp:param
             name="description"
             value="You have been idle in this page for too long. You need to try signing in again."/>
@@ -138,53 +138,56 @@
         totalTimeoutMinutes: <%= totalTimeoutMinutes %>,
         notifyOnMinute: <%= notifyOnMinute %>,
         appAccessUrlEncoded: "<%= appAccessUrlEncoded %>",
-        pageName: "<%= pageName %>"
+        pageName: "<%= pageName %>",
+        showModal: <%= isNotEmpty(appAccessUrlEncoded) %>
     };
 
-    $(document).ready(function () {
+    if(PROPS.showModal) {
+        $(document).ready(function () {
 
-        const SPACE_CHAR = " ";
-        const timeout = Countdown.minutes(PROPS.totalTimeoutMinutes);
-        const countdown = new Countdown(timeout, onDone, onTick);
+            const SPACE_CHAR = " ";
+            const timeout = Countdown.minutes(PROPS.totalTimeoutMinutes);
+            const countdown = new Countdown(timeout, onDone, onTick);
 
-        const modal = new ModalRef(function (/*Modal onAction*/) {
-            // Once the modal action button clicked, the user will be redirected
-            // to the specified URL immediately. If the url is not available then
-            // it will not redirect or do anything.
-            if (PROPS.appAccessUrlEncoded) {
+            const modal = new ModalRef(function (/*Modal onAction*/) {
+                // Once the modal action button clicked, the user will be redirected
+                // to the specified URL immediately. If the url is not available then
+                // it will not redirect or do anything.
+                if (PROPS.appAccessUrlEncoded) {
+                    window.location = PROPS.appAccessUrlEncoded;
+                }
+            });
+
+            /**
+             * This function will be called everytime when time ticks.
+             *
+             * @param time {{total: number, hours: number, seconds: number, minutes: number, days: number}}
+             */
+            function onTick(time) {
+                if (time.total < Countdown.minutes(PROPS.notifyOnMinute)) {
+                    modal.changeDescriptionAsHTML(
+                        "You have been idle in" + SPACE_CHAR + PROPS.pageName + SPACE_CHAR +
+                        "page for too long. You need to try signing in again" + SPACE_CHAR +
+                        "<b>" + Countdown.timeToReadable(time) + "</b>."
+                    );
+                }
+                if (time.total === Countdown.minutes(PROPS.notifyOnMinute)) {
+                    modal.show();
+                }
+            }
+
+            /**
+             * Once the timer is finished, this method will be
+             * invoked to execute the target action.
+             */
+            function onDone() {
+                // Once the countdown is over, the user will be redirected
+                // to the access URL immediately.
                 window.location = PROPS.appAccessUrlEncoded;
             }
+
+            countdown.start();
         });
-
-        /**
-         * This function will be called everytime when time ticks.
-         *
-         * @param time {{total: number, hours: number, seconds: number, minutes: number, days: number}}
-         */
-        function onTick(time) {
-            if (time.total < Countdown.minutes(PROPS.notifyOnMinute)) {
-                modal.changeDescriptionAsHTML(
-                    "You have been idle in" + SPACE_CHAR + PROPS.pageName + SPACE_CHAR +
-                    "page for too long. You need to try signing in again" + SPACE_CHAR +
-                    "<b>" + Countdown.timeToReadable(time) + "</b>."
-                );
-            }
-            if (time.total === Countdown.minutes(PROPS.notifyOnMinute)) {
-                modal.show();
-            }
-        }
-
-        /**
-         * Once the timer is finished, this method will be
-         * invoked to execute the target action.
-         */
-        function onDone() {
-            modal.hideDismissButton();
-            modal.show();
-        }
-
-        countdown.start();
-
-    });
+    }
 
 </script>
