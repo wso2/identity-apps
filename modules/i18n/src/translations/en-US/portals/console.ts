@@ -7516,7 +7516,8 @@ export const console: ConsoleNS = {
                         deleteUserZone: {
                             actionTitle: "Delete User",
                             header: "Delete user",
-                            subheader: "Delete user permanently from the organization."
+                            subheader: "This action will permanently delete the user from the organization. Please " +
+                                "be certain before you proceed."
                         },
                         disableUserZone: {
                             actionTitle: "Disable User",
@@ -7604,7 +7605,7 @@ export const console: ConsoleNS = {
                                     empty: "Username is a required field",
                                     invalid: "A user already exists with this username.",
                                     invalidCharacters: "Username seems to contain invalid characters.",
-                                    regExViolation: "Enter a valid email between 3 and 50 characters. You can use " +
+                                    regExViolation: "Your email must contain 3 to 50 characters. You can use " +
                                         "alphanumeric characters, unicode characters, underscores (_), dashes (-), " +
                                         "plus signs (+), periods (.), and an at sign (@)."
                                 }
@@ -8112,7 +8113,7 @@ export const console: ConsoleNS = {
                                 empty: "Username is a required field",
                                 invalid: "A user already exists with this username.",
                                 invalidCharacters: "Username seems to contain invalid characters.",
-                                regExViolation: "Enter a valid email between 3 and 50 characters. You can use " +
+                                regExViolation: "Your email must contain 3 to 50 characters. You can use " +
                                     "alphanumeric characters, unicode characters, underscores (_), dashes (-), " +
                                     "plus signs (+), periods (.), and an at sign (@)."
                             }
@@ -8128,7 +8129,7 @@ export const console: ConsoleNS = {
                                 empty: "Username is a required field",
                                 invalid: "A user already exists with this username.",
                                 invalidCharacters: "Username seems to contain invalid characters.",
-                                regExViolation: "Enter a valid email between 3 and 50 characters. You can use " +
+                                regExViolation: "Your email must contain 3 to 50 characters. You can use " +
                                 "alphanumeric characters, unicode characters, underscores (_), dashes (-), " +
                                     "periods (.), and an at sign (@)."
                             }
