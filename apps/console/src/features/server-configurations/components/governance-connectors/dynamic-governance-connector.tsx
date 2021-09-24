@@ -56,6 +56,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
     const { t } = useTranslation();
 
     const [ connectorIllustration, setConnectorIllustration ] = useState<string>(undefined);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     /**
      * Set the connector illustration.
@@ -125,6 +126,8 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             });
         }
 
+        setIsSubmitting(true);
+
         updateGovernanceConnector(data, connector.categoryId, connector.id)
             .then(() => {
                 dispatch(
@@ -146,6 +149,9 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             })
             .catch((error) => {
                 handleUpdateError(error);
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
     };
 
@@ -175,6 +181,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             form={ kebabCase(connector.friendlyName) + "-form" }
             initialValues={ getConnectorInitialValues(connector) }
             data-testid={ `${ testId }-${ connector.name }-form` }
+            isSubmitting={ isSubmitting }
         />
     );
 

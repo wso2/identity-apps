@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { I18n } from "@wso2is/i18n";
 import { Hint, PrimaryButton, RenderInput, RenderToggle } from "@wso2is/react-components";
@@ -71,7 +70,7 @@ const required =
  * @constructor
  */
 const DynamicConnectorForm = (props) => {
-    const { handleSubmit, [ "data-testid" ]: testId } = props;
+    const { isSubmitting, handleSubmit, [ "data-testid" ]: testId } = props;
     const properties: ConnectorPropertyInterface[] = props.props.properties;
 
     const formValues = useSelector((state: AppState) => state.form[ props.form ].values);
@@ -190,7 +189,11 @@ const DynamicConnectorForm = (props) => {
                         { !isReadOnly &&
                             <PrimaryButton
                                 data-testid={ `${ testId }-update-button` }
-                                type="submit">{ t("common:update") }
+                                type="submit"
+                                loading={ isSubmitting }
+                                disabled={ isSubmitting }
+                            >
+                                { t("common:update") }
                             </PrimaryButton>
                         }
                     </Grid.Column>
