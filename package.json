@@ -127,6 +127,7 @@
         "@typescript-eslint/parser": "^4.17.0",
         "autoprefixer": "^9.8.6",
         "babel-loader": "^8.1.0",
+        "babel-plugin-rename-jsx-attribute": "^0.2.4",
         "brotli-webpack-plugin": "^1.1.0",
         "child_process": "^1.0.2",
         "compression-webpack-plugin": "^7.1.2",
