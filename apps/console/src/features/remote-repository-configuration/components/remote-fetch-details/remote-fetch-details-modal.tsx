@@ -26,9 +26,9 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import {
-    InterfaceConfigDetails, 
-    InterfaceRemoteConfigDetails, 
-    InterfaceRemoteFetchStatus, 
+    InterfaceConfigDetails,
+    InterfaceRemoteConfigDetails,
+    InterfaceRemoteFetchStatus,
     getConfigDeploymentDetails,
     triggerConfigDeployment
 } from "../../../remote-repository-configuration";
@@ -60,11 +60,12 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
     } = props;
 
     const dispatch = useDispatch();
-    
+
     const { t } = useTranslation();
 
     const [ activeIndex, setActiveIndex ] = useState<number[]>([]);
     const [ deploymentStatus, setDeploymentStatus ] = useState<InterfaceConfigDetails>(undefined);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     useEffect(() => {
         getConfigDeploymentDetails(remoteDeployment.id)
@@ -144,9 +145,9 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
                                                     <div className="floated left text-left">
                                                         <Icon.Group className="mr-2" size="large">
                                                             <Icon name="fork" />
-                                                            <Icon 
+                                                            <Icon
                                                                 color="red"
-                                                                corner="bottom right" 
+                                                                corner="bottom right"
                                                                 name="cancel"
                                                             />
                                                         </Icon.Group>
@@ -194,7 +195,11 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
                             <PrimaryButton
                                 floated="right"
                                 data-testid={ `${ testId }-import-button` }
-                                onClick={ ()=> {
+                                loading={ isSubmitting }
+                                disabled={ isSubmitting }
+                                onClick={ () => {
+                                    setIsSubmitting(true);
+
                                     triggerConfigDeployment(remoteDeployment.id)
                                         .then(() => {
                                             dispatch(addAlert({
@@ -213,6 +218,9 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
                                                 message: t("console:manage.features.remoteFetch.notifications" +
                                                     ".triggerConfigDeployment.genericError.message")
                                             }));
+                                        })
+                                        .finally(() => {
+                                            setIsSubmitting(false);
                                         });
                                 } }
                             >
