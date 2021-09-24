@@ -84,6 +84,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
     const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
     const [ selectedUserStore, setSelectedUserStore ] = useState<string>("");
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
     const [ submitRoleList, setSubmitRoleList ] = useTrigger();
@@ -138,10 +139,12 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
             return;
         }
 
-        if (wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] && wizardState[ WizardStepsFormTypes.USER_LIST ]) {
+        if (wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]
+            && wizardState[ WizardStepsFormTypes.USER_LIST ]) {
             addGroup(wizardState);
         }
-    }, [ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] && wizardState[ WizardStepsFormTypes.USER_LIST ]]);
+    }, [ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]
+        && wizardState[ WizardStepsFormTypes.USER_LIST ] ]);
 
     const handleRoleIdSet = (roleId) => {
         setSelectedRoleId(roleId);
@@ -197,6 +200,8 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
             ]
 
         };
+
+        setIsSubmitting(true);
 
         /**
          * Create Group API Call.
@@ -305,6 +310,8 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                     message: t("console:manage.features.groups.notifications.createGroup.genericError.message")
                 }));
             }
+        }).finally(() => {
+            setIsSubmitting(false);
         });
     };
 
@@ -528,6 +535,8 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                                     floated="right"
                                     onClick={ changeStepToNext }
                                     data-testid={ `${ testId }-finish-button` }
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting }
                                 >
                                     { t("console:manage.features.roles.addRoleWizard.buttons.finish") }
                                 </PrimaryButton>
