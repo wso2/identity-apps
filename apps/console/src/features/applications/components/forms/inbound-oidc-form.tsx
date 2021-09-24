@@ -548,7 +548,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         label: "Opaque",
                         value: ele
                     });
-                // Cookie binding was hidden from the UI for SPAs & Traditional OIDC with https://github.com/wso2/identity-apps/pull/2254
+                // Cookie binding was hidden from the UI for SPAs & Traditional OIDC with
+                // https://github.com/wso2/identity-apps/pull/2254
                 } else if ((isSPAApplication || isOIDCWebApplication) && isBinding && ele === "cookie") {
                     return false;
                 } else {
@@ -2231,6 +2232,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 type="submit"
                                 size="small"
                                 className="form-button"
+                                loading={ isLoading }
+                                disabled={ isLoading }
                                 data-testid={ `${ testId }-submit-button` }
                             >
                                 { t("common:update") }
