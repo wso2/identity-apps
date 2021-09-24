@@ -4972,15 +4972,15 @@ export const console: ConsoleNS = {
             secrets: {
                 alerts: {
                     createdSecret: {
-                        description: "Created {{secretName}} for {{secretType}}.",
+                        description: "Created a new secret with the name {{secretName}}.",
                         message: "Successfully Created Secret."
                     },
                     updatedSecret: {
-                        description: "Updated {{secretName}} of {{secretType}}.",
+                        description: "Updated secret {{secretName}}.",
                         message: "Successfully Updated Secret."
                     },
                     deleteSecret: {
-                        description: "Deleted {{secretName}} of {{secretType}}.",
+                        description: "Deleted secret {{secretName}}.",
                         message: "Successfully Deleted Secret."
                     }
                 },
@@ -4991,7 +4991,7 @@ export const console: ConsoleNS = {
                     }
                 },
                 page: {
-                    description: "Create and manage secrets for Adaptive Authentication",
+                    description: "Create and manage secrets for conditional authentication",
                     primaryActionButtonText: "New Secret",
                     title: "Secrets",
                     subFeatureBackButton: "Go back to Secrets"
@@ -5017,31 +5017,31 @@ export const console: ConsoleNS = {
                 wizards: {
                     addSecret: {
                         heading: "Create Secret",
-                        subheading: "Create a new Secret for Adaptive Authentication Scripts",
+                        subheading: "Create a new secret for conditional authentication scripts",
                         form: {
                             secretTypeField: {
                                 ariaLabel: "Select Secret Type",
                                 hint: "Select a Secret Type which this Secret falls into.",
-                                label: "Select Secret Type"
+                                label: "Select secret type"
                             },
                             secretNameField: {
                                 ariaLabel: "Secret Name for the Secret Type",
-                                hint: "Give a meaningful name for this secret. Note that once " +
+                                hint: "Provide a meaningful name for this secret. Note that once " +
                                     "you create this secret with the name above, you cannot change it afterwards.",
-                                placeholder: "Enter a Secret Name",
+                                placeholder: "Enter a secret name",
                                 label: "Secret Name"
                             },
                             secretValueField: {
-                                ariaLabel: "Enter a Secret Value",
+                                ariaLabel: "Enter a secret value",
                                 hint: "This is the value of the secret. You can enter a value between length" +
                                     " {{minLength}} to {{maxLength}}.",
-                                placeholder: "Enter a Secret Value",
+                                placeholder: "Enter a secret value",
                                 label: "Secret Value"
                             },
                             secretDescriptionField: {
                                 ariaLabel: "Secret Description",
-                                hint: "Give a description for this secret (i.e., When to use this secret).",
-                                placeholder: "Enter a Secret Description",
+                                hint: "Provide a description for this secret (i.e., When to use this secret).",
+                                placeholder: "Enter a secret description",
                                 label: "Secret Description"
                             }
                         }
@@ -5060,14 +5060,12 @@ export const console: ConsoleNS = {
                 banners: {
                     secretIsHidden: {
                         title: "Why can't I see the secret?",
-                        content: "When you are creating a secret, you need to make sure you " +
-                            "copy your secret somewhere secure. Because {{productName}} " +
-                            "securely encrypt and stores this information and you won’t be " +
-                            "able to see it again!"
+                        content: "Once created, you won't be able to see the secret value again. " +
+                            "You will only be able to update the secret value or delete the secret. "
                     },
                     adaptiveAuthSecretType: {
-                        title: "Adaptive Authentication Secrets",
-                        content: "These secrets can be used in the Adaptive Authentication script of a " +
+                        title: "Conditional Authentication Secrets",
+                        content: "These secrets can be used in the Conditional Authentication script of a " +
                             "registered application when accessing external APIs."
                     }
                 },
@@ -5076,17 +5074,16 @@ export const console: ConsoleNS = {
                         secretValueField: {
                             ariaLabel: "Enter a Secret Value",
                             label: "Secret Value",
-                            hint: "This is the value of the secret. You can enter a value between length" +
-                                " {{minLength}} to {{maxLength}}.",
-                            placeholder: "Enter a Secret Value",
+                            hint: "You can enter a value between length {{minLength}} to {{maxLength}}.",
+                            placeholder: "Enter a secret value",
                             editButton: "Change Secret Value",
                             cancelButton: "Cancel",
                             updateButton: "Update Secret Value"
                         },
                         secretDescriptionField: {
                             ariaLabel: "Secret Description",
-                            hint: "Give a description for this secret (i.e., When to use this secret).",
-                            placeholder: "Enter a Secret Description",
+                            hint: "Provide a description for this secret (i.e., When to use this secret).",
+                            placeholder: "Enter a secret description",
                             label: "Secret Description"
                         }
                     },

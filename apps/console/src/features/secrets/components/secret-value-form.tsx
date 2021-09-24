@@ -252,14 +252,16 @@ const SecretValueForm: FC<SecretValueFormProps> = (props: SecretValueFormProps):
 
     return (
         <Fragment>
-            { showInfoMessage && InfoMessage }
             <Form
                 noValidate={ true }
                 aria-labelledby={ testId }
                 onSubmit={ onSubmission }>
-                <Grid className="form-container with-max-width" columns={ 2 }>
+                <Grid
+                    className="form-container with-max-width"
+                    columns={ 2 }
+                >
                     <Grid.Row>
-                        <Grid.Column width={ 15 }>
+                        <Grid.Column width={ 16 }>
                             <Form.TextArea
                                 type="textarea"
                                 className="with-lock-icon"
@@ -281,57 +283,62 @@ const SecretValueForm: FC<SecretValueFormProps> = (props: SecretValueFormProps):
                                 onChange={ onSecretFieldValueChange }
                                 onBlur={ () => setSecretFieldTouched(true) }
                                 error={ (secretFieldTouched || secretFieldModified) ? fieldError : undefined }
+                                style={ { position: "relative" } }
                             />
-                            <Hint icon="info circle">
-                                { t(`${ FIELD_I18N_KEY }.hint`, {
-                                    maxLength: SECRET_VALUE_LENGTH.max,
-                                    minLength: SECRET_VALUE_LENGTH.min
-                                }) }
-                            </Hint>
-                        </Grid.Column>
-                        <Grid.Column width={ 1 }>
-                            <Popup
-                                trigger={ (
-                                    <Button
-                                        type="submit"
-                                        loading={ loading }
-                                        primary={ isEditingSecretValue && secretValue && !fieldError }
-                                        disabled={
-                                            loading || isEditingSecretValue && (!!fieldError || !(secretValue?.trim()))
-                                        }
-                                        style={ { marginLeft: "-15px", marginTop: "23px" } }
-                                        aria-label={
-                                            isEditingSecretValue
-                                                ? t(`${ FIELD_I18N_KEY }.updateButton`)
-                                                : t(`${ FIELD_I18N_KEY }.editButton`)
-                                        }
-                                        className="ui button icon">
-                                        <Icon name={ isEditingSecretValue ? "check" : "pencil alternate" }/>
-                                    </Button>
-                                ) }
-                                disabled={ isEditingSecretValue && (!!fieldError || !(secretValue?.trim())) }
-                                position="top center"
-                                content={
-                                    isEditingSecretValue
-                                        ? t(`${ FIELD_I18N_KEY }.updateButton`)
-                                        : t(`${ FIELD_I18N_KEY }.editButton`)
-                                }
-                            />
-                            <Transition
-                                duration={ 500 }
-                                unmountOnHide
-                                animation="fade down"
-                                visible={ isEditingSecretValue }>
-                                { isEditingSecretValue ? (
-                                    <Button
-                                        type="button"
-                                        onClick={ resetFieldState }
-                                        style={ { marginLeft: "-15px", marginTop: "5px" } }
-                                        aria-label={ t(`${ FIELD_I18N_KEY }.cancelButton`) }
-                                        color="red"
-                                        icon="cancel"/>
-                                ) : <Fragment/> }
-                            </Transition>
+                            <div className={ "edit-button-transition" }  >
+                                <Popup
+                                    trigger={ (
+                                        <Button
+                                            type="submit"
+                                            loading={ loading }
+                                            primary={ isEditingSecretValue && secretValue && !fieldError }
+                                            disabled={
+                                                loading || isEditingSecretValue && (!!fieldError || !(secretValue?.trim()))
+                                            }
+                                            style={ { marginLeft: "-15px", marginTop: "23px" } }
+                                            aria-label={
+                                                isEditingSecretValue
+                                                    ? t(`${ FIELD_I18N_KEY }.updateButton`)
+                                                    : t(`${ FIELD_I18N_KEY }.editButton`)
+                                            }
+                                            className="ui button icon">
+                                            <Icon name={ isEditingSecretValue ? "check" : "pencil alternate" }/>
+                                        </Button>
+                                    ) }
+                                    disabled={ isEditingSecretValue && (!!fieldError || !(secretValue?.trim())) }
+                                    position="top center"
+                                    content={
+                                        isEditingSecretValue
+                                            ? t(`${ FIELD_I18N_KEY }.updateButton`)
+                                            : t(`${ FIELD_I18N_KEY }.editButton`)
+                                    }
+                                />
+                                <Transition
+                                    duration={ 500 }
+                                    unmountOnHide
+                                    animation="fade down"
+                                    visible={ isEditingSecretValue }>
+                                    { isEditingSecretValue ? (
+                                        <Button
+                                            type="button"
+                                            onClick={ resetFieldState }
+                                            style={ { marginLeft: "-15px", marginTop: "5px" } }
+                                            aria-label={ t(`${ FIELD_I18N_KEY }.cancelButton`) }
+                                            color="red"
+                                            icon="cancel"/>
+                                    ) : <Fragment/> }
+                                </Transition>
+                            </div>
+                            { isEditingSecretValue ? (
+                                <Hint icon="info circle">
+                                    { t(`${FIELD_I18N_KEY}.hint`, {
+                                        maxLength: SECRET_VALUE_LENGTH.max,
+                                        minLength: SECRET_VALUE_LENGTH.min
+                                    }) }
+                                </Hint>
+                            ):(
+                                <Divider hidden/>
+                            ) }
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>

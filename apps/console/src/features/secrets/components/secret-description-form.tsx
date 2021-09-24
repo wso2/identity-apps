@@ -23,6 +23,7 @@ import cloneDeep from "lodash-es/cloneDeep";
 import React, { FC, Fragment, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Grid } from "semantic-ui-react";
 import { patchSecret } from "../api/secret";
 import { SecretModel } from "../models/secret";
 import { SECRET_DESCRIPTION_LENGTH } from "../utils/secrets.validation.utils";

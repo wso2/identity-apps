@@ -18,13 +18,17 @@
 
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { LocalStorageUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
 import { ContentLoader, Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
 import React, { FC, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Grid, Modal } from "semantic-ui-react";
+import { useDispatch, useSelector } from "react-redux";
+import { Grid, Message, Modal } from "semantic-ui-react";
+import { AppState, ConfigReducerStateInterface } from "../../core";
 import { createSecret, getSecretList } from "../api/secret";
+import { EMPTY_JSON_OBJECT_STRING, FEATURE_LOCAL_STORAGE_KEY } from "../constants/secrets.common";
+import { EditSecretLocalStorage } from "../models/common";
 import { SecretModel } from "../models/secret";
 import {
     SECRET_DESCRIPTION_LENGTH,
@@ -82,6 +86,9 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
     const [ secretNameInvalid, setSecretNameInvalid ] = useState<boolean>(false);
     const [ secretValueInvalid, setSecretValueInvalid ] = useState<boolean>(false);
     const [ initialFormValues, setInitialFormValues ] = useState<Record<string, any>>({});
+    const [ showInfoMessage, setShowInfoMessage ] = useState<boolean>(false);
+
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     /**
      * Initial state hook. Fetches the available secret types and
@@ -136,6 +143,10 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                 setRequestInProgress(false);
             });
 
+    }, []);
+
+    useEffect(() => {
+            checkAndRenderInfoMessage();
     }, []);
 
     /**
@@ -225,6 +236,39 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                 value: "ADAPTIVE_AUTH_CALL_CHOREO"
             } as FieldDropDownOption
         ]);
+    };
+
+    /**
+     * Event handler for banner dismiss button.
+     * @event-handler
+     */
+    const onDismissInfoMessageBanner = (): void => {
+        LocalStorageUtils.setValueInLocalStorage(
+            FEATURE_LOCAL_STORAGE_KEY,
+            JSON.stringify({ hideInfoMessage: true } as EditSecretLocalStorage)
+        );
+        setShowInfoMessage(false);
+    };
+
+    /**
+     * Check whether the info message is already shown. if `not`
+     * show it otherwise don't.
+     */
+    const checkAndRenderInfoMessage = (): void => {
+        try {
+            // If message dismissed already shown, then don't show it again.
+            const local = JSON.parse(
+                LocalStorageUtils.getValueFromLocalStorage(FEATURE_LOCAL_STORAGE_KEY)
+                ?? EMPTY_JSON_OBJECT_STRING
+            ) as EditSecretLocalStorage;
+            if (local && local.hideInfoMessage === true) {
+                setShowInfoMessage(false);
+            } else {
+                setShowInfoMessage(true);
+            }
+        } catch (e) {
+            setShowInfoMessage(true);
+        }
     };
 
     /**
@@ -323,6 +367,24 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                             return error;
                         } }
                     />
+                    {
+                        showInfoMessage && (
+                            <Message
+                                data-componentid={ `${ testId }-page-message` }
+                                info
+                                onDismiss={ onDismissInfoMessageBanner }
+                            >
+                                <Message.Content
+                                    className="mt-2"
+                                    data-componentid={ `${ testId }-page-message-content` }>
+                                    { t(
+                                        "console:develop.features.secrets.banners.secretIsHidden.content",
+                                        { productName: config.ui?.productName }
+                                    ) }
+                                </Message.Content>
+                            </Message>
+                        )
+                    }
                     <Field.Textarea
                         label={ t("console:develop.features.secrets.wizards.addSecret" +
                             ".form.secretDescriptionField.label") }

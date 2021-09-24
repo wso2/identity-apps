@@ -3558,15 +3558,15 @@ export const console: ConsoleNS = {
             secrets: {
                 alerts: {
                     createdSecret: {
-                        description: "{{secretType}} සඳහා {{secretName}} තනන ලදි.",
+                        description: "{{secretName}} නමින් නව රහසක් තනන ලදි.",
                         message: "සාර්ථකව නිර්මාණය කළ රහසක්."
                     },
                     updatedSecret: {
-                        description: "{{secretType}} හි {{secretName}} යාවත්කාලීන කරන ලදි.",
+                        description: "{{secretName}} රහස යාවත්කාලීන කරන ලදි.",
                         message: "රහස සාර්ථකව යාවත්කාලීන කරන ලදි."
                     },
                     deleteSecret: {
-                        description: "{{secretType}} හි {{secretName}} මකන ලදි.",
+                        description: "{{secretName}} රහස මකන ලදි.",
                         message: "රහස සාර්ථකව මැකුවා"
                     }
                 },
@@ -3577,7 +3577,7 @@ export const console: ConsoleNS = {
                     }
                 },
                 page: {
-                    description: "අනුවර්තී සත්‍යාපනය සඳහා රහස් නිර්‍මාණය කර කළමනාකරණය කරන්න",
+                    description: "කොන්දේසි සහිත සත්‍යාපනය සඳහා රහස් නිර්‍මාණය කර කළමනාකරණය කරන්න",
                     primaryActionButtonText: "නව රහස",
                     title: "රහස්",
                     subFeatureBackButton: "රහස් වෙත ආපසු යන්න"
@@ -3646,9 +3646,8 @@ export const console: ConsoleNS = {
                 banners: {
                     secretIsHidden: {
                         title: "ඇයි මට රහස නොපෙනෙන්නේ?",
-                        content: "ඔබ රහසක් නිර්මාණය කරන විට, ඔබේ රහස ආරක්‍ෂිත ස්ථානයක කොපි කිරීමට වග බලා ගත යුතුය. " +
-                            "මෙම තොරතුරු {{productName}} ආරක්ෂිතව සංකේතනය කර ගබඩා කරන බැවින් ඔබට එය නැවත " +
-                            "දැක ගැනීමට නොහැකි වනු ඇත!"
+                        content: "වරක් නිර්මාණය කළ පසු ඔබට එහි රහස්‍ය වටිනාකම නැවත දැක ගැනීමට නොහැකි වනු ඇත. ඔබට කළ " +
+                            "හැක්කේ රහස්‍ය වටිනාකම යාවත්කාලීන කිරීමට හෝ රහස මැකීමට පමණි."
                     },
                     adaptiveAuthSecretType: {
                         title: "අනුවර්තී සත්‍යාපන රහස්",
@@ -3661,8 +3660,7 @@ export const console: ConsoleNS = {
                         secretValueField: {
                             ariaLabel: "රහස්‍ය අගයක් ඇතුළු කරන්න",
                             label: "රහස් අගය",
-                            hint: "රහසෙහි වටිනාකම මෙයයි. ඔබට දිග {{minLength}} සිට {{maxLength}} " +
-                                "දක්වා අගයක් ඇතුළු කළ හැකිය.",
+                            hint: "ඔබට දිග {{minLength}} සිට {{maxLength}} දක්වා අගයක් ඇතුළු කළ හැකිය.",
                             placeholder: "රහස්‍ය අගයක් ඇතුළු කරන්න",
                             editButton: "රහස්‍ය වටිනාකම වෙනස් කරන්න",
                             cancelButton: "අවලංගු කරන්න",

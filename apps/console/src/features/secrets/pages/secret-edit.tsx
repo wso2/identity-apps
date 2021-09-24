@@ -116,13 +116,6 @@ const SecretEdit: FC<SecretEditProps> = (props: SecretEditProps): ReactElement =
                 <PageLayout
                     isLoading={ loading }
                     title={ <strong>{ secretName }</strong> }
-                    description={
-                        <div className="with-label ellipsis">
-                            <Label size="small">
-                                { secretType }
-                            </Label>
-                        </div>
-                    }
                     image={
                         <GenericIcon
                             size="x60"

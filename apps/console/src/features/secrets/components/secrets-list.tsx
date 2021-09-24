@@ -22,7 +22,7 @@ import {
     AnimatedAvatar,
     AppAvatar,
     ConfirmationModal,
-    DataTable,
+    DataTable, GenericIcon,
     GridLayout,
     TableActionsInterface,
     TableColumnInterface,
@@ -33,7 +33,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Header, Message, SemanticICONS } from "semantic-ui-react";
 import { EmptySecretListPlaceholder } from "./empty-secret-list-placeholder";
-import { AppConstants, history } from "../../core";
+import { AppConstants, getSecretManagementIllustrations, history } from "../../core";
 import { deleteSecret } from "../api/secret";
 import { ADAPTIVE_SCRIPT_SECRETS, FEATURE_EDIT_PATH } from "../constants/secrets.common";
 import { SecretModel } from "../models/secret";
@@ -145,10 +145,13 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
                             data-testid={ `${ testId }-first-column` }>
                             <AppAvatar
                                 image={ (
-                                    <AnimatedAvatar
-                                        name={ data.secretName }
+                                    <GenericIcon
                                         size="mini"
-                                        data-testid={ `${ testId }-item-image-inner` }
+                                        shape="rounded"
+                                        colored
+                                        background={ true }
+                                        hoverable={ false }
+                                        icon={ getSecretManagementIllustrations().editingSecretIcon }
                                     />
                                 ) }
                                 size="mini"

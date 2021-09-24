@@ -3639,15 +3639,15 @@ export const console: ConsoleNS = {
             secrets: {
                 alerts: {
                     createdSecret: {
-                        description: "Créé {{secretName}} pour {{secretType}}.",
+                        description: "Création d'un nouveau secret avec le nom {{secretName}}.",
                         message: "Secret créé avec succès."
                     },
                     updatedSecret: {
-                        description: "{{secretName}} mis à jour de {{secretType}}.",
+                        description: "Secret mis à jour avec {{secretName}}.",
                         message: "Secret mis à jour avec succès."
                     },
                     deleteSecret: {
-                        description: "{{secretName}} supprimé de {{secretType}}.",
+                        description: "Secret supprimé avec {{secretName}}.",
                         message: "Secret supprimé avec succès."
                     }
                 },
@@ -3658,7 +3658,7 @@ export const console: ConsoleNS = {
                     }
                 },
                 page: {
-                    description: "Créer et gérer des secrets pour l'authentification adaptative",
+                    description: "Créer et gérer des secrets pour l'authentification conditionnelle",
                     primaryActionButtonText: "Nouveau secret",
                     title: "Secrets",
                     subFeatureBackButton: "Retourner à Secrets"
@@ -3727,9 +3727,8 @@ export const console: ConsoleNS = {
                 banners: {
                     secretIsHidden: {
                         title: "Pourquoi ne puis-je pas voir le secret ?",
-                        content: "Lorsque vous créez un secret, vous devez vous assurer de copier votre secret dans " +
-                            "un endroit sûr. Parce que {{productName}} crypte et stocke ces informations en toute " +
-                            "sécurité et vous ne pourrez plus les voir !"
+                        content: "Une fois créé, vous ne pourrez plus voir la valeur secrète. Vous ne pourrez que" +
+                            " mettre à jour la valeur secrète ou supprimer le secret."
                     },
                     adaptiveAuthSecretType: {
                         title: "Secrets d'authentification adaptative",
@@ -3742,8 +3741,7 @@ export const console: ConsoleNS = {
                         secretValueField: {
                             ariaLabel: "Entrez une valeur secrète",
                             label: "Valeur secrète",
-                            hint: "C'est la valeur du secret. Vous pouvez saisir une valeur comprise " +
-                                "entre {{minLength}} et {{maxLength}}.",
+                            hint: "Vous pouvez saisir une valeur comprise entre {{minLength}} et {{maxLength}}.",
                             placeholder: "Entrez une valeur secrète",
                             editButton: "Modifier la valeur secrète",
                             cancelButton: "Annuler",
