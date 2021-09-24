@@ -20,22 +20,22 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { LinkButton, ListLayout, PrimaryButton } from "@wso2is/react-components";
+import { LinkButton, ListLayout, PrimaryButton, SecondaryButton } from "@wso2is/react-components";
 import kebabCase from "lodash-es/kebabCase";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, DropdownProps, Grid, Icon, Modal, PaginationProps } from "semantic-ui-react";
 import { ClaimsList, ListType } from "../../";
 import { attributeConfig } from "../../../../../extensions";
-import { 
-    AdvancedSearchWithBasicFilters, 
-    AppState, 
+import {
+    AdvancedSearchWithBasicFilters,
+    AppState,
     EventPublisher,
-    FeatureConfigInterface, 
-    UIConstants, 
-    filterList, 
-    sortList 
+    FeatureConfigInterface,
+    UIConstants,
+    filterList,
+    sortList
 } from "../../../../core";
 import { addExternalClaim } from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";
@@ -127,6 +127,17 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
     const { dialectID, claims, update, isLoading } = props;
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    /**
+     * Reads the static configuration and disables the Add New Attribute mapping
+     * button for targeted attribute dialectIds. Please
+     * {@see markAddExternalAttributeButtonAsAComingSoonFeature}
+     */
+    const canAddNewAttributes = useMemo<boolean>(() => {
+        return !attributeConfig
+            ?.editAttributeMappings
+            ?.markAddExternalAttributeButtonAsAComingSoonFeature(dialectID);
+    }, [ dialectID ]);
 
     useEffect(() => {
         if (claims) {
@@ -318,20 +329,33 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
             totalPages={ Math.ceil(filteredClaims?.length / listItemLimit) }
             totalListSize={ filteredClaims?.length }
             rightActionPanel={
-                attributeConfig?.editAttributeMappings?.showAddExternalAttributeButton(dialectID)
-                && hasRequiredScopes(featureConfig?.attributeDialects,
-                    featureConfig?.attributeDialects?.scopes?.create, allowedScopes) && <PrimaryButton
-                    onClick={ (): void => {
-                        setShowAddExternalClaim(true);
-                    } }
-                    disabled={ showAddExternalClaim }
-                    data-testid={ `${ testId }-list-layout-add-button` }
-                >
-                    <Icon name="add" />
-                    { t("console:manage.features.claims.external.pageLayout.edit.primaryAction",
-                        { type: resolveType(attributeType, true) }) }
-                </PrimaryButton>
-            }
+                attributeConfig?.editAttributeMappings?.showAddExternalAttributeButton(dialectID) && hasRequiredScopes(
+                    featureConfig?.attributeDialects,
+                    featureConfig?.attributeDialects?.scopes?.create, allowedScopes
+                ) && (
+                    canAddNewAttributes ? (
+                        <PrimaryButton
+                            onClick={ (): void => setShowAddExternalClaim(true) }
+                            disabled={ showAddExternalClaim }
+                            data-testid={ `${ testId }-list-layout-add-button` }
+                        >
+                            <Icon name="add"/>
+                            { t("console:manage.features.claims.external.pageLayout.edit.primaryAction",
+                                { type: resolveType(attributeType, true) }) }
+                        </PrimaryButton>
+                    ) : (
+                        <SecondaryButton
+                            onClick={ undefined }
+                            disabled={ true }
+                            data-testid={ `${ testId }-list-layout-add-coming-soon-button` }
+                        >
+                            <Icon name="add"/>
+                            { t("console:manage.features.claims.external.pageLayout.edit.primaryAction",
+                                { type: resolveType(attributeType, true) }) }
+                            { !canAddNewAttributes && <span>&nbsp;(Coming Soon)</span> }
+                        </SecondaryButton>
+                    )
+                ) }
             data-testid={ `${ testId }-list-layout` }
         >
             {

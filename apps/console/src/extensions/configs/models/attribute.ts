@@ -39,6 +39,7 @@ export interface AttributeConfig {
     attributesPlaceholderAddButton: (attributeType: string) => boolean;
     editAttributeMappings: {
         showAddExternalAttributeButton: (dialectID: string) => boolean;
+        markAddExternalAttributeButtonAsAComingSoonFeature: (dialectID: string) => boolean;
     };
     editAttributes: {
         getDisplayOrder: (existingDisplayOrder: number, newDisplayOrder: string) => number;
