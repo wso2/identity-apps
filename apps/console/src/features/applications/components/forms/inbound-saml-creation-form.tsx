@@ -17,15 +17,14 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { URLUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import { ContentLoader, FilePicker, FileUpload, Hint, URLInput, XMLFileStrategy } from "@wso2is/react-components";
+import { ContentLoader, FilePicker, Hint, XMLFileStrategy } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Divider, Grid, Icon, Label } from "semantic-ui-react";
-import { getCertificateIllustrations, getEmptyPlaceholderIllustrations } from "../../../core";
+import { Button, Divider, Grid, Icon } from "semantic-ui-react";
+import { getCertificateIllustrations } from "../../../core";
 import { SAMLConfigModes } from "../../models";
 import { commonConfig } from "../../../../extensions";
 
@@ -36,6 +35,10 @@ interface SAMLProtocolCreationWizardFormPropsInterface extends TestableComponent
     initialValues: any;
     creationOption: SAMLConfigModes;
     onSubmit: (values: any) => void;
+    /**
+     * Specifies whether API calls are pending.
+     */
+    isLoading?: boolean;
 }
 
 /**
@@ -53,6 +56,7 @@ export const InboundSAMLCreationForm: FunctionComponent<SAMLProtocolCreationWiza
         initialValues,
         creationOption,
         onSubmit,
+        isLoading,
         ["data-testid"]: testId
     } = props;
 
@@ -220,6 +224,8 @@ export const InboundSAMLCreationForm: FunctionComponent<SAMLProtocolCreationWiza
                                 primary
                                 type="submit"
                                 size="small"
+                                loading={ isLoading }
+                                disabled={ isLoading }
                                 className="form-button"
                                 data-testid={ `${testId}-submit-button` }
                             >
