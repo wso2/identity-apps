@@ -67,6 +67,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
     const [ idpList, setIdpList ] = useState<IdentityProviderInterface[]>(undefined);
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
     /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`
@@ -107,6 +108,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
     };
 
     const addIdentityProvider = (id: string, values: any) => {
+        setIsSubmitting(true);
         updateApplicationConfigurations(id, values)
             .then(() => {
                 dispatch(addAlert({
@@ -138,6 +140,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                 }));
             })
             .finally(() => {
+                setIsSubmitting(false);
                 closeWizard();
             });
     };
@@ -185,6 +188,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                     } }
                     idpList={ idpList }
                     data-testid={ `${ testId }-form` }
+                    isSubmitting={ isSubmitting }
                 />
             ),
             icon: getApplicationWizardStepIcons().general,

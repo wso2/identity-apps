@@ -37,6 +37,10 @@ interface OutboundProvisioningIdpWizardFormPropsInterface extends TestableCompon
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Specifies if the form is being submitted.
+     */
+    isSubmitting?: boolean;
 }
 
 interface DropdownOptionsInterface {
@@ -63,6 +67,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
         onSubmit,
         isEdit,
         readOnly,
+        isSubmitting,
         [ "data-testid" ]: testId
     } = props;
 
@@ -336,6 +341,8 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                                     size="small"
                                     className="form-button"
                                     data-testid={ `${ testId }-submit-button` }
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting }
                                 >
                                     { t("common:update") }
                                 </PrimaryButton>
