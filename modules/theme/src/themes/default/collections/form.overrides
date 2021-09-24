@@ -133,3 +133,17 @@
         }
     }
 }
+
+
+/*-------------------------------
+      Secret Value Editor
+--------------------------------*/
+.ui.form {
+    div{
+        &.edit-button-transition {
+            position: absolute;
+            top: 0;
+            right: -40px;
+        }
+    }
+}

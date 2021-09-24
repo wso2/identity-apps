@@ -285,7 +285,7 @@ const SecretValueForm: FC<SecretValueFormProps> = (props: SecretValueFormProps):
                                 error={ (secretFieldTouched || secretFieldModified) ? fieldError : undefined }
                                 style={ { position: "relative" } }
                             />
-                            <div style={ { position: "absolute", top: 0 , right: "-40px" } }>
+                            <div className={ "edit-button-transition" }  >
                                 <Popup
                                     trigger={ (
                                         <Button
