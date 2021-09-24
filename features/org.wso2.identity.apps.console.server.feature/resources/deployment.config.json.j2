@@ -409,6 +409,7 @@
                     {% endif %}
                 }
             },
+            {% if console.secrets_management is defined %}
             "secretsManagement": {
                 "enabled": {{ console.secrets_management.enabled }},
                 "scopes": {
@@ -435,6 +436,7 @@
                     {% endif %}
                 ],
             },
+            {% endif %}
             {% if console.manage_getting_started is defined %}
             "manageGettingStarted": {
                 "disabledFeatures": [
