@@ -22,7 +22,17 @@ module.exports = {
             plugins: [ "@babel/plugin-transform-modules-commonjs" ]
         }
     },
-    plugins: [ "@babel/plugin-proposal-class-properties" ],
+    plugins: [
+        "@babel/plugin-proposal-class-properties",
+        [
+            "babel-plugin-rename-jsx-attribute",
+            {
+                "attributes": {
+                    "data-suppress": "data-hj-suppress"
+                }
+            }
+        ]
+    ],
     presets: [
         [
             "@babel/preset-env",
