@@ -136,6 +136,8 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
     const [ wizStep, setWizStep ] = useState<number>(0);
     const [ totalStep, setTotalStep ] = useState<number>(0);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -156,6 +158,8 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
         // TODO Uncomment below once template id is supported from IDP REST API
         // Tracked Here - https://github.com/wso2/product-is/issues/11023
         // identityProvider.templateId = template.id;
+
+        setIsSubmitting(true);
 
         createIdentityProvider(identityProvider)
             .then((response) => {
@@ -226,7 +230,11 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
                     message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
                         "genericError.message")
                 });
-            });
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+            })
+;
     };
 
     /**
@@ -342,6 +350,8 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
                                     submitForm();
                                 } }
                                 data-testid={ `${ testId }-modal-finish-button` }
+                                loading={ isSubmitting }
+                                disabled={ isSubmitting }
                             >
                                 { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
                             </PrimaryButton>
@@ -353,6 +363,8 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
                                         submitForm();
                                     } }
                                     data-testid={ `${ testId }-modal-finish-button` }
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting }
                                 >
                                     { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
                                 </PrimaryButton>
@@ -445,7 +457,7 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
                         />
                         <div className="ml-1">
                             { title }
-                            { subTitle && 
+                            { subTitle &&
                                 <Heading as="h6">
                                     { subTitle }
                                     <DocumentationLink
@@ -453,7 +465,7 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
                                     >
                                         { t("common:learnMore") }
                                     </DocumentationLink>
-                                </Heading> 
+                                </Heading>
                             }
                         </div>
                     </div>
