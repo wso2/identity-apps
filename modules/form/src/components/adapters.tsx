@@ -407,7 +407,7 @@ export const QueryParamsAdapter = ({ input, childFieldProps }): ReactElement => 
         <QueryParameters
             label={ childFieldProps.label }
             name={ childFieldProps.name }
-            value={ input.value || childFieldProps.value }
+            value={ input.value }
             onChange={ input.onChange }
         />
     );
