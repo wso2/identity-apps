@@ -355,6 +355,20 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     return;
                 }
 
+                if (error?.response.status === 500 &&
+                    selectedProtocol === "saml" &&
+                    selectedSamlConfigMode === "file" &&
+                    error.response?.data.code === "IDP-65002") {
+                    setAlert({
+                        description: "You are trying to add a provider with an existing Identity" +
+                            " Provider Entity ID or a Service Provider Entity ID.",
+                        level: AlertLevels.ERROR,
+                        message: "There's a Conflicting Entity"
+                    });
+                    setTimeout(() => setAlert(undefined), 8000);
+                    return;
+                }
+
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
                         description: t("console:develop.features.authenticationProvider.notifications." +
