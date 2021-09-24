@@ -75,6 +75,10 @@ export class ProfileConstants {
         .set("DOB", "dateOfBirth")
         .set("LOCAL_CREDENTIAL_EXISTS", "localCredentialExists")
         .set("USER_SOURCE_ID", "userSourceId")
+        .set("ACTIVE", "active")
+        .set("RESROUCE_TYPE", "ResourceType")
+        .set("EXTERNAL_ID", "ExternalID")
+        .set("META_DATA", "MetaData")
         .set("IDP_TYPE", "idpType");
 
     /**
