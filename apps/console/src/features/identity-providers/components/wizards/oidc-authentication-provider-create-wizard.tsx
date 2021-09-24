@@ -64,7 +64,8 @@ interface MinimalAuthenticationProviderCreateWizardPropsInterface extends Testab
  * @param { MinimalAuthenticationProviderCreateWizardPropsInterface } props - Props injected to the component.
  * @return { React.ReactElement }
  */
-export const OidcAuthenticationProviderCreateWizard: FunctionComponent<MinimalAuthenticationProviderCreateWizardPropsInterface> = (
+export const OidcAuthenticationProviderCreateWizard:
+    FunctionComponent<MinimalAuthenticationProviderCreateWizardPropsInterface> = (
     props: MinimalAuthenticationProviderCreateWizardPropsInterface
 ): ReactElement => {
 
