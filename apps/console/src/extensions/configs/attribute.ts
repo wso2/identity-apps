@@ -45,6 +45,14 @@ export const attributeConfig: AttributeConfig = {
         return true;
     },
     editAttributeMappings: {
+        /**
+         * Disables and marks the dialect add new attribute button as a
+         * coming soon feature.
+         * - @param dialectID: string
+         */
+        markAddExternalAttributeButtonAsAComingSoonFeature() {
+            return false;
+        },
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         showAddExternalAttributeButton: (dialectID: string): boolean => {
             return true;
