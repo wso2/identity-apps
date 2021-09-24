@@ -41,9 +41,6 @@ import { ReactComponent as DragSquaresIcon } from "../../../themes/default/asset
 import { ReactComponent as ForbiddenIcon } from "../../../themes/default/assets/images/icons/forbidden-icon.svg";
 import { ReactComponent as GearsIcon } from "../../../themes/default/assets/images/icons/gears-icon.svg";
 import { ReactComponent as LockIcon } from "../../../themes/default/assets/images/icons/lock-icon.svg";
-import {
-    ReactComponent as LockIconFilled
-} from "../../../themes/default/assets/images/icons/lock.svg";
 import { ReactComponent as MaximizeIcon } from "../../../themes/default/assets/images/icons/maximize-icon.svg";
 import { ReactComponent as IDPMetadataIcon } from "../../../themes/default/assets/images/icons/metadata.svg";
 import { ReactComponent as MinimizeIcon } from "../../../themes/default/assets/images/icons/minimize-icon.svg";
@@ -79,6 +76,9 @@ import { ReactComponent as PaperRocketIcon } from "../../../themes/default/asset
 import { ReactComponent as PinIcon } from "../../../themes/default/assets/images/icons/pin-icon.svg";
 import { ReactComponent as PlugIcon } from "../../../themes/default/assets/images/icons/plug-icon.svg";
 import { ReactComponent as ScopeIcon } from "../../../themes/default/assets/images/icons/scope.svg";
+import {
+    ReactComponent as LockIconFilled
+} from "../../../themes/default/assets/images/icons/secret-grey.svg";
 import {
     ReactComponent as DarkModeIcon
 } from "../../../themes/default/assets/images/icons/solid-icons/crescent-icon.svg";
