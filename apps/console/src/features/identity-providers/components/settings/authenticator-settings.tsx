@@ -220,7 +220,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         if (index >= 0) {
             values.properties.push(authenticator.data.properties[index]);
         }
-    }
+    };
 
     const handleGetFederatedAuthenticatorAPICallError = (error) => {
         if (error.response && error.response.data && error.response.data.description) {
@@ -626,6 +626,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                         prop.description = "These  will be sent to the identity provider as query parameters in the " +
                             "authentication request. \nE.g., loginHint=hint1";
                     } else if (prop.key === "IsBasicAuthEnabled") {
+                        prop.displayName = "Enable HTTP basic authentication for client authentication";
                         prop.description = "Specify whether to enable HTTP basic authentication. Unless, client " +
                             "credentials will be sent in the request body";
                     }
