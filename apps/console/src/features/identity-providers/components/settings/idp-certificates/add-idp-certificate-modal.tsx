@@ -246,7 +246,7 @@ export const AddIdpCertificateModal: FC<AddIdPCertificateModalV2Props> = (props)
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <PrimaryButton
-                                disabled={ submitShouldBeDisabled }
+                                disabled={ submitShouldBeDisabled || requestInProgress }
                                 floated="right"
                                 loading={ requestInProgress }
                                 onClick={ onWizardFinish }
