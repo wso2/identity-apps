@@ -183,7 +183,7 @@ export const getSidePanelIcons = () => {
         remoteFetch: CodeForkIcon,
         roles: BriefcaseIcon,
         scopes: ScopeIcon,
-        secrets: LockIcon,
+        secrets: KeyOutlineIcon,
         serverConfigurations: GearsIcon,
         userStore: DatabaseIcon,
         users: UserIcon
