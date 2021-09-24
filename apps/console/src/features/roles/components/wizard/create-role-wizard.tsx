@@ -314,6 +314,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                 triggerSubmit={ submitPermissionList }
                 initialValues={ wizardState && wizardState[ WizardStepsFormTypes.PERM_LIST ] }
                 onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.PERM_LIST) }
+                isSubmitting={ isSubmitting }
             />
         ),
         icon: <Icon name="key" inverted size="large" />,

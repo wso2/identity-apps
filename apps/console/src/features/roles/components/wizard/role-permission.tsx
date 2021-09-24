@@ -48,6 +48,10 @@ interface PermissionListProp extends  TestableComponentInterface {
      * Permissions to hide.
      */
     permissionsToHide?: string[];
+    /**
+     * Specifies if the form is submitting
+     */
+    isSubmitting?: boolean;
 }
 
 /**
@@ -66,6 +70,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
         isEdit,
         initialValues,
         isRole,
+        isSubmitting,
         permissionsToHide,
         [ "data-testid" ]: testId
     } = props;
@@ -101,7 +106,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                 checkedNodes.push(getNodeByKey(key, permissions));
             });
             setCheckedPermission(checkedNodes);
-        } 
+        }
 
         if (isRole && roleObject) {
             setPreviouslyCheckedKeys(roleObject.permissions);
@@ -128,7 +133,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
 
     /**
      * Utill method to disable super admin permissions when `isSuperAdmin` is false.
-     * 
+     *
      * @param isSuperAdmin is super admin check
      * @param permissionTree permission tree to change
      */
@@ -145,7 +150,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
 
     /**
      * Util function to disable checking of a node and it's children.
-     * 
+     *
      * @param permissionNodes - array of permission nodes
      * @param state - disable state
      */
@@ -160,9 +165,9 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
 
     /**
      * Event handler when a node is checked on the permission tree.
-     * 
+     *
      * @param checked - checked states of the node
-     * @param info - checked information 
+     * @param info - checked information
      */
     const onCheck = (checked: { checked: React.ReactText[]; halfChecked: React.ReactText[] }, info) => {
         if (info.checked) {
@@ -170,7 +175,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                 const parentNode: TreeNode = getNodeByKey(info.node.key, permissions, true);
                 let checkedChildren: number = 1;
                 parentNode?.children?.forEach((childPermission: TreeNode) => {
-                    if ( checkedPermission.filter((checkedPermission: TreeNode) => 
+                    if ( checkedPermission.filter((checkedPermission: TreeNode) =>
                         checkedPermission.key === childPermission.key).length > 0 ) {
                         ++checkedChildren;
                     }
@@ -192,7 +197,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
 
     /**
      * Util method to find a node from a given key.
-     * 
+     *
      * @param key - key to be found
      * @param permissionTree - permission tree to traverse
      * @param isParent - condition to find the parent of the key node
@@ -219,7 +224,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     };
 
     /**
-     * Util method to get a custom expander icon for 
+     * Util method to get a custom expander icon for
      * the tree nodes.
      * @param eventObject - event object
      */
@@ -274,6 +279,8 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                                     data-testid={ `${ testId }-update-button` }
                                     primary
                                     type="submit"
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting }
                                     size="small"
                                     className="form-button"
                                 >
