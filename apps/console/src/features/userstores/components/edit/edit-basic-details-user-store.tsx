@@ -78,6 +78,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
     const [ showMore, setShowMore ] = useState(false);
     const [ confirmDelete, setConfirmDelete ] = useState(false);
     const [ enabled, setEnabled ] = useState<boolean>(undefined);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const { t } = useTranslation();
 
@@ -265,6 +266,8 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
             ]
             : requiredData;
 
+        setIsSubmitting(true);
+
         patchUserStore(id, patchData).then(() => {
             dispatch(addAlert({
                 description: t("console:manage.features.userstores.notifications." +
@@ -295,6 +298,8 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                 message: error?.message || t("console:manage.features.userstores.notifications." +
                     "updateUserstore.genericError.message")
             }));
+        }).finally(() => {
+                setIsSubmitting(false);
         });
     };
 
@@ -399,7 +404,8 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                 }
                                 {
                                     <Field
-                                        label={ t("console:manage.features.userstores.forms.general.description.label") }
+                                        label={
+                                            t("console:manage.features.userstores.forms.general.description.label") }
                                         name="description"
                                         disabled={ id == CONSUMER_USERSTORE_ID }
                                         type="textarea"
@@ -677,7 +683,11 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                         }
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 8 }>
-                                <PrimaryButton data-testid={ `${ testId }-form-submit-button` }>
+                                <PrimaryButton
+                                    data-testid={ `${ testId }-form-submit-button` }
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting }
+                                >
                                     { t("common:update") }
                                 </PrimaryButton>
                             </Grid.Column>
