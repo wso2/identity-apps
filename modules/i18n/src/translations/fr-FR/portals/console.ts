@@ -6186,28 +6186,27 @@ export const console: ConsoleNS = {
                         deleteUserZone: {
                             actionTitle: "Supprimer l'utilisateur",
                             header: "Supprimer l'utilisateur",
-                            subheader: "Cette action est irréversible et supprimera définitivement l'utilisateur. " +
-                                "Êtes-vous ABSOLUMENT certain de vouloir supprimer cet utilisateur ?"
+                            subheader: "Cette action supprimera définitivement l'utilisateur de l'organisation. " +
+                                "Veuillez être certain avant de continuer."
                         },
                         disableUserZone: {
-                            actionTitle: "Supprimer l'utilisateur",
-                            header: "Supprimer l'utilisateur",
-                            subheader: "Cette action est irréversible et supprimera définitivement l'utilisateur. " +
-                                "Êtes-vous ABSOLUMENT certain de vouloir supprimer cet utilisateur ?"
+                            actionTitle: "Désactiver l'utilisateur",
+                            header: "Désactiver l'utilisateur",
+                            subheader: "Une fois que vous avez désactivé un compte, l'utilisateur ne peut pas " +
+                                "accéder au système."
                         },
                         header: "Zone sensible",
                         lockUserZone: {
-                            actionTitle: "Supprimer l'utilisateur",
-                            header: "Supprimer l'utilisateur",
-                            subheader: "Cette action est irréversible et supprimera définitivement l'utilisateur. " +
-                                "Êtes-vous ABSOLUMENT certain de vouloir supprimer cet utilisateur ?"
+                            actionTitle: "Verrouiller l'utilisateur",
+                            header: "Verrouiller l'utilisateur",
+                            subheader: "Une fois le compte verrouillé, l'utilisateur ne peut plus se connecter au " +
+                                "système."
                         },
                         passwordResetZone: {
                             actionTitle: "Réinitialiser le mot de passe",
                             header: "Réinitialiser le mot de passe",
-                            subheader: "Une fois le mot de passe modifié, l'utilisateur ne pourra plus se " +
-                                "connecter à aucune application en utilisant le mot de passe actuel. " +
-                                "S'il vous plaît soyez certain."
+                            subheader: "Une fois le mot de passe modifié, l'utilisateur ne pourra plus se connecter " +
+                                "à aucune application en utilisant le mot de passe actuel."
                         }
                     }
                 },
@@ -6215,7 +6214,7 @@ export const console: ConsoleNS = {
                     addUserForm: {
                         buttons: {
                             radioButton: {
-                                label: "Sélectionner la méthode d'initialisation du mot de passe",
+                                label: "Sélectionnez la méthode pour réinitialiser le mot de passe utilisateur",
                                 options: {
                                     askPassword: "Invitez l'utilisateur à définir son propre mot de passe",
                                     createPassword: "Définissez un mot de passe temporaire pour l'utilisateur"
@@ -6276,7 +6275,7 @@ export const console: ConsoleNS = {
                                     empty: "Le nom d'utilisateur est obligatoire",
                                     invalid: "Ce nom d'utilisateur n'est pas disponible.",
                                     invalidCharacters: "Le nom d'utilisateur semble contenir des caractères non valides.",
-                                    regExViolation: "Saisissez un e-mail valide entre 3 et 50 caractères. Vous pouvez " +
+                                    regExViolation: "Votre email doit contenir de 3 à 50 caractères. Vous pouvez " +
                                         "utiliser des caractères alphanumériques, caractères Unicode, " +
                                         "des traits de soulignement (_), des tirets (-), des signes plus (+), " +
                                         "des points (.), et un signe arobase (@)."
@@ -6349,14 +6348,14 @@ export const console: ConsoleNS = {
                     changePasswordModal: {
                         button: "réinitialiser le mot de passe",
                         header: "Réinitialiser le mot de passe de l'utilisateur",
-                        message: "REMARQUE: veuillez noter qu'après avoir modifié le mot de passe, l'utilisateur ne " +
+                        message: "ATTENTION: veuillez noter qu'après avoir modifié le mot de passe, l'utilisateur ne " +
                             "pourra plus se connecter à aucune application en utilisant le mot de passe actuel.",
                         hint: {
-                            forceReset: "REMARQUE: Veuillez noter qu'après avoir invité l'utilisateur à réinitialiser " +
+                            forceReset: "ATTENTION: Veuillez noter qu'après avoir invité l'utilisateur à réinitialiser " +
                                 "le mot de passe, l'utilisateur ne pourra plus se connecter à aucune application en " +
                                 "utilisant le mot de passe actuel. Le lien de réinitialisation du mot de passe sera " +
                                 "valide pendant {{codeValidityPeriod}} minutes.",
-                            setPassword: "REMARQUE: veuillez noter qu'après avoir modifié le mot de passe, l'utilisateur ne " +
+                            setPassword: "ATTENTION: veuillez noter qu'après avoir modifié le mot de passe, l'utilisateur ne " +
                                 "pourra plus se connecter à aucune application en utilisant le mot de passe actuel."
                         },
                         passwordOptions: {
@@ -6804,7 +6803,7 @@ export const console: ConsoleNS = {
                                 empty: "Le nom d'utilisateur est obligatoire",
                                 invalid: "Ce nom d'utilisateur n'est pas disponible.",
                                 invalidCharacters: "Le nom d'utilisateur semble contenir des caractères non valides.",
-                                regExViolation: "Saisissez un e-mail valide entre 3 et 50 caractères. Vous pouvez " +
+                                regExViolation: "Votre email doit contenir de 3 à 50 caractères. Vous pouvez " +
                                     "utiliser des caractères alphanumériques, caractères Unicode, " +
                                     "des traits de soulignement (_), des tirets (-), des signes plus (+), " +
                                     "des points (.), et un signe arobase (@)."
@@ -6821,7 +6820,7 @@ export const console: ConsoleNS = {
                                 empty: "Le nom d'utilisateur est obligatoire",
                                 invalid: "Ce nom d'utilisateur n'est pas disponible.",
                                 invalidCharacters: "Le nom d'utilisateur semble contenir des caractères non valides.",
-                                regExViolation: "Saisissez un e-mail valide entre 3 et 50 caractères. Vous pouvez " +
+                                regExViolation: "Votre email doit contenir de 3 à 50 caractères. Vous pouvez " +
                                     "utiliser des caractères alphanumériques, caractères Unicode, " +
                                     "des traits de soulignement (_), des tirets (-), des points (.), " +
                                     "et un signe arobase (@)."

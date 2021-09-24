@@ -7516,26 +7516,25 @@ export const console: ConsoleNS = {
                         deleteUserZone: {
                             actionTitle: "Delete User",
                             header: "Delete user",
-                            subheader: "Once you delete a user, there is no going back. Please be certain."
+                            subheader: "This action will permanently delete the user from the organization. Please " +
+                                "be certain before you proceed."
                         },
                         disableUserZone: {
                             actionTitle: "Disable User",
                             header: "Disable user",
-                            subheader: "Once you disable an account, the user can not access the system. Please " +
-                                "be certain."
+                            subheader: "Once you disable an account, the user cannot access the system."
                         },
                         header: "Danger Zone",
                         lockUserZone: {
                             actionTitle: "Lock User",
                             header: "Lock user",
-                            subheader: "Once you lock the account, the user can no longer log in to the system. " +
-                                "Please be certain."
+                            subheader: "Once you lock the account, the user can no longer log in to the system."
                         },
                         passwordResetZone: {
                             actionTitle: "Reset Password",
                             header: "Reset password",
                             subheader: "Once you change the password, the user will no longer be able to log in to " +
-                                "any application using the current password. Please be certain."
+                                "any application using the current password."
                         }
                     }
                 },
@@ -7543,7 +7542,7 @@ export const console: ConsoleNS = {
                     addUserForm: {
                         buttons: {
                             radioButton: {
-                                label: "Select the method to set the user password",
+                                label: "Select the method to reset the user password",
                                 options: {
                                     askPassword: "Invite the user to set their own password",
                                     createPassword: "Set a temporary password for the user"
@@ -7604,7 +7603,7 @@ export const console: ConsoleNS = {
                                     empty: "Username is a required field",
                                     invalid: "A user already exists with this username.",
                                     invalidCharacters: "Username seems to contain invalid characters.",
-                                    regExViolation: "Enter a valid email between 3 and 50 characters. You can use " +
+                                    regExViolation: "Your email must contain 3 to 50 characters. You can use " +
                                         "alphanumeric characters, unicode characters, underscores (_), dashes (-), " +
                                         "plus signs (+), periods (.), and an at sign (@)."
                                 }
@@ -7676,13 +7675,13 @@ export const console: ConsoleNS = {
                     changePasswordModal: {
                         button: "Reset Password",
                         header: "Reset User Password",
-                        message: "NOTE: Please note that after changing the password the user will no longer be " +
+                        message: "WARNING: Please note that after changing the password the user will no longer be " +
                             "able to log into any application using the current password.",
                         hint: {
-                            forceReset: "NOTE: Please note that after inviting the user to change the password " +
+                            forceReset: "WARNING: Please note that after inviting the user to change the password " +
                                 "the user will no longer be able to log into any application using the current " +
                                 "password. The password reset link will be valid for {{codeValidityPeriod}} minutes.",
-                            setPassword: "NOTE: Please note that after changing the password the user will no longer be " +
+                            setPassword: "WARNING: Please note that after changing the password the user will no longer be " +
                                 "able to log into any application using the current password."
                         },
                         passwordOptions: {
@@ -8112,7 +8111,7 @@ export const console: ConsoleNS = {
                                 empty: "Username is a required field",
                                 invalid: "A user already exists with this username.",
                                 invalidCharacters: "Username seems to contain invalid characters.",
-                                regExViolation: "Enter a valid email between 3 and 50 characters. You can use " +
+                                regExViolation: "Your email must contain 3 to 50 characters. You can use " +
                                     "alphanumeric characters, unicode characters, underscores (_), dashes (-), " +
                                     "plus signs (+), periods (.), and an at sign (@)."
                             }
@@ -8128,7 +8127,7 @@ export const console: ConsoleNS = {
                                 empty: "Username is a required field",
                                 invalid: "A user already exists with this username.",
                                 invalidCharacters: "Username seems to contain invalid characters.",
-                                regExViolation: "Enter a valid email between 3 and 50 characters. You can use " +
+                                regExViolation: "Your email must contain 3 to 50 characters. You can use " +
                                 "alphanumeric characters, unicode characters, underscores (_), dashes (-), " +
                                     "periods (.), and an at sign (@)."
                             }
