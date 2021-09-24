@@ -21,8 +21,6 @@ import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { updateGroupDetails } from "../../../groups/api";
-import { PatchGroupDataInterface } from "../../../groups/models";
 import { updateRoleDetails } from "../../api";
 import { PRIMARY_DOMAIN } from "../../constants";
 import { CreateRoleMemberInterface, PatchRoleDataInterface } from "../../models";
@@ -48,6 +46,7 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
     } = props;
 
     const [ currentUserStore, setCurrentUserStore ] = useState<string>(undefined);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     useEffect(() => {
         const roleName = roleObject.displayName;
@@ -85,6 +84,8 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
             schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
         };
 
+        setIsSubmitting(true);
+
         updateRoleDetails(roleObject.id, roleData)
             .then(() => {
                 handleAlerts({
@@ -94,12 +95,14 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
                 });
                 onRoleUpdate();
             }).catch(() => {
-            handleAlerts({
-                description: t("console:manage.features.roles.notifications.updateRole.error.description"),
-                level: AlertLevels.ERROR,
-                message: t("console:manage.features.roles.notifications.updateRole.error.message")
+                handleAlerts({
+                    description: t("console:manage.features.roles.notifications.updateRole.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.roles.notifications.updateRole.error.message")
+                });
+            }).finally(() => {
+                setIsSubmitting(false);
             });
-        });
     };
 
     return (
@@ -111,6 +114,7 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
             userStore={ currentUserStore }
             assignedUsers={ roleObject.users }
             onSubmit={ onUserUpdate }
+            isSubmitting={ isSubmitting }
         />
     );
 };
