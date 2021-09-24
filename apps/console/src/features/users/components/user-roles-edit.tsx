@@ -21,8 +21,7 @@ import {
     AlertInterface,
     AlertLevels,
     ProfileInfoInterface,
-    RolesInterface,
-    RolesMemberInterface
+    RolesInterface
 } from "@wso2is/core/models";
 import {
     ContentLoader,
@@ -131,6 +130,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
 
     const [ assignedRoles, setAssignedRoles ] = useState([]);
     const [ displayedRoles, setDisplayedRoles ] = useState([]);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     useEffect(() => {
         if (!selectedRoleId) {
@@ -384,6 +384,8 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             });
         }
 
+        setIsSubmitting(true);
+
         updateResources(bulkData)
             .then(() => {
                 onAlertFired({
@@ -429,6 +431,9 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                         "genericError.message"
                     )
                 });
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
     };
 
@@ -627,6 +632,8 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                             <PrimaryButton
                                 data-testid="user-mgt-update-roles-modal-save-button"
                                 floated="right"
+                                loading={ isSubmitting }
+                                disabled={ isSubmitting }
                                 onClick={ () => updateUserRole(user, selectedRoleList) }
                             >
                                 { t("common:save") }
