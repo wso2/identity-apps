@@ -56,8 +56,9 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
     const initCheck = useRef(true);
 
     const requestedComparator = (selectedList: ExtendedExternalClaimInterface[]) => {
+        const filteredSelectedList = selectedList.filter(item => !!item)
         return (claim: ExtendedExternalClaimInterface): number => {
-            return (selectedList?.findIndex(item => item.id === claim.id) >= 0) ? -1 : 1;
+            return (filteredSelectedList?.findIndex(item => item.id === claim.id) >= 0) ? -1 : 1;
         };
     };
 
