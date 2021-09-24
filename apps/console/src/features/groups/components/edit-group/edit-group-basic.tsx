@@ -85,9 +85,10 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
     const [ labelText, setLableText ] = useState<string>("");
     const [ nameValue, setNameValue ] = useState<string>("");
     const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
-    
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+
     const userStore: string = groupObject?.displayName?.split("/")?.length > 1
-        ? groupObject.displayName.split("/")[0]  
+        ? groupObject.displayName.split("/")[0]
         : SharedUserStoreConstants.PRIMARY_USER_STORE;
 
     useEffect(() => {
@@ -178,6 +179,8 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
             schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
         };
 
+        setIsSubmitting(true);
+
         updateGroupDetails(groupObject.id, groupData)
             .then(() => {
                 onGroupUpdate();
@@ -192,7 +195,10 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                 level: AlertLevels.ERROR,
                 message: t("console:manage.features.groups.notifications.updateGroup.error.message")
             });
-        });
+            }).finally(() => {
+                setIsSubmitting(false);
+            })
+;
     };
 
     return (
@@ -268,8 +274,9 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                                         if (response.data.Resources[0]?.id !== groupId) {
                                                             validation.isValid = false;
                                                             validation.errorMessages.push(
-                                                                t("console:manage.features.roles.addRoleWizard." +
-                                                                    "forms.roleBasicDetails.roleName.validations.duplicate",
+                                                                t("console:manage.features.roles." + "addRoleWizard." +
+                                                                    "forms.roleBasicDetails.roleName." +
+                                                                    "validations.duplicate",
                                                                     { type: "Group" }));
                                                         }
                                                     }
@@ -305,13 +312,14 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                             primary
                                             type="submit"
                                             size="small"
+                                            loading={ isSubmitting }
                                             className="form-button"
                                             data-testid={
                                                 isGroup
                                                     ? `${ testId }-group-update-button`
                                                     : `${ testId }-role-update-button`
                                             }
-                                            disabled={ !isRegExLoading }
+                                            disabled={ !isRegExLoading || isSubmitting }
                                         >
                                             { t("console:manage.features.roles.edit.basics.buttons.update") }
                                         </Button>
