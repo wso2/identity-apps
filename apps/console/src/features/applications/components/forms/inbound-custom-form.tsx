@@ -55,6 +55,11 @@ interface InboundCustomFormPropsInterface extends TestableComponentInterface {
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Specifies if API calls are pending.
+     */
+    isLoading?: boolean;
+
 }
 
 /**
@@ -74,6 +79,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
         initialValues,
         onSubmit,
         readOnly,
+        isLoading,
         [ "data-testid" ]: testId
     } = props;
 
@@ -468,7 +474,14 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                     !readOnly && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Button primary type="submit" size="small" className="form-button">
+                                <Button
+                                    primary
+                                    type="submit"
+                                    size="small"
+                                    className="form-button"
+                                    loading={ isLoading }
+                                    disabled={ isLoading }
+                                >
                                     { t("common:update") }
                                 </Button>
                             </Grid.Column>
