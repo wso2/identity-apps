@@ -90,7 +90,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
-    const [isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ idpList, setIdpList ] = useState<IdentityProviderInterface[]>(undefined);
     const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>(defaultActiveIndexes);
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();

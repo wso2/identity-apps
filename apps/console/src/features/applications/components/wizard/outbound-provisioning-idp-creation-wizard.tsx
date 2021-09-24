@@ -67,7 +67,8 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
     const [ idpList, setIdpList ] = useState<IdentityProviderInterface[]>(undefined);
-    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+
 
     /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`
@@ -125,7 +126,8 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.updateApplication.error.message")
+                        message: t(
+                            "console:develop.features.applications.notifications.updateApplication.error.message")
                     }));
 
                     return;
@@ -262,6 +264,8 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                                     floated="right"
                                     onClick={ navigateToNext }
                                     data-testid={ `${ testId }-finish-button` }
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting }
                                 >
                                     { t("common:finish") }
                                 </PrimaryButton>
