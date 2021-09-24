@@ -262,7 +262,7 @@
                                         <label class="control-label">
                                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "First.name")%>
                                         </label>
-                                        <input type="text" name="http://wso2.org/claims/givenname" class="form-control"
+                                        <input type="text" name="http://wso2.org/claims/givenname" class="form-control" id="firstname"
                                             <% if (firstNamePII.getRequired() || !piisConfigured) {%> required <%}%>
                                             <% if (skipSignUpEnableCheck && StringUtils.isNotEmpty(firstNameValue)) { %>
                                                value="<%= Encode.forHtmlAttribute(firstNameValue)%>" disabled <% } %>>
@@ -278,7 +278,7 @@
                                         <label class="control-label">
                                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Last.name")%>
                                         </label>
-                                        <input type="text" name="http://wso2.org/claims/lastname" class="form-control"
+                                        <input type="text" name="http://wso2.org/claims/lastname" class="form-control" id="lastname"
                                             <% if (lastNamePII.getRequired() || !piisConfigured) {%> required <%}%>
                                             <% if (skipSignUpEnableCheck && StringUtils.isNotEmpty(lastNameValue)) { %>
                                                value="<%= Encode.forHtmlAttribute(lastNameValue)%>" disabled <% } %>>
@@ -708,6 +708,17 @@
                 }
 
                 if (invalidInput) {
+                    return false;
+                }
+
+                var firstname = $("#firstname").val();
+                var lastname = $("#lastname").val();
+
+                if (!firstname.trim() || !lastname.trim()) {
+                    error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                        "Invalid.firstname.or.lastname")%>");
+                    error_msg.show();
+                    $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
                     return false;
                 }
 
