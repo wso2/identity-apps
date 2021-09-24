@@ -78,6 +78,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
     const [ pem, setPem ] = useState("");
     const [ file, setFile ] = useState<File>(null);
     const [ certificate, setCertificate ] = useState<X509>(null);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const [ firstStep, setFirstStep ] = useTrigger();
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
@@ -95,6 +96,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
      * Imports the certificate.
      */
     const handleSubmit = (): void => {
+        setIsSubmitting(true);
         createKeystoreCertificate(data).then(() => {
             dispatch(addAlert({
                 description: t("console:manage.features.certificates.keystore.notifications." +
@@ -115,6 +117,8 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
                     || t("console:manage.features.certificates.keystore.notifications." +
                         "addCertificate.genericError.message")
             });
+        }).finally(() => {
+            setIsSubmitting(false);
         });
     };
 
@@ -289,6 +293,8 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
                                     floated="right"
                                     onClick={ next }
                                     data-testid={ `${ testId }-import-button` }
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting }
                                 >
                                     { t("common:import") }
                                 </PrimaryButton>
