@@ -113,6 +113,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
 
     const [ selectedConfigurationMode, setSelectedConfigurationMode ] = useState<CertificateConfigurationMode>();
     const [ addCertificateModalOpen, setAddCertificateModalOpen ] = useState<boolean>(false);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -166,6 +167,8 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
             "value": values.jwks_endpoint
         } ];
 
+        setIsSubmitting(true);
+
         const doOnSuccess = () => {
             dispatch(addAlert({
                 description: t("console:develop.features.authenticationProvider.notifications." +
@@ -201,7 +204,10 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
 
         updateIDPCertificate(editingIDP.id, PATCH_OBJECT)
             .then(doOnSuccess)
-            .catch(ifTheresAnyError);
+            .catch(ifTheresAnyError)
+            .finally(() => {
+                setIsSubmitting(false);
+            });
 
     };
 
@@ -232,7 +238,10 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
             <Show when={ AccessControlConstants.IDP_EDIT }>
                 <PrimaryButton
                     type="submit"
-                    data-testid={ `${ testId }-save-button` }>
+                    data-testid={ `${ testId }-save-button` }
+                    loading={ isSubmitting }
+                    disabled={ isSubmitting }
+                >
                     { t("common:update") }
                 </PrimaryButton>
             </Show>
