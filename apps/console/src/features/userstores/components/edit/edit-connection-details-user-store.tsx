@@ -76,6 +76,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
     const [ connectionSuccessful, setConnectionSuccessful ] = useState(false);
     const [ isTesting, setIsTesting ] = useState(false);
     const [ sql, setSql ] = useState<Map<string, string>>(null);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const dispatch = useDispatch();
 
@@ -229,6 +230,8 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
             ]
             : requiredData;
 
+        setIsSubmitting(true);
+
         patchUserStore(id, data)
             .then(() => {
                 dispatch(addAlert<AlertInterface>({
@@ -261,6 +264,9 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                     message: error?.message || t("console:manage.features.userstores.notifications." +
                         "updateUserstore.genericError.message")
                 }));
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
     };
 
@@ -605,7 +611,12 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                 }
                 <Grid columns={ 1 }>
                     <Grid.Column width={ 8 }>
-                        <PrimaryButton type="submit" data-testid={ `${ testId }-form-submit-button` }>
+                        <PrimaryButton
+                            type="submit"
+                            data-testid={ `${ testId }-form-submit-button` }
+                            loading={ isSubmitting }
+                            disabled={ isSubmitting }
+                        >
                             { t("common:update") }
                         </PrimaryButton>
                     </Grid.Column>
