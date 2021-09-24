@@ -92,6 +92,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
     const [ initialRoleList, setInitialRoleList ] = useState([]);
     const [ initialTempRoleList, setInitialTempRoleList ] = useState([]);
     const [ primaryRoles, setPrimaryRoles ] = useState(undefined);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     // The following constant holds the state of role already assigned roles.
     const [ primaryRolesList, setPrimaryRolesList ] = useState(undefined);
@@ -304,6 +305,9 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                 bulkData.Operations.push(operation);
             });
         }
+
+        setIsSubmitting(true);
+
         updateResources(bulkData)
             .then(() => {
                 dispatch(addAlert({
@@ -346,6 +350,9 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                         "console:manage.featuresgroups.notifications.updateGroup.genericError.message"
                     )
                 });
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
     };
 
@@ -645,6 +652,8 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                                 data-testid="group-mgt-update-roles-modal-save-button"
                                 floated="right"
                                 onClick={ () => updateUserRole(group, tempRoleList) }
+                                loading={ isSubmitting }
+                                disabled={ isSubmitting }
                             >
                                 { t("common:save") }
                             </PrimaryButton>
