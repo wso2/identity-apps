@@ -38,8 +38,12 @@
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Locale" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="java.util.TreeMap" %>
 <%@ page import="org.json.JSONObject" %>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
@@ -178,6 +182,29 @@
         reCaptchaEnabled = true;
     }
 %>
+<%!
+    /**
+     * Retrieve all county codes and country display names and
+     * store into a map where key/value pair is defined as the
+     * country code/country display name.
+     *
+     * @return {Map<string, string>}
+     */
+    private Map<String, String> getCountryList() {
+        String[] countryCodes = Locale.getISOCountries();
+
+        Map<String, String> mapCountries = new TreeMap<>();
+
+        for (String countryCode : countryCodes) {
+            Locale locale = new Locale("", countryCode);
+            String country_code = locale.getCountry();
+            String country_display_name = locale.getDisplayCountry();
+            mapCountries.put(country_code, country_display_name);
+        }
+
+        return mapCountries;
+    }
+%>
 
 <!doctype html>
 <html>
@@ -199,6 +226,7 @@
     <%
         }
     %>
+    <link rel="stylesheet" href="libs/addons/calendar.min.css"/>
 </head>
 <body class="login-portal layout recovery-layout">
     <main class="center-segment">
@@ -386,6 +414,49 @@
                                     <label <% if (claim.getRequired()) {%> class="control-label" <%}%>>
                                         <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claim.getDisplayName())%>
                                     </label>
+                                    <% if(claimURI.contains("claims/country")) { %>
+                                    <div class="field">
+                                        <div class="ui fluid search selection dropdown"  id="country-dropdown">
+                                            <input
+                                                type="hidden"
+                                                name="<%= Encode.forHtmlAttribute(claimURI) %>"
+                                                <% if (claim.getRequired()) { %>
+                                                required
+                                                <% } %>
+                                                <% if(skipSignUpEnableCheck && StringUtils.isNotEmpty(claimValue)) {%>
+                                                value="<%= Encode.forHtmlAttribute(claimValue)%>" disabled<%}%>
+                                            />
+                                            <i class="dropdown icon"></i>
+                                            <div class="default text"></div>
+                                            <div class="menu">
+                                                <c:forEach items="<%=getCountryList()%>" var="country">
+                                                    <div class="item" data-value="${country.value}">
+                                                        <i class="${country.key.toLowerCase()} flag"></i>
+                                                        ${country.value}
+                                                    </div>
+                                                </c:forEach>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% } else if (claimURI.contains("claims/dob")) { %>
+                                    <div class="field">
+                                        <div class="ui calendar" id="date_picker">
+                                            <div class="ui input right icon" style="width: 100%;">
+                                                <i class="calendar icon"></i>
+                                                <input
+                                                    type="text"
+                                                    autocomplete="off"
+                                                    name="<%= Encode.forHtmlAttribute(claimURI) %>"
+                                                <% if (claim.getRequired()) { %>
+                                                    required
+                                                <% } %>
+                                                <% if(skipSignUpEnableCheck && StringUtils.isNotEmpty(claimValue)) {%>
+                                                    value="<%= Encode.forHtmlAttribute(claimValue)%>" disabled<%}%>
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% } else { %>
                                     <input type="text" name="<%= Encode.forHtmlAttribute(claimURI) %>"
                                            class="form-control"
                                         <% if (claim.getValidationRegex() != null) { %>
@@ -400,6 +471,7 @@
                                 <%
                                         }
                                     }
+                                }
                                 %>
                             </div>
 
@@ -677,6 +749,30 @@
                     registrationBtn.prop("disabled", false).removeClass("disabled");
                 } else {
                     registrationBtn.prop("disabled", true).addClass("disabled");
+                }
+            });
+
+            $("#country-dropdown").dropdown('hide');
+
+            $("#date_picker").calendar({
+                type: 'date',
+                formatter: {
+                    date: function (date, settings) {
+                        var EMPTY_STRING = "";
+                        var DATE_SEPARATOR = "-";
+                        var STRING_ZERO = "0";
+                        if (!date) return EMPTY_STRING;
+                            var day = date.getDate() + EMPTY_STRING;
+                        if (day.length < 2) {
+                            day = STRING_ZERO + day;
+                        }
+                        var month = (date.getMonth() + 1) + EMPTY_STRING;
+                        if (month.length < 2) {
+                            month = STRING_ZERO + month;
+                        }
+                        var year = date.getFullYear();
+                        return year + DATE_SEPARATOR + month + DATE_SEPARATOR + day;
+                    }
                 }
             });
 
@@ -1150,5 +1246,6 @@
 
         });
     </script>
+    <script src="libs/addons/calendar.min.js"></script>
 </body>
 </html>
