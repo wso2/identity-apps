@@ -375,7 +375,7 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                                 onDismiss={ onDismissInfoMessageBanner }
                             >
                                 <Message.Content
-                                    className="mt-2"
+                                    className="mr-2"
                                     data-componentid={ `${ testId }-page-message-content` }>
                                     { t(
                                         "console:develop.features.secrets.banners.secretIsHidden.content",
