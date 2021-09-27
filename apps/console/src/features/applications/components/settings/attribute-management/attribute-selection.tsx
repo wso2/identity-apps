@@ -182,11 +182,12 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     useEffect(() => {
         if (initializationFinished && claimConfigurations) {
             // Stop loader UI for SAML applications.
-            if (selectedDialect.localDialect && availableClaims.length > 0) {
+            if (selectedDialect.localDialect && (availableClaims.length > 0 || selectedClaims.length > 0 )) {
                 setUserAttributesLoading(false);
             }
             //  Stop loader UI for OIDC and SP applications.
-            if (!selectedDialect.localDialect && availableExternalClaims.length > 0) {
+            if (!selectedDialect.localDialect &&
+                (availableExternalClaims.length > 0 || selectedExternalClaims.length > 0)) {
                 setUserAttributesLoading(false);
             }
         }
