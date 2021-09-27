@@ -90,6 +90,7 @@ interface AttributeSelectionPropsInterface extends TestableComponentInterface {
      */
     isUserAttributesLoading?: boolean;
     setUserAttributesLoading?: any;
+    onlyOIDCConfigured?: boolean;
 }
 
 /**
@@ -130,6 +131,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         updateMappings,
         isUserAttributesLoading,
         setUserAttributesLoading,
+        onlyOIDCConfigured,
         [ "data-testid" ]: testId
     } = props;
 
@@ -909,7 +911,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             localDialect={ selectedDialect.localDialect }
                                                                             initialMandatory={
                                                                                 (selectedSubjectValue
-                                                                                    === claim.mappedLocalClaimURI)
+                                                                                    === claim.mappedLocalClaimURI &&
+                                                                                    !onlyOIDCConfigured)
                                                                                     ? true
                                                                                     : claim.mandatory
                                                                             }
@@ -918,7 +921,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             data-testid={ claim.claimURI }
                                                                             readOnly={
                                                                                 (selectedSubjectValue
-                                                                                    === claim.mappedLocalClaimURI)
+                                                                                    === claim.mappedLocalClaimURI &&
+                                                                                    !onlyOIDCConfigured)
                                                                                     ? true
                                                                                     : readOnly
                                                                             }
@@ -930,7 +934,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                     claim.mappedLocalClaimURI)
                                                                             }
                                                                             subject={ selectedSubjectValue
-                                                                                === claim.mappedLocalClaimURI }
+                                                                                === claim.mappedLocalClaimURI &&
+                                                                                !onlyOIDCConfigured }
                                                                         />
                                                                     );
                                                                 })
