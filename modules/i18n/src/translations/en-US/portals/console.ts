@@ -1714,7 +1714,7 @@ export const console: ConsoleNS = {
                                     empty: "Please provide the meta file url",
                                     invalid: "Enter a valid URL"
                                 },
-                                errorMessage: "The metadata Url is invalid"
+                                errorMessage: "The metadata URL is invalid"
                             },
                             mode: {
                                 children: {
