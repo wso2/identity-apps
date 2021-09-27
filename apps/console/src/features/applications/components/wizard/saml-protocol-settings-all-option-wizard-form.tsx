@@ -64,7 +64,9 @@ interface SAMLProtocolAllSettingsWizardFormPropsInterface extends TestableCompon
      */
     setSAMLConfigureMode?: (mode: string) => void;
     issuerRef?: any;
+    metaUrlRef?: any;
     issuerError?: boolean;
+    metaUrlError?: boolean;
     /**
      * Check whether the protocol form changed.
      * @param state - Protocol changed state
@@ -92,7 +94,9 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
         onSubmit,
         setSAMLConfigureMode,
         issuerRef,
+        metaUrlRef,
         issuerError,
+        metaUrlError,
         handleProtocolValueChange,
         ["data-testid"]: testId
     } = props;
@@ -307,7 +311,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                             validation.isValid = false;
                                             validation.errorMessages.push(
                                                 t("console:develop.features.applications.forms.inboundSAML" +
-                                                    ".fields.issuer.duplicateError"));
+                                                    ".fields.issuer.errorMessage"));
                                         }
                                     } }
                                     data-testid={ `${testId}-issuer-input` }
@@ -463,6 +467,8 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Field
                             name="url"
+                            ref={ metaUrlRef }
+                            displayErrorOn={ "blur" }
                             label={
                                 t("console:develop.features.applications.forms.inboundSAML.fields" +
                                     ".metaURL.label")
@@ -483,6 +489,14 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                     validation.errorMessages.push(
                                         t("console:develop.features.applications.forms.inboundSAML" +
                                             ".fields.metaURL.validations.invalid")
+                                    );
+                                }
+
+                                if (metaUrlError) {
+                                    validation.isValid = false;
+                                    validation.errorMessages.push(
+                                        t("console:develop.features.applications.forms.inboundSAML" +
+                                            ".fields.metaURL.errorMessage")
                                     );
                                 }
                             } }

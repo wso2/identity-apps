@@ -1704,7 +1704,7 @@ export const console: ConsoleNS = {
                                 validations: {
                                     empty: "Please provide the issuer"
                                 },
-                                duplicateError: "The issuer already exists."
+                                errorMessage: "The issuer already exists."
                             },
                             metaURL: {
                                 hint: "URL for the meta file",
@@ -1713,7 +1713,8 @@ export const console: ConsoleNS = {
                                 validations: {
                                     empty: "Please provide the meta file url",
                                     invalid: "Enter a valid URL"
-                                }
+                                },
+                                errorMessage: "The metadata Url is invalid"
                             },
                             mode: {
                                 children: {

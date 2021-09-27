@@ -1732,7 +1732,7 @@ export const console: ConsoleNS = {
                                 validations: {
                                     empty: "Veuillez indiquer l'émetteur"
                                 },
-                                duplicateError: "L'émetteur existe déjà."
+                                errorMessage: "L'émetteur existe déjà."
                             },
                             metaURL: {
                                 hint: "URL du fichier de métadonnées",
@@ -1741,7 +1741,8 @@ export const console: ConsoleNS = {
                                 validations: {
                                     empty: "Veuillez indiquer l'URL du fichier de métadonnées",
                                     invalid: "Ceci n'est pas une URL valide"
-                                }
+                                },
+                                errorMessage: "L'URL des métadonnées n'est pas valide"
                             },
                             mode: {
                                 children: {

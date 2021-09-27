@@ -142,9 +142,11 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateInterface>(template);
     const [ allowedOrigins, setAllowedOrigins ] = useState([]);
     const [ issuerError, setIssuerError ] = useState<boolean>(false);
+    const [ metaUrlError, setMetaUrlError ] = useState<boolean>(false);
     const [ protocolValuesChange, setProtocolValuesChange ] = useState<boolean>(false);
     const nameRef = useRef<HTMLDivElement>();
     const issuerRef = useRef<HTMLDivElement>();
+    const metaUrlRef = useRef<HTMLDivElement>();
 
     // Maintain SAML configuration mode
     const [samlConfigureMode, setSAMLConfigureMode] = useState<string>(undefined);
@@ -198,7 +200,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
      * main form, it triggers the submit of the protocol form.
      */
     useEffect(() => {
-        handleIssuerError(false);
+        handleError("all", false);
         if ((!protocolFormValues
             && (template?.authenticationProtocol || template.subTemplates?.length > 0))
             || !generalFormValues) {
@@ -323,8 +325,17 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 if (error.response && error.response.data && error.response.data.code &&
                     error.response.data.code === "SAML-60002") {
                     if (protocolValuesChange) {
-                        handleIssuerError(true);
+                        handleError("issuer", true);
                         scrollToInValidField("issuer");
+                    }
+                    return;
+                }
+
+                if (error.response && error.response.data && error.response.data.code &&
+                    error.response.data.code === "SAML-60003") {
+                    if (protocolValuesChange) {
+                        handleError("metaUrl", true);
+                        scrollToInValidField("metaUrl");
                     }
                     return;
                 }
@@ -357,7 +368,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 scrollToNotification();
             }).finally(() =>{
                 handleProtocolValueChange(false);
-                handleIssuerError(false);
+                handleError("all", false);
         })
     }, [ generalFormValues, protocolFormValues ]);
 
@@ -436,6 +447,14 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 issuerElement.blur();
                 break;
             }
+            case "metaUrl":
+            {
+                metaUrlRef.current.scrollIntoView(options);
+                const metaUrlElement = metaUrlRef.current.children[0].children[1].children[0] as HTMLInputElement;
+                metaUrlElement.focus();
+                metaUrlElement.blur();
+                break;
+            }
         }
     };
 
@@ -453,8 +472,20 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
      *
      * @param state
      */
-    const handleIssuerError = (state: boolean) => {
-        setIssuerError(state);
+    const handleError = (field: string, state: boolean) => {
+        switch (field) {
+            case "issuer":
+                setIssuerError(state);
+                break;
+            case "metaUrl":
+            {
+                setMetaUrlError(state);
+                break;
+            }
+            default:
+                setMetaUrlError(state);
+                setIssuerError(state);
+        }
     }
 
     /**
@@ -484,6 +515,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 <SAMLProtocolAllSettingsWizardForm
                     issuerRef={ issuerRef }
                     issuerError={ issuerError }
+                    metaUrlRef={ metaUrlRef }
+                    metaUrlError={ metaUrlError }
                     handleProtocolValueChange={ handleProtocolValueChange }
                     fields={ [ "issuer", "assertionConsumerURLs" ] }
                     hideFieldHints={ true }

@@ -1685,7 +1685,7 @@ export const console: ConsoleNS = {
                                 validations: {
                                     empty: "කරුණාකර නිකුත් කරන්නාට සපයන්න"
                                 },
-                                duplicateError: "නිකුත් කරන්නා දැනටමත් පවතී."
+                                errorMessage: "නිකුත් කරන්නා දැනටමත් පවතී."
                             },
                             metaURL: {
                                 hint: "මෙටා ගොනුව සඳහා URL",
@@ -1694,7 +1694,8 @@ export const console: ConsoleNS = {
                                 validations: {
                                     empty: "කරුණාකර මෙටා ගොනු url ලබා දෙන්න",
                                     invalid: "මෙය වලංගු URL එකක් නොවේ"
-                                }
+                                },
+                                errorMessage: "පාරදත්ත යූආර්එල් වලංගු නොවේ"
                             },
                             mode: {
                                 children: {

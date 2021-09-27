@@ -93,7 +93,7 @@ export interface FormAttributes extends StrictFormAttributes {
      * This property holds an `alternate` error message for a form field
      * attribute if there are multiple validations.
      */
-    duplicateError?: string;
+    errorMessage?: string;
 }
 
 /**
