@@ -379,7 +379,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                     }
                                 </Grid.Column>
                                 <Grid.Column width={ 11 }>
-                                    <List.Description data-suppress>{ session.ip }</List.Description>
+                                    <List.Description data-suppress="">{ session.ip }</List.Description>
                                 </Grid.Column>
                             </Grid.Row>
                             {

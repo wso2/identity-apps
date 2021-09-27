@@ -83,12 +83,13 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
     } = props;
 
     const resolveDataTestID = (): string => {
-        let listItemValue = "";
+        let listItemValue: string = "";
         if (typeof listItem === "string") {
             listItemValue = listItem;
         } else {
             listItemValue = listItem.listItemValue;
         }
+
         return listItemValue?.split(" ").length > 0
             ? listItemValue?.replace(" ", "-")
             : listItemValue;
