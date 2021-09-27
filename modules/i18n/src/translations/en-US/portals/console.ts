@@ -1703,7 +1703,8 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter issuer",
                                 validations: {
                                     empty: "Please provide the issuer"
-                                }
+                                },
+                                duplicateError: "The issuer already exists."
                             },
                             metaURL: {
                                 hint: "URL for the meta file",

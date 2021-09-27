@@ -1684,7 +1684,8 @@ export const console: ConsoleNS = {
                                 placeholder: "sample-app.com",
                                 validations: {
                                     empty: "කරුණාකර නිකුත් කරන්නාට සපයන්න"
-                                }
+                                },
+                                duplicateError: "නිකුත් කරන්නා දැනටමත් පවතී."
                             },
                             metaURL: {
                                 hint: "මෙටා ගොනුව සඳහා URL",

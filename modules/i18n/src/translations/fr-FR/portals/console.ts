@@ -1731,7 +1731,8 @@ export const console: ConsoleNS = {
                                 placeholder: "sample-app.com",
                                 validations: {
                                     empty: "Veuillez indiquer l'émetteur"
-                                }
+                                },
+                                duplicateError: "L'émetteur existe déjà."
                             },
                             metaURL: {
                                 hint: "URL du fichier de métadonnées",

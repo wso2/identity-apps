@@ -34,7 +34,7 @@ import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import merge from "lodash-es/merge";
 import set from "lodash-es/set";
-import React, { FunctionComponent, ReactElement, ReactNode, Suspense, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, Suspense, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dimmer, Grid } from "semantic-ui-react";
@@ -141,6 +141,10 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const [ generalFormValues, setGeneralFormValues ] = useState<Map<string, FormValue>>(undefined);
     const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateInterface>(template);
     const [ allowedOrigins, setAllowedOrigins ] = useState([]);
+    const [ issuerError, setIssuerError ] = useState<boolean>(false);
+    const [ protocolValuesChange, setProtocolValuesChange ] = useState<boolean>(false);
+    const nameRef = useRef<HTMLDivElement>();
+    const issuerRef = useRef<HTMLDivElement>();
 
     // Maintain SAML configuration mode
     const [samlConfigureMode, setSAMLConfigureMode] = useState<string>(undefined);
@@ -194,6 +198,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
      * main form, it triggers the submit of the protocol form.
      */
     useEffect(() => {
+        handleIssuerError(false);
         if ((!protocolFormValues
             && (template?.authenticationProtocol || template.subTemplates?.length > 0))
             || !generalFormValues) {
@@ -315,6 +320,15 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     return;
                 }
 
+                if (error.response && error.response.data && error.response.data.code &&
+                    error.response.data.code === "SAML-60002") {
+                    if (protocolValuesChange) {
+                        handleIssuerError(true);
+                        scrollToInValidField("issuer");
+                    }
+                    return;
+                }
+
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
                         description: error.response.data.description,
@@ -341,8 +355,11 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     )
                 });
                 scrollToNotification();
-            });
-    }, [ protocolFormValues, generalFormValues ]);
+            }).finally(() =>{
+                handleProtocolValueChange(false);
+                handleIssuerError(false);
+        })
+    }, [ generalFormValues, protocolFormValues ]);
 
     /**
      * Close the wizard.
@@ -397,6 +414,50 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     };
 
     /**
+     * Scrolls to the first field that throws an error.
+     *
+     * @param {string} field The name of the field.
+     */
+    const scrollToInValidField = (field: string): void => {
+        const options: ScrollIntoViewOptions = {
+            behavior: "smooth",
+            block: "center"
+        };
+
+        switch (field) {
+            case "name":
+                nameRef.current.scrollIntoView(options);
+                break;
+            case "issuer":
+            {
+                issuerRef.current.scrollIntoView(options);
+                const issuerElement = issuerRef.current.children[0].children[1].children[0] as HTMLInputElement;
+                issuerElement.focus();
+                issuerElement.blur();
+                break;
+            }
+        }
+    };
+
+    /**
+     * Handles the protocol form values change.
+     *
+     * @param state
+     */
+    const handleProtocolValueChange = (state: boolean) => {
+        setProtocolValuesChange(state);
+    }
+
+    /**
+     * Check whether the Issuer Error exists.
+     *
+     * @param state
+     */
+    const handleIssuerError = (state: boolean) => {
+        setIssuerError(state);
+    }
+
+    /**
      * Resolves the relevant protocol form based on the selected protocol.
      *
      * @return {any}
@@ -421,6 +482,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         } else if (selectedTemplate.authenticationProtocol === SupportedAuthProtocolTypes.SAML) {
             return (
                 <SAMLProtocolAllSettingsWizardForm
+                    issuerRef={ issuerRef }
+                    issuerError={ issuerError }
+                    handleProtocolValueChange={ handleProtocolValueChange }
                     fields={ [ "issuer", "assertionConsumerURLs" ] }
                     hideFieldHints={ true }
                     triggerSubmit={ submitProtocolForm }
@@ -506,6 +570,19 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     setGeneralFormValues(values);
                     setSubmitProtocolForm();
                 } }
+                onSubmitError={ (requiredFields: Map<string, boolean>, validFields: Map<string, Validation>) => {
+                    const iterator = requiredFields.entries();
+                    let result = iterator.next();
+
+                    while (!result.done) {
+                        if (!result.value[ 1 ] || !validFields.get(result.value[ 0 ]).isValid) {
+                            scrollToInValidField(result.value[ 0 ]);
+                            break;
+                        } else {
+                            result = iterator.next();
+                        }
+                    }
+                } }
                 submitState={ submit }
                 id="name-input"
             >
@@ -523,6 +600,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                             <Field
                                 name="name"
+                                ref={ nameRef }
                                 label={ t(
                                     "console:develop.features.applications.forms.generalDetails.fields.name.label"
                                 ) }
@@ -791,6 +869,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                 <PrimaryButton
                                     floated="right"
                                     onClick={ () => {
+                                        setIssuerError(false);
                                         setSubmit();
                                     } }
                                     data-testid={ `${ testId }-next-button` }
