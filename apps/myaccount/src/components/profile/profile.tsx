@@ -445,9 +445,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         }
 
         data.Operations[0].value = value;
-        console.log("data:"+JSON.stringify(data))
         updateProfileInfo(data).then((response) => {
-            console.log("response after update:" + JSON.stringify(response))
             if (response.status === 200) {
                 onAlertFired({
                     description: t(
@@ -1146,6 +1144,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_SOURCE_ID")
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("IDP_TYPE")
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("LOCAL_CREDENTIAL_EXISTS")
+                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACTIVE")
+                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("RESROUCE_TYPE")
+                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EXTERNAL_ID")
+                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_DATA")
                             || (!commonConfig.userProfilePage.showEmail &&
                                 schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"))
                         )) {
