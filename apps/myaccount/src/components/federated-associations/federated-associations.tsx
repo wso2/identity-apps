@@ -104,9 +104,10 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
     }, []);
 
 
-    // TODO: This is intended to disable remove option for the authenticated IDP in External Login section
-    //  (Ideally not necessary). Hence, disable this and linked conditions after proper BE fix.
-    // Issue: https://github.com/wso2/product-is/issues/12380
+    /* TODO: This is intended to disable remove option for the authenticated IDP in External Login section
+       (Ideally not necessary). Hence, disable this and linked conditions after proper BE fix.
+       Issue: https://github.com/wso2/product-is/issues/12380
+    */
     /**
      * This temporary one checks for authenticated IDP.
      */
@@ -122,7 +123,6 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
             }
         });
     }, []);
-
 
     //Todo : Update with relevant linked attribute
     useEffect(() => {

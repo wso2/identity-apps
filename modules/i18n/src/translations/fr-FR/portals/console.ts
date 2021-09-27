@@ -3817,7 +3817,10 @@ export const console: ConsoleNS = {
                     enterprise: {
                         validation: {
                             name: "Merci d'entrer un nom valide",
-                            invalidName: "Merci d'entrer un nom valide"
+                            invalidName: "{{idpName}} n'est pas un nom valide. " +
+                                "Il ne doit pas contenir d'autres caractères alphanumériques, " +
+                                "à l'exception des points (.), des tirets (-), " +
+                                "des traits de soulignement (_) et des espaces."
                         }
                     }
                 }
