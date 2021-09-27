@@ -468,7 +468,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     }
 
     /**
-     * Check whether the Issuer Error exists.
+     * Check the protocol errors.
      *
      * @param state
      */
