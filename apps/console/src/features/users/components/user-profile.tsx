@@ -901,6 +901,25 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         >
                             <Grid>
                                 {
+                                    user.id && (
+                                        <Grid.Row columns={ 1 }>
+                                            <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
+                                                <Form.Field>
+                                                    <label>
+                                                        { t("console:manage.features.user.profile.fields.userId") }
+                                                    </label>
+                                                    <Input
+                                                        name="userID"
+                                                        type="text"
+                                                        value={ user.id }
+                                                        readOnly={ true }
+                                                    />
+                                                </Form.Field>
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    )
+                                }
+                                {
                                     profileSchema
                                     && profileSchema.map((schema: ProfileSchemaInterface, index: number) => {
                                         if (!(schema.name === ProfileConstants?.

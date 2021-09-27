@@ -7690,6 +7690,7 @@ export const console: ConsoleNS = {
                 profile: {
                     fields: {
                         /* eslint-disable @typescript-eslint/camelcase */
+                        userId: "User ID",
                         addresses_home: "Home Address",
                         addresses_work: "Work Address",
                         emails: "Email",

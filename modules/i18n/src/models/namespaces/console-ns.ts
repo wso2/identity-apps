@@ -3588,6 +3588,7 @@ export interface ConsoleNS {
                         generic: {
                             default: string;
                         };
+                        userId: string;
                         emails: string;
                         profileUrl: string;
                         addresses_work: string;

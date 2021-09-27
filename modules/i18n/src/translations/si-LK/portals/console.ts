@@ -6295,6 +6295,7 @@ export const console: ConsoleNS = {
                 profile: {
                     fields: {
                         /* eslint-disable @typescript-eslint/camelcase */
+                        userId: "පරිශීලක ID",
                         addresses_home: "නිවසේ ලිපිනය",
                         addresses_work: "වැඩ ලිපිනය",
                         emails: "විද්යුත් තැපෑල",
