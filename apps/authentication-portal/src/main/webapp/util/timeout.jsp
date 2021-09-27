@@ -28,12 +28,16 @@
 <jsp:include page="countdown.jsp"/>
 
 <%--Include the reusable modal component--%>
+<%
+    String description = "You've been idle in this page for too long. For security reasons," +
+        "you need to start over or you will be redirected to the sign-in page";
+%>
 <jsp:include page="modal.jsp">
-    <jsp:param name="title" value="This login instance is about to timeout!"/>
+    <jsp:param name="title" value="This sign-in instance is about to timeout!"/>
     <jsp:param
             name="description"
-            value="You have been idle in this page for too long. You need to try signing in again."/>
-    <jsp:param name="action_button_text" value="Got it"/>
+            value="<%=description%>"/>
+    <jsp:param name="action_button_text" value="Start over"/>
     <jsp:param name="cancel_button_text" value="Dismiss"/>
 </jsp:include>
 
@@ -166,9 +170,9 @@
             function onTick(time) {
                 if (time.total < Countdown.minutes(PROPS.notifyOnMinute)) {
                     modal.changeDescriptionAsHTML(
-                        "You have been idle in" + SPACE_CHAR + PROPS.pageName + SPACE_CHAR +
-                        "page for too long. You need to try signing in again" + SPACE_CHAR +
-                        "<b>" + Countdown.timeToReadable(time) + "</b>."
+                    "You have been idle in" + SPACE_CHAR + PROPS.pageName + SPACE_CHAR +
+                    "page for too long. For security reasons, you need to start over or you will be redirected " +
+                    "to the sign-in page"  + SPACE_CHAR + "<b>" + Countdown.timeToReadable(time) + "</b>."
                     );
                 }
                 if (time.total === Countdown.minutes(PROPS.notifyOnMinute)) {
