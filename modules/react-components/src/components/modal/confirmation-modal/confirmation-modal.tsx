@@ -153,6 +153,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
      */
     const handleSecondaryActionClick = (e: MouseEvent<HTMLButtonElement>) => {
         setAssertionInput("");
+        setConfirmed(false);
         onSecondaryActionClick(e);
     };
 
@@ -161,6 +162,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
      */
     const handlePrimaryActionClick = (e: MouseEvent<HTMLButtonElement>) => {
         setAssertionInput("");
+        setConfirmed(false);
         onPrimaryActionClick(e);
     };
 
