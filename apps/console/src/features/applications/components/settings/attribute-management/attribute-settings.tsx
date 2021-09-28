@@ -836,6 +836,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                     }
                                     isUserAttributesLoading={ isUserAttributesLoading }
                                     setUserAttributesLoading={ setUserAttributesLoading }
+                                    onlyOIDCConfigured={ onlyOIDCConfigured }
                                     data-testid={ `${ testId }-attribute-selection` }
                                 />
                             </Grid.Column>
