@@ -206,6 +206,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 profileInfo={ profileInfo }
                 size="mini"
                 data-testid={ `${ testId }-user-avatar` }
+                data-suppress=""
             />
         );
 
@@ -319,6 +320,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                 name={ association.username }
                                 data-testid={ `${ testId }-la-avatar` }
                                 spaced="right"
+                                data-suppress=""
                             />
                             <Item.Content verticalAlign="middle">
                                 <Item.Description>
@@ -531,6 +533,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                                             data-testid={ `${ testId }-user-dropdown-avatar` }
                                                             size="x50"
                                                             onClick={ onAvatarClick }
+                                                            data-suppress=""
                                                         />
                                                         <Item.Content verticalAlign="middle">
                                                             <Item.Description
@@ -545,6 +548,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                                                     data-testid={
                                                                         `${ testId }-user-dropdown-display-name`
                                                                     }
+                                                                    data-suppress=""
                                                                 >
                                                                     {
                                                                         isProfileInfoLoading

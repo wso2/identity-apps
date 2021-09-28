@@ -33,7 +33,7 @@ export interface ItemTypeLabelPropsInterface extends LabelProps {
  * Proptypes for the transfer list item component.
  */
 interface TransferListItemPropsInterface extends TableRowProps, TestableComponentInterface {
-    listItem: string;
+    listItem: string | ListItemPropsInterface;
     listItemId: string;
     listItemIndex: number | string;
     listItemTypeLabel?: ItemTypeLabelPropsInterface;
@@ -45,6 +45,14 @@ interface TransferListItemPropsInterface extends TableRowProps, TestableComponen
     showListSubItem?: boolean;
     listSubItem?: ReactNode;
     readOnly?: boolean;
+}
+
+/**
+ * Proptypes for the {@link listItem} when its type is not string.
+ */
+interface ListItemPropsInterface {
+    listItemElement : ReactNode;
+    listItemValue : string;
 }
 
 /**
@@ -74,14 +82,25 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
         [ "data-testid" ]: testId
     } = props;
 
+    const resolveDataTestID = (): string => {
+        let listItemValue: string = "";
+        if (typeof listItem === "string") {
+            listItemValue = listItem;
+        } else {
+            listItemValue = listItem.listItemValue;
+        }
+
+        return listItemValue?.split(" ").length > 0
+            ? listItemValue?.replace(" ", "-")
+            : listItemValue;
+    };
+
     return (
         <Table.Row key={ listItemIndex }>
             <Table.Cell id={ listItemId } collapsing>
                 <Checkbox
                     data-testid={
-                        `${ testId }-${ listItem?.split(" ").length > 0
-                            ? listItem?.replace(" ", "-")
-                            : listItem }-checkbox` }
+                        `${ testId }-${ resolveDataTestID() }-checkbox` }
                     checked={ isItemChecked }
                     onChange={ handleItemChange }
                     onClick={ handleItemClick }
@@ -107,11 +126,20 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
                 showListSubItem ?
                     (
                         <Table.Cell id={ listItemId }>
-                            <div>{ listItem }</div>
+                            {
+                                typeof listItem === "string"
+                                    ? <div>{ listItem }</div>
+                                    : listItem.listItemElement
+                            }
                             <div className={ "transfer-list-sub-content" }>{ listSubItem }</div>
                         </Table.Cell>
-                    ) :
-                    (<Table.Cell id={ listItemId }> { listItem } </Table.Cell>)
+                    ) : (<Table.Cell id={ listItemId }>
+                        {
+                            typeof listItem === "string"
+                                ? <div>{ listItem }</div>
+                                : listItem.listItemElement
+                        }
+                    </Table.Cell>)
             }
             {
                 showSecondaryActions && (
@@ -123,9 +151,7 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
                             trigger={
                                 <Icon
                                     data-testid={
-                                        `${ testId }-${ listItem?.split(" ").length > 0
-                                            ? listItem?.replace(" ", "-")
-                                            : listItem }-icon` }
+                                        `${ testId }-${ resolveDataTestID() }-icon` }
                                     color="grey"
                                     name="key"
                                     onClick={ handleOpenPermissionModal }
