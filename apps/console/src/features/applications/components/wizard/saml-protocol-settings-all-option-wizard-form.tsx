@@ -290,7 +290,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                 <Field
                                     name="issuer"
                                     ref={ issuerRef }
-                                    displayErrorOn={ "blur" }
+                                    displayErrorOn="blur"
                                     label={
                                         t("console:develop.features.applications.forms.inboundSAML" +
                                             ".fields.issuer.label")
@@ -468,7 +468,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                         <Field
                             name="url"
                             ref={ metaUrlRef }
-                            displayErrorOn={ "blur" }
+                            displayErrorOn="blur"
                             label={
                                 t("console:develop.features.applications.forms.inboundSAML.fields" +
                                     ".metaURL.label")

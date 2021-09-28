@@ -323,7 +323,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 }
 
                 if (error.response && error.response.data && error.response.data.code &&
-                    error.response.data.code === "SAML-60002") {
+                    error.response.data.code === ApplicationManagementConstants.ERROR_CODE_ISSUER_EXISTS) {
                     if (protocolValuesChange) {
                         handleError("issuer", true);
                         scrollToInValidField("issuer");
@@ -332,7 +332,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 }
 
                 if (error.response && error.response.data && error.response.data.code &&
-                    error.response.data.code === "SAML-60003") {
+                    error.response.data.code === ApplicationManagementConstants.ERROR_CODE_INVALID_METADATA_URL) {
                     if (protocolValuesChange) {
                         handleError("metaUrl", true);
                         scrollToInValidField("metaUrl");
@@ -461,7 +461,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     /**
      * Handles the protocol form values change.
      *
-     * @param state
+     * @param {boolean} state - Flag to trigger validation.
      */
     const handleProtocolValueChange = (state: boolean) => {
         setProtocolValuesChange(state);
@@ -470,7 +470,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     /**
      * Check the protocol errors.
      *
-     * @param state
+     * @param {boolean} state - Flag to show the error.
      */
     const handleError = (field: string, state: boolean) => {
         switch (field) {
