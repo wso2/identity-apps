@@ -8670,10 +8670,10 @@ export const console: ConsoleNS = {
                     },
                     resendInvite: {
                         assertionHint: "Please confirm your action.",
-                        content: "If you send this invite, earlier invite link will be expired. " +
+                        content: "If you resend the invitation, the previous invitation link will be revoked. " +
                             "Please proceed with caution.",
                         header: "Are you sure?",
-                        message: "This action is  will permanently revoke the earlier invite."
+                        message: "This action will permanently revoke the previous invitation."
                     }
                 },
                 placeholder: {
