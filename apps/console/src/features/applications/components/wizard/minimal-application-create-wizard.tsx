@@ -328,6 +328,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         handleError("issuer", true);
                         scrollToInValidField("issuer");
                     }
+
                     return;
                 }
 
