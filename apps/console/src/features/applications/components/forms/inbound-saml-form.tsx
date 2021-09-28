@@ -19,7 +19,7 @@
 import { AlertInterface, AlertLevels, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils, URLUtils } from "@wso2is/core/utils";
-import { Field, Forms, useTrigger, Validation } from "@wso2is/forms";
+import { Field, Forms, Validation, useTrigger } from "@wso2is/forms";
 import { Code, CopyInputField, Heading, Hint, LinkButton, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
@@ -28,8 +28,9 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, 
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Label } from "semantic-ui-react";
+import { applicationConfig } from "../../../../extensions";
 import { AppState, ConfigReducerStateInterface } from "../../../core";
-import { ApplicationManagementConstants } from "../../constants";
+import { getAvailableNameIDFormats } from "../../../identity-providers/components";
 import {
     CertificateInterface,
     CertificateTypeInterface,
@@ -41,7 +42,6 @@ import {
     SAMLMetaDataInterface
 } from "../../models";
 import { CertificateFormFieldModal } from "../modals";
-import { applicationConfig } from "../../../../extensions";
 import { ApplicationCertificateWrapper } from "../settings/certificate";
 
 interface InboundSAMLFormPropsInterface extends TestableComponentInterface {
@@ -190,7 +190,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
             setSelectedCertType(certificate?.type);
         }
 
-    },[certificate])
+    },[certificate]);
 
     const updateConfiguration = (values) => {
 
@@ -296,15 +296,15 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                 readOnly: true,
                 value: "HTTP_REDIRECT"
             }
-        ]
-        const artBindingCheckbox = { label: "Artifact", readOnly: false, value: "ARTIFACT" }
+        ];
+        const artBindingCheckbox = { label: "Artifact", readOnly: false, value: "ARTIFACT" };
 
         if (isArtifactBindingAllowed) {
             ssoCheckBox.push(artBindingCheckbox);
         }
 
         return ssoCheckBox;
-    }
+    };
 
     /**
      * Scrolls to the first field that throws an error.
@@ -646,7 +646,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         t("console:develop.features.applications.forms.inboundSAML.fields" +
                                             ".idpEntityIdAlias.validations.empty")
                                     }
-                                    validation={(value: string, validation: Validation) => {
+                                    validation={ (value: string, validation: Validation) => {
                                         if (!FormValidation.url(value)) {
                                             validation.errorMessages.push(
                                                 t("console:develop.features.applications.forms.inboundSAML.fields" +
@@ -654,7 +654,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             );
                                             validation.isValid = false;
                                         }
-                                    }}
+                                    } }
                                     value={ initialValues?.idpEntityIdAlias }
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-idp-entity-id-alias-input` }
@@ -884,7 +884,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             ".ssoProfile.fields.bindings.validations.empty")
                                     }
                                     default={ ["HTTP_POST", "HTTP_REDIRECT"] }
-                                    children={ renderSSOProfileCheckBox()}
+                                    children={ renderSSOProfileCheckBox() }
                                     value={
                                         union(initialValues?.singleSignOnProfile?.bindings,
                                             [ "HTTP_POST", "HTTP_REDIRECT" ])
@@ -911,8 +911,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         {
                             isArtifactBindingAllowed
                                 ? (
-                                    <Grid.Row columns={1}>
-                                        <Grid.Column mobile={16} tablet={16} computer={16}>
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                             <Field
                                                 ref={ signatureValidationForArtifactBinding }
                                                 name="signatureValidationForArtifactBinding"
@@ -927,20 +927,20 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                                         ["enableSignatureValidationForArtifactBinding"]
                                                         : []
                                                 }
-                                                children={[
+                                                children={ [
                                                     {
                                                         label: t("console:develop.features.applications.forms.inboundSAML" +
                                                             ".sections.ssoProfile.fields.artifactBinding.label"),
                                                         value: "enableSignatureValidationForArtifactBinding"
                                                     }
-                                                ]}
+                                                ] }
                                                 readOnly={ readOnly }
                                                 disabled={ !isArtifactBindingEnabled }
-                                                data-testid={`${testId}-artifact-binding-signature-validation-checkbox`}
+                                                data-testid={ `${testId}-artifact-binding-signature-validation-checkbox` }
                                             />
                                             <Hint disabled={ !isArtifactBindingEnabled }>
-                                                {t("console:develop.features.applications.forms.inboundSAML.sections" +
-                                                    ".ssoProfile.fields.artifactBinding.hint")}
+                                                { t("console:develop.features.applications.forms.inboundSAML.sections" +
+                                                    ".ssoProfile.fields.artifactBinding.hint") }
                                             </Hint>
                                         </Grid.Column>
                                     </Grid.Row>
@@ -1001,14 +1001,15 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".assertion.fields.nameIdFormat.placeholder")
                                     }
-                                    type="text"
-                                    default={ metadata?.certificateAlias }
+                                    type="dropdown"
+                                    default={ metadata?.defaultNameIdFormat }
                                     required={ false }
                                     requiredErrorMessage={
                                         t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".assertion.fields.nameIdFormat.validations.empty")
                                     }
                                     value={ initialValues?.singleSignOnProfile.assertion.nameIdFormat }
+                                    children={ getAvailableNameIDFormats() }
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-name-id-format-input` }
                                 />
@@ -1620,7 +1621,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </>
                             )
                         }
-                        {/* Certificate Section */}
+                        { /* Certificate Section */ }
                         <ApplicationCertificateWrapper
                             updateCertFinalValue={ setFinalCertValue }
                             updateCertType={ setSelectedCertType }
