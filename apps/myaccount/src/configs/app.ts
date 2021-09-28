@@ -27,7 +27,6 @@ import { store } from "../store";
  * Class to handle application config operations.
  */
 export class Config {
-
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
@@ -35,7 +34,7 @@ export class Config {
      * @hideconstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    private constructor() { }
+    private constructor() {}
 
     /**
      * Get the deployment config.
@@ -79,11 +78,15 @@ export class Config {
             consentManagement: {
                 consent: {
                     addConsent: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents`,
-                    consentReceipt: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents/receipts`,
+                    consentReceipt: `${
+                        this.getDeploymentConfig().serverHost
+                    }/api/identity/consent-mgt/v1.0/consents/receipts`,
                     listAllConsents: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents`
                 },
                 purpose: {
-                    getPurpose: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents/purposes`,
+                    getPurpose: `${
+                        this.getDeploymentConfig().serverHost
+                    }/api/identity/consent-mgt/v1.0/consents/purposes`,
                     list: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents/purposes`
                 }
             },
@@ -91,9 +94,15 @@ export class Config {
             fidoEnd: `${this.getDeploymentConfig().serverHost}/api/users/v2/me/webauthn/finish-registration`,
             fidoMetaData: `${this.getDeploymentConfig().serverHost}/api/users/v2/me/webauthn`,
             fidoStart: `${this.getDeploymentConfig().serverHost}/api/users/v2/me/webauthn/start-registration`,
-            fidoStartUsernameless: `${ this.getDeploymentConfig().serverHost }/api/users/v2/me/webauthn/start-usernameless-registration`,
-            homeRealmIdentifiers: `${this.getDeploymentConfig().serverHost}/api/server/v1/configs/home-realm-identifiers`,
-            isReadOnlyUser: `${ this.getDeploymentConfig().serverHost }/scim2/Me?attributes=${ SCIMConfigs.scimEnterpriseUserClaimUri.isReadOnlyUser }`,
+            fidoStartUsernameless: `${
+                this.getDeploymentConfig().serverHost
+            }/api/users/v2/me/webauthn/start-usernameless-registration`,
+            homeRealmIdentifiers: `${
+                this.getDeploymentConfig().serverHost
+            }/api/server/v1/configs/home-realm-identifiers`,
+            isReadOnlyUser: `${this.getDeploymentConfig().serverHost}/scim2/Me?attributes=${
+                SCIMConfigs.scimEnterpriseUserClaimUri.isReadOnlyUser
+            }`,
             issuer: `${this.getDeploymentConfig().serverHost}/oauth2/token`,
             jwks: `${this.getDeploymentConfig().serverHost}/oauth2/jwks`,
             logout: `${this.getDeploymentConfig().serverHost}/oidc/logout`,
@@ -108,7 +117,9 @@ export class Config {
             totp: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/totp`,
             totpSecret: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/totp/secret`,
             typingDNAMe: `${this.getDeploymentConfig().serverHost}/api/identity/typingdna/v1.0/me/typingpatterns`,
-            typingDNAServer: `${this.getDeploymentConfig().serverHost}/api/identity/typingdna/v1.0/server/typingdnaConfig`,
+            typingDNAServer: `${
+                this.getDeploymentConfig().serverHost
+            }/api/identity/typingdna/v1.0/server/typingdnaConfig`,
             user: `${this.getDeploymentConfig().serverHost}/api/identity/user/v1.0/me`,
             wellKnown: `${this.getDeploymentConfig().serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
         };
@@ -125,8 +136,10 @@ export class Config {
             appName: window["AppUtils"].getConfig().ui.appName,
             appTitle: window["AppUtils"].getConfig().ui.appTitle,
             authenticatorApp: window["AppUtils"].getConfig().ui.authenticatorApp,
-            copyrightText: window[ "AppUtils" ].getConfig().ui.appCopyright
-                .replace("${copyright}", "\u00A9").replace("${year}", new Date().getFullYear()),
+            copyrightText: window["AppUtils"]
+                .getConfig()
+                .ui.appCopyright.replace("${copyright}", "\u00A9")
+                .replace("${year}", new Date().getFullYear()),
             disableMFAforSuperTenantUser: window["AppUtils"].getConfig().ui.disableMFAforSuperTenantUser,
             features: window["AppUtils"].getConfig().ui.features,
             i18nConfigs: window["AppUtils"].getConfig().ui.i18nConfigs,
@@ -141,7 +154,7 @@ export class Config {
         };
     }
 
-        /**
+    /**
      * I18n init options.
      *
      * @remarks
@@ -156,25 +169,23 @@ export class Config {
     public static generateModuleInitOptions(metaFile: MetaI18N): I18nModuleInitOptions {
         return {
             backend: {
-                loadPath: (language, namespace) => generateBackendPaths(
-                    language,
-                    namespace,
-                    window[ "AppUtils" ].getConfig().appBase,
-                    store.getState().config.i18n ?? {
-                        langAutoDetectEnabled: I18nConstants.LANG_AUTO_DETECT_ENABLED,
-                        namespaceDirectories: I18nConstants.BUNDLE_NAMESPACE_DIRECTORIES,
-                        overrideOptions: I18nConstants.INIT_OPTIONS_OVERRIDE,
-                        resourcePath: "/resources/i18n",
-                        xhrBackendPluginEnabled: I18nConstants.XHR_BACKEND_PLUGIN_ENABLED
-                    },
-                    metaFile
-                )
+                loadPath: (language, namespace) =>
+                    generateBackendPaths(
+                        language,
+                        namespace,
+                        window["AppUtils"].getConfig().appBase,
+                        store.getState().config.i18n ?? {
+                            langAutoDetectEnabled: I18nConstants.LANG_AUTO_DETECT_ENABLED,
+                            namespaceDirectories: I18nConstants.BUNDLE_NAMESPACE_DIRECTORIES,
+                            overrideOptions: I18nConstants.INIT_OPTIONS_OVERRIDE,
+                            resourcePath: "/resources/i18n",
+                            xhrBackendPluginEnabled: I18nConstants.XHR_BACKEND_PLUGIN_ENABLED
+                        },
+                        metaFile
+                    )
             },
             load: "currentOnly", // lookup only current lang key(en-US). Prevents 404 from `en`.
-            ns: [
-                I18nConstants.COMMON_NAMESPACE,
-                I18nConstants.PORTAL_NAMESPACE
-            ]
+            ns: [I18nConstants.COMMON_NAMESPACE, I18nConstants.PORTAL_NAMESPACE]
         };
     }
 
