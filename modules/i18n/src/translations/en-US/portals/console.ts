@@ -5764,8 +5764,10 @@ export const console: ConsoleNS = {
                             validationErrorMessages: {
                                 duplicateName: "The {{type}} attribute already exists.",
                                 invalidName: "The name you entered contains illegal characters. " +
-                                    "Only alphabets, numbers, `#`, and `_` are allowed."
-                            }
+                                    "Only alphabets, numbers, `#`, and `_` are allowed.",
+                                scimInvalidName: "The name should start with alphabets. " +
+                                    "Only alphabets, numbers, `-`, and `_` are allowed."
+                            },
                         },
                         localAttribute: {
                             label: "User Attribute to map to",

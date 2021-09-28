@@ -4423,7 +4423,9 @@ export const console: ConsoleNS = {
                             validationErrorMessages: {
                                 duplicateName: "L'URI de l'attribut {{type}} existe déjà.",
                                 invalidName: "Le nom que vous avez entré contient des caractères non autorisés. " +
-                                    "Seuls les alphabets, les nombres, «#», «_» sont autorisés."
+                                    "Seuls les alphabets, les nombres, «#», «_» sont autorisés.",
+                                scimInvalidName: "Le nom doit commencer par des alphabets. " +
+                                    "Seuls les alphabets, les nombres, «-», «_» sont autorisés."
                             }
                         },
                         localAttribute: {

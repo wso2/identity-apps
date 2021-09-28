@@ -261,6 +261,14 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                             { type: resolveType(attributeType) }));
                                     }
                                 }
+                                if (attributeType === ClaimManagementConstants.SCIM) {
+                                    if (!value.toString().match(/^[a-zA-Z]([-/_/\w]+)*$/)) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push(t("console:manage.features.claims.external" +
+                                            ".forms.attributeURI.validationErrorMessages.scimInvalidName",
+                                            { type: resolveType(attributeType) }));
+                                    }
+                                }
                             } }
                         />
 

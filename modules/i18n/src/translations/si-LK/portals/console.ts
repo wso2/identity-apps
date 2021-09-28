@@ -4361,7 +4361,9 @@ export const console: ConsoleNS = {
                             validationErrorMessages: {
                                 duplicateName: "{{Type}} ගුණාංගය දැනටමත් පවතී.",
                                 invalidName: "ඔබ ඇතුළත් කළ නමේ නීති විරෝධී අක්ෂර අඩංගු වේ. " +
-                                    "අවසර දී ඇත්තේ අක්ෂර, අංක, `#`, `_` පමණි."
+                                    "අවසර දී ඇත්තේ අක්ෂර, අංක, `#`, `_` පමණි.",
+                                scimInvalidName: "නම හෝඩිවලින් ආරම්භ විය යුතුය. " +
+                                    "අවසර දී ඇත්තේ අක්ෂර, අංක, `-`, `_` පමණි."
                             }
                         },
                         localAttribute: {
