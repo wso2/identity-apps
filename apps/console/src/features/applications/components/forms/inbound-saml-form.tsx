@@ -30,7 +30,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Label } from "semantic-ui-react";
 import { applicationConfig } from "../../../../extensions";
 import { AppState, ConfigReducerStateInterface } from "../../../core";
-import { getAvailableNameIDFormats } from "../../../identity-providers/components/utils/saml-idp-utils";
+import { getAvailableNameIDFormats } from "../../../identity-providers/components";
 import {
     CertificateInterface,
     CertificateTypeInterface,
