@@ -88,7 +88,10 @@ export const Link: FunctionComponent<PropsWithChildren<LinkPropsInterface>> = (
             target={ target }
             rel="noopener noreferrer"
             className={ classes }
-            onClick={ onClick }
+            onClick={ (e: SyntheticEvent) => {
+                e.preventDefault();
+                onClick(e);
+            } }
         >
             { external && icon && iconPosition === "left" && <Icon className="mr-1" name={ icon } /> }
             { children }
@@ -105,5 +108,6 @@ Link.defaultProps = {
     external: true,
     icon: "external",
     iconPosition: "right",
+    link: "#",
     target: "_blank"
 };
