@@ -262,7 +262,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                     }
                                 }
                                 if (attributeType === ClaimManagementConstants.SCIM) {
-                                    if (!value.toString().match(/^[a-zA-Z]([-/_/\w]+)*$/)) {
+                                    if (!value.toString().match(/^[a-zA-Z]([-_\w])+$/)) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(t("console:manage.features.claims.external" +
                                             ".forms.attributeURI.validationErrorMessages.scimInvalidName",
