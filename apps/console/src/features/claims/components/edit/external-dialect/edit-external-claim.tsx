@@ -254,7 +254,6 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                                             { type: resolveType(attributeType) })
                                     }
                                     type="text"
-                                    readOnly={ true }
                                     value={ addedClaim.claimURI }
                                     data-testid={ `${ testId }-form-claim-uri-input` }
                                     validation={ (value: string, validation: Validation) => {
