@@ -285,12 +285,12 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         let value: any = {};
 
         // this splits for the sub-attributes
-        const schemaNames = formName.split(".");
+        const schemaNames: string[] = formName.split(".");
 
         let isCanonical = false;
 
         // this splits for the canonical types
-        const schemaNamesCanonicalType = schemaNames[0].split("#");
+        const schemaNamesCanonicalType: string[] = schemaNames[0].split("#");
         if(schemaNamesCanonicalType.length !== 1){
             isCanonical = true;
         }
