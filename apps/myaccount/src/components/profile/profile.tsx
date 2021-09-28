@@ -99,6 +99,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     // }, [profileDetails]);
 
     /**
+     * Interface for the canonical attributes.
+     */
+    interface canonicalAttribute {
+        [key: string]: string;
+    }
+
+    /**
      * Set the if the email verification is pending.
      */
     useEffect(() => {
@@ -145,12 +152,12 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             profileSchema.forEach((schema: ProfileSchema) => {
 
                 // this splits for the sub-attributes
-                const schemaNames = schema.name.split(".");
+                const schemaNames: string[] = schema.name.split(".");
 
                 let isCanonical = false;
 
                 // this splits for the canonical types
-                const schemaNamesCanonicalType = schemaNames[0].split("#");
+                const schemaNamesCanonicalType: string[] = schemaNames[0].split("#");
                 if(schemaNamesCanonicalType.length !== 1){
                     isCanonical = true;
                 }
@@ -201,7 +208,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
                     } else if (isCanonical) {
                         let indexOfType = -1;
-                        profileDetails?.profileInfo[schemaNamesCanonicalType[0]]?.forEach((canonical: any) => {
+                        profileDetails?.profileInfo[schemaNamesCanonicalType[0]]?.forEach((canonical: canonicalAttribute) => {
                             if(schemaNamesCanonicalType[1] === canonical?.type) {
                                 indexOfType = profileDetails?.profileInfo[schemaNamesCanonicalType[0]].indexOf(canonical);
                             }
