@@ -29,7 +29,7 @@
 
 <%--Include the reusable modal component--%>
 <%
-    String description = "You've been idle in this page for too long. For security reasons," +
+    String description = "You have been idle in this page for too long. For security reasons," +
         "you need to start over or you will be redirected to the sign-in page";
 %>
 <jsp:include page="modal.jsp">
@@ -115,7 +115,7 @@
     try {
 
         String _serviceProvider = request.getParameter("sp");
-        String _userTenantDomain = request.getParameter("ut");
+        String _userTenantDomain = request.getParameter("t");
         String _tenantDomain = getTenantDomainFromContext();
         ApplicationDataRetrievalClient _client = new ApplicationDataRetrievalClient();
         String _accessUrl = _client.getApplicationAccessURL(_tenantDomain, _serviceProvider);
