@@ -18,7 +18,7 @@
 
 import { DocumentationConstants } from "@wso2is/core/constants";
 import { DocumentationProviders, DocumentationStructureFileTypes } from "@wso2is/core/models";
-import { I18nModuleOptionsInterface } from "@wso2is/i18n";
+import { generateBackendPaths, I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N } from "@wso2is/i18n";
 import { getApplicationsResourceEndpoints } from "../../applications";
 import { getCertificatesResourceEndpoints } from "../../certificates";
 import { getClaimResourceEndpoints } from "../../claims";
@@ -100,14 +100,54 @@ export class Config {
         };
     }
 
+     /**
+     * I18n init options.
+     *
+     * @remarks
+     * Since the portals are not deployed per tenant, looking for static resources in tenant qualified URLs will fail.
+     * Using `appBaseNameWithoutTenant` will create a path without the tenant. Therefore, `loadPath()` function will
+     * look for resource files in `https://localhost:9443/<PORTAL>/resources/i18n` rather than looking for the
+     * files in `https://localhost:9443/t/wso2.com/<PORTAL>/resources/i18n`.
+     *
+     * @param
+     * @return {I18nModuleInitOptions} I18n init options.
+     */
+    public static generateModuleInitOptions(metaFile: MetaI18N): I18nModuleInitOptions {
+        return {
+            backend: {
+                loadPath: (language, namespace) => generateBackendPaths(
+                    language,
+                    namespace,
+                    window[ "AppUtils" ].getConfig().appBase,
+                    Config.getI18nConfig() ?? {
+                        langAutoDetectEnabled: I18nConstants.LANG_AUTO_DETECT_ENABLED,
+                        namespaceDirectories: I18nConstants.BUNDLE_NAMESPACE_DIRECTORIES,
+                        overrideOptions: I18nConstants.INIT_OPTIONS_OVERRIDE,
+                        resourcePath: "/resources/i18n",
+                        xhrBackendPluginEnabled: I18nConstants.XHR_BACKEND_PLUGIN_ENABLED
+                    },
+                    metaFile
+                )
+            },
+            load: "currentOnly", // lookup only current lang key(en-US). Prevents 404 from `en`.
+            ns: [
+                I18nConstants.COMMON_NAMESPACE,
+                I18nConstants.CONSOLE_PORTAL_NAMESPACE,
+                I18nConstants.EXTENSIONS_NAMESPACE
+            ]
+        };
+    }
+
     /**
      * Get i18n module config.
      *
+     * @param {MetaI18N} metaFile Meta file.
+     *
      * @return {I18nModuleOptionsInterface} i18n config object.
      */
-    public static getI18nConfig(): I18nModuleOptionsInterface {
+    public static getI18nConfig(metaFile?: MetaI18N): I18nModuleOptionsInterface {
         return {
-            initOptions: I18nConstants.MODULE_INIT_OPTIONS,
+            initOptions: this.generateModuleInitOptions(metaFile),
             langAutoDetectEnabled: I18nConstants.LANG_AUTO_DETECT_ENABLED,
             namespaceDirectories: I18nConstants.BUNDLE_NAMESPACE_DIRECTORIES,
             overrideOptions: I18nConstants.INIT_OPTIONS_OVERRIDE,
