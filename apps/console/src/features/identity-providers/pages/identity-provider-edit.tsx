@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -39,11 +40,12 @@ import {
     FeatureConfigInterface,
     history
 } from "../../core";
-import { getIdentityProviderDetail, getMultiFactorAuthenticatorDetails } from "../api";
+import { getIdentityProviderDetail, getLocalAuthenticator, getMultiFactorAuthenticatorDetails } from "../api";
 import { EditIdentityProvider, EditMultiFactorAuthenticator } from "../components";
 import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorMeta } from "../meta";
 import {
+    AuthenticatorInterface,
     IdentityProviderInterface,
     IdentityProviderTemplateItemInterface,
     IdentityProviderTemplateLoadingStrategies,
@@ -90,7 +92,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     const [
         connector,
         setConnector
-    ] = useState<IdentityProviderInterface | MultiFactorAuthenticatorInterface>(undefined);
+    ] = useState<IdentityProviderInterface | MultiFactorAuthenticatorInterface | AuthenticatorInterface>(undefined);
     const [
         isConnectorDetailsFetchRequestLoading,
         setConnectorDetailFetchRequestLoading
@@ -276,40 +278,57 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
      * Retrieves the local authenticator details from the API.
      *
      * @param {string} id - Authenticator id.
+     * @param {boolean} useAuthenticatorsAPI - Use the 
      */
-    const getMultiFactorAuthenticator = (id: string): void => {
+    const getMultiFactorAuthenticator = (id: string, useAuthenticatorsAPI: boolean = true): void => {
 
         setConnectorDetailFetchRequestLoading(true);
 
-        getMultiFactorAuthenticatorDetails(id)
-            .then((response) => {
-                setConnector(response);
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
+        /**
+         * Get authenticator details from either governance API or `authenticators` API.
+         * @param {(id: string) => Promise<T>} cb - Callback.
+         * @return {Promise<T>}
+         */
+        const getAuthenticatorDetails = <T extends unknown>(cb: (id: string) => Promise<T>) => {
+
+            cb(id)
+                .then((response: T) => {
+                    setConnector(response);
+                })
+                .catch((error: IdentityAppsApiException) => {
+                    if (error.response && error.response.data && error.response.data.description) {
+                        dispatch(addAlert({
+                            description: t("console:develop.features.authenticationProvider." +
+                                "notifications.getConnectionDetails.error.description",
+                                { description: error.response.data.description }),
+                            level: AlertLevels.ERROR,
+                            message: t("console:develop.features.authenticationProvider." +
+                                "notifications.getConnectionDetails.error.message")
+                        }));
+
+                        return;
+                    }
+
                     dispatch(addAlert({
                         description: t("console:develop.features.authenticationProvider." +
-                            "notifications.getConnectionDetails.error.description",
-                            { description: error.response.data.description }),
+                            "notifications.getConnectionDetails.genericError.description"),
                         level: AlertLevels.ERROR,
                         message: t("console:develop.features.authenticationProvider." +
-                            "notifications.getConnectionDetails.error.message")
+                            "notifications.getConnectionDetails.genericError.message")
                     }));
+                })
+                .finally(() => {
+                    setConnectorDetailFetchRequestLoading(false);
+                });
+        };
 
-                    return;
-                }
+        if (useAuthenticatorsAPI) {
+            getAuthenticatorDetails<AuthenticatorInterface>(getLocalAuthenticator);
 
-                dispatch(addAlert({
-                    description: t("console:develop.features.authenticationProvider." +
-                        "notifications.getConnectionDetails.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:develop.features.authenticationProvider." +
-                        "notifications.getConnectionDetails.genericError.message")
-                }));
-            })
-            .finally(() => {
-                setConnectorDetailFetchRequestLoading(false);
-            });
+            return;
+        }
+
+        getAuthenticatorDetails<MultiFactorAuthenticatorInterface>(getMultiFactorAuthenticatorDetails);
     };
 
     /**

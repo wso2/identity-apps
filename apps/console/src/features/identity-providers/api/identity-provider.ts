@@ -697,6 +697,7 @@ export const updateIDPRoleMappings = (
  * Get the list of local authenticators.
  *
  * @return {Promise<LocalAuthenticatorInterface[]>} Response as a promise.
+ * @throws {IdentityAppsApiException}
  */
 export const getLocalAuthenticators = (): Promise<LocalAuthenticatorInterface[]> => {
 
@@ -726,6 +727,49 @@ export const getLocalAuthenticators = (): Promise<LocalAuthenticatorInterface[]>
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 IdentityProviderManagementConstants.LOCAL_AUTHENTICATORS_FETCH_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Get Local Authenticator details from `t/<TENANT>>/api/server/v1/configs/authenticators/<AUTHENTICATOR_ID>`
+ *
+ * @param {string} id - Authenticator ID.
+ * @return {Promise<AuthenticatorInterface>} Response as a promise.
+ * @throws {IdentityAppsApiException}
+ */
+export const getLocalAuthenticator = (id: string): Promise<AuthenticatorInterface> => {
+
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${ store.getState().config.endpoints.localAuthenticators }/${ id }`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse<AuthenticatorInterface>) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    IdentityProviderManagementConstants.LOCAL_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                IdentityProviderManagementConstants.LOCAL_AUTHENTICATOR_FETCH_ERROR,
                 error.stack,
                 error.code,
                 error.request,
@@ -799,6 +843,7 @@ export const getAuthenticators = (filter?: string, type?: AuthenticatorTypes): P
  * Get all authenticator tags
  *
  * @return {Promise<string[]>} Response as a promise.
+ * @throws {IdentityAppsApiException}
  */
 export const getAuthenticatorTags = (): Promise<string[]> => {
 
@@ -837,11 +882,11 @@ export const getAuthenticatorTags = (): Promise<string[]> => {
 };
 
 /**
- * Get the details of a Multi-factor authenticator.
+ * Get the details of a Multi-factor authenticator using the MFA connectors in Governance APIs.
  *
  * @param {string} id - Authenticator ID.
- *
  * @return {Promise<MultiFactorAuthenticatorInterface>} Response as a promise.
+ * @throws {IdentityAppsApiException}
  */
 export const getMultiFactorAuthenticatorDetails = (id: string): Promise<MultiFactorAuthenticatorInterface> => {
 

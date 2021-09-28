@@ -37,7 +37,7 @@ import React, {
     SyntheticEvent,
     useState
 } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Icon, List } from "semantic-ui-react";
 import { handleIDPDeleteError } from "./utils";
@@ -59,8 +59,6 @@ import {
     AuthenticatorInterface,
     ConnectedAppInterface,
     ConnectedAppsInterface,
-    FederatedAuthenticatorListItemInterface,
-    FederatedAuthenticatorListResponseInterface,
     IdentityProviderInterface,
     StrictIdentityProviderInterface
 } from "../models";
@@ -155,7 +153,6 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
         setShowDeleteErrorDueToConnectedAppsModal
     ] = useState<boolean>(false);
     const [ isAppsLoading, setIsAppsLoading ] = useState<boolean>(true);
-    const [ showCustomEditView, setShowCustomEditView ] = useState<boolean>(false);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
@@ -356,35 +353,8 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                         return (
                             <Fragment key={ index }>
                                 <ResourceGrid.Card
-                                    editButtonLabel={
-                                        authenticatorConfig?.editFlowOverrides?.editActionLabel
-                                            ?? t("common:setup")
-                                    }
+                                    editButtonLabel={ t("common:setup") }
                                     onEdit={ (e: MouseEvent<HTMLButtonElement>) => {
-                                        // If edit flow override is defined, set the custom edit view flag to true.
-                                        if (authenticatorConfig?.editFlowOverrides) {
-                                            eventPublisher.compute(() => {
-                                                eventPublisher.publish("connections-click-template-connect", { "type":
-                                                    isIdP 
-                                                        ? AuthenticatorMeta.getAuthenticatorTemplateName(
-                                                            (authenticator as IdentityProviderInterface)
-                                                                .federatedAuthenticators?.defaultAuthenticatorId)
-                                                            ? AuthenticatorMeta.getAuthenticatorTemplateName(
-                                                                (authenticator as IdentityProviderInterface)
-                                                                    .federatedAuthenticators?.defaultAuthenticatorId) 
-                                                            : "other"
-                                                        : AuthenticatorMeta
-                                                            .getAuthenticatorTemplateName(authenticator.id)
-                                                            ? AuthenticatorMeta
-                                                                .getAuthenticatorTemplateName(authenticator.id) 
-                                                            : ""
-                                                });
-                                            });
-
-                                            setShowCustomEditView(true);
-                                            return;
-                                        }
-
                                         eventPublisher.compute(() => {
                                             eventPublisher.publish("connections-click-template-setup", { "type":
                                                 isIdP 
@@ -451,13 +421,6 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                     }
                                     data-testid={ `${ testId }-${ authenticator.name }` }
                                 />
-                                {
-                                    // Engage the custom edit view from config.
-                                    authenticatorConfig?.editFlowOverrides?.getEditView(showCustomEditView,
-                                        () => setShowCustomEditView(false),
-                                        t,
-                                        testId)
-                                }
                             </Fragment>
                         );
                     })

@@ -236,6 +236,10 @@ export class IdentityProviderManagementConstants {
         "status code while fetching local authenticators.";
     public static readonly LOCAL_AUTHENTICATORS_FETCH_ERROR: string = "An error occurred while fetching the local" +
         "authenticators.";
+    public static readonly LOCAL_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
+        "status code while fetching the local authenticator.";
+    public static readonly LOCAL_AUTHENTICATOR_FETCH_ERROR: string = "An error occurred while fetching the " +
+        "local authenticator.";
     public static readonly AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while fetching the authenticators.";
     public static readonly AUTHENTICATORS_FETCH_ERROR: string = "An error occurred while fetching the " +
