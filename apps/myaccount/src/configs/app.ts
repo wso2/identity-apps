@@ -79,13 +79,11 @@ export class Config {
             consentManagement: {
                 consent: {
                     addConsent: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents`,
-                    consentReceipt: `${this.getDeploymentConfig().serverHost}
-                                                        /api/identity/consent-mgt/v1.0/consents/receipts`,
+                    consentReceipt: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents/receipts`,
                     listAllConsents: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents`
                 },
                 purpose: {
-                    getPurpose: `${this.getDeploymentConfig().serverHost}
-                                                        /api/identity/consent-mgt/v1.0/consents/purposes`,
+                    getPurpose: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents/purposes`,
                     list: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents/purposes`
                 }
             },
@@ -93,12 +91,9 @@ export class Config {
             fidoEnd: `${this.getDeploymentConfig().serverHost}/api/users/v2/me/webauthn/finish-registration`,
             fidoMetaData: `${this.getDeploymentConfig().serverHost}/api/users/v2/me/webauthn`,
             fidoStart: `${this.getDeploymentConfig().serverHost}/api/users/v2/me/webauthn/start-registration`,
-            fidoStartUsernameless: `${ this.getDeploymentConfig().serverHost }
-                /api/users/v2/me/webauthn/start-usernameless-registration`,
-            homeRealmIdentifiers: `${this.getDeploymentConfig().serverHost}
-                                        /api/server/v1/configs/home-realm-identifiers`,
-            isReadOnlyUser: `${ this.getDeploymentConfig().serverHost }
-                /scim2/Me?attributes=${ SCIMConfigs.scimEnterpriseUserClaimUri.isReadOnlyUser }`,
+            fidoStartUsernameless: `${ this.getDeploymentConfig().serverHost }/api/users/v2/me/webauthn/start-usernameless-registration`,
+            homeRealmIdentifiers: `${this.getDeploymentConfig().serverHost}/api/server/v1/configs/home-realm-identifiers`,
+            isReadOnlyUser: `${ this.getDeploymentConfig().serverHost }/scim2/Me?attributes=${ SCIMConfigs.scimEnterpriseUserClaimUri.isReadOnlyUser }`,
             issuer: `${this.getDeploymentConfig().serverHost}/oauth2/token`,
             jwks: `${this.getDeploymentConfig().serverHost}/oauth2/jwks`,
             logout: `${this.getDeploymentConfig().serverHost}/oidc/logout`,
@@ -113,8 +108,7 @@ export class Config {
             totp: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/totp`,
             totpSecret: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/totp/secret`,
             typingDNAMe: `${this.getDeploymentConfig().serverHost}/api/identity/typingdna/v1.0/me/typingpatterns`,
-            typingDNAServer: `${this.getDeploymentConfig().serverHost}
-                                        /api/identity/typingdna/v1.0/server/typingdnaConfig`,
+            typingDNAServer: `${this.getDeploymentConfig().serverHost}/api/identity/typingdna/v1.0/server/typingdnaConfig`,
             user: `${this.getDeploymentConfig().serverHost}/api/identity/user/v1.0/me`,
             wellKnown: `${this.getDeploymentConfig().serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
         };
