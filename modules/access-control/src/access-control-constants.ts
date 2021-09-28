@@ -212,4 +212,24 @@ export class AccessControlConstants {
      */
     public static readonly FULL_UI_SCOPE: string = "console:full";
 
+    /**
+     * Secret Management Write/Create Scope.
+     */
+    public static readonly SECRET_WRITE: string = "internal_secret_mgt_add";
+
+    /**
+     * Secret Management Read Scope.
+     */
+    public static readonly SECRET_READ: string = "internal_secret_mgt_view";
+
+    /**
+     * Secret Management Edit/Update Scope.
+     */
+    public static readonly SECRET_EDIT: string = "internal_secret_mgt_update";
+
+    /**
+     * Secret Management Delete/Remove Scope.
+     */
+    public static readonly SECRET_DELETE: string = "internal_secret_mgt_delete";
+
 }
