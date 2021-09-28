@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, SyntheticEvent } from "react";
-import { Button, Checkbox, CheckboxProps, Header, Responsive, Segment } from "semantic-ui-react";
+import { Button, Checkbox, CheckboxProps, Header, Responsive, Segment, Popup } from "semantic-ui-react";
 
 /**
  * Danger zone component Prop types.
@@ -45,6 +45,14 @@ export interface DangerZoneProps extends TestableComponentInterface {
      * @param {React.SyntheticEvent<HTMLButtonElement>} e - Click event.
      */
     onActionClick: (e: SyntheticEvent<HTMLButtonElement>) => void;
+    /**
+     * Button disable state.
+     */
+    isButtonDisabled?: boolean;
+    /**
+     * Button disable hint.
+     */
+    buttonDisableHint?: string;
 }
 
 /**
@@ -84,6 +92,8 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
         subheader,
         onActionClick,
         toggle,
+        isButtonDisabled,
+        buttonDisableHint,
         [ "data-testid" ]: testId
     } = props;
 
@@ -106,20 +116,36 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
                         data-testid={ `${ testId }-toggle` }
                     />
                     :
-                    <Button
-                        data-testid={ testId + "-delete-button" }
-                        fluid={ window.innerWidth <= Responsive.onlyTablet.maxWidth }
-                        negative
-                        className={
-                            (window.innerWidth <= Responsive.onlyTablet.maxWidth)
-                                ? "mb-1x mt-1x"
-                                : ""
+                    <Popup
+                        trigger={
+                            <div
+                                className={
+                                    (window.innerWidth <= Responsive.onlyTablet.maxWidth)
+                                        ? "mb-1x mt-1x inline-button button-width"
+                                        : "inline-button"
+                                }
+                            >
+                                <Button
+                                    data-testid={ testId + "-delete-button" }
+                                    fluid={ window.innerWidth <= Responsive.onlyTablet.maxWidth }
+                                    negative
+                                    onClick={ onActionClick }
+                                    disabled={ isButtonDisabled }
+                                >
+                                    { actionTitle }
+                                </Button>
+                            </div>
                         }
-                        floated="right"
-                        onClick={ onActionClick }
-                    >
-                        { actionTitle }
-                    </Button>
+                        content={ buttonDisableHint }
+                        position={
+                            (window.innerWidth <= Responsive.onlyTablet.maxWidth)
+                                ? "top center"
+                                : "top right"
+                        }
+                        size="mini"
+                        wide
+                        disabled={ !isButtonDisabled || !buttonDisableHint }
+                    />
             }
         </Segment>
     );

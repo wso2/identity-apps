@@ -6204,7 +6204,9 @@ export const console: ConsoleNS = {
                             actionTitle: "Réinitialiser le mot de passe",
                             header: "Réinitialiser le mot de passe",
                             subheader: "Une fois le mot de passe modifié, l'utilisateur ne pourra plus se connecter " +
-                                "à aucune application en utilisant le mot de passe actuel."
+                                "à aucune application en utilisant le mot de passe actuel.",
+                            buttonHint: "Ce compte utilisateur doit être déverrouillé pour réinitialiser le mot de " +
+                                "passe."
                         }
                     }
                 },

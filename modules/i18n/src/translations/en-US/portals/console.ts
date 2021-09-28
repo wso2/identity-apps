@@ -7531,7 +7531,8 @@ export const console: ConsoleNS = {
                             actionTitle: "Reset Password",
                             header: "Reset password",
                             subheader: "Once you change the password, the user will no longer be able to log in to " +
-                                "any application using the current password."
+                                "any application using the current password.",
+                            buttonHint: "This user account should be unlocked to reset the password."
                         }
                     }
                 },
