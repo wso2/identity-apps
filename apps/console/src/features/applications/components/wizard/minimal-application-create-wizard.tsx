@@ -338,6 +338,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         handleError("metaUrl", true);
                         scrollToInValidField("metaUrl");
                     }
+
                     return;
                 }
 
