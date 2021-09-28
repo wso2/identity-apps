@@ -173,7 +173,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
     const resolveClaimURIName = (): string => {
         const parts = addedClaim.claimURI.split(":");
         if (parts.length > 1) {
-            return parts[ parts.length - 1 ];
+            return parts[parts.length - 1];
         }
         return addedClaim.claimURI;
     };
