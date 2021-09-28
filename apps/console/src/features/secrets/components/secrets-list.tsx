@@ -16,13 +16,14 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
-    AnimatedAvatar,
     AppAvatar,
     ConfirmationModal,
-    DataTable, GenericIcon,
+    DataTable,
+    GenericIcon,
     GridLayout,
     TableActionsInterface,
     TableColumnInterface,
@@ -30,10 +31,10 @@ import {
 } from "@wso2is/react-components";
 import React, { FC, Fragment, ReactElement, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Header, Message, SemanticICONS } from "semantic-ui-react";
 import { EmptySecretListPlaceholder } from "./empty-secret-list-placeholder";
-import { AppConstants, getSecretManagementIllustrations, history } from "../../core";
+import { AppConstants, AppState, FeatureConfigInterface, getSecretManagementIllustrations, history } from "../../core";
 import { deleteSecret } from "../api/secret";
 import { ADAPTIVE_SCRIPT_SECRETS, FEATURE_EDIT_PATH } from "../constants/secrets.common";
 import { SecretModel } from "../models/secret";
@@ -52,7 +53,6 @@ export type SecretsListProps = {
 } & IdentifiableComponentInterface;
 
 /**
- * TODO: https://github.com/wso2/product-is/issues/12447
  * @param props {SecretsListProps}
  * @constructor
  * @return {ReactElement}
@@ -74,15 +74,23 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingSecret, setDeletingSecret ] = useState<SecretModel>(undefined);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const onSecretEditClick = (event: React.SyntheticEvent, item: SecretModel) => {
         event?.preventDefault();
-        const pathname = AppConstants
-            .getPaths()
-            .get(FEATURE_EDIT_PATH)
-            .replace(":type", item?.type)
-            .replace(":name", item?.secretName);
-        history.push({ pathname });
+        if (hasRequiredScopes(
+            featureConfig?.secretsManagement,
+            featureConfig?.secretsManagement?.scopes?.update,
+            allowedScopes
+        )) {
+            const pathname = AppConstants
+                .getPaths()
+                .get(FEATURE_EDIT_PATH)
+                .replace(":type", item?.type)
+                .replace(":name", item?.secretName);
+            history.push({ pathname });
+        }
     };
 
     /**
@@ -90,7 +98,11 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
      * @see {@code SecretDeleteConfirmationModal}
      */
     const onSecretDeleteClick = async (): Promise<void> => {
-        if (deletingSecret) {
+        if (deletingSecret && hasRequiredScopes(
+            featureConfig?.secretsManagement,
+            featureConfig?.secretsManagement?.scopes?.delete,
+            allowedScopes
+        )) {
             try {
                 await deleteSecret({
                     params: {
@@ -218,7 +230,13 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
         return [
             {
                 "data-componentid": `${ testId }-item-edit-button`,
-                hidden: () => false,
+                hidden: () => {
+                    return !hasRequiredScopes(
+                        featureConfig?.secretsManagement,
+                        featureConfig?.secretsManagement?.scopes?.update,
+                        allowedScopes
+                    );
+                },
                 icon: (): SemanticICONS => "pencil alternate",
                 onClick: onSecretEditClick,
                 popupText: (): string => t("common:edit"),
@@ -226,7 +244,13 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
             },
             {
                 "data-componentid": `${ testId }-item-delete-button`,
-                hidden: () => false,
+                hidden: () => {
+                    return !hasRequiredScopes(
+                        featureConfig?.secretsManagement,
+                        featureConfig?.secretsManagement?.scopes?.delete,
+                        allowedScopes
+                    );
+                },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick(event: SyntheticEvent, data: SecretModel) {
                     event?.preventDefault();

@@ -23,7 +23,6 @@ import React, { FC, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { Label } from "semantic-ui-react";
 import { AppConstants, getSecretManagementIllustrations, history } from "../../core";
 import { getSecret } from "../api/secret";
 import EditSecret from "../components/edit-secret";
@@ -37,10 +36,7 @@ import { SecretModel } from "../models/secret";
 export type SecretEditProps = RouteComponentProps & IdentifiableComponentInterface;
 
 /**
- * TODO: Need to implement access-control and event publishers
- *  https://github.com/wso2/product-is/issues/12447
- *
- * @param props
+ * @param props {SecretEditProps}
  * @constructor
  */
 const SecretEdit: FC<SecretEditProps> = (props: SecretEditProps): ReactElement => {
@@ -55,7 +51,7 @@ const SecretEdit: FC<SecretEditProps> = (props: SecretEditProps): ReactElement =
     const [ loading, setLoading ] = useState<boolean>(true);
     const [ resourceNotFound, setResourceNotFound ] = useState<boolean>(false);
     const [ editingSecret, setEditingSecret ] = useState<SecretModel>(undefined);
-    const [ secretType, setSecretType ] = useState<string>();
+    const [ , setSecretType ] = useState<string>();
     const [ secretName, setSecretName ] = useState<string>();
 
     /**
