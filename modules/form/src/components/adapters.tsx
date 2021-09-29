@@ -320,7 +320,7 @@ export const SelectAdapter = (props): ReactElement => {
 
                 input.onChange(data.value.toString());
             } }
-            onBlur={ (event: React.FocusEvent) => input.onBlur(event) }
+            onBlur={ (event: React.KeyboardEvent) => input.onBlur(event) }
             autoFocus={ childFieldProps.autoFocus || false }
             disabled={ childFieldProps.disabled }
             required={ childFieldProps.required }
