@@ -101,7 +101,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     /**
      * Interface for the canonical attributes.
      */
-    interface canonicalAttribute {
+    interface CanonicalAttribute {
         [key: string]: string;
     }
 
@@ -208,7 +208,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
                     } else if (isCanonical) {
                         let indexOfType = -1;
-                        profileDetails?.profileInfo[schemaNamesCanonicalType[0]]?.forEach((canonical: canonicalAttribute) => {
+                        profileDetails?.profileInfo[schemaNamesCanonicalType[0]]?.forEach((canonical: CanonicalAttribute) => {
                             if(schemaNamesCanonicalType[1] === canonical?.type) {
                                 indexOfType = profileDetails?.profileInfo[schemaNamesCanonicalType[0]].indexOf(canonical);
                             }
