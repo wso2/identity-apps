@@ -445,6 +445,7 @@ module.exports = (env) => {
                         ? "<%@ page import=\"" +
                         "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>"
                         : "",
+                    minify: false,
                     publicPath: !isRootContext
                         ? publicPath
                         : "/",
@@ -470,6 +471,7 @@ module.exports = (env) => {
                     excludeChunks: [ "rpIFrame" ],
                     filename: path.join(distFolder, "index.html"),
                     hash: true,
+                    minify: false,
                     publicPath: !isRootContext
                         ? publicPath
                         : "/",
@@ -480,6 +482,7 @@ module.exports = (env) => {
                 excludeChunks: [ "main", "init" ],
                 filename: path.join(distFolder, "rpIFrame.html"),
                 hash: true,
+                minify: false,
                 publicPath: !isRootContext
                     ? publicPath
                     : "/",
