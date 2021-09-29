@@ -4424,8 +4424,9 @@ export const console: ConsoleNS = {
                                 duplicateName: "L'URI de l'attribut {{type}} existe déjà.",
                                 invalidName: "Le nom que vous avez entré contient des caractères non autorisés. " +
                                     "Seuls les alphabets, les nombres, «#», «_» sont autorisés.",
-                                scimInvalidName: "Le nom doit commencer par des alphabets. " +
-                                    "Seuls les alphabets, les nombres, «-», «_» sont autorisés."
+                                scimInvalidName: "Le caractère de départ du nom doit être une lettre. " +
+                                    "Les caractères restants peuvent inclure des lettres, des chiffres, " +
+                                    "un tiret (-) et un trait de soulignement (_)."
                             }
                         },
                         localAttribute: {
