@@ -73,4 +73,12 @@ export class PatternConstants {
      * @default
      */
     public static readonly MOBILE_DEEP_LINK_URL_REGEX_PATTERN: RegExp = /^.+:\/\/.+$/;
+
+    /**
+     * Loop back call pattern regex.
+     * @constant
+     * @type {RegExp}
+     * @default
+     */
+    public static readonly LOOP_BACK_CALL_REGEX_PATTERN: RegExp = /(^(?:http|https):\/\/(localhost|127.0.0.1))/g;
 }
