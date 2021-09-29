@@ -251,6 +251,7 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
             basic
             icon={ canButtonGroupHaveIcons(options) }
             { ...(rest ?? EMPTY_OBJECT) }
+            widths={options.length}
         >
             { options.map((opt: SwitcherOptionProps, index: number): ReactElement => {
                 const { value, label, disabled, ...optRest } = opt;
