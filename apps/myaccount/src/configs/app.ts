@@ -16,17 +16,17 @@
  * under the License.
  */
 
-import { I18nModuleOptionsInterface } from "@wso2is/i18n";
+import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
 import { I18nConstants } from "../constants";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
 import { SCIMConfigs } from "../extensions/configs/scim";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
+import { store } from "../store";
 
 /**
  * Class to handle application config operations.
  */
 export class Config {
-
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
@@ -34,7 +34,7 @@ export class Config {
      * @hideconstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    private constructor() { }
+    private constructor() {}
 
     /**
      * Get the deployment config.
@@ -43,7 +43,6 @@ export class Config {
      */
     public static getDeploymentConfig(): DeploymentConfigInterface {
         return {
-            consoleApp: window["AppUtils"].getConfig().consoleApp,
             appBaseName: window["AppUtils"].getConfig().appBaseWithTenant,
             appBaseNameWithoutTenant: window["AppUtils"].getConfig().appBase,
             appHomePath: window["AppUtils"].getConfig().routes.home,
@@ -52,6 +51,7 @@ export class Config {
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
             clientOrigin: window["AppUtils"].getConfig().clientOrigin,
+            consoleApp: window["AppUtils"].getConfig().consoleApp,
             idpConfigs: window["AppUtils"].getConfig().idpConfigs,
             loginCallbackUrl: window["AppUtils"].getConfig().loginCallbackURL,
             productVersion: window["AppUtils"].getConfig().productVersion,
@@ -75,6 +75,21 @@ export class Config {
             authorize: `${this.getDeploymentConfig().serverHost}/oauth2/authorize`,
             challengeAnswers: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/challenge-answers`,
             challenges: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/challenges`,
+            consentManagement: {
+                consent: {
+                    addConsent: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents`,
+                    consentReceipt: `${
+                        this.getDeploymentConfig().serverHost
+                    }/api/identity/consent-mgt/v1.0/consents/receipts`,
+                    listAllConsents: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents`
+                },
+                purpose: {
+                    getPurpose: `${
+                        this.getDeploymentConfig().serverHost
+                    }/api/identity/consent-mgt/v1.0/consents/purposes`,
+                    list: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents/purposes`
+                }
+            },
             federatedAssociations: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/federated-associations`,
             fidoEnd: `${this.getDeploymentConfig().serverHost}/api/users/v2/me/webauthn/finish-registration`,
             fidoMetaData: `${this.getDeploymentConfig().serverHost}/api/users/v2/me/webauthn`,
@@ -82,9 +97,12 @@ export class Config {
             fidoStartUsernameless: `${
                 this.getDeploymentConfig().serverHost
             }/api/users/v2/me/webauthn/start-usernameless-registration`,
-            isReadOnlyUser:`${
+            homeRealmIdentifiers: `${
                 this.getDeploymentConfig().serverHost
-            }/scim2/Me?attributes=${SCIMConfigs.scimEnterpriseUserClaimUri.isReadOnlyUser}`,
+            }/api/server/v1/configs/home-realm-identifiers`,
+            isReadOnlyUser: `${this.getDeploymentConfig().serverHost}/scim2/Me?attributes=${
+                SCIMConfigs.scimEnterpriseUserClaimUri.isReadOnlyUser
+            }`,
             issuer: `${this.getDeploymentConfig().serverHost}/oauth2/token`,
             jwks: `${this.getDeploymentConfig().serverHost}/oauth2/jwks`,
             logout: `${this.getDeploymentConfig().serverHost}/oidc/logout`,
@@ -99,21 +117,11 @@ export class Config {
             totp: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/totp`,
             totpSecret: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/totp/secret`,
             typingDNAMe: `${this.getDeploymentConfig().serverHost}/api/identity/typingdna/v1.0/me/typingpatterns`,
-            typingDNAServer: `${this.getDeploymentConfig().serverHost}/api/identity/typingdna/v1.0/server/typingdnaConfig`,
+            typingDNAServer: `${
+                this.getDeploymentConfig().serverHost
+            }/api/identity/typingdna/v1.0/server/typingdnaConfig`,
             user: `${this.getDeploymentConfig().serverHost}/api/identity/user/v1.0/me`,
-            wellKnown: `${this.getDeploymentConfig().serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`,
-            consentManagement: {
-                consent: {
-                    addConsent: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents`,
-                    consentReceipt: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents/receipts`,
-                    listAllConsents: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents`
-                },
-                purpose: {
-                    getPurpose: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents/purposes`,
-                    list: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents/purposes`
-                }
-            },
-            homeRealmIdentifiers: `${this.getDeploymentConfig().serverHost}/api/server/v1/configs/home-realm-identifiers`
+            wellKnown: `${this.getDeploymentConfig().serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
         };
     }
 
@@ -128,9 +136,11 @@ export class Config {
             appName: window["AppUtils"].getConfig().ui.appName,
             appTitle: window["AppUtils"].getConfig().ui.appTitle,
             authenticatorApp: window["AppUtils"].getConfig().ui.authenticatorApp,
-            copyrightText: window["AppUtils"].getConfig().ui.appCopyright
-                .replace("${copyright}", "\u00A9")
+            copyrightText: window["AppUtils"]
+                .getConfig()
+                .ui.appCopyright.replace("${copyright}", "\u00A9")
                 .replace("${year}", new Date().getFullYear()),
+            disableMFAforSuperTenantUser: window["AppUtils"].getConfig().ui.disableMFAforSuperTenantUser,
             features: window["AppUtils"].getConfig().ui.features,
             i18nConfigs: window["AppUtils"].getConfig().ui.i18nConfigs,
             isCookieConsentBannerEnabled: window["AppUtils"].getConfig().ui.isCookieConsentBannerEnabled,
@@ -139,20 +149,57 @@ export class Config {
             privacyPolicyConfigs: window["AppUtils"].getConfig().ui.privacyPolicyConfigs,
             productName: window["AppUtils"].getConfig().ui.productName,
             productVersionConfig: window["AppUtils"].getConfig().ui.productVersionConfig,
-            theme: window["AppUtils"].getConfig().ui.theme,
-            disableMFAforSuperTenantUser: window["AppUtils"].getConfig().ui.disableMFAforSuperTenantUser,
-            showAppSwitchButton: window["AppUtils"].getConfig().ui.showAppSwitchButton
+            showAppSwitchButton: window["AppUtils"].getConfig().ui.showAppSwitchButton,
+            theme: window["AppUtils"].getConfig().ui.theme
+        };
+    }
+
+    /**
+     * I18n init options.
+     *
+     * @remarks
+     * Since the portals are not deployed per tenant, looking for static resources in tenant qualified URLs will fail.
+     * Using `appBaseNameWithoutTenant` will create a path without the tenant. Therefore, `loadPath()` function will
+     * look for resource files in `https://localhost:9443/<PORTAL>/resources/i18n` rather than looking for the
+     * files in `https://localhost:9443/t/wso2.com/<PORTAL>/resources/i18n`.
+     *
+     * @param {MetaI18N} metaI18N Meta i18n object.
+     *
+     * @return {I18nModuleInitOptions} I18n init options.
+     */
+    public static generateModuleInitOptions(metaFile: MetaI18N): I18nModuleInitOptions {
+        return {
+            backend: {
+                loadPath: (language, namespace) =>
+                    generateBackendPaths(
+                        language,
+                        namespace,
+                        window["AppUtils"].getConfig().appBase,
+                        store.getState().config.i18n ?? {
+                            langAutoDetectEnabled: I18nConstants.LANG_AUTO_DETECT_ENABLED,
+                            namespaceDirectories: I18nConstants.BUNDLE_NAMESPACE_DIRECTORIES,
+                            overrideOptions: I18nConstants.INIT_OPTIONS_OVERRIDE,
+                            resourcePath: "/resources/i18n",
+                            xhrBackendPluginEnabled: I18nConstants.XHR_BACKEND_PLUGIN_ENABLED
+                        },
+                        metaFile
+                    )
+            },
+            load: "currentOnly", // lookup only current lang key(en-US). Prevents 404 from `en`.
+            ns: [I18nConstants.COMMON_NAMESPACE, I18nConstants.PORTAL_NAMESPACE]
         };
     }
 
     /**
      * Get i18n module config.
      *
+     * @param {MetaI18N} metaFile Meta file.
+     *
      * @return {I18nModuleOptionsInterface} i18n config object.
      */
-    public static getI18nConfig(): I18nModuleOptionsInterface {
+    public static getI18nConfig(metaFile?: MetaI18N): I18nModuleOptionsInterface {
         return {
-            initOptions: I18nConstants.MODULE_INIT_OPTIONS,
+            initOptions: this.generateModuleInitOptions(metaFile),
             langAutoDetectEnabled: I18nConstants.LANG_AUTO_DETECT_ENABLED,
             namespaceDirectories: I18nConstants.BUNDLE_NAMESPACE_DIRECTORIES,
             overrideOptions: I18nConstants.INIT_OPTIONS_OVERRIDE,
