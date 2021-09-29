@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FC, ReactElement } from "react";
@@ -37,7 +38,6 @@ export type EmptySecretListPlaceholderProps = {
  * added to it. It can be either adaptive script secrets or custom
  * created secret-types.
  *
- * TODO: https://github.com/wso2/product-is/issues/12447
  * @constructor
  * @return {ReactElement}
  */
@@ -86,12 +86,16 @@ export const EmptySecretListPlaceholder: FC<EmptySecretListPlaceholderProps> = (
     return (
         <EmptyPlaceholder
             action={
-                <PrimaryButton
-                    aria-label={ t("console:develop.features.secrets.emptyPlaceholders.buttons.addSecret.ariaLabel") }
-                    onClick={ onAddNewSecret }>
-                    <Icon name="add"/>
-                    { t("console:develop.features.secrets.emptyPlaceholders.buttons.addSecret.label") }
-                </PrimaryButton>
+                <Show when={ AccessControlConstants.SECRET_WRITE }>
+                    <PrimaryButton
+                        aria-label={
+                            t("console:develop.features.secrets.emptyPlaceholders.buttons.addSecret.ariaLabel")
+                        }
+                        onClick={ onAddNewSecret }>
+                        <Icon name="add"/>
+                        { t("console:develop.features.secrets.emptyPlaceholders.buttons.addSecret.label") }
+                    </PrimaryButton>
+                </Show>
             }
             image={ getEmptyPlaceholderIllustrations().newList }
             imageSize="tiny"

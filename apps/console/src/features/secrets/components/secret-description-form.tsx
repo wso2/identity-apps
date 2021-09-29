@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
@@ -23,7 +24,6 @@ import cloneDeep from "lodash-es/cloneDeep";
 import React, { FC, Fragment, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Grid } from "semantic-ui-react";
 import { patchSecret } from "../api/secret";
 import { SecretModel } from "../models/secret";
 import { SECRET_DESCRIPTION_LENGTH } from "../utils/secrets.validation.utils";
@@ -124,7 +124,7 @@ const SecretDescriptionForm: FC<SecretDescriptionFormProps> = (
 
     return (
         <Fragment>
-            <Form uncontrolledForm={ false } onSubmit={ updateSecretDescription }>
+            <Form uncontrolledForm={ true } onSubmit={ updateSecretDescription }>
                 <Field.Textarea
                     data-componentid={ `${ testId }-description-field` }
                     ariaLabel={
@@ -141,15 +141,17 @@ const SecretDescriptionForm: FC<SecretDescriptionFormProps> = (
                     maxLength={ SECRET_DESCRIPTION_LENGTH.max }
                     listen={ (value: string): void => setSecretDescription(value) }
                 />
-                <Field.Button
-                    data-componentid={ `${ testId }-update-button` }
-                    loading={ loading }
-                    disabled={ !canUpdateDescription || loading }
-                    type="submit"
-                    buttonType="primary_btn"
-                    ariaLabel={ t("console:develop.features.secrets.forms.actions.submitButton.ariaLabel") }
-                    label={ t("console:develop.features.secrets.forms.actions.submitButton.label") }
-                    name="submit"/>
+                <Show when={ AccessControlConstants.SECRET_EDIT }>
+                    <Field.Button
+                        data-componentid={ `${ testId }-update-button` }
+                        loading={ loading }
+                        disabled={ !canUpdateDescription || loading }
+                        type="submit"
+                        buttonType="primary_btn"
+                        ariaLabel={ t("console:develop.features.secrets.forms.actions.submitButton.ariaLabel") }
+                        label={ t("console:develop.features.secrets.forms.actions.submitButton.label") }
+                        name="submit"/>
+                </Show>
             </Form>
         </Fragment>
     );

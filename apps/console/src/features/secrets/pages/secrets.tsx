@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PageLayout, PrimaryButton } from "@wso2is/react-components";
@@ -37,8 +38,9 @@ export type SecretsPageProps = IdentifiableComponentInterface;
 
 /**
  * There are couple of things missing in this component:
- * TODO: https://github.com/wso2/product-is/issues/12447
  * The secrets list of page.
+ *
+ * @param props {SecretsPageProps}
  * @constructor
  */
 const SecretsPage: FC<SecretsPageProps> = (props: SecretsPageProps): ReactElement => {
@@ -132,20 +134,24 @@ const SecretsPage: FC<SecretsPageProps> = (props: SecretsPageProps): ReactElemen
             title={ t("console:develop.features.secrets.page.title") }
             description={ t("console:develop.features.secrets.page.description") }
             action={ secretList?.length > 0 && (
-                <PrimaryButton
-                    onClick={ onAddNewSecretButtonClick }
-                    data-testid={ `${ testId }-add-button` }>
-                    <Icon name="add"/>
-                    { t("console:develop.features.secrets.page.primaryActionButtonText") }
-                </PrimaryButton>
+                <Show when={ AccessControlConstants.SECRET_WRITE }>
+                    <PrimaryButton
+                        onClick={ onAddNewSecretButtonClick }
+                        data-testid={ `${ testId }-add-button` }>
+                        <Icon name="add"/>
+                        { t("console:develop.features.secrets.page.primaryActionButtonText") }
+                    </PrimaryButton>
+                </Show>
             ) }>
-            <SecretsList
-                whenSecretDeleted={ whenSecretDeleted }
-                isSecretListLoading={ isSecretListLoading }
-                secretList={ secretList }
-                selectedSecretType={ selectedSecretType }
-                onAddNewSecretButtonClick={ onAddNewSecretButtonClick }
-            />
+            <Show when={ AccessControlConstants.SECRET_READ }>
+                <SecretsList
+                    whenSecretDeleted={ whenSecretDeleted }
+                    isSecretListLoading={ isSecretListLoading }
+                    secretList={ secretList }
+                    selectedSecretType={ selectedSecretType }
+                    onAddNewSecretButtonClick={ onAddNewSecretButtonClick }
+                />
+            </Show>
             { showAddSecretModal && (
                 <AddSecretWizard
                     onClose={ whenAddNewSecretModalClosed }
