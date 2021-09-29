@@ -51,7 +51,6 @@ const SecretEdit: FC<SecretEditProps> = (props: SecretEditProps): ReactElement =
     const [ loading, setLoading ] = useState<boolean>(true);
     const [ resourceNotFound, setResourceNotFound ] = useState<boolean>(false);
     const [ editingSecret, setEditingSecret ] = useState<SecretModel>(undefined);
-    const [ , setSecretType ] = useState<string>();
     const [ secretName, setSecretName ] = useState<string>();
 
     /**
@@ -62,7 +61,6 @@ const SecretEdit: FC<SecretEditProps> = (props: SecretEditProps): ReactElement =
         const { secretType, secretName } = extractDataFromPath();
 
         setSecretName(secretName);
-        setSecretType(secretType);
 
         getSecret({ params: { secretName, secretType } })
             .then(({ data }) => {
