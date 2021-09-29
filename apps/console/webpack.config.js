@@ -78,7 +78,8 @@ module.exports = (env) => {
     // will be removed. Since these resources are only available inside IS runtime, when hosted
     // externally, the server (tomcat etc.) will throw errors when trying to resolve them.
     const isDeployedOnExternalServer = env.IS_DEPLOYED_ON_EXTERNAL_SERVER;
-    // Is deployed on a static server. With this option, all the `jsp` files and java specific folders will be dropped.
+    // Flag to determine if the app is deployed on a static server.
+    // With this option, all the `jsp` files and java specific folders will be dropped.
     const isDeployedOnStaticServer = env.SERVER_TYPE === "static";
 
     // Analyzing mode options.
