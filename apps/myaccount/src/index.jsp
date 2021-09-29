@@ -47,15 +47,6 @@
         <noscript>
             You need to enable JavaScript to run this app.
         </noscript>
-        <iframe
-            id="rpIFrame"
-            style="display: block"
-            src="<%= htmlWebpackPlugin.options.publicPath %>/rpIFrame.html"
-            frameborder="0"
-            width="0"
-            height="0"
-        >
-        </iframe>
         <div id="root"></div>
     </body>
 </html>

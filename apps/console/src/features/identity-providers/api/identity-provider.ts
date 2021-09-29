@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient } from "@wso2/identity-oidc-js";
+import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
@@ -49,7 +49,7 @@ import {
  * Get an axios instance.
  *
  */
-const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
+const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Creates Identity Provider.
@@ -197,7 +197,7 @@ export const updateIdentityProviderDetails = (idp: IdentityProviderInterface): P
                 "path": "/" + key,
                 "value": rest[key]
             });
-        } 
+        }
     }
 
 

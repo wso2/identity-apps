@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient } from "@wso2/identity-oidc-js";
+import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
 import { store } from "../../core";
 import { PatchData, QueryParams, TestConnection, UserStorePostData } from "../models";
@@ -31,7 +31,7 @@ const RESOURCE_NOT_FOUND_ERROR_MESSAGE = "Resource not found.";
  *
  * @type { AxiosHttpClientInstance }
  */
-const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
+const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Fetches all userstores.

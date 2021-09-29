@@ -107,7 +107,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
     ];
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ offset, setOffset ] = useState(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);

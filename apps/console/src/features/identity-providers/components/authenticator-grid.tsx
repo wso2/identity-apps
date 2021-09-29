@@ -155,7 +155,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     const [ isAppsLoading, setIsAppsLoading ] = useState<boolean>(true);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 

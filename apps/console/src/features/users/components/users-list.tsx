@@ -160,7 +160,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     const [ deletingUser, setDeletingUser ] = useState<UserBasicInterface>(undefined);
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const handleUserEdit = (userId: string) => {
         history.push(AppConstants.getPaths().get("USER_EDIT").replace(":id", userId));

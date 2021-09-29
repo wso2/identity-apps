@@ -193,7 +193,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     const [ editClaim, setEditClaim ] = useState("");
     const [ editExternalClaim, setEditExternalClaim ] = useState<AddExternalClaim>(undefined);
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const dispatch = useDispatch();
 

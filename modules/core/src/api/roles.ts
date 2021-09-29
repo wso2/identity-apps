@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient, Storage } from "@wso2/identity-oidc-js";
+import { AsgardeoSPAClient, Storage } from "@asgardeo/auth-react";
 import { AxiosError, AxiosResponse } from "axios";
 import { CommonServiceResourcesEndpoints } from "../configs";
 import { RoleConstants } from "../constants";
@@ -29,7 +29,7 @@ import { ContextUtils } from "../utils";
  * Initialize an axios Http client.
  *
  */
-const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
+const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Retrieve the list of groups that are currently in the system.

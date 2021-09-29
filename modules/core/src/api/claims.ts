@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient, Storage } from "@wso2/identity-oidc-js";
+import { AsgardeoSPAClient, Storage } from "@asgardeo/auth-react";
 import { AxiosError, AxiosResponse } from "axios";
 import { CommonServiceResourcesEndpoints } from "../configs";
 import { ClaimConstants } from "../constants";
@@ -34,7 +34,7 @@ const RESOURCE_NOT_FOUND_ERROR_CODE = "CMT-50017";
  * Get an axios instance.
  *
  */
-const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
+const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Fetch all local claims.

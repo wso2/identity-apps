@@ -157,8 +157,8 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
     const [ sessionTimedOut, setSessionTimedOut ] = useState<boolean>(false);
 
     useEffect(() => {
-        window.addEventListener("popstate", e => {
-            const { state } = e;
+        const sessionTimeoutListener = (e: MessageEventInit) => {
+            const state = e.data;
 
             if (!state) {
                 return;
@@ -178,15 +178,18 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
                 return;
             }
 
-            if (timeout && type === SessionTimeoutModalTypes.COUNTER) {
+            if (JSON.parse(timeout) && type === SessionTimeoutModalTypes.COUNTER) {
                 startTimer(idleTimeout - idleWarningTimeout);
             }
 
-            setShowSessionTimeoutModal(!!timeout);
-        });
+            setShowSessionTimeoutModal(JSON.parse(timeout));
+        };
+
+        window.addEventListener("session-timeout", sessionTimeoutListener);
 
         return () => {
             performCleanupTasks();
+            window.removeEventListener("session-timeout",sessionTimeoutListener);
         };
     }, []);
 

@@ -139,7 +139,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
 
     const { t } = useTranslation();
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
