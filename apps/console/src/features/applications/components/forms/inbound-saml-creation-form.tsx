@@ -27,6 +27,7 @@ import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid, Icon, Label } from "semantic-ui-react";
 import { getCertificateIllustrations, getEmptyPlaceholderIllustrations } from "../../../core";
 import { SAMLConfigModes } from "../../models";
+import { commonConfig } from "../../../../extensions";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.
@@ -141,6 +142,7 @@ export const InboundSAMLCreationForm: FunctionComponent<SAMLProtocolCreationWiza
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                     <Field
                                         name="url"
+                                        displayErrorOn="blur"
                                         label={
                                             t("console:develop.features.applications.forms.inboundSAML.fields" +
                                                 ".metaURL.label")
@@ -161,6 +163,13 @@ export const InboundSAMLCreationForm: FunctionComponent<SAMLProtocolCreationWiza
                                                 validation.errorMessages.push(
                                                     t("console:develop.features.applications.forms.inboundSAML" +
                                                         ".fields.metaURL.validations.invalid")
+                                                );
+                                            }
+                                            if (commonConfig?.blockLoopBackCalls && URLUtils.isLoopBackCall(value)) {
+                                                validation.isValid = false;
+                                                validation.errorMessages.push(
+                                                    t("console:develop.features.idp.forms.common." +
+                                                        "internetResolvableErrorMessage")
                                                 );
                                             }
                                         } }

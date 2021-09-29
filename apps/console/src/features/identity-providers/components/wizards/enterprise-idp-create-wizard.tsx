@@ -76,6 +76,8 @@ import {
 } from "../../models";
 import { handleGetIDPListCallError } from "../utils";
 import { getAvailableNameIDFormats, getAvailableProtocolBindingTypes } from "../utils/saml-idp-utils";
+import { URLUtils } from "@wso2is/core/utils";
+import { commonConfig } from "../../../../extensions";
 
 /**
  * Proptypes for the enterprise identity provider
@@ -223,6 +225,16 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 { t("common:featureAvailable") }
             </Dimmer>
         );
+    };
+
+    /**
+     * Check whether loop back call is allowed or not.
+     * @param value URL to check.
+     */
+    const isLoopBackCall = (value) => {
+        return (!(URLUtils.isLoopBackCall(value) && commonConfig?.blockLoopBackCalls)) ?
+            undefined : t("console:develop.features.idp.forms.common." +
+                "internetResolvableErrorMessage");
     };
 
     /**
@@ -600,11 +612,13 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 errors.authorizationEndpointUrl = composeValidators(
                     required,
                     isUrl,
+                    isLoopBackCall,
                     length(OIDC_URL_MAX_LENGTH)
                 )(values.authorizationEndpointUrl);
                 errors.tokenEndpointUrl = composeValidators(
                     required,
                     isUrl,
+                    isLoopBackCall,
                     length(OIDC_URL_MAX_LENGTH)
                 )(values.tokenEndpointUrl);
                 setNextShouldBeDisabled(ifFieldsHave(errors));

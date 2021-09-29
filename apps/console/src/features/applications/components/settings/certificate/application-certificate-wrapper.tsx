@@ -29,6 +29,8 @@ import { Divider, Grid, Message } from "semantic-ui-react";
 import { ApplicationCertificatesListComponent } from "./application-certificate-list";
 import { AppState, ConfigReducerStateInterface } from "../../../../core";
 import { CertificateInterface, CertificateTypeInterface } from "../../../models";
+import { commonConfig } from "../../../../../extensions";
+import { URLUtils } from "@wso2is/core/utils";
 
 
 /**
@@ -275,6 +277,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                         (
                             <Field
                                 name="jwksValue"
+                                displayErrorOn="blur"
                                 label={
                                     t("console:develop.features.applications.forms.advancedConfig" +
                                         ".sections.certificate.fields.jwksValue.label")
@@ -297,6 +300,13 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                                 ".advancedConfig.sections.certificate.fields" +
                                                 ".jwksValue.validations.invalid"
                                             )
+                                        );
+                                    }
+                                    if (commonConfig?.blockLoopBackCalls && URLUtils.isLoopBackCall(value)) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push(
+                                            t("console:develop.features.idp.forms.common." +
+                                                "internetResolvableErrorMessage")
                                         );
                                     }
                                 } }
