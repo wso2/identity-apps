@@ -40,12 +40,13 @@ const isProfilingEnabledInProduction = false;
 const DEVELOPMENT_ESLINT_CONFIG = ".eslintrc.js";
 const PRODUCTION_ESLINT_CONFIG = ".prod.eslintrc.js";
 
-// Paths
-const APP_SOURCE_DIRECTORY = "src";                // App source code directory.
-const APP_NODE_MODULES_DIRECTORY = "node_modules"; // Node modules.
-const OUTPUT_PATH = "build/myaccount";             // Build artifacts output path.
-const CACHE_DIRECTORY = "cache";                   // Output directory for the cache files. Only applicable in dev mode.
-const STATIC_ASSETS_DIRECTORY = "static/media";    // Output directory for static assets i.e .png, .jpg etc.
+// Paths & Folders
+const APP_SOURCE_DIRECTORY = "src";                    // App source code directory.
+const APP_NODE_MODULES_DIRECTORY = "node_modules";     // Node modules.
+const OUTPUT_PATH = "build/myaccount";                 // Build artifacts output path.
+const CACHE_DIRECTORY = "cache";                       // Output directory for the cache files. Only applicable in dev mode.
+const STATIC_ASSETS_DIRECTORY = "static/media";        // Output directory for static assets i.e .png, .jpg etc.
+const JAVA_EE_SERVER_FOLDERS = [ "**/WEB-INF/**/*" ];  // Java EE server specific folders.
 
 // Dev Server Default Configs.
 const DEV_SERVER_PORT = 9000;
@@ -76,6 +77,9 @@ module.exports = (env) => {
     // will be removed. Since these resources are only available inside IS runtime, when hosted
     // externally, the server (tomcat etc.) will throw errors when trying to resolve them.
     const isDeployedOnExternalServer = env.IS_DEPLOYED_ON_EXTERNAL_SERVER;
+    // Flag to determine if the app is deployed on a static server.
+    // With this option, all the `jsp` files and java specific folders will be dropped.
+    const isDeployedOnStaticServer = env.SERVER_TYPE === "static";
 
     // Analyzing mode options.
     const isAnalyzeMode = env.ENABLE_ANALYZER === "true";
@@ -402,17 +406,26 @@ module.exports = (env) => {
                         context: path.join(__dirname, "src"),
                         force: true,
                         from: "public",
+                        // For deployments on static servers, we don't require the Java EE specific
+                        // folders like `WEB_INF` etc.
+                        globOptions: {
+                            ignore: isDeployedOnStaticServer
+                                ? [ ...JAVA_EE_SERVER_FOLDERS ]
+                                : []
+                        },
                         to: "."
                     },
-                    {
+                    // For deployments on static servers, we don't require `auth.jsp` since we can't use
+                    // `form_post` response mode.
+                    !isDeployedOnStaticServer && {
                         context: path.join(__dirname, "src"),
                         force: true,
                         from: "auth.jsp",
                         to: "."
                     }
-                ]
+                ].filter(Boolean)
             }),
-            isProduction
+            isProduction && !isDeployedOnStaticServer
                 ? new HtmlWebpackPlugin({
                     authorizationCode: "<%=request.getParameter(\"code\")%>",
                     contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" " +
@@ -432,6 +445,7 @@ module.exports = (env) => {
                         ? "<%@ page import=\"" +
                         "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>"
                         : "",
+                    minify: false,
                     publicPath: !isRootContext
                         ? publicPath
                         : "/",
@@ -457,6 +471,7 @@ module.exports = (env) => {
                     excludeChunks: [ "rpIFrame" ],
                     filename: path.join(distFolder, "index.html"),
                     hash: true,
+                    minify: false,
                     publicPath: !isRootContext
                         ? publicPath
                         : "/",
@@ -467,6 +482,7 @@ module.exports = (env) => {
                 excludeChunks: [ "main", "init" ],
                 filename: path.join(distFolder, "rpIFrame.html"),
                 hash: true,
+                minify: false,
                 publicPath: !isRootContext
                     ? publicPath
                     : "/",
