@@ -18,8 +18,26 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<div class="ui modal mini notify" id="asg-modal-0">
-    <div class="content">
+<div class="ui modal tiny notify" id="asg-modal-0">
+    <div class="animated-icon text-center">
+        <div class="svg-box" data-testid="session-timeout-modal-warning-animated-icon">
+            <svg class="circular warning-stroke">
+                <circle class="path" cx="75" cy="75" r="50" fill="none" stroke-width="2" stroke-miterlimit="10">
+                </circle>
+            </svg>
+            <svg class="warning-icon warning-stroke">
+                <g transform="matrix(1,0,0,1,-615.516,-257.346)">
+                    <g transform="matrix(0.56541,-0.56541,0.56541,0.56541,93.7153,495.69)">
+                        <path class="line" d="M634.087,300.805L673.361,261.53" fill="none"></path>
+                    </g>
+                    <g transform="matrix(2.27612,-2.46519e-32,0,2.27612,-792.339,-404.147)">
+                        <circle class="dot" cx="621.52" cy="316.126" r="1.318"></circle>
+                    </g>
+                </g>
+            </svg>
+        </div>
+    </div>
+    <div class="content text-center">
         <div class="description">
             <div class="ui header" id="asg-modal-0-title">
                 <b>${param.title}</b>
@@ -35,7 +53,7 @@
         </div>
         <c:if test="${not empty param.action_button_text}">
             <div class="ui primary button" id="asg-modal-0-action-button">
-                    ${param.action_button_text}
+                ${param.action_button_text}
             </div>
         </c:if>
     </div>
