@@ -64,6 +64,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         on,
         getOIDCServiceEndpoints,
         getDecodedIDToken,
+        updateConfig,
         state: { isAuthenticated }
     } = useAuthContext();
 
@@ -76,6 +77,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         on(Hooks.HttpRequestSuccess, onHttpRequestSuccess);
 
         on(Hooks.SignIn, (response: BasicUserInfo) => {
+            let logoutUrl;
             // Update the app base name with the newly resolved tenant.
             window[ "AppUtils" ].updateTenantQualifiedBaseName(response.tenantDomain);
 
@@ -106,7 +108,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             // Update post_logout_redirect_uri of logout_url with tenant qualified url
             if (sessionStorage.getItem(LOGOUT_URL)) {
-                let logoutUrl = sessionStorage.getItem(LOGOUT_URL);
+                logoutUrl = sessionStorage.getItem(LOGOUT_URL);
 
                 // If there is a base name, replace the `post_logout_redirect_uri` with the tenanted base name.
                 if (window[ "AppUtils" ].getConfig().appBase) {
@@ -204,6 +206,15 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     sessionStorage.setItem(AUTHORIZATION_ENDPOINT, authorizationEndpoint);
                     sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, oidcSessionIframeEndpoint);
                     sessionStorage.setItem(TOKEN_ENDPOINT, tokenEndpoint);
+
+                    updateConfig({
+                        endpoints: {
+                            authorizationEndpoint: authorizationEndpoint,
+                            checkSessionIframe: oidcSessionIframeEndpoint,
+                            endSessionEndpoint: logoutUrl.split("?")[ 0 ],
+                            tokenEndpoint: tokenEndpoint
+                        }
+                    });
                 })
                 .catch((error) => {
                     throw error;
