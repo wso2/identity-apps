@@ -99,6 +99,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     // }, [profileDetails]);
 
     /**
+     * Interface for the canonical attributes.
+     */
+    interface CanonicalAttribute {
+        [key: string]: string;
+    }
+
+    /**
      * Set the if the email verification is pending.
      */
     useEffect(() => {
@@ -143,7 +150,17 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             const tempProfileInfo: Map<string, string> = new Map<string, string>();
 
             profileSchema.forEach((schema: ProfileSchema) => {
-                const schemaNames = schema.name.split(".");
+
+                // this splits for the sub-attributes
+                const schemaNames: string[] = schema.name.split(".");
+
+                let isCanonical = false;
+
+                // this splits for the canonical types
+                const schemaNamesCanonicalType: string[] = schemaNames[0].split("#");
+                if(schemaNamesCanonicalType.length !== 1){
+                    isCanonical = true;
+                }
 
                 if (schemaNames.length === 1) {
                     if (schemaNames[0] === "emails") {
@@ -188,6 +205,21 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 } else {
                     if (schemaNames[0] === "name") {
                         tempProfileInfo.set(schema.name, profileDetails.profileInfo[schemaNames[0]][schemaNames[1]]);
+
+                    } else if (isCanonical) {
+                        let indexOfType = -1;
+                        profileDetails?.profileInfo[schemaNamesCanonicalType[0]]?.forEach((canonical: CanonicalAttribute) => {
+                            if(schemaNamesCanonicalType[1] === canonical?.type) {
+                                indexOfType = profileDetails?.profileInfo[schemaNamesCanonicalType[0]].indexOf(canonical);
+                            }
+                        });
+
+                        if (indexOfType > -1) {
+                            const subValue = profileDetails?.profileInfo[schemaNamesCanonicalType[0]][indexOfType][schemaNames[1]];
+                            if(schemaNamesCanonicalType [0] === "addresses") {
+                                tempProfileInfo.set(schema.name, subValue);
+                            }
+                        }
                     } else {
                         if (schema.extended) {
                             tempProfileInfo.set(schema.name,
@@ -252,7 +284,16 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         let value: any = {};
 
-        const schemaNames = formName.split(".");
+        // this splits for the sub-attributes
+        const schemaNames: string[] = formName.split(".");
+
+        let isCanonical = false;
+
+        // this splits for the canonical types
+        const schemaNamesCanonicalType: string[] = schemaNames[0].split("#");
+        if(schemaNamesCanonicalType.length !== 1){
+            isCanonical = true;
+        }
 
         if (ProfileUtils.isMultiValuedSchemaAttribute(profileSchema, schemaNames[0]) ||
             schemaNames[0] === "phoneNumbers") {
@@ -354,6 +395,18 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     value = {
                         name: { [schemaNames[1]]: values.get(formName) }
                     };
+
+                } else if (isCanonical && schemaNamesCanonicalType[0] === "addresses") {
+                    value = {
+                        [schemaNamesCanonicalType[0]]: [
+                            {
+                                [schemaNames[1]]: values.get(schema.name),
+                                type: schemaNamesCanonicalType[1]
+                            }
+                        ]
+                    };
+                    data.Operations[0].op = "add";
+
                 } else if (schemaNames[0] === "addresses") {
                     value = {
                         [schemaNames[0]]: [
