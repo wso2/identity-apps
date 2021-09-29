@@ -159,8 +159,9 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
      */
     const onJWKSFormSubmit = (values: Record<string, any>) => {
 
+        const operation = editingIDP?.certificate?.jwksUri ? "REPLACE" : "ADD";
         const PATCH_OBJECT = [ {
-            "operation": "REPLACE",
+            "operation": operation,
             "path": "/certificate/jwksUri",
             "value": values.jwks_endpoint
         } ];
