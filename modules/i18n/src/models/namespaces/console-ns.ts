@@ -1720,6 +1720,7 @@ export interface ConsoleNS {
                         invalidURLErrorMessage: string;
                         invalidQueryParamErrorMessage: string;
                         customProperties: string;
+                        internetResolvableErrorMessage: string;
                     };
                     generalDetails: {
                         name: FormAttributes;

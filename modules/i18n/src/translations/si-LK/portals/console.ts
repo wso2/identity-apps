@@ -2858,7 +2858,8 @@ export const console: ConsoleNS = {
                         customProperties: "අභිරුචි දේපල",
                         invalidQueryParamErrorMessage: "මේවා වලංගු විමසුම් පරාමිතීන් නොවේ",
                         invalidURLErrorMessage: "මෙය වලංගු URL එකක් නොවේ",
-                        requiredErrorMessage: "මෙය අවශ්‍ය වේ"
+                        requiredErrorMessage: "මෙය අවශ්‍ය වේ",
+                        internetResolvableErrorMessage: "යූආර්එල් අන්තර්ජාලය විසඳා ගත හැකි විය යුතුය."
                     },
                     generalDetails: {
                         description: {

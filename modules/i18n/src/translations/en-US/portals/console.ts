@@ -4244,7 +4244,8 @@ export const console: ConsoleNS = {
                         customProperties: "Custom Properties",
                         invalidQueryParamErrorMessage: "These are not valid query parameters",
                         invalidURLErrorMessage: "Enter a valid URL",
-                        requiredErrorMessage: "This is required"
+                        requiredErrorMessage: "This is required",
+                        internetResolvableErrorMessage: "URL must be internet resolvable.",
                     },
                     generalDetails: {
                         description: {
