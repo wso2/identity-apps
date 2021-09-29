@@ -11,6 +11,7 @@
         "build:analyze:win32": "..\\..\\node_modules\\.bin\\webpack --mode production --env NODE_ENV=production --env ENABLE_ANALYZER=true --env ANALYZER_PORT=8889",
         "build:analyze:default": "../../node_modules/.bin/webpack --mode production --env NODE_ENV=production --env ENABLE_ANALYZER=true --env ANALYZER_PORT=8889",
         "build:external": "npm run build:prod -- --env IS_DEPLOYED_ON_EXTERNAL_SERVER=true",
+        "build:external:static": "npm run build:prod -- --env IS_DEPLOYED_ON_EXTERNAL_SERVER=true SERVER_TYPE=static",
         "build:prod": "run-script-os",
         "build:prod:win32": "..\\..\\node_modules\\.bin\\webpack --mode production --env NODE_ENV=production",
         "build:prod:default": "../../node_modules/.bin/webpack --mode production --env NODE_ENV=production",
