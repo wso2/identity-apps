@@ -39,6 +39,20 @@ Before you can build and write code, make sure you have the following set of too
 
 ## Setting up Development Tools
 
+### React Developer Tools
+
+Browser extension to debug React code.
+
+- [Download for Chrome](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en)
+- [Download for Firefox](https://addons.mozilla.org/en-US/firefox/addon/react-devtools/)
+
+### Redux DevTools
+
+Redux DevTools for debugging application's Redux store operations.
+
+- [Download for Chrome](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en)
+- [Download for Firefox](https://addons.mozilla.org/en-US/firefox/addon/reduxdevtools/)
+
 ### ESLint
 
 ESLint is a static code analysis tool for identifying problematic patterns found in JavaScript/Typescript code.
