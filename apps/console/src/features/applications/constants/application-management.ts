@@ -407,4 +407,12 @@ export class ApplicationManagementConstants {
         "console:develop.features.applications.notifications.apiLimitReachedError.error.message",
         "cdaefcee-ecdb-47af-8538-174ec13292db"
     )
+    /**
+     * Error code for Issuer already exists.
+     */
+    public static readonly ERROR_CODE_ISSUER_EXISTS: string = "SAML-60002";
+    /**
+     * Error code for invalid metadata URL.
+     */
+    public static readonly ERROR_CODE_INVALID_METADATA_URL: string = "SAML-60003";
 }

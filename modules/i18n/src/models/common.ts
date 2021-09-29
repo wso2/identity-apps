@@ -89,6 +89,11 @@ export interface FormAttributes extends StrictFormAttributes {
      * explain the purpose of each each group.
      */
     description?: string;
+    /**
+     * This property holds an `alternate` error message for a form field
+     * attribute if there are multiple validations.
+     */
+    errorMessage?: string;
 }
 
 /**
