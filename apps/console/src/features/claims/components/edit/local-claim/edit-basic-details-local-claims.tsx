@@ -305,7 +305,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         }
                         ref={ descriptionField }
                         value={ claim?.description }
-                        maxLength={ 300 }
+                        maxLength={ 255 }
                         minLength={ 3 }
                         data-testid={ `${ testId }-form-description-input` }
                         hint={ t("console:manage.features.claims.local.forms.descriptionHint") }

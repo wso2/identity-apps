@@ -168,6 +168,32 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
     }, [ externalClaims, localClaims, claim, addedClaim ]);
 
     /**
+     * Get the attribute name.
+     */
+    const resolveClaimURIName = (): string => {
+        const parts = addedClaim.claimURI.split(":");
+        if (parts.length > 1) {
+            return parts[parts.length - 1];
+        }
+        return addedClaim.claimURI;
+    };
+
+    /**
+     * Set the modified claimURI to the form values.
+     *
+     * @param {Map<string, FormValue>} values - Claim object
+     */
+    const resolveClaimURI = (values: Map<string, FormValue>): Map<string, FormValue> => {
+        const parts = addedClaim.claimURI.split(":");
+        if (parts.length > 1) {
+            const claimURI = parts.filter((part,idx) => idx < parts.length - 1).join(":") +
+                ":" + values.get("claimURI");
+            values.set("claimURI", claimURI);
+        }
+        return values;
+    };
+
+    /**
      * This removes the mapped local claims from the local claims list.
      *
      * @param {string} claimURI The claim URI of the mapped local claim.
@@ -230,7 +256,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                         ));
                     });
                 } else {
-                    onSubmit(values);
+                    onSubmit(resolveClaimURI(values));
                     update();
                 }
             } }
@@ -254,7 +280,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                                             { type: resolveType(attributeType) })
                                     }
                                     type="text"
-                                    value={ addedClaim.claimURI }
+                                    value={ resolveClaimURIName() }
                                     data-testid={ `${ testId }-form-claim-uri-input` }
                                     validation={ (value: string, validation: Validation) => {
                                         for (const claim of externalClaims) {
