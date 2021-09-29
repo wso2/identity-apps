@@ -163,7 +163,8 @@ export class Config {
      * look for resource files in `https://localhost:9443/<PORTAL>/resources/i18n` rather than looking for the
      * files in `https://localhost:9443/t/wso2.com/<PORTAL>/resources/i18n`.
      *
-     * @param
+     * @param {MetaI18N} metaI18N Meta i18n object.
+     *
      * @return {I18nModuleInitOptions} I18n init options.
      */
     public static generateModuleInitOptions(metaFile: MetaI18N): I18nModuleInitOptions {
