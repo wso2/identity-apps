@@ -5765,8 +5765,9 @@ export const console: ConsoleNS = {
                                 duplicateName: "The {{type}} attribute already exists.",
                                 invalidName: "The name you entered contains illegal characters. " +
                                     "Only alphabets, numbers, `#`, and `_` are allowed.",
-                                scimInvalidName: "The starting character of the name should be a letter. " +
-                                    "The remaining characters may include letters, numbers, dash (-), and underscore (_)."
+                                scimInvalidName: "Le caractère de départ du nom doit être une lettre. " +
+                                    "Les caractères restants peuvent inclure des lettres, des chiffres, " +
+                                    "un tiret (-) et un trait de soulignement (_)."
                             },
                         },
                         localAttribute: {
