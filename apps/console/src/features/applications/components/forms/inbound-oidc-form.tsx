@@ -1627,11 +1627,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             { selectedGrantTypes?.includes("client_credentials") &&
                 (
                     <>
-                        <Grid.Row columns={1}>
-                            <Grid.Column mobile={16} tablet={16} computer={16}>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     name="applicationAccessTokenExpiryInSeconds"
-                                    ref={applicationAccessTokenExpiryInSeconds}
+                                    ref={ applicationAccessTokenExpiryInSeconds }
                                     label={
                                         t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                             ".accessToken.fields.applicationTokenExpiry.label")
@@ -1641,10 +1641,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                             ".accessToken.fields.applicationTokenExpiry.validations.empty")
                                     }
-                                    value={initialValues.accessToken ?
+                                    value={ initialValues.accessToken ?
                                         initialValues.accessToken.applicationAccessTokenExpiryInSeconds.toString() :
                                         metadata.defaultApplicationAccessTokenExpiryTime}
-                                    validation={async (value: FormValue, validation: Validation) => {
+                                    validation={ async (value: FormValue, validation: Validation) => {
                                         if (!isValidExpiryTime(value.toString())) {
                                             validation.isValid = false;
                                             validation.errorMessages.push(
@@ -1658,8 +1658,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             ".accessToken.fields.applicationTokenExpiry.placeholder")
                                     }
                                     type="number"
-                                    min={1}
-                                    readOnly={readOnly}
+                                    min={ 1 }
+                                    readOnly={ readOnly }
                                 />
                                 <Hint>Specify the validity period of the
                                     <Code withBackground>application_access_token</Code>
