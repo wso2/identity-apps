@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/webapps",
-    "version": "1.2.576",
+    "version": "1.2.577",
     "description": "WSO2 Identity Server Web Applications",
     "keywords": [
         "WSO2",
