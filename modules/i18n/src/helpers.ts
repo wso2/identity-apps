@@ -19,7 +19,7 @@
 import { StringUtils } from "@wso2is/core/utils";
 import { InitOptions, Resource } from "i18next";
 import { I18nModuleConstants } from "./constants";
-import { I18nModuleOptionsInterface, LocaleBundles, MetaI18N, SupportedLanguagesMeta } from "./models";
+import { I18nModuleOptionsInterface, LocaleBundles, SupportedLanguagesMeta } from "./models";
 
 /**
  * Generate the i18n options.
@@ -182,8 +182,7 @@ export const isLanguageSupported = (detectedLanguage: string,
 export const generateBackendPaths = (language: string[],
                                      namespace: string[],
                                      appBaseName: string,
-                                     i18nBundleOptions: I18nModuleOptionsInterface,
-                                     metaFile: MetaI18N): string => {
+                                     i18nBundleOptions: I18nModuleOptionsInterface): string => {
 
     // If `appBaseName` is "", avoids adding a forward slash.
     const resolvedAppBaseName: string = StringUtils.removeSlashesFromPath(appBaseName)
@@ -193,12 +192,9 @@ export const generateBackendPaths = (language: string[],
     const fullResourcePath = `${ resolvedAppBaseName }${
         StringUtils.removeSlashesFromPath(i18nBundleOptions?.resourcePath) }`;
 
-    const fileNames = metaFile[ language[ 0 ] ].paths[ namespace[ 0 ] ].split("/");
-    const fileName = fileNames[ fileNames.length - 1 ];
-
     if (i18nBundleOptions?.namespaceDirectories.has(namespace[0])) {
         return `/${ fullResourcePath }/${ language[0] }/${ i18nBundleOptions.namespaceDirectories.get(namespace[0]) }/${
-            fileName}`;
+            namespace[0] }.json`;
     }
 
     return `/${ fullResourcePath }/${ language[0] }/${ namespace[0] }.json`;
