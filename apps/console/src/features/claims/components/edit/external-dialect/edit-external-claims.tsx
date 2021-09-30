@@ -142,6 +142,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
     useEffect(() => {
         if (claims) {
             setFilteredClaims(claims);
+            handleSearchQueryClear(); // Clear the search field upon new claims
         }
     }, [ claims ]);
 
