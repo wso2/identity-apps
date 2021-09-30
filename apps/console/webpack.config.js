@@ -16,7 +16,6 @@
  * under the License.
  */
 
-const fs = require("fs");
 const path = require("path");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const BrotliPlugin = require("brotli-webpack-plugin");
@@ -29,7 +28,6 @@ const TerserPlugin = require("terser-webpack-plugin");
 const webpack = require("webpack");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const deploymentConfig = require("./src/public/deployment.config.json");
-const { env } = require("process");
 
 // Flag to enable source maps in production.
 const isSourceMapsEnabledInProduction = false;
@@ -51,20 +49,6 @@ const STATIC_ASSETS_DIRECTORY = "static/media";    // Output directory for stati
 // Dev Server Default Configs.
 const DEV_SERVER_PORT = 9001;
 const ROOT_CONTEXT_DEV_SERVER_INITIAL_REDIRECT = "/login";
-
-const THEME_TO_USE = deploymentConfig.ui.theme.name || "default";
-const THEME_DIR = path.resolve(__dirname, "node_modules", "@wso2is", "theme", "dist", "lib", "themes", THEME_TO_USE);
-let themeHash;
-const files = fs.readdirSync(THEME_DIR);
-
-const file = files ? files.filter(file => file.endsWith(".min.css"))[ 0 ] : null;
-themeHash = file ? file.split(".")[ 1 ] : null;
-
-const I18N_DIR = path.resolve(__dirname, "node_modules", "@wso2is", "i18n", "dist", "bundle");
-const metaFiles = fs.readdirSync(I18N_DIR);
-
-const metaFile = metaFiles ? metaFiles.filter(file => file.startsWith("meta"))[ 0 ] : null;
-const metaHash = metaFile ? metaFile.split(".")[ 1 ] : null;
 
 module.exports = (env) => {
 
@@ -89,7 +73,7 @@ module.exports = (env) => {
     const isDevServerHostCheckDisabled = env.DISABLE_DEV_SERVER_HOST_CHECK === "true";
 
     const shouldCopyLessDistribution = env.SHOULD_COPY_LESS_DISTRIBUTION === "true";
-
+    
     const isESLintPluginDisabled = env.DISABLE_ESLINT_PLUGIN === "true";
 
     // Log level.
@@ -475,7 +459,6 @@ module.exports = (env) => {
                     tenantPrefix: !isDeployedOnExternalServer
                         ? "<%=TENANT_AWARE_URL_PREFIX%>"
                         : "",
-                    themeHash: themeHash,
                     vwoScriptVariable: "<%= vwo_ac_id %>",
                     vwoSystemVariable: "<% String vwo_ac_id = System.getenv(\"vwo_account_id\"); %>"
                 })
@@ -486,8 +469,7 @@ module.exports = (env) => {
                     publicPath: !isRootContext
                         ? publicPath
                         : "/",
-                    template: path.join(__dirname, "src", "index.html"),
-                    themeHash: themeHash
+                    template: path.join(__dirname, "src", "index.html")
                 }),
             new HtmlWebpackPlugin({
                 excludeChunks: [ "main", "init" ],
@@ -500,8 +482,7 @@ module.exports = (env) => {
             }),
             new webpack.DefinePlugin({
                 "process.env": {
-                    NODE_ENV: JSON.stringify(env.NODE_ENV),
-                    metaHash: JSON.stringify(metaHash)
+                    NODE_ENV: JSON.stringify(env.NODE_ENV)
                 },
                 "typeof window": JSON.stringify("object")
             }),
