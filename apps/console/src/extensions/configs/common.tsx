@@ -24,6 +24,7 @@ export const commonConfig: CommonConfig = {
     advancedSearchWithBasicFilters: {
         enableQuerySearch: true
     },
+    blockLoopBackCalls: false,
     checkForUIResourceScopes: false,
     header: {
         getHeaderExtensions: (): HeaderExtension[] => [],

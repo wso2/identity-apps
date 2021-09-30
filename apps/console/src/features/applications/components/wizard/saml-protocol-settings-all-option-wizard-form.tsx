@@ -28,6 +28,7 @@ import { Button, Grid, Icon, Message } from "semantic-ui-react";
 import { getCertificateIllustrations } from "../../../core";
 import { SAMLConfigModes, SupportedAuthProtocolTypes } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
+import { commonConfig } from "../../../../extensions";
 
 /**
  * Proptypes for the saml protocol all settings wizard form component.
@@ -489,6 +490,14 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                     validation.errorMessages.push(
                                         t("console:develop.features.applications.forms.inboundSAML" +
                                             ".fields.metaURL.validations.invalid")
+                                    );
+                                }
+
+                                if (commonConfig?.blockLoopBackCalls && URLUtils.isLoopBackCall(value)) {
+                                    validation.isValid = false;
+                                    validation.errorMessages.push(
+                                        t("console:develop.features.idp.forms.common." +
+                                            "internetResolvableErrorMessage")
                                     );
                                 }
 

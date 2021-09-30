@@ -2914,7 +2914,8 @@ export const console: ConsoleNS = {
                         customProperties: "Propriétés personnalisées",
                         invalidQueryParamErrorMessage: "Ce ne sont pas des paramètres de requête valables",
                         invalidURLErrorMessage: "Ceci n'est pas une URL valide",
-                        requiredErrorMessage: "Ceci est requis"
+                        requiredErrorMessage: "Ceci est requis",
+                        internetResolvableErrorMessage: "L'URL doit pouvoir être résolue par Internet."
                     },
                     generalDetails: {
                         description: {

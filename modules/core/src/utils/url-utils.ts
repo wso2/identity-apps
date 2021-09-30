@@ -91,6 +91,17 @@ export class URLUtils {
     }
 
     /**
+     * Checks if the the provided URL is a loop back call.
+     *
+     * @param {string} url - The URL to evaluate.
+     *
+     * @return {boolean} True if the URL is a loop back call.
+     */
+    public static isLoopBackCall(url: string): boolean{
+        return !!url.trim().match(PatternConstants.LOOP_BACK_CALL_REGEX_PATTERN);
+    }
+
+    /**
      * Splits a given string url into <scheme>://<host> This function does
      * not handle individual ports or paths related to the url. Instead it
      * only returns the protocol, host, and combined origin of the url.
