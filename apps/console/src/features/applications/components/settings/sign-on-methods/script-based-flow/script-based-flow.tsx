@@ -225,13 +225,15 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      */
     const addSecretToScript = (secret:SecretModel): void => {
         const doc = editorInstance.getDoc();
-        //If a code segment is selected, the selected text is replaced.
+        const secretNameString = "\""+secret.secretName+"\"";
+
+        //If a code segment is selected, the selected text is replaced with secret name as a string.
         if (doc.somethingSelected()) {
-            doc.replaceSelection(secret.secretName);
+            doc.replaceSelection(secretNameString);
         } else {
             //If no selected text, secret name injected at the location of the cursor.
             const cursor = doc.getCursor();
-            doc.replaceRange(secret.secretName, cursor);
+            doc.replaceRange(secretNameString, cursor);
         }
     };
 
@@ -629,26 +631,28 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                 }
             >
                 <Dropdown.Menu>
-                    <Input
-                        data-testid={ `${ testId }-secret-search` }
-                        icon="search"
-                        iconPosition="left"
-                        className="search"
-                        placeholder= { t("console:develop.features.applications.edit.sections.signOnMethod" +
-                                        ".sections.authenticationFlow.sections.scriptBased.secretsList.search") }
-                        onChange={ ( data:ChangeEvent<HTMLInputElement>
-                        ) => {
-                            if(!data.currentTarget.value) {
-                                setFilteredSecretList(secretList);
-                            } else {
-                                setFilteredSecretList(secretList.
-                                filter((secret: SecretModel) => secret.secretName.includes(
-                                    data.currentTarget.value)));
-                            }
-                        } }
-                        onClick={ e => e.stopPropagation() }
-                    />
-
+                    {
+                        secretList.length > 0 && (
+                            <Input
+                                data-testid={ `${testId}-secret-search` }
+                                icon="search"
+                                iconPosition="left"
+                                className="search"
+                                placeholder={ t("console:develop.features.applications.edit.sections.signOnMethod" +
+                                    ".sections.authenticationFlow.sections.scriptBased.secretsList.search") }
+                                onChange={ (data: ChangeEvent<HTMLInputElement>
+                                ) => {
+                                    if (!data.currentTarget.value) {
+                                        setFilteredSecretList(secretList);
+                                    } else {
+                                        setFilteredSecretList(secretList.filter((secret: SecretModel) => secret.secretName.includes(
+                                            data.currentTarget.value)));
+                                    }
+                                } }
+                                onClick={ e => e.stopPropagation() }
+                            />
+                        )
+                    }
                     <Dropdown.Menu
                         data-testid={ `${ testId }-secret-list` }
                         scrolling
@@ -656,7 +660,6 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                     >
                         {
                             filteredSecretList.length>0 ? (
-
                                 filteredSecretList.map((
                                     secret: SecretModel
                                 ) => (
@@ -996,7 +999,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                         </div>
                                                     ) }
                                                     content={ () => {
-                                                        return t("common:addKey");
+                                                        return t("console:develop.features.applications.edit.sections.signOnMethod" +
+                                                            ".sections.authenticationFlow.sections.scriptBased.secretsList.iconTooltip") ;
                                                     } }
                                                     size="mini"
                                                 />
