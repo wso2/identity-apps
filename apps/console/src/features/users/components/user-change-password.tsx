@@ -464,8 +464,8 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                     { handlePasswordResetOptionChange() }
                     <Grid.Row>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                            <Message color="teal">
-                                <Hint>
+                            <Message visible warning>
+                                <Hint warning>
                                     { t("console:manage.features.user.modals.changePasswordModal.message") }
                                 </Hint>
                             </Message>
@@ -546,8 +546,8 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                    </Grid.Row>
                    <Grid.Row>
                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                           <Message color="teal">
-                               <Hint>
+                           <Message visible warning>
+                               <Hint warning>
                                    { t("console:manage.features.user.modals.changePasswordModal.message") }
                                </Hint>
                            </Message>
