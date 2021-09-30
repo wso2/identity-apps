@@ -763,6 +763,7 @@ export interface ConsoleNS {
                                 fields: {
                                     bindingType: FormAttributes;
                                     expiry: FormAttributes;
+                                    applicationTokenExpiry: FormAttributes;
                                     type: FormAttributes;
                                     revokeToken: FormAttributes;
                                     validateBinding: FormAttributes;

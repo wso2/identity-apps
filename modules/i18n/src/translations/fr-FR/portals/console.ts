@@ -1429,6 +1429,10 @@ export const console: ConsoleNS = {
                                             "n'est pas recommandée.",
                                         label: "{{grantType}} (non recommandé)"
                                     },
+                                    client_credential: {
+                                        hint: "La portée openid n'est pas autorisée avec ce type de subvention.",
+                                        label: "(portée openid non autorisée)"
+                                    },
                                     password: {
                                         hint: "L'utilisation de l'octroi de mot de passe avec des applications " +
                                             "publiques n'est pas recommandée.",
@@ -1500,6 +1504,19 @@ export const console: ConsoleNS = {
                                             empty: "Veuillez indiquer le délai d'expiration des jetons d'accès",
                                             invalid: "L'heure d'expiration du jeton d'accès doit être exprimée "
                                                 +"en secondes."
+                                        }
+                                    },
+                                    applicationTokenExpiry: {
+                                        hint: "Précisez la période de validité du " +
+                                            "<1>jeton d'accès à l'application</1> en secondes.",
+                                        label: "Délai d'expiration du jeton d'accès à l'application",
+                                        placeholder: "Saisissez l'heure d'expiration du jeton d'accès à l'application",
+                                        validations: {
+                                            empty: "Veuillez remplir le délai d'expiration du jeton d'accès " +
+                                                "à l'application",
+                                            invalid: "Le délai d'expiration du jeton d'accès à l'application " +
+                                                "doit être en secondes. Les décimales et les nombres " +
+                                                "négatifs ne sont pas autorisés."
                                         }
                                     },
                                     revokeToken: {
