@@ -115,7 +115,8 @@ const SecretEdit: FC<SecretEditProps> = (props: SecretEditProps): ReactElement =
             : (
                 <PageLayout
                     isLoading={ loading }
-                    title={ <strong>{ secretName }</strong> }
+                    title={ secretName }
+                    description={ "Edit secret" }
                     image={
                         <GenericIcon
                             size="x60"

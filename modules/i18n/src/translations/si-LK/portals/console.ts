@@ -937,6 +937,7 @@ export const console: ConsoleNS = {
                                                 }
                                             },
                                             secretsList: {
+                                                iconTooltip: "API යතුරක් ලෙස රහස් එකතු කරන්න",
                                                 create: "නව රහසක් සාදන්න",
                                                 emptyPlaceholder: "රහස් නොමැත",
                                                 search: "රහස් නාමයෙන් සොයන්න"
@@ -3558,15 +3559,15 @@ export const console: ConsoleNS = {
             secrets: {
                 alerts: {
                     createdSecret: {
-                        description: "{{secretName}} නමින් නව රහසක් තනන ලදි.",
-                        message: "සාර්ථකව නිර්මාණය කළ රහසක්."
+                        description: "නිර්මාණය සාර්ථකයි.",
+                        message: "රහස සාර්ථකව නිර්‍මාණය කරන ලදි."
                     },
                     updatedSecret: {
-                        description: "{{secretName}} රහස යාවත්කාලීන කරන ලදි.",
+                        description: "යාවත්කාලීන කිරීම සාර්‍ථකයි.",
                         message: "රහස සාර්ථකව යාවත්කාලීන කරන ලදි."
                     },
                     deleteSecret: {
-                        description: "{{secretName}} රහස මකන ලදි.",
+                        description: "මැකීම සාර්‍ථකයි.",
                         message: "රහස සාර්ථකව මැකුවා"
                     }
                 },
@@ -3596,7 +3597,7 @@ export const console: ConsoleNS = {
                         secondaryActionButtonText: "අවලංගු කරන්න",
                         title: "ඔබට විශ්වාසද?",
                         content: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර රහස සදහටම මකා දමයි.",
-                        warningMessage: "ඔබ මෙම රහස මකා දැමුවහොත්, මෙම වටිනාකම අනුව අනුවර්තී සත්‍යාපන ලේඛන " +
+                        warningMessage: "ඔබ මෙම රහස මකා දැමුවහොත්, මෙම වටිනාකම අනුව කොන්දේසි සහිත සත්‍යාපන ලේඛන " +
                             "වැඩ කිරීම නවතිනු ඇත. කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න."
                     }
                 },
@@ -3657,6 +3658,9 @@ export const console: ConsoleNS = {
                 },
                 forms: {
                     editSecret: {
+                        page: {
+                            description: "රහස සංස්කරණය කරන්න"
+                        },
                         secretValueField: {
                             ariaLabel: "රහස්‍ය අගයක් ඇතුළු කරන්න",
                             label: "රහස් අගය",
@@ -3689,7 +3693,7 @@ export const console: ConsoleNS = {
                     },
                     emptyListOfSecrets: {
                         messages: [
-                            "මෙම රහස් වර්ගය සඳහා අපට රහස් සොයා ගැනීමට නොහැකි විය."
+                            "මේ වන විට රහස් නොමැත.."
                         ]
                     },
                     buttons: {

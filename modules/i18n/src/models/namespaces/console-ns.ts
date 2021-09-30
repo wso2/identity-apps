@@ -596,6 +596,7 @@ export interface ConsoleNS {
                                                 };
                                             };
                                             secretsList: {
+                                                iconTooltip: string;
                                                 create: string;
                                                 emptyPlaceholder: string;
                                                 search: string;
@@ -2065,6 +2066,9 @@ export interface ConsoleNS {
                 },
                 forms?: {
                     editSecret?: {
+                        page: {
+                            description: string;
+                        },
                         secretValueField: Record<string, string>;
                         secretDescriptionField: Record<string, string>;
                     },

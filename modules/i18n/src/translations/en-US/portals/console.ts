@@ -941,6 +941,7 @@ export const console: ConsoleNS = {
                                                 }
                                             },
                                             secretsList: {
+                                                iconTooltip: "Add secret as an API key",
                                                 create: "Create new secret",
                                                 emptyPlaceholder: "No secrets available",
                                                 search: "Search by secret name"
@@ -4972,16 +4973,16 @@ export const console: ConsoleNS = {
             secrets: {
                 alerts: {
                     createdSecret: {
-                        description: "Created a new secret with the name {{secretName}}.",
-                        message: "Successfully Created Secret."
+                        description: "Successfully created the secret.",
+                        message: "Creation successful."
                     },
                     updatedSecret: {
-                        description: "Updated secret {{secretName}}.",
-                        message: "Successfully Updated Secret."
+                        description: "Successfully updated the secret.",
+                        message: "Update successful."
                     },
                     deleteSecret: {
-                        description: "Deleted secret {{secretName}}.",
-                        message: "Successfully Deleted Secret."
+                        description: "Successfully deleted the secret.",
+                        message: "Delete successful."
                     }
                 },
                 errors: {
@@ -5010,7 +5011,7 @@ export const console: ConsoleNS = {
                         secondaryActionButtonText: "Cancel",
                         title: "Are you sure?",
                         content: "This action is irreversible and will permanently delete the secret.",
-                        warningMessage: "If you delete this secret, Adaptive Authentication Scripts " +
+                        warningMessage: "If you delete this secret, conditional authentication scripts " +
                             "depending on this value will stop working. Please proceed with caution."
                     }
                 },
@@ -5029,20 +5030,20 @@ export const console: ConsoleNS = {
                                 hint: "Provide a meaningful name for this secret. Note that once " +
                                     "you create this secret with the name above, you cannot change it afterwards.",
                                 placeholder: "Enter a secret name",
-                                label: "Secret Name"
+                                label: "Secret name"
                             },
                             secretValueField: {
                                 ariaLabel: "Enter a secret value",
                                 hint: "This is the value of the secret. You can enter a value between length" +
                                     " {{minLength}} to {{maxLength}}.",
                                 placeholder: "Enter a secret value",
-                                label: "Secret Value"
+                                label: "Secret value"
                             },
                             secretDescriptionField: {
                                 ariaLabel: "Secret Description",
                                 hint: "Provide a description for this secret (i.e., When to use this secret).",
                                 placeholder: "Enter a secret description",
-                                label: "Secret Description"
+                                label: "Secret description"
                             }
                         }
                     },
@@ -5071,20 +5072,23 @@ export const console: ConsoleNS = {
                 },
                 forms: {
                     editSecret: {
+                        page: {
+                            description: "Edit secret"
+                        },
                         secretValueField: {
                             ariaLabel: "Enter a Secret Value",
-                            label: "Secret Value",
+                            label: "Secret value",
                             hint: "You can enter a value between length {{minLength}} to {{maxLength}}.",
                             placeholder: "Enter a secret value",
-                            editButton: "Change Secret Value",
+                            editButton: "Change secret value",
                             cancelButton: "Cancel",
-                            updateButton: "Update Secret Value"
+                            updateButton: "Update secret value"
                         },
                         secretDescriptionField: {
                             ariaLabel: "Secret Description",
                             hint: "Provide a description for this secret (i.e., When to use this secret).",
                             placeholder: "Enter a secret description",
-                            label: "Secret Description"
+                            label: "Secret description"
                         }
                     },
                     actions: {
@@ -5103,7 +5107,7 @@ export const console: ConsoleNS = {
                     },
                     emptyListOfSecrets: {
                         messages: [
-                            "We couldn't find any secrets for this secret type."
+                            "There are no secrets available at the moment."
                         ]
                     },
                     buttons: {
