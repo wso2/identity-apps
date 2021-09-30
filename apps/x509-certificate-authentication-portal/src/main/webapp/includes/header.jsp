@@ -22,17 +22,17 @@
 
 <!-- Extract the name of the stylesheet-->
 <%
-	String themeName = "default";
-	File themeDir = new File(request.getSession().getServletContext().getRealPath("/")
-		+ "/" + "libs/themes/" + themeName + "/");
-	String[] fileNames = themeDir.list();
-	String themeFileName = "";
+    String themeName = "default";
+    File themeDir = new File(request.getSession().getServletContext().getRealPath("/")
+        + "/" + "libs/themes/" + themeName + "/");
+    String[] fileNames = themeDir.list();
+    String themeFileName = "";
 
-	for(String file: fileNames) {
-		if(file.endsWith("min.css")) {
-			themeFileName = file;
-		}
-	}
+    for(String file: fileNames) {
+        if(file.endsWith("min.css")) {
+            themeFileName = file;
+        }
+    }
 %>
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
