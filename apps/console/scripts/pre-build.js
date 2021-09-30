@@ -17,6 +17,7 @@
  */
 
 const { execSync } = require("child_process");
+const crypto = require("crypto");
 const path = require("path");
 const fs = require("fs-extra");
 
@@ -57,6 +58,12 @@ log("Completed compiling i18n extensions.");
 
 const i18NTempExtensionsPath = path.join(distDirectory, "resources");
 const i18nExtensions = require(i18NTempExtensionsPath);
+const files = fs.readdirSync(i18nNodeModulesDir);
+const metaJsonFileName = files.filter(file => file.startsWith("meta"))[ 0 ];
+const metaFilePath = path.join(i18nNodeModulesDir, metaJsonFileName);
+const meta = require(metaFilePath);
+
+const namespaces = [];
 
 log("Moving extensions.json files to the build directory");
 for (const value of Object.values(i18nExtensions)) {
@@ -65,10 +72,27 @@ for (const value of Object.values(i18nExtensions)) {
     }
 
     const fileContent = JSON.stringify(value.extensions, undefined, 4);
-    const fileName = "extensions.json";
+    const hash = crypto.createHash("sha1").update(JSON.stringify(fileContent)).digest("hex");
+    const fileName = `extensions.${ hash.substr(0, 8) }.json`;
     const filePath = path.join(i18nNodeModulesDir, value.name, "portals", fileName);
     createFile(filePath, fileContent, null, true);
+
+    // Update the name of the extensions file in the meta.json file.
+    meta[ value.name ].paths.extensions = meta[ value.name ].paths.extensions.replace("{hash}", hash.substr(0, 8));
+
+    // Capture existing namespaces.
+    namespaces.push(value.name);
 }
+
+// Remove non-existent namespaces from the meta.json file.
+Object.keys(meta).forEach((key) => {
+    if (!namespaces.includes(key)) {
+        delete meta[ key ].paths.extensions;
+    }
+});
+
+// Save meta.json file.
+createFile(metaFilePath, JSON.stringify(meta, undefined, 4));
 
 log("Cleaning the tmp directory...");
 execSync("npm run clean:i18n:dist");

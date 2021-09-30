@@ -16,17 +16,19 @@
  * under the License.
  */
 
+const crypto = require("crypto");
 const path = require("path");
 const fs = require("fs-extra");
 const { execSync } = require("child_process");
+
 
 // eslint-disable-next-line no-console
 const log = console.log;
 
 const OUTPUT_DIR_NAME = "bundle";
-const META_FILE_NAME = "meta.json";
+const META_FILE_NAME = "meta.{hash}.json";
 const TRANSLATIONS_FOLDER_NAME = "translations";
-const EXTENSIONS_FILENAME = "extensions.json";
+const EXTENSIONS_FILENAME = "extensions.{hash}.json";
 
 // Path for the distribution directory.
 const dist = path.join(__dirname, "..", "dist");
@@ -95,8 +97,9 @@ for (const value of Object.values(translations)) {
         log("Creating " + objKey + " sub folder to store relevant namespace resources.");
 
         // Extract and create the JSON files from the namespaces.
-        for (const [nsObjKey, nsObjValue] of Object.entries(objValue)) {
-            const fileName = nsObjKey + ".json";
+        for (const [ nsObjKey, nsObjValue ] of Object.entries(objValue)) {
+            const hash = crypto.createHash("sha1").update(JSON.stringify(nsObjValue)).digest("hex");
+            const fileName = `${ nsObjKey }.${ hash.substr(0, 8) }.json`;
             const filePath = path.join(subFolderPath, fileName);
 
             createFile(filePath, JSON.stringify(nsObjValue, undefined, 4), null, true);
@@ -120,12 +123,14 @@ for (const value of Object.values(translations)) {
         ...metaFileContent,
         [ value.meta.code ] : {
             ...value.meta,
-            paths: resourcePaths,
-        },
+            paths: resourcePaths
+        }
     };
 }
 
-createFile(path.join(outputPath, META_FILE_NAME),
+const hash = crypto.createHash("sha1").update(JSON.stringify(metaFileContent)).digest("hex");
+
+createFile(path.join(outputPath, META_FILE_NAME.replace("{hash}", hash.substr(0, 8))),
     JSON.stringify(metaFileContent, undefined, 4), null, true);
 
 log("\nCreated the locale meta file.");
