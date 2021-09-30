@@ -82,11 +82,12 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const isHeaderAvatarLabelAllowed: boolean = useSelector((state: AppState) =>
         state.config.ui.isHeaderAvatarLabelAllowed);
-    const showAppSwitchButton: boolean = useSelector((state: AppState) => state.config.ui.showAppSwitchButton);
+    const showAppSwitchButtonConfig: boolean = useSelector((state: AppState) => state.config.ui.showAppSwitchButton);
     const consoleAppURL: string = useSelector((state: AppState) => state.config.deployment.consoleApp.path);
     const accountAppURL: string = useSelector((state: AppState) => state.config.deployment.appHomePath);
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const [ userStore, setUserstore ] = useState<string> (null);
+    const [ showAppSwitchButton, setShowAppSwitchButton ] = useState<boolean> (true);
 
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>(undefined);
 
@@ -99,6 +100,16 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             dispatch(getProfileLinkedAccounts());
         }
     }, []);
+
+    /**
+     * Sets whether to show apps in dropdown.
+     */
+    useEffect(() => {
+        setShowAppSwitchButton(showAppSwitchButtonConfig);
+       if (!commonConfig?.utils?.isConsoleNavigationAllowed(userStore)) {
+           setShowAppSwitchButton(false);
+       }
+    }, [showAppSwitchButtonConfig,userStore]);
 
     /**
      * Sets user store of the user.
