@@ -26,6 +26,7 @@ const CleanCSS = require("clean-css");
 const replace = require("replace");
 const lessToJson = require("less-to-json");
 const mergeFiles = require("merge-files");
+const crypto = require("crypto");
 
 const srcDir = path.join(__dirname, "..", "src");
 const distDir = path.join(__dirname, "..", "dist");
@@ -54,7 +55,7 @@ const createVariablesLessJson = async () => {
     const exportMergeLessFile = path.join(distDir, exportMergeLessFileName);
     const exportJsFile = path.join(distDir, exportJsFileName);
 
-    const semanticUISiteVariablesFile = 
+    const semanticUISiteVariablesFile =
         path.join(semanticUICorePath, DEFAULT_THEME_NAME, "globals", "site.variables");
     const themeCoreSiteVariablesFile = path.join(themesDir, DEFAULT_THEME_NAME, "globals", "site.variables");
 
@@ -204,7 +205,14 @@ const generateThemes = () => {
                 ".min.css": minifiedOutput.styles
             };
 
-            Object.keys(files).map((key) => writeFile(theme, key, files[key], themeIndexFile));
+            Object.keys(files).map((key) => {
+                const hash = files[ key ] && crypto.createHash("sha1").update(files[ key ]).digest("hex");
+                const ext = hash
+                    ? `.${ hash.substr(0, 8) }${ key }`
+                    : key;
+
+                writeFile(theme, ext, files[ key ], themeIndexFile);
+            });
             copyAssets(theme, filePath);
 
             if (!skipManifest) {
@@ -256,10 +264,10 @@ const createSampleTheme = () => {
         * Remove empty definition folders from the copied
         */
         const defaultThemeContent = fs.readdirSync(defaultThemePath);
-        
+
         defaultThemeContent.map((contentItem) => {
             const contentItemPath = path.join(defaultThemePath, contentItem);
-        
+
             if (fs.lstatSync(contentItemPath).isDirectory()) {
                 const folder = contentItem;
                 const folderPath = path.join(sampleThemePath, folder);
@@ -310,7 +318,7 @@ const createSampleTheme = () => {
 };
 
 /*
- * Create theme module dependency semantic-ui-core folder 
+ * Create theme module dependency semantic-ui-core folder
  */
 const createSemanticUICore = () => {
     try {
@@ -328,7 +336,7 @@ const createSemanticUICore = () => {
                     if (fs.lstatSync(src).isDirectory()) {
                        return true;
                     }
-                    
+
                     // @return true if 'src' is a file & type .less
                     const result = /\.less$/.test(src);
                     return result;
@@ -336,7 +344,7 @@ const createSemanticUICore = () => {
             });
 
         console.log("node_modules/semantic-ui-less/definitions .less files copied.");
-        
+
         /*
          * Remove empty definition folders from the copied
          */
@@ -350,7 +358,7 @@ const createSemanticUICore = () => {
         });
 
         console.log("node_modules/semantic-ui-less/definitions folder cleansed.");
-        
+
         /*
          * Copy default theme .variable & .override files from semantic ui less module to src/semantic-ui-core folder
          */
@@ -380,5 +388,5 @@ const createSemanticUICore = () => {
 };
 
 // Start the build with creating the src/semantic-ui-core folder dynamically
-fs.removeSync(distDir); 
+fs.removeSync(distDir);
 createSemanticUICore();
