@@ -1413,6 +1413,10 @@ export const console: ConsoleNS = {
                                         hint: "Using the implicit grant with public applications is not recommended.",
                                         label: "{{grantType}} (Not recommended)"
                                     },
+                                    client_credential: {
+                                        hint: "Using 'openid' scope is not allowed with this grant type.",
+                                        label: "(openid scope not allowed)"
+                                    },
                                     password: {
                                         hint: "Using the password grant with public applications is not recommended.",
                                         label: "{{grantType}} (Not recommended)"
@@ -1480,6 +1484,17 @@ export const console: ConsoleNS = {
                                         validations: {
                                             empty: "Please fill the user access token expiry time",
                                             invalid: "Access token expiry time should be in seconds. " +
+                                                "Decimal points and negative numbers are not allowed."
+                                        }
+                                    },
+                                    applicationTokenExpiry: {
+                                        hint: "Specify the validity period of the " +
+                                            "<1>application_access_token</1> in seconds.",
+                                        label: "Application access token expiry time",
+                                        placeholder: "Enter the application access token expiry time",
+                                        validations: {
+                                            empty: "Please fill the application access token expiry time",
+                                            invalid: "Application access token expiry time should be in seconds. " +
                                                 "Decimal points and negative numbers are not allowed."
                                         }
                                     },

@@ -191,6 +191,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const validateTokenBinding = useRef<HTMLElement>();
     const revokeAccessToken = useRef<HTMLElement>();
     const userAccessTokenExpiryInSeconds = useRef<HTMLElement>();
+    const applicationAccessTokenExpiryInSeconds = useRef<HTMLElement>();
     const refreshToken = useRef<HTMLElement>();
     const expiryInSeconds = useRef<HTMLElement>();
     const audience = useRef<HTMLElement>();
@@ -569,7 +570,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     };
 
     /**
-     * Modifies the grant type label. For `implicit` and `password` fields,
+     * Modifies the grant type label. For `implicit`, `password` and `client credentials` fields,
      * a warning icon is concatenated with the label.
      *
      * @param value {string} checkbox key {@link TEMPLATE_WISE_ALLOWED_GRANT_TYPES}
@@ -577,7 +578,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      */
     const modifyGrantTypeLabels = (value: string, label: string) => {
         if (value === ApplicationManagementConstants.IMPLICIT_GRANT ||
-            value === ApplicationManagementConstants.PASSWORD) {
+            value === ApplicationManagementConstants.PASSWORD ||
+            value === ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
+        ) {
             return (
                 <>
                     <label>
@@ -613,6 +616,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 return t("console:develop.features.applications.forms.inboundOIDC.fields.grant.children." +
                     "password.hint") + " " + "Asgardeo SDKs adhere to security best practices, and do not " +
                     "implement the password grant.";
+            case ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT:
+                return t("console:develop.features.applications.forms.inboundOIDC.fields.grant.children." +
+                        "client_credential.hint");
             case ApplicationManagementConstants.REFRESH_TOKEN_GRANT:
                 return "Refresh token grant type should only be selected along with the Code grant type.";
             default:
@@ -790,7 +796,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const updateConfiguration = (values: any, url?: string, origin?: string): any => {
         let inboundConfigFormValues: any = {
             accessToken: {
-                applicationAccessTokenExpiryInSeconds: Number(metadata.defaultApplicationAccessTokenExpiryTime),
+                applicationAccessTokenExpiryInSeconds: Number(values.get("applicationAccessTokenExpiryInSeconds")),
                 bindingType: values.get("bindingType"),
                 revokeTokensWhenIDPSessionTerminated: values.get("RevokeAccessToken")?.length > 0,
                 type: values.get("type"),
@@ -1616,24 +1622,54 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     </Hint>
                 </Grid.Column>
             </Grid.Row>
-            { /* TODO  Enable this option in future*/ }
-            { /*<Grid.Row columns={ 1 }>*/ }
-            { /*    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>*/ }
-            { /*        <Field*/ }
-            { /*            name="applicationAccessTokenExpiryInSeconds"*/ }
-            { /*            label="Application access token expiry time"*/ }
-            { /*            required={ true }*/ }
-            { /*            requiredErrorMessage="Please fill the application access token expiry time"*/ }
-            { /*            value={ initialValues.accessToken ?*/ }
-            { /*                initialValues.accessToken.
-                        applicationAccessTokenExpiryInSeconds.toString() :*/ }
-            { /*                metadata.defaultApplicationAccessTokenExpiryTime }*/ }
-            { /*            placeholder="Enter the application access token expiry time "*/ }
-            { /*            type="number"*/ }
-            { /*        />*/ }
-            { /*        <Hint>Configure the application access token expiry time (in seconds).</Hint>*/ }
-            { /*    </Grid.Column>*/ }
-            { /*</Grid.Row>*/ }
+
+            { /* Application AccessToken Expiry*/ }
+            { selectedGrantTypes?.includes("client_credentials") &&
+                (
+                    <>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Field
+                                    name="applicationAccessTokenExpiryInSeconds"
+                                    ref={ applicationAccessTokenExpiryInSeconds }
+                                    label={
+                                        t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                            ".accessToken.fields.applicationTokenExpiry.label")
+                                    }
+                                    required={ true }
+                                    requiredErrorMessage={
+                                        t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                            ".accessToken.fields.applicationTokenExpiry.validations.empty")
+                                    }
+                                    value={ initialValues.accessToken ?
+                                        initialValues.accessToken.applicationAccessTokenExpiryInSeconds.toString() :
+                                        metadata.defaultApplicationAccessTokenExpiryTime}
+                                    validation={ async (value: FormValue, validation: Validation) => {
+                                        if (!isValidExpiryTime(value.toString())) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(
+                                                t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                                    ".accessToken.fields.applicationTokenExpiry.validations.invalid")
+                                            );
+                                        }
+                                    }}
+                                    placeholder={
+                                        t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                            ".accessToken.fields.applicationTokenExpiry.placeholder")
+                                    }
+                                    type="number"
+                                    min={ 1 }
+                                    readOnly={ readOnly }
+                                />
+                                <Hint>Specify the validity period of the
+                                    <Code withBackground>application_access_token</Code>
+                                    in seconds.
+                                </Hint>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </>
+                )
+            }
 
             { /* Refresh Token */ }
             { selectedGrantTypes?.includes("refresh_token") &&
