@@ -178,7 +178,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         {
                             "data-testid": "app-switch-console",
                             description: t("console:common.header.appSwitch.console.description"),
-                            enabled: true,
+                            enabled: false,
                             icon: AppSwitcherIcons().console,
                             name: t("console:common.header.appSwitch.console.name"),
                             onClick: () => {
@@ -343,6 +343,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             {
                                 "data-testid": "app-switch-console",
                                 icon: AppSwitcherIcons().console,
+                                disabled: true,
                                 name: t("console:common.header.appSwitch.console.name"),
                                 onClick: () => {
                                     eventPublisher.publish("console-click-visit-console");

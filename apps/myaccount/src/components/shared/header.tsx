@@ -203,12 +203,13 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     window.open(consoleAppURL, "_blank", "noopener");
                 }
             })
-            : null
+            : null;
 
         links.push({
             "data-testid": "app-switch-myaccount",
             icon: AppSwitcherIcons().myAccount,
             name: t("myAccount:components.header.appSwitch.myAccount.name"),
+            disabled: true,
             onClick: () => {
                 window.open(accountAppURL, "_self");
             }
@@ -250,7 +251,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     {
                         "data-testid": "app-switch-myaccount",
                         description: t("myAccount:components.header.appSwitch.myAccount.description"),
-                        enabled: true,
+                        enabled: false,
                         icon: AppSwitcherIcons().myAccount,
                         name: t("myAccount:components.header.appSwitch.myAccount.name"),
                         onClick: () => {

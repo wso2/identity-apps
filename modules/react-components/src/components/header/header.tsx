@@ -374,6 +374,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                 "data-testid": linkTestId,
                                 icon,
                                 name,
+                                disabled,
                                 onClick
                             } = link;
 
@@ -383,6 +384,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                     className="action-panel user-dropdown-link"
                                     onClick={ onClick }
                                     data-testid={ linkTestId }
+                                    disabled={ disabled }
                                 >
                                     {
                                         icon && (
