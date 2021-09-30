@@ -1636,7 +1636,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                             ".accessToken.fields.applicationTokenExpiry.label")
                                     }
-                                    required={true}
+                                    required={ true }
                                     requiredErrorMessage={
                                         t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                             ".accessToken.fields.applicationTokenExpiry.validations.empty")
