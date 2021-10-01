@@ -368,7 +368,6 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                             <Message
                                 data-componentid={ `${ testId }-page-message` }
                                 info
-                                onDismiss={ onDismissInfoMessageBanner }
                             >
                                 <Message.Content
                                     className="mr-2"

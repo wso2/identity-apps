@@ -130,7 +130,9 @@ const SecretDescriptionForm: FC<SecretDescriptionFormProps> = (
                     ariaLabel={
                         t("console:develop.features.secrets.forms.editSecret.secretDescriptionField.ariaLabel")
                     }
-                    label="Secret Description"
+                    label={
+                        t("console:develop.features.secrets.forms.editSecret.secretDescriptionField.label")
+                    }
                     placeholder={
                         t("console:develop.features.secrets.forms.editSecret.secretDescriptionField.placeholder")
                     }

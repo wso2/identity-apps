@@ -949,6 +949,7 @@ export const console: ConsoleNS = {
                                                 }
                                             },
                                             secretsList: {
+                                                iconTooltip: "Ajouter un secret en tant que clé API",
                                                 create: "Créer un nouveau secret",
                                                 emptyPlaceholder: "Aucun secret disponible",
                                                 search: "Recherche par nom secret"
@@ -3659,16 +3660,16 @@ export const console: ConsoleNS = {
             secrets: {
                 alerts: {
                     createdSecret: {
-                        description: "Création d'un nouveau secret avec le nom {{secretName}}.",
-                        message: "Secret créé avec succès."
+                        description: "Le secret a été créé avec succès.",
+                        message: "Création réussie."
                     },
                     updatedSecret: {
-                        description: "Secret mis à jour avec {{secretName}}.",
-                        message: "Secret mis à jour avec succès."
+                        description: "Le secret a été mis à jour avec succès.",
+                        message: "Mise à jour réussie."
                     },
                     deleteSecret: {
-                        description: "Secret supprimé avec {{secretName}}.",
-                        message: "Secret supprimé avec succès."
+                        description: "Le secret a été supprimé avec succès.",
+                        message: "Suppression réussie."
                     }
                 },
                 errors: {
@@ -3697,7 +3698,7 @@ export const console: ConsoleNS = {
                         secondaryActionButtonText: "Annuler",
                         title: "Es-tu sûr?",
                         content: "Cette action est irréversible et supprimera définitivement le secret.",
-                        warningMessage: "Si vous supprimez ce secret, les scripts d'authentification adaptative " +
+                        warningMessage: "Si vous supprimez ce secret, les scripts d'authentification conditionnelle " +
                             "en fonction de cette valeur cesseront de fonctionner. Veuillez procéder avec prudence."
                     }
                 },
@@ -3758,6 +3759,9 @@ export const console: ConsoleNS = {
                 },
                 forms: {
                     editSecret: {
+                        page: {
+                            description: "Modifier le secret"
+                        },
                         secretValueField: {
                             ariaLabel: "Entrez une valeur secrète",
                             label: "Valeur secrète",
@@ -3790,7 +3794,7 @@ export const console: ConsoleNS = {
                     },
                     emptyListOfSecrets: {
                         messages: [
-                            "Nous n'avons pu trouver aucun secret pour ce type de secret."
+                            "Il n'y a pas de secrets disponibles pour le moment."
                         ]
                     },
                     buttons: {
