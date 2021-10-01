@@ -41,7 +41,7 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
 
     const { label, name, value, onChange } = props;
 
-    const QUERY_PARAMETER_SEPARATOR = ",";
+    const QUERY_PARAMETER_SEPARATOR = "&";
     const SPECIAL_CHARACTERS = [ ",", "&", "=", "?" ];
 
     const [ queryParamName, setQueryParamName ] = useState<string>("");
@@ -76,7 +76,7 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
      * Build query parameters string value, from it's object form.
      */
     const buildQueryParametersString = (queryParams: QueryParameter[]): string =>
-        queryParams?.map(buildQueryParameterString)?.join(",");
+        queryParams?.map(buildQueryParameterString)?.join("&");
 
     /**
      * Trigger provided onChange handler with provided query parameters.
