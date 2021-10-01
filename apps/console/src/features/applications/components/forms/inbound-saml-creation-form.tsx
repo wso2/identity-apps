@@ -17,6 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { URLUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { ContentLoader, FilePicker, Hint, XMLFileStrategy } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -24,9 +25,9 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid, Icon } from "semantic-ui-react";
+import { commonConfig } from "../../../../extensions";
 import { getCertificateIllustrations } from "../../../core";
 import { SAMLConfigModes } from "../../models";
-import { commonConfig } from "../../../../extensions";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.
