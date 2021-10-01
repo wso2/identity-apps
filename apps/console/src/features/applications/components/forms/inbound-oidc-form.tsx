@@ -796,7 +796,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const updateConfiguration = (values: any, url?: string, origin?: string): any => {
         let inboundConfigFormValues: any = {
             accessToken: {
-                applicationAccessTokenExpiryInSeconds: Number(values.get("applicationAccessTokenExpiryInSeconds")),
+                applicationAccessTokenExpiryInSeconds: values.get("applicationAccessTokenExpiryInSeconds")
+                    ? Number(values.get("applicationAccessTokenExpiryInSeconds"))
+                    : Number(metadata.defaultApplicationAccessTokenExpiryTime),
                 bindingType: values.get("bindingType"),
                 revokeTokensWhenIDPSessionTerminated: values.get("RevokeAccessToken")?.length > 0,
                 type: values.get("type"),
