@@ -109,7 +109,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
        if (!commonConfig?.utils?.isConsoleNavigationAllowed(userStore)) {
            setShowAppSwitchButton(false);
        }
-    }, [showAppSwitchButtonConfig,userStore]);
+    }, [ showAppSwitchButtonConfig, userStore ]);
 
     /**
      * Sets user store of the user.
