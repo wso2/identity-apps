@@ -193,8 +193,8 @@ export const generateBackendPaths = (language: string[],
     const fullResourcePath = `${ resolvedAppBaseName }${
         StringUtils.removeSlashesFromPath(i18nBundleOptions?.resourcePath) }`;
 
-    const fileNames = metaFile[ language[ 0 ] ].paths[ namespace[ 0 ] ].split("/");
-    const fileName = fileNames[ fileNames.length - 1 ];
+    const fileNames = metaFile[ language[ 0 ] ]?.paths[ namespace[ 0 ] ]?.split("/");
+    const fileName = fileNames ? fileNames[ fileNames?.length - 1 ] : "";
 
     if (i18nBundleOptions?.namespaceDirectories.has(namespace[0])) {
         return `/${ fullResourcePath }/${ language[0] }/${ i18nBundleOptions.namespaceDirectories.get(namespace[0]) }/${
