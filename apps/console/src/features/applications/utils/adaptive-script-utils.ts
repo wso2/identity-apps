@@ -67,9 +67,9 @@ export class AdaptiveScriptUtils {
      */
     public static isDefaultScript(script: string | string[], steps: number): boolean {
 
-        let scriptBody: string = "";
+        let scriptBody: string = ApplicationManagementConstants.EMPTY_STRING;
         const moderatedScript = Array.isArray(script)
-            ? script.join("")
+            ? script.join(ApplicationManagementConstants.EMPTY_STRING)
             : script;
         const scriptStringContent: string[] = [];
 
@@ -93,10 +93,10 @@ export class AdaptiveScriptUtils {
      */
     public static minifyScript(originalScript: string | string[]): string {
 
-        if (!originalScript) return "";
+        if (!originalScript) return ApplicationManagementConstants.EMPTY_STRING;
 
         const script = Array.isArray(originalScript)
-            ? originalScript.join("")
+            ? originalScript.join(ApplicationManagementConstants.EMPTY_STRING)
             : String(originalScript);
 
         /**
@@ -121,17 +121,31 @@ export class AdaptiveScriptUtils {
         const comments = /\/\*[\s\S]*?\*\/|\/\/.*/gm;
 
         return script
-            .replace(comments, "")
-            .replace(/(?:\r\n|\r|\n)/g, "")
-            .replace(/\s/g, "")
+            .replace(comments, ApplicationManagementConstants.EMPTY_STRING)
+            .replace(/(?:\r\n|\r|\n)/g, ApplicationManagementConstants.EMPTY_STRING)
+            .replace(/\s/g, ApplicationManagementConstants.EMPTY_STRING)
             .trim();
     }
 
     public static isEmptyScript(script: string | string[]): boolean {
         return !script ||
-            (Array.isArray(script) && (script.length === 0 || script.join("").trim().length == 0)) ||
+            (Array.isArray(script) && (script.length === 0 ||
+                script.join(ApplicationManagementConstants.EMPTY_STRING).trim().length == 0)) ||
             (script instanceof String && script.trim().length === 0) ||
             !AdaptiveScriptUtils.minifyScript(script);
+    }
+
+    /**
+     * Flat outs a given string source array.
+     * @param code {string | string[]}
+     */
+    public static sourceToString(code: string | string[]): string {
+        if (Array.isArray(code)) {
+            return code.join(ApplicationManagementConstants.LINE_BREAK);
+        } else {
+            // In this case we can guarantee it's a string.
+            return code ?? ApplicationManagementConstants.EMPTY_STRING;
+        }
     }
 
 }
