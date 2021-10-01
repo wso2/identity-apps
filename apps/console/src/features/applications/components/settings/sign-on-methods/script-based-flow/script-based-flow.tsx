@@ -642,7 +642,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                     ".sections.authenticationFlow.sections.scriptBased.secretsList.search") }
                                 onChange={ (data: ChangeEvent<HTMLInputElement>
                                 ) => {
-                                    if (!data.currentTarget.value) {
+                                    if (!data.currentTarget?.value) {
                                         setFilteredSecretList(secretList);
                                     } else {
                                         setFilteredSecretList(secretList.filter((secret: SecretModel) => secret.secretName.includes(
