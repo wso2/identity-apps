@@ -330,9 +330,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         />
                     }
                     {
-                        //Hides on user_id and username claims
-                        claim && claim.displayName !== ClaimManagementConstants.USER_ID
-                            && claim.displayName !== ClaimManagementConstants.USER_NAME &&
+                        //Hides on user_id, username and groups claims
+                        claim && claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI
+                            && claim.claimURI !== ClaimManagementConstants.USER_NAME_CLAIM_URI
+                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI &&
                         (
                             <Field.Checkbox
                                 ariaLabel="supportedByDefault"
@@ -373,7 +374,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         )
                     }
                     {
-                        claim && attributeConfig.editAttributes.showRequiredCheckBox &&
+                        claim && attributeConfig.editAttributes.showRequiredCheckBox
+                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI &&
                             <Field.Checkbox
                                 ariaLabel="required"
                                 name="required"
@@ -390,9 +392,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             />
                     }
                     {
-                        //Hides on user_id and username claims
-                        claim && claim.displayName !== ClaimManagementConstants.USER_ID
-                            && claim.displayName !== ClaimManagementConstants.USER_NAME &&
+                        //Hides on user_id, username and groups claims
+                        claim && claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI
+                            && claim.claimURI !== ClaimManagementConstants.USER_NAME_CLAIM_URI
+                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI &&
                         (
                             <Field.Checkbox
                                 ariaLabel="readOnly"

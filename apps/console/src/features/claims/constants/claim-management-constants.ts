@@ -138,6 +138,7 @@ export class ClaimManagementConstants {
      * Display names of User Id & Username to 
      * identify.
      */
-    public static readonly USER_ID: string = "User ID";
-    public static readonly USER_NAME: string = "Username";
+    public static readonly USER_ID_CLAIM_URI: string = "http://wso2.org/claims/userid";
+    public static readonly USER_NAME_CLAIM_URI: string = "http://wso2.org/claims/username";
+    public static readonly GROUPS_CLAIM_URI: string = "http://wso2.org/claims/groups";
 }
