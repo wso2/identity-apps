@@ -225,7 +225,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      */
     const addSecretToScript = (secret:SecretModel): void => {
         const doc = editorInstance.getDoc();
-        const secretNameString = "\""+secret.secretName+"\"";
+        const secretNameString = `"${ secret.secretName }"`;
 
         //If a code segment is selected, the selected text is replaced with secret name as a string.
         if (doc.somethingSelected()) {
