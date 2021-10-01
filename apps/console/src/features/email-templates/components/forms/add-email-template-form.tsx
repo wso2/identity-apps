@@ -77,6 +77,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ bodyError, setBodyError ] = useState<boolean>(false);
     const [ footerError, setFooterError ] = useState<boolean>(false);
+    const [ isLoading, setIsLoading ] = useState<boolean>(false);
 
     /**
      * This will load the locales to the dropdown.
@@ -141,6 +142,8 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
             subject: values.get("emailSubject").toString()
         };
 
+        setIsLoading(true);
+
         createLocaleTemplate(templateTypeId, templateDate)
             .then((response: AxiosResponse<EmailTemplateType>) => {
                 if (response.status === 201) {
@@ -166,6 +169,9 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                         "console:manage.features.emailTemplates.notifications.createTemplate.genericError.message"
                     )
                 }));
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 
@@ -183,6 +189,8 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
             id: templateId,
             subject: values.get("emailSubject").toString()
         };
+
+        setIsLoading(true);
 
         replaceLocaleTemplateContent(templateTypeId, templateId, templateDate)
             .then((response: AxiosResponse) => {
@@ -206,6 +214,9 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                         "console:manage.features.emailTemplates.notifications.updateTemplate.genericError.message"
                     )
                 }));
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 
@@ -290,7 +301,8 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                             }
                             required={ true }
                             requiredErrorMessage={
-                                t("console:manage.features.emailLocale.forms.addLocale.fields.subject.validations.empty")
+                                t("console:manage.features.emailLocale." +
+                                    "forms.addLocale.fields.subject.validations.empty")
                             }
                             placeholder={
                                 t("console:manage.features.emailLocale.forms.addLocale.fields.subject.placeholder")
@@ -365,6 +377,8 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                             primary
                             type="submit"
                             size="small"
+                            loading={ isLoading }
+                            disabled={ isLoading }
                             className="form-button"
                             data-testid={ `${ testId }-submit-button` }
                         >

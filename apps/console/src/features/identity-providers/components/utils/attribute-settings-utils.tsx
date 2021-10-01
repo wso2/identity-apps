@@ -162,9 +162,9 @@ export const initSubjectAndRoleURIs = (initialClaims, setSubjectClaimUri, setRol
 
 export const handleAttributeSettingsFormSubmit = (idpId: string, values: IdentityProviderClaimsInterface,
                                                   roleMapping: IdentityProviderRoleMappingInterface[],
-                                                  onUpdate: (idpId: string) => void): void => {
+                                                  onUpdate: (idpId: string) => void): Promise<void> => {
 
-    updateClaimsConfigs(idpId, values)
+    return updateClaimsConfigs(idpId, values)
         .then(() => {
             onUpdate(idpId);
             // Update IDP Role Mappings on Successful Claim Config Update.

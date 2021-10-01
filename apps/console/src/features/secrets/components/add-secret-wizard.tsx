@@ -413,7 +413,7 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                                 aria-label={
                                     t("console:develop.features.secrets.wizards.actions.finishButton.ariaLabel")
                                 }
-                                disabled={ submitShouldBeDisabled }
+                                disabled={ submitShouldBeDisabled || requestInProgress }
                                 floated="right"
                                 onClick={ () => formRef?.current?.triggerSubmit() }
                                 loading={ requestInProgress }

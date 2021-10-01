@@ -100,6 +100,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
         setGovernanceConnectorProperties
     ] = useState<ConnectorPropertyInterface[]>(undefined);
     const [ forcePasswordReset, setForcePasswordReset ] = useState<string>("false");
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     useEffect(() => {
         if (!connectorProperties) {
@@ -201,6 +202,8 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             "schemas": ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
         };
 
+        setIsSubmitting(true);
+
         updateUserInfo(user.id, data).then(() => {
             onAlertFired({
                 description: t(
@@ -237,6 +240,9 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                 });
                 handleModalClose();
                 handleCloseChangePasswordModal();
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
     };
 
@@ -357,6 +363,8 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             "schemas": ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
         };
 
+        setIsSubmitting(true);
+
         updateUserInfo(user.id, data).then(() => {
             onAlertFired({
                 description: t(
@@ -392,6 +400,9 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             });
             handleCloseChangePasswordModal();
             handleModalClose();
+        })
+        .finally(() => {
+            setIsSubmitting(false);
         });
     };
 
@@ -591,6 +602,8 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                             <PrimaryButton
                                 data-testid={ `${ testId }-save-button` }
                                 floated="right"
+                                loading={ isSubmitting }
+                                disabled={ isSubmitting }
                                 onClick={ () => setTriggerSubmit() }
                             >
                                 { t("console:manage.features.user.modals.changePasswordModal.button") }

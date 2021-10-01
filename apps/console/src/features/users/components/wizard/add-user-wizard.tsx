@@ -112,6 +112,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ viewRolePermissions, setViewRolePermissions ] = useState<boolean>(false);
     const [ selectedRoleId,  setSelectedRoleId ] = useState<string>();
     const [ isRoleSelected, setRoleSelection ] = useState<boolean>(false);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
@@ -413,6 +414,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 }
             );
 
+        setIsSubmitting(true);
+
         addUser(userDetails)
             .then((response) => {
                 dispatch(addAlert({
@@ -472,6 +475,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                         )
                     }));
                 }
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
     };
 
@@ -673,6 +679,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                     data-testid={ `${ testId }-finish-button` }
                                     floated="right"
                                     onClick={ navigateToNext }
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting }
                                 >
                                     Finish</PrimaryButton>
                             ) }

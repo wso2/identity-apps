@@ -64,7 +64,8 @@ interface MinimalAuthenticationProviderCreateWizardPropsInterface extends Testab
  * @param { MinimalAuthenticationProviderCreateWizardPropsInterface } props - Props injected to the component.
  * @return { React.ReactElement }
  */
-export const OidcAuthenticationProviderCreateWizard: FunctionComponent<MinimalAuthenticationProviderCreateWizardPropsInterface> = (
+export const OidcAuthenticationProviderCreateWizard:
+    FunctionComponent<MinimalAuthenticationProviderCreateWizardPropsInterface> = (
     props: MinimalAuthenticationProviderCreateWizardPropsInterface
 ): ReactElement => {
 
@@ -84,6 +85,7 @@ export const OidcAuthenticationProviderCreateWizard: FunctionComponent<MinimalAu
         useState<FederatedAuthenticatorMetaInterface>(undefined);
     const [ defaultOutboundProvisioningConnectorMetadata, setDefaultOutboundProvisioningConnectorMetadata ] =
         useState<OutboundProvisioningConnectorMetaInterface>(undefined);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -109,6 +111,8 @@ export const OidcAuthenticationProviderCreateWizard: FunctionComponent<MinimalAu
     const createNewIdentityProvider = (identityProvider: IdentityProviderInterface): void => {
         // TODO Uncomment below once BE support is available for templateId
         // identityProvider.templateId = template.id
+        setIsSubmitting(true);
+
         createIdentityProvider(identityProvider)
             .then((response) => {
                 eventPublisher.publish("connections-finish-adding-connection", {
@@ -157,6 +161,9 @@ export const OidcAuthenticationProviderCreateWizard: FunctionComponent<MinimalAu
                     message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
                         "genericError.message")
                 });
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
     };
 
@@ -284,25 +291,33 @@ export const OidcAuthenticationProviderCreateWizard: FunctionComponent<MinimalAu
                     </Grid.Column>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                         { currentWizardStep !== totalStep ? (
-                            <PrimaryButton floated="right" onClick={ () => {
-                                submitAdvanceForm();
-                            } }
+                            <PrimaryButton
+                                floated="right"
+                                onClick={ () => {
+                                    submitAdvanceForm();
+                                } }
+                                loading={ isSubmitting }
+                                disabled={ isSubmitting }
                                 data-testid={ `${ testId }-modal-finish-button` }>
                                 { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
                             </PrimaryButton>
                         ) : (
                                 <>
-                                    <PrimaryButton floated="right" onClick={ () => {
-                                        // setCurrentWizardStep(1);
-                                        submitAdvanceForm();
-                                    } }
+                                    <PrimaryButton
+                                        floated="right"
+                                        onClick={ () => {
+                                            // setCurrentWizardStep(1);
+                                            submitAdvanceForm();
+                                        } }
+                                        loading={ isSubmitting }
+                                        disabled={ isSubmitting }
                                         data-testid={ `${ testId }-modal-finish-button` }>
                                         { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
                                     </PrimaryButton>
                                 </>
                             ) }
                         {
-                            currentWizardStep > 1 && 
+                            currentWizardStep > 1 &&
                             <LinkButton floated="right" onClick={ ()=> {
                                         triggerPreviousForm();
                                     } }

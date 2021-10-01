@@ -41,6 +41,10 @@ interface AdvanceConfigurationsFormPropsInterface extends IdentityProviderAdvanc
      * Specifies if the component should only be read-only.
      */
     isReadOnly: boolean;
+    /**
+     * Specifies if the form is being submitted.
+     */
+    isSubmitting?: boolean;
 }
 
 /**
@@ -57,6 +61,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
         config,
         onSubmit,
         isReadOnly,
+        isSubmitting,
         [ "data-testid" ]: testId
     } = props;
 
@@ -154,8 +159,15 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Show when={ AccessControlConstants.IDP_EDIT }>
-                            <Button primary type="submit" size="small" className="form-button"
-                                    data-testid={ `${ testId }-update-button` }>
+                            <Button
+                                primary
+                                type="submit"
+                                size="small"
+                                className="form-button"
+                                loading={ isSubmitting }
+                                disabled={ isSubmitting }
+                                data-testid={ `${ testId }-update-button` }
+                            >
                                 { t("common:update") }
                             </Button>
                         </Show>

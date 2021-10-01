@@ -105,6 +105,7 @@ export const OutboundProvisioningConnectorCreateWizard:
     const [ isConnectorMetadataRequestLoading, setIsConnectorMetadataRequestLoading ] = useState<boolean>(false);
     const [ defaultConnector, setDefaultConnector ] =
         useState<OutboundProvisioningConnectorListItemInterface>(undefined);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
@@ -262,6 +263,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                 setSubmitConnectorSettings();
                 break;
             case 2:
+                setIsSubmitting(true);
                 setFinishSubmit();
         }
     };
@@ -313,6 +315,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                 setNewConnector(response);
             })
             .finally(() => {
+                setIsSubmitting(false);
                 closeWizard();
             });
     };
@@ -430,8 +433,13 @@ export const OutboundProvisioningConnectorCreateWizard:
                                 </PrimaryButton>
                             ) }
                             { currentWizardStep === STEPS.length - 1 && (
-                                <PrimaryButton floated="right" onClick={ navigateToNext }
-                                               data-testid={ `${ testId }-modal-finish-button` }>
+                                <PrimaryButton
+                                    floated="right"
+                                    onClick={ navigateToNext }
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting }
+                                    data-testid={ `${ testId }-modal-finish-button` }
+                                >
                                     { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
                                 </PrimaryButton>
                             ) }

@@ -77,6 +77,7 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
     const { t } = useTranslation();
 
     const [userStore, setUserStore] = useState<SimpleUserStoreListItemInterface[]>([]);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
 
     /**
@@ -132,6 +133,7 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
                         useStoreList={ userStore }
                         data-testid={ testId }
                         isReadOnly={ isReadOnly }
+                        isSubmitting={ isSubmitting }
                     />
                 </EmphasizedSegment>
             )

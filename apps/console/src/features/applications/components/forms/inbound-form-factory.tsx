@@ -133,6 +133,7 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
             if (showSAMLCreation && SAMLCreationOption && SAMLCreationOption !== SAMLConfigModes.MANUAL) {
                 return (
                     <InboundSAMLCreationForm
+                        isLoading={ isLoading }
                         initialValues={ initialValues }
                         creationOption={ SAMLCreationOption ? SAMLCreationOption : SAMLConfigModes.META_URL  }
                         onSubmit={ onSubmit }
@@ -142,6 +143,7 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
             }
             return (
                 <InboundSAMLForm
+                    isLoading={ isLoading }
                     certificate={ certificate }
                     initialValues={ initialValues }
                     metadata={ metadata }
@@ -153,6 +155,7 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         case SupportedAuthProtocolTypes.WS_TRUST:
             return (
                 <InboundWSTrustForm
+                    isLoading={ isLoading }
                     certificate={ certificate }
                     initialValues={ initialValues }
                     metadata={ metadata }
@@ -164,6 +167,7 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         case SupportedAuthProtocolTypes.WS_FEDERATION:
             return (
                 <InboundPassiveStsForm
+                    isLoading={ isLoading }
                     certificate={ certificate }
                     initialValues={ initialValues }
                     onSubmit={ onSubmit }
@@ -174,6 +178,7 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         case SupportedAuthProtocolTypes.CUSTOM:
             return (
                 <InboundCustomProtocolForm
+                    isLoading={ isLoading }
                     certificate={ certificate }
                     metadata={ metadata }
                     initialValues={ initialValues }

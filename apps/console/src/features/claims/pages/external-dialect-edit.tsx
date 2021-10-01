@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { getAllExternalClaims } from "@wso2is/core/api";
 import { AlertLevels, ClaimDialect, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -30,7 +31,6 @@ import { deleteADialect, getADialect } from "../api";
 import { EditDialectDetails, EditExternalClaims } from "../components";
 import { ClaimManagementConstants } from "../constants";
 import { resolveType } from "../utils";
-import { Show, AccessControlConstants } from "@wso2is/access-control";
 
 /**
  * Props for the External Dialects edit page.
@@ -106,9 +106,11 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
 
     /**
      * Fetch the dialect.
+     *
+     * @param {string} id - Dialect ID
      */
-    const getDialect = () => {
-        getADialect(dialectId)
+    const getDialect = (id?: string) => {
+        getADialect(id ?? dialectId)
             .then((response) => {
                 setDialect(response);
             })
@@ -161,7 +163,6 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                         attributeType,
                         response
                     );
-
                     setClaims(sortList(claims, "claimURI", true));
                 })
                 .catch((error) => {
@@ -260,6 +261,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                                                 dialect={ dialect }
                                                 data-testid={ `${ testId }-edit-dialect-details` }
                                                 attributeType={ attributeType }
+                                                onUpdate={ (id?: string) => { getDialect(id); } }
                                             />
                                         ) }
                                 </EmphasizedSegment>

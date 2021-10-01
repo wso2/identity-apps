@@ -67,6 +67,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
         [ ApprovalStatus.ALL ]: false
     });
     const [ searchResult, setSearchResult ] = useState<number>(undefined);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const APPROVAL_OPTIONS = [
         {
@@ -266,6 +267,8 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
         id: string,
         status: ApprovalStatus.CLAIM | ApprovalStatus.RELEASE | ApprovalStatus.APPROVE | ApprovalStatus.REJECT
     ): void => {
+        setIsSubmitting(true);
+
         updatePendingApprovalStatus(id, status)
             .then(() => {
                 getApprovals(false);
@@ -288,13 +291,17 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
 
                 dispatch(addAlert({
                     description: t(
-                        "console:manage.features.approvals.notifications.updatePendingApprovals.genericError.description"
+                        "console:manage.features.approvals.notifications." +
+                        "updatePendingApprovals.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
                         "console:manage.features.approvals.notifications.updatePendingApprovals.genericError.message"
                     )
                 }));
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
     };
 

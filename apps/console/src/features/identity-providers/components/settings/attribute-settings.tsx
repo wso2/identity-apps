@@ -158,6 +158,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     // Selected role mapping.
     const [roleMapping, setRoleMapping] = useState<IdentityProviderRoleMappingInterface[]>(undefined);
+    const [ isSubmissionLoading, setIsSubmissionLoading ] = useState<boolean>(false);
 
     // Trigger role mapping field to submission.
     const [triggerSubmission, setTriggerSubmission] = useTrigger();
@@ -293,7 +294,11 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
         if (canSubmit) {
             setIsSubmitting(false);
-            handleAttributeSettingsFormSubmit(idpId, claimConfigurations, roleMapping, onUpdate);
+            setIsSubmissionLoading(true);
+            handleAttributeSettingsFormSubmit(idpId, claimConfigurations, roleMapping, onUpdate)
+                .finally(() => {
+                    setIsSubmissionLoading(false);
+                });
         } else {
             dispatch(addAlert(
                 {
@@ -405,6 +410,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                     <Button
                                         primary
                                         size="small"
+                                        loading={ isSubmissionLoading }
+                                        disabled={ isSubmissionLoading }
                                         onClick={ handleAttributesUpdate }
                                         data-testid={ `${ testId }-update-button` }
                                     >

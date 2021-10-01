@@ -44,12 +44,12 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Icon, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
+import { commonConfig,userConfig } from "../../../extensions";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
 import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../server-configurations";
 import { getUserDetails, updateUserInfo } from "../api";
 import { UserManagementConstants } from "../constants";
-import { commonConfig,userConfig } from "../../../extensions";
 /**
  * Prop types for the basic details component.
  */
@@ -143,6 +143,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const [ oneTimePassword, setOneTimePassword ] = useState<string>(undefined);
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
     const [ countryList, setCountryList ] = useState<DropdownItemProps[]>([]);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     useEffect(() => {
 
@@ -488,6 +489,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             data.Operations.push(operation);
         });
 
+        setIsSubmitting(true);
+
         updateUserInfo(user.id, data)
             .then(() => {
                 onAlertFired({
@@ -522,7 +525,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     message: t("console:manage.features.user.profile.notifications.updateProfileInfo." +
                         "genericError.message")
                 }));
-            });
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+            })
+;
     };
 
     /**
@@ -975,6 +982,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                     type="submit"
                                                     size="small"
                                                     className="form-button"
+                                                    loading={ isSubmitting }
+                                                    disabled={ isSubmitting }
                                                 >
                                                     Update
                                                 </Button>

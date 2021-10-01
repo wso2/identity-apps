@@ -18,12 +18,12 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { 
-    ConfirmationModal, 
-    EmptyPlaceholder, 
-    Heading, 
-    PrimaryButton, 
-    useConfirmationModalAlert 
+import {
+    ConfirmationModal,
+    EmptyPlaceholder,
+    Heading,
+    PrimaryButton,
+    useConfirmationModalAlert
 } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -90,6 +90,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ idpList, setIdpList ] = useState<IdentityProviderInterface[]>(undefined);
     const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>(defaultActiveIndexes);
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
@@ -114,6 +115,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
     }, []);
 
     const addIdentityProvider = (id: string, values: any) => {
+        setIsSubmitting(true);
         updateApplicationConfigurations(id, values)
             .then(() => {
                 dispatch(addAlert({
@@ -143,6 +145,9 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                     message: t("console:develop.features.applications.notifications.updateApplication.genericError" +
                         ".message")
                 }));
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
     };
 
@@ -297,6 +302,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                                                                     idpList={ idpList }
                                                                     isEdit={ true }
                                                                     data-testid={ `${ testId }-form` }
+                                                                    isSubmitting={ isSubmitting }
                                                                 />
                                                             ),
                                                             id: provisioningIdp?.idp,

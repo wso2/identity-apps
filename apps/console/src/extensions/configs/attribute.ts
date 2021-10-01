@@ -131,6 +131,6 @@ export const attributeConfig: AttributeConfig = {
         isSCIMCustomDialectAvailable: () =>  { return Promise.resolve(""); },
         isUserStoresHidden: () =>  { return Promise.resolve([]); },
         mapClaimToCustomDialect: false
-    }, 
+    },
     showCustomDialectInSCIM: false
 };

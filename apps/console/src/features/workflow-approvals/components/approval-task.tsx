@@ -69,6 +69,10 @@ interface ApprovalTaskComponentPropsInterface extends TestableComponentInterface
     resolveApprovalTagColor?: (
         status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED
     ) => SemanticCOLORS;
+    /**
+     * Specifies if the form is submitting
+     */
+    isSubmitting?: boolean;
 }
 
 /**
@@ -88,6 +92,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
         updateApprovalStatus,
         openApprovalTaskModal,
         onCloseApprovalTaskModal,
+        isSubmitting,
         [ "data-testid" ]: testId
     } = props;
 
@@ -234,6 +239,8 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                     updateApprovalStatus(editingApproval.id, ApprovalStatus.APPROVE);
                     onCloseApprovalTaskModal();
                 } }
+                loading={ isSubmitting }
+                disabled={ isSubmitting }
             >
                 { t("common:approve") }
             </Button>

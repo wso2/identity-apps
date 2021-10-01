@@ -18,7 +18,6 @@
 
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { useTrigger } from "@wso2is/forms";
 import {
     ContentLoader,
     DocumentationLink,
@@ -95,6 +94,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
         useState<FederatedAuthenticatorMetaInterface>(undefined);
     const [ defaultOutboundProvisioningConnectorMetadata, setDefaultOutboundProvisioningConnectorMetadata ] =
         useState<OutboundProvisioningConnectorMetaInterface>(undefined);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -118,6 +118,9 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
     const createNewIdentityProvider = (identityProvider: IdentityProviderInterface): void => {
         // TODO Uncomment below once BE support is available for templateId
         // identityProvider.templateId = template.id
+
+        setIsSubmitting(true);
+
         createIdentityProvider(identityProvider)
             .then((response) => {
                 eventPublisher.publish("connections-finish-adding-connection", {
@@ -187,6 +190,9 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
                     message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
                         "genericError.message")
                 });
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
     };
 
@@ -333,6 +339,8 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
                                             submitAdvanceForm();
                                         } }
                                         data-testid={ `${ testId }-modal-finish-button` }
+                                        loading={ isSubmitting }
+                                        disabled={ isSubmitting }
                                     >
                                         { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
                                     </PrimaryButton>
@@ -345,6 +353,8 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
                                             submitAdvanceForm();
                                         } }
                                         data-testid={ `${ testId }-modal-finish-button` }
+                                        loading={ isSubmitting }
+                                        disabled={ isSubmitting }
                                     >
                                         { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
                                     </PrimaryButton>
@@ -426,7 +436,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
                         />
                         <div className="ml-1">
                             { title }
-                            { subTitle && 
+                            { subTitle &&
                                 <Heading as="h6">
                                     { subTitle }
                                     <DocumentationLink
@@ -434,7 +444,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
                                     >
                                         { t("common:learnMore") }
                                     </DocumentationLink>
-                                </Heading> 
+                                </Heading>
                             }
                         </div>
                     </div>

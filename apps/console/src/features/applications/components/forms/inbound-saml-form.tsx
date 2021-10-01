@@ -56,6 +56,10 @@ interface InboundSAMLFormPropsInterface extends TestableComponentInterface {
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Specifies if API calls are pending.
+     */
+    isLoading?: boolean;
 }
 
 /**
@@ -75,6 +79,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
         metadata,
         onSubmit,
         readOnly,
+        isLoading,
         [ "data-testid" ]: testId
     } = props;
 
@@ -1666,6 +1671,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             type="submit"
                                             size="small"
                                             className="form-button"
+                                            loading={ isLoading }
+                                            disabled={ isLoading }
                                             data-testid={ `${ testId }-submit-button` }
                                         >
                                             { t("common:update") }

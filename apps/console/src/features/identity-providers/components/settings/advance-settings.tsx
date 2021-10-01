@@ -19,7 +19,7 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { updateIdentityProviderDetails } from "../../api";
@@ -69,6 +69,8 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
 
     const dispatch = useDispatch();
 
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+
     const { t } = useTranslation();
 
     /**
@@ -77,6 +79,8 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
      * @param values - Form values.
      */
     const handleAdvancedConfigFormSubmit = (values: any): void => {
+        setIsSubmitting(true);
+
         updateIdentityProviderDetails({ id: editingIDP.id, ...values })
             .then(() => {
                 dispatch(addAlert({
@@ -90,6 +94,9 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
             })
             .catch((error) => {
                 handleIDPUpdateError(error);
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
     };
 
@@ -100,6 +107,7 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
                 onSubmit={ handleAdvancedConfigFormSubmit }
                 data-testid={ testId }
                 isReadOnly={ isReadOnly }
+                isSubmitting={ isSubmitting }
             />
         </EmphasizedSegment>
     );

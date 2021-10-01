@@ -24,6 +24,7 @@ import React, {
     useEffect,
     useState
 } from "react";
+import { Loader } from "semantic-ui-react";
 import {
     AdvanceSettings,
     AttributeSettings,
@@ -76,10 +77,6 @@ interface EditIdentityProviderPropsInterface extends TestableComponentInterface 
      */
     template: IdentityProviderTemplateInterface;
     /**
-     * Default active tab index.
-     */
-    defaultActiveIndex?: number;
-    /**
      * Callback to see if tab extensions are available
      */
     isTabExtensionsAvailable: (isAvailable: boolean) => void;
@@ -112,7 +109,6 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         onDelete,
         onUpdate,
         template,
-        defaultActiveIndex,
         isTabExtensionsAvailable,
         type,
         isReadOnly,
@@ -120,6 +116,9 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
     } = props;
 
     const [ tabPaneExtensions, setTabPaneExtensions ] = useState<any>(undefined);
+    const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<any>(0);
+
+    const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
 
     const idpAdvanceConfig: IdentityProviderAdvanceInterface = {
         alias: identityProvider.alias,
@@ -256,6 +255,9 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
 
         if (Array.isArray(extensions) && extensions.length > 0) {
             isTabExtensionsAvailable(true);
+            if (!urlSearchParams.get(IdentityProviderManagementConstants.IDP_STATE_URL_SEARCH_PARAM_KEY)) {
+                setDefaultActiveIndex(1);
+            }
         }
 
         setTabPaneExtensions(extensions);
@@ -348,13 +350,15 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
     };
 
     return (
-        identityProvider && (
-            <ResourceTab
-                data-testid={ `${ testId }-resource-tabs` }
-                panes={ getPanes() }
-                defaultActiveIndex={ defaultActiveIndex }
-            />
-        )
+        identityProvider && !isLoading
+            ?  (
+                <ResourceTab
+                    data-testid={ `${ testId }-resource-tabs` }
+                    panes={ getPanes() }
+                    defaultActiveIndex={ defaultActiveIndex }
+                />
+            )
+            : <Loader />
     );
 };
 

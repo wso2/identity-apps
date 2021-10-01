@@ -85,6 +85,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     const [ isRoleNamePatternValid, setIsRoleNamePatternValid ] = useState<boolean>(true);
     const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
     const [ userStore, setUserStore ] = useState<string>(SharedUserStoreConstants.PRIMARY_USER_STORE);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     useEffect(() => {
         if (roleObject && roleObject.displayName.indexOf("/") !== -1) {
@@ -213,6 +214,8 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
         };
 
+        setIsSubmitting(true);
+
         updateRoleDetails(roleObject.id, roleData)
             .then(() => {
                 onRoleUpdate();
@@ -222,12 +225,14 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                     message: t("console:manage.features.roles.notifications.updateRole.success.message")
                 });
             }).catch(() => {
-            handleAlerts({
-                description: t("console:manage.features.roles.notifications.updateRole.error.description"),
-                level: AlertLevels.ERROR,
-                message: t("console:manage.features.roles.notifications.updateRole.error.message")
+                handleAlerts({
+                    description: t("console:manage.features.roles.notifications.updateRole.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.roles.notifications.updateRole.error.message")
+                });
+            }).finally(() => {
+                setIsSubmitting(false);
             });
-        });
 
     };
 
@@ -344,13 +349,14 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                             primary
                                             type="submit"
                                             size="small"
+                                            loading={ isSubmitting }
                                             className="form-button"
                                             data-testid={
                                                 isGroup
                                                     ? `${ testId }-group-update-button`
                                                     : `${ testId }-role-update-button`
                                             }
-                                            disabled={ isRegExLoading }
+                                            disabled={ isRegExLoading || isSubmitting }
                                         >
                                             { t("console:manage.features.roles.edit.basics.buttons.update") }
                                         </Button>

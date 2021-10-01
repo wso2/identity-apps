@@ -51,6 +51,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
     const [selectedRole, setSelectedRole] = useState<string>(undefined);
     const [selectedRoles, setSelectedRoles] = useState<string[]>(undefined);
     const [roleList, setRoleList] = useState<RolesInterface[]>(undefined);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const dispatch = useDispatch();
 
@@ -93,6 +94,8 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
     }, []);
 
     const handleOutboundProvisioningRoleMapping = (outboundProvisioningRoles: string[]) => {
+        setIsSubmitting(true);
+
         updateIDPRoleMappings(idpId, {
                 ...idpRoles,
                 outboundProvisioningRoles: outboundProvisioningRoles
@@ -110,7 +113,10 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
             ));
         }).catch(error => {
             handleUpdateIDPRoleMappingsError(error);
-        });
+        }).finally(() => {
+            setIsSubmitting(false);
+        })
+;
     };
 
     return (
@@ -202,6 +208,8 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                         <Button
                             primary
                             size="small"
+                            loading={ isSubmitting }
+                            disabled={ isSubmitting }
                             onClick={ () => {
                                 if (selectedRoles === undefined) {
                                     return;

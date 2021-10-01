@@ -58,6 +58,8 @@ export const AddEmailTemplateTypeWizard: FunctionComponent<AddEmailTemplateTypeW
     const { t } = useTranslation();
 
     const [ currentStep, setCurrentWizardStep ] = useState<number>(0);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
@@ -79,6 +81,7 @@ export const AddEmailTemplateTypeWizard: FunctionComponent<AddEmailTemplateTypeW
     } ];
 
     const createTemplateType = (templateTypeName: string): void => {
+        setIsSubmitting(true);
         createNewTemplateType(templateTypeName)
             .then((response: AxiosResponse) => {
                 if (response.status === 201) {
@@ -102,6 +105,8 @@ export const AddEmailTemplateTypeWizard: FunctionComponent<AddEmailTemplateTypeW
                     message: t("console:manage.features.emailTemplateTypes.notifications.createTemplateType" +
                         ".genericError.message")
                 });
+            }).finally(() => {
+                setIsSubmitting(false);
             });
     };
 
@@ -145,6 +150,8 @@ export const AddEmailTemplateTypeWizard: FunctionComponent<AddEmailTemplateTypeW
                                 floated="right"
                                 onClick={ setFinishSubmit }
                                 data-testid={ `${ testId }-create-button` }
+                                loading={ isSubmitting }
+                                disabled={ isSubmitting }
                             >
                                 { t("console:manage.features.emailTemplateTypes.buttons.createTemplateType") }
                             </PrimaryButton>

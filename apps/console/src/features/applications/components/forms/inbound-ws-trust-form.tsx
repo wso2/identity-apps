@@ -52,6 +52,10 @@ interface InboundWSTrustFormPropsInterface extends TestableComponentInterface {
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Specifies if API calls are pending.
+     */
+    isLoading?: boolean;
 }
 
 /**
@@ -71,6 +75,7 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
         initialValues,
         onSubmit,
         readOnly,
+        isLoading,
         [ "data-testid" ]: testId
     } = props;
 
@@ -385,6 +390,8 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                                             size="small"
                                             className="form-button"
                                             data-testid={ `${ testId }-submit-button` }
+                                            loading={ isLoading }
+                                            disabled={ isLoading }
                                         >
                                             { t("common:update") }
                                         </Button>

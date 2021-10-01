@@ -85,6 +85,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
     const [ isSelectAllUsers, setIsSelectAllUsers ] = useState<boolean>(false);
     const [ newlySelectedUsers, setNewlySelectedUsers ] = useState<UserBasicInterface[]>([]);
     const [ showAddNewUserModal, setAddNewUserModalView ] = useState<boolean>(false);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     useEffect(() => {
         setOriginalUserList(users);
@@ -184,7 +185,6 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
 
     const updateGroupUsersList = (selectedUsers: UserBasicInterface[]) => {
         const newUsers: CreateGroupMemberInterface[] = [];
-
         for (const selectedUser of selectedUsers) {
             newUsers.push({
                 display: selectedUser.userName,
@@ -216,6 +216,8 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                     level: AlertLevels.ERROR,
                     message: t("console:manage.features.groups.notifications.updateGroup.error.message")
                 });
+            }).finally(() => {
+                setIsSubmitting(false);
             });
     };
 
@@ -319,9 +321,12 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                             <PrimaryButton
                                 data-testid={ `${ testId }-assign-user-wizard-modal-save-button` }
                                 onClick={ () => {
+                                    setIsSubmitting(true);
                                     handleAddUserSubmit();
                                 } }
                                 floated="right"
+                                loading={ isSubmitting }
+                                disabled={ isSubmitting }
                             >
                                 { t("common:save") }
                             </PrimaryButton>

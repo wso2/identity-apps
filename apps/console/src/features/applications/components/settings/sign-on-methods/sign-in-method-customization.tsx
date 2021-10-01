@@ -329,10 +329,10 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 "script-based": !AdaptiveScriptUtils.isDefaultScript(adaptiveScript, steps),
                 "step-based": []
             };
-    
+
             updatedSteps.forEach((updatedStep) => {
                 const step : Record<number, string> = {};
-    
+
                 if (Array.isArray(updatedStep?.options) && updatedStep.options.length > 0) {
                     updatedStep.options.forEach((element,id) => {
                         step[id] = kebabCase(element?.authenticator);
@@ -340,7 +340,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                     eventPublisherProperties["step-based"].push(step);
                 }
             });
-    
+
             eventPublisher.publish("application-sign-in-method-click-update-button", {
                 "type": eventPublisherProperties
             });
@@ -413,7 +413,8 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 <PrimaryButton
                     onClick={ handleUpdateClick }
                     data-testid={ `${ testId }-update-button` }
-                    disabled={ isButtonDisabled }
+                    disabled={ isButtonDisabled || isLoading }
+                    loading={ isLoading }
                 >
                     { t("common:update") }
                 </PrimaryButton>
