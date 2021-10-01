@@ -26,6 +26,9 @@ import { ApplicationTemplateCategories, ApplicationTemplateLoadingStrategies } f
  */
 export class ApplicationManagementConstants {
 
+    public static readonly EMPTY_STRING = "";
+    public static readonly LINE_BREAK = "\n";
+
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.

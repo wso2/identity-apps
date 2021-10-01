@@ -467,6 +467,38 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     };
 
     /**
+     * TLDR; This function should be called when switching between
+     *       full-screen mode to track the source changes.
+     *
+     * Why implement this in the first place? When switching from full screen to
+     * normal view it loses all user entered source code vice versa.
+     *
+     * That happens because, we pass {@code sourceCode={ sourceCode }} to
+     * {@link CodeEditor}. We cannot alter it's depending state since it's
+     * used in conditional script generators. We have checked the feasibility
+     * of adding {@link useCallback} and mix it with a debounce handler to
+     * track changes within onChange event. But the problem is it causes the
+     * component to re-render multiple times and causes unforeseen side effects.
+     *
+     * In this function we read {@code internalScript} and {@code sourceCode}
+     * and checks whether their state has been changed. If yes then simply
+     * set the new {@code sourceCode} to what user entered. And place the cursor
+     * back to where it was originally.
+     */
+    const preserveStateOnFullScreenChange = (): void => {
+
+        const _modifiedScript = AdaptiveScriptUtils.sourceToString(internalScript);
+        const _editorSourceCode = AdaptiveScriptUtils.sourceToString(sourceCode);
+
+        if (_modifiedScript !== _editorSourceCode) {
+            const cur = editorInstance.doc.getCursor();
+            setSourceCode(_modifiedScript.split(ApplicationManagementConstants.LINE_BREAK));
+            editorInstance.doc.setCursor(cur);
+        }
+
+    };
+
+    /**
      * Steps for the conditional authentication toggle tour.
      *
      * @type {Array<Step>}
@@ -1098,6 +1130,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                             } }
                                             onFullScreenToggle={ (isFullScreen: boolean) => {
                                                 setIsEditorFullScreen(isFullScreen);
+                                                preserveStateOnFullScreenChange();
                                             } }
                                             theme={ isEditorDarkMode ? "dark" : "light" }
                                             readOnly={ readOnly }
