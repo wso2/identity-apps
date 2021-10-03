@@ -31,6 +31,9 @@ import { EmptyCertificatesPlaceholder } from "./empty-certificates-placeholder";
 import { IdpCertificatesList } from "./idp-cetificates-list";
 import { updateIDPCertificate } from "../../../api";
 import { IdentityProviderInterface } from "../../../models";
+import { FormValidation } from "@wso2is/validation";
+import { commonConfig } from "../../../../../extensions";
+import { URLUtils } from "@wso2is/core/utils";
 
 /**
  * Props interface of {@link IdpCertificates}
@@ -230,6 +233,15 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                 ariaLabel="JWKS Endpoint URL"
                 inputType="url"
                 width={ 16 }
+                validation={ (value: string) => {
+                    if (!FormValidation.url(value)) {
+                        return t("console:develop.features.applications.forms.inboundSAML" +
+                            ".fields.metaURL.validations.invalid");
+                    }
+                    if (commonConfig?.blockLoopBackCalls && URLUtils.isLoopBackCall(value)) {
+                        return t("console:develop.features.idp.forms.common.internetResolvableErrorMessage");
+                    }
+                }}
                 placeholder="https://{ oauth-provider-url }/oauth/jwks"
                 maxLength={ JWKS_MAX_LENGTH }
                 minLength={ JWKS_MIN_LENGTH }
