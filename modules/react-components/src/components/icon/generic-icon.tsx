@@ -137,6 +137,9 @@ export interface GenericIconProps extends TestableComponentInterface {
      * Vertical alignment.
      */
     verticalAlign?: SemanticVERTICALALIGNMENTS;
+    /**
+     * ID used to recognize components in guided tour wizards.
+     */
     "data-tourid"?: string;
 }
 
