@@ -67,7 +67,6 @@ import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
 import SinglePageApplicationTemplate
     from "../../data/application-templates/templates/single-page-application/single-page-application.json";
-
 import {
     ApplicationTemplateIdTypes,
     ApplicationTemplateInterface,
@@ -137,8 +136,10 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
     const [ templateSettings, setTemplateSettings ] = useState<ApplicationTemplateInterface>(null);
     const [ protocolFormValues, setProtocolFormValues ] = useState<object>(undefined);
-    const [ customApplicationProtocol, setCustomApplicationProtocol ]
-        = useState<string>(SupportedAuthProtocolTypes.OIDC);
+    const [
+        customApplicationProtocol,
+        setCustomApplicationProtocol 
+    ] = useState<SupportedAuthProtocolTypes>(SupportedAuthProtocolTypes.OAUTH2_OIDC);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ generalFormValues, setGeneralFormValues ] = useState<Map<string, FormValue>>(undefined);
     const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateInterface>(template);
@@ -202,10 +203,31 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
      * main form, it triggers the submit of the protocol form.
      */
     useEffect(() => {
+
         handleError("all", false);
-        if ((!protocolFormValues
-            && (template?.authenticationProtocol || template.subTemplates?.length > 0))
-            || !generalFormValues) {
+
+        // If both `protocolFormValues` & `generalFormValues` are undefined, return.
+        if (!protocolFormValues && !generalFormValues) {
+            return;
+        }
+
+        // If `protocolFormValues` is undefined, evaluate...
+        if (!protocolFormValues) {
+            if (selectedTemplate.id === CustomApplicationTemplate.id) {
+                // SAML Custom Apps a has protocol settings form.
+                if (customApplicationProtocol === SupportedAuthProtocolTypes.SAML) {
+                    return;
+                }
+            }
+
+            // If there is an `authenticationProtocol` defined in the template or it has `subTemplates`, return.
+            if (template?.authenticationProtocol || template.subTemplates?.length > 0) {
+                return;
+            }
+        }
+
+        // Every app should atleast have a `name` input defined.
+        if (!generalFormValues) {
             return;
         }
 
@@ -238,12 +260,13 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
         application.name = generalFormValues.get("name").toString();
         application.templateId = selectedTemplate.id;
+
         if (selectedTemplate.id === CustomApplicationTemplate.id) {
-            if ( customApplicationProtocol === SupportedAuthProtocolTypes.OIDC) {
+            if (customApplicationProtocol === SupportedAuthProtocolTypes.OIDC) {
                 application.templateId = ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC;
-            } else if ( customApplicationProtocol === SupportedAuthProtocolTypes.SAML) {
+            } else if (customApplicationProtocol === SupportedAuthProtocolTypes.SAML) {
                 application.templateId = ApplicationManagementConstants.CUSTOM_APPLICATION_SAML;
-            } else if ( customApplicationProtocol === SupportedAuthProtocolTypes.WS_FEDERATION) {
+            } else if (customApplicationProtocol === SupportedAuthProtocolTypes.WS_FEDERATION) {
                 application.templateId = ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS;
             }
         }
@@ -376,7 +399,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 setIsSubmitting(false);
                 handleProtocolValueChange(false);
                 handleError("all", false);
-        })
+        });
     }, [ generalFormValues, protocolFormValues ]);
 
     /**
@@ -472,7 +495,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
      */
     const handleProtocolValueChange = (state: boolean) => {
         setProtocolValuesChange(state);
-    }
+    };
 
     /**
      * Check the protocol errors.
@@ -493,15 +516,23 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 setMetaUrlError(state);
                 setIssuerError(state);
         }
-    }
+    };
 
     /**
      * Resolves the relevant protocol form based on the selected protocol.
      *
-     * @return {any}
+     * @return {React.ReactElement}
      */
     const resolveMinimalProtocolFormFields = (): ReactElement => {
-        if (selectedTemplate.authenticationProtocol === SupportedAuthProtocolTypes.OIDC) {
+
+        let selectedProtocol: SupportedAuthProtocolTypes = selectedTemplate
+            .authenticationProtocol as SupportedAuthProtocolTypes;
+
+        if (selectedTemplate.id === CustomApplicationTemplate.id) {
+            selectedProtocol = customApplicationProtocol;
+        }
+
+        if (selectedProtocol === SupportedAuthProtocolTypes.OIDC) {
             return (
                 <OauthProtocolSettingsWizardForm
                     isProtocolConfig={ false }
@@ -517,7 +548,21 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     data-testid={ `${ testId }-oauth-protocol-settings-form` }
                 />
             );
-        } else if (selectedTemplate.authenticationProtocol === SupportedAuthProtocolTypes.SAML) {
+        } else if (selectedProtocol === SupportedAuthProtocolTypes.SAML) {
+
+            /**
+             * Enable to have SAML wizard without config mode options.
+             * 
+             * @example
+             * <SAMLProtocolSettingsWizardForm
+             *     fields={ [ "issuer", "assertionConsumerURLs" ] }
+             *     hideFieldHints={ true }
+             *     triggerSubmit={ submitProtocolForm }
+             *     templateValues={ templateSettings?.application }
+             *     onSubmit={ (values): void => setProtocolFormValues(values) }
+             *     data-testid={ `${ testId }-saml-protocol-settings-form` }
+             * />
+             */
             return (
                 <SAMLProtocolAllSettingsWizardForm
                     issuerRef={ issuerRef }
@@ -533,15 +578,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     setSAMLConfigureMode={ setSAMLConfigureMode }
                     data-testid={ `${ testId }-saml-protocol-settings-form` }
                 />
-                // Enable to have SAML wizard without config mode options.
-                // <SAMLProtocolSettingsWizardForm
-                //     fields={ [ "issuer", "assertionConsumerURLs" ] }
-                //     hideFieldHints={ true }
-                //     triggerSubmit={ submitProtocolForm }
-                //     templateValues={ templateSettings?.application }
-                //     onSubmit={ (values): void => setProtocolFormValues(values) }
-                //     data-testid={ `${ testId }-saml-protocol-settings-form` }
-                // />
             );
         }
     };
@@ -570,9 +606,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         // Filter out legacy and unsupported auth protocols.
         supportedProtocols = supportedProtocols.filter((protocol) => {
 
-            if ( applicationConfig.customApplication.allowedProtocolTypes
-                && applicationConfig.customApplication.allowedProtocolTypes.length > 0 ) {
-                if (applicationConfig.customApplication.allowedProtocolTypes.includes(protocol)){
+            if (applicationConfig.customApplication.allowedProtocolTypes
+                && applicationConfig.customApplication.allowedProtocolTypes.length > 0) {
+                if (applicationConfig.customApplication.allowedProtocolTypes.includes(protocol)) {
                     return protocol;
                 } else {
                     return false;
@@ -580,6 +616,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             }
 
             if (protocol === SupportedAuthProtocolTypes.WS_TRUST
+                || protocol === SupportedAuthProtocolTypes.OIDC
                 || protocol === SupportedAuthProtocolTypes.CUSTOM
                 || (filterProtocol && protocol === filterProtocol)) {
 
@@ -706,43 +743,58 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         </Grid.Column>
                     </Grid.Row>
                     {
-                        (selectedTemplate.id === CustomApplicationTemplate.id)
-                        && (
+                        (selectedTemplate.id === CustomApplicationTemplate.id) && (
                             <Grid.Row className="pt-0">
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                                     <div className="sub-template-selection">
-                                        <div>Protocol</div>
-                                        {
-                                            getSupportedProtocols().map((
-                                                subTemplate: string, index: number
-                                            ) => (
-                                                <SelectionCard
-                                                    inline
-                                                    key={ index }
-                                                    image={
-                                                        {
-                                                            ...getInboundProtocolLogos(),
-                                                            ...getTechnologyLogos()
-                                                        }[ subTemplate ]
-                                                    }
-                                                    size="x120"
-                                                    className="sub-template-selection-card"
-                                                    header={ ApplicationManagementUtils.resolveProtocolDisplayName(
-                                                        subTemplate as SupportedAuthProtocolTypes.OIDC) }
-                                                    selected={ customApplicationProtocol=== subTemplate }
-                                                    onClick={ () => {
-                                                        setCustomApplicationProtocol(subTemplate);
-                                                    } }
-                                                    imageSize="mini"
-                                                    contentTopBorder={ false }
-                                                    showTooltips={ false }
-                                                    renderDisabledItemsAsGrayscale={ false }
-                                                    overlay={ renderDimmerOverlay() }
-                                                    overlayOpacity={ 0.6 }
-                                                    data-testid={ `${ testId }-${ subTemplate }-card` }
-                                                />
-                                            ))
-                                        }
+                                        <label className="sub-templates-label">{ subTemplatesSectionTitle }</label>
+                                        <div className="sub-templates">
+                                            {
+                                                getSupportedProtocols().map((
+                                                    subTemplate: string, index: number
+                                                ) => (
+                                                    <div
+                                                        key={ index }
+                                                        className="sub-template-selection-card-wrapper"
+                                                    >
+                                                        <SelectionCard
+                                                            fluid
+                                                            imageInline
+                                                            image={
+                                                                {
+                                                                    ...getInboundProtocolLogos(),
+                                                                    ...getTechnologyLogos()
+                                                                }[ subTemplate ]
+                                                            }
+                                                            size="auto"
+                                                            className="sub-template-selection-card"
+                                                            header={
+                                                                ApplicationManagementUtils.resolveProtocolDisplayName(
+                                                                        subTemplate as SupportedAuthProtocolTypes
+                                                                )
+                                                            }
+                                                            selected={ customApplicationProtocol === subTemplate }
+                                                            onClick={ () => {
+                                                                setCustomApplicationProtocol(
+                                                                    subTemplate as SupportedAuthProtocolTypes
+                                                                );
+                                                            } }
+                                                            imageSize="x22"
+                                                            imageOptions={ {
+                                                                square: false,
+                                                                width: "auto"
+                                                            } }
+                                                            contentTopBorder={ false }
+                                                            showTooltips={ false }
+                                                            renderDisabledItemsAsGrayscale={ false }
+                                                            overlay={ renderDimmerOverlay() }
+                                                            overlayOpacity={ 0.6 }
+                                                            data-testid={ `${ testId }-${ subTemplate }-card` }
+                                                        />
+                                                    </div>
+                                                ))
+                                            }
+                                        </div>
                                     </div>
                                 </Grid.Column>
                             </Grid.Row>

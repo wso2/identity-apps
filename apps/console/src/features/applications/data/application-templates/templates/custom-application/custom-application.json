@@ -9,11 +9,20 @@
     "displayOrder": -1,
     "self": "",
     "subTemplates": [],
-    "subTemplatesSectionTitle": "",
+    "subTemplatesSectionTitle": "Protocol",
     "templateGroup": "",
     "types": [
         "oidc",
         "saml"
     ],
-    "application": null
+    "application": {
+        "name": "",
+        "inboundProtocolConfiguration": {
+            "oidc": {
+                "grantTypes": [
+                    "client_credentials"
+                ]
+            }
+        }
+    }
 }
