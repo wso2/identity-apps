@@ -1005,11 +1005,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * @param {string} url - Allowed origin
      */
     const handleAllowOrigin = (url: string): void => {
-        const allowedURLs = initialValues?.allowedOrigins;
-        if (allowedURLs.indexOf(url) < 0) {
-            allowedURLs.push(url);
+        let allowedURLs = allowedOrigins;
+        if (allowedURLs !== "") {
+            allowedURLs = allowedURLs + "," + url;
         }
-        setAllowedOrigins(allowedURLs?.toString());
+        else {
+            allowedURLs = url;
+        }
+        setAllowedOrigins(allowedURLs);
     };
 
     /**
