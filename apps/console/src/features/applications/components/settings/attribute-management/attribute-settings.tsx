@@ -711,7 +711,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         if (!applicationConfig.attributeSettings.roleMapping) {
             delete submitValue.claimConfiguration.role;
         }
-        // Sto sending subject claim for OIDC applications.
+        // Stop sending subject claim for OIDC applications.
         if (onlyOIDCConfigured) {
             delete submitValue.claimConfiguration.subject;
         }
