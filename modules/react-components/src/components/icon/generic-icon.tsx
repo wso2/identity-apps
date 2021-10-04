@@ -204,7 +204,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
         twoTone,
         verticalAlign,
         [ "data-testid" ]: testId,
-        [ "data-tourid"]: tourId
+        [ "data-tourid" ]: tourId
     } = props;
     
     const [ renderedIcon, setRenderedIcon ] = useState<HTMLElement | SVGElement | ReactElement | JSX.Element>(null);
