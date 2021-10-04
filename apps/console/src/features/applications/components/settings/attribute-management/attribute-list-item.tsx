@@ -213,6 +213,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                                 ? !requested
                                 : false
                     }
+                    flowing = { subject }
                 />
             </Table.Cell>
             { !readOnly && deleteAttribute ? (
