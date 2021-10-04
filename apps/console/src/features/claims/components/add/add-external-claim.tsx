@@ -244,7 +244,8 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                             data-testid={ `${ testId }-form-claim-uri-input` }
                             validation={ (value: string, validation: Validation) => {
                                 for (const claim of externalClaims) {
-                                    if (claim.claimURI === value) {
+                                    const parts = claim.claimURI.split(":");
+                                    if (parts[parts.length - 1].toLowerCase() === value.toLowerCase()) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(t("console:manage.features.claims.external" +
                                             ".forms.attributeURI.validationErrorMessages.duplicateName",
