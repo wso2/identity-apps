@@ -243,6 +243,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                 <Form
                     uncontrolledForm={ false }
                     initialValues={
+                        !onlyOIDCConfigured &&
                         { subjectAttribute: selectedSubjectValue }
                     }
                     onSubmit={ (values, form) => {
