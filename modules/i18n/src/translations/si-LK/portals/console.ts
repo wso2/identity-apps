@@ -2563,6 +2563,11 @@ export const console: ConsoleNS = {
                             description: "නව ප්‍රොටොකෝල් වින්‍යාසයන් සාර්ථකව එක් කරන ලදි.",
                             message: "යාවත්කාලීන කිරීම සාර්ථකයි"
                         }
+                    },
+                    conditionalScriptLoopingError: {
+                        description: "කොන්දේසි සහිත සත්‍යාපන පිටපත තුළ <1>for</1>, <3>while</3>, සහ <5>forEach</5>" +
+                            " වැනි ලූප් ඉදි කිරීම් වලට ඉඩ නොදේ.",
+                        message: "පිටපත යාවත්කාලීන කිරීමට අසමත් විය"
                     }
                 },
                 placeholders: {
