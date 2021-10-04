@@ -129,6 +129,24 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
                     data-testid={ testId }
                 />
             );
+        case SupportedAuthProtocolTypes.OAUTH2_OIDC:
+            return (
+                <InboundOIDCForm
+                    isLoading={ isLoading }
+                    setIsLoading={ setIsLoading }
+                    certificate={ certificate }
+                    tenantDomain={ tenantDomain }
+                    allowedOriginList={ allowedOrigins }
+                    initialValues={ initialValues }
+                    metadata={ metadata }
+                    onSubmit={ onSubmit }
+                    onApplicationRegenerate={ onApplicationRegenerate }
+                    onApplicationRevoke={ onApplicationRevoke }
+                    readOnly={ readOnly }
+                    template={ template }
+                    data-testid={ testId }
+                />
+            );
         case SupportedAuthProtocolTypes.SAML:
             if (showSAMLCreation && SAMLCreationOption && SAMLCreationOption !== SAMLConfigModes.MANUAL) {
                 return (

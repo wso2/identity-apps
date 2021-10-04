@@ -1376,7 +1376,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     inboundOIDC: {
-                        description: "Ci-dessous sont les paramètres OpenID Connect pour votre application",
+                        description: "Ci-dessous sont les paramètres {{protocol}} pour votre application",
                         fields: {
                             allowedOrigins: {
                                 hint: "Les origines autorisées sont des URL qui seront autorisées à effectuer des requêtes " +

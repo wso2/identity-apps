@@ -1361,7 +1361,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     inboundOIDC: {
-                        description: "Given below are the OpenID Connect settings for your application.",
+                        description: "Given below are the {{protocol}} settings for your application.",
                         fields: {
                             allowedOrigins: {
                                 hint: "Allowed origins are URLs that will be allowed to make requests from cross " +

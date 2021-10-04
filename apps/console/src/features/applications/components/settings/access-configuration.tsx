@@ -34,9 +34,8 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button as SemButton, Divider, Grid, Header, Popup } from "semantic-ui-react";
-import { ProtocolLanding } from "./protocols/protocol-landing";
 import { applicationConfig } from "../../../../extensions";
-import { AppConstants, AppState, FeatureConfigInterface, history, store } from "../../../core";
+import { AppState, FeatureConfigInterface, store } from "../../../core";
 import {
     deleteProtocol,
     getAuthProtocolMetadata,
@@ -445,7 +444,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         }
 
         if (applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC) {
-            return [SupportedAuthProtocolTypes.OIDC];
+            return [SupportedAuthProtocolTypes.OAUTH2_OIDC];
         }
 
         if (applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
@@ -548,7 +547,14 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                 certificate={ certificate }
                                 tenantDomain={ tenantName }
                                 allowedOrigins={ allowedOriginList }
-                                metadata={ authProtocolMeta[ selectedProtocol ] }
+                                metadata={
+                                    authProtocolMeta[
+                                        // There's no separate meta for `OAuth2/OIDC` Apps. Need to use `OIDC` for noe.
+                                        selectedProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+                                            ? SupportedAuthProtocolTypes.OIDC
+                                            : selectedProtocol
+                                        ]
+                                }
                                 initialValues={
                                     get(inboundProtocolConfig, selectedProtocol)
                                         ? inboundProtocolConfig[ selectedProtocol ]
@@ -578,7 +584,14 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                 isLoading={ isLoading }
                                 setIsLoading={ setIsLoading }
                                 certificate={ certificate }
-                                metadata={ authProtocolMeta[ selectedProtocol ] }
+                                metadata={
+                                    // There's no separate meta for `OAuth2/OIDC` Apps. Need to use `OIDC` for noe.
+                                    authProtocolMeta[
+                                        selectedProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+                                            ? SupportedAuthProtocolTypes.OIDC
+                                            : selectedProtocol
+                                        ]
+                                }
                                 initialValues={
                                     get(inboundProtocolConfig, selectedProtocol)
                                         ? inboundProtocolConfig[ selectedProtocol ]
@@ -665,12 +678,12 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         }
         return (
             <>
-                <Header as="h3">
+                <Header as="h3" className="display-flex">
                     <GenericIcon
-                        inline
                         transparent
+                        width="auto"
                         icon={ getInboundProtocolLogos()[ selectedProtocol ] }
-                        size="mini"
+                        size="x30"
                         verticalAlign="middle"
                     />
                     <Header.Content
@@ -707,11 +720,20 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
      * @return {React.ReactElement}
      */
     const resolveProtocolDescription =(): ReactElement => {
-        // Description for SAML Protocol tab.
+
+        // Description for OIDC Protocol tab.
         if (selectedProtocol === SupportedAuthProtocolTypes.OIDC) {
             return(
                 <Header as="h6" color="grey" compact>
-                    { t("console:develop.features.applications.forms.inboundOIDC.description") }
+                    {
+                        t(
+                            "console:develop.features.applications.forms.inboundOIDC.description",
+                            {
+                                protocol: ApplicationManagementUtils
+                                    .resolveProtocolDisplayName(SupportedAuthProtocolTypes.OIDC)
+                            }
+                        )
+                    }
                     <DocumentationLink
                         link={ getLink("develop.applications.editApplication.oidcApplication.protocol.learnMore") }
                     >
@@ -720,7 +742,30 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 </Header>
             );
         }
-        // Description for OIDC Protocol tab.
+
+        // Description for OAuth2/OIDC Protocol tab.
+        if (selectedProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC) {
+            return(
+                <Header as="h6" color="grey" compact>
+                    {
+                        t(
+                            "console:develop.features.applications.forms.inboundOIDC.description",
+                            {
+                                protocol: ApplicationManagementUtils
+                                    .resolveProtocolDisplayName(SupportedAuthProtocolTypes.OAUTH2_OIDC)
+                            }
+                        )
+                    }
+                    <DocumentationLink
+                        link={ getLink("develop.applications.editApplication.oidcApplication.protocol.learnMore") }
+                    >
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                </Header>
+            );
+        }
+
+        // Description for SAML Protocol tab.
         if (selectedProtocol === SupportedAuthProtocolTypes.SAML) {
             return(
                 <Header as="h6" color="grey" compact>

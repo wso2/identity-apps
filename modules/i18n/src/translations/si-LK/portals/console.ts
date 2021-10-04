@@ -1349,7 +1349,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     inboundOIDC: {
-                        description: "ඔබේ OpenID Connect සම්බන්ධක සැකසුම් පහත දක්වා ඇත",
+                        description: "ඔබේ {{protocol}} සම්බන්ධක සැකසුම් පහත දක්වා ඇත",
                         messages: {
                             revokeDisclaimer: {
                                 content: "යෙදුම අවලංගු කර ඇත. ඔබට යෙදුම නැවත සක්‍රිය කිරීමට අවශ්‍ය නම් " +

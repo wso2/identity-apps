@@ -262,7 +262,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         application.templateId = selectedTemplate.id;
 
         if (selectedTemplate.id === CustomApplicationTemplate.id) {
-            if (customApplicationProtocol === SupportedAuthProtocolTypes.OIDC) {
+            if (customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC) {
                 application.templateId = ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC;
             } else if (customApplicationProtocol === SupportedAuthProtocolTypes.SAML) {
                 application.templateId = ApplicationManagementConstants.CUSTOM_APPLICATION_SAML;
