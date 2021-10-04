@@ -692,6 +692,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 if (values.jwks_endpoint?.length > 0) {
                     errors.jwks_endpoint = composeValidators(
                         length(JWKS_URL_LENGTH),
+                        isLoopBackCall,
                         isUrl
                     )(values.jwks_endpoint);
                 }
