@@ -6341,6 +6341,7 @@ export const console: ConsoleNS = {
                         phoneNumbers_mobile: "ජංගම දූරකථන අංකය",
                         phoneNumbers_other: "වෙනත් දුරකථන අංකය",
                         phoneNumbers_work: "වැඩ කරන දුරකථන අංකය",
+                        photos: "ඡායාරූප",
                         profileUrl: "URL",
                         userName: "පරිශීලක නාමය"
                         /* eslint-enable @typescript-eslint/camelcase */

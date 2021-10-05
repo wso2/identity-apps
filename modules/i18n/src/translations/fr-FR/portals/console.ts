@@ -6417,6 +6417,7 @@ export const console: ConsoleNS = {
                         phoneNumbers_mobile: "Numéro de téléphone portable",
                         phoneNumbers_other: "Autre numéro de téléphone",
                         phoneNumbers_work: "Numéro de téléphone au professionnel",
+                        photos: "Photos",
                         profileUrl: "URL",
                         userName: "Nom d'utilisateur"
                         /* eslint-enable @typescript-eslint/camelcase */

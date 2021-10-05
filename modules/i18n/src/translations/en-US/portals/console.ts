@@ -7739,6 +7739,7 @@ export const console: ConsoleNS = {
                         phoneNumbers_mobile: "Mobile Number",
                         phoneNumbers_other: "Other Phone Number",
                         phoneNumbers_work: "Work Phone Number",
+                        photos: "Photos",
                         profileUrl: "URL",
                         userName: "Username"
                         /* eslint-enable @typescript-eslint/camelcase */
