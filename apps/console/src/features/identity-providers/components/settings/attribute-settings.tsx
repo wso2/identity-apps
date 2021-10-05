@@ -26,7 +26,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button, Grid } from "semantic-ui-react";
+import { Button, Divider, Grid } from "semantic-ui-react";
 import { AttributeSelection, RoleMappingSettings, UriAttributesSettings } from "./attribute-management";
 import { AttributesSelectionV2 } from "./attribute-management/attribute-selection-v2";
 import {
@@ -323,103 +323,105 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             ? (
                 <EmphasizedSegment padded="very">
                     <Grid className="attributes-settings">
+                        <div className="form-container with-max-width">
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column>
+                                    <AttributesSelectionV2
+                                        onAttributesSelected={ (mappingsToBeAdded) => {
+                                            setSelectedClaimsWithMapping([ ...mappingsToBeAdded ]);
+                                        } }
+                                        attributeList={
+                                            hideIdentityClaimAttributes
+                                                ? availableLocalClaims.filter(({ uri }) => !isLocalIdentityClaim(uri))
+                                                : availableLocalClaims
+                                        }
+                                        mappedAttributesList={ [ ...selectedClaimsWithMapping ] }
+                                        isReadOnly = { isReadOnly }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Divider hidden/>
 
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column width={ 10 }>
-                                <AttributesSelectionV2
-                                    onAttributesSelected={ (mappingsToBeAdded) => {
-                                        setSelectedClaimsWithMapping([ ...mappingsToBeAdded ]);
-                                    } }
-                                    attributeList={
-                                        hideIdentityClaimAttributes
-                                            ? availableLocalClaims.filter(({ uri }) => !isLocalIdentityClaim(uri))
-                                            : availableLocalClaims
-                                    }
-                                    mappedAttributesList={ [ ...selectedClaimsWithMapping ] }
-                                    isReadOnly = { isReadOnly }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
+                            { selectedClaimsWithMapping &&
+                            <UriAttributesSettings
+                                dropDownOptions={
+                                    createDropdownOption(selectedClaimsWithMapping, availableLocalClaims)
+                                        .filter(element => !isEmpty(element))
+                                        .filter(hideIdentityClaimAttributes
+                                            ? ({ value }) => !isLocalIdentityClaim(value)
+                                            : (_) => true
+                                        )
+                                }
+                                initialRoleUri={ roleClaimUri }
+                                initialSubjectUri={ subjectClaimUri }
+                                claimMappingOn={ isRoleMappingsEnabled && !isEmpty(selectedClaimsWithMapping) }
+                                updateRole={ setRoleClaimUri }
+                                updateSubject={ setSubjectClaimUri }
+                                data-testid={ `${ testId }-uri-attribute-settings` }
+                                roleError={ isSubmitting && roleError && !roleClaimUri }
+                                subjectError={ isSubmitting && !subjectClaimUri }
+                                isReadOnly={ isReadOnly }
+                                isMappingEmpty={ isEmpty(selectedClaimsWithMapping) }
+                            /> }
 
-                        { selectedClaimsWithMapping &&
-                        <UriAttributesSettings
-                            dropDownOptions={
-                                createDropdownOption(selectedClaimsWithMapping, availableLocalClaims)
-                                    .filter(element => !isEmpty(element))
-                                    .filter(hideIdentityClaimAttributes
-                                        ? ({ value }) => !isLocalIdentityClaim(value)
-                                        : (_) => true
-                                    )
-                            }
-                            initialRoleUri={ roleClaimUri }
-                            initialSubjectUri={ subjectClaimUri }
-                            claimMappingOn={ isRoleMappingsEnabled && !isEmpty(selectedClaimsWithMapping) }
-                            updateRole={ setRoleClaimUri }
-                            updateSubject={ setSubjectClaimUri }
-                            data-testid={ `${ testId }-uri-attribute-settings` }
-                            roleError={ isSubmitting && roleError && !roleClaimUri }
-                            subjectError={ isSubmitting && !subjectClaimUri }
-                            isReadOnly={ isReadOnly }
-                            isMappingEmpty={ isEmpty(selectedClaimsWithMapping) }
-                        /> }
+                            { /* Select attributes for provisioning. */ }
+                            { provisioningAttributesEnabled
+                                && selectedProvisioningClaimsWithDefaultValue &&
+                            <AttributeSelection
+                                attributeList={
+                                    buildProvisioningClaimList(selectedClaimsWithMapping, availableLocalClaims)
+                                        .filter(element => !isEmpty(element?.uri)) }
+                                selectedAttributesWithMapping={ selectedProvisioningClaimsWithDefaultValue }
+                                setSelectedAttributesWithMapping={ setSelectedProvisioningClaimsWithDefaultValue }
+                                uiProps={ {
+                                    attributeColumnHeader: isEmpty(selectedClaimsWithMapping) ?
+                                        t("console:develop.features.authenticationProvider.forms.attributeSettings." +
+                                            "attributeProvisioning.attributeColumnHeader.0") :
+                                        t("console:develop.features.authenticationProvider.forms.attributeSettings." +
+                                            "attributeProvisioning.attributeColumnHeader.1"),
+                                    attributeMapColumnHeader: t("console:develop.features.authenticationProvider." +
+                                        "forms.attributeSettings." +
+                                        "attributeProvisioning.attributeMapColumnHeader"),
+                                    attributeMapInputPlaceholderPrefix: t("console:develop.features." +
+                                        "authenticationProvider.forms" +
+                                        ".attributeSettings.attributeProvisioning.attributeMapInputPlaceholderPrefix"),
+                                    componentHeading: t("console:develop.features.authenticationProvider." +
+                                        "forms.attributeSettings." +
+                                        "attributeProvisioning.componentHeading"),
+                                    enablePrecedingDivider: false,
+                                    hint: t("console:develop.features.authenticationProvider.forms.attributeSettings." +
+                                        "attributeProvisioning.hint")
+                                } }
+                                data-testid={ `${ testId }-provisioning-attribute-selection` }
+                                isReadOnly={ isReadOnly }
+                            /> }
 
-                        { /* Select attributes for provisioning. */ }
-                        { provisioningAttributesEnabled
-                            && selectedProvisioningClaimsWithDefaultValue &&
-                        <AttributeSelection
-                            attributeList={
-                                buildProvisioningClaimList(selectedClaimsWithMapping, availableLocalClaims)
-                                    .filter(element => !isEmpty(element?.uri)) }
-                            selectedAttributesWithMapping={ selectedProvisioningClaimsWithDefaultValue }
-                            setSelectedAttributesWithMapping={ setSelectedProvisioningClaimsWithDefaultValue }
-                            uiProps={ {
-                                attributeColumnHeader: isEmpty(selectedClaimsWithMapping) ?
-                                    t("console:develop.features.authenticationProvider.forms.attributeSettings." +
-                                        "attributeProvisioning.attributeColumnHeader.0") :
-                                    t("console:develop.features.authenticationProvider.forms.attributeSettings." +
-                                        "attributeProvisioning.attributeColumnHeader.1"),
-                                attributeMapColumnHeader: t("console:develop.features.authenticationProvider." +
-                                    "forms.attributeSettings." +
-                                    "attributeProvisioning.attributeMapColumnHeader"),
-                                attributeMapInputPlaceholderPrefix: t("console:develop.features." +
-                                    "authenticationProvider.forms" +
-                                    ".attributeSettings.attributeProvisioning.attributeMapInputPlaceholderPrefix"),
-                                componentHeading: t("console:develop.features.authenticationProvider." +
-                                    "forms.attributeSettings." +
-                                    "attributeProvisioning.componentHeading"),
-                                enablePrecedingDivider: false,
-                                hint: t("console:develop.features.authenticationProvider.forms.attributeSettings." +
-                                    "attributeProvisioning.hint")
-                            } }
-                            data-testid={ `${ testId }-provisioning-attribute-selection` }
-                            isReadOnly={ isReadOnly }
-                        /> }
+                            { /* Set role mappings. */ }
+                            { isRoleMappingsEnabled && <RoleMappingSettings
+                                triggerSubmit={ triggerSubmission }
+                                initialRoleMappings={ initialRoleMappings }
+                                onSubmit={ setRoleMapping }
+                                data-testid={ `${ testId }-role-mapping` }
+                                isReadOnly={ isReadOnly }
+                            /> }
 
-                        { /* Set role mappings. */ }
-                        { isRoleMappingsEnabled && <RoleMappingSettings
-                            triggerSubmit={ triggerSubmission }
-                            initialRoleMappings={ initialRoleMappings }
-                            onSubmit={ setRoleMapping }
-                            data-testid={ `${ testId }-role-mapping` }
-                            isReadOnly={ isReadOnly }
-                        /> }
-
-                        <Grid.Row>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 3 }>
-                                <Show when={ AccessControlConstants.IDP_EDIT }>
-                                    <Button
-                                        primary
-                                        size="small"
-                                        loading={ isSubmissionLoading }
-                                        disabled={ isSubmissionLoading }
-                                        onClick={ handleAttributesUpdate }
-                                        data-testid={ `${ testId }-update-button` }
-                                    >
-                                        { t("common:update") }
-                                    </Button>
-                                </Show>
-                            </Grid.Column>
-                        </Grid.Row>
+                            <Grid.Row>
+                                <Grid.Column>
+                                    <Show when={ AccessControlConstants.IDP_EDIT }>
+                                        <Button
+                                            primary
+                                            size="small"
+                                            loading={ isSubmissionLoading }
+                                            disabled={ isSubmissionLoading }
+                                            onClick={ handleAttributesUpdate }
+                                            data-testid={ `${ testId }-update-button` }
+                                        >
+                                            { t("common:update") }
+                                        </Button>
+                                    </Show>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </div>
                     </Grid>
                 </EmphasizedSegment>
             )
