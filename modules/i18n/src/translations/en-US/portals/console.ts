@@ -2604,6 +2604,12 @@ export const console: ConsoleNS = {
                             description: "Successfully added new protocol configurations.",
                             message: "Update successful"
                         }
+                    },
+                    conditionalScriptLoopingError: {
+                        description: "Looping constructs such as <1>for</1>, <3>while</3>, and" +
+                            " <5>forEach</5> are not allowed in the conditional authentication" +
+                            " script.",
+                        message: "Failed to update the script"
                     }
                 },
                 placeholders: {

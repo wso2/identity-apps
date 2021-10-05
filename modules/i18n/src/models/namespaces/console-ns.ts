@@ -983,6 +983,7 @@ export interface ConsoleNS {
                     updateProtocol: Notification;
                     fetchOIDCServiceEndpoints: Notification;
                     secondFactorAuthenticatorToFirstStep: Notification;
+                    conditionalScriptLoopingError: NotificationItem;
                 };
                 popups: {
                     appStatus: {

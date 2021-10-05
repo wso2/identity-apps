@@ -2620,6 +2620,11 @@ export const console: ConsoleNS = {
                             description: "Ajout réussi de nouvelles configurations de protocole.",
                             message: "Mise à jour réussie"
                         }
+                    },
+                    conditionalScriptLoopingError: {
+                        description: "Les constructions en boucle telles que <1>for</1>, <3>while</3> et " +
+                            "<5>forEach</5> ne sont pas autorisées dans le script d'authentification conditionnelle.",
+                        message: "Échec de la mise à jour du script"
                     }
                 },
                 placeholders: {
