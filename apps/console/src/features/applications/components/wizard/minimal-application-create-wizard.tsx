@@ -254,7 +254,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             delete templateSettingsClone?.application?.inboundProtocolConfiguration?.saml?.templateConfiguration;
         }
 
-        const application: MainApplicationInterface = merge(templateSettingsClone?.application, protocolFormValues);
+        const application: MainApplicationInterface = cloneDeep(merge(templateSettingsClone?.application,
+            protocolFormValues));
 
         application.name = generalFormValues.get("name").toString();
         application.templateId = selectedTemplate.id;
@@ -263,6 +264,14 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         if (selectedTemplate.id === CustomApplicationTemplate.id) {
             if (customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC) {
                 application.templateId = ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC;
+                // Custom OAuth2/OIDC Apps are created with `client_credentials` grant by default.
+                application.inboundProtocolConfiguration = {
+                    oidc: {
+                        grantTypes: [
+                            "client_credentials"
+                        ]
+                    }
+                };
             } else if (customApplicationProtocol === SupportedAuthProtocolTypes.SAML) {
                 application.templateId = ApplicationManagementConstants.CUSTOM_APPLICATION_SAML;
             } else if (customApplicationProtocol === SupportedAuthProtocolTypes.WS_FEDERATION) {

@@ -15,14 +15,5 @@
         "oidc",
         "saml"
     ],
-    "application": {
-        "name": "",
-        "inboundProtocolConfiguration": {
-            "oidc": {
-                "grantTypes": [
-                    "client_credentials"
-                ]
-            }
-        }
-    }
+    "application": null
 }

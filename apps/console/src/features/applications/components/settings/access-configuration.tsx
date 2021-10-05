@@ -556,8 +556,17 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                         ]
                                 }
                                 initialValues={
-                                    get(inboundProtocolConfig, selectedProtocol)
-                                        ? inboundProtocolConfig[ selectedProtocol ]
+                                    get(
+                                        inboundProtocolConfig,
+                                        selectedProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+                                            ? SupportedAuthProtocolTypes.OIDC
+                                            : selectedProtocol
+                                    )
+                                        ? inboundProtocolConfig[
+                                            selectedProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+                                                ? SupportedAuthProtocolTypes.OIDC
+                                                : selectedProtocol
+                                            ]
                                         : undefined
                                 }
                                 onSubmit={ handleSubmit }
@@ -593,8 +602,17 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                         ]
                                 }
                                 initialValues={
-                                    get(inboundProtocolConfig, selectedProtocol)
-                                        ? inboundProtocolConfig[ selectedProtocol ]
+                                    get(
+                                        inboundProtocolConfig,
+                                        selectedProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+                                            ? SupportedAuthProtocolTypes.OIDC
+                                            : selectedProtocol
+                                    )
+                                        ? inboundProtocolConfig[
+                                            selectedProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+                                                ? SupportedAuthProtocolTypes.OIDC
+                                                : selectedProtocol
+                                            ]
                                         : undefined
                                 }
                                 onSubmit={ handleSubmit }
