@@ -90,7 +90,8 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
 
     return (
         <>
-            <Grid verticalAlign="middle">
+        <form>
+        <Grid verticalAlign="middle">
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
@@ -111,7 +112,6 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
                         <CopyInputField
                             value={ oidcConfigurations?.wellKnownEndpoint  }
-                            className="panel-url-input"
                             data-testid={ `${ testId }-introspection-readonly-input` }
                         />
                     </Grid.Column>
@@ -136,7 +136,6 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
                         <CopyInputField
                             value={ oidcConfigurations?.authorizeEndpoint }
-                            className="panel-url-input"
                             data-testid={ `${ testId }-authorize-readonly-input` }
                         />
                     </Grid.Column>
@@ -161,7 +160,6 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
                         <CopyInputField
                             value={ oidcConfigurations?.tokenEndpoint }
-                            className="panel-url-input"
                             data-testid={ `${ testId }-token-readonly-input` }
                         />
                     </Grid.Column>
@@ -186,7 +184,6 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
                         <CopyInputField
                             value={ oidcConfigurations?.userEndpoint }
-                            className="panel-url-input"
                             data-testid={ `${ testId }-userInfo-readonly-input` }
                         />
                     </Grid.Column>
@@ -211,7 +208,6 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
                         <CopyInputField
                             value={ oidcConfigurations?.introspectionEndpoint }
-                            className="panel-url-input"
                             data-testid={ `${ testId }-introspection-readonly-input` }
                         />
                     </Grid.Column>
@@ -236,7 +232,6 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
                         <CopyInputField
                             value={ oidcConfigurations?.jwksEndpoint }
-                            className="panel-url-input"
                             data-testid={ `${ testId }-jwks-readonly-input` }
                         />
                     </Grid.Column>
@@ -261,7 +256,6 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
                         <CopyInputField
                             value={ oidcConfigurations?.tokenRevocationEndpoint }
-                            className="panel-url-input"
                             data-testid={ `${ testId }-token-revoke-readonly-input` }
                         />
                     </Grid.Column>
@@ -286,12 +280,13 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
                         <CopyInputField
                             value={ oidcConfigurations?.endSessionEndpoint  }
-                            className="panel-url-input"
                             data-testid={ `${ testId }-logout-readonly-input` }
                         />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
+        </form>
+           
         </>
     );
 };
