@@ -19,6 +19,7 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.apache.cxf.jaxrs.impl.ResponseImpl" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.serviceclient.UserRegistrationClient" %>
@@ -57,10 +58,7 @@
 
 %>
 <%
-    boolean reCaptchaEnabled = false;
-    if (request.getAttribute("reCaptcha") != null && "TRUE".equalsIgnoreCase((String) request.getAttribute("reCaptcha"))) {
-        reCaptchaEnabled = true;
-    }
+    boolean reCaptchaEnabled = CaptchaUtil.isRecaptchaEnabled("SelfRegistration.ReCaptcha", tenantDomain);
 %>
 
     <html>
@@ -90,8 +88,9 @@
 
         <%
             if (reCaptchaEnabled) {
+                String reCaptchaAPI = CaptchaUtil.recaptchaAPIURL();
         %>
-        <script src='<%=(request.getAttribute("reCaptchaAPI"))%>'></script>
+        <script src='<%=(reCaptchaAPI)%>'></script>
         <%
             }
         %>
@@ -220,10 +219,11 @@
                             %>
                             <%
                                 if (reCaptchaEnabled) {
+                                    String reCaptchaKey = CaptchaUtil.recaptchaSiteKey();
                             %>
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
                                 <div class="g-recaptcha"
-                                     data-sitekey="<%=Encode.forHtmlContent((String)request.getAttribute("reCaptchaKey"))%>">
+                                     data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>">
                                 </div>
                             </div>
                             <%

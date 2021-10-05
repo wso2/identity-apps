@@ -23,6 +23,7 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
+<%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.constants.SelfRegistrationStatusCodes" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
@@ -160,7 +161,6 @@
         if (uniquePIIs != null) {
             claims = uniquePIIs.values().toArray(new Claim[0]);
         }
-        IdentityManagementEndpointUtil.addReCaptchaHeaders(request, usernameRecoveryApi.getApiClient().getResponseHeaders());
 
     } catch (ApiException e) {
         IdentityManagementEndpointUtil.addErrorInformation(request, e);
@@ -169,10 +169,7 @@
     }
 %>
 <%
-    boolean reCaptchaEnabled = false;
-    if (request.getAttribute("reCaptcha") != null && "TRUE".equalsIgnoreCase((String) request.getAttribute("reCaptcha"))) {
-        reCaptchaEnabled = true;
-    }
+    boolean reCaptchaEnabled = CaptchaUtil.isRecaptchaEnabled("SelfRegistration.ReCaptcha", tenantDomain);
 %>
 
 <!doctype html>
@@ -190,8 +187,9 @@
 
     <%
         if (reCaptchaEnabled) {
+            String reCaptchaAPI = CaptchaUtil.recaptchaAPIURL();
     %>
-    <script src='<%=(request.getAttribute("reCaptchaAPI"))%>'></script>
+    <script src='<%=(reCaptchaAPI)%>'></script>
     <%
         }
     %>
@@ -471,10 +469,11 @@
                             <div class="field">
                                 <%
                                     if (reCaptchaEnabled) {
+                                        String reCaptchaKey = CaptchaUtil.recaptchaSiteKey();
                                 %>
                                 <div class="field">
                                     <div class="g-recaptcha"
-                                         data-sitekey="<%=Encode.forHtmlContent((String)request.getAttribute("reCaptchaKey"))%>">
+                                         data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>">
                                     </div>
                                 </div>
                                 <%

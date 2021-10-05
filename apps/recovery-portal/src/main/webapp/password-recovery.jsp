@@ -19,6 +19,7 @@
 
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
@@ -53,36 +54,12 @@
         tenantDomain = IdentityManagementServiceUtil.getInstance().getUser(username).getTenantDomain();
     }
 
-    ReCaptchaApi reCaptchaApi = new ReCaptchaApi();
-    try {
-        ReCaptchaProperties reCaptchaProperties = reCaptchaApi.getReCaptcha(tenantDomain, true, "ReCaptcha",
-                "password-recovery");
-
-        if (reCaptchaProperties.getReCaptchaEnabled()) {
-            Map<String, List<String>> headers = new HashMap<>();
-            headers.put("reCaptcha", Arrays.asList(String.valueOf(true)));
-            headers.put("reCaptchaAPI", Arrays.asList(reCaptchaProperties.getReCaptchaAPI()));
-            headers.put("reCaptchaKey", Arrays.asList(reCaptchaProperties.getReCaptchaKey()));
-            IdentityManagementEndpointUtil.addReCaptchaHeaders(request, headers);
-        }
-    } catch (ApiException e) {
-        request.setAttribute("error", true);
-        request.setAttribute("errorMsg", e.getMessage());
-        request.getRequestDispatcher("error.jsp").forward(request, response);
-        return;
-    }
-
     boolean isEmailNotificationEnabled = false;
 
     isEmailNotificationEnabled = Boolean.parseBoolean(application.getInitParameter(
             IdentityManagementEndpointConstants.ConfigConstants.ENABLE_EMAIL_NOTIFICATION));
 
-    boolean reCaptchaEnabled = false;
-
-    if (request.getAttribute("reCaptcha") != null &&
-            "TRUE".equalsIgnoreCase((String) request.getAttribute("reCaptcha"))) {
-        reCaptchaEnabled = true;
-    }
+    boolean reCaptchaEnabled = CaptchaUtil.isRecaptchaEnabled("Recovery.ReCaptcha.Password.Enable", tenantDomain);
 %>
 
 <!doctype html>
@@ -99,8 +76,9 @@
 
     <%
         if (reCaptchaEnabled) {
+            String reCaptchaAPI = CaptchaUtil.recaptchaAPIURL();
     %>
-    <script src='<%=(request.getAttribute("reCaptchaAPI"))%>'></script>
+    <script src='<%=(reCaptchaAPI)%>'></script>
     <%
         }
     %>
@@ -210,11 +188,12 @@
 
                         <%
                             if (reCaptchaEnabled) {
+                                String reCaptchaKey = CaptchaUtil.recaptchaSiteKey();
                         %>
                         <div class="field">
                             <div class="g-recaptcha"
                                  data-sitekey=
-                                         "<%=Encode.forHtmlContent((String)request.getAttribute("reCaptchaKey"))%>">
+                                         "<%=Encode.forHtmlContent(reCaptchaKey)%>">
                             </div>
                         </div>
                         <%
