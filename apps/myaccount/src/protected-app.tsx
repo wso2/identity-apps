@@ -78,6 +78,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
         on(Hooks.SignIn, (response: BasicUserInfo) => {
             let logoutUrl;
+            let logoutRedirectUrl;
             // Update the app base name with the newly resolved tenant.
             window[ "AppUtils" ].updateTenantQualifiedBaseName(response.tenantDomain);
 
@@ -116,11 +117,14 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         window[ "AppUtils" ].getAppBase(),
                         window[ "AppUtils" ].getAppBaseWithTenant()
                     );
+                    logoutRedirectUrl = window[ "AppUtils" ].getAppBaseWithTenant();
                 } else {
                     logoutUrl = logoutUrl.replace(
                         window[ "AppUtils" ].getConfig().logoutCallbackURL,
                         window[ "AppUtils" ].getConfig().clientOrigin + window[ "AppUtils" ].getConfig().routes.login
                     );
+                    logoutRedirectUrl = window[ "AppUtils" ].getConfig().clientOrigin
+                        + window[ "AppUtils" ].getConfig().routes.login;
                 }
 
                 // If an override URL is defined in config, use that instead.
@@ -213,7 +217,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                             checkSessionIframe: oidcSessionIframeEndpoint,
                             endSessionEndpoint: logoutUrl.split("?")[ 0 ],
                             tokenEndpoint: tokenEndpoint
-                        }
+                        },
+                        signOutRedirectURL: logoutRedirectUrl
                     });
                 })
                 .catch((error) => {

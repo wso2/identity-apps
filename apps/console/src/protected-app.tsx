@@ -68,6 +68,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
         on(Hooks.SignIn, (response: BasicUserInfo) => {
             let logoutUrl;
+            let logoutRedirectUrl;
+
             // Update the app base name with the newly resolved tenant.
             window[ "AppUtils" ].updateTenantQualifiedBaseName(response.tenantDomain);
 
@@ -100,12 +102,15 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                             window[ "AppUtils" ].getAppBase(),
                             window[ "AppUtils" ].getAppBaseWithTenant()
                         );
+                        logoutRedirectUrl = window[ "AppUtils" ].getAppBaseWithTenant();
                     } else {
                         logoutUrl = logoutUrl.replace(
                             window[ "AppUtils" ].getConfig().logoutCallbackURL,
                             window[ "AppUtils" ].getConfig().clientOrigin
                             + window[ "AppUtils" ].getConfig().routes.login
                         );
+                        logoutRedirectUrl = window[ "AppUtils" ].getConfig().clientOrigin
+                            + window[ "AppUtils" ].getConfig().routes.login;
                     }
                 }
 
@@ -182,9 +187,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         endpoints: {
                             authorizationEndpoint: authorizationEndpoint,
                             checkSessionIframe: oidcSessionIframeEndpoint,
-                            endSessionEndpoint: logoutUrl.split("?")[0],
+                            endSessionEndpoint: logoutUrl.split("?")[ 0 ],
                             tokenEndpoint: tokenEndpoint
-                        }
+                        },
+                        signOutRedirectURL: logoutRedirectUrl
                     });
                 })
                 .catch((error) => {
@@ -200,7 +206,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         });
     }, []);
 
-    const loginSuccessRedirect = (): void  => {
+    const loginSuccessRedirect = (): void => {
         const AuthenticationCallbackUrl = CommonAuthenticateUtils.getAuthenticationCallbackUrl(
             CommonAppConstants.CONSOLE_APP
         );
