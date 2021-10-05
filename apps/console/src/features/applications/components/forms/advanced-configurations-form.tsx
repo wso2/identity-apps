@@ -39,6 +39,10 @@ interface AdvancedConfigurationsFormPropsInterface extends TestableComponentInte
      * Application template.
      */
     template?: ApplicationTemplateListItemInterface;
+    /**
+     * Specifies if the form is submitting
+     */
+    isSubmitting?: boolean;
 }
 
 /**
@@ -57,6 +61,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
         onSubmit,
         readOnly,
         template,
+        isSubmitting,
         [ "data-testid" ]: testId
     } = props;
 
@@ -169,7 +174,8 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 ariaLabel="Update button"
                 name="update-button"
                 data-testid={ `${ testId }-submit-button` }
-                disabled={ false }
+                disabled={ isSubmitting }
+                loading={ isSubmitting }
                 hidden={ readOnly }
                 label={ t("common:update") }
             />

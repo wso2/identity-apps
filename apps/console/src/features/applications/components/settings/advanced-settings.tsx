@@ -20,7 +20,7 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState, FeatureConfigInterface } from "../../../core";
@@ -81,12 +81,16 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
+    const [ isSubmitting, setIsSubmitting ] = useState(false);
+
     /**
      * Handles the advanced config form submit action.
      *
      * @param values - Form values.
      */
     const handleAdvancedConfigFormSubmit = (values: any): void => {
+        setIsSubmitting(true);
+
         updateApplicationConfigurations(appId, values)
             .then(() => {
                 dispatch(addAlert({
@@ -117,6 +121,9 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
                     message: t("console:develop.features.applications.notifications.updateAdvancedConfig" +
                         ".genericError.message")
                 }));
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
     };
 
@@ -133,6 +140,7 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
                 }
                 template={ template }
                 data-testid={ `${ testId }-form` }
+                isSubmitting={ isSubmitting }
             />
         </EmphasizedSegment>
     );

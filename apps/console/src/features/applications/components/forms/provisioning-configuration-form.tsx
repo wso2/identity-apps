@@ -30,6 +30,10 @@ interface ProvisioningConfigurationFormPropsInterface extends TestableComponentI
     onSubmit: (values: any) => void;
     useStoreList: SimpleUserStoreListItemInterface[];
     readOnly?: boolean;
+    /**
+     * Specifies if the form is submitting.
+     */
+    isSubmitting?: boolean;
 }
 
 /**
@@ -48,6 +52,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
         onSubmit,
         readOnly,
         useStoreList,
+        isSubmitting,
         [ "data-testid" ]: testId
     } = props;
 
@@ -140,7 +145,8 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                 ariaLabel="Update button"
                 name="update-button"
                 data-testid={ `${ testId }-submit-button` }
-                disabled={ false }
+                disabled={ isSubmitting }
+                loading={ isSubmitting }
                 label={ t("common:update") }
                 hidden={ readOnly }
             />
