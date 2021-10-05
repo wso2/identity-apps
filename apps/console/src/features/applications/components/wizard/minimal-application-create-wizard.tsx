@@ -34,20 +34,13 @@ import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import merge from "lodash-es/merge";
 import set from "lodash-es/set";
+import sortBy from "lodash-es/sortBy";
 import React, { FunctionComponent, ReactElement, ReactNode, Suspense, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dimmer, Grid } from "semantic-ui-react";
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
 import { SAMLProtocolAllSettingsWizardForm } from "./saml-protocol-settings-all-option-wizard-form";
-import {
-    ApplicationListInterface,
-    ApplicationManagementUtils,
-    ApplicationTemplateLoadingStrategies,
-    SAMLConfigModes,
-    URLFragmentTypes,
-    getApplicationList
-} from "../..";
 import { applicationConfig } from "../../../../extensions";
 import {
     AppConstants,
@@ -60,7 +53,7 @@ import {
     history,
     store
 } from "../../../core";
-import { createApplication, getApplicationTemplateData } from "../../api";
+import { createApplication, getApplicationList, getApplicationTemplateData } from "../../api";
 import { getInboundProtocolLogos } from "../../configs";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
@@ -68,11 +61,16 @@ import CustomApplicationTemplate
 import SinglePageApplicationTemplate
     from "../../data/application-templates/templates/single-page-application/single-page-application.json";
 import {
+    ApplicationListInterface,
     ApplicationTemplateIdTypes,
     ApplicationTemplateInterface,
+    ApplicationTemplateLoadingStrategies,
     MainApplicationInterface,
-    SupportedAuthProtocolTypes
+    SAMLConfigModes,
+    SupportedAuthProtocolTypes,
+    URLFragmentTypes
 } from "../../models";
+import { ApplicationManagementUtils } from "../../utils";
 
 /**
  * Prop types of the `MinimalAppCreateWizard` component.
@@ -261,6 +259,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         application.name = generalFormValues.get("name").toString();
         application.templateId = selectedTemplate.id;
 
+        // If the selected template is Custom, assign the proper `template ids`.
         if (selectedTemplate.id === CustomApplicationTemplate.id) {
             if (customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC) {
                 application.templateId = ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC;
@@ -395,11 +394,12 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     )
                 });
                 scrollToNotification();
-            }).finally(() =>{
+            })
+            .finally(() => {
                 setIsSubmitting(false);
                 handleProtocolValueChange(false);
                 handleError("all", false);
-        });
+            });
     }, [ generalFormValues, protocolFormValues ]);
 
     /**
@@ -599,12 +599,18 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         return name && !!name.match(ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_PATTERN);
     };
 
+    /**
+     * Get the list of supported custom protocols.
+     *
+     * @param {string} filterProtocol - Protocol to filder.
+     * @return {SupportedAuthProtocolTypes[]}
+     */
+    const getSupportedCustomProtocols = (filterProtocol?: string): SupportedAuthProtocolTypes[] => {
 
-    const getSupportedProtocols = (filterProtocol?: string): string[] => {
-        let supportedProtocols: string[] = Object.values(SupportedAuthProtocolTypes);
+        let supportedProtocols: SupportedAuthProtocolTypes[] = Object.values(SupportedAuthProtocolTypes);
 
         // Filter out legacy and unsupported auth protocols.
-        supportedProtocols = supportedProtocols.filter((protocol) => {
+        supportedProtocols = supportedProtocols.filter((protocol: string) => {
 
             if (applicationConfig.customApplication.allowedProtocolTypes
                 && applicationConfig.customApplication.allowedProtocolTypes.length > 0) {
@@ -626,13 +632,143 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             return protocol;
         });
 
-        supportedProtocols.sort((a, b) => {
-            if (a < b) return -1;
-            if (a > b) return 1;
-            return 0;
+        const sortOrder: SupportedAuthProtocolTypes[] = [
+            SupportedAuthProtocolTypes.OAUTH2_OIDC,
+            SupportedAuthProtocolTypes.SAML,
+            SupportedAuthProtocolTypes.WS_FEDERATION
+        ];
+
+        supportedProtocols = sortBy(supportedProtocols, (protocol: SupportedAuthProtocolTypes) => {
+            return sortOrder.indexOf(protocol);
         });
 
         return supportedProtocols;
+    };
+    
+    const renderSubTemplateSelection = (): ReactElement => {
+
+        const hasSubTemplates: boolean = (subTemplates && subTemplates instanceof Array && subTemplates.length > 0);
+        const isCustom: boolean = selectedTemplate.id === CustomApplicationTemplate.id;
+
+        if (!hasSubTemplates || !isCustom) {
+            return null;
+        }
+
+        const subTemplates: SupportedAuthProtocolTypes[] | ApplicationTemplateInterface[] = isCustom
+            ? getSupportedCustomProtocols()
+            : getSupportedCustomProtocols();
+
+        return (
+            <div className="sub-template-selection">
+                <label className="sub-templates-label">{ subTemplatesSectionTitle }</label>
+                <div className="sub-templates">
+                    {
+                        subTemplates
+                            .map((subTemplate: SupportedAuthProtocolTypes | ApplicationTemplateInterface, index: number) => {
+
+                                const id: string = isCustom ? subTemplate : subTemplate.id;
+                                const imageKey: (SupportedAuthProtocolTypes | ApplicationTemplateInterface["image"]) = isCustom ? subTemplate : subTemplate.image;
+                                const header: string = isCustom
+                                    ? ApplicationManagementUtils.resolveProtocolDisplayName(subTemplate)
+                                    : subTemplate.name;
+                                const isSelected: boolean = isCustom
+                                    ? customApplicationProtocol === subTemplate
+                                    : selectedTemplate.id === subTemplate.id;
+                                const isDisabled: boolean = isCustom ? false : subTemplate.previewOnly;
+                                const onClick = () => {
+                                    if (subTemplate.previewOnly) {
+                                        return;
+                                    }
+
+                                    if (isCustom) {
+                                        setCustomApplicationProtocol(subTemplate);
+                                        
+                                        return;
+                                    }
+
+                                    setSelectedTemplate(subTemplate);
+                                    loadTemplateDetails(subTemplate.id, subTemplate);
+                                };
+
+                                return (
+                                    <div
+                                        key={ index }
+                                        className="sub-template-selection-card-wrapper"
+                                    >
+                                        <SelectionCard
+                                            fluid
+                                            imageInline
+                                            image={
+                                                {
+                                                    ...getInboundProtocolLogos(),
+                                                    ...getTechnologyLogos()
+                                                }[ imageKey ]
+                                            }
+                                            size="auto"
+                                            className="sub-template-selection-card"
+                                            header={ header }
+                                            selected={ isSelected }
+                                            onClick={ onClick }
+                                            imageSize="x22"
+                                            imageOptions={ {
+                                                square: false,
+                                                width: "auto"
+                                            } }
+                                            contentTopBorder={ false }
+                                            showTooltips={ false }
+                                            renderDisabledItemsAsGrayscale={ false }
+                                            disabled={ isDisabled }
+                                            overlay={ renderDimmerOverlay() }
+                                            overlayOpacity={ 0.6 }
+                                            data-testid={ `${ testId }-${ id }-card` }
+                                        />
+                                    </div>
+                                );
+                            })
+                    }
+                </div>
+            </div>
+        )
+        return (
+            <div className="sub-template-selection">
+                <div>{ subTemplatesSectionTitle }</div>
+                {
+                    subTemplates.map((
+                        subTemplate: ApplicationTemplateInterface, index: number
+                    ) => (
+                        <SelectionCard
+                            inline
+                            key={ index }
+                            image={
+                                {
+                                    ...getInboundProtocolLogos(),
+                                    ...getTechnologyLogos()
+                                }[ subTemplate.image ]
+                            }
+                            size="x120"
+                            className="sub-template-selection-card"
+                            header={ subTemplate.name }
+                            selected={ selectedTemplate.id === subTemplate.id }
+                            onClick={ () => {
+                                if (!subTemplate.previewOnly) {
+                                    setSelectedTemplate(subTemplate);
+                                    loadTemplateDetails(subTemplate.id,
+                                        subTemplate);
+                                }
+                            } }
+                            imageSize="mini"
+                            contentTopBorder={ false }
+                            showTooltips={ !subTemplate.previewOnly }
+                            renderDisabledItemsAsGrayscale={ false }
+                            disabled={ subTemplate.previewOnly }
+                            overlay={ renderDimmerOverlay() }
+                            overlayOpacity={ 0.6 }
+                            data-testid={ `${ testId }-${ subTemplate.id }-card` }
+                        />
+                    ))
+                }
+            </div>
+        );
     };
 
     /**
@@ -743,6 +879,12 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         </Grid.Column>
                     </Grid.Row>
                     {
+                        (selectedTemplate.id === CustomApplicationTemplate.id) || (subTemplates && subTemplates instanceof Array && subTemplates.length > 0) && (
+                            (selectedTemplate.id === CustomApplicationTemplate.id)
+                                
+                        )
+                    }
+                    {
                         (selectedTemplate.id === CustomApplicationTemplate.id) && (
                             <Grid.Row className="pt-0">
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
@@ -750,49 +892,45 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                         <label className="sub-templates-label">{ subTemplatesSectionTitle }</label>
                                         <div className="sub-templates">
                                             {
-                                                getSupportedProtocols().map((
-                                                    subTemplate: string, index: number
-                                                ) => (
-                                                    <div
-                                                        key={ index }
-                                                        className="sub-template-selection-card-wrapper"
-                                                    >
-                                                        <SelectionCard
-                                                            fluid
-                                                            imageInline
-                                                            image={
-                                                                {
-                                                                    ...getInboundProtocolLogos(),
-                                                                    ...getTechnologyLogos()
-                                                                }[ subTemplate ]
-                                                            }
-                                                            size="auto"
-                                                            className="sub-template-selection-card"
-                                                            header={
-                                                                ApplicationManagementUtils.resolveProtocolDisplayName(
-                                                                        subTemplate as SupportedAuthProtocolTypes
-                                                                )
-                                                            }
-                                                            selected={ customApplicationProtocol === subTemplate }
-                                                            onClick={ () => {
-                                                                setCustomApplicationProtocol(
-                                                                    subTemplate as SupportedAuthProtocolTypes
-                                                                );
-                                                            } }
-                                                            imageSize="x22"
-                                                            imageOptions={ {
-                                                                square: false,
-                                                                width: "auto"
-                                                            } }
-                                                            contentTopBorder={ false }
-                                                            showTooltips={ false }
-                                                            renderDisabledItemsAsGrayscale={ false }
-                                                            overlay={ renderDimmerOverlay() }
-                                                            overlayOpacity={ 0.6 }
-                                                            data-testid={ `${ testId }-${ subTemplate }-card` }
-                                                        />
-                                                    </div>
-                                                ))
+                                                getSupportedCustomProtocols()
+                                                    .map((subTemplate: SupportedAuthProtocolTypes, index: number) => (
+                                                        <div
+                                                            key={ index }
+                                                            className="sub-template-selection-card-wrapper"
+                                                        >
+                                                            <SelectionCard
+                                                                fluid
+                                                                imageInline
+                                                                image={
+                                                                    {
+                                                                        ...getInboundProtocolLogos(),
+                                                                        ...getTechnologyLogos()
+                                                                    }[subTemplate]
+                                                                }
+                                                                size="auto"
+                                                                className="sub-template-selection-card"
+                                                                header={
+                                                                    ApplicationManagementUtils
+                                                                        .resolveProtocolDisplayName(subTemplate)
+                                                                }
+                                                                selected={ customApplicationProtocol === subTemplate }
+                                                                onClick={ () => {
+                                                                    setCustomApplicationProtocol(subTemplate);
+                                                                } }
+                                                                imageSize="x22"
+                                                                imageOptions={ {
+                                                                    square: false,
+                                                                    width: "auto"
+                                                                } }
+                                                                contentTopBorder={ false }
+                                                                showTooltips={ false }
+                                                                renderDisabledItemsAsGrayscale={ false }
+                                                                overlay={ renderDimmerOverlay() }
+                                                                overlayOpacity={ 0.6 }
+                                                                data-testid={ `${ testId }-${ subTemplate }-card` }
+                                                            />
+                                                        </div>
+                                                    ))
                                             }
                                         </div>
                                     </div>
