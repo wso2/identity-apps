@@ -384,7 +384,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
                     />
                 ) }
             >
-                <Suspense fallback={ <ContentLoader dimmer/> }>
+                <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
                     <Switch>
                         { resolveRoutes() }
                     </Switch>

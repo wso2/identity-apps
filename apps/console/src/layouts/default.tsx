@@ -145,7 +145,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
                 />
             ) }
         >
-            <Suspense fallback={ <ContentLoader dimmer/> }>
+            <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
                 <Switch>
                     {
                         defaultLayoutRoutes.map((route, index) => (

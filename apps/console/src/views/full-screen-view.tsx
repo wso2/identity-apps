@@ -183,7 +183,7 @@ export const FullScreenView: FunctionComponent<FullScreenViewPropsInterface> = (
                     />
                 ) }
             >
-                <Suspense fallback={ <PreLoader /> }>
+                <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
                     <Switch>
                         { resolveRoutes() }
                     </Switch>
