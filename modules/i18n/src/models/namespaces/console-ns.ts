@@ -3610,6 +3610,7 @@ export interface ConsoleNS {
                         phoneNumbers_mobile: string;
                         phoneNumbers_work: string;
                         phoneNumbers_other: string;
+                        photos: string;
                         oneTimePassword: string;
                         userName: string;
                     };
