@@ -17,7 +17,7 @@
  */
 
 import { AnyAction, Store, StoreEnhancer, applyMiddleware, createStore } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
+import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
 import thunk from "redux-thunk";
 import { reducers } from "./combine-reducers";
 
