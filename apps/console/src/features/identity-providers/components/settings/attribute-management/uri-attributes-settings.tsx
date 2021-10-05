@@ -133,6 +133,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                     </Hint>
                 </Grid.Column>
             </Grid.Row>
+            <Divider hidden/>
             {
                 claimMappingOn &&
                 <Grid.Row columns={ 2 }>
@@ -141,7 +142,6 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                             { t("console:develop.features.authenticationProvider.forms.uriAttributeSettings." +
                                 "role.heading") }
                         </Heading>
-                        <Divider hidden/>
                         <Form>
                             <Form.Select
                                 required

@@ -363,6 +363,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                 isReadOnly={ isReadOnly }
                                 isMappingEmpty={ isEmpty(selectedClaimsWithMapping) }
                             /> }
+                            <Divider hidden/>
 
                             { /* Select attributes for provisioning. */ }
                             { provisioningAttributesEnabled
@@ -395,6 +396,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                 data-testid={ `${ testId }-provisioning-attribute-selection` }
                                 isReadOnly={ isReadOnly }
                             /> }
+                            <Divider hidden/>
 
                             { /* Set role mappings. */ }
                             { isRoleMappingsEnabled && <RoleMappingSettings
@@ -404,6 +406,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                 data-testid={ `${ testId }-role-mapping` }
                                 isReadOnly={ isReadOnly }
                             /> }
+                            <Divider hidden/>
 
                             <Grid.Row>
                                 <Grid.Column>
