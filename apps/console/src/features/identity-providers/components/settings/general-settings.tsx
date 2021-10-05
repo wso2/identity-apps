@@ -136,6 +136,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
 
     const [ idpList, setIdPList ] = useState<IdentityProviderListResponseInterface>({});
     const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(false);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     /**
      * Loads the identity provider authenticators on initial component load.
@@ -230,6 +231,8 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
      * @param {IdentityProviderInterface} updatedDetails - Form values.
      */
     const handleFormSubmit = (updatedDetails: IdentityProviderInterface): void => {
+        setIsSubmitting(true);
+
         updateIdentityProviderDetails({ id: editingIDP.id, ...updatedDetails })
             .then(() => {
                 dispatch(addAlert({
@@ -243,6 +246,9 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
             })
             .catch((error) => {
                 handleIDPUpdateError(error);
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
     };
 
@@ -295,7 +301,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                         idpList={ idpList }
                         data-testid={ `${ testId }-form` }
                         isReadOnly={ isReadOnly }
-
+                        isSubmitting={ isSubmitting }
                     />
                     <Divider hidden />
                     { !(IdentityProviderManagementConstants.DELETING_FORBIDDEN_IDPS.includes(name)) && (

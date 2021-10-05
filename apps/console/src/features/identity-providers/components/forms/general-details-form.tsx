@@ -92,6 +92,10 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
      * IdP is a OIDC provider or not.
      */
     isOidc?: boolean;
+    /**
+     * Specifies if the form is submitting.
+     */
+    isSubmitting?: boolean;
 }
 
 const IDP_NAME_MAX_LENGTH: number = 50;
@@ -119,6 +123,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         isReadOnly,
         isSaml,
         isOidc,
+        isSubmitting,
         [ "data-testid" ]: testId
     } = props;
 
@@ -263,7 +268,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             buttonType="primary_btn"
                             label={ t("common:update") }
                             name="submit"
-                            disabled={ false }
+                            disabled={ isSubmitting }
+                            loading={ isSubmitting }
                         />
                     ) }
                 </Form>

@@ -38,13 +38,13 @@ import {
     Hint
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useRef, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid , Form as SemanticForm } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../core";
-import { ClaimManagementConstants } from "../../../constants";
 import { deleteAClaim, updateAClaim } from "../../../api";
+import { ClaimManagementConstants } from "../../../constants";
 
 /**
  * Prop types for `EditBasicDetailsLocalClaims` component
@@ -82,6 +82,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const [ isShowDisplayOrder, setIsShowDisplayOrder ] = useState(false);
     const [ confirmDelete, setConfirmDelete ] = useState(false);
     const [ isClaimReadOnly, setIsClaimReadOnly ] = useState<boolean>(false);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const nameField = useRef<HTMLElement>(null);
     const regExField = useRef<HTMLElement>(null);
@@ -90,7 +91,6 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-
 
     const { t } = useTranslation();
 
@@ -216,6 +216,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             supportedByDefault: values?.supportedByDefault !== undefined
                 ? !!values.supportedByDefault : claim?.supportedByDefault
         };
+
+        setIsSubmitting(true);
+
         updateAClaim(claim.id, data).then(() => {
             dispatch(addAlert(
                 {
@@ -240,6 +243,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             "updateClaim.genericError.description")
                 }
             ));
+        })
+        .finally(() => {
+            setIsSubmitting(false);
         });
     };
 
@@ -386,8 +392,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 readOnly={ isReadOnly }
                                 hint={ t("console:manage.features.claims.local.forms.requiredHint") }
                                 disabled={ isClaimReadOnly }
-                                { ...( isClaimReadOnly ? 
-                                    { value: false } : 
+                                { ...( isClaimReadOnly ?
+                                    { value: false } :
                                     { defaultValue : claim?.required } ) }
                             />
                     }
@@ -424,6 +430,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 ariaLabel="submit"
                                 size="small"
                                 buttonType="primary_btn"
+                                loading={ isSubmitting }
+                                disabled={ isSubmitting }
                                 label={ t("common:update") }
                                 name="submit"
                             />

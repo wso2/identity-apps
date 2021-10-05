@@ -129,6 +129,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     /**
      * Deletes an application.
@@ -174,6 +175,8 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
      * @param {ApplicationInterface} updatedDetails - Form values.
      */
     const handleFormSubmit = (updatedDetails: ApplicationInterface): void => {
+        setIsSubmitting(true);
+
         updateApplicationDetails(updatedDetails)
             .then(() => {
                 dispatch(addAlert({
@@ -204,6 +207,9 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                     message: t("console:develop.features.applications.notifications.updateApplication.genericError" +
                         ".message")
                 }));
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
     };
 
@@ -276,6 +282,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                                 )
                             }
                             data-testid={ `${ testId }-form` }
+                            isSubmitting={ isSubmitting }
                         />
                     </EmphasizedSegment>
                     <Divider hidden />
@@ -316,7 +323,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
             ) :
                 <EmphasizedSegment padded="very">
                     <ContentLoader inline="centered" active/>
-                </EmphasizedSegment>  
+                </EmphasizedSegment>
         );
 };
 

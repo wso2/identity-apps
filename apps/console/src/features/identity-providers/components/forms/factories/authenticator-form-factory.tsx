@@ -52,6 +52,10 @@ interface AuthenticatorFormFactoryInterface extends TestableComponentInterface {
      */
     isReadOnly: boolean;
     authenticator?: FederatedAuthenticatorWithMetaInterface;
+    /**
+     * Specifies if the form is submitting.
+     */
+    isSubmitting?: boolean;
 }
 
 /**
@@ -74,6 +78,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
         enableSubmitButton,
         showCustomProperties,
         isReadOnly,
+        isSubmitting,
         [ "data-testid" ]: testId
     } = props;
 
@@ -89,6 +94,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     data-testid={ testId }
                     showCustomProperties={ showCustomProperties }
                     readOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
                 />
             );
         case IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID:
@@ -102,6 +108,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     data-testid={ testId }
                     showCustomProperties={ showCustomProperties }
                     readOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
                 />
             );
         case IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID:
@@ -115,6 +122,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     data-testid={ testId }
                     showCustomProperties={ showCustomProperties }
                     readOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
                 />
             );
         case IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID:
@@ -128,6 +136,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     data-testid={ testId }
                     showCustomProperties={ showCustomProperties }
                     readOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
                 />
             );
         case IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID:
@@ -136,6 +145,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     onSubmit={ onSubmit }
                     authenticator={ authenticator }
                     readOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
                 />
             );
         default:
@@ -149,6 +159,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     data-testid={ testId }
                     showCustomProperties={ showCustomProperties }
                     readOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
                 />
             );
     }

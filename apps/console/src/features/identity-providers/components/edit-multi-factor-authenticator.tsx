@@ -97,6 +97,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
     const { t } = useTranslation();
 
     const [ tabPaneExtensions, setTabPaneExtensions ] = useState<any>(undefined);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     /**
      * Check for tab extensions.
@@ -136,6 +137,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
      * @param {MultiFactorAuthenticatorInterface} values - Form values.
      */
     const handleAuthenticatorConfigFormSubmit = (values: MultiFactorAuthenticatorInterface): void => {
+        setIsSubmitting(true);
 
         updateMultiFactorAuthenticatorDetails(authenticator.id, values)
             .then(() => {
@@ -170,6 +172,9 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
                     message: t("console:develop.features.authenticationProvider.notifications" +
                         ".updateEmailOTPAuthenticator.genericError.message")
                 }));
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
     };
 
@@ -195,6 +200,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
                                                 type={ type }
                                                 data-testid={ `${ testId }-${ authenticator.name }-content` }
                                                 isReadOnly={ isReadOnly }
+                                                isSubmitting={ isSubmitting }
                                             />
                                         </EmphasizedSegment>
                                     </Grid.Column>
@@ -263,7 +269,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
      * @return {number}
      */
     const resolveDefaultActiveIndex = (activeIndex: number): number => {
-        
+
         if (authenticator.id !== IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID) {
             return activeIndex;
         }

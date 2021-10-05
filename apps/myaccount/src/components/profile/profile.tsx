@@ -86,6 +86,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     const [ showEditAvatarModal, setShowEditAvatarModal ] = useState<boolean>(false);
     const [ showMobileUpdateWizard, setShowMobileUpdateWizard ] = useState<boolean>(false);
     const [ countryList, setCountryList ] = useState<DropdownItemProps[]>([]);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
 
     // Removed User ID field from profile.
@@ -934,6 +936,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      * @param {string} url - Selected image URL.
      */
     const handleAvatarEditModalSubmit = (e: MouseEvent<HTMLButtonElement>, url: string): void => {
+        setIsSubmitting(true);
+
         updateProfileImageURL(url)
             .then(() => {
                 onAlertFired({
@@ -966,6 +970,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             })
             .finally(() => {
                 setShowEditAvatarModal(false);
+                setIsSubmitting(false);
             });
     };
 
@@ -1011,6 +1016,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         imageUrl={ profileDetails?.profileInfo?.profileUrl }
                         heading={ t("myAccount:modals.editAvatarModal.heading") }
                         submitButtonText={ t("myAccount:modals.editAvatarModal.primaryButton") }
+                        isSubmitting={ isSubmitting }
                         cancelButtonText={ t("myAccount:modals.editAvatarModal.secondaryButton") }
                         translations={ {
                             gravatar: {
