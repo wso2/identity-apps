@@ -84,6 +84,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     const [ mappedCustomAttribues, setMappedCustomAttribues ] = useState<Map<string, string>>(null);
     const [ showMapAttributes, setShowMapAttributes ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ skipSCIM, setSkipSCIM ] = useState<boolean>(false);
     const hiddenUserStores: string[] = useSelector((state: AppState) => state.config.ui.hiddenUserStores);
 
     const [ firstStep, setFirstStep ] = useTrigger();
@@ -142,7 +143,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                     }
                 ));
 
-                if ( attributeConfig.localAttributes.mapClaimToCustomDialect && customMappings ) {
+                if ( attributeConfig.localAttributes.mapClaimToCustomDialect && customMappings && !skipSCIM) {
 
                     attributeConfig.localAttributes.isSCIMCustomDialectAvailable().then(( claimId: string ) => {
                         addExternalClaim(claimId, {
@@ -252,11 +253,17 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
         setData(tempData);
         setBasicDetailsData(values);
 
-        if (values.has("scim") && values.has("oidc")) {
+        if (values.has("scim") ) {
             customMappings.set("scim", values.get("scim").toString());
-            customMappings.set("oidc", values.get("oidc").toString());
-            setMappedCustomAttribues(customMappings);
+        } else {
+            setSkipSCIM(true);
         }
+
+        if (values.has("oidc") ) {
+            customMappings.set("oidc", values.get("oidc").toString());
+        }
+
+        setMappedCustomAttribues(customMappings);
 
         if (attributeConfig.localAttributes.createWizard.identifyAsCustomAttrib) {
             if (tempData.properties && tempData.properties.length > 0) {
