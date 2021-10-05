@@ -835,7 +835,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     id: "actions",
                     key: "actions",
                     textAlign: "right",
-                    title: t("console:manage.features.claims.list.columns.actions")
+                    title: ClaimManagementConstants.EMPTY_STRING
                 } : null
             ].filter(Boolean);
         }
