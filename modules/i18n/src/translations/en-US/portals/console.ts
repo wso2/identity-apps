@@ -5874,8 +5874,8 @@ export const console: ConsoleNS = {
                 list: {
                     columns: {
                         actions: "Actions",
-                        claimURI: "Attribute",
-                        dialectURI: "Attribute Mapping",
+                        claimURI: "SCIM Attribute",
+                        dialectURI: "Mapped Attribute",
                         name: "Name"
                     },
                     confirmation: {

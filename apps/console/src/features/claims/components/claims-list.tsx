@@ -799,7 +799,6 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                             </Header>
                         );
                     },
-                    // TODO: Add i18n strings.
                     title: t("console:manage.features.claims.list.columns.claimURI")
                 },
                 {
@@ -826,7 +825,6 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                             )
                             : <code>{ claim.mappedLocalClaimURI }</code>
                     ),
-                    // TODO: Add i18n strings.
                     title: t("console:manage.features.claims.list.columns.dialectURI")
                 },
                 shouldRenderActionsColumn() ? {
