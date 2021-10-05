@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient } from "@wso2/identity-oidc-js";
+import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { Decode, Encode } from "../helpers/base64-utils";
 import { HttpMethods } from "../models";
 import { store } from "../store";
@@ -26,7 +26,7 @@ import { store } from "../store";
  *
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
+const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Retrieve FIDO meta data
@@ -37,7 +37,7 @@ const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.
 export const getMetaData = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost.clientHost,
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost.clientHost,
             "Content-Type": "application/x-www-form-urlencoded"
         },
         method: HttpMethods.GET,
@@ -72,7 +72,7 @@ export const updateDeviceName = (credentialId: string, deviceName: string): Prom
             value: deviceName
         }],
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost.clientHost,
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
@@ -103,7 +103,7 @@ export const deleteDevice = (credentialId): Promise<any> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost.clientHost
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost.clientHost
         },
         method: HttpMethods.DELETE,
         url: `${store.getState().config.endpoints.fidoMetaData}/${credentialId}`
@@ -177,7 +177,7 @@ export const endFidoFlow = (clientResponse): Promise<any> => {
         data: clientResponse,
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost.clientHost,
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
@@ -266,7 +266,7 @@ export const startFidoFlow = (): Promise<any> => {
     const requestConfig = {
         data: { appId: window.location.origin },
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost.clientHost,
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost.clientHost,
             "Content-Type": "application/x-www-form-urlencoded"
         },
         method: HttpMethods.POST,
@@ -306,7 +306,7 @@ export const startFidoUsernamelessFlow = (): Promise<any> => {
     const requestConfig = {
         data: { appId: window.location.origin },
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost.clientHost,
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost.clientHost,
             "Content-Type": "application/x-www-form-urlencoded"
         },
         method: HttpMethods.POST,

@@ -113,7 +113,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
@@ -419,7 +419,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         }
                     />
                 ) }
-            </> 
+            </>
             ) : (
                 <GridLayout
                     isLoading={ isLoading }

@@ -211,7 +211,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     const [ isClaimLoading, setIsClaimLoading ] = useState<boolean>(true);
     const [ isUserAttributesLoading, setUserAttributesLoading ] = useState<boolean>(false);
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -569,7 +569,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     const updateValues = () => {
         eventPublisher.publish("application-user-attribute-click-update-button");
-        
+
         submitAdvanceForm();
         setTriggerAdvanceSettingFormSubmission();
     };
@@ -945,7 +945,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         </Grid>
                         ) : null
                     }
-                </EmphasizedSegment> 
+                </EmphasizedSegment>
             ) :
                 <EmphasizedSegment padded="very">
                     <ContentLoader inline="centered" active/>

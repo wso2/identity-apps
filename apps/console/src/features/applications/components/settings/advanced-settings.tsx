@@ -79,7 +79,7 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
 
     const dispatch = useDispatch();
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ isSubmitting, setIsSubmitting ] = useState(false);
 

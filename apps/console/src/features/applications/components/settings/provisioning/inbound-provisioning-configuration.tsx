@@ -84,7 +84,7 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
 
     const [ userStore, setUserStore ] = useState<SimpleUserStoreListItemInterface[]>([]);
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>(defaultActiveIndexes);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);

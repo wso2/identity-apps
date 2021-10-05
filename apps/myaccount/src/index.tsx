@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AuthParams, AuthProvider, SPAUtils } from "@asgardeo/auth-react";
 import { ContextUtils, StringUtils } from "@wso2is/core/utils";
 import {
     I18n,
@@ -24,6 +25,7 @@ import {
     LanguageChangeException,
     isLanguageSupported
 } from "@wso2is/i18n";
+import { ContentLoader } from "@wso2is/react-components";
 import axios from "axios";
 import * as React from "react";
 // tslint:disable:no-submodule-imports
@@ -34,12 +36,13 @@ import "react-app-polyfill/stable";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import { App } from "./app";
 import { Config } from "./configs";
+import { ProtectedApp } from "./protected-app";
 import { store } from "./store";
 import { setSupportedI18nLanguages } from "./store/actions";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
+import { getAuthInitializeConfig } from "./utils";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
@@ -89,11 +92,35 @@ axios.get(metaPath)
         throw new I18nInstanceInitException(error);
     });
 
+const getAuthParams = (): Promise<AuthParams> => {
+    if (!SPAUtils.hasAuthSearchParamsInURL() && process.env.NODE_ENV === "production") {
+
+        const contextPath: string = window[ "AppUtils" ].getConfig().appBase
+            ? `/${ window[ "AppUtils" ].getConfig().appBase }`
+            : "";
+
+        return axios.get(contextPath + "/auth").then((response) => {
+            return Promise.resolve({
+                authorizationCode: response?.data?.authCode,
+                sessionState: response?.data?.sessionState
+            });
+        });
+    }
+
+    return;
+};
+
 ReactDOM.render(
     (
         <Provider store={ store }>
             <BrowserRouter>
-                <App/>
+                <AuthProvider
+                    config={ getAuthInitializeConfig() }
+                    fallback={ <ContentLoader dimmer /> }
+                    getAuthParams={ getAuthParams }
+                >
+                    <ProtectedApp />
+                </AuthProvider>
             </BrowserRouter>
         </Provider>
     ),

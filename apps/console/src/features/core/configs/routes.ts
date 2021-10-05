@@ -634,15 +634,6 @@ export const getAuthLayoutRoutes = (): RouteInterface[] => {
 
     return [
         {
-            component: lazy(() => import("../../authentication/pages/sign-in")),
-            icon: null,
-            id: "authLayoutLogin",
-            name: "Login",
-            path: AppConstants.getPaths().get("LOGIN"),
-            protected: false,
-            showOnSidePanel: false
-        },
-        {
             component: lazy(() => import("../../authentication/pages/sign-out")),
             icon: null,
             id: "authLayoutLogout",

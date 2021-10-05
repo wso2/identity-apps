@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient } from "@wso2/identity-oidc-js";
+import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { HttpMethods } from "../models";
 import { store } from "../store";
 
@@ -25,12 +25,12 @@ import { store } from "../store";
  *
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
+const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Method that sends multiple api requests at once.
  */
-const httpRequestAll = IdentityClient.getInstance().httpRequestAll.bind(IdentityClient.getInstance());
+const httpRequestAll = AsgardeoSPAClient.getInstance().httpRequestAll.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Fetch the configured security questions of the user.
@@ -41,7 +41,7 @@ const httpRequestAll = IdentityClient.getInstance().httpRequestAll.bind(Identity
 export const getSecurityQs = (): Promise<any> => {
     const headers = {
         "Accept": "application/json",
-        "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost
+        "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost
     };
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -85,7 +85,7 @@ export const addSecurityQs = (data: object): Promise<any> => {
         data,
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost
         },
         method: HttpMethods.POST,
         url: store.getState().config.endpoints.challengeAnswers
@@ -115,7 +115,7 @@ export const updateSecurityQs = (data: object): Promise<any> => {
         data,
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost
         },
         method: HttpMethods.PUT,
         url: store.getState().config.endpoints.challengeAnswers
