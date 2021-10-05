@@ -44,6 +44,7 @@ const MANIFEST_FILE_NAME = "assets-manifest.json";
 
 const skipSample = process.argv.indexOf("--skipSample") > -1;     // CLI arg to skip the sample theme generation.
 const skipManifest = process.argv.indexOf("--skipManifest") > -1; // CLI arg to skip the asset manifest generation.
+const skipHashing = process.argv.indexOf("--skipHashing") > -1;   // CLI arg to skip the hashing the css artifacts.
 
 /*
  * Generate Default Site Variables JSON files
@@ -206,13 +207,19 @@ const generateThemes = () => {
             };
 
             Object.keys(files).map((key) => {
-                const hash = files[ key ] && crypto.createHash("sha1").update(files[ key ]).digest("hex");
-                const ext = hash
-                    ? `.${ hash.substr(0, 8) }${ key }`
-                    : key;
+
+                let ext = key;
+
+                if (!skipHashing) {
+                    const hash = files[ key ] && crypto.createHash("sha1").update(files[ key ]).digest("hex");
+                    ext = hash
+                        ? `.${ hash.substr(0, 8) }${ key }`
+                        : key;
+                }
 
                 writeFile(theme, ext, files[ key ], themeIndexFile);
             });
+
             copyAssets(theme, filePath);
 
             if (!skipManifest) {
