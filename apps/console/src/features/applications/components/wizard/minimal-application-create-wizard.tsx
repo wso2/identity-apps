@@ -644,130 +644,109 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
         return supportedProtocols;
     };
-    
+
+    /**
+     * Renders the sub template selection.
+     * @return {React.ReactElement}
+     */
     const renderSubTemplateSelection = (): ReactElement => {
 
         const hasSubTemplates: boolean = (subTemplates && subTemplates instanceof Array && subTemplates.length > 0);
         const isCustom: boolean = selectedTemplate.id === CustomApplicationTemplate.id;
 
-        if (!hasSubTemplates || !isCustom) {
+        if (!hasSubTemplates && !isCustom) {
             return null;
         }
 
-        const subTemplates: SupportedAuthProtocolTypes[] | ApplicationTemplateInterface[] = isCustom
+        const templates: SupportedAuthProtocolTypes[] | ApplicationTemplateInterface[] = isCustom
             ? getSupportedCustomProtocols()
-            : getSupportedCustomProtocols();
+            : subTemplates;
 
         return (
-            <div className="sub-template-selection">
-                <label className="sub-templates-label">{ subTemplatesSectionTitle }</label>
-                <div className="sub-templates">
-                    {
-                        subTemplates
-                            .map((subTemplate: SupportedAuthProtocolTypes | ApplicationTemplateInterface, index: number) => {
+            <Grid.Row className="pt-0">
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                    <div className="sub-template-selection">
+                        <label className="sub-templates-label">{ subTemplatesSectionTitle }</label>
+                        <div className="sub-templates">
+                            {
+                                templates
+                                    .map((subTemplate: SupportedAuthProtocolTypes | ApplicationTemplateInterface,
+                                          index: number) => {
 
-                                const id: string = isCustom ? subTemplate : subTemplate.id;
-                                const imageKey: (SupportedAuthProtocolTypes | ApplicationTemplateInterface["image"]) = isCustom ? subTemplate : subTemplate.image;
-                                const header: string = isCustom
-                                    ? ApplicationManagementUtils.resolveProtocolDisplayName(subTemplate)
-                                    : subTemplate.name;
-                                const isSelected: boolean = isCustom
-                                    ? customApplicationProtocol === subTemplate
-                                    : selectedTemplate.id === subTemplate.id;
-                                const isDisabled: boolean = isCustom ? false : subTemplate.previewOnly;
-                                const onClick = () => {
-                                    if (subTemplate.previewOnly) {
-                                        return;
-                                    }
-
-                                    if (isCustom) {
-                                        setCustomApplicationProtocol(subTemplate);
-                                        
-                                        return;
-                                    }
-
-                                    setSelectedTemplate(subTemplate);
-                                    loadTemplateDetails(subTemplate.id, subTemplate);
-                                };
-
-                                return (
-                                    <div
-                                        key={ index }
-                                        className="sub-template-selection-card-wrapper"
-                                    >
-                                        <SelectionCard
-                                            fluid
-                                            imageInline
-                                            image={
-                                                {
-                                                    ...getInboundProtocolLogos(),
-                                                    ...getTechnologyLogos()
-                                                }[ imageKey ]
+                                        const id: string = isCustom
+                                            ? subTemplate as SupportedAuthProtocolTypes
+                                            : (subTemplate as ApplicationTemplateInterface).id;
+                                        const imageKey: (SupportedAuthProtocolTypes
+                                            | ApplicationTemplateInterface["image"]) = isCustom
+                                            ? subTemplate as SupportedAuthProtocolTypes
+                                            : (subTemplate as ApplicationTemplateInterface).image;
+                                        const header: string = isCustom
+                                            ? ApplicationManagementUtils
+                                                .resolveProtocolDisplayName(subTemplate as SupportedAuthProtocolTypes)
+                                            : (subTemplate as ApplicationTemplateInterface).name;
+                                        const isSelected: boolean = isCustom
+                                            ? customApplicationProtocol === subTemplate
+                                            : selectedTemplate.id === (subTemplate as ApplicationTemplateInterface).id;
+                                        const isDisabled: boolean = isCustom
+                                            ? false
+                                            : (subTemplate as ApplicationTemplateInterface).previewOnly;
+                                        const onClick = () => {
+                                            // If `previewOnly`, avoid click actions. 
+                                            if ((subTemplate as ApplicationTemplateInterface).previewOnly) {
+                                                return;
                                             }
-                                            size="auto"
-                                            className="sub-template-selection-card"
-                                            header={ header }
-                                            selected={ isSelected }
-                                            onClick={ onClick }
-                                            imageSize="x22"
-                                            imageOptions={ {
-                                                square: false,
-                                                width: "auto"
-                                            } }
-                                            contentTopBorder={ false }
-                                            showTooltips={ false }
-                                            renderDisabledItemsAsGrayscale={ false }
-                                            disabled={ isDisabled }
-                                            overlay={ renderDimmerOverlay() }
-                                            overlayOpacity={ 0.6 }
-                                            data-testid={ `${ testId }-${ id }-card` }
-                                        />
-                                    </div>
-                                );
-                            })
-                    }
-                </div>
-            </div>
-        )
-        return (
-            <div className="sub-template-selection">
-                <div>{ subTemplatesSectionTitle }</div>
-                {
-                    subTemplates.map((
-                        subTemplate: ApplicationTemplateInterface, index: number
-                    ) => (
-                        <SelectionCard
-                            inline
-                            key={ index }
-                            image={
-                                {
-                                    ...getInboundProtocolLogos(),
-                                    ...getTechnologyLogos()
-                                }[ subTemplate.image ]
+
+                                            if (isCustom) {
+                                                setCustomApplicationProtocol(subTemplate as SupportedAuthProtocolTypes);
+
+                                                return;
+                                            }
+
+                                            setSelectedTemplate(subTemplate as ApplicationTemplateInterface);
+                                            loadTemplateDetails((subTemplate as ApplicationTemplateInterface).id,
+                                                subTemplate as ApplicationTemplateInterface);
+                                        };
+
+                                        return (
+                                            <div
+                                                key={ index }
+                                                className="sub-template-selection-card-wrapper"
+                                            >
+                                                <SelectionCard
+                                                    fluid
+                                                    imageInline
+                                                    image={
+                                                        {
+                                                            ...getInboundProtocolLogos(),
+                                                            ...getTechnologyLogos()
+                                                        }[imageKey]
+                                                    }
+                                                    size="auto"
+                                                    className="sub-template-selection-card"
+                                                    header={ header }
+                                                    selected={ isSelected }
+                                                    onClick={ onClick }
+                                                    imageSize="x22"
+                                                    imageOptions={ {
+                                                        square: false,
+                                                        width: "auto"
+                                                    } }
+                                                    contentTopBorder={ false }
+                                                    showTooltips={ false }
+                                                    renderDisabledItemsAsGrayscale={ false }
+                                                    disabled={ isDisabled }
+                                                    overlay={ renderDimmerOverlay() }
+                                                    overlayOpacity={ 0.6 }
+                                                    data-testid={ `${ testId }-${ id }-card` }
+                                                />
+                                            </div>
+                                        );
+                                    })
                             }
-                            size="x120"
-                            className="sub-template-selection-card"
-                            header={ subTemplate.name }
-                            selected={ selectedTemplate.id === subTemplate.id }
-                            onClick={ () => {
-                                if (!subTemplate.previewOnly) {
-                                    setSelectedTemplate(subTemplate);
-                                    loadTemplateDetails(subTemplate.id,
-                                        subTemplate);
-                                }
-                            } }
-                            imageSize="mini"
-                            contentTopBorder={ false }
-                            showTooltips={ !subTemplate.previewOnly }
-                            renderDisabledItemsAsGrayscale={ false }
-                            disabled={ subTemplate.previewOnly }
-                            overlay={ renderDimmerOverlay() }
-                            overlayOpacity={ 0.6 }
-                            data-testid={ `${ testId }-${ subTemplate.id }-card` }
-                        />
-                    ))
-                }
-            </div>
+                        </div>
+                    </div>
+                </Grid.Column>
+            </Grid.Row>
         );
     };
 
@@ -878,114 +857,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                             />
                         </Grid.Column>
                     </Grid.Row>
-                    {
-                        (selectedTemplate.id === CustomApplicationTemplate.id) || (subTemplates && subTemplates instanceof Array && subTemplates.length > 0) && (
-                            (selectedTemplate.id === CustomApplicationTemplate.id)
-                                
-                        )
-                    }
-                    {
-                        (selectedTemplate.id === CustomApplicationTemplate.id) && (
-                            <Grid.Row className="pt-0">
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                                    <div className="sub-template-selection">
-                                        <label className="sub-templates-label">{ subTemplatesSectionTitle }</label>
-                                        <div className="sub-templates">
-                                            {
-                                                getSupportedCustomProtocols()
-                                                    .map((subTemplate: SupportedAuthProtocolTypes, index: number) => (
-                                                        <div
-                                                            key={ index }
-                                                            className="sub-template-selection-card-wrapper"
-                                                        >
-                                                            <SelectionCard
-                                                                fluid
-                                                                imageInline
-                                                                image={
-                                                                    {
-                                                                        ...getInboundProtocolLogos(),
-                                                                        ...getTechnologyLogos()
-                                                                    }[subTemplate]
-                                                                }
-                                                                size="auto"
-                                                                className="sub-template-selection-card"
-                                                                header={
-                                                                    ApplicationManagementUtils
-                                                                        .resolveProtocolDisplayName(subTemplate)
-                                                                }
-                                                                selected={ customApplicationProtocol === subTemplate }
-                                                                onClick={ () => {
-                                                                    setCustomApplicationProtocol(subTemplate);
-                                                                } }
-                                                                imageSize="x22"
-                                                                imageOptions={ {
-                                                                    square: false,
-                                                                    width: "auto"
-                                                                } }
-                                                                contentTopBorder={ false }
-                                                                showTooltips={ false }
-                                                                renderDisabledItemsAsGrayscale={ false }
-                                                                overlay={ renderDimmerOverlay() }
-                                                                overlayOpacity={ 0.6 }
-                                                                data-testid={ `${ testId }-${ subTemplate }-card` }
-                                                            />
-                                                        </div>
-                                                    ))
-                                            }
-                                        </div>
-                                    </div>
-                                </Grid.Column>
-                            </Grid.Row>
-                        )
-                    }
-                    {
-                        (subTemplates && subTemplates instanceof Array && subTemplates.length > 0)
-                            ? (
-                                <Grid.Row className="pt-0">
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                                        <div className="sub-template-selection">
-                                            <div>{ subTemplatesSectionTitle }</div>
-                                            {
-                                                subTemplates.map((
-                                                    subTemplate: ApplicationTemplateInterface, index: number
-                                                ) => (
-                                                    <SelectionCard
-                                                        inline
-                                                        key={ index }
-                                                        image={
-                                                            {
-                                                                ...getInboundProtocolLogos(),
-                                                                ...getTechnologyLogos()
-                                                            }[ subTemplate.image ]
-                                                        }
-                                                        size="x120"
-                                                        className="sub-template-selection-card"
-                                                        header={ subTemplate.name }
-                                                        selected={ selectedTemplate.id === subTemplate.id }
-                                                        onClick={ () => {
-                                                            if (!subTemplate.previewOnly) {
-                                                                setSelectedTemplate(subTemplate);
-                                                                loadTemplateDetails(subTemplate.id,
-                                                                    subTemplate);
-                                                            }
-                                                        } }
-                                                        imageSize="mini"
-                                                        contentTopBorder={ false }
-                                                        showTooltips={ !subTemplate.previewOnly }
-                                                        renderDisabledItemsAsGrayscale={ false }
-                                                        disabled={ subTemplate.previewOnly }
-                                                        overlay={ renderDimmerOverlay() }
-                                                        overlayOpacity={ 0.6 }
-                                                        data-testid={ `${ testId }-${ subTemplate.id }-card` }
-                                                    />
-                                                ))
-                                            }
-                                        </div>
-                                    </Grid.Column>
-                                </Grid.Row>
-                            )
-                            : null
-                    }
+                    { renderSubTemplateSelection() }
                     <Grid.Row className="pt-0">
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                             { resolveMinimalProtocolFormFields() }
