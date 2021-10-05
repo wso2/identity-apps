@@ -23,7 +23,7 @@ import { CopyInputField, GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Grid, Icon } from "semantic-ui-react";
+import { Form, Grid, Icon } from "semantic-ui-react";
 import { AppState } from "../../../core/store";
 import { getHelpPanelIcons } from "../../configs";
 import {
@@ -89,7 +89,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
     });
 
     return (
-        <form>
+        <Form>
             <Grid verticalAlign="middle">
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
@@ -284,7 +284,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
-        </form>
+        </Form>
     );
 };
 
