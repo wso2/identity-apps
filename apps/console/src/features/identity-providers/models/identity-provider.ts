@@ -428,6 +428,7 @@ export interface CommonPluggableComponentFormPropsInterface extends TestableComp
     enableSubmitButton?: boolean;
     showCustomProperties?: boolean;
     readOnly?: boolean;
+    isSubmitting?: boolean;
 }
 
 export interface CommonPluggableComponentInterface {

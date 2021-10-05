@@ -298,7 +298,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 ariaLabel="Update button"
                 name="update-button"
                 data-testid={ `${ testId }-submit-button` }
-                disabled={ false || isSubmitting }
+                disabled={ isSubmitting }
                 loading={ isSubmitting }
                 label={ t("common:update") }
                 hidden={ readOnly }

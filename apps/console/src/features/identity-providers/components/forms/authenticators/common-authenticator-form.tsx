@@ -39,6 +39,7 @@ export const CommonAuthenticatorForm: FunctionComponent<CommonPluggableComponent
         enableSubmitButton,
         showCustomProperties,
         readOnly,
+        isSubmitting,
         [ "data-testid" ]: testId
     } = props;
 
