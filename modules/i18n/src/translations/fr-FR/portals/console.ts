@@ -3844,6 +3844,11 @@ export const console: ConsoleNS = {
             authenticationProvider: {
                 templates: {
                     enterprise: {
+                        addWizard: {
+                            title: "Entreprise",
+                            subtitle: "Configurez un nouveau fournisseur d'identité avec des protocoles " +
+                                "d'authentification standard."
+                        },
                         validation: {
                             name: "Merci d'entrer un nom valide",
                             invalidName: "Merci d'entrer un nom valide"

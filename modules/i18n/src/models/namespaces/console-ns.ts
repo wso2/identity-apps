@@ -1434,6 +1434,10 @@ export interface ConsoleNS {
                         }
                     };
                     enterprise?: {
+                        addWizard?: {
+                            title: string;
+                            subtitle: string;
+                        };
                         saml?: {
                             preRequisites: {
                                 configureIdp: string;

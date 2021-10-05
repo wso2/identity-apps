@@ -439,7 +439,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 width={ 15 }
                 format = { (values: any) => {
                     return values.toString().trimStart();
-                }}
+                } }
                 validation={ (values: any) => {
                     let errors: "";
                     errors = composeValidators(required, length(IDP_NAME_LENGTH))(values);
@@ -450,7 +450,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     if (!FormValidation.isValidResourceName(values)) {
                         errors = t("console:develop.features.authenticationProvider." +
                             "templates.enterprise.validation.invalidName",
-                            { idpName: values});
+                            { idpName: values });
                     }
 
                     if (errors === "" || errors === undefined) {
@@ -470,7 +470,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                 image={ getIdPIcons().oidc }
                                 size="x120"
                                 className="sub-template-selection-card"
-                                header={ "OIDC" }
+                                header={ "OpenID Connect" }
                                 selected={ selectedProtocol === "oidc" }
                                 onClick={ () => setSelectedProtocol("oidc") }
                                 imageSize="mini"

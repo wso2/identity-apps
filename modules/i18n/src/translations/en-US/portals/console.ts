@@ -3942,6 +3942,10 @@ export const console: ConsoleNS = {
                 },
                 templates: {
                     enterprise: {
+                        addWizard: {
+                            title: "Enterprise",
+                            subtitle: "Configure a new Identity Provider with standard authentication protocols."
+                        },
                         saml: {
                             preRequisites: {
                                 configureIdp: "See Asgardeo guide on configuring SAML IdP",

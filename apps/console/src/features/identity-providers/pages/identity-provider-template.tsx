@@ -477,7 +477,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                                     onClick={ (e: SyntheticEvent) => {
                                                         handleTemplateSelection(e, template.id);
                                                     } }
-                                                    showTooltips={ false }
+                                                    showTooltips={ true }
                                                     data-testid={ `${ testId }-${ template.name }` }
                                                 />
                                             ))
