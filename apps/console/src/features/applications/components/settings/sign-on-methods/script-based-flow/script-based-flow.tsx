@@ -1163,7 +1163,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                             "sections.signOnMethod.sections.authenticationFlow." +
                                                             "sections.scriptBased.secretsList.iconTooltip") ;
                                                     } }
-                                                    position={ "bottom left" }
+                                                    position="bottom left"
                                                     hoverable={ true }
                                                     positionFixed
                                                     pinned={ false }
