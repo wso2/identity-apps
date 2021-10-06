@@ -569,9 +569,24 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     const updateValues = () => {
         eventPublisher.publish("application-user-attribute-click-update-button");
-        
-        submitAdvanceForm();
-        setTriggerAdvanceSettingFormSubmission();
+
+        const mappedValues = new Set(
+            claimMapping.map((mapping) => mapping.applicationClaim)
+        );
+
+        if (mappedValues.size === claimMapping.length) {
+            submitAdvanceForm();
+            setTriggerAdvanceSettingFormSubmission();
+        }
+        else {
+            dispatch(addAlert({
+                description: t("console:develop.features.applications.notifications.updateClaimConfig" +
+                    ".error.description", { description: "Mapped user attributes cannot be duplicated." }),
+                level: AlertLevels.ERROR,
+                message: t("console:develop.features.applications.notifications.updateClaimConfig.error" +
+                    ".message")
+            }));
+        }
     };
 
     /**
