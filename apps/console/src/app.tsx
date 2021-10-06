@@ -24,10 +24,18 @@ import {
     setDeploymentConfigs,
     setI18nConfigs,
     setServiceResourceEndpoints,
+    setSupportedI18nLanguages,
     setUIConfigs
 } from "@wso2is/core/store";
-import { LocalStorageUtils } from "@wso2is/core/utils";
-import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
+import { LocalStorageUtils, StringUtils } from "@wso2is/core/utils";
+import {
+    I18n,
+    I18nInstanceInitException,
+    I18nModuleConstants,
+    I18nModuleOptionsInterface,
+    LanguageChangeException,
+    isLanguageSupported
+} from "@wso2is/i18n";
 import {
     ChunkErrorModal,
     Code,
@@ -35,6 +43,7 @@ import {
     SessionManagementProvider,
     SessionTimeoutModalTypes
 } from "@wso2is/react-components";
+import axios from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
@@ -53,7 +62,7 @@ import {
     ServiceResourceEndpointsInterface,
     UIConfigInterface
 } from "./features/core/models";
-import { AppState } from "./features/core/store";
+import { AppState, store } from "./features/core/store";
 
 /**
  * Main App component.
@@ -61,7 +70,6 @@ import { AppState } from "./features/core/store";
  * @return {React.ReactElement}
  */
 export const App: FunctionComponent<Record<string, never>> = (): ReactElement => {
-
     const dispatch = useDispatch();
 
     const userName: string = useSelector((state: AppState) => state.auth.username);
@@ -78,6 +86,59 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     const { trySignInSilently } = useAuthContext();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+
+    /**
+     * Load localization files.
+     */
+    useEffect(() => {
+        // If `appBaseNameWithoutTenant` is "", avoids adding a forward slash.
+        const resolvedAppBaseNameWithoutTenant: string = StringUtils.removeSlashesFromPath(
+            Config.getDeploymentConfig().appBaseNameWithoutTenant
+        )
+            ? `/${ StringUtils.removeSlashesFromPath(Config.getDeploymentConfig().appBaseNameWithoutTenant) }`
+            : "";
+
+        const metaFileNames = I18nModuleConstants.META_FILENAME.split(".");
+        const metaFileName = `${ metaFileNames[ 0 ] }.${ process.env.metaHash }.${ metaFileNames[ 1 ] }`;
+
+        // Since the portals are not deployed per tenant, looking for static resources in tenant qualified URLs
+        // will fail. This constructs the path without the tenant, therefore it'll look for the file in
+        // `https://localhost:9443/<PORTAL>/resources/i18n/meta.json` rather than looking for the file in
+        // `https://localhost:9443/t/wso2.com/<PORTAL>/resources/i18n/meta.json`.
+        const metaPath = `${resolvedAppBaseNameWithoutTenant}/${StringUtils.removeSlashesFromPath(
+            Config.getI18nConfig().resourcePath
+        )}/${metaFileName}`;
+
+        // Fetch the meta file to get the supported languages and paths.
+        axios
+            .get(metaPath)
+            .then((response) => {
+                // Set up the i18n module.
+                I18n.init(
+                    {
+                        ...Config.getI18nConfig(response?.data)?.initOptions,
+                        debug: window[ "AppUtils" ].getConfig().debug
+                    },
+                    Config.getI18nConfig()?.overrideOptions,
+                    Config.getI18nConfig()?.langAutoDetectEnabled,
+                    Config.getI18nConfig()?.xhrBackendPluginEnabled
+                ).then(() => {
+                    // Set the supported languages in redux store.
+                    store.dispatch(setSupportedI18nLanguages(response?.data));
+
+                    const isSupported = isLanguageSupported(I18n.instance.language, null, response?.data);
+
+                    if (!isSupported) {
+                        I18n.instance.changeLanguage(I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE).catch((error) => {
+                            throw new LanguageChangeException(I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE, error);
+                        });
+                    }
+                });
+            })
+            .catch((error) => {
+                throw new I18nInstanceInitException(error);
+            });
+    }, []);
 
     /**
      * Set the deployment configs in redux state.
@@ -115,7 +176,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
         const tenantAppSettings = JSON.parse(LocalStorageUtils.getValueFromLocalStorage(tenant));
         const appSettings = {};
 
-        appSettings[userName] = emptyIdentityAppsSettings();
+        appSettings[ userName ] = emptyIdentityAppsSettings();
 
         if (!tenantAppSettings) {
             LocalStorageUtils.setValueInLocalStorage(tenant, JSON.stringify(appSettings));
@@ -123,12 +184,11 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
             if (CommonHelpers.lookupKey(tenantAppSettings, userName) === null) {
                 const newUserSettings = {
                     ...tenantAppSettings,
-                    [userName]: emptyIdentityAppsSettings()
+                    [ userName ]: emptyIdentityAppsSettings()
                 };
                 LocalStorageUtils.setValueInLocalStorage(tenant, JSON.stringify(newUserSettings));
             }
         }
-
     }, [ config?.deployment?.tenant, userName ]);
 
     /**
@@ -150,15 +210,15 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     }, [ config, loginInit ]);
 
     /**
-    * Publish page visit when the UUID is set.
-    */
+     * Publish page visit when the UUID is set.
+     */
     useEffect(() => {
-        if(!UUID) {
+        if (!UUID) {
             return;
         }
 
         eventPublisher.publish("page-visit-console-landing-page");
-    }, [UUID]);
+    }, [ UUID ]);
 
     /**
      * Handles session timeout abort.

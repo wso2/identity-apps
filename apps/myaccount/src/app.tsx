@@ -19,8 +19,14 @@
 import { useAuthContext } from "@asgardeo/auth-react";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
 import { RouteInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
-import { LocalStorageUtils } from "@wso2is/core/utils";
-import { I18n } from "@wso2is/i18n";
+import { LocalStorageUtils, StringUtils } from "@wso2is/core/utils";
+import {
+    I18n,
+    I18nInstanceInitException,
+    I18nModuleConstants,
+    LanguageChangeException,
+    isLanguageSupported
+} from "@wso2is/i18n";
 import {
     ChunkErrorModal,
     Code,
@@ -29,6 +35,7 @@ import {
     SessionManagementProvider,
     SessionTimeoutModalTypes
 } from "@wso2is/react-components";
+import axios from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement, Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
@@ -36,14 +43,15 @@ import { I18nextProvider, Trans } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { ProtectedRoute } from "./components";
-import { getAppRoutes } from "./configs";
+import { Config, getAppRoutes } from "./configs";
 import { AppConstants } from "./constants";
 import { history } from "./helpers";
 import {
     ConfigReducerStateInterface,
     FeatureConfigInterface
 } from "./models";
-import { AppState } from "./store";
+import { AppState, store } from "./store";
+import { setSupportedI18nLanguages } from "./store/actions";
 import { EventPublisher, filterRoutes } from "./utils";
 
 /**
@@ -65,6 +73,59 @@ export const App = (): ReactElement => {
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const { trySignInSilently } = useAuthContext();
+
+    /**
+     * Load localization files.
+     */
+    useEffect(() => {
+        // If `appBaseNameWithoutTenant` is "", avoids adding a forward slash.
+        const resolvedAppBaseNameWithoutTenant: string = StringUtils.removeSlashesFromPath(
+            Config.getDeploymentConfig().appBaseNameWithoutTenant
+        )
+            ? `/${StringUtils.removeSlashesFromPath(Config.getDeploymentConfig().appBaseNameWithoutTenant)}`
+            : "";
+
+        const metaFileNames = I18nModuleConstants.META_FILENAME.split(".");
+        const metaFileName = `${metaFileNames[0]}.${process.env.metaHash}.${metaFileNames[1]}`;
+
+        // Since the portals are not deployed per tenant, looking for static resources in tenant qualified URLs
+        // will fail. This constructs the path without the tenant, therefore it'll look for the file in
+        // `https://localhost:9443/<PORTAL>/resources/i18n/meta.json` rather than looking for the file in
+        // `https://localhost:9443/t/wso2.com/<PORTAL>/resources/i18n/meta.json`.
+        const metaPath = `${resolvedAppBaseNameWithoutTenant}/${StringUtils.removeSlashesFromPath(
+            Config.getI18nConfig().resourcePath
+        )}/${metaFileName}`;
+
+        // Fetch the meta file to get the supported languages.
+        axios
+            .get(metaPath)
+            .then((response) => {
+                // Set up the i18n module.
+                I18n.init(
+                    {
+                        ...Config.getI18nConfig(response?.data)?.initOptions,
+                        debug: window["AppUtils"].getConfig().debug
+                    },
+                    Config.getI18nConfig()?.overrideOptions,
+                    Config.getI18nConfig()?.langAutoDetectEnabled,
+                    Config.getI18nConfig()?.xhrBackendPluginEnabled
+                ).then(() => {
+                    // Set the supported languages in redux store.
+                    store.dispatch(setSupportedI18nLanguages(response?.data));
+
+                    const isSupported = isLanguageSupported(I18n.instance.language, null, response?.data);
+
+                    if (!isSupported) {
+                        I18n.instance.changeLanguage(I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE).catch((error) => {
+                            throw new LanguageChangeException(I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE, error);
+                        });
+                    }
+                });
+            })
+            .catch((error) => {
+                throw new I18nInstanceInitException(error);
+            });
+    }, []);
 
     /**
      * Set the deployment configs in redux state.
