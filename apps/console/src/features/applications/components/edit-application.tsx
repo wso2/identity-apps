@@ -156,8 +156,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         clientSecretHashDisclaimerModalInputs,
         setClientSecretHashDisclaimerModalInputs
     ] = useState<{ clientSecret: string; clientId: string }>({ clientId: "", clientSecret: "" });
-    const [ isOIDCConfigsLoading, setOIDCConfigsLoading ] = useState<boolean>(false);
-    const [ isSAMLConfigsLoading, setSAMLConfigsLoading ] = useState<boolean>(false);
+    const [ isOIDCConfigsLoading, setOIDCConfigsLoading ] = useState<boolean>(undefined);
+    const [ isSAMLConfigsLoading, setSAMLConfigsLoading ] = useState<boolean>(undefined);
     const [ activeTabIndex, setActiveTabIndex ] = useState<number>(undefined);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(undefined);
     const [ totalTabs, setTotalTabs ] = useState<number>(undefined);
@@ -302,10 +302,15 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         findConfiguredInboundProtocol(application.id);
     }, [ application?.inboundProtocols ]);
 
+    /**
+     * Fetches the SAML Inbound configs and sets them in redux store if not existing.
+     */
     useEffect(() => {
+
         if (samlConfigurations !== undefined) {
             return;
         }
+
         setSAMLConfigsLoading(true);
 
 
