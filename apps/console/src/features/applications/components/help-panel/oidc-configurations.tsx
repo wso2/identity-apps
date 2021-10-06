@@ -16,32 +16,23 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { CopyInputField, GenericIcon } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon } from "semantic-ui-react";
-import { AppState } from "../../../core/store";
 import { getHelpPanelIcons } from "../../configs";
-import {
-    OIDCApplicationConfigurationInterface,
-    OIDCEndpointsInterface
-} from "../../models";
-
-/**
- * Get an identity client instance.
- *
- */
-const identityClient = AsgardeoSPAClient.getInstance();
+import { OIDCDiscoveryEndpointsInterface } from "../../models";
 
 /**
  * Proptypes for the OIDC application configurations component.
  */
 interface OIDCConfigurationsPropsInterface extends TestableComponentInterface {
-    oidcConfigurations: OIDCApplicationConfigurationInterface;
+
+    /**
+     * OIDC Discovery Endpoints.
+     */
+    endpoints: OIDCDiscoveryEndpointsInterface;
 }
 
 /**
@@ -56,241 +47,269 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
 ): ReactElement => {
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
 
     const {
-        oidcConfigurations,
+        endpoints,
         [ "data-testid" ]: testId
     } = props;
 
-    const serverOrigin: string = useSelector((state: AppState) => state?.config?.deployment?.serverOrigin);
-
-    const [ endpoints, setEndpoints ] = useState<OIDCEndpointsInterface>(undefined);
-
-    useEffect(() => {
-        if (endpoints !== undefined) {
-            return;
-        }
-
-        // Fetch the server endpoints for OIDC applications.
-        identityClient.getOIDCServiceEndpoints()
-            .then((response) => {
-                setEndpoints({
-                    authorize: response?.authorizationEndpoint,
-                    jwks: response?.jwksUri,
-                    logout: response?.endSessionEndpoint,
-                    oidcSessionIFrame: response?.checkSessionIframe,
-                    revoke: response?.revocationEndpoint,
-                    token: response?.tokenEndpoint,
-                    wellKnown: response?.wellKnownEndpoint
-                });
-            })
-            .catch(() => {
-                dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.fetchOIDCServiceEndpoints" +
-                        ".genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.fetchOIDCServiceEndpoints." +
-                        "genericError.message")
-                }));
-            });
-    });
-
     return (
-        <Form>
+        <Form className="form-container with-max-width">
             <Grid verticalAlign="middle">
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
-                        <GenericIcon
-                            icon={ getHelpPanelIcons().endpoints.wellKnown }
-                            size="micro"
-                            square
-                            transparent
-                            inline
-                            className="left-icon"
-                            verticalAlign="middle"
-                            spaced="right"
-                        />
-                        <label data-testid={ `${ testId }-introspection-label` }>
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
-                                "oidcConfigurations.labels.wellKnown") }
-                        </label>
-                    </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
-                        <CopyInputField
-                            value={ oidcConfigurations?.wellKnownEndpoint  }
-                            data-testid={ `${ testId }-introspection-readonly-input` }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
-                        <GenericIcon
-                            icon={ getHelpPanelIcons().endpoints.authorize }
-                            size="micro"
-                            square
-                            transparent
-                            inline
-                            className="left-icon"
-                            verticalAlign="middle"
-                            spaced="right"
-                        />
-                        <label data-testid={ `${ testId }-authorize-label` }>
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
-                                "oidcConfigurations.labels.authorize") }
-                        </label>
-                    </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
-                        <CopyInputField
-                            value={ oidcConfigurations?.authorizeEndpoint }
-                            data-testid={ `${ testId }-authorize-readonly-input` }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
-                        <GenericIcon
-                            icon={ getHelpPanelIcons().endpoints.token }
-                            size="micro"
-                            square
-                            transparent
-                            inline
-                            className="left-icon"
-                            verticalAlign="middle"
-                            spaced="right"
-                        />
-                        <label data-testid={ `${ testId }-token-label` }>
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
-                                "oidcConfigurations.labels.token") }
-                        </label>
-                    </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
-                        <CopyInputField
-                            value={ oidcConfigurations?.tokenEndpoint }
-                            data-testid={ `${ testId }-token-readonly-input` }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
-                        <GenericIcon
-                            icon={ getHelpPanelIcons().endpoints.userInfo }
-                            size="micro"
-                            square
-                            transparent
-                            inline
-                            className="left-icon"
-                            verticalAlign="middle"
-                            spaced="right"
-                        />
-                        <label data-testid={ `${ testId }-userInfo-label` }>
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
-                                "oidcConfigurations.labels.userInfo") }
-                        </label>
-                    </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
-                        <CopyInputField
-                            value={ oidcConfigurations?.userEndpoint }
-                            data-testid={ `${ testId }-userInfo-readonly-input` }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
-                        <GenericIcon
-                            icon={ getHelpPanelIcons().endpoints.introspect }
-                            size="micro"
-                            square
-                            transparent
-                            inline
-                            className="left-icon"
-                            verticalAlign="middle"
-                            spaced="right"
-                        />
-                        <label data-testid={ `${ testId }-introspection-label` }>
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
-                                "oidcConfigurations.labels.introspection") }
-                        </label>
-                    </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
-                        <CopyInputField
-                            value={ oidcConfigurations?.introspectionEndpoint }
-                            data-testid={ `${ testId }-introspection-readonly-input` }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
-                        <GenericIcon
-                            icon={ getHelpPanelIcons().endpoints.jwks }
-                            size="micro"
-                            square
-                            transparent
-                            inline
-                            className="left-icon"
-                            verticalAlign="middle"
-                            spaced="right"
-                        />
-                        <label data-testid={ `${ testId }-jwks-label` }>
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
-                                "oidcConfigurations.labels.jwks") }
-                        </label>
-                    </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
-                        <CopyInputField
-                            value={ oidcConfigurations?.jwksEndpoint }
-                            data-testid={ `${ testId }-jwks-readonly-input` }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
-                        <GenericIcon
-                            icon={ getHelpPanelIcons().endpoints.revoke }
-                            size="micro"
-                            square
-                            transparent
-                            inline
-                            className="left-icon"
-                            verticalAlign="middle"
-                            spaced="right"
-                        />
-                        <label data-testid={ `${ testId }-token-revoke-label` }>
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
-                                "oidcConfigurations.labels.revoke") }
-                        </label>
-                    </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
-                        <CopyInputField
-                            value={ oidcConfigurations?.tokenRevocationEndpoint }
-                            data-testid={ `${ testId }-token-revoke-readonly-input` }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
-                        <GenericIcon
-                            icon={ <Icon className={ "mr-0" } name="power off" /> }
-                            size="micro"
-                            square
-                            transparent
-                            inline
-                            className="left-icon"
-                            verticalAlign="middle"
-                            spaced="right"
-                        />
-                        <label data-testid={ `${ testId }-logout-label` }>
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
-                                "oidcConfigurations.labels.endSession") }
-                        </label>
-                    </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
-                        <CopyInputField
-                            value={ oidcConfigurations?.endSessionEndpoint  }
-                            data-testid={ `${ testId }-logout-readonly-input` }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
+                {
+                    endpoints?.issuer && (
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
+                                <GenericIcon
+                                    icon={ getHelpPanelIcons().endpoints.issuer }
+                                    size="micro"
+                                    square
+                                    transparent
+                                    inline
+                                    className="left-icon"
+                                    verticalAlign="middle"
+                                    spaced="right"
+                                />
+                                <label data-testid={ `${ testId }-issuer-label` }>
+                                    {
+                                        t("console:develop.features.applications.helpPanel.tabs.start.content" +
+                                            ".oidcConfigurations.labels.issuer")
+                                    }
+                                </label>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
+                                <CopyInputField
+                                    value={ endpoints.issuer }
+                                    data-testid={ `${ testId }-issuer-readonly-input` }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
+                {
+                    endpoints.wellKnownEndpoint && (
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
+                                <GenericIcon
+                                    icon={ getHelpPanelIcons().endpoints.wellKnown }
+                                    size="micro"
+                                    square
+                                    transparent
+                                    inline
+                                    className="left-icon"
+                                    verticalAlign="middle"
+                                    spaced="right"
+                                />
+                                <label data-testid={ `${ testId }-introspection-label` }>
+                                    { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                                        "oidcConfigurations.labels.wellKnown") }
+                                </label>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
+                                <CopyInputField
+                                    value={ endpoints?.wellKnownEndpoint  }
+                                    data-testid={ `${ testId }-introspection-readonly-input` }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
+                {
+                    endpoints?.authorizationEndpoint && (
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
+                                <GenericIcon
+                                    icon={ getHelpPanelIcons().endpoints.authorize }
+                                    size="micro"
+                                    square
+                                    transparent
+                                    inline
+                                    className="left-icon"
+                                    verticalAlign="middle"
+                                    spaced="right"
+                                />
+                                <label data-testid={ `${ testId }-authorize-label` }>
+                                    { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                                        "oidcConfigurations.labels.authorize") }
+                                </label>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
+                                <CopyInputField
+                                    value={ endpoints.authorizationEndpoint }
+                                    data-testid={ `${ testId }-authorize-readonly-input` }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
+                {
+                    endpoints?.tokenEndpoint && (
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
+                                <GenericIcon
+                                    icon={ getHelpPanelIcons().endpoints.token }
+                                    size="micro"
+                                    square
+                                    transparent
+                                    inline
+                                    className="left-icon"
+                                    verticalAlign="middle"
+                                    spaced="right"
+                                />
+                                <label data-testid={ `${ testId }-token-label` }>
+                                    { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                                        "oidcConfigurations.labels.token") }
+                                </label>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
+                                <CopyInputField
+                                    value={ endpoints.tokenEndpoint }
+                                    data-testid={ `${ testId }-token-readonly-input` }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
+                {
+                    endpoints?.userinfoEndpoint && (
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
+                                <GenericIcon
+                                    icon={ getHelpPanelIcons().endpoints.userInfo }
+                                    size="micro"
+                                    square
+                                    transparent
+                                    inline
+                                    className="left-icon"
+                                    verticalAlign="middle"
+                                    spaced="right"
+                                />
+                                <label data-testid={ `${ testId }-userInfo-label` }>
+                                    { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                                        "oidcConfigurations.labels.userInfo") }
+                                </label>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
+                                <CopyInputField
+                                    value={ endpoints.userinfoEndpoint }
+                                    data-testid={ `${ testId }-userInfo-readonly-input` }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
+                {
+                    endpoints?.introspectionEndpoint && (
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
+                                <GenericIcon
+                                    icon={ getHelpPanelIcons().endpoints.introspect }
+                                    size="micro"
+                                    square
+                                    transparent
+                                    inline
+                                    className="left-icon"
+                                    verticalAlign="middle"
+                                    spaced="right"
+                                />
+                                <label data-testid={ `${ testId }-introspection-label` }>
+                                    { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                                        "oidcConfigurations.labels.introspection") }
+                                </label>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
+                                <CopyInputField
+                                    value={ endpoints.introspectionEndpoint }
+                                    data-testid={ `${ testId }-introspection-readonly-input` }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
+                {
+                    endpoints?.jwksUri && (
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
+                                <GenericIcon
+                                    icon={ getHelpPanelIcons().endpoints.jwks }
+                                    size="micro"
+                                    square
+                                    transparent
+                                    inline
+                                    className="left-icon"
+                                    verticalAlign="middle"
+                                    spaced="right"
+                                />
+                                <label data-testid={ `${ testId }-jwks-label` }>
+                                    { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                                        "oidcConfigurations.labels.jwks") }
+                                </label>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
+                                <CopyInputField
+                                    value={ endpoints.jwksUri }
+                                    data-testid={ `${ testId }-jwks-readonly-input` }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
+                {
+                    endpoints?.revocationEndpoint && (
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
+                                <GenericIcon
+                                    icon={ getHelpPanelIcons().endpoints.revoke }
+                                    size="micro"
+                                    square
+                                    transparent
+                                    inline
+                                    className="left-icon"
+                                    verticalAlign="middle"
+                                    spaced="right"
+                                />
+                                <label data-testid={ `${ testId }-token-revoke-label` }>
+                                    { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                                        "oidcConfigurations.labels.revoke") }
+                                </label>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
+                                <CopyInputField
+                                    value={ endpoints.revocationEndpoint }
+                                    data-testid={ `${ testId }-token-revoke-readonly-input` }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
+                {
+                    endpoints?.endSessionEndpoint && (
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
+                                <GenericIcon
+                                    icon={ <Icon className={ "mr-0" } name="power off" /> }
+                                    size="micro"
+                                    square
+                                    transparent
+                                    inline
+                                    className="left-icon"
+                                    verticalAlign="middle"
+                                    spaced="right"
+                                />
+                                <label data-testid={ `${ testId }-logout-label` }>
+                                    { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                                        "oidcConfigurations.labels.endSession") }
+                                </label>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
+                                <CopyInputField
+                                    value={ endpoints.endSessionEndpoint  }
+                                    data-testid={ `${ testId }-logout-readonly-input` }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
             </Grid>
         </Form>
     );

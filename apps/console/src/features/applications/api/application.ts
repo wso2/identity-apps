@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { AsgardeoSPAClient, OIDCEndpoints } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
@@ -30,8 +30,7 @@ import {
     ApplicationTemplateInterface,
     ApplicationTemplateListInterface,
     AuthProtocolMetaListItemInterface,
-    OIDCApplicationConfigurationInterface,
-    OIDCDataInterface,
+    OIDCDataInterface, OIDCDiscoveryEndpointsInterface,
     SAMLApplicationConfigurationInterface
 } from "../models";
 import { ApplicationManagementUtils } from "../utils";
@@ -728,47 +727,32 @@ export const getApplicationTemplateList = (limit?: number, offset?: number,
 };
 
 /**
- * Gets the OIDC application configurations.
+ * Gets the OIDC Discovery Endpoints using the SDK.
  *
- * @return {Promise<OIDCApplicationConfigurationInterface>} A promise containing the oidc configurations.
+ * @return {Promise<OIDCDiscoveryEndpointsInterface>} A promise containing the oidc discovery endpoints.
+ * @throws {IdentityAppsApiException}
  */
-export const getOIDCApplicationConfigurations = (): Promise<OIDCApplicationConfigurationInterface> => {
-    const requestConfig = {
-        headers: {
-            "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: store.getState().config.endpoints.wellKnown
-    };
+export const getOIDCDiscoveryEndpoints = (): Promise<OIDCDiscoveryEndpointsInterface> => {
 
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            if (response.status !== 200) {
+    const skdClient: AsgardeoSPAClient = AsgardeoSPAClient.getInstance();
+
+    return skdClient.getOIDCServiceEndpoints()
+        .then((response: OIDCEndpoints) => {
+            if (!response) {
                 throw new IdentityAppsApiException(
-                    ApplicationManagementConstants.OIDC_CONFIGURATIONS_STATUS_CODE_ERROR,
+                    ApplicationManagementConstants.OIDC_DISCOVERY_ENDPOINTS_FETCH_RESPONSE_ERROR,
                     null,
-                    response.status,
-                    response.request,
+                    null,
+                    null,
                     response,
-                    response.config);
+                    null);
             }
 
-            const oidcConfigs = {
-                authorizeEndpoint: response.data.authorization_endpoint,
-                endSessionEndpoint: response.data.end_session_endpoint,
-                introspectionEndpoint: response.data.introspection_endpoint,
-                jwksEndpoint: response.data.jwks_uri,
-                tokenEndpoint: response.data.token_endpoint,
-                tokenRevocationEndpoint: response.data.revocation_endpoint,
-                userEndpoint: response.data.userinfo_endpoint,
-                wellKnownEndpoint: store.getState().config.endpoints.wellKnown
-            };
-            return Promise.resolve(oidcConfigs);
-        }).catch((error: AxiosError) => {
+            return Promise.resolve(response as OIDCEndpoints);
+        })
+        .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                ApplicationManagementConstants.APPLICATION_OIDC_CONFIGURATIONS_FETCH_ERROR,
+                ApplicationManagementConstants.OIDC_DISCOVERY_ENDPOINTS_FETCH_FETCH_ERROR,
                 error.stack,
                 error.code,
                 error.request,

@@ -30,7 +30,7 @@ const initialState: ApplicationReducerStateInterface = {
         inboundProtocols: [],
         protocolMeta: {}
     },
-    oidcConfigurations: undefined,
+    oidcDiscoveryEndpoints: undefined,
     samlConfigurations: undefined,
     templates: undefined
 };
@@ -94,7 +94,7 @@ export const applicationReducer = (state: ApplicationReducerStateInterface = ini
         case ApplicationActionTypes.SET_OIDC_APPLICATION_CONFIGURATIONS:
             return {
                 ...state,
-                oidcConfigurations: action.payload
+                oidcDiscoveryEndpoints: action.payload
             };
         case ApplicationActionTypes.SET_SAML_APPLICATION_CONFIGURATIONS:
             return {

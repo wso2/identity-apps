@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { OIDCEndpoints } from "@asgardeo/auth-react";
 import { MandatoryArray } from "@wso2is/core/models";
 
 /**
@@ -391,36 +392,7 @@ export interface SubmitFormCustomPropertiesInterface {
 /**
  * OIDC service endpoints.
  */
-export interface OIDCEndpointsInterface {
-    /**
-     * Authorization endpoint.
-     */
-    authorize?: string;
-    /**
-     * JWKS endpoint.
-     */
-    jwks?: string;
-    /**
-     * Logout endpoint.
-     */
-    logout?: string;
-    /**
-     * OIDC session IFrame endpoint.
-     */
-    oidcSessionIFrame?: string;
-    /**
-     * Revocation endpoint.
-     */
-    revoke?: string;
-    /**
-     * Token endpoint.
-     */
-    token?: string;
-    /**
-     * WellKnown endpoint.
-     */
-    wellKnown?: string;
-}
+export type OIDCDiscoveryEndpointsInterface = OIDCEndpoints;
 
 /**
  * Enum for the access token binding types.
