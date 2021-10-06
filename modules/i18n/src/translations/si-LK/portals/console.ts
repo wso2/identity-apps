@@ -4467,8 +4467,8 @@ export const console: ConsoleNS = {
                 list: {
                     columns: {
                         actions: "ක්‍රියා",
-                        claimURI: "යූආර්අයි ඉල්ලන්න",
-                        dialectURI: "උපභාෂාව URI",
+                        claimURI: "SCIM ගුණාංගය",
+                        dialectURI: "සිතියම්ගත ගුණාංගය",
                         name: "නම"
                     },
                     confirmation: {

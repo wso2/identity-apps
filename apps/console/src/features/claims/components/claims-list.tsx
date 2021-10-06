@@ -740,6 +740,33 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         }
 
         if (isExternalClaim(list)) {
+
+            /**
+             * A predicate that tells whether table action column should render or not.
+             * Currently we only have "edit" and "delete". This will only check whether
+             * one of the targeted action is enabled for all rows.
+             *
+             * @return {boolean} show it or hide
+             */
+            const shouldRenderActionsColumn = (): boolean => {
+                const showEditAction =
+                    attributeConfig.externalAttributes.showActions(dialectID) &&
+                    attributeConfig.externalAttributes.isAttributeEditable &&
+                    hasRequiredScopes(
+                        featureConfig?.attributeDialects,
+                        featureConfig?.attributeDialects?.scopes?.create,
+                        allowedScopes
+                    );
+                const showDeleteAction =
+                    attributeConfig.externalAttributes.showDeleteIcon(dialectID, list) &&
+                    hasRequiredScopes(
+                        featureConfig?.attributeDialects,
+                        featureConfig?.attributeDialects?.scopes?.delete,
+                        allowedScopes
+                    );
+                return showEditAction || showDeleteAction;
+            };
+
             return [
                 {
                     allowToggleVisibility: false,
@@ -772,7 +799,6 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                             </Header>
                         );
                     },
-                    // TODO: Add i18n strings.
                     title: t("console:manage.features.claims.list.columns.claimURI")
                 },
                 {
@@ -799,18 +825,17 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                             )
                             : <code>{ claim.mappedLocalClaimURI }</code>
                     ),
-                    // TODO: Add i18n strings.
                     title: t("console:manage.features.claims.list.columns.dialectURI")
                 },
-                {
+                shouldRenderActionsColumn() ? {
                     allowToggleVisibility: false,
                     dataIndex: "action",
                     id: "actions",
                     key: "actions",
                     textAlign: "right",
-                    title: t("console:manage.features.claims.list.columns.actions")
-                }
-            ];
+                    title: ClaimManagementConstants.EMPTY_STRING
+                } : null
+            ].filter(Boolean);
         }
 
         return [
@@ -1064,7 +1089,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 onRowClick={ resolveTableRowClick }
                 placeholders={ showPlaceholders() }
                 selectable={ selection }
-                showHeader={ false }
+                showHeader={ true }
                 transparent={ !isLoading && (showPlaceholders() !== null) }
                 data-testid={ testId }
                 isRowSelectable={ (claim: Claim | ExternalClaim | ClaimDialect) =>

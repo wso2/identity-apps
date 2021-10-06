@@ -4534,8 +4534,8 @@ export const console: ConsoleNS = {
                 list: {
                     columns: {
                         actions: "Actions",
-                        claimURI: "URI du claim",
-                        dialectURI: "URI du dialecte",
+                        claimURI: "Attribut SCIM",
+                        dialectURI: "Attribut mappé",
                         name: "Nom"
                     },
                     confirmation: {
