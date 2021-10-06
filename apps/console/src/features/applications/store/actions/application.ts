@@ -23,13 +23,13 @@ import {
     SetAuthProtocolMetaInterface,
     SetAvailableCustomInboundProtocolsMetaInterface,
     SetAvailableInboundProtocolsMetaInterface,
-    SetOIDCApplicationConfigurationsActionInterface,
+    SetOIDCDiscoveryEndpointsActionInterface,
     SetSAMLApplicationConfigurationsActionInterface
 } from "./types";
 import {
     ApplicationTemplateListItemInterface,
     AuthProtocolMetaListItemInterface,
-    OIDCApplicationConfigurationInterface,
+    OIDCDiscoveryEndpointsInterface,
     OIDCMetadataInterface,
     SAMLApplicationConfigurationInterface,
     SupportedAuthProtocolMetaTypes
@@ -105,20 +105,18 @@ export const setApplicationTemplates = (
 });
 
 /**
- * Redux action to set the oidc application configurations.
+ * Redux action to set the OIDC Discovery Endpoints.
  *
- *
- * @return {OIDCApplicationConfigurationInterface} An action of type
+ * @param {OIDCDiscoveryEndpointsInterface} endpoints - Endpoints.
+ * @return {OIDCDiscoveryEndpointsInterface} An action of type
  * `ApplicationActionTypes.SET_OIDC_APPLICATION_CONFIGURATIONS`
- *
- * @param oidcConfigurations
  */
-export const setOIDCApplicationConfigs = (
-        oidcConfigurations: OIDCApplicationConfigurationInterface
-    ): SetOIDCApplicationConfigurationsActionInterface => ({
-        payload: oidcConfigurations,
-        type: ApplicationActionTypes.SET_OIDC_APPLICATION_CONFIGURATIONS
-    });
+export const setOIDCDiscoveryEndpoints = (
+    endpoints: OIDCDiscoveryEndpointsInterface
+): SetOIDCDiscoveryEndpointsActionInterface => ({
+    payload: endpoints,
+    type: ApplicationActionTypes.SET_OIDC_APPLICATION_CONFIGURATIONS
+});
 
 /**
  * Redux action to set the oidc application configurations.

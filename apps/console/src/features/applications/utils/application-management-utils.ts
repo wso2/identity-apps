@@ -23,12 +23,10 @@ import { I18n } from "@wso2is/i18n";
 import camelCase from "lodash-es/camelCase";
 import intersectionBy from "lodash-es/intersectionBy";
 import unionBy from "lodash-es/unionBy";
-import { useSelector } from "react-redux";
-import { applicationConfig } from "../../../extensions";
-import { AppState, DocPanelUICardInterface, store } from "../../core";
+import { DocPanelUICardInterface, store } from "../../core";
 import {
     getAvailableInboundProtocols,
-    getOIDCApplicationConfigurations,
+    getOIDCDiscoveryEndpoints,
     getSAMLApplicationConfigurations
 } from "../api";
 import {
@@ -37,10 +35,7 @@ import {
     SupportedAuthProtocolTypeDisplayNames
 } from "../components/meta";
 import { ApplicationManagementConstants } from "../constants";
-import CustomApplicationTemplate
-    from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
-    ApplicationTemplateListItemInterface,
     AuthProtocolMetaListItemInterface,
     SAMLApplicationConfigurationInterface,
     SAMLConfigModes,
@@ -51,7 +46,7 @@ import {
     checkAvailableCustomInboundAuthProtocolMeta,
     setAvailableCustomInboundAuthProtocolMeta,
     setAvailableInboundAuthProtocolMeta,
-    setOIDCApplicationConfigs,
+    setOIDCDiscoveryEndpoints,
     setSAMLApplicationConfigs
 } from "../store";
 
@@ -169,11 +164,14 @@ export class ApplicationManagementUtils {
 
     /**
      * Retrieve IDP details of the OIDC application and sets it in redux state.
+     *
+     * @return {Promise<void>}
      */
     public static getOIDCApplicationMeta = (): Promise<void> => {
-        return getOIDCApplicationConfigurations()
+
+        return getOIDCDiscoveryEndpoints()
             .then((response) => {
-                store.dispatch(setOIDCApplicationConfigs(response));
+                store.dispatch(setOIDCDiscoveryEndpoints(response));
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {

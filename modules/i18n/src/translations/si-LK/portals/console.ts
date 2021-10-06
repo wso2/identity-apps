@@ -2130,8 +2130,10 @@ export const console: ConsoleNS = {
                                         authorize: "අවසරලත්",
                                         endSession: "පිටතට",
                                         introspection: "ස්වයං විමර්ශනය",
-                                        keystore: "යතුරු කට්ටලය",
+                                        issuer: "නිකුත් කරන්නා",
                                         jwks: "JWKS",
+                                        keystore: "යතුරු කට්ටලය",
+                                        revoke: "අහෝසි කරන්න",
                                         token: "ටෝකන්",
                                         userInfo: "UserInfo",
                                         wellKnown: "සොයාගැනීම"
