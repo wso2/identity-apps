@@ -25,6 +25,11 @@ import { Icon, SemanticICONS } from "semantic-ui-react";
  * Link component Prop types interface.
  */
 interface LinkPropsInterface extends IdentifiableComponentInterface {
+
+    /**
+     * Additional CSS classes.
+     */
+    className?: string;
     /**
      * Does the link point to an external source.
      */
@@ -63,6 +68,7 @@ export const Link: FunctionComponent<PropsWithChildren<LinkPropsInterface>> = (
 
     const {
         children,
+        className,
         external,
         icon,
         iconPosition,
@@ -75,7 +81,8 @@ export const Link: FunctionComponent<PropsWithChildren<LinkPropsInterface>> = (
         "link pointing",
         {
             external
-        }
+        },
+        className
     );
 
     if (!link) {
