@@ -17,7 +17,7 @@
  *
  */
 
-import { AsgardeoSPAClient, AuthSPAClientConfig, ResponseMode, Storage } from "@asgardeo/auth-react";
+import { AsgardeoSPAClient, AuthReactConfig, ResponseMode, Storage } from "@asgardeo/auth-react";
 import { TokenConstants } from "@wso2is/core/constants";
 import UAParser from "ua-parser-js";
 import { store } from "../store";
@@ -103,14 +103,17 @@ const resolveStorage = (): Storage => {
  *
  * @returns {AuthSPAClientConfig} Initialize Config.
  */
-export const getAuthInitializeConfig = (): AuthSPAClientConfig => {
+export const getAuthInitializeConfig = (): AuthReactConfig => {
     const responseModeFallback: ResponseMode =
         process.env.NODE_ENV === "production" ? ResponseMode.formPost : ResponseMode.query;
 
     return {
+        checkSessionInterval: window["AppUtils"].getConfig()?.session?.checkSessionInterval,
         clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
         clientID: window["AppUtils"].getConfig().clientID,
         clockTolerance: window["AppUtils"].getConfig().idpConfigs?.clockTolerance,
+        disableTrySignInSilently: new URL(location.href).searchParams.get("disable_silent_sign_in") === "true",
+        enableOIDCSessionManagement: true,
         enablePKCE: window["AppUtils"].getConfig().idpConfigs?.enablePKCE ?? true,
         endpoints: {
             authorizationEndpoint: window["AppUtils"].getConfig().idpConfigs?.authorizeEndpointURL,
@@ -121,19 +124,17 @@ export const getAuthInitializeConfig = (): AuthSPAClientConfig => {
             tokenEndpoint: window["AppUtils"].getConfig().idpConfigs?.tokenEndpointURL,
             wellKnownEndpoint: window["AppUtils"].getConfig().idpConfigs?.wellKnownEndpointURL
         },
+        overrideWellEndpointConfig: true,
         resourceServerURLs: resolveBaseUrls(),
         responseMode: window["AppUtils"].getConfig().idpConfigs?.responseMode ?? responseModeFallback,
         scope: window["AppUtils"].getConfig().idpConfigs?.scope ?? [TokenConstants.SYSTEM_SCOPE],
         sendCookiesInRequests: true,
         serverOrigin:
             window["AppUtils"].getConfig().idpConfigs?.serverOrigin ??
-            window["AppUtils"].getConfig().idpConfigs.serverOrigin,
+            window[ "AppUtils" ].getConfig().idpConfigs.serverOrigin,
+        sessionRefreshInterval: window["AppUtils"].getConfig()?.session?.sessionRefreshTimeOut,
         signInRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
         signOutRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
-        storage: resolveStorage(),
-        checkSessionInterval: window[ "AppUtils" ].getConfig()?.session?.checkSessionInterval,
-        enableOIDCSessionManagement: true,
-        overrideWellEndpointConfig: true,
-        sessionRefreshInterval: window[ "AppUtils" ].getConfig()?.session?.sessionRefreshTimeOut
+        storage: resolveStorage()
     };
 };
