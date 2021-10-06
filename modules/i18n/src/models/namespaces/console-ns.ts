@@ -749,6 +749,7 @@ export interface ConsoleNS {
                     };
                     inboundOIDC: {
                         description: string;
+                        documentation: string;
                         fields: {
                             allowedOrigins: FormAttributes;
                             callBackUrls: FormAttributes;
@@ -823,6 +824,7 @@ export interface ConsoleNS {
                     };
                     inboundSAML: {
                         description: string;
+                        documentation: string;
                         fields: {
                             assertionURLs: FormAttributes;
                             defaultAssertionURL: FormAttributes;

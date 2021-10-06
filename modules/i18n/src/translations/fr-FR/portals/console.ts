@@ -1376,7 +1376,9 @@ export const console: ConsoleNS = {
                         }
                     },
                     inboundOIDC: {
-                        description: "Ci-dessous sont les paramètres OpenID Connect pour votre application",
+                        description: "Ci-dessous sont les paramètres {{protocol}} pour votre application",
+                        documentation: "Lisez notre <1>documentation</1> pour en savoir plus sur l'utilisation " +
+                            "du protocole <3>{{protocol}}</3> pour implémenter la connexion dans vos applications.",
                         fields: {
                             allowedOrigins: {
                                 hint: "Les origines autorisées sont des URL qui seront autorisées à effectuer des requêtes " +
@@ -1701,6 +1703,8 @@ export const console: ConsoleNS = {
                     },
                     inboundSAML: {
                         description: "Vous trouverez ci-dessous les paramètres SAML de votre application.",
+                        documentation: "Lisez notre <1>documentation</1> pour en savoir plus sur l'utilisation " +
+                            "du protocole <3>{{protocol}}</3> pour implémenter la connexion dans vos applications.",
                         fields: {
                             assertionURLs: {
                                 hint: "Elle précise les URL des consommateurs vers lesquels le navigateur " +

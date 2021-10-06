@@ -45,6 +45,10 @@ export interface SelectionCardPropsInterface extends Omit<CardProps, "image">, T
      */
     image?: any;
     /**
+     * Should the image be shown inline?.
+     */
+    imageInline?: boolean;
+    /**
      * Icon options.
      */
     imageOptions?: Omit<GenericIconProps, "icon" | "size">;
@@ -122,6 +126,7 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
         id,
         inline,
         image,
+        imageInline,
         imageOptions,
         imageSize,
         multilineDescription,
@@ -146,8 +151,9 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
         "selection-card",
         {
             disabled,
-            grayscale: disabled && renderDisabledItemsAsGrayscale,
             "filled-selection": selectionType === "filled",
+            grayscale: disabled && renderDisabledItemsAsGrayscale,
+            "image-inline": imageInline,
             inline,
             "no-content-top-border": !contentTopBorder,
             selected,
@@ -188,7 +194,7 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
                 disabled && dimmerState && overlay
             }
             {
-                image && (
+                image && !imageInline && (
                     <Card.Content
                         className="card-image-container"
                         style={ imageContainerStyles() }
@@ -208,31 +214,50 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
             {
                 showText && (
                     <Card.Content className="card-text-container" style={ { textAlign } }>
-                        { header && (
-                            <Tooltip
-                                disabled={ !showTooltips }
-                                content={ header }
-                                trigger={ (
-                                    <Card.Header data-testid={ `${ testId }-header` }>
-                                        { header }
-                                    </Card.Header>
-                                ) }
-                            />
-                        ) }
-                        { description && (
-                            <Tooltip
-                                disabled={ !showTooltips }
-                                content={ description }
-                                trigger={ (
-                                    <Card.Description
-                                        className={ multilineDescription ? "multiline" : "" }
-                                        data-testid={ `${ testId }-description` }
-                                    >
-                                        { description }
-                                    </Card.Description>
-                                ) }
-                            />
-                        ) }
+                        {
+                            image && imageInline && (
+                                <div className="card-image-container" style={ imageContainerStyles() }>
+                                    <GenericIcon
+                                        square
+                                        transparent
+                                        className="card-image"
+                                        size={ imageSize }
+                                        icon={ image }
+                                        spaced="right"
+                                        floated="left"
+                                        data-testid={ `${ testId }-image` }
+                                        { ...imageOptions }
+                                    />
+                                </div>
+                            )
+                        }
+                        <div className="inner-card-text-container">
+                            { header && (
+                                <Tooltip
+                                    disabled={ !showTooltips }
+                                    content={ header }
+                                    trigger={ (
+                                        <Card.Header data-testid={ `${ testId }-header` }>
+                                            { header }
+                                        </Card.Header>
+                                    ) }
+                                />
+                            ) }
+                            { description && (
+                                <Tooltip
+                                    disabled={ !showTooltips }
+                                    content={ description }
+                                    trigger={ (
+                                        <Card.Description
+                                            className={ multilineDescription ? "multiline" : "" }
+                                            data-testid={ `${ testId }-description` }
+                                        >
+                                            { description }
+                                        </Card.Description>
+                                    ) }
+                                />
+                            ) }
+                        </div>
                     </Card.Content>
                 )
             }

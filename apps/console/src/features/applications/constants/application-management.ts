@@ -226,7 +226,6 @@ export class ApplicationManagementConstants {
         ["b9c5e11e-fc78-484b-9bec-015d247561b8"]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.IMPLICIT_GRANT,
-            ApplicationManagementConstants.PASSWORD,
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT
         ],

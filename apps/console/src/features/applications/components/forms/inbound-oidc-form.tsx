@@ -2629,7 +2629,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                     } }
                 >
-                    <Grid className="form-container with-max-width">
+                    <Grid>
                         {
                             (initialValues?.state === State.REVOKED) && (
                                 <Grid.Row columns={ 1 }>

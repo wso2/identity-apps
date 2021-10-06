@@ -315,7 +315,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                 onSubmit(updateConfiguration(values));
             } }
         >
-            <Grid className="form-container with-max-width">
+            <Grid>
                 { generateFormElements() }
                 { /* Certificates */ }
                 <Grid.Row columns={ 1 }>

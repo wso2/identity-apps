@@ -458,7 +458,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         }
                     } }
                 >
-                    <Grid className="form-container with-max-width">
+                    <Grid>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 {
