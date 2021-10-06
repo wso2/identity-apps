@@ -1,6 +1,6 @@
 {
     "category": "DEFAULT",
-    "description": "Login users with existing accounts Enterprise IdPs.",
+    "description": "Enable login for users with existing accounts in enterprise IdPs via standard authentication protocols.",
     "enabled": true,
     "displayOrder": 4,
     "id": "enterprise-protocols",

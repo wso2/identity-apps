@@ -92,7 +92,7 @@ export interface InfoCardPropsInterface extends CardProps, TestableComponentInte
     /**
      * Show/Hide tooltips.
      */
-    showTooltips?: boolean;
+    showTooltips?: boolean | { header:boolean; description:boolean; };
 }
 
 /**
@@ -202,7 +202,8 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                 </Card.Header>
                             ) }
                             content={ header }
-                            disabled={ !showTooltips || typeof header !== "string" }
+                            disabled={ typeof showTooltips === "boolean" ? !showTooltips : !showTooltips.header ||
+                                typeof header !== "string" }
                         />
                     ) }
                     { subHeader && (
@@ -224,7 +225,8 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                     </Card.Description>
                                 ) }
                                 content={ description }
-                                disabled={ !showTooltips || typeof description !== "string" }
+                                disabled={ typeof showTooltips === "boolean" ? !showTooltips : !showTooltips.description
+                                    || typeof description !== "string" }
                             />
                         )
                     }
@@ -280,7 +282,8 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                             </Card.Description>
                         ) }
                         content={ description }
-                        disabled={ !showTooltips || typeof description !== "string" }
+                        disabled={ typeof showTooltips === "boolean" ? !showTooltips : !showTooltips.description ||
+                            typeof description !== "string" }
                     />
                 </Card.Content>
             ) }

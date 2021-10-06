@@ -3785,6 +3785,10 @@ export const console: ConsoleNS = {
             authenticationProvider: {
                 templates: {
                     enterprise: {
+                        addWizard: {
+                            title: "ව්යවසාය",
+                            subtitle: "සම්මත සත්‍යාපන ප්‍රොටෝකෝල සමඟ නව හැඳුනුම්පත් සපයන්නෙකු වින්‍යාස කරන්න."
+                        },
                         validation: {
                             name: "වලංගු නමක් ඇතුළත් කරන්න",
                             invalidName: "වලංගු නමක් ඇතුළත් කරන්න"

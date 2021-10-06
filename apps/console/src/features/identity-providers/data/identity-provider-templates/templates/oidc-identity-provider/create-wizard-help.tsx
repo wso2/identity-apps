@@ -67,11 +67,11 @@ const CustomIdentityProviderCreateWizardHelp: FunctionComponent<CustomIdentityPr
             <Divider />
             <Heading as="h5">Authorization endpoint URL</Heading>
             <p>Provide the standard authorization endpoint URL of the identity provider.</p>
-            <p>E.g., https://ENTERPRISE_DOMAIN/authorize</p>
+            <p>E.g., https://enterprise_domain/authorize</p>
             <Divider />
             <Heading as="h5">Token endpoint URL</Heading>
             <p>Provide the standard token endpoint URL of the identity provider.</p>
-            <p>E.g., https://ENTERPRISE_DOMAIN/token</p>
+            <p>E.g., https://enterprise_domain/token</p>
 
         </div>
     );
