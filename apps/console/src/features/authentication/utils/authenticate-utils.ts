@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AuthClientConfig, Config, ResponseMode, Storage } from "@asgardeo/auth-react";
+import { AuthReactConfig, ResponseMode, Storage } from "@asgardeo/auth-react";
 import { TokenConstants } from "@wso2is/core/constants";
 import UAParser from "ua-parser-js";
 
@@ -39,11 +39,12 @@ export class AuthenticateUtils {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() {}
 
-    public static initializeConfig: AuthClientConfig<Config> = {
+    public static initializeConfig: AuthReactConfig = {
         checkSessionInterval: window[ "AppUtils" ].getConfig()?.session?.checkSessionInterval,
         clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
         clientID: window["AppUtils"].getConfig().clientID,
         clockTolerance: window[ "AppUtils" ].getConfig().idpConfigs?.clockTolerance,
+        disableTrySignInSilently: new URL(location.href).searchParams.get("disable_silent_sign_in") === "true",
         enableOIDCSessionManagement: true,
         enablePKCE: window["AppUtils"].getConfig().idpConfigs?.enablePKCE ?? true,
         endpoints: {
