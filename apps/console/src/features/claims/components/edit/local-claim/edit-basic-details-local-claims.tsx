@@ -40,11 +40,13 @@ import {
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid , Form as SemanticForm } from "semantic-ui-react";
+import { Divider, Grid, Form as SemanticForm, Message } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../core";
-import { deleteAClaim, updateAClaim } from "../../../api";
+import { deleteAClaim, updateAClaim, getExternalClaims} from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";
+import { ExternalClaim } from "@wso2is/core/models";
+import { SCIMConfigs } from "../../../../../extensions/configs/scim";
 
 /**
  * Prop types for `EditBasicDetailsLocalClaims` component
@@ -83,6 +85,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const [ confirmDelete, setConfirmDelete ] = useState(false);
     const [ isClaimReadOnly, setIsClaimReadOnly ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ hasMapping, setHasMapping ] = useState<boolean>(false);
 
     const nameField = useRef<HTMLElement>(null);
     const regExField = useRef<HTMLElement>(null);
@@ -102,6 +105,38 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             setIsClaimReadOnly(true);
         }
     }, [ claim ]);
+
+    useEffect(() => {
+        const dialectID = [];
+        getDialectID(dialectID);
+        if(claim) {
+            dialectID.forEach((dialectId) => {
+                let tempMappings = []
+                getExternalClaims(dialectId).then((response) => {
+                    tempMappings = response;
+                    tempMappings.forEach((tempMapping:ExternalClaim) => {
+                        if(tempMapping.mappedLocalClaimURI === claim.claimURI) {
+                            setHasMapping(true);
+                            return;
+                        }
+                    });
+                }).catch((error) => {
+                    dispatch(addAlert({
+                        description: error.response.description,
+                        level: AlertLevels.ERROR,
+                        message: "Error occurred while trying to get external mappings for the claim."
+                    }));
+                });
+                })
+        }
+    }, [claim]);
+
+    const getDialectID = (dialectID: String[]) => {
+        dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE"))
+        dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE_USER"))
+        dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_ENT_USER"))
+        dialectID.push(SCIMConfigs.scimDialectID.customeEnterpriseSchema)
+    };
 
     const isReadOnly = useMemo(() => (
         !hasRequiredScopes(
@@ -335,11 +370,25 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             readOnly={ isReadOnly }
                         />
                     }
+                    {!hasMapping
+                        ? (
+                            <Grid.Row columns={ 1 } >
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                                    <Message color="teal">
+                                        <Hint>
+                                            Please note that below section is disabled as there is no external claim
+                                            mapping found for this claim attribute.
+                                        </Hint>
+                                    </Message>
+                                </Grid.Column>
+                            </Grid.Row>
+                        )
+                        : null
+                    }
                     {
                         //Hides on user_id, username and groups claims
                         claim && claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI
                             && claim.claimURI !== ClaimManagementConstants.USER_NAME_CLAIM_URI
-                            && claim.claimURI !== ClaimManagementConstants.LOCATION_CLAIM_URI
                             && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI &&
                         (
                             <Field.Checkbox
@@ -353,6 +402,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 } }
                                 data-testid={ `${testId}-form-supported-by-default-input` }
                                 readOnly={ isReadOnly }
+                                disabled={ !hasMapping }
                             />
                         )
                     }
@@ -392,7 +442,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 data-testid={ `${ testId }-form-required-checkbox` }
                                 readOnly={ isReadOnly }
                                 hint={ t("console:manage.features.claims.local.forms.requiredHint") }
-                                disabled={ isClaimReadOnly }
+                                disabled={ isClaimReadOnly || !hasMapping }
                                 { ...( isClaimReadOnly ?
                                     { value: false } :
                                     { defaultValue : claim?.required } ) }
@@ -417,6 +467,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 listen={ (value) => {
                                     setIsClaimReadOnly(value);
                                 } }
+                                disabled={ !hasMapping }
                             />
                         )
                     }
