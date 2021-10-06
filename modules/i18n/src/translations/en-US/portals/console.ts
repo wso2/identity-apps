@@ -941,7 +941,9 @@ export const console: ConsoleNS = {
                                                 }
                                             },
                                             secretsList: {
-                                                iconTooltip: "Add secret as an API key",
+                                                iconTooltip: "Securely store access keys as secrets. A secret can " +
+                                                    "replace the API key in callChoreo function in the conditional " +
+                                                    "authentication scripts.",
                                                 create: "Create new secret",
                                                 emptyPlaceholder: "No secrets available",
                                                 search: "Search by secret name"
@@ -4271,7 +4273,7 @@ export const console: ConsoleNS = {
                         invalidQueryParamErrorMessage: "These are not valid query parameters",
                         invalidURLErrorMessage: "Enter a valid URL",
                         requiredErrorMessage: "This is required",
-                        internetResolvableErrorMessage: "URL must be internet resolvable.",
+                        internetResolvableErrorMessage: "URL must be internet resolvable."
                     },
                     generalDetails: {
                         description: {
@@ -5799,7 +5801,7 @@ export const console: ConsoleNS = {
                                     "Only letters, numbers, `#`, and `_` are allowed.",
                                 scimInvalidName: "The starting character of the name should be a letter. " +
                                     "The remaining characters may include letters, numbers, dash (-), and underscore (_)."
-                            },
+                            }
                         },
                         localAttribute: {
                             label: "User Attribute to map to",

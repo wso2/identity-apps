@@ -45,12 +45,12 @@ import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useRef,
 import { Trans, useTranslation } from "react-i18next";
 import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
 import { useDispatch } from "react-redux";
-import { Checkbox, Dropdown, Header, Icon, Input, Menu, Sidebar } from "semantic-ui-react";
+import { Checkbox, Dropdown, Header, Icon, Input, Menu, Popup, Sidebar } from "semantic-ui-react";
 import { stripSlashes } from "slashes";
 import { ScriptTemplatesSidePanel } from "./script-templates-side-panel";
 import { getOperationIcons } from "../../../../../core/configs";
 import { AppUtils, EventPublisher } from "../../../../../core/utils";
-import { getSecretList } from "../../../../../secrets/api/secret";
+import { deleteSecret, getSecretList } from "../../../../../secrets/api/secret";
 import AddSecretWizard from "../../../../../secrets/components/add-secret-wizard";
 import { ADAPTIVE_SCRIPT_SECRETS } from "../../../../../secrets/constants/secrets.common";
 import { GetSecretListResponse, SecretModel } from "../../../../../secrets/models/secret";
@@ -169,6 +169,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      */
     const [ filteredSecretList, setFilteredSecretList ] = useState<SecretModel[]>([]);
     const [ isSecretListLoading, setIsSecretListLoading ] = useState<boolean>(true);
+    const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
+    const [ deletingSecret, setDeletingSecret ] = useState<SecretModel>(undefined);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -238,6 +240,15 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     };
 
     /**
+     * Handle secret delete operation.
+     * @param secret
+     */
+    const handleSecretDelete = (secret:SecretModel) :void => {
+        setDeletingSecret(secret);
+        setShowDeleteConfirmationModal(true);
+    };
+
+    /**
      * This will be called when secret add wizard closed.
      * It will tell us to refresh the secret list or not.
      * @param shouldRefresh {boolean}
@@ -245,6 +256,18 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const whenAddNewSecretModalClosed = (shouldRefresh: boolean): void => {
         setShowAddSecretModal(false);
         refreshSecretList();
+    };
+
+    /**
+     * This will be called when secret delete confirmation is closed.
+     * It will tell us to refresh the secret list or not.
+     * @param deletingSecret {SecretModel}
+     * @param shouldRefresh {boolean}
+     */
+    const whenSecretDeleted = (deletingSecret:SecretModel, shouldRefresh: boolean): void => {
+        if (shouldRefresh) {
+            refreshSecretList();
+        }
     };
 
     /**
@@ -638,6 +661,50 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     );
 
     /**
+     * This will be only called when user gives their consent for deletion.
+     * @see {@code SecretDeleteConfirmationModal}
+     */
+    const onSecretDeleteClick = async (): Promise<void> => {
+        if (deletingSecret) {
+            try {
+                deleteSecret({
+                    params: {
+                        secretName: deletingSecret.secretName,
+                        secretType: deletingSecret.type
+                    }
+                });
+                dispatch(addAlert({
+                    description: t("console:develop.features.secrets.alerts.deleteSecret.description", {
+                        secretName: deletingSecret.secretName,
+                        secretType: deletingSecret.type
+                    }),
+                    level: AlertLevels.SUCCESS,
+                    message: t("console:develop.features.secrets.alerts.deleteSecret.message")
+                }));
+            } catch (error) {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: error.response.data.message
+                    }));
+                    return;
+                }
+                dispatch(addAlert({
+                    description: t("console:develop.features.secrets.errors.generic.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:develop.features.secrets.errors.generic.message")
+                }));
+            } finally {
+                const refreshSecretList = true;
+                whenSecretDeleted(deletingSecret, refreshSecretList);
+                setShowDeleteConfirmationModal(false);
+                setDeletingSecret(undefined);
+            }
+        }
+    };
+
+    /**
      * Render the secret list dropdown.
      */
     const renderSecretListDropdown = (): ReactElement => {
@@ -677,8 +744,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                     if (!data.currentTarget?.value) {
                                         setFilteredSecretList(secretList);
                                     } else {
-                                        setFilteredSecretList(secretList.filter((secret: SecretModel) => secret.secretName.includes(
-                                            data.currentTarget.value)));
+                                        setFilteredSecretList(secretList.filter((secret: SecretModel) => secret.
+                                        secretName.toLowerCase().includes(data.currentTarget.value.toLowerCase())));
                                     }
                                 } }
                                 onClick={ e => e.stopPropagation() }
@@ -697,14 +764,41 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                 ) => (
                                     <Dropdown.Item
                                         key={ secret.secretId }
-                                        onClick={ () => {
-                                            addSecretToScript(secret);
-                                        } }
                                     >
                                         <Header
                                             as={ "h6" }
                                             className={ "header-with-icon" }
                                         >
+                                            <GenericIcon
+                                                defaultIcon
+                                                link={ true }
+                                                linkType="primary"
+                                                transparent
+                                                floated="right"
+                                                size="micro"
+                                                icon={
+                                                    <Icon name="trash alternate"/>
+                                                }
+                                                onClick={ () => {
+                                                    handleSecretDelete(secret);
+                                                } }
+                                                data-testid={ `${ testId }-secret-delete` }
+                                            />
+                                            <GenericIcon
+                                                defaultIcon
+                                                transparent
+                                                link={ true }
+                                                linkType="primary"
+                                                floated="right"
+                                                size="micro"
+                                                icon={
+                                                    <Icon name="plus"/>
+                                                }
+                                                onClick={ () => {
+                                                    addSecretToScript(secret);
+                                                } }
+                                                data-testid={ `${ testId }-secret-add` }
+                                            />
                                             <Header.Content>
                                                 { secret.secretName }
                                             </Header.Content>
@@ -721,7 +815,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                     data-testid={ `${ testId }-empty-placeholder` }
                                     key={ "secretEmptyPlaceholder" }
                                     text={ t("console:develop.features.applications.edit.sections.signOnMethod" +
-                                        ".sections.authenticationFlow.sections.scriptBased.secretsList.emptyPlaceholder") }
+                                        ".sections.authenticationFlow.sections.scriptBased.secretsList." +
+                                        "emptyPlaceholder") }
                                     disabled
                                 />
                             )
@@ -935,6 +1030,40 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         );
     };
 
+    const SecretDeleteConfirmationModal: ReactElement = (
+        <ConfirmationModal
+            onClose={ (): void => {
+                setShowDeleteConfirmationModal(false);
+                setDeletingSecret(undefined);
+            } }
+            onSecondaryActionClick={ (): void => {
+                setShowDeleteConfirmationModal(false);
+                setDeletingSecret(undefined);
+            } }
+            onPrimaryActionClick={ onSecretDeleteClick }
+            open={ showDeleteConfirmationModal }
+            type="warning"
+            assertionHint={ t("console:develop.features.secrets.modals.deleteSecret.assertionHint") }
+            assertionType="checkbox"
+            primaryAction={ t("console:develop.features.secrets.modals.deleteSecret.primaryActionButtonText") }
+            secondaryAction={ t("console:develop.features.secrets.modals.deleteSecret.secondaryActionButtonText") }
+            data-testid={ `${ testId }-delete-confirmation-modal` }
+            closeOnDimmerClick={ false }>
+            <ConfirmationModal.Header data-testid={ `${ testId }-delete-confirmation-modal-header` }>
+                { t("console:develop.features.secrets.modals.deleteSecret.title") }
+            </ConfirmationModal.Header>
+            <ConfirmationModal.Message
+                attached
+                warning
+                data-testid={ `${ testId }-delete-confirmation-modal-message` }>
+                { t("console:develop.features.secrets.modals.deleteSecret.warningMessage") }
+            </ConfirmationModal.Message>
+            <ConfirmationModal.Content data-testid={ `${ testId }-delete-confirmation-modal-content` }>
+                { t("console:develop.features.secrets.modals.deleteSecret.content") }
+            </ConfirmationModal.Content>
+        </ConfirmationModal>
+    );
+
     return (
         <>
             <div className="conditional-auth-section">
@@ -1021,8 +1150,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                         <Menu.Menu position="right">
                                             { resolveApiDocumentationLink() }
                                             <Menu.Item className="action">
-                                                <Tooltip
-                                                    compact
+                                                <Popup
                                                     trigger={ (
                                                         <div>
                                                             {
@@ -1031,10 +1159,14 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                         </div>
                                                     ) }
                                                     content={ () => {
-                                                        return t("console:develop.features.applications.edit.sections.signOnMethod" +
-                                                            ".sections.authenticationFlow.sections.scriptBased.secretsList.iconTooltip") ;
+                                                        return t("console:develop.features.applications.edit." +
+                                                            "sections.signOnMethod.sections.authenticationFlow." +
+                                                            "sections.scriptBased.secretsList.iconTooltip") ;
                                                     } }
-                                                    size="mini"
+                                                    position={ "bottom left" }
+                                                    hoverable={ true }
+                                                    positionFixed
+                                                    pinned={ false }
                                                 />
                                             </Menu.Item>
                                             <Menu.Item className="action">
@@ -1152,6 +1284,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                     </SegmentedAccordion.Content>
                 </SegmentedAccordion>
                 { showAddSecretModal && renderAddSecretModal() }
+                { showDeleteConfirmationModal && SecretDeleteConfirmationModal }
             </div>
             { showScriptResetWarning && renderAdaptiveScriptResetWarning() }
             { showScriptTemplateChangeWarning && renderAdaptiveAuthTemplateChangeWarning() }

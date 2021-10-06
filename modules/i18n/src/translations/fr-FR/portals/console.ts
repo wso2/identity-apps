@@ -949,7 +949,9 @@ export const console: ConsoleNS = {
                                                 }
                                             },
                                             secretsList: {
-                                                iconTooltip: "Ajouter un secret en tant que clé API",
+                                                iconTooltip: "Stockez en toute sécurité les clés d'accès en tant que " +
+                                                    "secrets. Les secrets peuvent remplacer la clé API dans la " +
+                                                    "fonction callChoreo pour l'authentification conditionnelle.",
                                                 create: "Créer un nouveau secret",
                                                 emptyPlaceholder: "Aucun secret disponible",
                                                 search: "Recherche par nom secret"
