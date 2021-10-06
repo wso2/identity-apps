@@ -1362,6 +1362,8 @@ export const console: ConsoleNS = {
                     },
                     inboundOIDC: {
                         description: "Given below are the {{protocol}} settings for your application.",
+                        documentation: "Read through our <1>documentation</1> to learn more about using " +
+                            "<3>{{protocol}}</3> protocol to implement login in your applications.",
                         fields: {
                             allowedOrigins: {
                                 hint: "Allowed origins are URLs that will be allowed to make requests from cross " +
@@ -1673,6 +1675,8 @@ export const console: ConsoleNS = {
                     },
                     inboundSAML: {
                         description: "Given below are the SAML settings for your application.",
+                        documentation: "Read through our <1>documentation</1> to learn more about using " +
+                            "<3>{{protocol}}</3> protocol to implement login in your applications.",
                         fields: {
                             assertionURLs: {
                                 hint: "The Assertion Consumer Service (ACS) URL determines where to " +

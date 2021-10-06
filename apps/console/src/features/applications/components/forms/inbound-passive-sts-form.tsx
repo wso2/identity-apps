@@ -143,7 +143,7 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                 onSubmit(updateConfiguration(values));
             } }
         >
-            <Grid className="form-container with-max-width">
+            <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Field
