@@ -135,7 +135,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE"))
         dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE_USER"))
         dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_ENT_USER"))
-        dialectID.push(SCIMConfigs.scimDialectID.customeEnterpriseSchema)
+        dialectID.push(SCIMConfigs.scimDialectID.customEnterpriseSchema)
     };
 
     const isReadOnly = useMemo(() => (
