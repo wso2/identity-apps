@@ -618,3 +618,36 @@
         }
     }
 }
+
+/*-------------------
+   Secrets Dropdown
+--------------------*/
+
+.ui.menu {
+    .ui.dropdown {
+        .menu {
+            &.custom-dropdown {
+                max-height: 200px;
+                max-width: 50px;
+
+                .item {
+                    height: 43px;
+
+                    .theme-icon {
+                        padding-right: 0;
+                        padding-left: 0;
+                        background: 0 0!important;
+                    }
+
+                    .icon:hover {
+                        cursor: pointer;
+                    }
+                }
+                .item:hover {
+                    background: 0 0!important;
+                    cursor: default;
+                }
+            }
+        }
+    }
+}

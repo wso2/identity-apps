@@ -44,15 +44,4 @@
             display: none; 
         }
     }
-
-    .menu {
-        &.custom-dropdown {
-            max-height: 200px;
-            max-width: 50px;
-
-            .item {
-                height: 43px;
-            }
-        }
-    }
 }
