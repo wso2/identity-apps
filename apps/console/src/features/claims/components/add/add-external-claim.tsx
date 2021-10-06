@@ -25,9 +25,10 @@ import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useS
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { DropdownItemProps, DropdownOnSearchChangeData, Grid, Header, Label } from "semantic-ui-react";
-import { addExternalClaim } from "../../api";
+import { addExternalClaim, getServerSupportedClaimsForSchema } from "../../api";
 import { ClaimManagementConstants } from "../../constants";
 import { AddExternalClaim } from "../../models";
+import { attributeConfig } from "../../../../extensions";
 import { resolveType } from "../../utils";
 
 /**
@@ -70,6 +71,10 @@ interface AddExternalClaimsPropsInterface extends TestableComponentInterface {
      * Claim dialect URI
      */
     claimDialectUri?: string;
+    /**
+     * Mapped local claim list
+     */
+    mappedLocalClaims: string[];
 }
 
 /**
@@ -92,6 +97,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
         triggerSubmit,
         attributeType,
         claimDialectUri,
+        mappedLocalClaims,
         cancel,
         [ "data-testid" ]: testId
     } = props;
@@ -99,6 +105,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
     const [ localClaims, setLocalClaims ] = useState<Claim[]>();
     const [ filteredLocalClaims, setFilteredLocalClaims ] = useState<Claim[]>();
     const [ localClaimsSearchResults, setLocalClaimsSearchResults ] = useState<Claim[]>();
+    const [ serverSupportedClaims, setServerSupportedClaims ] = useState<string[]>();
     const [ localClaimsSet, setLocalClaimsSet ] = useState(false);
     const [ claim, setClaim ] = useState<string>("");
     const [ isLocalClaimsLoading, setIsLocalClaimsLoading ] = useState<boolean>(true);
@@ -109,6 +116,20 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
     const dispatch = useDispatch();
 
     const { t } = useTranslation();
+
+    useEffect(() => {
+        getServerSupportedClaimsForSchema(dialectId).then(response => {
+            const serverSupportedClaimList = response.attributes;
+            externalClaims.forEach(claim => {
+                if (serverSupportedClaimList.indexOf(claim.claimURI) !== -1) {
+                    serverSupportedClaimList.splice(serverSupportedClaimList.indexOf(claim.claimURI), 1)
+                }
+            })
+            setServerSupportedClaims(serverSupportedClaimList);
+        }).catch(error => {
+            console.log(error)
+        })
+    }, [ externalClaims ])
 
     /**
      * Gets the list of local claims.
@@ -150,8 +171,8 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
     useEffect(() => {
         if (externalClaims && localClaims) {
             let tempLocalClaims: Claim[] = [ ...localClaims ];
-            externalClaims.forEach((externalClaim: ExternalClaim) => {
-                tempLocalClaims = [ ...removeMappedLocalClaim(externalClaim.mappedLocalClaimURI, tempLocalClaims) ];
+            mappedLocalClaims.forEach((externalClaim: string) => {
+                tempLocalClaims = [ ...removeMappedLocalClaim(externalClaim, tempLocalClaims) ];
             });
             setLocalClaimsSearchResults(tempLocalClaims);
             setFilteredLocalClaims(tempLocalClaims);
@@ -231,51 +252,92 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
             <Grid>
                 <Grid.Row columns={ 2 }>
                     <Grid.Column width={ 8 }>
-                        <Field
-                            name="claimURI"
-                            label={ t("console:manage.features.claims.external.forms.attributeURI.label",
-                                { type: resolveType(attributeType, true) }) }
-                            required={ true }
-                            requiredErrorMessage={ t("console:manage.features.claims.external.forms." +
-                                "attributeURI.requiredErrorMessage", { type: resolveType(attributeType, true) }) }
-                            placeholder={ t("console:manage.features.claims.external.forms.attributeURI.placeholder",
-                                { type: resolveType(attributeType) }) }
-                            type="text"
-                            listen={ (values: Map<string, FormValue>) => {
-                                setClaim(values.get("claimURI").toString());
-                            } }
-                            maxLength={ 30 }
-                            data-testid={ `${ testId }-form-claim-uri-input` }
-                            validation={ (value: string, validation: Validation) => {
-                                for (const claim of externalClaims) {
-                                    const parts = claim.claimURI.split(":");
-                                    if (parts[parts.length - 1].toLowerCase() === value.toLowerCase()) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push(t("console:manage.features.claims.external" +
-                                            ".forms.attributeURI.validationErrorMessages.duplicateName",
-                                            { type: resolveType(attributeType) }));
-                                        break;
+                        { attributeType !== "oidc" 
+                            && claimDialectUri !== attributeConfig.localAttributes.customDialectURI ?
+                            <Field
+                                name="claimURI"
+                                label={ t("console:manage.features.claims.external.forms.attributeURI.label",
+                                    { type: resolveType(attributeType, true) }) }
+                                required={ true }
+                                requiredErrorMessage={ t("console:manage.features.claims.external.forms." +
+                                    "attributeURI.requiredErrorMessage", { type: resolveType(attributeType, true) }) }
+                                placeholder={ t("console:manage.features.claims.external.forms.attributeURI.placeholder",
+                                    { type: resolveType(attributeType) }) }
+                                type={ "dropdown" }
+                                data-testid={ `${ testId }-form-claim-uri-input` }
+                                listen={ (values: Map<string, FormValue>) => {
+                                    setClaim(values.get("claimURI").toString());
+                                } }
+                                validation={ (value: string, validation: Validation) => {
+                                    for (const claim of externalClaims) {
+                                        if (claim.claimURI === value) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(t("console:manage.features.claims.external" +
+                                                ".forms.attributeURI.validationErrorMessages.duplicateName",
+                                                { type: resolveType(attributeType) }));
+                                            break;
+                                        }
                                     }
-                                }
 
-                                if (attributeType === ClaimManagementConstants.OIDC) {
-                                    if (!value.toString().match(/^[A-za-z0-9#_]+$/)) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push(t("console:manage.features.claims.external" +
-                                            ".forms.attributeURI.validationErrorMessages.invalidName",
-                                            { type: resolveType(attributeType) }));
+                                    if (attributeType === ClaimManagementConstants.OIDC) {
+                                        if (!value.toString().match(/^[A-za-z0-9#_]+$/)) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(t("console:manage.features.claims.external" +
+                                                ".forms.attributeURI.validationErrorMessages.invalidName",
+                                                { type: resolveType(attributeType) }));
+                                        }
                                     }
+                                } }
+                                children={
+                                    serverSupportedClaims?.map((claim: string, index) => {
+                                        return {
+                                            key: index,
+                                            text: claim.split(":").pop(),
+                                            value: claim.split(":").pop()
+                                        };
+                                    })
+                                    ?? []
                                 }
-                                if (attributeType === ClaimManagementConstants.SCIM) {
-                                    if (!value.toString().match(/^[a-zA-Z]([-_\w])+$/)) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push(t("console:manage.features.claims.external" +
-                                            ".forms.attributeURI.validationErrorMessages.scimInvalidName",
-                                            { type: resolveType(attributeType) }));
+                            />
+                        :
+                            <Field
+                                name="claimURI"
+                                label={ t("console:manage.features.claims.external.forms.attributeURI.label",
+                                    { type: resolveType(attributeType, true) }) }
+                                required={ true }
+                                requiredErrorMessage={ t("console:manage.features.claims.external.forms." +
+                                    "attributeURI.requiredErrorMessage", { type: resolveType(attributeType, true) }) }
+                                placeholder={ t("console:manage.features.claims.external.forms.attributeURI.placeholder",
+                                    { type: resolveType(attributeType) }) }
+                                type="text"
+                                listen={ (values: Map<string, FormValue>) => {
+                                    setClaim(values.get("claimURI").toString());
+                                } }
+                                maxLength={ 30 }
+                                data-testid={ `${ testId }-form-claim-uri-input` }
+                                validation={ (value: string, validation: Validation) => {
+                                    for (const claim of externalClaims) {
+                                        if (claim.claimURI === value) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(t("console:manage.features.claims.external" +
+                                                ".forms.attributeURI.validationErrorMessages.duplicateName",
+                                                { type: resolveType(attributeType) }));
+                                            break;
+                                        }
                                     }
-                                }
-                            } }
-                        />
+
+                                    if (attributeType === ClaimManagementConstants.OIDC) {
+                                        if (!value.toString().match(/^[A-za-z0-9#_]+$/)) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(t("console:manage.features.claims.external" +
+                                                ".forms.attributeURI.validationErrorMessages.invalidName",
+                                                { type: resolveType(attributeType) }));
+                                        }
+                                    }
+                                } }
+                            />
+                        }
+                        
 
                     </Grid.Column>
                     <Grid.Column width={ 8 } className="select-attribute">

@@ -22,7 +22,7 @@ import { Claim, HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { store } from "../../core";
 import { ClaimManagementConstants } from "../constants";
-import { AddExternalClaim } from "../models";
+import { AddExternalClaim, ServerSupportedClaimsInterface } from "../models";
 
 /**
  * Get an axios instance.
@@ -425,6 +425,37 @@ export const deleteAnExternalClaim = (dialectID: string, claimID: string): Promi
             if (response.status !== 204) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+            return Promise.resolve(response.data);
+        })
+        .catch((error) => {
+            return Promise.reject(error?.response?.data);
+        });
+};
+
+/**
+ * Retrieves a list of all the server supported claims
+ * per the given schema id.
+ * 
+ * @param id - Selected schema id
+ * @returns - list of 
+ */
+export const getServerSupportedClaimsForSchema = (id: string): Promise<ServerSupportedClaimsInterface> => {
+    const requestConfig = {
+        headers: {
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${store.getState().config.endpoints.serverSupportedSchemas}/${id}`
+    };
+
+    return httpClient(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(`An error occurred. The server returned ${response.status}`);
+            }
+
             return Promise.resolve(response.data);
         })
         .catch((error) => {
