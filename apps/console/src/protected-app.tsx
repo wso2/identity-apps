@@ -102,7 +102,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                             window[ "AppUtils" ].getAppBase(),
                             window[ "AppUtils" ].getAppBaseWithTenant()
                         );
-                        logoutRedirectUrl = window[ "AppUtils" ].getAppBaseWithTenant();
+                        logoutRedirectUrl = window[ "AppUtils" ].getConfig().logoutCallbackURL.replace(
+                            window[ "AppUtils" ].getAppBase(),
+                            window[ "AppUtils" ].getAppBaseWithTenant()
+                        );
                     } else {
                         logoutUrl = logoutUrl.replace(
                             window[ "AppUtils" ].getConfig().logoutCallbackURL,
