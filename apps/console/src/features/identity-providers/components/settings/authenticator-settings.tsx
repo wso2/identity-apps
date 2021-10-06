@@ -24,7 +24,6 @@ import {
     ContentLoader,
     EmphasizedSegment,
     EmptyPlaceholder,
-    Heading,
     PrimaryButton,
     SegmentedAccordionTitleActionInterface
 } from "@wso2is/react-components";
@@ -33,7 +32,6 @@ import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffec
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { CheckboxProps, Grid, Icon } from "semantic-ui-react";
-import { IdpCertificates } from "./idp-certificates";
 import { AppState, ConfigReducerStateInterface, getEmptyPlaceholderIllustrations } from "../../../core";
 import {
     getFederatedAuthenticatorDetails,
@@ -127,6 +125,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     const [ showAddAuthenticatorWizard, setShowAddAuthenticatorWizard ] = useState<boolean>(false);
     const [ isTemplatesLoading, setIsTemplatesLoading ] = useState<boolean>(false);
     const [ isPageLoading, setIsPageLoading ] = useState<boolean>(true);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     /**
@@ -162,6 +162,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
          * `tags` has to be removed.
          */
         values?.tags && delete values.tags;
+
+        setIsSubmitting(true);
 
         updateFederatedAuthenticator(identityProvider.id, values)
             .then(() => {
@@ -200,7 +202,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                         "updateFederatedAuthenticator." +
                         "genericError.message")
                 }));
-            });
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+             });
     };
 
     /**
@@ -667,6 +672,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     type={ authenticator.meta?.authenticatorId }
                     data-testid={ `${ testId }-${ authenticator.meta?.name }-content` }
                     isReadOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
                 />
             );
         } else {

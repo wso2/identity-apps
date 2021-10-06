@@ -27,7 +27,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Grid, Message, Modal } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface } from "../../core";
 import { createSecret, getSecretList } from "../api/secret";
-import { EMPTY_JSON_OBJECT_STRING, FEATURE_LOCAL_STORAGE_KEY } from "../constants/secrets.common";
+import { EMPTY_JSON_OBJECT_STRING, EMPTY_STRING, FEATURE_LOCAL_STORAGE_KEY } from "../constants/secrets.common";
 import { EditSecretLocalStorage } from "../models/common";
 import { SecretModel } from "../models/secret";
 import {
@@ -58,8 +58,6 @@ type FieldDropDownOption = {
  * This wizard is sorely responsible for adding a new `secret` for a
  * given `secret-type`.
  *
- * Known Issue TODO: https://github.com/wso2/product-is/issues/12447
- *                   Need to add access-control and event-publishers
  * @param props {AddSecretWizardProps}
  * @constructor
  * @return {ReactElement}
@@ -102,12 +100,12 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
         fetchSecretTypes()
             .then(async (response) => {
                 setSecretTypes(response);
-                const initialSecretType = response.length ? response[0].value : "";
+                const initialSecretType = response.length ? response[0].value : EMPTY_STRING;
                 setInitialFormValues({
-                    secret_description: "",
-                    secret_name: "",
+                    secret_description: EMPTY_STRING,
+                    secret_name: EMPTY_STRING,
                     secret_type: initialSecretType,
-                    secret_value: ""
+                    secret_value: EMPTY_STRING
                 });
                 /**
                  * If we have a initial secret type then, go ahead and fetch
@@ -146,7 +144,7 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
     }, []);
 
     useEffect(() => {
-            checkAndRenderInfoMessage();
+        checkAndRenderInfoMessage();
     }, []);
 
     /**
@@ -322,8 +320,6 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                         ariaLabel={ t("console:develop.features.secrets.wizards" +
                             ".addSecret.form.secretTypeField.ariaLabel") }
                         hint={ t("console:develop.features.secrets.wizards.addSecret.form.secretTypeField.hint") }
-                        // TODO: implement validation here if above improvement added.
-                        // https://github.com/wso2/product-is/issues/12447
                     />
                     <Field.Input
                         required
@@ -372,7 +368,6 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                             <Message
                                 data-componentid={ `${ testId }-page-message` }
                                 info
-                                onDismiss={ onDismissInfoMessageBanner }
                             >
                                 <Message.Content
                                     className="mr-2"
@@ -418,7 +413,7 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                                 aria-label={
                                     t("console:develop.features.secrets.wizards.actions.finishButton.ariaLabel")
                                 }
-                                disabled={ submitShouldBeDisabled }
+                                disabled={ submitShouldBeDisabled || requestInProgress }
                                 floated="right"
                                 onClick={ () => formRef?.current?.triggerSubmit() }
                                 loading={ requestInProgress }

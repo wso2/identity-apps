@@ -73,6 +73,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
     const [ showMore, setShowMore ] = useState(false);
     const [ disabled, setDisabled ] = useState(true);
     const [ sql, setSql ] = useState<Map<string, string>>(null);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const dispatch = useDispatch();
 
@@ -179,6 +180,8 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
             ]
             : requiredData;
 
+        setIsSubmitting(true);
+
         patchUserStore(id, data)
             .then(() => {
                 dispatch(addAlert<AlertInterface>({
@@ -189,7 +192,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                         "updateUserstore.success.message")
                 }));
 
-                // ATM, userstore operations run as an async task in the backend. Hence, The changes aren't 
+                // ATM, userstore operations run as an async task in the backend. Hence, The changes aren't
                 // applied at once. As a temp solution, a notification informing the delay is shown here.
                 // See https://github.com/wso2/product-is/issues/9767 for updates on the backend improvement.
                 // TODO: Remove delay notification and fetch the new updates once backend is fixed.
@@ -211,6 +214,9 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                     message: error?.message || t("console:manage.features.userstores.notifications." +
                         "updateUserstore.genericError.message")
                 }));
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
     };
 
@@ -230,7 +236,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                                     const toggle = property.attributes
                                         .find(attribute => attribute.name === "type")?.value === "boolean";
                                     const master = property.name === "ReadGroups";
-    
+
                                     return (
                                         isPassword
                                             ? (
@@ -354,11 +360,11 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                                     );
                                 })
                             }
-    
+
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-    
+
                 { !disabled
                     && (properties?.optional.nonSql.length > 0
                         || properties?.optional.sql.delete.length > 0
@@ -380,7 +386,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                             </Grid.Column>
                         </Grid>
                     ) }
-    
+
                 { !disabled
                     && showMore && properties?.optional.nonSql.length > 0 && (
                         <Grid>
@@ -393,7 +399,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                                                 .find(attribute => attribute.name === "type").value === "password";
                                             const toggle = property.attributes
                                                 .find(attribute => attribute.name === "type")?.value === "boolean";
-    
+
                                             return (
                                                 isPassword
                                                     ? (
@@ -512,7 +518,12 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                 }
                 <Grid columns={ 1 }>
                     <Grid.Column width={ 8 }>
-                        <PrimaryButton type="submit" data-testid={ `${ testId }-form-submit-button` }>
+                        <PrimaryButton
+                            type="submit"
+                            loading={ isSubmitting }
+                            disabled={ isSubmitting }
+                            data-testid={ `${ testId }-form-submit-button` }
+                        >
                             Update
                         </PrimaryButton>
                     </Grid.Column>

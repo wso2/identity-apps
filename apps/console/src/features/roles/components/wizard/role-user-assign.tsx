@@ -55,6 +55,10 @@ interface AddRoleUserProps extends TestableComponentInterface {
      * Fired when a user is removed from teh list.
      */
     handleTempUsersListChange?: (list: UserBasicInterface[]) => void;
+    /**
+     * Specifies if the there is a submission being carried out.
+     */
+    isSubmitting?: boolean;
 }
 
 export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRoleUserProps): ReactElement => {
@@ -68,6 +72,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         userStore,
         isReadOnly,
         handleTempUsersListChange,
+        isSubmitting,
         [ "data-testid" ]: testId
     } = props;
 
@@ -454,6 +459,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                     handleAddUserSubmit();
                                 } }
                                 floated="right"
+                                loading={ isSubmitting }
+                                disabled={ isSubmitting }
                             >
                                 { t("common:save") }
                             </PrimaryButton>
@@ -659,6 +666,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                         primary
                                         type="submit"
                                         size="small"
+                                        loading={ isSubmitting }
+                                        disabled={ isSubmitting }
                                         className="form-button"
                                     >
                                         { t("common.update") }

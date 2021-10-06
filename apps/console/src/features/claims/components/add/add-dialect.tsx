@@ -74,6 +74,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
     const [ currentWizardStep, setCurrentWizardStep ] = useState(0);
     const [ dialectDetailsData, setDialectDetailsData ] = useState<Map<string, FormValue>>(null);
     const [ externalClaims, setExternalClaims ] = useState<AddExternalClaim[]>([]);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const [ firstStep, setFirstStep ] = useTrigger();
     const [ secondStep, setSecondStep ] = useTrigger();
@@ -86,6 +87,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
      * Submit handler that sends the API request to add the local claim.
      */
     const handleSubmit = () => {
+        setIsSubmitting(true);
 
         addDialect(dialectDetailsData?.get("dialectURI").toString())
             .then(() => {
@@ -123,14 +125,16 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
             }).catch((error) => {
 
                 setAlert({
-                description: error?.description
-                    || t("console:manage.features.claims.dialects.notifications." +
-                        "addDialect.error.description"),
-                level: AlertLevels.ERROR,
-                message: error?.message
-                    || t("console:manage.features.claims.dialects.notifications.addDialect.error.message")
+                    description: error?.description
+                        || t("console:manage.features.claims.dialects.notifications." +
+                            "addDialect.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: error?.message
+                        || t("console:manage.features.claims.dialects.notifications.addDialect.error.message")
+                });
+            }).finally(() => {
+                setIsSubmitting(false);
             });
-        });
     };
 
     /**
@@ -302,6 +306,8 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                                     floated="right"
                                     onClick={ next }
                                     data-testid={ `${ testId }-finish-button` }
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting }
                                 >
                                     { t("common:finish") }</PrimaryButton>
                             ) }

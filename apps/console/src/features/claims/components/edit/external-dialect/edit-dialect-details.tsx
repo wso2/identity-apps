@@ -20,11 +20,11 @@ import { AlertLevels, ClaimDialect, TestableComponentInterface } from "@wso2is/c
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { AppConstants, AppState, ConfigReducerStateInterface, history } from "../../../../core";
+import { AppState, ConfigReducerStateInterface } from "../../../../core";
 import { updateADialect } from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";
 import { resolveType } from "../../../utils";
@@ -38,6 +38,10 @@ interface EditDialectDetailsPropsInterface extends TestableComponentInterface {
      * Attribute type.
      */
     attributeType?: string;
+    /**
+     * Callback function to be fired on successful update.
+     */
+    onUpdate: (id?: string) => void;
 }
 
 /**
@@ -54,6 +58,7 @@ export const EditDialectDetails: FunctionComponent<EditDialectDetailsPropsInterf
     const {
         dialect,
         attributeType,
+        onUpdate,
         [ "data-testid" ]: testId
     } = props;
 
@@ -62,6 +67,7 @@ export const EditDialectDetails: FunctionComponent<EditDialectDetailsPropsInterf
     const { t } = useTranslation();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     return (
         <Grid>
@@ -70,6 +76,7 @@ export const EditDialectDetails: FunctionComponent<EditDialectDetailsPropsInterf
                     <Forms
                         onSubmit={ (values: Map<string, FormValue>) => {
                             const dialectURI = values.get("dialectURI").toString();
+                            setIsSubmitting(true);
                             updateADialect(dialect.id, dialectURI)
                                 .then(() => {
                                     dispatch(addAlert({
@@ -79,10 +86,7 @@ export const EditDialectDetails: FunctionComponent<EditDialectDetailsPropsInterf
                                         message: t("console:manage.features.claims.dialects.notifications" +
                                             ".updateDialect.success.message")
                                     }));
-                                    history.push(
-                                        AppConstants.getPaths().get("EXTERNAL_DIALECT_EDIT")
-                                            .replace(":id", window.btoa(dialectURI).replace(/=/g, ""))
-                                    );
+                                    onUpdate(window.btoa(dialectURI).replace(/=/g, ""));
                                 })
                                 .catch((error) => {
                                     dispatch(addAlert({
@@ -94,6 +98,9 @@ export const EditDialectDetails: FunctionComponent<EditDialectDetailsPropsInterf
                                             || t("console:manage.features.claims.dialects.notifications" +
                                                 ".updateDialect.genericError.message")
                                     }));
+                                })
+                                .finally(() => {
+                                    setIsSubmitting(false);
                                 });
                         } }
                     >
@@ -121,7 +128,12 @@ export const EditDialectDetails: FunctionComponent<EditDialectDetailsPropsInterf
                                 :(
                                     <>
                                         <Divider hidden />
-                                        <PrimaryButton type="submit" data-testid={ `${ testId }-form-submit-button` }>
+                                        <PrimaryButton
+                                            type="submit"
+                                            data-testid={ `${ testId }-form-submit-button` }
+                                            loading={ isSubmitting }
+                                            disabled={ isSubmitting }
+                                        >
                                             { t("console:manage.features.claims.dialects.forms.submit") }
                                         </PrimaryButton>
                                     </>

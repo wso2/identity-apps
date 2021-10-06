@@ -78,6 +78,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
     const [ groupDetailsData, setGroupDetailsData ] = useState<Map<string, FormValue>>(null);
     const [ userStore, setUserStore ] = useState<UserStorePostData>(null);
     const [ properties, setProperties ] = useState<CategorizedProperties>(null);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const [ firstStep, setFirstStep ] = useTrigger();
     const [ secondStep, setSecondStep ] = useTrigger();
@@ -105,6 +106,8 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
      * Adds the userstore
      */
     const handleSubmit = () => {
+        setIsSubmitting(true);
+
         addUserStore(userStore).then(() => {
             dispatch(addAlert({
                 description: t("console:manage.features.userstores.notifications.addUserstore.success.description"),
@@ -141,6 +144,8 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                 message: error?.message ?? t("console:manage.features.userstores.notifications.addUserstore" +
                     ".genericError.message")
             });
+        }).finally(() => {
+            setIsSubmitting(false);
         });
     };
 
@@ -393,6 +398,8 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                                     floated="right"
                                     onClick={ next }
                                     data-testid={ `${ testId }-finish-button` }
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting }
                                 >
                                     { t("common:finish") }</PrimaryButton>
                             ) }

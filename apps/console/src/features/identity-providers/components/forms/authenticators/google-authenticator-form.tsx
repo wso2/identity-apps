@@ -66,6 +66,10 @@ interface GoogleAuthenticatorFormPropsInterface extends TestableComponentInterfa
      * @remarks Not implemented ATM. Do this when needed.
      */
     showCustomProperties: boolean;
+    /**
+     * Specifies if the form is submitting.
+     */
+    isSubmitting?: boolean;
 }
 
 /**
@@ -146,6 +150,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
         initialValues: originalInitialValues,
         onSubmit,
         readOnly,
+        isSubmitting,
         [ "data-testid" ]: testId
     } = props;
 
@@ -471,7 +476,8 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                 ariaLabel="Google authenticator update button"
                 name="update-button"
                 data-testid={ `${ testId }-submit-button` }
-                disabled={ false }
+                disabled={ isSubmitting }
+                loading={ isSubmitting }
                 label={ t("common:update") }
                 hidden={ readOnly }
             />

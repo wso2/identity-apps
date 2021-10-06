@@ -77,7 +77,7 @@ export const FullScreenView: FunctionComponent<FullScreenViewPropsInterface> = (
     const { t } = useTranslation();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(getFullScreenViewRoutes());
 
@@ -183,7 +183,7 @@ export const FullScreenView: FunctionComponent<FullScreenViewPropsInterface> = (
                     />
                 ) }
             >
-                <Suspense fallback={ <PreLoader /> }>
+                <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
                     <Switch>
                         { resolveRoutes() }
                     </Switch>

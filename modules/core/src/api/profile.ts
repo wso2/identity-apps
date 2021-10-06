@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient } from "@wso2/identity-oidc-js";
+import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { CommonServiceResourcesEndpoints } from "../configs";
 import { ProfileConstants } from "../constants";
@@ -35,7 +35,7 @@ import { ContextUtils, ProfileUtils } from "../utils";
 /**
  * auth instance.
  */
-const auth = IdentityClient.getInstance();
+const auth = AsgardeoSPAClient.getInstance();
 /**
  * Get an http client instance.
  *

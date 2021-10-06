@@ -137,6 +137,14 @@ export interface GenericIconProps extends TestableComponentInterface {
      * Vertical alignment.
      */
     verticalAlign?: SemanticVERTICALALIGNMENTS;
+    /**
+     * Width of the icon.
+     */
+    width?: "auto" | number;
+    /**
+     * ID used to recognize components in guided tour wizards.
+     */
+    "data-tourid"?: string;
 }
 
 /**
@@ -199,7 +207,9 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
         transparent,
         twoTone,
         verticalAlign,
-        [ "data-testid" ]: testId
+        width,
+        [ "data-testid" ]: testId,
+        [ "data-tourid" ]: tourId
     } = props;
     
     const [ renderedIcon, setRenderedIcon ] = useState<HTMLElement | SVGElement | ReactElement | JSX.Element>(null);
@@ -229,7 +239,8 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
         "transparent": transparent,
         "two-tone": twoTone,
         [`${relaxLevel}`]: relaxLevel,
-        [`vertical-aligned-${ verticalAlign }`]: verticalAlign
+        [`vertical-aligned-${ verticalAlign }`]: verticalAlign,
+        [ `width-${ width }`]: width
     }, className);
 
     /**
@@ -384,6 +395,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
             style={ style }
             onClick={ onIconClickHandler }
             data-testid={ testId }
+            data-tourid={ tourId }
         >
             { renderedIcon }
         </div>
@@ -399,6 +411,7 @@ GenericIcon.defaultProps = {
     bordered: false,
     className: "",
     "data-testid": "generic-icon",
+    "data-tourid": null,
     defaultIcon: false,
     disabled: false,
     floated: null,

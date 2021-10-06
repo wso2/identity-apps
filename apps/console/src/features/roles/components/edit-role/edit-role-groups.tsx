@@ -96,6 +96,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     const [ isSelectUnassignedRolesAllRolesChecked, setIsSelectUnassignedAllRolesChecked ] = useState(false);
     const [ isSelectAssignedAllRolesChecked, setIsSelectAssignedAllRolesChecked ] = useState(false);
     const [ assignedGroups, setAssignedGroups ] = useState<RolesMemberInterface[]>([]);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
@@ -387,6 +388,8 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             bulkData.Operations.push(operation);
         }
 
+        setIsSubmitting(true);
+
         updateResources(bulkData)
             .then(() => {
                 dispatch(addAlert({
@@ -427,7 +430,11 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                         "console:manage.features.roles.notifications.updateRole.genericError.message"
                     )
                 });
-            });
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+            })
+;
     };
 
     const resolveListItemLabel = (displayName: string): ItemTypeLabelPropsInterface => {
@@ -569,6 +576,8 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                             <PrimaryButton
                                 data-testid="role-mgt-update-groups-modal-save-button"
                                 floated="right"
+                                loading={ isSubmitting }
+                                disabled={ isSubmitting }
                                 onClick={ () => updateRoleGroup(role, tempGroupList) }
                             >
                                 { t("common:save") }

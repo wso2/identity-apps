@@ -136,7 +136,28 @@ export const AccessControlContext: FunctionComponent<PropsWithChildren<AccessCon
                 [ AccessControlConstants.USER_EDIT ] : hasRequiredScopes(featureConfig.users,
                     featureConfig.users.scopes.update, allowedScopes),
                 [ AccessControlConstants.USER_DELETE ] : hasRequiredScopes(featureConfig.users,
-                    featureConfig.users.scopes.delete, allowedScopes)
+                    featureConfig.users.scopes.delete, allowedScopes),
+
+                [AccessControlConstants.SECRET_WRITE]: hasRequiredScopes(
+                    featureConfig.secretsManagement,
+                    featureConfig.secretsManagement.scopes.create,
+                    allowedScopes
+                ),
+                [AccessControlConstants.SECRET_READ]: hasRequiredScopes(
+                    featureConfig.secretsManagement,
+                    featureConfig.secretsManagement.scopes.read,
+                    allowedScopes
+                ),
+                [AccessControlConstants.SECRET_EDIT]: hasRequiredScopes(
+                    featureConfig.secretsManagement,
+                    featureConfig.secretsManagement.scopes.update,
+                    allowedScopes
+                ),
+                [AccessControlConstants.SECRET_DELETE]: hasRequiredScopes(
+                    featureConfig.secretsManagement,
+                    featureConfig.secretsManagement.scopes.delete,
+                    allowedScopes
+                )
             }
         });
 

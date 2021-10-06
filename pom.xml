@@ -24,7 +24,7 @@
     <groupId>org.wso2.identity.apps</groupId>
     <artifactId>identity-apps</artifactId>
     <packaging>pom</packaging>
-    <version>1.2.563-SNAPSHOT</version>
+    <version>1.2.616-SNAPSHOT</version>
     <name>WSO2 Identity Server Apps - Parent</name>
     <description>WSO2 Identity Server Web Apps</description>
 
@@ -664,7 +664,7 @@
         <identity.governance.version>1.4.97</identity.governance.version>
         <totp.authenticator.version>3.0.18</totp.authenticator.version>
 
-        <commons-io.wso2.version>2.4.0.wso2v1</commons-io.wso2.version>
+        <commons-io.wso2.version>2.7.0.wso2v1</commons-io.wso2.version>
         <commons-lang.wso2.version>2.6.0.wso2v1</commons-lang.wso2.version>
         <servlet-api.version>2.5</servlet-api.version>
         <javax.jsp-api.version>2.0</javax.jsp-api.version>

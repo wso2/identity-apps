@@ -18,6 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader, EmptyPlaceholder, PageLayout, TemplateGrid } from "@wso2is/react-components";
+import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import isEqual from "lodash-es/isEqual";
 import orderBy from "lodash-es/orderBy";
@@ -31,8 +32,7 @@ import {
     DropdownProps,
     Grid,
     Icon,
-    Input,
-    Button as SemButton
+    Input
 } from "semantic-ui-react";
 import {
     AppConstants,
@@ -207,17 +207,19 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
      */
     const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
 
-        if (id === CustomApplicationTemplate.id) {
-            setSelectedTemplate(CustomApplicationTemplate);
-            setShowWizard(true);
-
+        if (!applicationTemplates) {
             return;
         }
 
-        const selected = applicationTemplates?.find((template) => template.id === id);
+        let selected: ApplicationTemplateListItemInterface = applicationTemplates
+            .find((template) => template.id === id);
 
         if (!selected) {
             return;
+        }
+
+        if (id === CustomApplicationTemplate.id) {
+            selected = cloneDeep(CustomApplicationTemplate);
         }
 
         eventPublisher.publish("application-click-create-new", {

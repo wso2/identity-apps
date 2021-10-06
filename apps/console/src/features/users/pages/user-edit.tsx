@@ -50,7 +50,7 @@ const UserEditPage = (): ReactElement => {
     const dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
 
     const [ user, setUserProfile ] = useState<ProfileInfoInterface>(emptyProfileInfo);
@@ -59,6 +59,7 @@ const UserEditPage = (): ReactElement => {
     const [ showEditAvatarModal, setShowEditAvatarModal ] = useState<boolean>(false);
     const [ connectorProperties, setConnectorProperties ] = useState<ConnectorPropertyInterface[]>(undefined);
     const [ isReadOnlyUserStoresLoading, setReadOnlyUserStoresLoading ] = useState<boolean>(false);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     useEffect(() => {
         const properties: ConnectorPropertyInterface[] = [];
@@ -154,6 +155,8 @@ const UserEditPage = (): ReactElement => {
             schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
         };
 
+        setIsSubmitting(true);
+
         updateUserInfo(user?.id, data)
             .then(() => {
                 dispatch(addAlert<AlertInterface>({
@@ -196,6 +199,7 @@ const UserEditPage = (): ReactElement => {
             })
             .finally(() => {
                 setShowEditAvatarModal(false);
+                setIsSubmitting(false);
             });
     };
 
@@ -260,6 +264,7 @@ const UserEditPage = (): ReactElement => {
                         onCancel={ () => setShowEditAvatarModal(false) }
                         onSubmit={ handleAvatarEditModalSubmit }
                         imageUrl={ profileInfo?.profileUrl }
+                        isSubmitting={ isSubmitting }
                         heading={ t("console:common.modals.editAvatarModal.heading") }
                         submitButtonText={ t("console:common.modals.editAvatarModal.primaryButton") }
                         cancelButtonText={ t("console:common.modals.editAvatarModal.secondaryButton") }

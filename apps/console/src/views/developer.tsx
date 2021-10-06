@@ -107,7 +107,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const activeView: AppViewTypes = useSelector((state: AppState) => state.global.activeView);
 
     const [ manageRoutes ] = useState<RouteInterface[]>(getAdminViewRoutes());
@@ -384,7 +384,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
                     />
                 ) }
             >
-                <Suspense fallback={ <ContentLoader dimmer/> }>
+                <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
                     <Switch>
                         { resolveRoutes() }
                     </Switch>

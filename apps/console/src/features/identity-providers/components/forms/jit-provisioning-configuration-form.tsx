@@ -38,6 +38,10 @@ interface JITProvisioningConfigurationFormPropsInterface extends TestableCompone
     initialValues: JITProvisioningResponseInterface;
     useStoreList: SimpleUserStoreListItemInterface[];
     isReadOnly?: boolean;
+    /**
+     * Specifies if the form is submitting.
+     */
+    isSubmitting?: boolean;
 }
 
 enum JITProvisioningConstants {
@@ -61,6 +65,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         onSubmit,
         useStoreList,
         isReadOnly,
+        isSubmitting,
         [ "data-testid" ]: testId
     } = props;
 
@@ -221,6 +226,8 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                 primary type="submit"
                                 size="small"
                                 className="form-button"
+                                loading={ isSubmitting }
+                                disabled={ isSubmitting }
                                 data-testid={ `${ testId }-update-button` }
                             >
                                 { t("common:update") }

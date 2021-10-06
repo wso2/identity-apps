@@ -66,12 +66,13 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
     const dispatch = useDispatch();
 
     const [ userStore, setUserStore ] = useState([]);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const [ submit, setSubmit ] = useTrigger();
 
     const { t } = useTranslation();
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     useEffect(() => {
@@ -120,6 +121,9 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                         };
                                     })
                                 };
+
+                                setIsSubmitting(true);
+
                                 updateAClaim(claim.id, submitData).then(() => {
                                     dispatch(addAlert(
                                         {
@@ -143,6 +147,8 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                                     "updateClaim.genericError.message")
                                         }
                                     ));
+                                }).finally(() => {
+                                    setIsSubmitting(false);
                                 });
                             } }
                         >
@@ -188,6 +194,8 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                     setSubmit();
                                 } }
                                 data-testid={ `${ testId }-form-submit-button` }
+                                loading={ isSubmitting }
+                                disabled={ isSubmitting }
                             >
                                 { t("common:update") }
                             </PrimaryButton>

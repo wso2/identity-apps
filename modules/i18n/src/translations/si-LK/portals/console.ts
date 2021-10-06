@@ -937,6 +937,7 @@ export const console: ConsoleNS = {
                                                 }
                                             },
                                             secretsList: {
+                                                iconTooltip: "API යතුරක් ලෙස රහස් එකතු කරන්න",
                                                 create: "නව රහසක් සාදන්න",
                                                 emptyPlaceholder: "රහස් නොමැත",
                                                 search: "රහස් නාමයෙන් සොයන්න"
@@ -1348,7 +1349,9 @@ export const console: ConsoleNS = {
                         }
                     },
                     inboundOIDC: {
-                        description: "ඔබේ OpenID Connect සම්බන්ධක සැකසුම් පහත දක්වා ඇත",
+                        description: "ඔබේ {{protocol}} සම්බන්ධක සැකසුම් පහත දක්වා ඇත",
+                        documentation: "ඔබේ යෙදුම් වල ප්‍රවේශය ක්‍රියාත්මක කිරීම සඳහා <3>{{ප්‍රොටොකෝලය}</3> ප්‍රොටෝකෝලය " +
+                            "භාවිතා කිරීම ගැන වැඩිදුර දැන ගැනීමට අපගේ <1>ප්‍රලේඛනය</1> කියවන්න.",
                         messages: {
                             revokeDisclaimer: {
                                 content: "යෙදුම අවලංගු කර ඇත. ඔබට යෙදුම නැවත සක්‍රිය කිරීමට අවශ්‍ය නම් " +
@@ -1408,6 +1411,10 @@ export const console: ConsoleNS = {
                                         hint: "පොදු අයදුම්පත් සමඟ ව්‍යංග ප්‍රදානය භාවිතා කිරීම නිර්දේශ නොකරයි.",
                                         label: "{{grantType}} (නිර්දේශ නොකරයි)"
                                     },
+                                    client_credential: {
+                                        hint: "මෙම ප්‍රදාන වර්ගය සමඟ openid විෂය පථයට ඉඩ නොදේ.",
+                                        label: "(openid විෂය පථයට අවසර නැත)"
+                                    },
                                     password: {
                                         hint: "පොදු යෙදුම් සමඟ මුරපද ප්‍රදානය භාවිතා කිරීම නිර්දේශ නොකරයි.",
                                         label: "{{grantType}} (නිර්දේශ නොකරයි)"
@@ -1466,6 +1473,15 @@ export const console: ConsoleNS = {
                                         validations: {
                                             empty: "කරුණාකර පරිශීලක ප්‍රවේශ ටෝකන කල් ඉකුත් වීමේ කාලය පුරවන්න",
                                             invalid: "ප්‍රවේශ ටෝකන කල් ඉකුත් වීමේ කාලය තත්පර වලින් විය යුතුය."
+                                        }
+                                    },
+                                    applicationTokenExpiry: {
+                                        hint: "",
+                                        label: "අයදුම්පත් ප්‍රවේශ වීමේ සංකේත කල් ඉකුත් වීමේ කාලය",
+                                        placeholder: "අයදුම්පත් ප්‍රවේශ වීමේ සංකේත කල් ඉකුත් වීමේ වේලාව ඇතුළත් කරන්න",
+                                        validations: {
+                                            empty: "කරුණාකර අයදුම්පත් ප්‍රවේශ වීමේ සංකේත කල් ඉකුත් වීමේ කාලය පුරවන්න",
+                                            invalid: "අයදුම්පත් ප්‍රවේශ වීමේ සංකේත කල් ඉකුත් වීමේ කාලය තත්පර කිහිපයකින් විය යුතුය."
                                         }
                                     },
                                     revokeToken: {
@@ -1635,6 +1651,8 @@ export const console: ConsoleNS = {
                     },
                     inboundSAML: {
                         description: "ඔබේ අයදුම්පත සඳහා වූ SAML සැකසුම් පහත දක්වා ඇත.",
+                        documentation: "ඔබේ යෙදුම් වල ප්‍රවේශය ක්‍රියාත්මක කිරීම සඳහා <3>{{ප්‍රොටොකෝලය}</3> ප්‍රොටෝකෝලය " +
+                            "භාවිතා කිරීම ගැන වැඩිදුර දැන ගැනීමට අපගේ <1>ප්‍රලේඛනය</1> කියවන්න.",
                         fields: {
                             assertionURLs: {
                                 hint: "සත්‍යාපනය සාර්ථක වූ පසු බ්‍රව්සරය යළි හරවා යැවිය යුතු බවට පාරිභෝගික " +
@@ -1684,7 +1702,8 @@ export const console: ConsoleNS = {
                                 placeholder: "sample-app.com",
                                 validations: {
                                     empty: "කරුණාකර නිකුත් කරන්නාට සපයන්න"
-                                }
+                                },
+                                errorMessage: "නිකුත් කරන්නා දැනටමත් පවතී."
                             },
                             metaURL: {
                                 hint: "මෙටා ගොනුව සඳහා URL",
@@ -1693,7 +1712,8 @@ export const console: ConsoleNS = {
                                 validations: {
                                     empty: "කරුණාකර මෙටා ගොනු url ලබා දෙන්න",
                                     invalid: "මෙය වලංගු URL එකක් නොවේ"
-                                }
+                                },
+                                errorMessage: "පාරදත්ත යූආර්එල් වලංගු නොවේ"
                             },
                             mode: {
                                 children: {
@@ -2548,6 +2568,11 @@ export const console: ConsoleNS = {
                             description: "නව ප්‍රොටොකෝල් වින්‍යාසයන් සාර්ථකව එක් කරන ලදි.",
                             message: "යාවත්කාලීන කිරීම සාර්ථකයි"
                         }
+                    },
+                    conditionalScriptLoopingError: {
+                        description: "කොන්දේසි සහිත සත්‍යාපන පිටපත තුළ <1>for</1>, <3>while</3>, සහ <5>forEach</5>" +
+                            " වැනි ලූප් ඉදි කිරීම් වලට ඉඩ නොදේ.",
+                        message: "පිටපත යාවත්කාලීන කිරීමට අසමත් විය"
                     }
                 },
                 placeholders: {
@@ -2856,7 +2881,8 @@ export const console: ConsoleNS = {
                         customProperties: "අභිරුචි දේපල",
                         invalidQueryParamErrorMessage: "මේවා වලංගු විමසුම් පරාමිතීන් නොවේ",
                         invalidURLErrorMessage: "මෙය වලංගු URL එකක් නොවේ",
-                        requiredErrorMessage: "මෙය අවශ්‍ය වේ"
+                        requiredErrorMessage: "මෙය අවශ්‍ය වේ",
+                        internetResolvableErrorMessage: "යූආර්එල් අන්තර්ජාලය විසඳා ගත හැකි විය යුතුය."
                     },
                     generalDetails: {
                         description: {
@@ -3558,15 +3584,15 @@ export const console: ConsoleNS = {
             secrets: {
                 alerts: {
                     createdSecret: {
-                        description: "{{secretName}} නමින් නව රහසක් තනන ලදි.",
-                        message: "සාර්ථකව නිර්මාණය කළ රහසක්."
+                        description: "නිර්මාණය සාර්ථකයි.",
+                        message: "රහස සාර්ථකව නිර්‍මාණය කරන ලදි."
                     },
                     updatedSecret: {
-                        description: "{{secretName}} රහස යාවත්කාලීන කරන ලදි.",
+                        description: "යාවත්කාලීන කිරීම සාර්‍ථකයි.",
                         message: "රහස සාර්ථකව යාවත්කාලීන කරන ලදි."
                     },
                     deleteSecret: {
-                        description: "{{secretName}} රහස මකන ලදි.",
+                        description: "මැකීම සාර්‍ථකයි.",
                         message: "රහස සාර්ථකව මැකුවා"
                     }
                 },
@@ -3596,7 +3622,7 @@ export const console: ConsoleNS = {
                         secondaryActionButtonText: "අවලංගු කරන්න",
                         title: "ඔබට විශ්වාසද?",
                         content: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර රහස සදහටම මකා දමයි.",
-                        warningMessage: "ඔබ මෙම රහස මකා දැමුවහොත්, මෙම වටිනාකම අනුව අනුවර්තී සත්‍යාපන ලේඛන " +
+                        warningMessage: "ඔබ මෙම රහස මකා දැමුවහොත්, මෙම වටිනාකම අනුව කොන්දේසි සහිත සත්‍යාපන ලේඛන " +
                             "වැඩ කිරීම නවතිනු ඇත. කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න."
                     }
                 },
@@ -3657,6 +3683,9 @@ export const console: ConsoleNS = {
                 },
                 forms: {
                     editSecret: {
+                        page: {
+                            description: "රහස සංස්කරණය කරන්න"
+                        },
                         secretValueField: {
                             ariaLabel: "රහස්‍ය අගයක් ඇතුළු කරන්න",
                             label: "රහස් අගය",
@@ -3689,7 +3718,7 @@ export const console: ConsoleNS = {
                     },
                     emptyListOfSecrets: {
                         messages: [
-                            "මෙම රහස් වර්ගය සඳහා අපට රහස් සොයා ගැනීමට නොහැකි විය."
+                            "මේ වන විට රහස් නොමැත.."
                         ]
                     },
                     buttons: {
@@ -3760,6 +3789,10 @@ export const console: ConsoleNS = {
             authenticationProvider: {
                 templates: {
                     enterprise: {
+                        addWizard: {
+                            title: "ව්යවසාය",
+                            subtitle: "සම්මත සත්‍යාපන ප්‍රොටෝකෝල සමඟ නව හැඳුනුම්පත් සපයන්නෙකු වින්‍යාස කරන්න."
+                        },
                         validation: {
                             name: "වලංගු නමක් ඇතුළත් කරන්න",
                             invalidName: "වලංගු නමක් ඇතුළත් කරන්න"
@@ -4361,7 +4394,9 @@ export const console: ConsoleNS = {
                             validationErrorMessages: {
                                 duplicateName: "{{Type}} ගුණාංගය දැනටමත් පවතී.",
                                 invalidName: "ඔබ ඇතුළත් කළ නමේ නීති විරෝධී අක්ෂර අඩංගු වේ. " +
-                                    "අවසර දී ඇත්තේ අක්ෂර, අංක, `#`, `_` පමණි."
+                                    "අවසර දී ඇත්තේ අක්ෂර, අංක, `#`, `_` පමණි.",
+                                scimInvalidName: "නමේ ආරම්භක චරිතය අකුරක් විය යුතුය. " +
+                                    "ඉතිරි අක්ෂර වලට අකුරු, ඉලක්කම්, ඉර (-) සහ යටි ඉරි (_) ඇතුළත් විය හැකිය."
                             }
                         },
                         localAttribute: {
@@ -4440,8 +4475,8 @@ export const console: ConsoleNS = {
                 list: {
                     columns: {
                         actions: "ක්‍රියා",
-                        claimURI: "යූආර්අයි ඉල්ලන්න",
-                        dialectURI: "උපභාෂාව URI",
+                        claimURI: "SCIM ගුණාංගය",
+                        dialectURI: "සිතියම්ගත ගුණාංගය",
                         name: "නම"
                     },
                     confirmation: {
@@ -6135,7 +6170,8 @@ export const console: ConsoleNS = {
                             actionTitle: "මුරපදය නැවත සකසන්න",
                             header: "මුරපදය නැවත සකසන්න",
                             subheader: "ඔබ මුරපදය වෙනස් කළ පසු, පරිශීලකයාට දැනට පවතින මුරපදය භාවිතා කර කිසිඳු යෙදුමකට " +
-                                "ප්‍රවේශ විය නොහැක."
+                                "ප්‍රවේශ විය නොහැක.",
+                            buttonHint: "මුරපදය නැවත සැකසීමට මෙම පරිශීලක ගිණුම අගුළු හැරිය යුතුය."
                         }
                     }
                 },
@@ -6313,6 +6349,7 @@ export const console: ConsoleNS = {
                         phoneNumbers_mobile: "ජංගම දූරකථන අංකය",
                         phoneNumbers_other: "වෙනත් දුරකථන අංකය",
                         phoneNumbers_work: "වැඩ කරන දුරකථන අංකය",
+                        photos: "ඡායාරූප",
                         profileUrl: "URL",
                         userName: "පරිශීලක නාමය"
                         /* eslint-enable @typescript-eslint/camelcase */

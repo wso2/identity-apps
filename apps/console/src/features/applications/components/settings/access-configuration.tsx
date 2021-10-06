@@ -20,23 +20,25 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
+    Code,
     ConfirmationModal,
     ContentLoader,
     DocumentationLink,
     EmphasizedSegment,
     GenericIcon,
+    Text,
     useDocumentation
 } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import get from "lodash-es/get";
 import sortBy from "lodash-es/sortBy";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Button as SemButton, Divider, Grid, Header, Popup } from "semantic-ui-react";
-import { ProtocolLanding } from "./protocols/protocol-landing";
+import { Divider, Grid, Header, Message, Popup, Button as SemButton } from "semantic-ui-react";
+import { SAMLSelectionLanding } from "./protocols";
 import { applicationConfig } from "../../../../extensions";
-import { AppConstants, AppState, FeatureConfigInterface, history, store } from "../../../core";
+import { AppState, FeatureConfigInterface, store } from "../../../core";
 import {
     deleteProtocol,
     getAuthProtocolMetadata,
@@ -46,6 +48,7 @@ import {
     updateAuthProtocolConfig
 } from "../../api";
 import { getInboundProtocolLogos } from "../../configs";
+import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
 import {
@@ -60,8 +63,6 @@ import { setAuthProtocolMeta } from "../../store";
 import { ApplicationManagementUtils } from "../../utils";
 import { InboundFormFactory } from "../forms";
 import { ApplicationCreateWizard } from "../wizard";
-import { ApplicationManagementConstants } from "../../constants";
-import { SAMLSelectionLanding } from "./protocols";
 
 /**
  * Proptypes for the applications settings component.
@@ -176,7 +177,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const dispatch = useDispatch();
 
     const authProtocolMeta = useSelector((state: AppState) => state.application.meta.protocolMeta);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const tenantName = store.getState().config.deployment.tenant;
     const allowMultipleProtocol: boolean = useSelector(
         (state: AppState) => state.config.deployment.allowMultipleAppProtocols);
@@ -356,7 +357,10 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     message: t("console:develop.features.applications.notifications.updateApplication.genericError" +
                         ".message")
                 }));
-            });
+            })
+            .finally(() => {
+                setIsLoading(false);
+             });
     };
 
     /**
@@ -442,7 +446,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         }
 
         if (applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC) {
-            return [SupportedAuthProtocolTypes.OIDC];
+            return [SupportedAuthProtocolTypes.OAUTH2_OIDC];
         }
 
         if (applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
@@ -533,68 +537,159 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
             return null;
         }
 
+        /**
+         * Renders the link to documentation for integrating login.
+         * @remarks Currently, the logic is added only for standard based applications (custom).
+         * And shown when the link is defined.
+         * @return {React.ReactElement}
+         */
+        const renderProtocolIntegrationHelpMessage = (): ReactElement => {
+
+            let docLink: string = undefined;
+
+            if (applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC) {
+                docLink = getLink("develop.applications.editApplication.standardBasedApplication" +
+                    ".oauth2OIDC.protocol.learnMore");
+            }
+
+            if (applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) {
+                docLink = getLink("develop.applications.editApplication.standardBasedApplication" +
+                    ".saml.protocol.learnMore");
+            }
+
+            if (!docLink) {
+                return null;
+            }
+
+            return (
+                <Fragment>
+                    <Message visible>
+                        <Text>
+                            <Trans
+                                i18nKey={
+                                    "extensions:console.application.quickStart" +
+                                    ".technologySelectionWrapper.subHeading"
+                                }
+                            >
+                                Read through our
+                                <DocumentationLink link={ docLink }>documentation</DocumentationLink>
+                                to learn more about using
+                                <Code withBackground={ false }>
+                                    {
+                                        ApplicationManagementUtils.resolveProtocolDisplayName(
+                                                selectedProtocol as SupportedAuthProtocolTypes
+                                        )
+                                    }
+                                </Code>
+                                protocol to implement login in your applications.
+                            </Trans>
+                        </Text>
+                    </Message>
+                    <Divider hidden />
+                </Fragment>
+            );
+        };
+
         return (
             <EmphasizedSegment className="protocol-settings-section form-wrapper" padded="very">
-                { !isLoading? resolveProtocolBanner() : null }
-                {
-                    Object.values(SupportedAuthProtocolTypes).includes(selectedProtocol as SupportedAuthProtocolTypes)
-                        ? (
-                            <InboundFormFactory
-                                isLoading={ isLoading }
-                                setIsLoading={ setIsLoading }
-                                certificate={ certificate }
-                                tenantDomain={ tenantName }
-                                allowedOrigins={ allowedOriginList }
-                                metadata={ authProtocolMeta[ selectedProtocol ] }
-                                initialValues={
-                                    get(inboundProtocolConfig, selectedProtocol)
-                                        ? inboundProtocolConfig[ selectedProtocol ]
-                                        : undefined
-                                }
-                                onSubmit={ handleSubmit }
-                                type={ selectedProtocol as SupportedAuthProtocolTypes }
-                                onApplicationRegenerate={ handleApplicationRegenerate }
-                                onApplicationRevoke={ handleApplicationRevoke }
-                                readOnly={
-                                    readOnly
-                                    || !hasRequiredScopes(
-                                        featureConfig?.applications,
-                                        featureConfig?.applications?.scopes?.update,
-                                        allowedScopes
-                                    )
-                                }
-                                showSAMLCreation={ selectedProtocol === SupportedAuthProtocolTypes.SAML }
-                                SAMLCreationOption={
-                                    (selectedProtocol === SupportedAuthProtocolTypes.SAML) && samlCreationOption }
-                                template={ template }
-                                data-testid={ `${ testId }-inbound-${ selectedProtocol }-form` }
-                            />
-                        )
-                        : (
-                            <InboundFormFactory
-                                isLoading={ isLoading }
-                                setIsLoading={ setIsLoading }
-                                certificate={ certificate }
-                                metadata={ authProtocolMeta[ selectedProtocol ] }
-                                initialValues={
-                                    get(inboundProtocolConfig, selectedProtocol)
-                                        ? inboundProtocolConfig[ selectedProtocol ]
-                                        : undefined
-                                }
-                                onSubmit={ handleSubmit }
-                                type={ SupportedAuthProtocolTypes.CUSTOM }
-                                readOnly={
-                                    !hasRequiredScopes(
-                                        featureConfig?.applications,
-                                        featureConfig?.applications?.scopes?.update,
-                                        allowedScopes
-                                    )
-                                }
-                                template={ template }
-                                data-testid={ `${ testId }-inbound-custom-form` }
-                            />
-                        )
-                }
+                <div className="form-container with-max-width">
+                    { !isLoading? resolveProtocolBanner() : null }
+                    { renderProtocolIntegrationHelpMessage() }
+                    {
+                        Object
+                            .values(SupportedAuthProtocolTypes)
+                            .includes(selectedProtocol as SupportedAuthProtocolTypes)
+                            ? (
+                                <InboundFormFactory
+                                    isLoading={ isLoading }
+                                    setIsLoading={ setIsLoading }
+                                    certificate={ certificate }
+                                    tenantDomain={ tenantName }
+                                    allowedOrigins={ allowedOriginList }
+                                    metadata={
+                                        authProtocolMeta[
+                                            // There's no separate meta for `OAuth2/OIDC` Apps.
+                                            // Need to use `OIDC` for noe.
+                                            selectedProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+                                                ? SupportedAuthProtocolTypes.OIDC
+                                                : selectedProtocol
+                                            ]
+                                    }
+                                    initialValues={
+                                        get(
+                                            inboundProtocolConfig,
+                                            selectedProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+                                                ? SupportedAuthProtocolTypes.OIDC
+                                                : selectedProtocol
+                                        )
+                                            ? inboundProtocolConfig[
+                                                selectedProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+                                                    ? SupportedAuthProtocolTypes.OIDC
+                                                    : selectedProtocol
+                                                ]
+                                            : undefined
+                                    }
+                                    onSubmit={ handleSubmit }
+                                    type={ selectedProtocol as SupportedAuthProtocolTypes }
+                                    onApplicationRegenerate={ handleApplicationRegenerate }
+                                    onApplicationRevoke={ handleApplicationRevoke }
+                                    readOnly={
+                                        readOnly
+                                        || !hasRequiredScopes(
+                                            featureConfig?.applications,
+                                            featureConfig?.applications?.scopes?.update,
+                                            allowedScopes
+                                        )
+                                    }
+                                    showSAMLCreation={ selectedProtocol === SupportedAuthProtocolTypes.SAML }
+                                    SAMLCreationOption={
+                                        (selectedProtocol === SupportedAuthProtocolTypes.SAML) && samlCreationOption }
+                                    template={ template }
+                                    data-testid={ `${ testId }-inbound-${ selectedProtocol }-form` }
+                                />
+                            )
+                            : (
+                                <InboundFormFactory
+                                    isLoading={ isLoading }
+                                    setIsLoading={ setIsLoading }
+                                    certificate={ certificate }
+                                    metadata={
+                                        // There's no separate meta for `OAuth2/OIDC` Apps. Need to use `OIDC` for noe.
+                                        authProtocolMeta[
+                                            selectedProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+                                                ? SupportedAuthProtocolTypes.OIDC
+                                                : selectedProtocol
+                                            ]
+                                    }
+                                    initialValues={
+                                        get(
+                                            inboundProtocolConfig,
+                                            selectedProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+                                                ? SupportedAuthProtocolTypes.OIDC
+                                                : selectedProtocol
+                                        )
+                                            ? inboundProtocolConfig[
+                                                selectedProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+                                                    ? SupportedAuthProtocolTypes.OIDC
+                                                    : selectedProtocol
+                                                ]
+                                            : undefined
+                                    }
+                                    onSubmit={ handleSubmit }
+                                    type={ SupportedAuthProtocolTypes.CUSTOM }
+                                    readOnly={
+                                        !hasRequiredScopes(
+                                            featureConfig?.applications,
+                                            featureConfig?.applications?.scopes?.update,
+                                            allowedScopes
+                                        )
+                                    }
+                                    template={ template }
+                                    data-testid={ `${ testId }-inbound-custom-form` }
+                                />
+                            )
+                    }
+                </div>
             </EmphasizedSegment>
         );
     };
@@ -604,7 +699,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         if (!supportedProtocolList) {
             return null;
         }
-        
+
         if (allowMultipleProtocol) {
             return (
                 <Grid.Row>
@@ -662,12 +757,12 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         }
         return (
             <>
-                <Header as="h3">
+                <Header as="h3" className="display-flex">
                     <GenericIcon
-                        inline
                         transparent
+                        width="auto"
                         icon={ getInboundProtocolLogos()[ selectedProtocol ] }
-                        size="mini"
+                        size="x30"
                         verticalAlign="middle"
                     />
                     <Header.Content
@@ -677,20 +772,20 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                             ApplicationManagementUtils.resolveProtocolDisplayName(
                                 selectedProtocol as SupportedAuthProtocolTypes)
                         } </strong>
-                        {/*{TODO: Hide change protocol option}*/}
-                        {/*{  (supportedProtocolList.length !== 1) &&*/}
-                        {/*<Header.Subheader*/}
-                        {/*    className="protocol-banner-sub-title"*/}
-                        {/*>*/}
-                        {/*    Choose different protocol?*/}
-                        {/*    <LinkButton*/}
-                        {/*        className={ "pl-1" }*/}
-                        {/*        onClick={ () => setShowProtocolSwitchModal(true) }*/}
-                        {/*    >*/}
-                        {/*        Change Protocol*/}
-                        {/*    </LinkButton>*/}
-                        {/*</Header.Subheader>*/}
-                        {/*}*/}
+                        { /*{TODO: Hide change protocol option}*/ }
+                        { /*{  (supportedProtocolList.length !== 1) &&*/ }
+                        { /*<Header.Subheader*/ }
+                        { /*    className="protocol-banner-sub-title"*/ }
+                        { /*>*/ }
+                        { /*    Choose different protocol?*/ }
+                        { /*    <LinkButton*/ }
+                        { /*        className={ "pl-1" }*/ }
+                        { /*        onClick={ () => setShowProtocolSwitchModal(true) }*/ }
+                        { /*    >*/ }
+                        { /*        Change Protocol*/ }
+                        { /*    </LinkButton>*/ }
+                        { /*</Header.Subheader>*/ }
+                        { /*}*/ }
                     </Header.Content>
                 </Header>
                 { resolveProtocolDescription() }
@@ -704,11 +799,20 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
      * @return {React.ReactElement}
      */
     const resolveProtocolDescription =(): ReactElement => {
-        // Description for SAML Protocol tab.
+
+        // Description for OIDC Protocol tab.
         if (selectedProtocol === SupportedAuthProtocolTypes.OIDC) {
             return(
                 <Header as="h6" color="grey" compact>
-                    { t("console:develop.features.applications.forms.inboundOIDC.description") }
+                    {
+                        t(
+                            "console:develop.features.applications.forms.inboundOIDC.description",
+                            {
+                                protocol: ApplicationManagementUtils
+                                    .resolveProtocolDisplayName(SupportedAuthProtocolTypes.OIDC)
+                            }
+                        )
+                    }
                     <DocumentationLink
                         link={ getLink("develop.applications.editApplication.oidcApplication.protocol.learnMore") }
                     >
@@ -717,7 +821,30 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 </Header>
             );
         }
-        // Description for OIDC Protocol tab.
+
+        // Description for OAuth2/OIDC Protocol tab.
+        if (selectedProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC) {
+            return(
+                <Header as="h6" color="grey" compact>
+                    {
+                        t(
+                            "console:develop.features.applications.forms.inboundOIDC.description",
+                            {
+                                protocol: ApplicationManagementUtils
+                                    .resolveProtocolDisplayName(SupportedAuthProtocolTypes.OAUTH2_OIDC)
+                            }
+                        )
+                    }
+                    <DocumentationLink
+                        link={ getLink("develop.applications.editApplication.oidcApplication.protocol.learnMore") }
+                    >
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                </Header>
+            );
+        }
+
+        // Description for SAML Protocol tab.
         if (selectedProtocol === SupportedAuthProtocolTypes.SAML) {
             return(
                 <Header as="h6" color="grey" compact>

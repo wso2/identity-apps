@@ -129,10 +129,29 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
                     data-testid={ testId }
                 />
             );
+        case SupportedAuthProtocolTypes.OAUTH2_OIDC:
+            return (
+                <InboundOIDCForm
+                    isLoading={ isLoading }
+                    setIsLoading={ setIsLoading }
+                    certificate={ certificate }
+                    tenantDomain={ tenantDomain }
+                    allowedOriginList={ allowedOrigins }
+                    initialValues={ initialValues }
+                    metadata={ metadata }
+                    onSubmit={ onSubmit }
+                    onApplicationRegenerate={ onApplicationRegenerate }
+                    onApplicationRevoke={ onApplicationRevoke }
+                    readOnly={ readOnly }
+                    template={ template }
+                    data-testid={ testId }
+                />
+            );
         case SupportedAuthProtocolTypes.SAML:
             if (showSAMLCreation && SAMLCreationOption && SAMLCreationOption !== SAMLConfigModes.MANUAL) {
                 return (
                     <InboundSAMLCreationForm
+                        isLoading={ isLoading }
                         initialValues={ initialValues }
                         creationOption={ SAMLCreationOption ? SAMLCreationOption : SAMLConfigModes.META_URL  }
                         onSubmit={ onSubmit }
@@ -142,6 +161,7 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
             }
             return (
                 <InboundSAMLForm
+                    isLoading={ isLoading }
                     certificate={ certificate }
                     initialValues={ initialValues }
                     metadata={ metadata }
@@ -153,6 +173,7 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         case SupportedAuthProtocolTypes.WS_TRUST:
             return (
                 <InboundWSTrustForm
+                    isLoading={ isLoading }
                     certificate={ certificate }
                     initialValues={ initialValues }
                     metadata={ metadata }
@@ -164,6 +185,7 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         case SupportedAuthProtocolTypes.WS_FEDERATION:
             return (
                 <InboundPassiveStsForm
+                    isLoading={ isLoading }
                     certificate={ certificate }
                     initialValues={ initialValues }
                     onSubmit={ onSubmit }
@@ -174,6 +196,7 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         case SupportedAuthProtocolTypes.CUSTOM:
             return (
                 <InboundCustomProtocolForm
+                    isLoading={ isLoading }
                     certificate={ certificate }
                     metadata={ metadata }
                     initialValues={ initialValues }

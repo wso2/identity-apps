@@ -1,5 +1,5 @@
-<!--
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+/**
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -14,29 +14,21 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- -->
+ */
 
-<!DOCTYPE HTML>
-<html>
-<head>
-    <title>OpenID Connect Session Management RP IFrame</title>
-</head>
-<body>
-<iframe
-    id="opIFrame"
-    src=""
-    width="0"
-    height="0"
->
-</iframe>
-<iframe
-    id="promptNoneIFrame"
-    src=""
-    width="0"
-    height="0"
->
-</iframe>
-<script type="application/javascript">
-</script>
-</body>
-</html>
+export interface MetaI18NNamespace {
+    code: string;
+    flag: string;
+    name: string;
+    namespaces: string[];
+    paths: {
+        common: string;
+        console: string;
+        myAccount: string;
+        extensions: string;
+    };
+}
+
+export interface MetaI18N {
+    [ key: string ]: MetaI18NNamespace;
+}

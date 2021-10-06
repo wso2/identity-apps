@@ -22,6 +22,7 @@ import { AuthReducerStateInterface } from "../../../core/models";
  * Initial state for the common authenticate reducer.
  */
 export const commonAuthenticateReducerInitialState: AuthReducerStateInterface = {
+    allowedScopes: "",
     displayName: "",
     display_name: "",
     email: "",
@@ -29,6 +30,6 @@ export const commonAuthenticateReducerInitialState: AuthReducerStateInterface = 
     isAuthenticated: false,
     loginInit: false,
     logoutInit: false,
-    scope: "",
+    sessionState: "",
     username: ""
 };

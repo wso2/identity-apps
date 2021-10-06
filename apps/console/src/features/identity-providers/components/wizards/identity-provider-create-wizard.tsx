@@ -127,6 +127,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
         useState<FederatedAuthenticatorMetaInterface>(undefined);
     const [ defaultOutboundProvisioningConnectorMetadata, setDefaultOutboundProvisioningConnectorMetadata ] =
         useState<OutboundProvisioningConnectorMetaInterface>(undefined);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -150,6 +151,8 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
     const createNewIdentityProvider = (identityProvider: IdentityProviderInterface): void => {
         // TODO Uncomment below once BE support is available for templateId
         // identityProvider.templateId = template.id
+        setIsSubmitting(true);
+
         createIdentityProvider(identityProvider)
             .then((response) => {
                 dispatch(addAlert({
@@ -215,6 +218,9 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                     message: t("console:develop.features.authenticationProvider.notifications." +
                         "addIDP.genericError.message")
                 });
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
     };
 
@@ -698,7 +704,11 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                             </PrimaryButton>
                         ) }
                         { currentWizardStep === wizardSteps.length - 1 && (
-                            <PrimaryButton floated="right" onClick={ navigateToNext }
+                            <PrimaryButton
+                                floated="right"
+                                onClick={ navigateToNext }
+                                loading={ isSubmitting }
+                                disabled={ isSubmitting }
                                 data-testid={ `${ testId }-modal-finish-button` }>
                                 { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
                             </PrimaryButton>

@@ -30,6 +30,8 @@ import {
     CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface
 } from "../../../models";
+import { commonConfig } from "../../../../../extensions";
+import { URLUtils } from "@wso2is/core/utils";
 
 const AUTHORIZATION_REDIRECT_URL: string = "callbackUrl";
 
@@ -264,6 +266,19 @@ export const getURLField = (eachProp: CommonPluggableComponentPropertyInterface,
                         validation.errorMessages.push(
                             I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                                 "invalidURLErrorMessage"));
+                    }
+                    if (commonConfig?.blockLoopBackCalls && URLUtils.isLoopBackCall(value) &&
+                        (
+                            propertyMetadata?.key === "OAuth2AuthzEPUrl" ||
+                            propertyMetadata?.key === "OAuth2TokenEPUrl" ||
+                            propertyMetadata?.key === "UserInfoUrl"
+                        ))
+                    {
+                        validation.isValid = false;
+                        validation.errorMessages.push(
+                            I18n.instance.t("console:develop.features.idp.forms.common." +
+                                "internetResolvableErrorMessage")
+                        );
                     }
                 } }
                 type="text"

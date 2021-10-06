@@ -107,7 +107,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
     ];
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ offset, setOffset ] = useState(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
@@ -118,6 +118,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ disableSubmit, setDisableSubmit ] = useState<boolean>(true);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const [ triggerAddExternalClaim, setTriggerAddExternalClaim ] = useTrigger();
     const [ resetPagination, setResetPagination ] = useTrigger();
@@ -142,6 +143,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
     useEffect(() => {
         if (claims) {
             setFilteredClaims(claims);
+            handleSearchQueryClear(); // Clear the search field upon new claims
         }
     }, [ claims ]);
 
@@ -242,6 +244,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
             });
         });
 
+        setIsSubmitting(true);
         Promise.all(addAttributesRequests).then(() => {
             dispatch(addAlert(
                 {
@@ -266,6 +269,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                 }
             ));
         }).finally(() => {
+            setIsSubmitting(false);
             setShowAddExternalClaim(false);
         });
     };
@@ -395,12 +399,13 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                                 { t("common:cancel") }
                             </LinkButton>
                             <PrimaryButton
-                                disabled={ disableSubmit }
+                                disabled={ disableSubmit || isSubmitting }
+                                loading={ isSubmitting }
                                 onClick={ () => {
                                     eventPublisher.publish("manage-attribute-mappings-add-new-attribute", {
                                         "type": kebabCase(attributeType)
                                     });
-                                    
+
                                     setTriggerAddExternalClaim();
                                 } }
                                 data-testid={ `${ testId }-add-external-claim-modal-save-button` }

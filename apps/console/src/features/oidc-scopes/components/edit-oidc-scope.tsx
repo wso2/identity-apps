@@ -121,7 +121,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
 
     const init = useRef(true);
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const isReadOnly = useMemo(
@@ -235,10 +235,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                 render: (claim: ExternalClaim): ReactNode => (
                     <Header image as="h6" className="header-with-icon" data-testid={ `${ testId }-item-heading` }>
                         <Header.Content>
-                            { claim.localClaimDisplayName }
-                            <Header.Subheader>
-                                <code>{ claim.mappedLocalClaimURI }</code>
-                            </Header.Subheader>
+                            { claim.claimURI }
                         </Header.Content>
                     </Header>
                 ),

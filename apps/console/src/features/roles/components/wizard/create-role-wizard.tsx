@@ -101,6 +101,8 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
 
     const [ tempUsersList, setTempUsersList ] = useState<UserBasicInterface[]>([]);
     const [ isEnded, setEnded ] = useState<boolean>(false);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+
 
     /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`
@@ -181,6 +183,8 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             "users": users
         };
 
+        setIsSubmitting(true);
+
         // Create Role API Call.
         createRole(roleData).then(response => {
             if (response.status === 201) {
@@ -224,6 +228,8 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                     message: t("console:manage.features.roles.notifications.createRole.genericError.message")
                 }));
             }
+        }).finally(() => {
+                setIsSubmitting(false);
         });
     };
 
@@ -308,6 +314,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                 triggerSubmit={ submitPermissionList }
                 initialValues={ wizardState && wizardState[ WizardStepsFormTypes.PERM_LIST ] }
                 onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.PERM_LIST) }
+                isSubmitting={ isSubmitting }
             />
         ),
         icon: <Icon name="key" inverted size="large" />,
@@ -463,6 +470,8 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                                 <PrimaryButton
                                     floated="right"
                                     onClick={ changeStepToNext }
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting }
                                     data-testid={ `${ testId }-finish-button` }
                                 >
                                     { t("console:manage.features.roles.addRoleWizard.buttons.finish") }

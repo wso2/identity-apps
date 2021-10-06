@@ -102,6 +102,9 @@ export interface EditAvatarModalPropsInterface extends ModalProps, TestableCompo
      * Flag to decide whether to show the hosted URL option.
      */
     showHostedURLOption?: boolean;
+    /**
+     * Specifies if there is a pending submission.
+     */
 }
 
 const GRAVATAR_IMAGE_MIN_SIZE = 80;
@@ -187,6 +190,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
         showHostedURLOption,
         showOptionTitle,
         submitButtonText,
+        isSubmitting,
         [ "data-testid" ]: testId,
         translations,
         ...rest
@@ -246,7 +250,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
 
         getGravatarImage(selectedGravatarEmail)
             .then(() => {
-                setIsGravatarQualified(true)
+                setIsGravatarQualified(true);
             })
             .catch(() => {
                 setIsGravatarQualified(false);
@@ -644,7 +648,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                                                                                         key: index,
                                                                                         text: email,
                                                                                         value: email
-                                                                                    }
+                                                                                    };
                                                                                 })
                                                                         }
                                                                         onChange={ handleGravatarEmailDropdownChange }
@@ -742,7 +746,9 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                         || !outputURL
                         || (selectedAvatarType === AvatarTypes.URL && !isHostedURLValid)
                         || (selectedAvatarType === AvatarTypes.URL && hostedURL === imageUrl)
+                        || isSubmitting
                     }
+                    loading={ isSubmitting }
                     onClick={ handleModalSubmit }
                 >
                     { submitButtonText }

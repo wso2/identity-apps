@@ -292,6 +292,16 @@
             display: inline-block;
             margin-right: @selectionCardRightSpacing;
         }
+        &.image-inline {
+            .card-text-container {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                align-content: center;
+                justify-content: center;
+                align-items: center;
+            }
+        }
         &.selected {
             &.underlined-selection {
                 &:after {

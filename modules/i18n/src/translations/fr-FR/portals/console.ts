@@ -949,6 +949,7 @@ export const console: ConsoleNS = {
                                                 }
                                             },
                                             secretsList: {
+                                                iconTooltip: "Ajouter un secret en tant que clé API",
                                                 create: "Créer un nouveau secret",
                                                 emptyPlaceholder: "Aucun secret disponible",
                                                 search: "Recherche par nom secret"
@@ -1375,7 +1376,9 @@ export const console: ConsoleNS = {
                         }
                     },
                     inboundOIDC: {
-                        description: "Ci-dessous sont les paramètres OpenID Connect pour votre application",
+                        description: "Ci-dessous sont les paramètres {{protocol}} pour votre application",
+                        documentation: "Lisez notre <1>documentation</1> pour en savoir plus sur l'utilisation " +
+                            "du protocole <3>{{protocol}}</3> pour implémenter la connexion dans vos applications.",
                         fields: {
                             allowedOrigins: {
                                 hint: "Les origines autorisées sont des URL qui seront autorisées à effectuer des requêtes " +
@@ -1428,6 +1431,10 @@ export const console: ConsoleNS = {
                                         hint: "L'utilisation de l'octroi implicite avec des applications publiques " +
                                             "n'est pas recommandée.",
                                         label: "{{grantType}} (non recommandé)"
+                                    },
+                                    client_credential: {
+                                        hint: "La portée openid n'est pas autorisée avec ce type de subvention.",
+                                        label: "(portée openid non autorisée)"
                                     },
                                     password: {
                                         hint: "L'utilisation de l'octroi de mot de passe avec des applications " +
@@ -1500,6 +1507,19 @@ export const console: ConsoleNS = {
                                             empty: "Veuillez indiquer le délai d'expiration des jetons d'accès",
                                             invalid: "L'heure d'expiration du jeton d'accès doit être exprimée "
                                                 +"en secondes."
+                                        }
+                                    },
+                                    applicationTokenExpiry: {
+                                        hint: "Précisez la période de validité du " +
+                                            "<1>jeton d'accès à l'application</1> en secondes.",
+                                        label: "Délai d'expiration du jeton d'accès à l'application",
+                                        placeholder: "Saisissez l'heure d'expiration du jeton d'accès à l'application",
+                                        validations: {
+                                            empty: "Veuillez remplir le délai d'expiration du jeton d'accès " +
+                                                "à l'application",
+                                            invalid: "Le délai d'expiration du jeton d'accès à l'application " +
+                                                "doit être en secondes. Les décimales et les nombres " +
+                                                "négatifs ne sont pas autorisés."
                                         }
                                     },
                                     revokeToken: {
@@ -1683,6 +1703,8 @@ export const console: ConsoleNS = {
                     },
                     inboundSAML: {
                         description: "Vous trouverez ci-dessous les paramètres SAML de votre application.",
+                        documentation: "Lisez notre <1>documentation</1> pour en savoir plus sur l'utilisation " +
+                            "du protocole <3>{{protocol}}</3> pour implémenter la connexion dans vos applications.",
                         fields: {
                             assertionURLs: {
                                 hint: "Elle précise les URL des consommateurs vers lesquels le navigateur " +
@@ -1731,7 +1753,8 @@ export const console: ConsoleNS = {
                                 placeholder: "sample-app.com",
                                 validations: {
                                     empty: "Veuillez indiquer l'émetteur"
-                                }
+                                },
+                                errorMessage: "L'émetteur existe déjà."
                             },
                             metaURL: {
                                 hint: "URL du fichier de métadonnées",
@@ -1740,7 +1763,8 @@ export const console: ConsoleNS = {
                                 validations: {
                                     empty: "Veuillez indiquer l'URL du fichier de métadonnées",
                                     invalid: "Ceci n'est pas une URL valide"
-                                }
+                                },
+                                errorMessage: "L'URL des métadonnées n'est pas valide"
                             },
                             mode: {
                                 children: {
@@ -2600,6 +2624,11 @@ export const console: ConsoleNS = {
                             description: "Ajout réussi de nouvelles configurations de protocole.",
                             message: "Mise à jour réussie"
                         }
+                    },
+                    conditionalScriptLoopingError: {
+                        description: "Les constructions en boucle telles que <1>for</1>, <3>while</3> et " +
+                            "<5>forEach</5> ne sont pas autorisées dans le script d'authentification conditionnelle.",
+                        message: "Échec de la mise à jour du script"
                     }
                 },
                 placeholders: {
@@ -2912,7 +2941,8 @@ export const console: ConsoleNS = {
                         customProperties: "Propriétés personnalisées",
                         invalidQueryParamErrorMessage: "Ce ne sont pas des paramètres de requête valables",
                         invalidURLErrorMessage: "Ceci n'est pas une URL valide",
-                        requiredErrorMessage: "Ceci est requis"
+                        requiredErrorMessage: "Ceci est requis",
+                        internetResolvableErrorMessage: "L'URL doit pouvoir être résolue par Internet."
                     },
                     generalDetails: {
                         description: {
@@ -3639,16 +3669,16 @@ export const console: ConsoleNS = {
             secrets: {
                 alerts: {
                     createdSecret: {
-                        description: "Création d'un nouveau secret avec le nom {{secretName}}.",
-                        message: "Secret créé avec succès."
+                        description: "Le secret a été créé avec succès.",
+                        message: "Création réussie."
                     },
                     updatedSecret: {
-                        description: "Secret mis à jour avec {{secretName}}.",
-                        message: "Secret mis à jour avec succès."
+                        description: "Le secret a été mis à jour avec succès.",
+                        message: "Mise à jour réussie."
                     },
                     deleteSecret: {
-                        description: "Secret supprimé avec {{secretName}}.",
-                        message: "Secret supprimé avec succès."
+                        description: "Le secret a été supprimé avec succès.",
+                        message: "Suppression réussie."
                     }
                 },
                 errors: {
@@ -3677,7 +3707,7 @@ export const console: ConsoleNS = {
                         secondaryActionButtonText: "Annuler",
                         title: "Es-tu sûr?",
                         content: "Cette action est irréversible et supprimera définitivement le secret.",
-                        warningMessage: "Si vous supprimez ce secret, les scripts d'authentification adaptative " +
+                        warningMessage: "Si vous supprimez ce secret, les scripts d'authentification conditionnelle " +
                             "en fonction de cette valeur cesseront de fonctionner. Veuillez procéder avec prudence."
                     }
                 },
@@ -3738,6 +3768,9 @@ export const console: ConsoleNS = {
                 },
                 forms: {
                     editSecret: {
+                        page: {
+                            description: "Modifier le secret"
+                        },
                         secretValueField: {
                             ariaLabel: "Entrez une valeur secrète",
                             label: "Valeur secrète",
@@ -3770,7 +3803,7 @@ export const console: ConsoleNS = {
                     },
                     emptyListOfSecrets: {
                         messages: [
-                            "Nous n'avons pu trouver aucun secret pour ce type de secret."
+                            "Il n'y a pas de secrets disponibles pour le moment."
                         ]
                     },
                     buttons: {
@@ -3815,6 +3848,11 @@ export const console: ConsoleNS = {
             authenticationProvider: {
                 templates: {
                     enterprise: {
+                        addWizard: {
+                            title: "Entreprise",
+                            subtitle: "Configurez un nouveau fournisseur d'identité avec des protocoles " +
+                                "d'authentification standard."
+                        },
                         validation: {
                             name: "Merci d'entrer un nom valide",
                             invalidName: "Merci d'entrer un nom valide"
@@ -4423,7 +4461,10 @@ export const console: ConsoleNS = {
                             validationErrorMessages: {
                                 duplicateName: "L'URI de l'attribut {{type}} existe déjà.",
                                 invalidName: "Le nom que vous avez entré contient des caractères non autorisés. " +
-                                    "Seuls les alphabets, les nombres, «#», «_» sont autorisés."
+                                    "Seuls les alphabets, les nombres, «#», «_» sont autorisés.",
+                                scimInvalidName: "Le caractère de départ du nom doit être une lettre. " +
+                                    "Les caractères restants peuvent inclure des lettres, des chiffres, " +
+                                    "un tiret (-) et un trait de soulignement (_)."
                             }
                         },
                         localAttribute: {
@@ -4502,8 +4543,8 @@ export const console: ConsoleNS = {
                 list: {
                     columns: {
                         actions: "Actions",
-                        claimURI: "URI du claim",
-                        dialectURI: "URI du dialecte",
+                        claimURI: "Attribut SCIM",
+                        dialectURI: "Attribut mappé",
                         name: "Nom"
                     },
                     confirmation: {
@@ -6204,7 +6245,9 @@ export const console: ConsoleNS = {
                             actionTitle: "Réinitialiser le mot de passe",
                             header: "Réinitialiser le mot de passe",
                             subheader: "Une fois le mot de passe modifié, l'utilisateur ne pourra plus se connecter " +
-                                "à aucune application en utilisant le mot de passe actuel."
+                                "à aucune application en utilisant le mot de passe actuel.",
+                            buttonHint: "Ce compte utilisateur doit être déverrouillé pour réinitialiser le mot de " +
+                                "passe."
                         }
                     }
                 },
@@ -6383,6 +6426,7 @@ export const console: ConsoleNS = {
                         phoneNumbers_mobile: "Numéro de téléphone portable",
                         phoneNumbers_other: "Autre numéro de téléphone",
                         phoneNumbers_work: "Numéro de téléphone au professionnel",
+                        photos: "Photos",
                         profileUrl: "URL",
                         userName: "Nom d'utilisateur"
                         /* eslint-enable @typescript-eslint/camelcase */

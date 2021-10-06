@@ -65,6 +65,7 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
 
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
@@ -128,6 +129,8 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
             ];
         }
 
+        setIsSubmitting(true);
+
         updateIDPCertificate(idp.id, data)
             .then(() => {
                 dispatch(addAlert({
@@ -161,6 +164,9 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
                     message: t("console:develop.features.authenticationProvider." +
                         "notifications.updateIDPCertificate.genericError.message")
                 });
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
     };
 
@@ -242,6 +248,8 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
                                 <PrimaryButton
                                     floated="right"
                                     onClick={ navigateToNext }
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting }
                                     data-testid={ `${ testId }-finish-button` }
                                 >
                                     { t("common:finish") }

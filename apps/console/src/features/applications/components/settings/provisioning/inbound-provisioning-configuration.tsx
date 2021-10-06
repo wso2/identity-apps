@@ -84,9 +84,10 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
 
     const [ userStore, setUserStore ] = useState<SimpleUserStoreListItemInterface[]>([]);
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>(defaultActiveIndexes);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     /**
      * Handles the provisioning config form submit action.
@@ -94,6 +95,8 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
      * @param values - Form values.
      */
     const handleProvisioningConfigFormSubmit = (values: any): void => {
+        setIsSubmitting(true);
+
         updateApplicationConfigurations(appId, values)
             .then(() => {
                 dispatch(addAlert({
@@ -114,6 +117,9 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
                     message: t("console:develop.features.applications.notifications.updateInboundProvisioningConfig" +
                         ".genericError.message")
                 }));
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
     };
 
@@ -183,6 +189,7 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
                                                         allowedScopes)
                                                 }
                                                 data-testid={ `${ testId }-form` }
+                                                isSubmitting={ isSubmitting }
                                             />
                                         ),
                                         id: "scim",

@@ -66,6 +66,10 @@ interface GithubAuthenticatorFormPropsInterface extends TestableComponentInterfa
      * @remarks Not implemented ATM. Do this when needed.
      */
     showCustomProperties: boolean;
+    /**
+     * Specifies if the form is submitting.
+     */
+    isSubmitting?: boolean;
 }
 
 /**
@@ -135,7 +139,7 @@ interface ScopeMetaInterface {
     /**
      * Scope icon.
      */
-    icon: SemanticICONS
+    icon: SemanticICONS;
 }
 
 /**
@@ -154,6 +158,7 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
         initialValues: originalInitialValues,
         onSubmit,
         readOnly,
+        isSubmitting,
         [ "data-testid" ]: testId
     } = props;
 
@@ -441,7 +446,8 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                 ariaLabel="GitHub authenticator update button"
                 name="update-button"
                 data-testid={ `${ testId }-submit-button` }
-                disabled={ false }
+                disabled={ isSubmitting }
+                loading={ isSubmitting }
                 label={ t("common:update") }
                 hidden={ readOnly }
             />

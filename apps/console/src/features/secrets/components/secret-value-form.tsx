@@ -16,29 +16,16 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { LocalStorageUtils } from "@wso2is/core/utils";
 import { Hint } from "@wso2is/react-components";
-import React, { FC, Fragment, ReactElement, useEffect, useState } from "react";
+import React, { FC, Fragment, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import {
-    Button,
-    Divider,
-    Form,
-    Grid,
-    Icon,
-    Message,
-    Popup,
-    TextArea,
-    TextAreaProps,
-    Transition
-} from "semantic-ui-react";
-import { AppState, ConfigReducerStateInterface } from "../../core";
+import { useDispatch } from "react-redux";
+import { Button, Divider, Form, Grid, Icon, Popup, TextArea, TextAreaProps, Transition } from "semantic-ui-react";
 import { patchSecret } from "../api/secret";
-import { EMPTY_JSON_OBJECT_STRING, EMPTY_STRING, FEATURE_LOCAL_STORAGE_KEY } from "../constants/secrets.common";
-import { EditSecretLocalStorage } from "../models/common";
+import { EMPTY_STRING } from "../constants/secrets.common";
 import { SecretModel } from "../models/secret";
 import { SECRET_VALUE_LENGTH, secretValueValidator } from "../utils/secrets.validation.utils";
 
@@ -55,7 +42,6 @@ export type SecretValueFormProps = {
 const SecretValueForm: FC<SecretValueFormProps> = (props: SecretValueFormProps): ReactElement => {
 
     const {
-        showInfoBanner,
         editingSecret,
         ["data-componentid"]: testId
     } = props;
@@ -64,52 +50,11 @@ const SecretValueForm: FC<SecretValueFormProps> = (props: SecretValueFormProps):
     const dispatch = useDispatch();
 
     const [ loading, setLoading ] = useState<boolean>(false);
-    const [ showInfoMessage, setShowInfoMessage ] = useState<boolean>(false);
     const [ fieldError, setFieldError ] = useState<string | undefined>(undefined);
     const [ secretFieldTouched, setSecretFieldTouched ] = useState<boolean>(false);
     const [ secretFieldModified, setSecretFieldModified ] = useState<boolean>(false);
     const [ isEditingSecretValue, setIsEditingSecretValue ] = useState<boolean>(false);
     const [ secretValue, setSecretValue ] = useState<string | undefined>(EMPTY_STRING);
-
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-
-    useEffect(() => {
-        if (showInfoBanner)
-            checkAndRenderInfoMessage();
-    }, []);
-
-    /**
-     * Check whether the info message is already shown. if `not`
-     * show it otherwise don't.
-     */
-    const checkAndRenderInfoMessage = (): void => {
-        try {
-            // If message dismissed already shown, then don't show it again.
-            const local = JSON.parse(
-                LocalStorageUtils.getValueFromLocalStorage(FEATURE_LOCAL_STORAGE_KEY)
-                ?? EMPTY_JSON_OBJECT_STRING
-            ) as EditSecretLocalStorage;
-            if (local && local.hideInfoMessage === true) {
-                setShowInfoMessage(false);
-            } else {
-                setShowInfoMessage(true);
-            }
-        } catch (e) {
-            setShowInfoMessage(true);
-        }
-    };
-
-    /**
-     * Event handler for banner dismiss button.
-     * @event-handler
-     */
-    const onDismissInfoMessageBanner = (): void => {
-        LocalStorageUtils.setValueInLocalStorage(
-            FEATURE_LOCAL_STORAGE_KEY,
-            JSON.stringify({ hideInfoMessage: true } as EditSecretLocalStorage)
-        );
-        setShowInfoMessage(false);
-    };
 
     const updateSecretValue = async (valueToUpdate: string) => {
         setLoading(true);
@@ -218,38 +163,6 @@ const SecretValueForm: FC<SecretValueFormProps> = (props: SecretValueFormProps):
         setFieldError(fieldValidator(String(props.value)));
     };
 
-    /**
-     * Information banner explaining why the user cannot see the
-     * secret value. By default API won't send value information
-     * to client. So this message is to convey them.
-     */
-    const InfoMessage: ReactElement = (
-        <Grid>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column width={ 10 }>
-                    <Message
-                        data-componentid={ `${ testId }-page-message` }
-                        info
-                        onDismiss={ onDismissInfoMessageBanner }>
-                        <Message.Header
-                            data-componentid={ `${ testId }-page-message-header` }>
-                            <strong>{ t("console:develop.features.secrets.banners.secretIsHidden.title") }</strong>
-                        </Message.Header>
-                        <Message.Content
-                            className="mt-2"
-                            data-componentid={ `${ testId }-page-message-content` }>
-                            { t(
-                                "console:develop.features.secrets.banners.secretIsHidden.content",
-                                { productName: config.ui?.productName }
-                            ) }
-                        </Message.Content>
-                    </Message>
-                    <Divider hidden/>
-                </Grid.Column>
-            </Grid.Row>
-        </Grid>
-    );
-
     return (
         <Fragment>
             <Form
@@ -285,25 +198,29 @@ const SecretValueForm: FC<SecretValueFormProps> = (props: SecretValueFormProps):
                                 error={ (secretFieldTouched || secretFieldModified) ? fieldError : undefined }
                                 style={ { position: "relative" } }
                             />
-                            <div className={ "edit-button-transition" }  >
+                            <div className={ "edit-button-transition" }>
                                 <Popup
                                     trigger={ (
-                                        <Button
-                                            type="submit"
-                                            loading={ loading }
-                                            primary={ isEditingSecretValue && secretValue && !fieldError }
-                                            disabled={
-                                                loading || isEditingSecretValue && (!!fieldError || !(secretValue?.trim()))
-                                            }
-                                            style={ { marginLeft: "-15px", marginTop: "23px" } }
-                                            aria-label={
-                                                isEditingSecretValue
-                                                    ? t(`${ FIELD_I18N_KEY }.updateButton`)
-                                                    : t(`${ FIELD_I18N_KEY }.editButton`)
-                                            }
-                                            className="ui button icon">
-                                            <Icon name={ isEditingSecretValue ? "check" : "pencil alternate" }/>
-                                        </Button>
+                                        <Show when={ AccessControlConstants.SECRET_EDIT }>
+                                            <Button
+                                                type="submit"
+                                                loading={ loading }
+                                                primary={ isEditingSecretValue && secretValue && !fieldError }
+                                                disabled={
+                                                    loading ||
+                                                    isEditingSecretValue &&
+                                                    (!!fieldError || !(secretValue?.trim()))
+                                                }
+                                                style={ { marginLeft: "-15px", marginTop: "23px" } }
+                                                aria-label={
+                                                    isEditingSecretValue
+                                                        ? t(`${ FIELD_I18N_KEY }.updateButton`)
+                                                        : t(`${ FIELD_I18N_KEY }.editButton`)
+                                                }
+                                                className="ui button icon">
+                                                <Icon name={ isEditingSecretValue ? "check" : "pencil alternate" }/>
+                                            </Button>
+                                        </Show>
                                     ) }
                                     disabled={ isEditingSecretValue && (!!fieldError || !(secretValue?.trim())) }
                                     position="top center"
@@ -331,12 +248,12 @@ const SecretValueForm: FC<SecretValueFormProps> = (props: SecretValueFormProps):
                             </div>
                             { isEditingSecretValue ? (
                                 <Hint icon="info circle">
-                                    { t(`${FIELD_I18N_KEY}.hint`, {
+                                    { t(`${ FIELD_I18N_KEY }.hint`, {
                                         maxLength: SECRET_VALUE_LENGTH.max,
                                         minLength: SECRET_VALUE_LENGTH.min
                                     }) }
                                 </Hint>
-                            ):(
+                            ) : (
                                 <Divider hidden/>
                             ) }
                         </Grid.Column>

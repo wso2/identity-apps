@@ -28,6 +28,7 @@ import { Button, Grid, Icon, Message } from "semantic-ui-react";
 import { getCertificateIllustrations } from "../../../core";
 import { SAMLConfigModes, SupportedAuthProtocolTypes } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
+import { commonConfig } from "../../../../extensions";
 
 /**
  * Proptypes for the saml protocol all settings wizard form component.
@@ -63,6 +64,15 @@ interface SAMLProtocolAllSettingsWizardFormPropsInterface extends TestableCompon
      * @param mode configuration mode
      */
     setSAMLConfigureMode?: (mode: string) => void;
+    issuerRef?: any;
+    metaUrlRef?: any;
+    issuerError?: boolean;
+    metaUrlError?: boolean;
+    /**
+     * Check whether the protocol form changed.
+     * @param state - Protocol changed state
+     */
+    handleProtocolValueChange?: (state: boolean) => void;
 }
 
 /**
@@ -84,6 +94,11 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
         triggerSubmit,
         onSubmit,
         setSAMLConfigureMode,
+        issuerRef,
+        metaUrlRef,
+        issuerError,
+        metaUrlError,
+        handleProtocolValueChange,
         ["data-testid"]: testId
     } = props;
 
@@ -275,6 +290,8 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     name="issuer"
+                                    ref={ issuerRef }
+                                    displayErrorOn="blur"
                                     label={
                                         t("console:develop.features.applications.forms.inboundSAML" +
                                             ".fields.issuer.label")
@@ -290,6 +307,14 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                             ".issuer.placeholder")
                                     }
                                     value={ issuer }
+                                    validation={ (value, validation) => {
+                                        if (issuerError) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(
+                                                t("console:develop.features.applications.forms.inboundSAML" +
+                                                    ".fields.issuer.errorMessage"));
+                                        }
+                                    } }
                                     data-testid={ `${testId}-issuer-input` }
                                 />
                                 { !hideFieldHints && (
@@ -443,6 +468,8 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Field
                             name="url"
+                            ref={ metaUrlRef }
+                            displayErrorOn="blur"
                             label={
                                 t("console:develop.features.applications.forms.inboundSAML.fields" +
                                     ".metaURL.label")
@@ -463,6 +490,22 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                     validation.errorMessages.push(
                                         t("console:develop.features.applications.forms.inboundSAML" +
                                             ".fields.metaURL.validations.invalid")
+                                    );
+                                }
+
+                                if (commonConfig?.blockLoopBackCalls && URLUtils.isLoopBackCall(value)) {
+                                    validation.isValid = false;
+                                    validation.errorMessages.push(
+                                        t("console:develop.features.idp.forms.common." +
+                                            "internetResolvableErrorMessage")
+                                    );
+                                }
+
+                                if (metaUrlError) {
+                                    validation.isValid = false;
+                                    validation.errorMessages.push(
+                                        t("console:develop.features.applications.forms.inboundSAML" +
+                                            ".fields.metaURL.errorMessage")
                                     );
                                 }
                             } }
@@ -517,6 +560,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
             ? (
                 <Forms
                     onSubmit={ (values: Map<string, FormValue>): void => {
+                        handleProtocolValueChange(true);
                         if (configureMode === SAMLConfigModes.MANUAL) {
                             submitUrl((url: string) => {
                                 // Check whether assertionConsumer url is empty or not.

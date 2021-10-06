@@ -16,6 +16,7 @@
  * under the License.
  */
 
+const fs = require("fs");
 const path = require("path");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const BrotliPlugin = require("brotli-webpack-plugin");
@@ -39,16 +40,31 @@ const isProfilingEnabledInProduction = false;
 const DEVELOPMENT_ESLINT_CONFIG = ".eslintrc.js";
 const PRODUCTION_ESLINT_CONFIG = ".prod.eslintrc.js";
 
-// Paths
-const APP_SOURCE_DIRECTORY = "src";                // App source code directory.
-const APP_NODE_MODULES_DIRECTORY = "node_modules"; // Node modules.
-const OUTPUT_PATH = "build/myaccount";             // Build artifacts output path.
-const CACHE_DIRECTORY = "cache";                   // Output directory for the cache files. Only applicable in dev mode.
-const STATIC_ASSETS_DIRECTORY = "static/media";    // Output directory for static assets i.e .png, .jpg etc.
+// Paths & Folders
+const APP_SOURCE_DIRECTORY = "src";                    // App source code directory.
+const APP_NODE_MODULES_DIRECTORY = "node_modules";     // Node modules.
+const OUTPUT_PATH = "build/myaccount";                 // Build artifacts output path.
+const CACHE_DIRECTORY = "cache";                       // Output directory for the cache files. Only applicable in dev mode.
+const STATIC_ASSETS_DIRECTORY = "static/media";        // Output directory for static assets i.e .png, .jpg etc.
+const JAVA_EE_SERVER_FOLDERS = [ "**/WEB-INF/**/*" ];  // Java EE server specific folders.
 
 // Dev Server Default Configs.
 const DEV_SERVER_PORT = 9000;
 const ROOT_CONTEXT_DEV_SERVER_INITIAL_REDIRECT = "/login";
+
+const THEME_TO_USE = deploymentConfig.ui.theme.name || "default";
+const THEME_DIR = path.resolve(__dirname, "node_modules", "@wso2is", "theme", "dist", "lib", "themes", THEME_TO_USE);
+let themeHash;
+const files = fs.readdirSync(THEME_DIR);
+
+const file = files ? files.filter(file => file.endsWith(".min.css"))[ 0 ] : null;
+themeHash = file ? file.split(".")[ 1 ] : null;
+
+const I18N_DIR = path.resolve(__dirname, "node_modules", "@wso2is", "i18n", "dist", "bundle");
+const metaFiles = fs.readdirSync(I18N_DIR);
+
+const metaFile = metaFiles ? metaFiles.filter(file => file.startsWith("meta"))[ 0 ] : null;
+const metaHash = metaFile ? metaFile.split(".")[ 1 ] : null;
 
 module.exports = (env) => {
 
@@ -61,6 +77,9 @@ module.exports = (env) => {
     // will be removed. Since these resources are only available inside IS runtime, when hosted
     // externally, the server (tomcat etc.) will throw errors when trying to resolve them.
     const isDeployedOnExternalServer = env.IS_DEPLOYED_ON_EXTERNAL_SERVER;
+    // Flag to determine if the app is deployed on a static server.
+    // With this option, all the `jsp` files and java specific folders will be dropped.
+    const isDeployedOnStaticServer = env.SERVER_TYPE === "static";
 
     // Analyzing mode options.
     const isAnalyzeMode = env.ENABLE_ANALYZER === "true";
@@ -141,8 +160,7 @@ module.exports = (env) => {
             : isDevelopment && "eval-cheap-module-source-map",
         entry: {
             init: [ "@babel/polyfill", "./src/init/init.ts" ],
-            main: "./src/index.tsx",
-            rpIFrame: "./src/init/rpIFrame-script.ts"
+            main: "./src/index.tsx"
         },
         infrastructureLogging: {
             // Log level is set to `none` by default to get rid of un-necessary logs from persistent cache etc.
@@ -387,22 +405,30 @@ module.exports = (env) => {
                         context: path.join(__dirname, "src"),
                         force: true,
                         from: "public",
+                        // For deployments on static servers, we don't require the Java EE specific
+                        // folders like `WEB_INF` etc.
+                        globOptions: {
+                            ignore: isDeployedOnStaticServer
+                                ? [ ...JAVA_EE_SERVER_FOLDERS ]
+                                : []
+                        },
                         to: "."
                     },
-                    {
+                    // For deployments on static servers, we don't require `auth.jsp` since we can't use
+                    // `form_post` response mode.
+                    !isDeployedOnStaticServer && {
                         context: path.join(__dirname, "src"),
                         force: true,
                         from: "auth.jsp",
                         to: "."
                     }
-                ]
+                ].filter(Boolean)
             }),
-            isProduction
+            isProduction && !isDeployedOnStaticServer
                 ? new HtmlWebpackPlugin({
                     authorizationCode: "<%=request.getParameter(\"code\")%>",
                     contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" " +
                         "pageEncoding=\"UTF-8\" %>",
-                    excludeChunks: [ "rpIFrame" ],
                     filename: path.join(distFolder, "index.jsp"),
                     hash: true,
                     importSuperTenantConstant: !isDeployedOnExternalServer
@@ -417,6 +443,7 @@ module.exports = (env) => {
                         ? "<%@ page import=\"" +
                         "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>"
                         : "",
+                    minify: false,
                     publicPath: !isRootContext
                         ? publicPath
                         : "/",
@@ -434,30 +461,24 @@ module.exports = (env) => {
                     tenantPrefix: !isDeployedOnExternalServer
                         ? "<%=TENANT_AWARE_URL_PREFIX%>"
                         : "",
+                    themeHash: themeHash,
                     vwoScriptVariable: "<%= vwo_ac_id %>",
                     vwoSystemVariable: "<% String vwo_ac_id = System.getenv(\"vwo_account_id\"); %>"
                 })
                 : new HtmlWebpackPlugin({
-                    excludeChunks: [ "rpIFrame" ],
                     filename: path.join(distFolder, "index.html"),
                     hash: true,
+                    minify: false,
                     publicPath: !isRootContext
                         ? publicPath
                         : "/",
-                    template: path.join(__dirname, "src", "index.html")
+                    template: path.join(__dirname, "src", "index.html"),
+                    themeHash: themeHash
                 }),
-            new HtmlWebpackPlugin({
-                excludeChunks: [ "main", "init" ],
-                filename: path.join(distFolder, "rpIFrame.html"),
-                hash: true,
-                publicPath: !isRootContext
-                    ? publicPath
-                    : "/",
-                template: path.join(__dirname, "src", "rpIFrame.html")
-            }),
             new webpack.DefinePlugin({
                 "process.env": {
-                    NODE_ENV: JSON.stringify(env.NODE_ENV)
+                    NODE_ENV: JSON.stringify(env.NODE_ENV),
+                    metaHash: JSON.stringify(metaHash)
                 },
                 "typeof window": JSON.stringify("object")
             }),

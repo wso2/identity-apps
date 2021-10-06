@@ -94,6 +94,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     const [ isSelectAllGroupsChecked, setIsSelectAllGroupsChecked ] = useState(false);
     const [ assignedGroups, setAssignedGroups ] = useState<RolesMemberInterface[]>([]);
     const [ isPrimaryGroupsLoading, setPrimaryGroupsLoading ] = useState<boolean>(false);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     useEffect(() => {
         if (!(user)) {
@@ -315,6 +316,8 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
             });
         }
 
+        setIsSubmitting(true);
+
         updateResources(bulkData)
             .then(() => {
                 onAlertFired({
@@ -360,6 +363,9 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                         "genericError.message"
                     )
                 });
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
         };
 
@@ -468,6 +474,8 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                             <PrimaryButton
                                 data-testid="user-mgt-update-groups-modal-save-button"
                                 floated="right"
+                                loading={ isSubmitting }
+                                disabled={ isSubmitting }
                                 onClick={ () => updateUserGroup(user, selectedGroupsList) }
                             >
                                 { t("common:save") }

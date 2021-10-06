@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -39,11 +40,12 @@ import {
     FeatureConfigInterface,
     history
 } from "../../core";
-import { getIdentityProviderDetail, getMultiFactorAuthenticatorDetails } from "../api";
+import { getIdentityProviderDetail, getLocalAuthenticator, getMultiFactorAuthenticatorDetails } from "../api";
 import { EditIdentityProvider, EditMultiFactorAuthenticator } from "../components";
 import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorMeta } from "../meta";
 import {
+    AuthenticatorInterface,
     IdentityProviderInterface,
     IdentityProviderTemplateItemInterface,
     IdentityProviderTemplateLoadingStrategies,
@@ -77,8 +79,6 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
 
     const { t } = useTranslation();
 
-    const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
-
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const identityProviderTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
         (state: AppState) => state.identityProvider.templates);
@@ -90,16 +90,15 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     const [
         connector,
         setConnector
-    ] = useState<IdentityProviderInterface | MultiFactorAuthenticatorInterface>(undefined);
+    ] = useState<IdentityProviderInterface | MultiFactorAuthenticatorInterface | AuthenticatorInterface>(undefined);
     const [
         isConnectorDetailsFetchRequestLoading,
         setConnectorDetailFetchRequestLoading
     ] = useState<boolean>(undefined);
-    const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(0);
     const [ isExtensionsAvailable, setIsExtensionsAvailable ] = useState<boolean>(false);
     const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const isReadOnly = useMemo(() => (
         !hasRequiredScopes(
@@ -143,22 +142,6 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     }, [ identityProviderConfig ]);
 
     /**
-     * Triggered when the IDP state search param in the URL changes.
-     */
-    useEffect(() => {
-
-        if (!urlSearchParams.get(IdentityProviderManagementConstants.IDP_STATE_URL_SEARCH_PARAM_KEY)) {
-            if (isExtensionsAvailable) {
-                setDefaultActiveIndex(1);
-            }
-            return;
-        }
-    }, [
-        urlSearchParams.get(IdentityProviderManagementConstants.IDP_STATE_URL_SEARCH_PARAM_KEY),
-        isExtensionsAvailable
-    ]);
-
-    /**
      *  Get IDP templates.
      */
     useEffect(() => {
@@ -196,8 +179,8 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
         }
 
         if (!(identityProviderTemplates
-                && identityProviderTemplates instanceof Array
-                && identityProviderTemplates.length > 0)) {
+            && identityProviderTemplates instanceof Array
+            && identityProviderTemplates.length > 0)) {
 
             return;
         }
@@ -276,40 +259,57 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
      * Retrieves the local authenticator details from the API.
      *
      * @param {string} id - Authenticator id.
+     * @param {boolean} useAuthenticatorsAPI - Use the 
      */
-    const getMultiFactorAuthenticator = (id: string): void => {
+    const getMultiFactorAuthenticator = (id: string, useAuthenticatorsAPI: boolean = true): void => {
 
         setConnectorDetailFetchRequestLoading(true);
 
-        getMultiFactorAuthenticatorDetails(id)
-            .then((response) => {
-                setConnector(response);
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
+        /**
+         * Get authenticator details from either governance API or `authenticators` API.
+         * @param {(id: string) => Promise<T>} cb - Callback.
+         * @return {Promise<T>}
+         */
+        const getAuthenticatorDetails = <T extends unknown>(cb: (id: string) => Promise<T>) => {
+
+            cb(id)
+                .then((response: T) => {
+                    setConnector(response);
+                })
+                .catch((error: IdentityAppsApiException) => {
+                    if (error.response && error.response.data && error.response.data.description) {
+                        dispatch(addAlert({
+                            description: t("console:develop.features.authenticationProvider." +
+                                "notifications.getConnectionDetails.error.description",
+                                { description: error.response.data.description }),
+                            level: AlertLevels.ERROR,
+                            message: t("console:develop.features.authenticationProvider." +
+                                "notifications.getConnectionDetails.error.message")
+                        }));
+
+                        return;
+                    }
+
                     dispatch(addAlert({
                         description: t("console:develop.features.authenticationProvider." +
-                            "notifications.getConnectionDetails.error.description",
-                            { description: error.response.data.description }),
+                            "notifications.getConnectionDetails.genericError.description"),
                         level: AlertLevels.ERROR,
                         message: t("console:develop.features.authenticationProvider." +
-                            "notifications.getConnectionDetails.error.message")
+                            "notifications.getConnectionDetails.genericError.message")
                     }));
+                })
+                .finally(() => {
+                    setConnectorDetailFetchRequestLoading(false);
+                });
+        };
 
-                    return;
-                }
+        if (useAuthenticatorsAPI) {
+            getAuthenticatorDetails<AuthenticatorInterface>(getLocalAuthenticator);
 
-                dispatch(addAlert({
-                    description: t("console:develop.features.authenticationProvider." +
-                        "notifications.getConnectionDetails.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:develop.features.authenticationProvider." +
-                        "notifications.getConnectionDetails.genericError.message")
-                }));
-            })
-            .finally(() => {
-                setConnectorDetailFetchRequestLoading(false);
-            });
+            return;
+        }
+
+        getAuthenticatorDetails<MultiFactorAuthenticatorInterface>(getMultiFactorAuthenticatorDetails);
     };
 
     /**
@@ -459,7 +459,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                     { connector.name }
                     {
                         (isConnectorDetailsFetchRequestLoading === false
-                            && connector.name) &&  resolveStatusLabel(connector)
+                            && connector.name) && resolveStatusLabel(connector)
                     }
                 </Fragment>
             );
@@ -537,18 +537,17 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                             isSaml={
                                 (connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
                                     ? undefined
-                                    :(connector.federatedAuthenticators.defaultAuthenticatorId
-                                    === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID)
+                                    : (connector.federatedAuthenticators.defaultAuthenticatorId
+                                        === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID)
                             }
                             isOidc={
                                 (connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
                                     ? undefined
-                                    :(connector.federatedAuthenticators.defaultAuthenticatorId
-                                    === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID)
+                                    : (connector.federatedAuthenticators.defaultAuthenticatorId
+                                        === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID)
                             }
                             data-testid={ testId }
                             template={ identityProviderTemplate }
-                            defaultActiveIndex={ defaultActiveIndex }
                             isTabExtensionsAvailable={ (isAvailable) => setIsExtensionsAvailable(isAvailable) }
                             type={ identityProviderTemplate?.id }
                             isReadOnly={ isReadOnly }

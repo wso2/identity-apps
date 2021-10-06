@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ResponseMode, Storage } from "@wso2/identity-oidc-js";
+import { ResponseMode, Storage } from "@asgardeo/auth-react";
 import {
     CommonConfigInterface,
     CommonDeploymentConfigInterface,
@@ -103,6 +103,10 @@ export interface FeatureConfigInterface {
      * User management feature.
      */
     users?: FeatureAccessConfigInterface;
+    /**
+     * Secret Management Feature UI Access Scopes.
+     */
+    secretsManagement?: FeatureAccessConfigInterface;
 }
 
 /**

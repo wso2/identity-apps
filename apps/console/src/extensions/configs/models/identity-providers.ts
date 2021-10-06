@@ -91,10 +91,6 @@ export interface IdentityProviderConfig {
  * Interface for Authenticator extensions config.
  */
 export interface AuthenticatorExtensionsConfigInterface {
-    editFlowOverrides?: {
-        editActionLabel: string;
-        getEditView: (...args: any) => ReactNode;
-    };
     content?: {
         quickStart: ReactNode;
     };

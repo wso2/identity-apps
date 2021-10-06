@@ -192,7 +192,7 @@
 </head>
 <body class="login-portal layout authentication-portal-layout" onload="checkSessionKey()">
 
-    <% request.setAttribute("pageName", "login"); %>
+    <% request.setAttribute("pageName", "sign-in"); %>
     <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
         <jsp:include page="extensions/timeout.jsp"/>
     <% } else { %>

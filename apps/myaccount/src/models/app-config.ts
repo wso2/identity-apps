@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ResponseMode, Storage } from "@wso2/identity-oidc-js";
+import { ResponseMode, Storage } from "@asgardeo/auth-react";
 import {
     CommonConfigInterface,
     CommonDeploymentConfigInterface,
@@ -155,7 +155,7 @@ export interface UIConfigInterface extends CommonUIConfigInterface {
      */
      showAppSwitchButton?: boolean;
     }
-    
+
     /**
      * Interface for defining settings and configs of an external app.
      */
@@ -173,12 +173,12 @@ export interface UIConfigInterface extends CommonUIConfigInterface {
          */
         path: string;
     }
-    
+
     /**
      * Portal Deployment config interface inheriting the common configs from core module.
      */
     export interface DeploymentConfigInterface extends CommonDeploymentConfigInterface<ResponseMode, Storage> {
-    
+
         /**
          * Configs of the Console app.
          */

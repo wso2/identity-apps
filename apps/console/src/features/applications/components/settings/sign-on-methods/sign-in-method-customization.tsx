@@ -19,10 +19,10 @@
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms } from "@wso2is/forms";
-import { Heading, Hint, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { Code, Heading, Hint, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Icon } from "semantic-ui-react";
 import { ScriptBasedFlow } from "./script-based-flow";
@@ -250,6 +250,30 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 onUpdate(appId);
             })
             .catch((error) => {
+
+                const DISALLOWED_PROGRAMMING_CONSTRUCTS = "APP-60001";
+                if (error.response && error.response.data?.code === DISALLOWED_PROGRAMMING_CONSTRUCTS) {
+                    dispatch(addAlert({
+                        description: (
+                            <p>
+                                <Trans
+                                    i18nKey={
+                                        "console:develop.features.applications.notifications" +
+                                        ".conditionalScriptLoopingError.description"
+                                    }>
+                                    Looping constructs such as <Code>for</Code>, <Code>while</Code> and,
+                                    <Code>forEach</Code> are not allowed in the conditional authentication
+                                    script.
+                                </Trans>
+                            </p>
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t("console:develop.features.applications.notifications" +
+                            ".conditionalScriptLoopingError.message")
+                    }));
+                    return;
+                }
+
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -329,10 +353,10 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 "script-based": !AdaptiveScriptUtils.isDefaultScript(adaptiveScript, steps),
                 "step-based": []
             };
-    
+
             updatedSteps.forEach((updatedStep) => {
                 const step : Record<number, string> = {};
-    
+
                 if (Array.isArray(updatedStep?.options) && updatedStep.options.length > 0) {
                     updatedStep.options.forEach((element,id) => {
                         step[id] = kebabCase(element?.authenticator);
@@ -340,7 +364,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                     eventPublisherProperties["step-based"].push(step);
                 }
             });
-    
+
             eventPublisher.publish("application-sign-in-method-click-update-button", {
                 "type": eventPublisherProperties
             });
@@ -413,7 +437,8 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 <PrimaryButton
                     onClick={ handleUpdateClick }
                     data-testid={ `${ testId }-update-button` }
-                    disabled={ isButtonDisabled }
+                    disabled={ isButtonDisabled || isLoading }
+                    loading={ isLoading }
                 >
                     { t("common:update") }
                 </PrimaryButton>

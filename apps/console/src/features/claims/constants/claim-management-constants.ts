@@ -128,9 +128,9 @@ export class ClaimManagementConstants {
     public static readonly OTHERS: string = "others";
 
     public static readonly SCIM_TABS = [
-        { name: "Enterprise Schema", uri: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User" },
-        { name: "User Schema", uri: "urn:ietf:params:scim:schemas:core:2.0:User" },
         { name: "Core Schema", uri: "urn:ietf:params:scim:schemas:core:2.0" },
+        { name: "User Schema", uri: "urn:ietf:params:scim:schemas:core:2.0:User" },
+        { name: "Enterprise Schema", uri: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User" },
         { name: "Core 1.0 Schema", uri: "urn:scim:schemas:core:1.0" }
     ]
 
@@ -138,6 +138,11 @@ export class ClaimManagementConstants {
      * Display names of User Id & Username to 
      * identify.
      */
-    public static readonly USER_ID: string = "User ID";
-    public static readonly USER_NAME: string = "Username";
+    public static readonly USER_ID_CLAIM_URI: string = "http://wso2.org/claims/userid";
+    public static readonly USER_NAME_CLAIM_URI: string = "http://wso2.org/claims/username";
+    public static readonly GROUPS_CLAIM_URI: string = "http://wso2.org/claims/groups";
+    public static readonly LOCATION_CLAIM_URI: string = "http://wso2.org/claims/location";
+
+    public static readonly EMPTY_STRING = "";
+
 }

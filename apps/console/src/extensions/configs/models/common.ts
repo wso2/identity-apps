@@ -23,6 +23,7 @@ export interface CommonConfig {
     advancedSearchWithBasicFilters: {
         enableQuerySearch: boolean;
     };
+    blockLoopBackCalls: boolean;
     checkForUIResourceScopes: boolean;
     header: {
         /**

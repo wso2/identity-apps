@@ -38,13 +38,13 @@ import {
     Hint
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useRef, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid , Form as SemanticForm } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../core";
-import { ClaimManagementConstants } from "../../../constants";
 import { deleteAClaim, updateAClaim } from "../../../api";
+import { ClaimManagementConstants } from "../../../constants";
 
 /**
  * Prop types for `EditBasicDetailsLocalClaims` component
@@ -82,15 +82,15 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const [ isShowDisplayOrder, setIsShowDisplayOrder ] = useState(false);
     const [ confirmDelete, setConfirmDelete ] = useState(false);
     const [ isClaimReadOnly, setIsClaimReadOnly ] = useState<boolean>(false);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const nameField = useRef<HTMLElement>(null);
     const regExField = useRef<HTMLElement>(null);
     const displayOrderField = useRef<HTMLElement>(null);
     const descriptionField = useRef<HTMLElement>(null);
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-
 
     const { t } = useTranslation();
 
@@ -216,6 +216,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             supportedByDefault: values?.supportedByDefault !== undefined
                 ? !!values.supportedByDefault : claim?.supportedByDefault
         };
+
+        setIsSubmitting(true);
+
         updateAClaim(claim.id, data).then(() => {
             dispatch(addAlert(
                 {
@@ -240,6 +243,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             "updateClaim.genericError.description")
                 }
             ));
+        })
+        .finally(() => {
+            setIsSubmitting(false);
         });
     };
 
@@ -305,7 +311,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         }
                         ref={ descriptionField }
                         value={ claim?.description }
-                        maxLength={ 300 }
+                        maxLength={ 255 }
                         minLength={ 3 }
                         data-testid={ `${ testId }-form-description-input` }
                         hint={ t("console:manage.features.claims.local.forms.descriptionHint") }
@@ -330,9 +336,11 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         />
                     }
                     {
-                        //Hides on user_id and username claims
-                        claim && claim.displayName !== ClaimManagementConstants.USER_ID
-                            && claim.displayName !== ClaimManagementConstants.USER_NAME &&
+                        //Hides on user_id, username and groups claims
+                        claim && claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI
+                            && claim.claimURI !== ClaimManagementConstants.USER_NAME_CLAIM_URI
+                            && claim.claimURI !== ClaimManagementConstants.LOCATION_CLAIM_URI
+                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI &&
                         (
                             <Field.Checkbox
                                 ariaLabel="supportedByDefault"
@@ -373,7 +381,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         )
                     }
                     {
-                        claim && attributeConfig.editAttributes.showRequiredCheckBox &&
+                        claim && attributeConfig.editAttributes.showRequiredCheckBox
+                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI &&
                             <Field.Checkbox
                                 ariaLabel="required"
                                 name="required"
@@ -384,15 +393,16 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 readOnly={ isReadOnly }
                                 hint={ t("console:manage.features.claims.local.forms.requiredHint") }
                                 disabled={ isClaimReadOnly }
-                                { ...( isClaimReadOnly ? 
-                                    { value: false } : 
+                                { ...( isClaimReadOnly ?
+                                    { value: false } :
                                     { defaultValue : claim?.required } ) }
                             />
                     }
                     {
-                        //Hides on user_id and username claims
-                        claim && claim.displayName !== ClaimManagementConstants.USER_ID
-                            && claim.displayName !== ClaimManagementConstants.USER_NAME &&
+                        //Hides on user_id, username and groups claims
+                        claim && claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI
+                            && claim.claimURI !== ClaimManagementConstants.USER_NAME_CLAIM_URI
+                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI &&
                         (
                             <Field.Checkbox
                                 ariaLabel="readOnly"
@@ -421,6 +431,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 ariaLabel="submit"
                                 size="small"
                                 buttonType="primary_btn"
+                                loading={ isSubmitting }
+                                disabled={ isSubmitting }
                                 label={ t("common:update") }
                                 name="submit"
                             />

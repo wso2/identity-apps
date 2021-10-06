@@ -31,6 +31,9 @@ import { EmptyCertificatesPlaceholder } from "./empty-certificates-placeholder";
 import { IdpCertificatesList } from "./idp-cetificates-list";
 import { updateIDPCertificate } from "../../../api";
 import { IdentityProviderInterface } from "../../../models";
+import { FormValidation } from "@wso2is/validation";
+import { commonConfig } from "../../../../../extensions";
+import { URLUtils } from "@wso2is/core/utils";
 
 /**
  * Props interface of {@link IdpCertificates}
@@ -113,6 +116,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
 
     const [ selectedConfigurationMode, setSelectedConfigurationMode ] = useState<CertificateConfigurationMode>();
     const [ addCertificateModalOpen, setAddCertificateModalOpen ] = useState<boolean>(false);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -159,11 +163,14 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
      */
     const onJWKSFormSubmit = (values: Record<string, any>) => {
 
+        const operation = editingIDP?.certificate?.jwksUri ? "REPLACE" : "ADD";
         const PATCH_OBJECT = [ {
-            "operation": "REPLACE",
+            "operation": operation,
             "path": "/certificate/jwksUri",
             "value": values.jwks_endpoint
         } ];
+
+        setIsSubmitting(true);
 
         const doOnSuccess = () => {
             dispatch(addAlert({
@@ -200,7 +207,10 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
 
         updateIDPCertificate(editingIDP.id, PATCH_OBJECT)
             .then(doOnSuccess)
-            .catch(ifTheresAnyError);
+            .catch(ifTheresAnyError)
+            .finally(() => {
+                setIsSubmitting(false);
+            });
 
     };
 
@@ -223,6 +233,15 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                 ariaLabel="JWKS Endpoint URL"
                 inputType="url"
                 width={ 16 }
+                validation={ (value: string) => {
+                    if (!FormValidation.url(value)) {
+                        return t("console:develop.features.applications.forms.inboundSAML" +
+                            ".fields.metaURL.validations.invalid");
+                    }
+                    if (commonConfig?.blockLoopBackCalls && URLUtils.isLoopBackCall(value)) {
+                        return t("console:develop.features.idp.forms.common.internetResolvableErrorMessage");
+                    }
+                }}
                 placeholder="https://{ oauth-provider-url }/oauth/jwks"
                 maxLength={ JWKS_MAX_LENGTH }
                 minLength={ JWKS_MIN_LENGTH }
@@ -231,7 +250,10 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
             <Show when={ AccessControlConstants.IDP_EDIT }>
                 <PrimaryButton
                     type="submit"
-                    data-testid={ `${ testId }-save-button` }>
+                    data-testid={ `${ testId }-save-button` }
+                    loading={ isSubmitting }
+                    disabled={ isSubmitting }
+                >
                     { t("common:update") }
                 </PrimaryButton>
             </Show>

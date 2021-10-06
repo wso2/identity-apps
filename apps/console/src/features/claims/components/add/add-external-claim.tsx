@@ -21,7 +21,7 @@ import { AlertLevels, Claim, ClaimsGetParams, ExternalClaim, TestableComponentIn
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
 import { ContentLoader, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState, SyntheticEvent } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { DropdownItemProps, DropdownOnSearchChangeData, Grid, Header, Label } from "semantic-ui-react";
@@ -102,6 +102,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
     const [ localClaimsSet, setLocalClaimsSet ] = useState(false);
     const [ claim, setClaim ] = useState<string>("");
     const [ isLocalClaimsLoading, setIsLocalClaimsLoading ] = useState<boolean>(true);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const [ reset, setReset ] = useTrigger();
 
@@ -189,6 +190,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                     setClaim("");
                     setReset();
                 } else {
+                    setIsSubmitting(true);
                     addExternalClaim(dialectId, {
                         claimURI: values.get("claimURI").toString(),
                         mappedLocalClaimURI: values.get("localClaim").toString()
@@ -218,6 +220,8 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                         "addExternalAttribute.genericError.message")
                             }
                         ));
+                    }).finally(() => {
+                        setIsSubmitting(false);
                     });
                 }
             } }
@@ -244,7 +248,8 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                             data-testid={ `${ testId }-form-claim-uri-input` }
                             validation={ (value: string, validation: Validation) => {
                                 for (const claim of externalClaims) {
-                                    if (claim.claimURI === value) {
+                                    const parts = claim.claimURI.split(":");
+                                    if (parts[parts.length - 1].toLowerCase() === value.toLowerCase()) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(t("console:manage.features.claims.external" +
                                             ".forms.attributeURI.validationErrorMessages.duplicateName",
@@ -258,6 +263,14 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                         validation.isValid = false;
                                         validation.errorMessages.push(t("console:manage.features.claims.external" +
                                             ".forms.attributeURI.validationErrorMessages.invalidName",
+                                            { type: resolveType(attributeType) }));
+                                    }
+                                }
+                                if (attributeType === ClaimManagementConstants.SCIM) {
+                                    if (!value.toString().match(/^[a-zA-Z]([-_\w])+$/)) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push(t("console:manage.features.claims.external" +
+                                            ".forms.attributeURI.validationErrorMessages.scimInvalidName",
                                             { type: resolveType(attributeType) }));
                                     }
                                 }
@@ -276,15 +289,15 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                             placeholder={ t("console:manage.features.claims.external.forms." +
                                 "localAttribute.placeholder") }
                             // prevent default search functionality
-                            search = { (items: DropdownItemProps[], query:string) => {
+                            search = { (items: DropdownItemProps[]) => {
                                 return items;
-                            }}
+                            } }
                             onSearchChange={ (event: SyntheticEvent, data: DropdownOnSearchChangeData) => {
                                 const query: string = data.searchQuery;
                                 const itemList: Claim[] = filteredLocalClaims.filter((claim: Claim) => claim.displayName
                                     .toLowerCase().includes(query.toLowerCase()));
                                 setLocalClaimsSearchResults(itemList);
-                            }}
+                            } }
                             children={
                                 localClaimsSearchResults?.map((claim: Claim, index) => {
                                     return {
@@ -321,7 +334,12 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                     wizard && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 } textAlign="right" verticalAlign="top">
-                            <PrimaryButton type="submit" data-testid={ `${ testId }-form-submit-button` }>
+                            <PrimaryButton
+                                type="submit"
+                                data-testid={ `${ testId }-form-submit-button` }
+                                loading={ isSubmitting }
+                                disabled={ isSubmitting }
+                            >
                                     { t("console:manage.features.claims.external.forms.submit") }
                             </PrimaryButton>
                             </Grid.Column>

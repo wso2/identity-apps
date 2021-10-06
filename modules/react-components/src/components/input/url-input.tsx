@@ -212,7 +212,15 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                 ...(onlyOrigin ? (allowedOrigins ?? []) : []),
                 ...(availableURls ?? [])
             ]);
-            const duplicate: boolean = urls.has(url);
+            const checkDuplicateUrl = (url: string): boolean => {
+                if (url.charAt(url.length-1) === "/") {
+                    return urls.has(url) || urls.has(url.slice(0, -1));
+                }
+                else {
+                    return urls.has(url) || urls.has(url + "/");
+                }
+            };
+            const duplicate: boolean = checkDuplicateUrl(url);
             urlValid && setDuplicateURL(duplicate);
 
             if (urlValid && !duplicate) {

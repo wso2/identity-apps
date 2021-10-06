@@ -52,6 +52,10 @@ interface InboundWSTrustFormPropsInterface extends TestableComponentInterface {
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Specifies if API calls are pending.
+     */
+    isLoading?: boolean;
 }
 
 /**
@@ -71,6 +75,7 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
         initialValues,
         onSubmit,
         readOnly,
+        isLoading,
         [ "data-testid" ]: testId
     } = props;
 
@@ -163,7 +168,7 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                         onSubmit(updateConfiguration(values));
                     } }
                 >
-                    <Grid className="form-container with-max-width">
+                    <Grid>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
@@ -385,6 +390,8 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                                             size="small"
                                             className="form-button"
                                             data-testid={ `${ testId }-submit-button` }
+                                            loading={ isLoading }
+                                            disabled={ isLoading }
                                         >
                                             { t("common:update") }
                                         </Button>

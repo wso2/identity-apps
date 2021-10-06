@@ -225,13 +225,15 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      */
     const addSecretToScript = (secret:SecretModel): void => {
         const doc = editorInstance.getDoc();
-        //If a code segment is selected, the selected text is replaced.
+        const secretNameString = `"${ secret.secretName }"`;
+
+        //If a code segment is selected, the selected text is replaced with secret name as a string.
         if (doc.somethingSelected()) {
-            doc.replaceSelection(secret.secretName);
+            doc.replaceSelection(secretNameString);
         } else {
             //If no selected text, secret name injected at the location of the cursor.
             const cursor = doc.getCursor();
-            doc.replaceRange(secret.secretName, cursor);
+            doc.replaceRange(secretNameString, cursor);
         }
     };
 
@@ -467,6 +469,38 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     };
 
     /**
+     * TLDR; This function should be called when switching between
+     *       full-screen mode to track the source changes.
+     *
+     * Why implement this in the first place? When switching from full screen to
+     * normal view it loses all user entered source code vice versa.
+     *
+     * That happens because, we pass {@code sourceCode={ sourceCode }} to
+     * {@link CodeEditor}. We cannot alter it's depending state since it's
+     * used in conditional script generators. We have checked the feasibility
+     * of adding {@link useCallback} and mix it with a debounce handler to
+     * track changes within onChange event. But the problem is it causes the
+     * component to re-render multiple times and causes unforeseen side effects.
+     *
+     * In this function we read {@code internalScript} and {@code sourceCode}
+     * and checks whether their state has been changed. If yes then simply
+     * set the new {@code sourceCode} to what user entered. And place the cursor
+     * back to where it was originally.
+     */
+    const preserveStateOnFullScreenChange = (): void => {
+
+        const _modifiedScript = AdaptiveScriptUtils.sourceToString(internalScript);
+        const _editorSourceCode = AdaptiveScriptUtils.sourceToString(sourceCode);
+
+        if (_modifiedScript !== _editorSourceCode) {
+            const cur = editorInstance.doc.getCursor();
+            setSourceCode(_modifiedScript.split(ApplicationManagementConstants.LINE_BREAK));
+            editorInstance.doc.setCursor(cur);
+        }
+
+    };
+
+    /**
      * Steps for the conditional authentication toggle tour.
      *
      * @type {Array<Step>}
@@ -629,26 +663,28 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                 }
             >
                 <Dropdown.Menu>
-                    <Input
-                        data-testid={ `${ testId }-secret-search` }
-                        icon="search"
-                        iconPosition="left"
-                        className="search"
-                        placeholder= { t("console:develop.features.applications.edit.sections.signOnMethod" +
-                                        ".sections.authenticationFlow.sections.scriptBased.secretsList.search") }
-                        onChange={ ( data:ChangeEvent<HTMLInputElement>
-                        ) => {
-                            if(!data.currentTarget.value) {
-                                setFilteredSecretList(secretList);
-                            } else {
-                                setFilteredSecretList(secretList.
-                                filter((secret: SecretModel) => secret.secretName.includes(
-                                    data.currentTarget.value)));
-                            }
-                        } }
-                        onClick={ e => e.stopPropagation() }
-                    />
-
+                    {
+                        secretList.length > 0 && (
+                            <Input
+                                data-testid={ `${testId}-secret-search` }
+                                icon="search"
+                                iconPosition="left"
+                                className="search"
+                                placeholder={ t("console:develop.features.applications.edit.sections.signOnMethod" +
+                                    ".sections.authenticationFlow.sections.scriptBased.secretsList.search") }
+                                onChange={ (data: ChangeEvent<HTMLInputElement>
+                                ) => {
+                                    if (!data.currentTarget?.value) {
+                                        setFilteredSecretList(secretList);
+                                    } else {
+                                        setFilteredSecretList(secretList.filter((secret: SecretModel) => secret.secretName.includes(
+                                            data.currentTarget.value)));
+                                    }
+                                } }
+                                onClick={ e => e.stopPropagation() }
+                            />
+                        )
+                    }
                     <Dropdown.Menu
                         data-testid={ `${ testId }-secret-list` }
                         scrolling
@@ -656,7 +692,6 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                     >
                         {
                             filteredSecretList.length>0 ? (
-
                                 filteredSecretList.map((
                                     secret: SecretModel
                                 ) => (
@@ -996,7 +1031,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                         </div>
                                                     ) }
                                                     content={ () => {
-                                                        return t("common:addKey");
+                                                        return t("console:develop.features.applications.edit.sections.signOnMethod" +
+                                                            ".sections.authenticationFlow.sections.scriptBased.secretsList.iconTooltip") ;
                                                     } }
                                                     size="mini"
                                                 />
@@ -1098,6 +1134,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                             } }
                                             onFullScreenToggle={ (isFullScreen: boolean) => {
                                                 setIsEditorFullScreen(isFullScreen);
+                                                preserveStateOnFullScreenChange();
                                             } }
                                             theme={ isEditorDarkMode ? "dark" : "light" }
                                             readOnly={ readOnly }

@@ -123,6 +123,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
         useState<FederatedAuthenticatorMetaInterface>(undefined);
     const [ selectedTemplateId, setSelectedTemplateId ] = useState<string>(undefined);
     const [ selectedManualModeOptionId, setSelectedManualModeOptionId ] = useState<string>(undefined);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -211,6 +212,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
     };
 
     const addNewAuthenticator = (authenticator) => {
+        setIsSubmitting(true);
         updateFederatedAuthenticator(idpId, authenticator)
             .then(() => {
                 dispatch(addAlert({
@@ -247,6 +249,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                 });
             })
             .finally(() => {
+                setIsSubmitting(false);
                 closeWizard();
             });
     };
@@ -449,8 +452,13 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                                     </PrimaryButton>
                                 ) }
                                 { currentWizardStep === wizardSteps.length - 1 && (
-                                    <PrimaryButton floated="right" onClick={ navigateToNext }
-                                                   data-testid={ `${ testId }-modal-finish-button` }>
+                                    <PrimaryButton
+                                        floated="right"
+                                        onClick={ navigateToNext }
+                                        data-testid={ `${ testId }-modal-finish-button` }
+                                        loading={ isSubmitting }
+                                        disabled={ isSubmitting }
+                                    >
                                         { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
                                     </PrimaryButton>
                                 ) }

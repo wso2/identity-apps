@@ -84,6 +84,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
     const [ selectedAttributes, setSelectedAttributes ] = useState<ExternalClaim[]>([]);
     const [ isClaimRequestLoading, setIsClaimRequestLoading ] = useState<boolean>(false);
     const [ claims, setClaims ] = useState<Claim[]>([]);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
@@ -287,6 +288,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                     setInitialSelectedExternalClaims={ (response: ExternalClaim[]) => {
                         const claimURIs: string[] = response?.map((claim: ExternalClaim) => claim.claimURI);
                         if (claimURIs?.length > 0) {
+                            setIsSubmitting(true);
                             handleWizardFormFinish(claimURIs);
                         } else {
                             setAlert({
@@ -371,6 +373,8 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                                     floated="right"
                                     onClick={ navigateToNext }
                                     data-testid={ `${ testId }-finish-button` }
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting }
                                 >
                                     { t("common:finish") }
                                 </PrimaryButton>

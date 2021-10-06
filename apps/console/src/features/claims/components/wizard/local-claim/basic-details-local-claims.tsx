@@ -408,6 +408,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                 "name.requiredErrorMessage") }
                             placeholder={ t("console:manage.features.claims.local.forms.name.placeholder") }
                             value={ values?.get("name")?.toString() }
+                            maxLength={ 30 }
                             ref={ nameField }
                             data-testid={ `${ testId }-form-name-input` }
                         />

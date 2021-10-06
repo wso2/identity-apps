@@ -110,10 +110,11 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
         const [ sortOrder, setSortOrder ] = useState(true);
         const [ sortByStrategy, setSortByStrategy ] = useState<DropdownItemProps>(SORT_BY[ 0 ]);
         const [ attributeSearchQuery, setAttributeSearchQuery ] = useState<string>("");
+        const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
         const initialRender = useRef(true);
 
-        const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+        const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
         const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
         const SCOPE_DESCRIPTION_MAX_LENGTH: number = 100;
 
@@ -350,7 +351,9 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
             setTempSelectedAttributes(selectedAttributes);
         };
 
-        const onSubmit = (values: any): void  => {
+        const onSubmit = (values: any): void => {
+            setIsSubmitting(true);
+
             updateOIDCScopeDetails(scope.name, {
                 claims: scope.claims,
                 description: values?.description !== undefined ?  values?.description?.toString() : scope.description,
@@ -392,6 +395,9 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                 )
                         })
                     );
+                })
+                .finally(() => {
+                    setIsSubmitting(false);
                 });
         };
 
@@ -477,6 +483,8 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                             <Field.Button
                                                 ariaLabel="submit"
                                                 size="small"
+                                                loading={ isSubmitting }
+                                                disabled={ isSubmitting }
                                                 buttonType="primary_btn"
                                                 label={ t("common:update") }
                                                 name="submit"

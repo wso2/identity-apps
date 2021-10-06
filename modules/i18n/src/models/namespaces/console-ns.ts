@@ -596,6 +596,7 @@ export interface ConsoleNS {
                                                 };
                                             };
                                             secretsList: {
+                                                iconTooltip: string;
                                                 create: string;
                                                 emptyPlaceholder: string;
                                                 search: string;
@@ -748,6 +749,7 @@ export interface ConsoleNS {
                     };
                     inboundOIDC: {
                         description: string;
+                        documentation: string;
                         fields: {
                             allowedOrigins: FormAttributes;
                             callBackUrls: FormAttributes;
@@ -763,6 +765,7 @@ export interface ConsoleNS {
                                 fields: {
                                     bindingType: FormAttributes;
                                     expiry: FormAttributes;
+                                    applicationTokenExpiry: FormAttributes;
                                     type: FormAttributes;
                                     revokeToken: FormAttributes;
                                     validateBinding: FormAttributes;
@@ -821,6 +824,7 @@ export interface ConsoleNS {
                     };
                     inboundSAML: {
                         description: string;
+                        documentation: string;
                         fields: {
                             assertionURLs: FormAttributes;
                             defaultAssertionURL: FormAttributes;
@@ -981,6 +985,7 @@ export interface ConsoleNS {
                     updateProtocol: Notification;
                     fetchOIDCServiceEndpoints: Notification;
                     secondFactorAuthenticatorToFirstStep: Notification;
+                    conditionalScriptLoopingError: NotificationItem;
                 };
                 popups: {
                     appStatus: {
@@ -1431,6 +1436,10 @@ export interface ConsoleNS {
                         }
                     };
                     enterprise?: {
+                        addWizard?: {
+                            title: string;
+                            subtitle: string;
+                        };
                         saml?: {
                             preRequisites: {
                                 configureIdp: string;
@@ -1720,6 +1729,7 @@ export interface ConsoleNS {
                         invalidURLErrorMessage: string;
                         invalidQueryParamErrorMessage: string;
                         customProperties: string;
+                        internetResolvableErrorMessage: string;
                     };
                     generalDetails: {
                         name: FormAttributes;
@@ -2065,6 +2075,9 @@ export interface ConsoleNS {
                 },
                 forms?: {
                     editSecret?: {
+                        page: {
+                            description: string;
+                        },
                         secretValueField: Record<string, string>;
                         secretDescriptionField: Record<string, string>;
                     },
@@ -3603,6 +3616,7 @@ export interface ConsoleNS {
                         phoneNumbers_mobile: string;
                         phoneNumbers_work: string;
                         phoneNumbers_other: string;
+                        photos: string;
                         oneTimePassword: string;
                         userName: string;
                     };

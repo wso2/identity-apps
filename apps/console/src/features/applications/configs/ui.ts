@@ -116,6 +116,7 @@ import {
     ReactComponent as ZoomTemplateIllustration
 } from "../../../themes/default/assets/images/illustrations/zoom-template-illustration.svg";
 import OpenIDLogo from "../../../themes/default/assets/images/protocols/openid.png";
+import OAuth2OpenIDLogo from "../../../themes/default/assets/images/protocols/oauth2-oidc.png";
 import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
 import WSFedLogo from "../../../themes/default/assets/images/protocols/ws-fed.png";
 import WSTrustLogo from "../../../themes/default/assets/images/protocols/ws-trust.png";
@@ -127,18 +128,20 @@ import { ReactComponent as MicrosoftLogo } from "../../../themes/default/assets/
 import { ReactComponent as Office365Logo } from "../../../themes/default/assets/images/third-party/office-365-logo.svg";
 import { ReactComponent as YahooLogo } from "../../../themes/default/assets/images/third-party/yahoo-logo.svg";
 import { ReactComponent as WarningIcon } from "../../../themes/default/assets/images/icons/warning-icon.svg";
+import { SupportedAuthProtocolTypes } from "../models";
 
 export const getInboundProtocolLogos = () => {
 
     return {
+        general: ProtocolIllustration,
         oidc: OpenIDLogo,
         openid: OpenIDLogo,
         "passive-sts": WSFedLogo,
+        [ SupportedAuthProtocolTypes.OAUTH2_OIDC ]: OAuth2OpenIDLogo,
         saml: SamlLogo,
         "ws-trust": WSTrustLogo,
         wsFed: WSFedLogo,
-        wsTrust: WSTrustLogo,
-        general: ProtocolIllustration
+        wsTrust: WSTrustLogo
     };
 };
 

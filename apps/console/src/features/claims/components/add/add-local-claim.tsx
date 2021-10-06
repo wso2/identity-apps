@@ -16,10 +16,10 @@
 * under the License.
 */
 
-import { AlertLevels, Claim, ProfileSchemaInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
 import { getProfileSchemas } from "@wso2is/core/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { AlertLevels, Claim, ProfileSchemaInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
@@ -82,8 +82,8 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     const [ basicDetailsData, setBasicDetailsData ] = useState<Map<string, FormValue>>(null);
     const [ mappedAttributesData, setMappedAttributesData ] = useState<Map<string, FormValue>>(null);
     const [ mappedCustomAttribues, setMappedCustomAttribues ] = useState<Map<string, string>>(null);
-
     const [ showMapAttributes, setShowMapAttributes ] = useState<boolean>(false);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const hiddenUserStores: string[] = useSelector((state: AppState) => state.config.ui.hiddenUserStores);
 
     const [ firstStep, setFirstStep ] = useTrigger();
@@ -127,10 +127,11 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 
         }
 
+        setIsSubmitting(true);
         addLocalClaim(data)
             .then((response) => {
                 eventPublisher.publish("manage-attribute-add-new-attribute");
-                
+
                 dispatch(addAlert(
                     {
                         description: t("console:manage.features.claims.local.notifications." +
@@ -198,6 +199,8 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                                 "genericError.message")
                     }
                 );
+            }).finally(() => {
+                setIsSubmitting(false);
             });
     };
 
@@ -455,6 +458,8 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                                     floated="right"
                                     onClick={ next }
                                     data-testid={ `${ testId }-finish-button` }
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting }
                                 >
                                     { t("common:finish") }</PrimaryButton>
                             ) }

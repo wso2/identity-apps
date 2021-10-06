@@ -1,7 +1,7 @@
 {
     "id": "facebook-idp",
     "name": "Facebook",
-    "description": "Login users with existing Facebook accounts.",
+    "description": "Enable login for users with existing Facebook accounts.",
     "image": "facebook",
     "category": "DEFAULT",
     "displayOrder": 2,

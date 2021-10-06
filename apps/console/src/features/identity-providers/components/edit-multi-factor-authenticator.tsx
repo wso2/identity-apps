@@ -32,7 +32,7 @@ import {
 } from "../../../extensions";
 import { updateMultiFactorAuthenticatorDetails } from "../api";
 import { IdentityProviderManagementConstants } from "../constants";
-import { MultiFactorAuthenticatorInterface } from "../models";
+import { AuthenticatorInterface, MultiFactorAuthenticatorInterface } from "../models";
 
 /**
  * Proptypes for the Multi-factor Authenticator edit component.
@@ -42,7 +42,7 @@ interface EditMultiFactorAuthenticatorPropsInterface extends TestableComponentIn
     /**
      * Editing Multi-factor Authenticator.
      */
-    authenticator: MultiFactorAuthenticatorInterface;
+    authenticator: MultiFactorAuthenticatorInterface | AuthenticatorInterface;
     /**
      * Callback to be triggered after deleting the idp.
      */
@@ -97,6 +97,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
     const { t } = useTranslation();
 
     const [ tabPaneExtensions, setTabPaneExtensions ] = useState<any>(undefined);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     /**
      * Check for tab extensions.
@@ -136,6 +137,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
      * @param {MultiFactorAuthenticatorInterface} values - Form values.
      */
     const handleAuthenticatorConfigFormSubmit = (values: MultiFactorAuthenticatorInterface): void => {
+        setIsSubmitting(true);
 
         updateMultiFactorAuthenticatorDetails(authenticator.id, values)
             .then(() => {
@@ -170,6 +172,9 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
                     message: t("console:develop.features.authenticationProvider.notifications" +
                         ".updateEmailOTPAuthenticator.genericError.message")
                 }));
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
     };
 
@@ -195,6 +200,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
                                                 type={ type }
                                                 data-testid={ `${ testId }-${ authenticator.name }-content` }
                                                 isReadOnly={ isReadOnly }
+                                                isSubmitting={ isSubmitting }
                                             />
                                         </EmphasizedSegment>
                                     </Grid.Column>
@@ -227,10 +233,13 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
             panes.push(...tabPaneExtensions);
         }
 
-        panes.push({
-            menuItem: t("console:develop.features.authenticationProvider.edit.common.settings.tabName"),
-            render: AuthenticatorSettingsTabPane
-        });
+        // If the MFA is TOTP, skip the settings tab.
+        if (authenticator.id !== IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID) {
+            panes.push({
+                menuItem: t("console:develop.features.authenticationProvider.edit.common.settings.tabName"),
+                render: AuthenticatorSettingsTabPane
+            });
+        }
 
         // If the MFA is Email OTP, add the Email Template tab.
         if (authenticator.id === IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID) {
@@ -253,13 +262,28 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
         return panes;
     };
 
+    /**
+     * Resolves the active index of the tabs.
+     *
+     * @param {number} activeIndex - Active index of the tabs.
+     * @return {number}
+     */
+    const resolveDefaultActiveIndex = (activeIndex: number): number => {
+
+        if (authenticator.id !== IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID) {
+            return activeIndex;
+        }
+
+        return 0;
+    };
+
     return (
         authenticator
             ? (
                 <ResourceTab
                     data-testid={ `${ testId }-resource-tabs` }
                     panes={ getPanes() }
-                    defaultActiveIndex={ defaultActiveIndex }
+                    defaultActiveIndex={ resolveDefaultActiveIndex(defaultActiveIndex) }
                 />
             )
             : null

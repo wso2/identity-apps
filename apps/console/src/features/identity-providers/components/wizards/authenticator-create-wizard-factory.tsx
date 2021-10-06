@@ -19,6 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { EnterpriseIDPCreateWizard } from "./enterprise-idp-create-wizard";
 import { FacebookAuthenticationProviderCreateWizard } from "./facebook";
@@ -103,6 +104,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
         selectedTemplateWithUniqueName,
         setSelectedTemplateWithUniqueName
     ] = useState<IdentityProviderTemplateInterface>(undefined);
+    const { t } = useTranslation();
 
     /**
      * Load the template based on the passed in template type.
@@ -344,8 +346,10 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
             return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
                 ? (
                     <EnterpriseIDPCreateWizard
-                        title="Standard Based Authentication"
-                        subTitle="Configure a new Identity Provider with advanced enterprise protocols."
+                        title= { t("console:develop.features.authenticationProvider.templates.enterprise." +
+                            "addWizard.title") }
+                        subTitle= { t("console:develop.features.authenticationProvider.templates.enterprise." +
+                            "addWizard.subtitle") }
                         onWizardClose={ () => {
                             setSelectedTemplateWithUniqueName(undefined);
                             setSelectedTemplate(undefined);

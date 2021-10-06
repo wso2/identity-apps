@@ -21,7 +21,7 @@ import { CertificateManagementUtils } from "@wso2is/core/utils";
 import { CopyInputField, GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Grid, Icon } from "semantic-ui-react";
+import { Button, Form, Grid, Icon } from "semantic-ui-react";
 import { store } from "../../../core";
 import { getHelpPanelIcons } from "../../configs";
 import { SAMLApplicationConfigurationInterface } from "../../models";
@@ -60,7 +60,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
     };
 
     return (
-        <>
+        <Form>
             <Grid verticalAlign="middle">
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
@@ -82,7 +82,6 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
                         <CopyInputField
                             value={ samlConfigurations?.issuer }
-                            className="panel-url-input"
                             data-testid={ `${ testId }-issuer-readonly-input` }
                         />
                     </Grid.Column>
@@ -107,7 +106,6 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
                         <CopyInputField
                             value={ samlConfigurations?.ssoUrl }
-                            className="panel-url-input"
                             data-testid={ `${ testId }-sso-readonly-input` }
                         />
                     </Grid.Column>
@@ -132,7 +130,6 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
                         <CopyInputField
                             value={ samlConfigurations?.sloUrl }
-                            className="panel-url-input"
                             data-testid={ `${ testId }-slo-readonly-input` }
                         />
                     </Grid.Column>
@@ -202,7 +199,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
-        </>
+        </Form>
     );
 };
 

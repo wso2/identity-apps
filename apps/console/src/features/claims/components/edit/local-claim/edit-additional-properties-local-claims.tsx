@@ -22,7 +22,7 @@ import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/mod
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { DynamicField, EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
@@ -56,13 +56,15 @@ export const EditAdditionalPropertiesLocalClaims:
 ): ReactElement => {
     const { claim, update, [ "data-testid" ]: testId } = props;
 
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+
     const [ submit, setSubmit ] = useTrigger();
 
     const dispatch = useDispatch();
 
     const { t } = useTranslation();
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const isReadOnly = useMemo(
@@ -104,6 +106,7 @@ export const EditAdditionalPropertiesLocalClaims:
                                     properties: [ ...data ]
                                 };
 
+                                setIsSubmitting(true);
                                 updateAClaim(claim.id, submitData)
                                     .then(() => {
                                         dispatch(
@@ -139,6 +142,9 @@ export const EditAdditionalPropertiesLocalClaims:
                                                     )
                                             })
                                         );
+                                    })
+                                    .finally(() => {
+                                        setIsSubmitting(false);
                                     });
                             } }
                             data-testid={ `${ testId }-form-properties-dynamic-field` }
@@ -154,6 +160,8 @@ export const EditAdditionalPropertiesLocalClaims:
                                     setSubmit();
                                 } }
                                 data-testid={ `${ testId }-submit-button` }
+                                loading={ isSubmitting }
+                                disabled={ isSubmitting }
                             >
                                 { t("common:update") }
                             </PrimaryButton>

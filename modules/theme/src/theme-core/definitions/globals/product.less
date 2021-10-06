@@ -118,6 +118,7 @@ body {
     // Remove the underline for the icon class while hovering. Other custom classes can be added here.
     .icon {
         text-decoration: none;
+        margin: 0 0 0 0.25em !important;
     }
 }
 
@@ -423,6 +424,7 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    max-width: 650px;
 }
 
 .text {
@@ -472,6 +474,7 @@ body {
                 .side-panel-wrapper {
                     width: @dashboardLayoutSidePanelWidth;
                     padding: @fluidDashboardLayoutSidePanelPadding;
+                    min-width: max-content;
 
                     &.bordered {
                         &.all {
@@ -687,6 +690,12 @@ body {
                 height: @iconNano;
             }
         }
+        &.width-auto {
+            > .icon {
+                width: auto;
+                height: @iconNano;
+            }
+        }
     }
     &.default-size {
         > .icon {
@@ -695,6 +704,12 @@ body {
         }
         &.square {
             > .icon {
+                height: @iconDefault;
+            }
+        }
+        &.width-auto {
+            > .icon {
+                width: auto;
                 height: @iconDefault;
             }
         }
@@ -710,6 +725,12 @@ body {
                 height: @iconMicro;
             }
         }
+        &.width-auto {
+            > .icon {
+                width: auto;
+                height: @iconMicro;
+            }
+        }
     }
     &.x22 {
         > .icon {
@@ -719,6 +740,12 @@ body {
         }
         &.square {
             > .icon {
+                height: @iconX22;
+            }
+        }
+        &.width-auto {
+            > .icon {
+                width: auto;
                 height: @iconX22;
             }
         }
@@ -734,6 +761,12 @@ body {
                 height: @iconX30;
             }
         }
+        &.width-auto {
+            > .icon {
+                width: auto;
+                height: @iconX30;
+            }
+        }
     }
     &.mini {
         > .icon {
@@ -742,6 +775,12 @@ body {
         }
         &.square {
             > .icon {
+                height: @iconMini;
+            }
+        }
+        &.width-auto {
+            > .icon {
+                width: auto;
                 height: @iconMini;
             }
         }
@@ -756,6 +795,12 @@ body {
                 height: @iconX50;
             }
         }
+        &.width-auto {
+            > .icon {
+                width: auto;
+                height: @iconX50;
+            }
+        }
     }
     &.x60 {
         > .icon {
@@ -764,6 +809,12 @@ body {
         }
         &.square {
             > .icon {
+                height: @iconX60;
+            }
+        }
+        &.width-auto {
+            > .icon {
+                width: auto;
                 height: @iconX60;
             }
         }
@@ -778,6 +829,12 @@ body {
                 height: @iconTiny;
             }
         }
+        &.width-auto {
+            > .icon {
+                width: auto;
+                height: @iconTiny;
+            }
+        }
     }
     &.small {
         > .icon {
@@ -786,6 +843,12 @@ body {
         }
         &.square {
             > .icon {
+                height: @iconSmall;
+            }
+        }
+        &.width-auto {
+            > .icon {
+                width: auto;
                 height: @iconSmall;
             }
         }
@@ -800,6 +863,12 @@ body {
                 height: @iconMedium;
             }
         }
+        &.width-auto {
+            > .icon {
+                width: auto;
+                height: @iconMedium;
+            }
+        }
     }
     &.large {
         > .icon {
@@ -808,6 +877,12 @@ body {
         }
         &.square {
             > .icon {
+                height: @iconLarge;
+            }
+        }
+        &.width-auto {
+            > .icon {
+                width: auto;
                 height: @iconLarge;
             }
         }
@@ -822,6 +897,12 @@ body {
                 height: @iconBig;
             }
         }
+        &.width-auto {
+            > .icon {
+                width: auto;
+                height: @iconBig;
+            }
+        }
     }
     &.huge {
         > .icon {
@@ -833,6 +914,12 @@ body {
                 height: @iconHuge;
             }
         }
+        &.width-auto {
+            > .icon {
+                width: auto;
+                height: @iconHuge;
+            }
+        }
     }
     &.massive {
         > .icon {
@@ -841,6 +928,12 @@ body {
         }
         &.square {
             > .icon {
+                height: @iconMassive;
+            }
+        }
+        &.width-auto {
+            > .icon {
+                width: auto;
                 height: @iconMassive;
             }
         }

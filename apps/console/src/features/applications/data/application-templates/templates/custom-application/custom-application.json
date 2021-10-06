@@ -9,7 +9,7 @@
     "displayOrder": -1,
     "self": "",
     "subTemplates": [],
-    "subTemplatesSectionTitle": "",
+    "subTemplatesSectionTitle": "Protocol",
     "templateGroup": "",
     "types": [
         "oidc",

@@ -211,7 +211,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     const [ isClaimLoading, setIsClaimLoading ] = useState<boolean>(true);
     const [ isUserAttributesLoading, setUserAttributesLoading ] = useState<boolean>(false);
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -726,6 +726,10 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         if (!applicationConfig.attributeSettings.roleMapping) {
             delete submitValue.claimConfiguration.role;
         }
+        // Stop sending subject claim for OIDC applications.
+        if (onlyOIDCConfigured) {
+            delete submitValue.claimConfiguration.subject;
+        }
 
         updateClaimConfiguration(appId, submitValue)
             .then(() => {
@@ -956,7 +960,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         </Grid>
                         ) : null
                     }
-                </EmphasizedSegment> 
+                </EmphasizedSegment>
             ) :
                 <EmphasizedSegment padded="very">
                     <ContentLoader inline="centered" active/>

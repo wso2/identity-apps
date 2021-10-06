@@ -49,6 +49,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         enableSubmitButton,
         showCustomProperties,
         readOnly,
+        isSubmitting,
         [ "data-testid" ]: testId
     } = props;
 
@@ -307,8 +308,15 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             <Grid.Row columns={ 1 }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                     <Show when={ AccessControlConstants.IDP_EDIT }>
-                        <Button primary type="submit" size="small" className="form-button"
-                                data-testid={ `${ testId }-submit-button` }>
+                        <Button
+                            primary
+                            type="submit"
+                            size="small"
+                            className="form-button"
+                            isSubmitting={ isSubmitting }
+                            loading={ isSubmitting }
+                            data-testid={ `${ testId }-submit-button` }
+                        >
                             { content }
                         </Button>
                     </Show>

@@ -76,6 +76,8 @@ import {
 } from "../../models";
 import { handleGetIDPListCallError } from "../utils";
 import { getAvailableNameIDFormats, getAvailableProtocolBindingTypes } from "../utils/saml-idp-utils";
+import { URLUtils } from "@wso2is/core/utils";
+import { commonConfig } from "../../../../extensions";
 
 /**
  * Proptypes for the enterprise identity provider
@@ -141,6 +143,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     const [ selectedProtocol, setSelectedProtocol ] = useState<AvailableProtocols>("oidc");
     const [ selectedSamlConfigMode, setSelectedSamlConfigMode ] = useState<SamlConfigurationMode>("file");
     const [ pastedPEMContent, setPastedPEMContent ] = useState<string>(null);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     // Dynamic UI state
     const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(true);
@@ -223,6 +226,16 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 { t("common:featureAvailable") }
             </Dimmer>
         );
+    };
+
+    /**
+     * Check whether loop back call is allowed or not.
+     * @param value URL to check.
+     */
+    const isLoopBackCall = (value) => {
+        return (!(URLUtils.isLoopBackCall(value) && commonConfig?.blockLoopBackCalls)) ?
+            undefined : t("console:develop.features.idp.forms.common." +
+                "internetResolvableErrorMessage");
     };
 
     /**
@@ -309,6 +322,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             identityProvider.federatedAuthenticators.authenticators[ FIRST_ENTRY ].authenticatorId
         );
 
+        setIsSubmitting(true);
+
         createIdentityProvider(identityProvider)
             .then((response) => {
                 eventPublisher.publish("connections-finish-adding-connection", {
@@ -389,6 +404,9 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         "addIDP.genericError.message")
                 });
                 setTimeout(() => setAlert(undefined), 4000);
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
 
     };
@@ -421,7 +439,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 width={ 15 }
                 format = { (values: any) => {
                     return values.toString().trimStart();
-                }}
+                } }
                 validation={ (values: any) => {
                     let errors: "";
                     errors = composeValidators(required, length(IDP_NAME_LENGTH))(values);
@@ -432,7 +450,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     if (!FormValidation.isValidResourceName(values)) {
                         errors = t("console:develop.features.authenticationProvider." +
                             "templates.enterprise.validation.invalidName",
-                            { idpName: values});
+                            { idpName: values });
                     }
 
                     if (errors === "" || errors === undefined) {
@@ -452,7 +470,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                 image={ getIdPIcons().oidc }
                                 size="x120"
                                 className="sub-template-selection-card"
-                                header={ "OIDC" }
+                                header={ "OpenID Connect" }
                                 selected={ selectedProtocol === "oidc" }
                                 onClick={ () => setSelectedProtocol("oidc") }
                                 imageSize="mini"
@@ -600,11 +618,13 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 errors.authorizationEndpointUrl = composeValidators(
                     required,
                     isUrl,
+                    isLoopBackCall,
                     length(OIDC_URL_MAX_LENGTH)
                 )(values.authorizationEndpointUrl);
                 errors.tokenEndpointUrl = composeValidators(
                     required,
                     isUrl,
+                    isLoopBackCall,
                     length(OIDC_URL_MAX_LENGTH)
                 )(values.tokenEndpointUrl);
                 setNextShouldBeDisabled(ifFieldsHave(errors));
@@ -672,6 +692,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 if (values.jwks_endpoint?.length > 0) {
                     errors.jwks_endpoint = composeValidators(
                         length(JWKS_URL_LENGTH),
+                        isLoopBackCall,
                         isUrl
                     )(values.jwks_endpoint);
                 }
@@ -829,7 +850,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
      * Resolves the documentation link when a protocol is selected.
      * @return {React.ReactElement}
      */
-    const resolveDocumentationLink = (): ReactElement => {   
+    const resolveDocumentationLink = (): ReactElement => {
         let docLink: string = undefined;
 
         if (selectedProtocol === AuthProtocolTypes.SAML) {
@@ -874,7 +895,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             data-testid={ `${ testId }-image` }/>
                         <div>
                             { title }
-                            { subTitle && 
+                            { subTitle &&
                                 <Heading as="h6">
                                     { subTitle }
                                     { resolveDocumentationLink() }
@@ -948,12 +969,14 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                     // element. This is because we pass a callback to
                                     // onSubmit which triggers a dedicated handler.
                                     <PrimaryButton
-                                        disabled={ nextShouldBeDisabled }
+                                        disabled={ nextShouldBeDisabled || isSubmitting }
                                         type="submit"
                                         floated="right" onClick={ () => {
-                                        wizardRef.current.gotoNextPage();
-                                    } }
-                                        data-testid={ `${ testId }-modal-finish-button` }>
+                                            wizardRef.current.gotoNextPage();
+                                        } }
+                                        data-testid={ `${ testId }-modal-finish-button` }
+                                        loading={ isSubmitting }
+                                    >
                                         { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
                                     </PrimaryButton>
                                 ) }

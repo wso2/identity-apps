@@ -75,12 +75,11 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
     return (
         <>
             <Grid.Row>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                <Grid.Column>
                     <Heading as="h4">
                         { t("console:develop.features.authenticationProvider.forms.uriAttributeSettings." +
                             "subject.heading") }
                     </Heading>
-                    <Divider hidden/>
                     <Form>
                         <Form.Select
                             fluid
@@ -134,15 +133,15 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                     </Hint>
                 </Grid.Column>
             </Grid.Row>
+            <Divider hidden/>
             {
                 claimMappingOn &&
                 <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Grid.Column>
                         <Heading as="h4">
                             { t("console:develop.features.authenticationProvider.forms.uriAttributeSettings." +
                                 "role.heading") }
                         </Heading>
-                        <Divider hidden/>
                         <Form>
                             <Form.Select
                                 required

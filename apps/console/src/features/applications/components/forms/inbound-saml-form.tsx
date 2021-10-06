@@ -28,7 +28,7 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, 
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Label } from "semantic-ui-react";
-import { applicationConfig } from "../../../../extensions";
+import { applicationConfig, commonConfig } from "../../../../extensions";
 import { AppState, ConfigReducerStateInterface } from "../../../core";
 import { getAvailableNameIDFormats } from "../../../identity-providers/components";
 import {
@@ -56,6 +56,10 @@ interface InboundSAMLFormPropsInterface extends TestableComponentInterface {
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Specifies if API calls are pending.
+     */
+    isLoading?: boolean;
 }
 
 /**
@@ -75,6 +79,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
         metadata,
         onSubmit,
         readOnly,
+        isLoading,
         [ "data-testid" ]: testId
     } = props;
 
@@ -138,6 +143,10 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
     const [ finalCertValue, setFinalCertValue ] = useState<string>(undefined);
     const [ selectedCertType, setSelectedCertType ] = useState<CertificateTypeInterface>(CertificateTypeInterface.NONE);
     const [ isCertAvailableForEncrypt, setCertAvailableForEncrypt ] = useState(false);
+    const [ selectedSingleLogoutMethod, setSelectedSingleLogoutMethod ] = useState<LogoutMethods>(
+        initialValues?.singleLogoutProfile.logoutMethod?
+            initialValues?.singleLogoutProfile.logoutMethod
+            : LogoutMethods.BACK_CHANNEL);
 
     const [ triggerCertSubmit, setTriggerCertSubmit ] = useTrigger();
 
@@ -449,7 +458,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         }
                     } }
                 >
-                    <Grid className="form-container with-max-width">
+                    <Grid>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 {
@@ -1390,6 +1399,11 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         }
                                     ]
                                     }
+                                    listen={
+                                        (values) => {
+                                            setSelectedSingleLogoutMethod(values.get("logoutMethod") as LogoutMethods);
+                                        }
+                                    }
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-logout-method-dropdown` }
                                 />
@@ -1410,6 +1424,14 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             validation.errorMessages.push(
                                                 t("console:develop.features.applications.forms.inboundSAML" +
                                                     ".sections.sloProfile.fields.responseURL.validations.invalid")
+                                            );
+                                        }
+                                        if ((selectedSingleLogoutMethod === LogoutMethods.BACK_CHANNEL) &&
+                                            commonConfig?.blockLoopBackCalls && URLUtils.isLoopBackCall(value)) {
+                                                validation.isValid = false;
+                                                validation.errorMessages.push(
+                                                    t("console:develop.features.idp.forms.common." +
+                                                        "internetResolvableErrorMessage")
                                             );
                                         }
                                     } }
@@ -1451,6 +1473,14 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             validation.errorMessages.push(
                                                 t("console:develop.features.applications.forms.inboundSAML" +
                                                     ".sections.sloProfile.fields.requestURL.validations.invalid")
+                                            );
+                                        }
+                                        if ((selectedSingleLogoutMethod === LogoutMethods.BACK_CHANNEL) &&
+                                            commonConfig?.blockLoopBackCalls && URLUtils.isLoopBackCall(value)) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(
+                                                t("console:develop.features.idp.forms.common." +
+                                                    "internetResolvableErrorMessage")
                                             );
                                         }
                                     } }
@@ -1641,6 +1671,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             type="submit"
                                             size="small"
                                             className="form-button"
+                                            loading={ isLoading }
+                                            disabled={ isLoading }
                                             data-testid={ `${ testId }-submit-button` }
                                         >
                                             { t("common:update") }

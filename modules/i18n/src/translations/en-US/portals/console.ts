@@ -941,6 +941,7 @@ export const console: ConsoleNS = {
                                                 }
                                             },
                                             secretsList: {
+                                                iconTooltip: "Add secret as an API key",
                                                 create: "Create new secret",
                                                 emptyPlaceholder: "No secrets available",
                                                 search: "Search by secret name"
@@ -1360,7 +1361,9 @@ export const console: ConsoleNS = {
                         }
                     },
                     inboundOIDC: {
-                        description: "Given below are the OpenID Connect settings for your application.",
+                        description: "Given below are the {{protocol}} settings for your application.",
+                        documentation: "Read through our <1>documentation</1> to learn more about using " +
+                            "<3>{{protocol}}</3> protocol to implement login in your applications.",
                         fields: {
                             allowedOrigins: {
                                 hint: "Allowed origins are URLs that will be allowed to make requests from cross " +
@@ -1412,6 +1415,10 @@ export const console: ConsoleNS = {
                                     implicit: {
                                         hint: "Using the implicit grant with public applications is not recommended.",
                                         label: "{{grantType}} (Not recommended)"
+                                    },
+                                    client_credential: {
+                                        hint: "Using 'openid' scope is not allowed with this grant type.",
+                                        label: "(openid scope not allowed)"
                                     },
                                     password: {
                                         hint: "Using the password grant with public applications is not recommended.",
@@ -1480,6 +1487,17 @@ export const console: ConsoleNS = {
                                         validations: {
                                             empty: "Please fill the user access token expiry time",
                                             invalid: "Access token expiry time should be in seconds. " +
+                                                "Decimal points and negative numbers are not allowed."
+                                        }
+                                    },
+                                    applicationTokenExpiry: {
+                                        hint: "Specify the validity period of the " +
+                                            "<1>application_access_token</1> in seconds.",
+                                        label: "Application access token expiry time",
+                                        placeholder: "Enter the application access token expiry time",
+                                        validations: {
+                                            empty: "Please fill the application access token expiry time",
+                                            invalid: "Application access token expiry time should be in seconds. " +
                                                 "Decimal points and negative numbers are not allowed."
                                         }
                                     },
@@ -1657,6 +1675,8 @@ export const console: ConsoleNS = {
                     },
                     inboundSAML: {
                         description: "Given below are the SAML settings for your application.",
+                        documentation: "Read through our <1>documentation</1> to learn more about using " +
+                            "<3>{{protocol}}</3> protocol to implement login in your applications.",
                         fields: {
                             assertionURLs: {
                                 hint: "The Assertion Consumer Service (ACS) URL determines where to " +
@@ -1703,7 +1723,8 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter issuer",
                                 validations: {
                                     empty: "Please provide the issuer"
-                                }
+                                },
+                                errorMessage: "The issuer already exists."
                             },
                             metaURL: {
                                 hint: "URL for the meta file",
@@ -1712,7 +1733,8 @@ export const console: ConsoleNS = {
                                 validations: {
                                     empty: "Please provide the meta file url",
                                     invalid: "Enter a valid URL"
-                                }
+                                },
+                                errorMessage: "The metadata URL is invalid"
                             },
                             mode: {
                                 children: {
@@ -2586,6 +2608,12 @@ export const console: ConsoleNS = {
                             description: "Successfully added new protocol configurations.",
                             message: "Update successful"
                         }
+                    },
+                    conditionalScriptLoopingError: {
+                        description: "Looping constructs such as <1>for</1>, <3>while</3>, and" +
+                            " <5>forEach</5> are not allowed in the conditional authentication" +
+                            " script.",
+                        message: "Failed to update the script"
                     }
                 },
                 placeholders: {
@@ -3918,6 +3946,10 @@ export const console: ConsoleNS = {
                 },
                 templates: {
                     enterprise: {
+                        addWizard: {
+                            title: "Enterprise",
+                            subtitle: "Configure a new Identity Provider with standard authentication protocols."
+                        },
                         saml: {
                             preRequisites: {
                                 configureIdp: "See Asgardeo guide on configuring SAML IdP",
@@ -4242,7 +4274,8 @@ export const console: ConsoleNS = {
                         customProperties: "Custom Properties",
                         invalidQueryParamErrorMessage: "These are not valid query parameters",
                         invalidURLErrorMessage: "Enter a valid URL",
-                        requiredErrorMessage: "This is required"
+                        requiredErrorMessage: "This is required",
+                        internetResolvableErrorMessage: "URL must be internet resolvable.",
                     },
                     generalDetails: {
                         description: {
@@ -4972,16 +5005,16 @@ export const console: ConsoleNS = {
             secrets: {
                 alerts: {
                     createdSecret: {
-                        description: "Created a new secret with the name {{secretName}}.",
-                        message: "Successfully Created Secret."
+                        description: "Successfully created the secret.",
+                        message: "Creation successful."
                     },
                     updatedSecret: {
-                        description: "Updated secret {{secretName}}.",
-                        message: "Successfully Updated Secret."
+                        description: "Successfully updated the secret.",
+                        message: "Update successful."
                     },
                     deleteSecret: {
-                        description: "Deleted secret {{secretName}}.",
-                        message: "Successfully Deleted Secret."
+                        description: "Successfully deleted the secret.",
+                        message: "Delete successful."
                     }
                 },
                 errors: {
@@ -5010,7 +5043,7 @@ export const console: ConsoleNS = {
                         secondaryActionButtonText: "Cancel",
                         title: "Are you sure?",
                         content: "This action is irreversible and will permanently delete the secret.",
-                        warningMessage: "If you delete this secret, Adaptive Authentication Scripts " +
+                        warningMessage: "If you delete this secret, conditional authentication scripts " +
                             "depending on this value will stop working. Please proceed with caution."
                     }
                 },
@@ -5029,20 +5062,20 @@ export const console: ConsoleNS = {
                                 hint: "Provide a meaningful name for this secret. Note that once " +
                                     "you create this secret with the name above, you cannot change it afterwards.",
                                 placeholder: "Enter a secret name",
-                                label: "Secret Name"
+                                label: "Secret name"
                             },
                             secretValueField: {
                                 ariaLabel: "Enter a secret value",
                                 hint: "This is the value of the secret. You can enter a value between length" +
                                     " {{minLength}} to {{maxLength}}.",
                                 placeholder: "Enter a secret value",
-                                label: "Secret Value"
+                                label: "Secret value"
                             },
                             secretDescriptionField: {
                                 ariaLabel: "Secret Description",
                                 hint: "Provide a description for this secret (i.e., When to use this secret).",
                                 placeholder: "Enter a secret description",
-                                label: "Secret Description"
+                                label: "Secret description"
                             }
                         }
                     },
@@ -5071,20 +5104,23 @@ export const console: ConsoleNS = {
                 },
                 forms: {
                     editSecret: {
+                        page: {
+                            description: "Edit secret"
+                        },
                         secretValueField: {
                             ariaLabel: "Enter a Secret Value",
-                            label: "Secret Value",
+                            label: "Secret value",
                             hint: "You can enter a value between length {{minLength}} to {{maxLength}}.",
                             placeholder: "Enter a secret value",
-                            editButton: "Change Secret Value",
+                            editButton: "Change secret value",
                             cancelButton: "Cancel",
-                            updateButton: "Update Secret Value"
+                            updateButton: "Update secret value"
                         },
                         secretDescriptionField: {
                             ariaLabel: "Secret Description",
                             hint: "Provide a description for this secret (i.e., When to use this secret).",
                             placeholder: "Enter a secret description",
-                            label: "Secret Description"
+                            label: "Secret description"
                         }
                     },
                     actions: {
@@ -5103,7 +5139,7 @@ export const console: ConsoleNS = {
                     },
                     emptyListOfSecrets: {
                         messages: [
-                            "We couldn't find any secrets for this secret type."
+                            "There are no secrets available at the moment."
                         ]
                     },
                     buttons: {
@@ -5764,8 +5800,10 @@ export const console: ConsoleNS = {
                             validationErrorMessages: {
                                 duplicateName: "The {{type}} attribute already exists.",
                                 invalidName: "The name you entered contains illegal characters. " +
-                                    "Only alphabets, numbers, `#`, and `_` are allowed."
-                            }
+                                    "Only letters, numbers, `#`, and `_` are allowed.",
+                                scimInvalidName: "The starting character of the name should be a letter. " +
+                                    "The remaining characters may include letters, numbers, dash (-), and underscore (_)."
+                            },
                         },
                         localAttribute: {
                             label: "User Attribute to map to",
@@ -5844,8 +5882,8 @@ export const console: ConsoleNS = {
                 list: {
                     columns: {
                         actions: "Actions",
-                        claimURI: "Attribute",
-                        dialectURI: "Attribute Mapping",
+                        claimURI: "SCIM Attribute",
+                        dialectURI: "Mapped Attribute",
                         name: "Name"
                     },
                     confirmation: {
@@ -7531,7 +7569,8 @@ export const console: ConsoleNS = {
                             actionTitle: "Reset Password",
                             header: "Reset password",
                             subheader: "Once you change the password, the user will no longer be able to log in to " +
-                                "any application using the current password."
+                                "any application using the current password.",
+                            buttonHint: "This user account should be unlocked to reset the password."
                         }
                     }
                 },
@@ -7708,6 +7747,7 @@ export const console: ConsoleNS = {
                         phoneNumbers_mobile: "Mobile Number",
                         phoneNumbers_other: "Other Phone Number",
                         phoneNumbers_work: "Work Phone Number",
+                        photos: "Photos",
                         profileUrl: "URL",
                         userName: "Username"
                         /* eslint-enable @typescript-eslint/camelcase */
@@ -8670,10 +8710,10 @@ export const console: ConsoleNS = {
                     },
                     resendInvite: {
                         assertionHint: "Please confirm your action.",
-                        content: "If you send this invite, earlier invite link will be expired. " +
+                        content: "If you resend the invitation, the previous invitation link will be revoked. " +
                             "Please proceed with caution.",
                         header: "Are you sure?",
-                        message: "This action is  will permanently revoke the earlier invite."
+                        message: "This action will permanently revoke the previous invitation."
                     }
                 },
                 placeholder: {

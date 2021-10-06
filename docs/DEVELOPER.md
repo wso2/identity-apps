@@ -1,6 +1,6 @@
 # Developer Guide
 
-This guide contains instructions on developing features/fixes for WSO2 Identity Apps. Use this as a handbook for 
+This guide contains instructions on developing features/fixes for WSO2 Identity Apps. Use this as a handbook for
 submitting PRs.
 
 * [Prerequisites](#prerequisites)
@@ -15,6 +15,7 @@ submitting PRs.
     * [Ensuring Code Quality](#ensuring-code-quality)
     * [Formatting](#formatting)
     * [Ensuring performance](#ensuring-performance)
+    * [Ensuring a good user experience](#ensuring-a-good-user-experience)
 * [Styling](#styling)
     * [Forms](#forms)
 * [Writing Tests](#writing-tests)
@@ -23,7 +24,7 @@ submitting PRs.
 * [Troubleshoot](#troubleshoot)
 
 See the [contribution guidelines](../CONTRIBUTING.md)
-if you'd like to contribute to Angular.
+if you'd like to contribute to Identity Apps.
 
 ## Prerequisites
 
@@ -38,6 +39,20 @@ Before you can build and write code, make sure you have the following set of too
 * [Java Development Kit 1.8](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html) - Development environment for building applications using the Java programming language.
 
 ## Setting up Development Tools
+
+### React Developer Tools
+
+Browser extension to debug React code.
+
+- [Download for Chrome](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en)
+- [Download for Firefox](https://addons.mozilla.org/en-US/firefox/addon/react-devtools/)
+
+### Redux DevTools
+
+Redux DevTools for debugging application's Redux store operations.
+
+- [Download for Chrome](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en)
+- [Download for Firefox](https://addons.mozilla.org/en-US/firefox/addon/reduxdevtools/)
 
 ### ESLint
 
@@ -105,7 +120,7 @@ We support the following set of build strategies.
 Run the following command from the root of the project (where the root `pom.xml` is located).
 
 ```shell
-# Hoists and boostraps the dependecies & builds the entire project including the JSP portals. 
+# Hoists and boostraps the dependecies & builds the entire project including the JSP portals.
 mvn clean install
 ```
 
@@ -127,16 +142,16 @@ Read through our [configurations guidelines](./CONFIGURATION.md) to learn about 
 
 ### Ensuring Code Quality
 
-Make sure that you set up the required developer tools as mentioned [here](#setting-up-development-tools) before 
+Make sure that you set up the required developer tools as mentioned [here](#setting-up-development-tools) before
 starting off with the coding.
 
 #### ESLint
 
-We use [ESLint][eslint-official-site] as the primary code analysis tool and it's important that you adhere to the 
-defined ruleset in the configuration. Setup the ESLint plugin corresponding to the IDE/Code editor you are using. For more 
+We use [ESLint][eslint-official-site] as the primary code analysis tool and it's important that you adhere to the
+defined ruleset in the configuration. Setup the ESLint plugin corresponding to the IDE/Code editor you are using. For more
 information, follow the instructions [here](#setting-up-development-tools).
 
-Always keep an eye out for the inline warnings and errors given out by the plugin and also execute the following 
+Always keep an eye out for the inline warnings and errors given out by the plugin and also execute the following
 command before making a commit to make sure that you don't violate the rules.
 
 ```bash
@@ -150,9 +165,9 @@ npm run lint:staged
 
 ##### Conditional Rendering
 
-The return from an component should always be a `ReactElement` or `null`. Always be careful when doing 
-[conditional rendering][react-conditional-rendering] with `&&` operator. If the component returns undefined, React 
-with break the rendering as of now.
+The return from an component should always be a `ReactElement` or `null`. Always be careful when doing
+[conditional rendering][react-conditional-rendering] with `&&` operator. If the component returns undefined, React
+will break the rendering as of now.
 
 :white_check_mark: Do
 
@@ -162,7 +177,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
 ): ReactElement => {
 
     ...
-    
+
     return (
         someCondition
             ? <SignOnMethodsContent />
@@ -179,7 +194,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
 ): ReactElement => {
 
     ...
-    
+
     return someCondition && <SignOnMethodsContent />;
 }
 ```
@@ -218,7 +233,7 @@ foo > bar ? value1
 
 ### Ensuring performance
 
-We care a lot about maintaining the performance of our applications. Hence, it is your duty to make sure that the code you 
+We care a lot about maintaining the performance of our applications. Hence, it is your duty to make sure that the code you
 write follows the standards and does not diminish the existing performance levels.
 
 In-order to ensure this, please follow the following steps while making your contributions.
@@ -288,7 +303,7 @@ if ((_a = user === null || user === void 0 ? void 0 : user.email) === null || _a
 
 #### Carefully adding new dependencies
 
-Dependencies carry a heavy wait and contribute in a significant amount for the overall bundle size. So, when adding a new 
+Dependencies carry a heavy wait and contribute in a significant amount for the overall bundle size. So, when adding a new
 library to the project try to answer the following questions.
 
 Q1. Is the library absolutely required?
@@ -351,6 +366,36 @@ When adding new assets, always check the existing once in the theme and only pro
 
 When adding images, always try to add SVGs which are optimized for web.
 
+## Ensuring a good user experience
+We follow certain development practices to ensure the applications provide a good user experience. Please make sure you adhere to the following guidelines.
+
+### Disable submit buttons until the submission is complete
+When the submit button in a form is clicked, usually an API call is sent to persist the changes. However, during the API call, if the submit button remains enabled, then the users will be able to click on it as many times as they want, which will result in multiple API calls.
+
+To avoid this, disable the submit button until the API call is complete. While disabling the button, to provide a better UX, it is also advisable top show a loading indicator in the button.
+
+```TypeScript
+const SampleComponent = () => {
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const apiCall = (): void {
+        setIsSubmitting(true);
+
+        callAPI().then((response) => {
+            // handle response
+        }).error((error)=>{
+            // handle error
+        }).finally(()=>{
+            setIsSubmitting(false);
+        });
+    }
+
+    return (
+        <div>
+            <PrimaryButton loading={ isSubmitting } disabled={ loading }> Submit </PrimaryButton>
+        </div>
+    )
+```
 ## Styling
 
 ### Forms
@@ -413,9 +458,9 @@ describe("Test if the Application List is working as expected", () => {
 });
 ```
 
-:bulb: Note that we use a custom `render` function here rather than from the `@testing-library/react` module. The reason for 
-this is that we need to wrap our components with providers like `Redux` etc. And doing this in every test case is a 
-tedious task. So we have written a custom renderer following the guide in 
+:bulb: Note that we use a custom `render` function here rather than from the `@testing-library/react` module. The reason for
+this is that we need to wrap our components with providers like `Redux` etc. And doing this in every test case is a
+tedious task. So we have written a custom renderer following the guide in
 [official documentation][react-testing-library-custom-renderer]. `@unit-testing` is a webpack alias added to avoid importing this function using relative paths.
 
 ##### Snapshot Testing

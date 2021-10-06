@@ -110,6 +110,10 @@ interface ApprovalsListPropsInterface extends SBACInterface<FeatureConfigInterfa
      * Handle the change of filter status.
      */
     onChangeStatusFilter?: (status: string) => void;
+    /**
+     * Specifies if the form is submitting
+     */
+    isSubmitting?: boolean;
 }
 
 /**
@@ -138,6 +142,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
         selection,
         searchResult,
         showListItemActions,
+        isSubmitting,
         [ "data-testid" ]: testId
     } = props;
 
@@ -396,6 +401,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                 openApprovalTaskModal={ openApprovalTaskModal }
                 approval={ approval }
                 updateApprovalStatus={ updateApprovalStatus }
+                isSubmitting = { isSubmitting }
             />
         </>
     );

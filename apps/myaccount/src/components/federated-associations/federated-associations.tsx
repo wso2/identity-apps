@@ -17,24 +17,20 @@
  */
 
 import {
-    IdentityClient
-} from "@wso2/identity-oidc-js";
+    AsgardeoSPAClient
+} from "@asgardeo/auth-react";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { Button, Grid, Icon, List, Modal, Popup } from "semantic-ui-react";
 import { deleteFederatedAssociation, getFederatedAssociations } from "../../api/federated-associations";
 import { getSettingsSectionIcons } from "../../configs";
 import { commonConfig } from "../../extensions";
 import {
     AlertInterface,
-    AlertLevels,
-    AuthStateInterface
+    AlertLevels
 } from "../../models";
 import { FederatedAssociation } from "../../models/federated-associations";
-import { AppState } from "../../store";
 import { SettingsSection, UserAvatar } from "../shared";
 
 /**
@@ -69,7 +65,7 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
     const [showExternalLogins, setShowExternalLogins] = useState<boolean>(true);
     const [currentIDP, setCurrentIDP] = useState<string>();
     const [linkedAttribute, setLinkedAttribute] = useState<string>();
-    const auth = IdentityClient.getInstance();
+    const auth = AsgardeoSPAClient.getInstance();
 
     /**
      * This calls the `getFederatedAssociations` api call
@@ -126,7 +122,7 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
 
     //Todo : Update with relevant linked attribute
     useEffect(() => {
-        auth.getUserInfo().then((response)=> {
+        auth.getBasicUserInfo().then((response)=> {
             /* For the time being, lets have Gmail/Github primary Email (at the time of mapping)
             as the linked attribute. But sooner we have to display the linking attribute. */
             setLinkedAttribute(response.email);

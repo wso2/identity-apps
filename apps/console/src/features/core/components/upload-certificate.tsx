@@ -218,12 +218,16 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
      * Sets the visibility of the Finish button.
      */
     useEffect(() => {
+        if (!setShowFinishButton) {
+            return;
+        }
+
         if (!file && !pem) {
             setShowFinishButton(false);
         } else {
             setShowFinishButton(true);
         }
-    }, [file, pem])
+    }, [ file, pem ]);
 
     /**
      * Gets the forge certificate data from the wizard on coming back from the following step.

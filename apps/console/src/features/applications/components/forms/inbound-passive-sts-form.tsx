@@ -45,6 +45,10 @@ interface InboundPassiveStsFormPropsInterface extends TestableComponentInterface
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Specifies if API calls are pending.
+     */
+    isLoading?: boolean;
 }
 
 /**
@@ -63,6 +67,7 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
         initialValues,
         onSubmit,
         readOnly,
+        isLoading,
         [ "data-testid" ]: testId
     } = props;
 
@@ -138,7 +143,7 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                 onSubmit(updateConfiguration(values));
             } }
         >
-            <Grid className="form-container with-max-width">
+            <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Field
@@ -357,6 +362,8 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                                     primary
                                     type="submit"
                                     size="small"
+                                    loading={ isLoading }
+                                    disabled={ isLoading }
                                     className="form-button"
                                     data-testid={ `${ testId }-submit-button` }
                                 >

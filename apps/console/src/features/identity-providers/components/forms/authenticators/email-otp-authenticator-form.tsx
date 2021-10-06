@@ -69,6 +69,10 @@ interface EmailOTPAuthenticatorFormPropsInterface extends TestableComponentInter
      * @remarks Not implemented ATM. Do this when needed.
      */
     showCustomProperties: boolean;
+    /**
+     * Specifies if the form is submitting.
+     */
+    isSubmitting?: boolean;
 }
 
 /**
@@ -141,6 +145,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
         initialValues: originalInitialValues,
         onSubmit,
         readOnly,
+        isSubmitting,
         [ "data-testid" ]: testId
     } = props;
 
@@ -351,7 +356,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                             ".emailOTP.tokenLength.hint"
                         }
                     >
-                        The number of allowed characters in the OTP token. Please pick a value between 
+                        The number of allowed characters in the OTP token. Please pick a value between
                         <Code>4-10</Code>.
                     </Trans>
                 }
@@ -382,7 +387,8 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                             ".emailOTP.useNumericChars.hint"
                         }
                     >
-                       Only numeric characters (<Code>0-9</Code>) are used for the OTP token. Please clear this checkbox to enable alphanumeric characters.
+                        Only numeric characters (<Code>0-9</Code>) are used for the OTP token.
+                        Please clear this checkbox to enable alphanumeric characters.
                     </Trans>
                 }
                 readOnly={ readOnly }
@@ -395,7 +401,8 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                 ariaLabel="Email OTP authenticator update button"
                 name="update-button"
                 data-testid={ `${ testId }-submit-button` }
-                disabled={ false }
+                disabled={ isSubmitting }
+                loading={ isSubmitting }
                 label={ t("common:update") }
                 hidden={ readOnly }
             />

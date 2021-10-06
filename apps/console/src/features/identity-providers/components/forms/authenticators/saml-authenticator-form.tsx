@@ -62,6 +62,10 @@ interface SamlSettingsFormPropsInterface extends TestableComponentInterface {
     authenticator: FederatedAuthenticatorWithMetaInterface;
     onSubmit: (values: CommonAuthenticatorFormInitialValuesInterface) => void;
     readOnly?: boolean;
+    /**
+     * Specifies if the form is submitted.
+     */
+    isSubmitting?: boolean;
 }
 
 export interface SamlPropertiesInterface {
@@ -98,6 +102,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
         authenticator,
         onSubmit,
         readOnly,
+        isSubmitting,
         [ "data-testid" ]: testId
     } = props;
 
@@ -579,7 +584,8 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 ariaLabel="SAML authenticator update button"
                 name="update-button"
                 data-testid={ `${ testId }-submit-button` }
-                disabled={ false }
+                disabled={ isSubmitting }
+                loading={ isSubmitting }
                 label={ t("common:update") }
                 hidden={ readOnly }
             />
