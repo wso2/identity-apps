@@ -55,7 +55,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         on,
         getDecodedIDToken,
         getOIDCServiceEndpoints,
-        updateConfig
+        updateConfig,
+        signIn
     } = useAuthContext();
 
     const dispatch = useDispatch();
@@ -238,6 +239,15 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         <SecureApp
             fallback={ <PreLoader /> }
             onSignIn={ loginSuccessRedirect }
+            overrideSignIn={ async () => {
+                // This is to prompt the SSO page if a user tries to sign in
+                // through a federated IdP using an existing email address.
+                if (new URL(location.href).searchParams.get("prompt")) {
+                    await signIn({ prompt: "login" });
+                } else {
+                    await signIn();
+                }
+            } }
         >
             <App />
         </SecureApp>
