@@ -341,15 +341,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         categoryLabel: t("common:apps"),
                         links: [
                             {
-                                "data-testid": "app-switch-console",
-                                icon: AppSwitcherIcons().console,
-                                name: t("console:common.header.appSwitch.console.name"),
-                                onClick: () => {
-                                    eventPublisher.publish("console-click-visit-console");
-                                    window.open(consoleAppURL, "_self");
-                                }
-                            },
-                            {
                                 "data-testid": "app-switch-myaccount",
                                 icon: AppSwitcherIcons().myAccount,
                                 name: t("console:manage.features.header.links.userPortalNav"),
