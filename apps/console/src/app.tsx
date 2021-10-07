@@ -335,7 +335,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                         sessionTimedOutDescription: (
                                                             <Trans
                                                                 i18nKey={
-                                                                    "console:common:modals" +
+                                                                    "console:common.modals" +
                                                                     ".sessionTimeoutModal.sessionTimedOutDescription"
                                                                 }>
                                                                 Please log in again to continue from where you left off.
