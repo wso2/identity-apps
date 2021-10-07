@@ -45,7 +45,8 @@ import {
     IdentityProviderTemplateInterface,
     IdentityProviderTemplateItemInterface,
     IdentityProviderTemplateLoadingStrategies,
-    IdentityProviderTemplateManagementUtils, SupportedAuthenticators
+    IdentityProviderTemplateManagementUtils,
+    SupportedAuthenticators
 } from "../../../../../identity-providers";
 import { getSignInFlowIcons } from "../../../../configs";
 import { ApplicationManagementConstants } from "../../../../constants";
