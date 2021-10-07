@@ -389,15 +389,22 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                     </Grid.Column>
                                                     <Grid.Column width={ 2 }>
                                                         { scimMapping
-                                                            ? <span>
-                                                                <Icon name="trash alternate"
-                                                                      link
-                                                                      onClick={() => {
-                                                                          setScimMapping("");
-                                                                          setIsScimMappingRemoved(true);
-                                                                      }}
-                                                                />
-                                                        </span>
+                                                            ? <Popup
+                                                                trigger={
+                                                                    <Icon name="trash alternate"
+                                                                          link
+                                                                          onClick={() => {
+                                                                              setScimMapping("");
+                                                                              setIsScimMappingRemoved(true);
+                                                                          }}
+                                                                    />
+                                                                }
+                                                                content={ "Remove Mapping" }
+                                                                position="top center"
+                                                                size="mini"
+                                                                hideOnScroll
+                                                                inverted
+                                                             />
                                                             : null
                                                         }
                                                     </Grid.Column>
