@@ -45,7 +45,7 @@ import {
     IdentityProviderTemplateInterface,
     IdentityProviderTemplateItemInterface,
     IdentityProviderTemplateLoadingStrategies,
-    IdentityProviderTemplateManagementUtils
+    IdentityProviderTemplateManagementUtils, SupportedAuthenticators
 } from "../../../../../identity-providers";
 import { getSignInFlowIcons } from "../../../../configs";
 import { ApplicationManagementConstants } from "../../../../constants";
@@ -285,7 +285,22 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         options: AuthenticatorInterface[]
     ): boolean => {
 
-        if (options.find((option) => option.authenticator === authenticator?.defaultAuthenticator?.name)) {
+        let isDuplicate: boolean = options.some((option: AuthenticatorInterface) => {
+            return option.authenticator === authenticator?.defaultAuthenticator?.name;
+        });
+
+        const isEIDP: boolean = ApplicationManagementConstants
+            .EIDP_AUTHENTICATORS.includes(authenticator?.defaultAuthenticator?.name as SupportedAuthenticators);
+
+        // If the added option is EIDP, eventhough the authenticator is same,
+        // we need to check if it's the same IDP. If it is, then mark as duplicate.
+        if (isDuplicate && isEIDP) {
+            isDuplicate = options.some((option: AuthenticatorInterface) => {
+                return option.idp === authenticator?.idp;
+            });
+        }
+
+        if (isDuplicate) {
             dispatch(
                 addAlert({
                     description: t(
