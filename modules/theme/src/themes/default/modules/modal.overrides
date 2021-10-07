@@ -302,7 +302,7 @@
                 }
             }
         }
-        &.minimal-application-create-wizard {
+        &.minimal-application-create-wizard, &.identity-provider-create-wizard {
             .sub-template-selection {
                 .sub-templates-label {
                     display: block;
@@ -311,15 +311,6 @@
                     font-size: @relativeSmall;
                     font-weight: @bold;
                     text-transform: none;
-                }
-                .sub-templates {
-                    display: flex;
-                    flex-direction: row;
-                    flex-wrap: wrap;
-                    align-content: center;
-                    justify-content: flex-start;
-                    align-items: center;
-                    gap: 10px;
                 }
                 .sub-template-selection-card {
                     .card-text-container {

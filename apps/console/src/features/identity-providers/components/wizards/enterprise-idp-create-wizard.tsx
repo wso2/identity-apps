@@ -54,7 +54,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Dimmer, Divider, Grid, Icon } from "semantic-ui-react";
+import { Card, Dimmer, Divider, Grid, Icon } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
@@ -463,38 +463,50 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             <Grid>
                 <Grid.Row>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                        <div>
-                            <p><b>Select protocol</b></p>
-                            <SelectionCard
-                                inline
-                                image={ getIdPIcons().oidc }
-                                size="x120"
-                                className="sub-template-selection-card"
-                                header={ "OpenID Connect" }
-                                selected={ selectedProtocol === "oidc" }
-                                onClick={ () => setSelectedProtocol("oidc") }
-                                imageSize="mini"
-                                contentTopBorder={ false }
-                                showTooltips={ true }
-                                data-testid={ `${ testId }-form-wizard-oidc-selection-card` }
-                            />
-                            <SelectionCard
-                                inline
-                                image={ getIdPIcons().saml }
-                                size="x120"
-                                className="sub-template-selection-card"
-                                header={ "SAML" }
-                                selected={ selectedProtocol === "saml" }
-                                onClick={ () => setSelectedProtocol("saml") }
-                                imageSize="mini"
-                                showTooltips={ true }
-                                disabled={ false }
-                                overlay={ renderDimmerOverlay() }
-                                contentTopBorder={ false }
-                                renderDisabledItemsAsGrayscale={ false }
-                                overlayOpacity={ 0.6 }
-                                data-testid={ `${ testId }-form-wizard-saml-selection-card` }
-                            />
+                        <div className="sub-template-selection">
+                            <label className="sub-templates-label">Select protocol</label>
+                            <Card.Group itemsPerRow={ 3 } className="sub-templates">
+                                <SelectionCard
+                                    inline
+                                    image={ getIdPIcons().oidc }
+                                    size="small"
+                                    className="sub-template-selection-card"
+                                    header={ "OpenID Connect" }
+                                    selected={ selectedProtocol === "oidc" }
+                                    onClick={ () => setSelectedProtocol("oidc") }
+                                    imageSize="x30"
+                                    imageOptions={ {
+                                        relaxed: true,
+                                        square: false,
+                                        width: "auto"
+                                    } }
+                                    contentTopBorder={ false }
+                                    showTooltips={ true }
+                                    data-testid={ `${ testId }-form-wizard-oidc-selection-card` }
+                                />
+                                <SelectionCard
+                                    inline
+                                    image={ getIdPIcons().saml }
+                                    size="small"
+                                    className="sub-template-selection-card"
+                                    header={ "SAML" }
+                                    selected={ selectedProtocol === "saml" }
+                                    onClick={ () => setSelectedProtocol("saml") }
+                                    imageSize="x30"
+                                    imageOptions={ {
+                                        relaxed: true,
+                                        square: false,
+                                        width: "auto"
+                                    } }
+                                    showTooltips={ true }
+                                    disabled={ false }
+                                    overlay={ renderDimmerOverlay() }
+                                    contentTopBorder={ false }
+                                    renderDisabledItemsAsGrayscale={ false }
+                                    overlayOpacity={ 0.6 }
+                                    data-testid={ `${ testId }-form-wizard-saml-selection-card` }
+                                />
+                            </Card.Group>
                         </div>
                     </Grid.Column>
                 </Grid.Row>

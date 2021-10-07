@@ -38,7 +38,7 @@ import sortBy from "lodash-es/sortBy";
 import React, { FunctionComponent, ReactElement, ReactNode, Suspense, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Dimmer, Grid } from "semantic-ui-react";
+import { Card, Dimmer, Divider, Grid } from "semantic-ui-react";
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
 import { SAMLProtocolAllSettingsWizardForm } from "./saml-protocol-settings-all-option-wizard-form";
 import { applicationConfig } from "../../../../extensions";
@@ -676,7 +676,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                     <div className="sub-template-selection">
                         <label className="sub-templates-label">{ subTemplatesSectionTitle }</label>
-                        <div className="sub-templates">
+                        <Card.Group itemsPerRow={ 3 } className="sub-templates">
                             {
                                 templates
                                     .map((subTemplate: SupportedAuthProtocolTypes | ApplicationTemplateInterface,
@@ -689,9 +689,16 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                             | ApplicationTemplateInterface["image"]) = isCustom
                                             ? subTemplate as SupportedAuthProtocolTypes
                                             : (subTemplate as ApplicationTemplateInterface).image;
-                                        const header: string = isCustom
-                                            ? ApplicationManagementUtils
-                                                .resolveProtocolDisplayName(subTemplate as SupportedAuthProtocolTypes)
+                                        const header: ReactNode = isCustom
+                                            ? subTemplate === SupportedAuthProtocolTypes.OAUTH2_OIDC
+                                                ? (
+                                                    <>
+                                                        <div>OAuth2.0</div>
+                                                        <div>OpenID Connect</div>
+                                                    </>
+                                                )
+                                                : ApplicationManagementUtils.resolveProtocolDisplayName(
+                                                        subTemplate as SupportedAuthProtocolTypes)
                                             : (subTemplate as ApplicationTemplateInterface).name;
                                         const isSelected: boolean = isCustom
                                             ? customApplicationProtocol === subTemplate
@@ -717,42 +724,38 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                         };
 
                                         return (
-                                            <div
+                                            <SelectionCard
                                                 key={ index }
-                                                className="sub-template-selection-card-wrapper"
-                                            >
-                                                <SelectionCard
-                                                    fluid
-                                                    imageInline
-                                                    image={
-                                                        {
-                                                            ...getInboundProtocolLogos(),
-                                                            ...getTechnologyLogos()
-                                                        }[imageKey]
-                                                    }
-                                                    size="auto"
-                                                    className="sub-template-selection-card"
-                                                    header={ header }
-                                                    selected={ isSelected }
-                                                    onClick={ onClick }
-                                                    imageSize="x22"
-                                                    imageOptions={ {
-                                                        square: false,
-                                                        width: "auto"
-                                                    } }
-                                                    contentTopBorder={ false }
-                                                    showTooltips={ false }
-                                                    renderDisabledItemsAsGrayscale={ false }
-                                                    disabled={ isDisabled }
-                                                    overlay={ renderDimmerOverlay() }
-                                                    overlayOpacity={ 0.6 }
-                                                    data-testid={ `${ testId }-${ id }-card` }
-                                                />
-                                            </div>
+                                                image={
+                                                    {
+                                                        ...getInboundProtocolLogos(),
+                                                        ...getTechnologyLogos()
+                                                    }[imageKey]
+                                                }
+                                                size="small"
+                                                className="sub-template-selection-card"
+                                                header={ header }
+                                                selected={ isSelected }
+                                                onClick={ onClick }
+                                                imageSize="x30"
+                                                imageOptions={ {
+                                                    relaxed: true,
+                                                    square: false,
+                                                    width: "auto"
+                                                } }
+                                                contentTopBorder={ false }
+                                                showTooltips={ false }
+                                                renderDisabledItemsAsGrayscale={ false }
+                                                disabled={ isDisabled }
+                                                overlay={ renderDimmerOverlay() }
+                                                overlayOpacity={ 0.6 }
+                                                data-testid={ `${ testId }-${ id }-card` }
+                                            />
                                         );
                                     })
                             }
-                        </div>
+                        </Card.Group>
+                        <Divider hidden />
                     </div>
                 </Grid.Column>
             </Grid.Row>
