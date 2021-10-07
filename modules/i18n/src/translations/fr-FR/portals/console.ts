@@ -949,12 +949,16 @@ export const console: ConsoleNS = {
                                                 }
                                             },
                                             secretsList: {
-                                                iconTooltip: "Stockez en toute sécurité les clés d'accès en tant que " +
-                                                    "secrets. Les secrets peuvent remplacer la clé API dans la " +
-                                                    "fonction <1>callChoreo</1> pour l'authentification conditionnelle.",
                                                 create: "Créer un nouveau secret",
                                                 emptyPlaceholder: "Aucun secret disponible",
-                                                search: "Recherche par nom secret"
+                                                search: "Recherche par nom secret",
+                                                tooltips: {
+                                                    keyIcon: "Stockez en toute sécurité les clés d'accès en tant que " +
+                                                        "secrets. Les secrets peuvent remplacer la clé API dans la " +
+                                                        "fonction <1>callChoreo</1> pour l'authentification " +
+                                                        "conditionnelle.",
+                                                    plusIcon: "Ajouter au script"
+                                                }
                                             },
                                             heading: "Configuration basée sur des scripts",
                                             hint: "Définissez le flux d'authentification via un script adaptatif. Vous pouvez " +

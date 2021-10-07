@@ -941,12 +941,15 @@ export const console: ConsoleNS = {
                                                 }
                                             },
                                             secretsList: {
-                                                iconTooltip: "Securely store access keys as secrets. A secret can " +
-                                                    "replace the API key in <1>callChoreo()</1> function in the " +
-                                                    "conditional authentication scripts.",
                                                 create: "Create new secret",
                                                 emptyPlaceholder: "No secrets available",
-                                                search: "Search by secret name"
+                                                search: "Search by secret name",
+                                                tooltips: {
+                                                    keyIcon: "Securely store access keys as secrets. A secret can " +
+                                                        "replace the API key in <1>callChoreo()</1> function in the " +
+                                                        "conditional authentication scripts.",
+                                                    plusIcon: "Add to the script"
+                                                }
                                             },
                                             heading: "Script-based configuration",
                                             hint: "Define the authentication flow via an adaptive script. You can " +
