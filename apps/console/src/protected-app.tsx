@@ -143,7 +143,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                             display_name: response.displayName,
                             email: response.email,
                             tenantDomain: response.tenantDomain ?? tenantDomain,
-                            username: response.username
+                            username: response.username + (response.tenantDomain ? `@${response.tenantDomain}` :
+                                `@${tenantDomain}`)
                         })
                     );
                 })

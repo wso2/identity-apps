@@ -25,10 +25,10 @@ import { Button, Container, Divider, Form, Modal } from "semantic-ui-react";
 import { updatePassword } from "../../api";
 import { getSettingsSectionIcons } from "../../configs";
 import { CommonConstants } from "../../constants";
+import { history } from "../../helpers";
 import { AlertInterface, AlertLevels } from "../../models";
 import { AppState } from "../../store";
 import { setActiveForm } from "../../store/actions";
-import { endUserSession } from "../../utils";
 import { EditSection, SettingsSection } from "../shared";
 
 /**
@@ -112,8 +112,11 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                         )
                     });
 
-                    // Terminate the user session.
-                    endUserSession();
+                    // Terminate the user session. Set a timeout to display alert.
+                    setTimeout(() => {
+                        history.push(window[ "AppUtils" ].getConfig().routes.logout);
+                    }, 3000);
+
                 }
             })
             .catch((error) => {
