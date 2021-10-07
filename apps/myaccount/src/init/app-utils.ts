@@ -159,13 +159,16 @@ export const AppUtils = (function() {
             }
             if (_config.consoleApp && _config.consoleApp.origin) {
                 _config.consoleAppOrigin = _config.consoleApp.origin;
-            } 
+            }
+
+            const tenantPath = this.getTenantPath(false);
+            const resolvedTenantPath = tenantPath.match(this.getSuperTenant())?.length > 0 ? "" : tenantPath;
 
             return {
                 consoleApp: {
-                    path: _config.consoleApp?.path ?
-                    _config.consoleAppOrigin + this.getTenantPath(false) + _config.consoleApp?.path
-                    : null
+                    path: _config.consoleApp?.path
+                        ? _config.consoleAppOrigin + resolvedTenantPath + _config.consoleApp?.path
+                        : null
                 },
                 appBase: _config.appBaseName,
                 appBaseNameForHistoryAPI: this.constructAppBaseNameForHistoryAPI(),

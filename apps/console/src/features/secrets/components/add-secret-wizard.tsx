@@ -84,7 +84,7 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
     const [ secretNameInvalid, setSecretNameInvalid ] = useState<boolean>(false);
     const [ secretValueInvalid, setSecretValueInvalid ] = useState<boolean>(false);
     const [ initialFormValues, setInitialFormValues ] = useState<Record<string, any>>({});
-    const [ showInfoMessage, setShowInfoMessage ] = useState<boolean>(false);
+    const [ showInfoMessage, setShowInfoMessage ] = useState<boolean>(true);
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
@@ -230,18 +230,6 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                 value: "ADAPTIVE_AUTH_CALL_CHOREO"
             } as FieldDropDownOption
         ]);
-    };
-
-    /**
-     * Event handler for banner dismiss button.
-     * @event-handler
-     */
-    const onDismissInfoMessageBanner = (): void => {
-        LocalStorageUtils.setValueInLocalStorage(
-            FEATURE_LOCAL_STORAGE_KEY,
-            JSON.stringify({ hideInfoMessage: true } as EditSecretLocalStorage)
-        );
-        setShowInfoMessage(false);
     };
 
     /**

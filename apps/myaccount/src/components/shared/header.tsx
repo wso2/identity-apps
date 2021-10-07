@@ -216,15 +216,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             })
             : null
 
-        links.push({
-            "data-testid": "app-switch-myaccount",
-            icon: AppSwitcherIcons().myAccount,
-            name: t("myAccount:components.header.appSwitch.myAccount.name"),
-            onClick: () => {
-                window.open(accountAppURL, "_self");
-            }
-        });
-
         return links;
     };
 

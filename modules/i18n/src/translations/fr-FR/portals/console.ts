@@ -951,7 +951,7 @@ export const console: ConsoleNS = {
                                             secretsList: {
                                                 iconTooltip: "Stockez en toute sécurité les clés d'accès en tant que " +
                                                     "secrets. Les secrets peuvent remplacer la clé API dans la " +
-                                                    "fonction callChoreo pour l'authentification conditionnelle.",
+                                                    "fonction <1>callChoreo</1> pour l'authentification conditionnelle.",
                                                 create: "Créer un nouveau secret",
                                                 emptyPlaceholder: "Aucun secret disponible",
                                                 search: "Recherche par nom secret"
@@ -4695,6 +4695,12 @@ export const console: ConsoleNS = {
                         "cet attribut sur le profil.",
                         supportedByDefault: {
                             label: "Afficher cet attribut sur le profil de l'utilisateur et la page d'enregistrement de l'utilisateur"
+                        },
+                        infoMessages: {
+                            disabledConfigInfo: "Veuillez noter que la section ci-dessous est désactivée car aucun" +
+                                " mappage de revendication externe n'a été trouvé pour cet attribut de revendication.",
+                            configApplicabilityInfo: "Veuillez noter que les configurations d'attributs suivantes " +
+                                "n'affecteront que les profils d'utilisateurs des clients."
                         }
                     },
                     mappedAttributes: {
