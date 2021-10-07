@@ -1185,9 +1185,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                             { resolveApiDocumentationLink() }
                                             <Menu.Item className="action">
                                                 <div>
-                                                    {
-                                                        renderSecretListDropdown()
-                                                    }
+                                                    { renderSecretListDropdown() }
                                                 </div>
                                             </Menu.Item>
                                             <Menu.Item className="action">
