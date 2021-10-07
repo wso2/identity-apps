@@ -156,6 +156,11 @@ interface ClaimsListPropsInterface extends SBACInterface<FeatureConfigInterface>
      */
     showListItemActions?: boolean;
     /**
+     * Show or hide table headers. By default they are hidden.
+     * You have to explicitly mark them as enabled.
+     */
+    showTableHeaders?: boolean;
+    /**
      * Search query for the list.
      */
     searchQuery?: string;
@@ -186,6 +191,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
 ): ReactElement => {
 
     const {
+        showTableHeaders,
         advancedSearch,
         defaultListItemLimit,
         featureConfig,
@@ -1132,7 +1138,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 onRowClick={ resolveTableRowClick }
                 placeholders={ showPlaceholders() }
                 selectable={ selection }
-                showHeader={ true }
+                showHeader={ showTableHeaders }
                 transparent={ !isLoading && (showPlaceholders() !== null) }
                 data-testid={ testId }
                 isRowSelectable={ (claim: Claim | ExternalClaim | ClaimDialect) =>
@@ -1149,5 +1155,6 @@ ClaimsList.defaultProps = {
     attributeType: ClaimManagementConstants.OTHERS,
     "data-testid": "claims-list",
     selection: true,
-    showListItemActions: true
+    showListItemActions: true,
+    showTableHeaders: false
 };

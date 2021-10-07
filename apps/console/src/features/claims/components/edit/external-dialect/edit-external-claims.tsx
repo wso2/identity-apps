@@ -458,6 +458,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                                 data-testid={ `${ testId }-list-advanced-search` }
                             />
                         ) }
+                        showTableHeaders={ true }
                         isLoading={ isLoading }
                         list={ paginate(filteredClaims, listItemLimit, offset) }
                         localClaim={ ListType.EXTERNAL }
