@@ -2053,7 +2053,7 @@ export interface ConsoleNS {
                         }
                     },
                     actions: {
-                        finishButton: {
+                        createButton: {
                             label: string;
                             ariaLabel: string;
                         };

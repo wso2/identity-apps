@@ -942,8 +942,8 @@ export const console: ConsoleNS = {
                                             },
                                             secretsList: {
                                                 iconTooltip: "Securely store access keys as secrets. A secret can " +
-                                                    "replace the API key in callChoreo function in the conditional " +
-                                                    "authentication scripts.",
+                                                    "replace the API key in <1>callChoreo()</1> function in the " +
+                                                    "conditional authentication scripts.",
                                                 create: "Create new secret",
                                                 emptyPlaceholder: "No secrets available",
                                                 search: "Search by secret name"
@@ -2985,7 +2985,8 @@ export const console: ConsoleNS = {
                                 }
                             },
                             clientId: {
-                                hint: "The generated unique ID which is generated when the Facebook OAuth app is created.",
+                                hint: "The generated unique ID which is generated when the Facebook OAuth app is " +
+                                    "created.",
                                 label: "App ID",
                                 placeholder: "Enter App ID from Facebook application.",
                                 validations: {
@@ -3002,7 +3003,8 @@ export const console: ConsoleNS = {
                             },
                             scopes: {
                                 heading: "Permissions",
-                                hint: "Permissions granted for the connected apps to access data from Facebook. Click <1>here</> to learn more.",
+                                hint: "Permissions granted for the connected apps to access data from Facebook. " +
+                                    "Click <1>here</> to learn more.",
                                 list: {
                                     email: {
                                         description: "Grants read access to a user's primary email address."
@@ -3192,8 +3194,8 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter logout URL",
                                 ariaLabel: "Specify SAML 2.0 IdP Logout URL",
                                 label: "IdP logout URL",
-                                hint: "Enter the IdP's logout" +
-                                    " URL value if it's different from above."
+                                hint: "Enter the IdP's logout URL value if it's different from the Single Sign-On URL" +
+                                    " mentioned above."
                             },
                             IsAuthnRespSigned: {
                                 ariaLabel: "Authentication response must be signed always?",
@@ -5083,9 +5085,9 @@ export const console: ConsoleNS = {
                         }
                     },
                     actions: {
-                        finishButton: {
-                            label: "Finish",
-                            ariaLabel: "Finish and Submit"
+                        createButton: {
+                            label: "Create",
+                            ariaLabel: "Create and Submit"
                         },
                         cancelButton: {
                             label: "Cancel",
@@ -5097,7 +5099,7 @@ export const console: ConsoleNS = {
                     secretIsHidden: {
                         title: "Why can't I see the secret?",
                         content: "Once created, you won't be able to see the secret value again. " +
-                            "You will only be able to update the secret value or delete the secret. "
+                            "You will only be able to delete the secret. "
                     },
                     adaptiveAuthSecretType: {
                         title: "Conditional Authentication Secrets",
