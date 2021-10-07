@@ -374,14 +374,14 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <PrimaryButton
                                 aria-label={
-                                    t("console:develop.features.secrets.wizards.actions.creteButton.ariaLabel")
+                                    t("console:develop.features.secrets.wizards.actions.createButton.ariaLabel")
                                 }
                                 disabled={ submitShouldBeDisabled || requestInProgress }
                                 floated="right"
                                 onClick={ () => formRef?.current?.triggerSubmit() }
                                 loading={ requestInProgress }
                                 data-testid={ `${ testId }-form-submit-button` }>
-                                { t("console:develop.features.secrets.wizards.actions.creteButton.label") }
+                                { t("console:develop.features.secrets.wizards.actions.createButton.label") }
                             </PrimaryButton>
                         </Grid.Column>
                     </Grid.Row>
