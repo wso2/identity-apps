@@ -823,6 +823,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                         }
                     </Dropdown.Menu>
                     <Dropdown.Menu
+                        className={ "create-button-item" }
                         scrolling
                     >
                         <Dropdown.Item
@@ -1158,14 +1159,20 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                             }
                                                         </div>
                                                     ) }
-                                                    content={ () => {
-                                                        return t("console:develop.features.applications.edit." +
-                                                            "sections.signOnMethod.sections.authenticationFlow." +
-                                                            "sections.scriptBased.secretsList.iconTooltip") ;
-                                                    } }
-                                                    position="bottom left"
-                                                    hoverable={ true }
-                                                    positionFixed
+                                                    content={
+                                                        <Trans
+                                                            i18nKey={
+                                                                "console:develop.features.applications.edit." +
+                                                                "sections.signOnMethod.sections.authenticationFlow." +
+                                                                "sections.scriptBased.secretsList.iconTooltip"
+                                                            }
+                                                        >
+                                                            Securely store access keys as secrets. A secret can
+                                                            replace the API key in <Code>callChoreo()</Code> function
+                                                            in the conditional authentication scripts.
+                                                        </Trans>
+                                                     }
+                                                    position="top left"
                                                     pinned={ false }
                                                 />
                                             </Menu.Item>

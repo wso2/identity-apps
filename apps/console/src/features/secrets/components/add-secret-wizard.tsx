@@ -84,7 +84,7 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
     const [ secretNameInvalid, setSecretNameInvalid ] = useState<boolean>(false);
     const [ secretValueInvalid, setSecretValueInvalid ] = useState<boolean>(false);
     const [ initialFormValues, setInitialFormValues ] = useState<Record<string, any>>({});
-    const [ showInfoMessage, setShowInfoMessage ] = useState<boolean>(false);
+    const [ showInfoMessage, setShowInfoMessage ] = useState<boolean>(true);
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
@@ -141,10 +141,6 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                 setRequestInProgress(false);
             });
 
-    }, []);
-
-    useEffect(() => {
-        checkAndRenderInfoMessage();
     }, []);
 
     /**
@@ -234,39 +230,6 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                 value: "ADAPTIVE_AUTH_CALL_CHOREO"
             } as FieldDropDownOption
         ]);
-    };
-
-    /**
-     * Event handler for banner dismiss button.
-     * @event-handler
-     */
-    const onDismissInfoMessageBanner = (): void => {
-        LocalStorageUtils.setValueInLocalStorage(
-            FEATURE_LOCAL_STORAGE_KEY,
-            JSON.stringify({ hideInfoMessage: true } as EditSecretLocalStorage)
-        );
-        setShowInfoMessage(false);
-    };
-
-    /**
-     * Check whether the info message is already shown. if `not`
-     * show it otherwise don't.
-     */
-    const checkAndRenderInfoMessage = (): void => {
-        try {
-            // If message dismissed already shown, then don't show it again.
-            const local = JSON.parse(
-                LocalStorageUtils.getValueFromLocalStorage(FEATURE_LOCAL_STORAGE_KEY)
-                ?? EMPTY_JSON_OBJECT_STRING
-            ) as EditSecretLocalStorage;
-            if (local && local.hideInfoMessage === true) {
-                setShowInfoMessage(false);
-            } else {
-                setShowInfoMessage(true);
-            }
-        } catch (e) {
-            setShowInfoMessage(true);
-        }
     };
 
     /**
@@ -411,14 +374,14 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <PrimaryButton
                                 aria-label={
-                                    t("console:develop.features.secrets.wizards.actions.finishButton.ariaLabel")
+                                    t("console:develop.features.secrets.wizards.actions.createButton.ariaLabel")
                                 }
                                 disabled={ submitShouldBeDisabled || requestInProgress }
                                 floated="right"
                                 onClick={ () => formRef?.current?.triggerSubmit() }
                                 loading={ requestInProgress }
                                 data-testid={ `${ testId }-form-submit-button` }>
-                                { t("console:develop.features.secrets.wizards.actions.finishButton.label") }
+                                { t("console:develop.features.secrets.wizards.actions.createButton.label") }
                             </PrimaryButton>
                         </Grid.Column>
                     </Grid.Row>

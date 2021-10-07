@@ -951,7 +951,7 @@ export const console: ConsoleNS = {
                                             secretsList: {
                                                 iconTooltip: "Stockez en toute sécurité les clés d'accès en tant que " +
                                                     "secrets. Les secrets peuvent remplacer la clé API dans la " +
-                                                    "fonction callChoreo pour l'authentification conditionnelle.",
+                                                    "fonction <1>callChoreo</1> pour l'authentification conditionnelle.",
                                                 create: "Créer un nouveau secret",
                                                 emptyPlaceholder: "Aucun secret disponible",
                                                 search: "Recherche par nom secret"
@@ -1255,7 +1255,8 @@ export const console: ConsoleNS = {
                                 }
                             },
                             skipConsentLogout: {
-                                hint: "Le consentement de l'utilisateur sera ignoré pendant le processus de déconnexion.",
+                                hint: "Le consentement de l'utilisateur sera ignoré pendant le processus de " +
+                                    "déconnexion.",
                                 label: "Sauter le consentement à la déconnexion",
                                 validations: {
                                     empty: "Ceci est un champ obligatoire."
@@ -1748,8 +1749,8 @@ export const console: ConsoleNS = {
                                 }
                             },
                             issuer: {
-                                hint: "Ceci précise l'émetteur. C'est l'élément 'saml:Issuer' qui contient l'identifiant " +
-                                    "unique de la demande. C'est également la valeur de l'émetteur" +
+                                hint: "Ceci précise l'émetteur. C'est l'élément 'saml:Issuer' qui contient " +
+                                    "l'identifiant unique de la demande. C'est également la valeur de l'émetteur" +
                                     "spécifiée dans la demande d'authentification SAML émise par l'application.",
                                 label: "Emetteur",
                                 placeholder: "sample-app.com",
@@ -3748,9 +3749,9 @@ export const console: ConsoleNS = {
                         }
                     },
                     actions: {
-                        finishButton: {
-                            label: "Finir",
-                            ariaLabel: "Terminer et soumettre"
+                        createButton: {
+                            label: "Créer",
+                            ariaLabel: "Créer et soumettre"
                         },
                         cancelButton: {
                             label: "Annuler",
@@ -3761,8 +3762,8 @@ export const console: ConsoleNS = {
                 banners: {
                     secretIsHidden: {
                         title: "Pourquoi ne puis-je pas voir le secret ?",
-                        content: "Une fois créé, vous ne pourrez plus voir la valeur secrète. Vous ne pourrez que" +
-                            " mettre à jour la valeur secrète ou supprimer le secret."
+                        content: "Une fois créé, vous ne pourrez plus voir la valeur secrète. Vous ne pourrez " +
+                            "supprimer que le secret."
                     },
                     adaptiveAuthSecretType: {
                         title: "Secrets d'authentification adaptative",

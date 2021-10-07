@@ -938,7 +938,7 @@ export const console: ConsoleNS = {
                                             },
                                             secretsList: {
                                                 iconTooltip: "රහස්‍ය ලෙස ප්‍රවේශ යතුරු ආරක්ෂිතව ගබඩා කරන්න. " +
-                                                    "කොන්දේසි සහිත සත්‍යාපනය සඳහා කෝල්චෝරියෝ ශ්‍රිතයේ ඒපීඅයි යතුර රහස් " +
+                                                    "කොන්දේසි සහිත සත්‍යාපනය සඳහා <1>callChoreo</1> ශ්‍රිතයේ API යතුර රහස් " +
                                                     "වලට ආදේශ කළ හැකිය.",
                                                 create: "නව රහසක් සාදන්න",
                                                 emptyPlaceholder: "රහස් නොමැත",
@@ -3663,9 +3663,9 @@ export const console: ConsoleNS = {
                         }
                     },
                     actions: {
-                        finishButton: {
-                            label: "අවසන් කරන්න",
-                            ariaLabel: "මාදිලිය අවසන් කර ඉදිරිපත් කරන්න"
+                        createButton: {
+                            label: "සාදන්න",
+                            ariaLabel: "සාදන්න සහ ඉදිරිපත් කරන්න"
                         },
                         cancelButton: {
                             label: "අවලංගු කරන්න",
@@ -3677,7 +3677,7 @@ export const console: ConsoleNS = {
                     secretIsHidden: {
                         title: "ඇයි මට රහස නොපෙනෙන්නේ?",
                         content: "වරක් නිර්මාණය කළ පසු ඔබට එහි රහස්‍ය වටිනාකම නැවත දැක ගැනීමට නොහැකි වනු ඇත. ඔබට කළ " +
-                            "හැක්කේ රහස්‍ය වටිනාකම යාවත්කාලීන කිරීමට හෝ රහස මැකීමට පමණි."
+                            "හැක්කේ රහස මැකීම පමණි."
                     },
                     adaptiveAuthSecretType: {
                         title: "අනුවර්තී සත්‍යාපන රහස්",
