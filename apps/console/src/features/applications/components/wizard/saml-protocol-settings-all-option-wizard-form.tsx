@@ -556,7 +556,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
     let submitUrl: (callback: (url?: string) => void) => void;
 
     return (
-        templateValues && configureMode
+         configureMode
             ? (
                 <Forms
                     onSubmit={ (values: Map<string, FormValue>): void => {

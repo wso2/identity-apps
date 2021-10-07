@@ -21,7 +21,7 @@ import { getAllExternalClaims } from "@wso2is/core/api";
 import { AlertLevels, ClaimDialect, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { Dispatch, FunctionComponent, ReactElement, SetStateAction, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Header, Placeholder } from "semantic-ui-react";
@@ -48,6 +48,14 @@ interface ExternalDialectEditPageInterface extends TestableComponentInterface {
      * Attribute URI
      */
     attributeUri: string;
+    /**
+     * Mapped Local claim list
+     */
+    mappedLocalClaims: string[];
+    /**
+     * Update mapped claims on delete or edit
+     */
+    updateMappedClaims?: Dispatch<SetStateAction<boolean>>;
 }
 
 /**
@@ -60,7 +68,14 @@ interface ExternalDialectEditPageInterface extends TestableComponentInterface {
 const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterface> = (
     props: ExternalDialectEditPageInterface
 ): ReactElement => {
-    const { attributeType, attributeUri, [ "data-testid" ]: testId, id: dialectId } = props;
+    const { 
+        attributeType, 
+        attributeUri, 
+        mappedLocalClaims, 
+        updateMappedClaims, 
+        [ "data-testid" ]: testId, 
+        id: dialectId 
+    } = props;
 
     const [ dialect, setDialect ] = useState<ClaimDialect>(null);
     const [ claims, setClaims ] = useState<ExternalClaim[]>(undefined);
@@ -296,6 +311,8 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                 data-testid={ `${ testId }-edit-external-claims` }
                 attributeType={ attributeType }
                 attributeUri={ attributeUri }
+                mappedLocalClaims={ mappedLocalClaims }
+                updateMappedClaims={ updateMappedClaims }
             />
 
             <Divider hidden />

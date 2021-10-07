@@ -22,7 +22,7 @@ import { Claim, HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { store } from "../../core";
 import { ClaimManagementConstants } from "../constants";
-import { AddExternalClaim } from "../models";
+import { AddExternalClaim, ServerSupportedClaimsInterface } from "../models";
 
 /**
  * Get an axios instance.
@@ -371,6 +371,34 @@ export const getAnExternalClaim = (dialectID: string, claimID: string): Promise<
 };
 
 /**
+ * Gets the external claims with the given ID of the dialect.
+ *
+ * @param {string} dialectID Claim Dialect ID. *
+ * @return {Promise<any>} response.
+ */
+export const getExternalClaims = (dialectID: string): Promise<any> => {
+    const requestConfig = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${store.getState().config.endpoints.externalClaims.replace("{}", dialectID)}`
+    };
+    return httpClient(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(`An error occurred. The server returned ${response.status}`);
+            }
+
+            return Promise.resolve(response.data);
+        })
+        .catch((error) => {
+            return Promise.reject(error?.response?.data);
+        });
+};
+
+/**
  * Update an external claim.
  *
  * @param {string} dialectID Dialect ID.
@@ -425,6 +453,36 @@ export const deleteAnExternalClaim = (dialectID: string, claimID: string): Promi
             if (response.status !== 204) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+            return Promise.resolve(response.data);
+        })
+        .catch((error) => {
+            return Promise.reject(error?.response?.data);
+        });
+};
+
+/**
+ * Retrieves a list of all the server supported claims
+ * per the given schema id.
+ * 
+ * @param id - Selected schema id
+ * @returns - list of 
+ */
+export const getServerSupportedClaimsForSchema = (id: string): Promise<ServerSupportedClaimsInterface> => {
+    const requestConfig = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${store.getState().config.endpoints.serverSupportedSchemas}/${id}`
+    };
+
+    return httpClient(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(`An error occurred. The server returned ${response.status}`);
+            }
+
             return Promise.resolve(response.data);
         })
         .catch((error) => {
