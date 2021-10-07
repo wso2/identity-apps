@@ -948,7 +948,7 @@ export const console: ConsoleNS = {
                                                     keyIcon: "Securely store access keys as secrets. A secret can " +
                                                         "replace the API key in <1>callChoreo()</1> function in the " +
                                                         "conditional authentication scripts.",
-                                                    plusIcon: "Add to script"
+                                                    plusIcon: "Add to the script"
                                                 }
                                             },
                                             heading: "Script-based configuration",
