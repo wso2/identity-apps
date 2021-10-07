@@ -16,22 +16,22 @@
  * under the License.
  */
 
-import { AlertInterface, AlertLevels, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
-import { CertificateManagementUtils, URLUtils } from "@wso2is/core/utils";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import { URLUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation, useTrigger } from "@wso2is/forms";
-import { Code, CopyInputField, Heading, Hint, LinkButton, URLInput } from "@wso2is/react-components";
+import { Code, CopyInputField, Heading, Hint, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import union from "lodash-es/union";
-import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Label } from "semantic-ui-react";
 import { applicationConfig, commonConfig } from "../../../../extensions";
 import { AppState, ConfigReducerStateInterface } from "../../../core";
-import { getAvailableNameIDFormats } from "../../../identity-providers/components";
+import { getAvailableNameIDFormats } from "../../../identity-providers";
 import {
+    ApplicationInterface,
     CertificateInterface,
     CertificateTypeInterface,
     LogoutMethods,
@@ -41,10 +41,11 @@ import {
     SAMLApplicationConfigurationInterface,
     SAMLMetaDataInterface
 } from "../../models";
-import { CertificateFormFieldModal } from "../modals";
 import { ApplicationCertificateWrapper } from "../settings/certificate";
 
 interface InboundSAMLFormPropsInterface extends TestableComponentInterface {
+    onUpdate: (id: string) => void;
+    application: ApplicationInterface;
     /**
      * Current certificate configurations.
      */
@@ -74,6 +75,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
 ): ReactElement => {
 
     const {
+        onUpdate,
+        application,
         certificate,
         initialValues,
         metadata,
@@ -84,8 +87,6 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
     } = props;
 
     const { t } = useTranslation();
-
-    const dispatch = useDispatch();
 
     const [ assertionConsumerURLsErrorLabel, setAssertionConsumerURLsErrorLabel ] = useState<ReactElement>(null);
     const [ audiencesErrorLabel, setAudiencesErrorLabel ] = useState<ReactElement>(null);
@@ -134,11 +135,6 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
     const [isSignSAMLResponsesEnabled, setSignSAMLResponsesEnabled] = useState(false);
     const [isArtifactBindingEnabled, setIsArtifactBindingEnabled] = useState(false);
     const [isArtifactBindingAllowed, setIsArtifactBindingAllowed] = useState(true);
-
-    const [ isPEMSelected, setPEMSelected ] = useState<boolean>(true);
-    const [ showCertificateModal, setShowCertificateModal ] = useState<boolean>(false);
-    const [ PEMValue, setPEMValue ] = useState<string>(undefined);
-    const [ certificateDisplay, setCertificateDisplay ] = useState<DisplayCertificate>(null);
 
     const [ finalCertValue, setFinalCertValue ] = useState<string>(undefined);
     const [ selectedCertType, setSelectedCertType ] = useState<CertificateTypeInterface>(CertificateTypeInterface.NONE);
@@ -1653,6 +1649,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         }
                         { /* Certificate Section */ }
                         <ApplicationCertificateWrapper
+                            onUpdate={ onUpdate }
+                            application={ application }
                             updateCertFinalValue={ setFinalCertValue }
                             updateCertType={ setSelectedCertType }
                             certificate={ certificate }

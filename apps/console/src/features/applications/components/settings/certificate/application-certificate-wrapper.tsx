@@ -18,6 +18,7 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { URLUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { Heading, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -27,17 +28,20 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Message } from "semantic-ui-react";
 import { ApplicationCertificatesListComponent } from "./application-certificate-list";
-import { AppState, ConfigReducerStateInterface } from "../../../../core";
-import { CertificateInterface, CertificateTypeInterface } from "../../../models";
 import { commonConfig } from "../../../../../extensions";
-import { URLUtils } from "@wso2is/core/utils";
-
+import { AppState, ConfigReducerStateInterface } from "../../../../core";
+import { ApplicationInterface, CertificateInterface, CertificateTypeInterface } from "../../../models";
 
 /**
  * Proptypes for the application wrapper certificate component.
  */
 interface ApplicationWrapperCertificatesPropsInterface extends TestableComponentInterface {
-
+    /**
+     * Application refresh call.
+     * @param id {string} application id
+     */
+    onUpdate: (id: string) => void;
+    application: ApplicationInterface;
     /**
      * Callback to update final certificate value.
      */
@@ -72,9 +76,10 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
 ): ReactElement => {
 
     const {
+        onUpdate,
+        application,
         certificate,
         triggerSubmit,
-        isRequired,
         hidden,
         hideJWKS,
         readOnly,
@@ -267,6 +272,8 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                         selectedCertType === CertificateTypeInterface.PEM &&
                         (
                             <ApplicationCertificatesListComponent
+                                onUpdate={ onUpdate }
+                                application={ application }
                                 updatePEMValue={ setPEMValue }
                                 applicationCertificate={ PEMValue }
                             />
