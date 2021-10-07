@@ -443,7 +443,6 @@ export const getServerSupportedClaimsForSchema = (id: string): Promise<ServerSup
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,

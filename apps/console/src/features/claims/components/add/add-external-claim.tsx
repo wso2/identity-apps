@@ -127,7 +127,15 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
             })
             setServerSupportedClaims(serverSupportedClaimList);
         }).catch(error => {
-            console.log(error)
+            dispatch(addAlert(
+                {
+                    description: error?.response?.data?.description
+                        || t("console:manage.features.claims.local.notifications.getClaims.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: error?.response?.data?.message
+                        || t("console:manage.features.claims.local.notifications.getClaims.genericError.message")
+                }
+            ));
         })
     }, [ externalClaims ])
 
@@ -337,7 +345,6 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                 } }
                             />
                         }
-                        
 
                     </Grid.Column>
                     <Grid.Column width={ 8 } className="select-attribute">
