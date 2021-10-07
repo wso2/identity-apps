@@ -380,7 +380,6 @@ export const getExternalClaims = (dialectID: string): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -391,6 +390,7 @@ export const getExternalClaims = (dialectID: string): Promise<any> => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response.data);
         })
         .catch((error) => {

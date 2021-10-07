@@ -370,7 +370,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             readOnly={ isReadOnly }
                         />
                     }
-                    {!hasMapping
+                    { !hasMapping
                         ? (
                             <Grid.Row columns={ 1 } >
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
