@@ -84,7 +84,7 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
     const [ secretNameInvalid, setSecretNameInvalid ] = useState<boolean>(false);
     const [ secretValueInvalid, setSecretValueInvalid ] = useState<boolean>(false);
     const [ initialFormValues, setInitialFormValues ] = useState<Record<string, any>>({});
-    const [ showInfoMessage, setShowInfoMessage ] = useState<boolean>(false);
+    const [ showInfoMessage, setShowInfoMessage ] = useState<boolean>(true);
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
@@ -233,18 +233,6 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
     };
 
     /**
-     * Event handler for banner dismiss button.
-     * @event-handler
-     */
-    const onDismissInfoMessageBanner = (): void => {
-        LocalStorageUtils.setValueInLocalStorage(
-            FEATURE_LOCAL_STORAGE_KEY,
-            JSON.stringify({ hideInfoMessage: true } as EditSecretLocalStorage)
-        );
-        setShowInfoMessage(false);
-    };
-
-    /**
      * Fetches all the secrets for the {@param secretType}.
      * @param secretType {string}
      */
@@ -386,14 +374,14 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <PrimaryButton
                                 aria-label={
-                                    t("console:develop.features.secrets.wizards.actions.createButton.ariaLabel")
+                                    t("console:develop.features.secrets.wizards.actions.creteButton.ariaLabel")
                                 }
                                 disabled={ submitShouldBeDisabled || requestInProgress }
                                 floated="right"
                                 onClick={ () => formRef?.current?.triggerSubmit() }
                                 loading={ requestInProgress }
                                 data-testid={ `${ testId }-form-submit-button` }>
-                                { t("console:develop.features.secrets.wizards.actions.createButton.label") }
+                                { t("console:develop.features.secrets.wizards.actions.creteButton.label") }
                             </PrimaryButton>
                         </Grid.Column>
                     </Grid.Row>

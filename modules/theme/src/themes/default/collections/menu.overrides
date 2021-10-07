@@ -626,6 +626,13 @@
 .ui.menu {
     .ui.dropdown {
         .menu {
+            &.create-button-item {
+                .item {
+                    .text {
+                        color: @primaryColor;
+                    }
+                }
+            }
             &.custom-dropdown {
                 max-height: 200px;
                 max-width: 50px;
