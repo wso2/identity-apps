@@ -550,15 +550,18 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         const renderProtocolIntegrationHelpMessage = (): ReactElement => {
 
             let docLink: string = undefined;
+            let i18nKey: string = undefined;
 
             if (applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC) {
                 docLink = getLink("develop.applications.editApplication.standardBasedApplication" +
                     ".oauth2OIDC.protocol.learnMore");
+                i18nKey = "console:develop.features.applications.forms.inboundOIDC.documentation";
             }
 
             if (applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) {
                 docLink = getLink("develop.applications.editApplication.standardBasedApplication" +
                     ".saml.protocol.learnMore");
+                i18nKey = "console:develop.features.applications.forms.inboundSAML.documentation";
             }
 
             if (!docLink) {
@@ -569,12 +572,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 <Fragment>
                     <Message visible>
                         <Text>
-                            <Trans
-                                i18nKey={
-                                    "extensions:console.application.quickStart" +
-                                    ".technologySelectionWrapper.subHeading"
-                                }
-                            >
+                            <Trans i18nKey={ i18nKey }>
                                 Read through our
                                 <DocumentationLink link={ docLink }>documentation</DocumentationLink>
                                 to learn more about using
