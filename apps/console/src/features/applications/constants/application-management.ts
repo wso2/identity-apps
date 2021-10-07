@@ -368,7 +368,7 @@ export class ApplicationManagementConstants {
     ];
 
     // Enterprise EIDP Authenticators
-    public static readonly EIDP_AUTHENTICATORS = [
+    public static readonly EIDP_AUTHENTICATORS: SupportedAuthenticators[] = [
         SupportedAuthenticators.OIDC,
         SupportedAuthenticators.SAML
     ];
