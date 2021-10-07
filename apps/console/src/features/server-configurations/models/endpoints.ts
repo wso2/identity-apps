@@ -32,4 +32,5 @@ export interface ServerConfigurationsResourceEndpointsInterface {
     passwordPolicy: string;
     selfSignUp: string;
     serverConfigurations: string;
+    serverSupportedSchemas: string;
 }

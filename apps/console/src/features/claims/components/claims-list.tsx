@@ -45,7 +45,18 @@ import {
     useConfirmationModalAlert
 } from "@wso2is/react-components";
 import isEqual from "lodash-es/isEqual";
-import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useRef, useState } from "react";
+import 
+    React,{ 
+    Dispatch, 
+    FunctionComponent, 
+    ReactElement, 
+    ReactNode, 
+    SetStateAction, 
+    SyntheticEvent, 
+    useEffect, 
+    useRef, 
+    useState 
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Header, Icon, ItemHeader, Popup, SemanticICONS } from "semantic-ui-react";
@@ -152,6 +163,15 @@ interface ClaimsListPropsInterface extends SBACInterface<FeatureConfigInterface>
      * Specifies the attribute type.
      */
     attributeType?: string;
+    /**
+     * Update mapped claims on delete or edit
+     */
+    updateMappedClaims?: Dispatch<SetStateAction<boolean>>;
+    /**
+     * Depending on the attribute type
+     * disables the edit functionality.
+     */
+    isEditable?: boolean;
 }
 
 /**
@@ -183,6 +203,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         searchQuery,
         attributeType,
         showListItemActions,
+        isEditable,
+        updateMappedClaims,
         [ "data-testid" ]: testId
     } = props;
 
@@ -313,6 +335,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         deleteAClaim(id).then(() => {
             update();
             closeDeleteConfirm();
+            updateMappedClaims(true);
             dispatch(addAlert(
                 {
                     description: t("console:manage.features.claims.local.notifications.deleteClaim.success."+
@@ -346,6 +369,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 fetchUpdatedSchemaList();
             });
 
+            updateMappedClaims(true);
             closeDeleteConfirm();
             dispatch(addAlert(
                 {
@@ -1004,9 +1028,24 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     renderer: "semantic-icon"
                 },
                 attributeConfig.externalAttributes.showDeleteIcon(dialectID, list) && {
-                    hidden: (claim: ExternalClaim): boolean => !hasRequiredScopes(featureConfig?.attributeDialects,
-                        featureConfig?.attributeDialects?.scopes?.delete, allowedScopes)
-                        || attributeConfig.externalAttributes.hideDeleteIcon(claim),
+                    hidden: (claim: ExternalClaim): boolean => {
+                        if (!hasRequiredScopes(featureConfig?.attributeDialects, 
+                            featureConfig?.attributeDialects?.scopes?.delete, allowedScopes) 
+                            || attributeConfig.externalAttributes.hideDeleteIcon(claim)) {
+                            return true;
+                        }
+                        
+                        if (attributeConfig.defaultScimMapping 
+                            && Object.keys(attributeConfig.defaultScimMapping).length > 0) {
+                            const defaultSCIMClaims: Map<string, string> = attributeConfig
+                            .defaultScimMapping[claim.claimDialectURI];
+                            if (defaultSCIMClaims && defaultSCIMClaims.get(claim.claimURI)) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    },
                     icon: (): SemanticICONS => "trash alternate",
                     onClick: (e: SyntheticEvent, claim: ExternalClaim): void =>
                         initDelete(ListType.EXTERNAL, claim),
@@ -1025,6 +1064,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 renderer: "semantic-icon"
             },
             {
+                hidden: () => !isEditable,
                 icon: (claim: AddExternalClaim): SemanticICONS => isEqual(editExternalClaim, claim)
                         ? "times"
                         : "pencil alternate",
@@ -1066,6 +1106,9 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 setEditClaim(editClaim ? "" : item.id);
             }
         } else {
+            if (!isEditable) {
+                return;
+            }
             setEditExternalClaim(item);
         }
 

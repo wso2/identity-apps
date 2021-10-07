@@ -17,7 +17,8 @@
  */
 
 import { getDialects } from "@wso2is/core/api";
-import { AlertLevels, ClaimDialect, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, ClaimDialect, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
+import { getAllExternalClaims } from "@wso2is/core/api";
 import { addAlert } from "@wso2is/core/store";
 import {
     AnimatedAvatar,
@@ -37,6 +38,8 @@ import { attributeConfig } from "../../../extensions";
 import { AppConstants, AppState, getTechnologyLogos, history } from "../../core";
 import { } from "../components";
 import { ClaimManagementConstants } from "../constants";
+import { resolveType } from "../utils";
+import Axios from "axios";
 
 /**
  * Props for the Edit Attribute Mappings page.
@@ -69,10 +72,79 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
 
         const [ isLoading, setIsLoading ] = useState(true);
         const [ dialects, setDialects ] = useState<ClaimDialect[]>(null);
+        const [ mappedLocalclaims, setMappedLocalClaims ] = useState<string[]>([]);
+        const [ triggerFetchMappedClaims, setTriggerFetchMappedClaims ] = useState<boolean>(true);
 
         useEffect(() => {
             getDialect();
         }, []);
+
+        useEffect(() => {
+            if ( dialects && dialects.length > 0 && triggerFetchMappedClaims ) {
+                generateMappedLocalClaimList(dialects.map(dialect => dialect.id));
+                setTriggerFetchMappedClaims(false);
+            }
+        }, [ dialects, triggerFetchMappedClaims ])
+
+        /**
+         * This will fetch external claims for each dialect 
+         * and create a list of already mapped local claims 
+         * for filteration purpose.
+         * 
+         * TODO : This is not the ideal way to fetch and 
+         *        identify the already mapped claims. Need
+         *        API support for this.
+         */
+        const generateMappedLocalClaimList = (dialectIdList: string[], 
+                                            limit?: number, 
+                                            offset?: number, 
+                                            sort?: string, 
+                                            filter?: string) => {
+
+            const mappedLocalClaimPromises = [];
+            dialectIdList.forEach(id => {
+                mappedLocalClaimPromises.push(
+                    getAllExternalClaims(id, {
+                        filter,
+                        limit,
+                        offset,
+                        sort
+                    })
+                );
+            })
+
+            Axios.all(mappedLocalClaimPromises).then(response => {
+                const mappedClaims = [];
+                response.forEach(claim => {
+                    // Hide identity claims in SCIM
+                    const claims: ExternalClaim[] = attributeConfig.attributeMappings.getExternalAttributes(
+                        type,
+                        claim
+                    );
+                    mappedClaims.push(...claims.map(claim => claim.mappedLocalClaimURI))
+                });
+                setMappedLocalClaims(mappedClaims);
+            }).catch(error => {
+                dispatch(
+                    addAlert({
+                        description:
+                            error[0]?.response?.data?.description ||
+                            t(
+                                "console:manage.features.claims.dialects.notifications." +
+                                "fetchExternalClaims.genericError.description",
+                                { type: resolveType(type) }
+                            ),
+                        level: AlertLevels.ERROR,
+                        message:
+                            error[0]?.response?.data?.message ||
+                            t(
+                                "console:manage.features.claims.dialects.notifications." +
+                                "fetchExternalClaims.genericError.message"
+                            )
+                    })
+                );
+            }).finally(() => setIsLoading(false))
+        }
 
         /**
          * Resolves page heading based on the `type`.
@@ -266,7 +338,10 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                                     <ExternalDialectEditPage 
                                         id={ dialect.id } 
                                         attributeUri={ tab.uri } 
-                                        attributeType={ type }/>
+                                        attributeType={ type }
+                                        mappedLocalClaims={ mappedLocalclaims }
+                                        updateMappedClaims={ setTriggerFetchMappedClaims } 
+                                    />
                                 </ResourceTab.Pane>
                             )
                         });
@@ -285,6 +360,8 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                                         id={ dialect.id } 
                                         attributeType={ type }
                                         attributeUri={ dialect.dialectURI } 
+                                        mappedLocalClaims={ mappedLocalclaims }
+                                        updateMappedClaims={ setTriggerFetchMappedClaims } 
                                     />
                                 </ResourceTab.Pane>
                             )
@@ -304,6 +381,8 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                                 id={ dialect.id  }
                                 attributeType={ type } 
                                 attributeUri={ dialect.dialectURI } 
+                                mappedLocalClaims={ mappedLocalclaims }
+                                updateMappedClaims={ setTriggerFetchMappedClaims } 
                             />
                         </ResourceTab.Pane>
                     )
@@ -332,6 +411,8 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                             id={ dialects && dialects[ 0 ]?.id } 
                             attributeType={ type } 
                             attributeUri={ dialects &&  dialects[ 0 ]?.dialectURI } 
+                            mappedLocalClaims={ mappedLocalclaims }
+                            updateMappedClaims={ setTriggerFetchMappedClaims } 
                         />
                     ) }
             </PageLayout>
