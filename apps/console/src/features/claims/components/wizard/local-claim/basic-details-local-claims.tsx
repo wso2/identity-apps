@@ -21,7 +21,7 @@ import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { GenericIcon, Hint, InlineEditInput } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Card, Grid, Label, Message, Popup } from "semantic-ui-react";
+import { Card, Grid, Label, Message, Popup, Icon } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
 import { getTechnologyLogos } from "../../../../core";
 
@@ -79,6 +79,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
     const [ oidcMapping, setOidcMapping ] = useState<string>(values?.get("oidc").toString());
     const [ scimMapping, setScimMapping ] = useState<string>(values?.get("scim").toString());
     const [ validateMapping, setValidateMapping ] = useState<boolean>(false);
+    const [ isScimMappingRemoved, setIsScimMappingRemoved] = useState<boolean>(false);
 
     const nameField = useRef<HTMLElement>(null);
     const claimField = useRef<HTMLElement>(null);
@@ -149,12 +150,15 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                         return;
                     }
 
-                    if (oidcMapping === "" || scimMapping === "") {
+                    if (oidcMapping === "") {
                         return;
                     }
 
+                    if (scimMapping !== "") {
+                        values.set("scim", scimMapping);
+                    }
+
                     values.set("oidc", oidcMapping);
-                    values.set("scim", scimMapping);
                 }
 
                 if (noUniqueOIDCAttrib && noUniqueSCIMAttrib) {
@@ -187,6 +191,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                         setClaimID(values.get("claimURI").toString());
                                         setOidcMapping(values.get("claimURI").toString().replace(/\./g,""));
                                         setScimMapping(values.get("claimURI").toString().replace(/\./g,""));
+                                        setIsScimMappingRemoved(false);
                                     } }
                                     onMouseOver={ () => {
                                         delayPopup(setIsShowClaimIDHint, claimTimer);
@@ -338,8 +343,9 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                         />
                                                     </Grid.Column>
                                                 </Grid.Row>
-                                                <Grid.Row columns={ 2 } >
-                                                    <Grid.Column width={ 5 }>
+                                                { !isScimMappingRemoved &&
+                                                <Grid.Row columns={ 3 }>
+                                                    <Grid.Column width={ 3 }>
                                                         <GenericIcon
                                                             transparent
                                                             verticalAlign="middle"
@@ -381,8 +387,29 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                             text={ scimMapping }
                                                         />
                                                     </Grid.Column>
+                                                    <Grid.Column width={ 2 }>
+                                                        { scimMapping
+                                                            ? <Popup
+                                                                trigger={
+                                                                    <Icon name="trash alternate"
+                                                                          link
+                                                                          onClick={() => {
+                                                                              setScimMapping("");
+                                                                              setIsScimMappingRemoved(true);
+                                                                          }}
+                                                                    />
+                                                                }
+                                                                content={ "Remove Mapping" }
+                                                                position="top center"
+                                                                size="mini"
+                                                                hideOnScroll
+                                                                inverted
+                                                             />
+                                                            : null
+                                                        }
+                                                    </Grid.Column>
                                                 </Grid.Row>
-
+                                                }
                                             </Grid>
                                         </Card.Description>
                                     </Card.Content>
