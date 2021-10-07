@@ -603,6 +603,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const ApplicationSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <AccessConfiguration
+                application={ application }
                 allowedOriginList={ allowedOrigins }
                 certificate={ application.advancedConfigurations?.certificate }
                 onAllowedOriginsUpdate={ () => setIsAllowedOriginsUpdated(!isAllowedOriginsUpdated) }

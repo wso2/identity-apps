@@ -16,11 +16,13 @@
  * under the License.
  */
 
-import { DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
 import { Forms } from "@wso2is/forms";
 import {
     Certificate as CertificateDisplay,
+    ConfirmationModal,
     EmptyPlaceholder,
     GenericIcon,
     PrimaryButton,
@@ -30,14 +32,19 @@ import {
 import moment from "moment";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { Divider, Grid, Icon, Modal, Popup, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 import { AddApplicationCertificateWizard } from "./add-certificate-wizard";
-import { UIConstants, getCertificateIllustrations, getEmptyPlaceholderIllustrations } from "../../../../core";
+import { getCertificateIllustrations, getEmptyPlaceholderIllustrations, UIConstants } from "../../../../core";
+import { updateApplicationDetails } from "../../../api";
+import { ApplicationInterface, CertificateTypeInterface } from "../../../models";
 
 /**
  * Proptypes for the Application certificate list component.
  */
 interface ApplicationCertificatesPropsListInterface extends TestableComponentInterface {
+    application: ApplicationInterface;
+    onUpdate: (id: string) => void;
     applicationCertificate: string;
     applicationName?: string;
     updatePEMValue: (value: string) => void;
@@ -55,17 +62,22 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
 ): ReactElement => {
 
     const {
+        onUpdate,
+        application,
         applicationCertificate,
         updatePEMValue,
-        ["data-testid"]: testId
+        [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
+    const dispatch = useDispatch();
 
     const [ certificates, setCertificates ] = useState<DisplayCertificate[]>(null);
     const [ certificateModal, setCertificateModal ] = useState<boolean>(false);
     const [ certificateDisplay, setCertificateDisplay ] = useState<DisplayCertificate>(null);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
+    const [ showCertificateDeleteConfirmation, setShowCertificateDeleteConfirmation ] = useState<boolean>(false);
+    const [ ongoingDeleteRequest, setOngoingDeleteRequest ] = useState<boolean>(false);
 
     useEffect(() => {
         if (applicationCertificate) {
@@ -73,7 +85,7 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
             certificatesList?.push(CertificateManagementUtils.displayCertificate(null, applicationCertificate));
             setCertificates(certificatesList);
         }
-    }, [applicationCertificate]);
+    }, [ applicationCertificate ]);
 
     useEffect(() => {
         if (!certificateDisplay) {
@@ -149,18 +161,56 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
         setCertificateDisplay(certificate);
     };
 
-    /**
-     * Remove the certificate from the certificated list.
-     * The path attribute of the patch request requires the certificate index.
-     * At the moment, the index of the certificate to be deleted is obtained from the indexes of
-     * @see certificates array. This may cause unexpected behaviours if the certificates array is manipulated
-     * for some reason.
-     *
-     * @param certificateIndex
-     */
-    const deleteCertificate = () => {
-        updatePEMValue("");
+    const deleteCertificate = async (): Promise<void> => {
+
+        const EMPTY_STRING = "";
+
+        setOngoingDeleteRequest(true);
+        updatePEMValue(EMPTY_STRING);
         setCertificates(null);
+
+        try {
+            const patchObject: any = {
+                general: {
+                    advancedConfigurations: {
+                        certificate: {
+                            type: CertificateTypeInterface.PEM,
+                            value: EMPTY_STRING
+                        }
+                    }
+                }
+            };
+            await updateApplicationDetails({
+                id: application?.id,
+                ...(patchObject.general)
+            });
+            // TODO: Add i18n strings.
+            dispatch(addAlert({
+                description: "Successfully deleted the application certificate.",
+                level: AlertLevels.SUCCESS,
+                message: "Deleted certificate"
+            }));
+        } catch (error) {
+            if (error.response && error.response.data && error.response.data.description) {
+                dispatch(addAlert({
+                    description: error.response.data.description,
+                    level: AlertLevels.ERROR,
+                    message: error.response.data.message
+                }));
+                return;
+            }
+            // TODO: Add i18n strings.
+            dispatch(addAlert({
+                description: "Something went wrong. We were unable to delete the application certificate.",
+                level: AlertLevels.ERROR,
+                message: "Failed to update the application"
+            }));
+        } finally {
+            setShowCertificateDeleteConfirmation(false);
+            setOngoingDeleteRequest(false);
+            onUpdate(application.id);
+        }
+
     };
 
     /**
@@ -224,6 +274,41 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
         );
     };
 
+    // TODO: Add i18n strings for {DeleteCertConfirmationModal}
+    const DeleteCertConfirmationModal: ReactElement = (
+        <ConfirmationModal
+            onClose={ (): void => {
+                setShowCertificateDeleteConfirmation(false);
+            } }
+            onSecondaryActionClick={ (): void => {
+                setShowCertificateDeleteConfirmation(false);
+            } }
+            primaryActionLoading={ ongoingDeleteRequest }
+            onPrimaryActionClick={ deleteCertificate }
+            open={ showCertificateDeleteConfirmation }
+            type="negative"
+            assertionHint={ t("console:develop.features.secrets.modals.deleteSecret.assertionHint") }
+            assertionType="checkbox"
+            primaryAction={ "Delete" }
+            secondaryAction={ "Cancel" }
+            data-testid={ `${ testId }-delete-confirmation-modal` }
+            closeOnDimmerClick={ false }>
+            <ConfirmationModal.Header data-testid={ `${ testId }-delete-confirmation-modal-header` }>
+                Are you sure?
+            </ConfirmationModal.Header>
+            <ConfirmationModal.Message
+                attached
+                negative
+                data-testid={ `${ testId }-delete-confirmation-modal-message` }>
+                This action is irreversible and will permanently delete the certificate.
+            </ConfirmationModal.Message>
+            <ConfirmationModal.Content data-testid={ `${ testId }-delete-confirmation-modal-content` }>
+                If you delete this certificate, Identity Providers depending on this certificate may
+                not function as expected. Please proceed with caution.
+            </ConfirmationModal.Content>
+        </ConfirmationModal>
+    );
+
     return (
         <Forms>
             {
@@ -260,9 +345,9 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
                                                         type: "button"
                                                     },
                                                     {
-                                                        "data-testid": `${testId}-delete-cert-${index}-button`,
+                                                        "data-testid": `${ testId }-delete-cert-${ index }-button`,
                                                         icon: "trash alternate",
-                                                        onClick: () => deleteCertificate(),
+                                                        onClick: () => setShowCertificateDeleteConfirmation(true),
                                                         popupText: t("console:manage.features.users.usersList.list." +
                                                             "iconPopups.delete"),
                                                         type: "button"
@@ -332,10 +417,11 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
                     <AddApplicationCertificateWizard
                         closeWizard={ () => setShowWizard(false) }
                         updatePEMValue={ updatePEMValue }
-                        data-testid={ `${testId}-add-certificate-wizard` }
+                        data-testid={ `${ testId }-add-certificate-wizard` }
                     />
                 )
             }
+            { DeleteCertConfirmationModal }
             { showCertificateModal() }
         </Forms>
     );

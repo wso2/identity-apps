@@ -19,7 +19,7 @@
 import { AlertInterface, AlertLevels, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils, URLUtils } from "@wso2is/core/utils";
-import { Field, FormValue, Forms, useTrigger, Validation } from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
 import {
     Code,
     ConfirmationModal,
@@ -28,7 +28,6 @@ import {
     GenericIcon,
     Heading,
     Hint,
-    LinkButton,
     Text,
     URLInput
 } from "@wso2is/react-components";
@@ -43,14 +42,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Divider, Form, Grid, Label, List, Message } from "semantic-ui-react";
 import { applicationConfig } from "../../../../extensions";
 import { AppState, ConfigReducerStateInterface } from "../../../core";
+import { getGeneralIcons } from "../../configs";
 import { ApplicationManagementConstants } from "../../constants";
-import SinglePageApplicationTemplate
-    from "../../data/application-templates/templates/single-page-application/single-page-application.json";
-import OIDCWebApplicationTemplate
-    from "../../data/application-templates/templates/oidc-web-application/oidc-web-application.json";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
+import OIDCWebApplicationTemplate
+    from "../../data/application-templates/templates/oidc-web-application/oidc-web-application.json";
+import SinglePageApplicationTemplate
+    from "../../data/application-templates/templates/single-page-application/single-page-application.json";
 import {
+    ApplicationInterface,
     ApplicationTemplateListItemInterface,
     CertificateInterface,
     CertificateTypeInterface,
@@ -64,14 +65,14 @@ import {
     SupportedAccessTokenBindingTypes
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
-import { CertificateFormFieldModal } from "../modals";
-import { getGeneralIcons } from "../../configs";
 import { ApplicationCertificateWrapper } from "../settings/certificate";
 
 /**
  * Proptypes for the inbound OIDC form component.
  */
 interface InboundOIDCFormPropsInterface extends TestableComponentInterface {
+    onUpdate: (id: string) => void;
+    application: ApplicationInterface;
     /**
      * Current certificate configurations.
      */
@@ -126,6 +127,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 ): ReactElement => {
 
     const {
+        onUpdate,
+        application,
         certificate,
         metadata,
         initialValues,
@@ -205,7 +208,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const scopeValidator = useRef<HTMLElement>();
     const [ isSPAApplication, setSPAApplication ] = useState<boolean>(false);
     const [ isOIDCWebApplication, setOIDCWebApplication ] = useState<boolean>(false);
-    const [ isCustomApplication, setCustomApplication ] = useState<boolean>(false);
 
     const [ finalCertValue, setFinalCertValue ] = useState<string>(undefined);
     const [ selectedCertType, setSelectedCertType ] = useState<CertificateTypeInterface>(CertificateTypeInterface.NONE);
@@ -1649,7 +1651,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     }
                                     value={ initialValues.accessToken ?
                                         initialValues.accessToken.applicationAccessTokenExpiryInSeconds.toString() :
-                                        metadata.defaultApplicationAccessTokenExpiryTime}
+                                        metadata.defaultApplicationAccessTokenExpiryTime }
                                     validation={ async (value: FormValue, validation: Validation) => {
                                         if (!isValidExpiryTime(value.toString())) {
                                             validation.isValid = false;
@@ -1658,7 +1660,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                     ".accessToken.fields.applicationTokenExpiry.validations.invalid")
                                             );
                                         }
-                                    }}
+                                    } }
                                     placeholder={
                                         t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                             ".accessToken.fields.applicationTokenExpiry.placeholder")
@@ -2216,8 +2218,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     </Grid.Column>
                 </Grid.Row>
             }
-            {/* Certificate Section */}
+            { /* Certificate Section */ }
             <ApplicationCertificateWrapper
+                onUpdate={ onUpdate }
+                application={ application }
                 updateCertFinalValue={ setFinalCertValue }
                 updateCertType={ setSelectedCertType }
                 certificate={ certificate }
