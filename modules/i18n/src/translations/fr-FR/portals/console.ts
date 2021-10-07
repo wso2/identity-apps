@@ -4695,6 +4695,12 @@ export const console: ConsoleNS = {
                         "cet attribut sur le profil.",
                         supportedByDefault: {
                             label: "Afficher cet attribut sur le profil de l'utilisateur et la page d'enregistrement de l'utilisateur"
+                        },
+                        infoMessages: {
+                            disabledConfigInfo: "Veuillez noter que la section ci-dessous est désactivée car aucun" +
+                                " mappage de revendication externe n'a été trouvé pour cet attribut de revendication.",
+                            configApplicabilityInfo: "Veuillez noter que les configurations d'attributs suivantes " +
+                                "n'affecteront que les profils d'utilisateurs des clients."
                         }
                     },
                     mappedAttributes: {

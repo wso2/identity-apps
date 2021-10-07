@@ -2740,6 +2740,10 @@ export interface ConsoleNS {
                         readOnly: FormField;
                         readOnlyHint: string;
                         attribute: FormField;
+                        infoMessages?: {
+                            disabledConfigInfo: string;
+                            configApplicabilityInfo: string;
+                        }
                     };
                     dangerZone: DangerZone;
                     mappedAttributes: {
