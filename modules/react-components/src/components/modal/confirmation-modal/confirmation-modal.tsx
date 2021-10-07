@@ -64,6 +64,11 @@ export interface ConfirmationModalPropsInterface extends ModalProps, TestableCom
      */
     primaryAction?: string;
     /**
+     * Tells whether primary action is loading or something is
+     * happening asynchronously.
+     */
+    primaryActionLoading?: boolean;
+    /**
      * Should primary action button appear in full length.
      */
     primaryActionFluid?: boolean;
@@ -126,6 +131,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
         onSecondaryActionClick,
         skipAssertion,
         textAlign,
+        primaryActionLoading,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -348,10 +354,11 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                         {
                             (primaryAction && onPrimaryActionClick) && (
                                 <Button
+                                    loading={ primaryActionLoading }
                                     data-testid={ testId + "-confirm-button" }
                                     className={ `${ type } ${ primaryActionFluid ? "fluid" : "" }` }
                                     disabled={
-                                        !skipAssertion
+                                        primaryActionLoading || !skipAssertion
                                             ? !(!assertionType || confirmed)
                                             : false
                                     }
@@ -375,6 +382,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
 ConfirmationModal.defaultProps = {
     "data-testid": "confirmation-modal",
     dimmer: "blurring",
+    primaryActionLoading: false,
     size: "tiny",
     textAlign: "left"
 };
