@@ -72,15 +72,15 @@ export interface SessionManagementModalOptionsInterface {
     /**
      * Primary button text.
      */
-    primaryButtonText: string;
+    primaryButtonText: string | ReactNode;
     /**
      * Secondary button text.
      */
-    secondaryButtonText: string;
+    secondaryButtonText: string | ReactNode;
     /**
      * Login again button text.
      */
-    loginAgainButtonText?: string;
+    loginAgainButtonText?: string | ReactNode;
     /**
      * Session timed out message i18n heading.
      */
@@ -88,7 +88,7 @@ export interface SessionManagementModalOptionsInterface {
     /**
      * Session timed out description.
      */
-    sessionTimedOutDescription?: string;
+    sessionTimedOutDescription?: string | ReactNode;
 }
 
 /**
