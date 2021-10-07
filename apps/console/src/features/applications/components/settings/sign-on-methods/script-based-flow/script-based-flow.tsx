@@ -737,7 +737,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                 i18nKey={
                                     "console:develop.features.applications.edit." +
                                     "sections.signOnMethod.sections.authenticationFlow." +
-                                    "sections.scriptBased.secretsList.iconTooltip"
+                                    "sections.scriptBased.secretsList.tooltips.keyIcon"
                                 }
                             >
                                 Securely store access keys as secrets. A secret can
@@ -823,7 +823,9 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                         trigger={ (
                                                             <Icon name="plus"/>
                                                         ) }
-                                                        content={ t("common:add") }
+                                                        content={ t("console:develop.features.applications.edit." +
+                                                            "sections.signOnMethod.sections.authenticationFlow." +
+                                                            "sections.scriptBased.secretsList.tooltips.plusIcon") }
                                                         size="mini"
                                                     />
                                                 }

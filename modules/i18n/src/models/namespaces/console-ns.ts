@@ -596,10 +596,13 @@ export interface ConsoleNS {
                                                 };
                                             };
                                             secretsList: {
-                                                iconTooltip: string;
                                                 create: string;
                                                 emptyPlaceholder: string;
                                                 search: string;
+                                                tooltips: {
+                                                    keyIcon: string;
+                                                    plusIcon: string;
+                                                }
                                             }
                                         };
                                         stepBased: {
