@@ -6032,6 +6032,12 @@ export const console: ConsoleNS = {
                         "attribute on the profile.",
                         supportedByDefault: {
                             label: "Display this attribute on the user's profile"
+                        },
+                        infoMessages: {
+                            disabledConfigInfo: "Please note that below section is disabled as there is no " +
+                                "external claim mapping found for this claim attribute.",
+                            configApplicabilityInfo: "Please note that the following attribute configurations will " +
+                                "only affect the customer users' profiles."
                         }
                     },
                     mappedAttributes: {
