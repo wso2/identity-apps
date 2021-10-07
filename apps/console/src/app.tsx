@@ -343,7 +343,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                         ),
                                                         headingI18nKey: "console:common.modals.sessionTimeoutModal" +
                                                             ".heading",
-                                                        sessionTimedOutHeadingI18nKey: "console:common:modals" +
+                                                        sessionTimedOutHeadingI18nKey: "console:common.modals" +
                                                             ".sessionTimeoutModal.sessionTimedOutHeading"
                                                     } }
                                                     type={ SessionTimeoutModalTypes.DEFAULT }
