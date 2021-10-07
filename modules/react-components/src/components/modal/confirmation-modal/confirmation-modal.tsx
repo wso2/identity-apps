@@ -62,7 +62,7 @@ export interface ConfirmationModalPropsInterface extends ModalProps, TestableCom
     /**
      * Primary action button label.
      */
-    primaryAction?: string;
+    primaryAction?: string | ReactNode;
     /**
      * Tells whether primary action is loading or something is
      * happening asynchronously.
@@ -75,7 +75,7 @@ export interface ConfirmationModalPropsInterface extends ModalProps, TestableCom
     /**
      * Secondary action button label.
      */
-    secondaryAction?: string;
+    secondaryAction?: string | ReactNode;
     /**
      * Callback function for the primary action button.
      */

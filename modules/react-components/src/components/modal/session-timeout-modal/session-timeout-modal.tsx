@@ -42,11 +42,11 @@ export interface SessionTimeoutModalPropsInterface extends ModalProps, TestableC
     /**
      * Secondary button text.
      */
-    secondaryButtonText?: string;
+    secondaryButtonText?: string | ReactNode;
     /**
      * Primary button text.
      */
-    primaryButtonText?: string;
+    primaryButtonText?: string | ReactNode;
     /**
      * Callback function for the primary action button.
      */

@@ -305,18 +305,45 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                                 redirected to the login page
                                                             </Trans>
                                                         ),
+                                                        loginAgainButtonText: (
+                                                            <Trans
+                                                                i18nKey={
+                                                                    "console:common.modals" +
+                                                                    ".sessionTimeoutModal.loginAgainButton"
+                                                                }>
+                                                                Login again
+                                                            </Trans>
+                                                        ),
+                                                        primaryButtonText: (
+                                                            <Trans
+                                                                i18nKey={
+                                                                    "console:common.modals" +
+                                                                    ".sessionTimeoutModal.primaryButton"
+                                                                }>
+                                                                Go back
+                                                            </Trans>
+                                                        ),
+                                                        secondaryButtonText: (
+                                                            <Trans
+                                                                i18nKey={
+                                                                    "console:common.modals" +
+                                                                    ".sessionTimeoutModal.secondaryButton"
+                                                                }>
+                                                                Logout
+                                                            </Trans>
+                                                        ),
+                                                        sessionTimedOutDescription: (
+                                                            <Trans
+                                                                i18nKey={
+                                                                    "console:common.modals" +
+                                                                    ".sessionTimeoutModal.sessionTimedOutDescription"
+                                                                }>
+                                                                Please log in again to continue from where you left off.
+                                                            </Trans>
+                                                        ),
                                                         headingI18nKey: "console:common.modals.sessionTimeoutModal" +
                                                             ".heading",
-                                                        loginAgainButtonText: I18n.instance.t("console:common:modals" +
-                                                            ".sessionTimeoutModal.loginAgainButton"),
-                                                        primaryButtonText: I18n.instance.t("console:common.modals" +
-                                                            ".sessionTimeoutModal.primaryButton"),
-                                                        secondaryButtonText: I18n.instance.t("console:common.modals" +
-                                                            ".sessionTimeoutModal.secondaryButton"),
-                                                        sessionTimedOutDescription: I18n.instance
-                                                            .t("console:common:modals" +
-                                                            ".sessionTimeoutModal.sessionTimedOutDescription"),
-                                                        sessionTimedOutHeadingI18nKey: "console:common:modals" +
+                                                        sessionTimedOutHeadingI18nKey: "console:common.modals" +
                                                             ".sessionTimeoutModal.sessionTimedOutHeading"
                                                     } }
                                                     type={ SessionTimeoutModalTypes.DEFAULT }
