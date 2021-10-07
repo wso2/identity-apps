@@ -308,7 +308,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                         loginAgainButtonText: (
                                                             <Trans
                                                                 i18nKey={
-                                                                    "console:common:modals" +
+                                                                    "console:common.modals" +
                                                                     ".sessionTimeoutModal.loginAgainButton"
                                                                 }>
                                                                 Login again
@@ -317,7 +317,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                         primaryButtonText: (
                                                             <Trans
                                                                 i18nKey={
-                                                                    "console:common:modals" +
+                                                                    "console:common.modals" +
                                                                     ".sessionTimeoutModal.primaryButton"
                                                                 }>
                                                                 Go back
@@ -326,7 +326,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                         secondaryButtonText: (
                                                             <Trans
                                                                 i18nKey={
-                                                                    "console:common:modals" +
+                                                                    "console:common.modals" +
                                                                     ".sessionTimeoutModal.secondaryButton"
                                                                 }>
                                                                 Logout
