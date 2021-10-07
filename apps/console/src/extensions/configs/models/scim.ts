@@ -35,4 +35,8 @@ export interface SCIMConfigInterface {
         oneTimePassword: string,
         profileUrl: string
     };
+
+    scimDialectID: {
+        customEnterpriseSchema: string
+    };
 }
