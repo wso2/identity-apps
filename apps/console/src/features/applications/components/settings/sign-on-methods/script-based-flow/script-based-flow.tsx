@@ -716,16 +716,37 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                 upward={ false }
                 options={ filteredSecretList }
                 icon ={
-                    <GenericIcon
-                        hoverable
-                        transparent
-                        defaultIcon
-                        size="micro"
-                        hoverType="rounded"
-                        icon={ getOperationIcons().keyIcon }
-                        data-testid={
-                            `${ testId }-code-editor-secret-selection`
+                    <Popup
+                        trigger={ (
+                            <div>
+                                <GenericIcon
+                                    hoverable
+                                    transparent
+                                    defaultIcon
+                                    size="micro"
+                                    hoverType="rounded"
+                                    icon={ getOperationIcons().keyIcon }
+                                    data-testid={
+                                        `${ testId }-code-editor-secret-selection`
+                                    }
+                                />
+                            </div>
+                        ) }
+                        content={
+                            <Trans
+                                i18nKey={
+                                    "console:develop.features.applications.edit." +
+                                    "sections.signOnMethod.sections.authenticationFlow." +
+                                    "sections.scriptBased.secretsList.iconTooltip"
+                                }
+                            >
+                                Securely store access keys as secrets. A secret can
+                                replace the API key in <Code>callChoreo()</Code> function
+                                in the conditional authentication scripts.
+                            </Trans>
                         }
+                        position="bottom center"
+                        pinned={ true }
                     />
                 }
             >
@@ -777,7 +798,13 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                 floated="right"
                                                 size="micro"
                                                 icon={
-                                                    <Icon name="trash alternate"/>
+                                                    <Tooltip
+                                                        trigger={ (
+                                                            <Icon name="trash alternate"/>
+                                                        ) }
+                                                        content={ t("common:delete") }
+                                                        size="mini"
+                                                    />
                                                 }
                                                 onClick={ () => {
                                                     handleSecretDelete(secret);
@@ -792,7 +819,13 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                 floated="right"
                                                 size="micro"
                                                 icon={
-                                                    <Icon name="plus"/>
+                                                    <Tooltip
+                                                        trigger={ (
+                                                            <Icon name="plus"/>
+                                                        ) }
+                                                        content={ t("common:add") }
+                                                        size="mini"
+                                                    />
                                                 }
                                                 onClick={ () => {
                                                     addSecretToScript(secret);
@@ -1151,30 +1184,11 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                         <Menu.Menu position="right">
                                             { resolveApiDocumentationLink() }
                                             <Menu.Item className="action">
-                                                <Popup
-                                                    trigger={ (
-                                                        <div>
-                                                            {
-                                                                renderSecretListDropdown()
-                                                            }
-                                                        </div>
-                                                    ) }
-                                                    content={
-                                                        <Trans
-                                                            i18nKey={
-                                                                "console:develop.features.applications.edit." +
-                                                                "sections.signOnMethod.sections.authenticationFlow." +
-                                                                "sections.scriptBased.secretsList.iconTooltip"
-                                                            }
-                                                        >
-                                                            Securely store access keys as secrets. A secret can
-                                                            replace the API key in <Code>callChoreo()</Code> function
-                                                            in the conditional authentication scripts.
-                                                        </Trans>
-                                                     }
-                                                    position="top left"
-                                                    pinned={ false }
-                                                />
+                                                <div>
+                                                    {
+                                                        renderSecretListDropdown()
+                                                    }
+                                                </div>
                                             </Menu.Item>
                                             <Menu.Item className="action">
                                                 <Tooltip
