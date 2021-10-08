@@ -30,8 +30,10 @@ import {
     ApplicationTemplateInterface,
     ApplicationTemplateListInterface,
     AuthProtocolMetaListItemInterface,
-    OIDCDataInterface, OIDCDiscoveryEndpointsInterface,
-    SAMLApplicationConfigurationInterface
+    OIDCDataInterface,
+    OIDCDiscoveryEndpointsInterface,
+    SAMLApplicationConfigurationInterface,
+    SupportedAuthProtocolTypes
 } from "../models";
 import { ApplicationManagementUtils } from "../utils";
 
@@ -343,6 +345,17 @@ export const updateOIDCData = (id: string, OIDC: object): Promise<any> => {
  */
 export const updateAuthProtocolConfig = <T>(id: string, config: any,
                                             protocol: string): Promise<T> => {
+
+    /**
+     * On template level we use {@link SupportedAuthProtocolTypes.OAUTH2_OIDC}
+     * to determine custom oidc applications. But for the API "oauth2-oidc" is
+     * an unknown protocol. We manually switch out the protocol or re-correct
+     * in this API call to avoid unattended PUT errors.
+     */
+    if (SupportedAuthProtocolTypes.OAUTH2_OIDC === protocol) {
+        protocol = SupportedAuthProtocolTypes.OIDC;
+    }
+
     const requestConfig = {
         data: config,
         headers: {
