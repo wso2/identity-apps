@@ -572,7 +572,13 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 <Fragment>
                     <Message visible>
                         <Text>
-                            <Trans i18nKey={ i18nKey }>
+                            <Trans
+                                i18nKey={ i18nKey }
+                                tOptions={ {
+                                    protocol: ApplicationManagementUtils
+                                        .resolveProtocolDisplayName(selectedProtocol as SupportedAuthProtocolTypes)
+                                } }
+                            >
                                 Read through our
                                 <DocumentationLink link={ docLink }>documentation</DocumentationLink>
                                 to learn more about using
