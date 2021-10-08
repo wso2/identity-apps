@@ -20,6 +20,7 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.base.IdentityRuntimeException" %>
+<%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
@@ -38,36 +39,6 @@
 <jsp:directive.include file="tenant-resolve.jsp"/>
 
 <%
-    ReCaptchaApi reCaptchaApi = new ReCaptchaApi();
-
-    if (StringUtils.isNotEmpty(tenantDomain)) {
-        try {
-            IdentityTenantUtil.getTenantId(tenantDomain);
-        } catch (IdentityRuntimeException e) {
-            request.setAttribute("error", true);
-            request.setAttribute("errorMsg", e.getMessage());
-            request.getRequestDispatcher("password-recovery-tenant-request.jsp").forward(request, response);
-            return;
-        }
-    }
-
-    try {
-        ReCaptchaProperties reCaptchaProperties = reCaptchaApi.getReCaptcha(tenantDomain, true, "ReCaptcha",
-                "password-recovery");
-
-        if (reCaptchaProperties != null && reCaptchaProperties.getReCaptchaEnabled()) {
-            Map<String, List<String>> headers = new HashMap<>();
-            headers.put("reCaptcha", Arrays.asList(String.valueOf(true)));
-            headers.put("reCaptchaAPI", Arrays.asList(reCaptchaProperties.getReCaptchaAPI()));
-            headers.put("reCaptchaKey", Arrays.asList(reCaptchaProperties.getReCaptchaKey()));
-            IdentityManagementEndpointUtil.addReCaptchaHeaders(request, headers);
-        }
-    } catch (ApiException e) {
-        request.setAttribute("error", true);
-        request.setAttribute("errorMsg", e.getMessage());
-        request.getRequestDispatcher("error.jsp").forward(request, response);
-        return;
-    }
 
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
@@ -108,11 +79,7 @@
 
     boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
 
-    boolean reCaptchaEnabled = false;
-    if (request.getAttribute("reCaptcha") != null &&
-            "TRUE".equalsIgnoreCase((String) request.getAttribute("reCaptcha"))) {
-        reCaptchaEnabled = true;
-    }
+    boolean reCaptchaEnabled = CaptchaUtil.isRecaptchaEnabled("Recovery.ReCaptcha.Password.Enable", tenantDomain);
 %>
 
 <!doctype html>
@@ -130,8 +97,9 @@
 
     <%
         if (reCaptchaEnabled) {
+            String reCaptchaAPI = CaptchaUtil.recaptchaAPIURL();
     %>
-    <script src='<%=(request.getAttribute("reCaptchaAPI"))%>'></script>
+    <script src='<%=(reCaptchaAPI)%>'></script>
     <%
         }
     %>
@@ -256,11 +224,12 @@
 
                         <%
                             if (reCaptchaEnabled) {
+                                String reCaptchaKey = CaptchaUtil.recaptchaSiteKey();
                         %>
                         <div class="field">
                             <div class="g-recaptcha"
                                  data-sitekey=
-                                         "<%=Encode.forHtmlContent((String)request.getAttribute("reCaptchaKey"))%>">
+                                         "<%=Encode.forHtmlContent(reCaptchaKey)%>">
                             </div>
                         </div>
                         <%

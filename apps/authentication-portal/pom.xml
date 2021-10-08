@@ -239,6 +239,11 @@
             <artifactId>org.wso2.carbon.extension.identity.authenticator.totp.connector</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.identity.governance</groupId>
+            <artifactId>org.wso2.carbon.identity.captcha</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
