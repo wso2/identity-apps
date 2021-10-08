@@ -199,7 +199,6 @@ export const getTOTPSecret = (): Promise<any> => {
         });
 };
 
-
 /**
  * This API is used to check if the TOTP secret key is added for the user
  */
