@@ -261,9 +261,12 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                     data-testid={ `${ testId }-save-button` }
                     loading={ isSubmitting }
                     disabled={
-                        !isJwksValueValid ||
-                        isSubmitting ||
-                        (jwksValue === editingIDP?.certificate?.jwksUri)
+                        (
+                            !jwksValue ||
+                            !isJwksValueValid ||
+                            jwksValue === editingIDP?.certificate?.jwksUri
+                        ) ||
+                        isSubmitting
                     }>
                     { t("common:update") }
                 </PrimaryButton>
