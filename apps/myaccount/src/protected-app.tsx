@@ -154,6 +154,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 .then((idToken) => {
                     const subParts = idToken.sub.split("@");
                     const tenantDomain = subParts[ subParts.length - 1 ];
+                    const username = idToken.sub;
 
                     dispatch(
                         setSignIn<AuthenticatedUserInfo>({
@@ -162,8 +163,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                             email: response.email,
                             scope: response.allowedScopes,
                             tenantDomain: response.tenantDomain ?? tenantDomain,
-                            username: response.username + (response.tenantDomain ? `@${response.tenantDomain}` :
-                                `@${tenantDomain}`)
+                            username: username
                         })
                     );
                 })
