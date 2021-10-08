@@ -76,7 +76,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     const [ consentListActiveIndexes, setConsentListActiveIndexes ] = useState([]);
     const [ deniedPIIClaimList, setDeniedPIIClaimList ] = useState<Set<PIICategoryClaimToggleItem>>(new Set());
     const [ acceptedPIIClaimList, setAcceptedPIIClaimList ] = useState<Set<PIICategoryClaimToggleItem>>(new Set());
-    const userName: string = useSelector((state: AppState) => state?.authenticationInformation?.profileInfo.userName);
+    const userName: string = useSelector((state: AppState) => state?.authenticationInformation?.username);
     const tenantDomain: string = useSelector((state: AppState) => state?.authenticationInformation?.tenantDomain);
     const { t } = useTranslation();
 
