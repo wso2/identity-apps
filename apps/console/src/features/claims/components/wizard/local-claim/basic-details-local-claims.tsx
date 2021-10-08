@@ -76,8 +76,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
     const [ noUniqueOIDCAttrib, setNoUniqueOIDCAttrib ] = useState<boolean>(true);
     const [ noUniqueSCIMAttrib, setNoUniqueSCIMAttrib ] = useState<boolean>(true);
     const [ isInlineEditMode, setIsInlineEditMode ] = useState<boolean>(false);
-    const [ oidcMapping, setOidcMapping ] = useState<string>(values?.get("oidc").toString());
-    const [ scimMapping, setScimMapping ] = useState<string>(values?.get("scim").toString());
+    const [ oidcMapping, setOidcMapping ] = useState<string>(values?.get("oidc")?.toString());
+    const [ scimMapping, setScimMapping ] = useState<string>(values?.get("scim")?.toString());
     const [ validateMapping, setValidateMapping ] = useState<boolean>(false);
     const [ isScimMappingRemoved, setIsScimMappingRemoved] = useState<boolean>(false);
 
