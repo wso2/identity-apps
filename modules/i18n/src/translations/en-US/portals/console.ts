@@ -2838,12 +2838,12 @@ export const console: ConsoleNS = {
                 dangerZoneGroup: {
                     deleteIDP: {
                         actionTitle: "Delete",
-                        header: "Delete identity provider",
+                        header: "Delete connection",
                         subheader: "Once you delete it, it cannot be recovered. Please be certain."
                     },
                     disableIDP: {
-                        actionTitle: "{{ state }} Identity Provider",
-                        header: "{{ state }} identity provider",
+                        actionTitle: "{{ state }} Connection",
+                        header: "{{ state }} connection",
                         subheader: "Once you disable it, it can no longer be used until you enable it again.",
                         subheader2: "Enable the identity provider to use it with your applications."
                     },
@@ -3266,9 +3266,9 @@ export const console: ConsoleNS = {
                             placeholder: "https://myapp-resources.io/my_app_image.png"
                         },
                         name: {
-                            hint: "Enter a unique name for this identity provider.",
+                            hint: "Enter a unique name for this connection.",
                             label: "Name",
-                            placeholder: "Enter a name for the identity provider.",
+                            placeholder: "Enter a name for the connection.",
                             validations: {
                                 duplicate: "An identity provider already exists with this name",
                                 empty: "Identity Provider name is required",
@@ -3418,7 +3418,7 @@ export const console: ConsoleNS = {
                             message: "Create error"
                         },
                         success: {
-                            description: "Successfully created the identity provider.",
+                            description: "Successfully created the connection.",
                             message: "Create successful"
                         }
                     },
@@ -3806,11 +3806,11 @@ export const console: ConsoleNS = {
                             message: "Update error"
                         },
                         genericError: {
-                            description: "An error occurred while updating the identity provider.",
+                            description: "An error occurred while updating the connection.",
                             message: "Update Error"
                         },
                         success: {
-                            description: "Successfully updated the identity provider.",
+                            description: "Successfully updated the connection.",
                             message: "Update successful"
                         }
                     },
@@ -3824,7 +3824,7 @@ export const console: ConsoleNS = {
                             message: "Update Error"
                         },
                         success: {
-                            description: "Successfully updated the identity provider certificate.",
+                            description: "Successfully updated the connection certificate.",
                             message: "Update successful"
                         }
                     },
