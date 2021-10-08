@@ -2171,10 +2171,11 @@ export const console: ConsoleNS = {
                                         authorize: "Authorize",
                                         endSession: "Logout",
                                         introspection: "Introspection",
-                                        keystore: "Key Set",
+                                        issuer: "Issuer",
                                         jwks: "JWKS",
-                                        token: "Token",
+                                        keystore: "Key Set",
                                         revoke: "Revoke",
+                                        token: "Token",
                                         userInfo: "UserInfo",
                                         wellKnown: "Discovery"
                                     }
@@ -3136,7 +3137,7 @@ export const console: ConsoleNS = {
                             AuthRedirectUrl: {
                                 ariaLabel: "SAML assertion consumer service URL",
                                 hint: "The Assertion Consumer Service (ACS) URL determines where" +
-                                    " {{productName}} expects the external identity provider to send the" + 
+                                    " {{productName}} expects the external identity provider to send the" +
                                     " SAML response.",
                                 label: "Assertion Consumer Service (ACS) URL",
                                 placeholder: "Assertion Consumer Service (ACS) URL"
@@ -3960,11 +3961,11 @@ export const console: ConsoleNS = {
                         saml: {
                             preRequisites: {
                                 configureIdp: "See Asgardeo guide on configuring SAML IdP",
-                                configureRedirectURL: "Use the following URL as the " + 
+                                configureRedirectURL: "Use the following URL as the " +
                                     "<1>Assertion Consumer Service (ACS) URL</1>.",
                                 heading: "Prerequisite",
                                 hint: "The Assertion Consumer Service (ACS) URL determines" +
-                                    " where {{productName}} expects the external identity" + 
+                                    " where {{productName}} expects the external identity" +
                                     " provider to send the SAML response."
                             }
                         },
