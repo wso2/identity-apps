@@ -87,9 +87,9 @@ export interface ResourceListActionInterface extends TestableComponentInterface 
     disabled?: boolean;
     hidden?: boolean;
     icon: SemanticICONS;
-    popupHeader?: string | ReactNode;
+    popupHeader?: ReactNode;
     onClick?: () => void;
-    popupText?: string | ReactNode;
+    popupText?: ReactNode;
     subActions?: DropdownItemProps[];
     type: "button" | "dropdown";
 }

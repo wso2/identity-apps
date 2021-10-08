@@ -52,7 +52,7 @@ interface ApplicationCertificatesPropsListInterface extends TestableComponentInt
      * The message or the content of the pop up saying
      * why it's being disabled.
      */
-    reasonInsideTooltipWhyDeleteIsNotAllowed?: string | ReactNode;
+    reasonInsideTooltipWhyDeleteIsNotAllowed?: ReactNode;
     application: ApplicationInterface;
     onUpdate: (id: string) => void;
     applicationCertificate: string;

@@ -57,7 +57,7 @@ interface ApplicationWrapperCertificatesPropsInterface extends TestableComponent
      * The message or the content of the pop up saying
      * why it's being disabled.
      */
-    reasonInsideTooltipWhyDeleteIsNotAllowed?: string | ReactNode;
+    reasonInsideTooltipWhyDeleteIsNotAllowed?: ReactNode;
     /**
      * Callback to update final certificate value.
      */
