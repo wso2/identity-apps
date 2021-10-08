@@ -110,14 +110,14 @@
                     &:last-child {
                         margin-bottom: 0 !important;
                     }
-                    
+
                     .header-dropdown-item-inner {
                         padding: 0;
-                        
+
                         &.flex {
                             display: flex !important;
                         }
-                        
+
                         .header {
                             font-weight: 400;
                         }
