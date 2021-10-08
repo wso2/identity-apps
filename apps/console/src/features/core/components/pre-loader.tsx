@@ -20,10 +20,20 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 
-type OverviewPageInterface = TestableComponentInterface;
+/**
+ * Pre loader component props interface.
+ */
+type PreLoaderPropsInterface = TestableComponentInterface;
 
-export const PreLoader: FunctionComponent<OverviewPageInterface> = (
-    props: OverviewPageInterface
+/**
+ * Pre-Loader for the application.
+ *
+ * @param {PreLoaderPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
+ */
+export const PreLoader: FunctionComponent<PreLoaderPropsInterface> = (
+    props: PreLoaderPropsInterface
 ): ReactElement => {
 
     const {
@@ -31,12 +41,15 @@ export const PreLoader: FunctionComponent<OverviewPageInterface> = (
     } = props;
 
     return(
-        <div className={ "pre-loader-wrapper" }>
+        <div className="pre-loader-wrapper">
             <ContentLoader dimmer data-testid={ testId }/>
         </div>
     );
 };
 
+/**
+ * Default props for the component.
+ */
 PreLoader.defaultProps = {
     "data-testid": "pre-loader"
 };
