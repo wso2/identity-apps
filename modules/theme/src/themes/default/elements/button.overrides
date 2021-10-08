@@ -83,6 +83,9 @@
                 box-shadow: none !important;
             }
         }
+        &.with-no-margin {
+            margin: 0;
+        }
     }
     &.positive-modal-link-button {
         background: transparent;
