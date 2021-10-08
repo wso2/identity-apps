@@ -1304,8 +1304,13 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "Certificat",
-                                hint: "Ce certificat permet de valider les signatures des requêtes signées et de " +
-                                    "décrypter les requêtes cryptées de l'application vers {{productName}}."
+                                hint: {
+                                    customOidc: "Ce certificat est utilisé pour chiffrer le <1>id_token</1>" +
+                                        " renvoyé après l'authentification.",
+                                    customSaml: "Ce certificat permet de valider les signatures des " +
+                                        "requêtes signées et de chiffrer les assertions SAML renvoyées " +
+                                        "après authentification."
+                                }
                             }
                         }
                     },

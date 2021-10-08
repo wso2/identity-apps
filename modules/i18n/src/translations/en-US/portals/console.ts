@@ -1286,9 +1286,13 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "Certificate",
-                                hint: "This certificate is used to validate the signatures of the signed " +
-                                    "requests and to decrypt the encrypted requests from the" +
-                                    " application to {{productName}}."
+                                hint: {
+                                    customOidc: "This certificate is used to encrypt the <1>id_token</1>" +
+                                        " returned after the authentication.",
+                                    customSaml: "This certificate is used to validate the signatures of the " +
+                                        "signed requests and to encrypt the SAML assertions returned after " +
+                                        "authentication."
+                                }
                             }
                         }
                     },

@@ -724,7 +724,10 @@ export interface ConsoleNS {
                         sections: {
                             certificate: {
                                 heading: string;
-                                hint: string;
+                                hint?: {
+                                    customOidc: string;
+                                    customSaml: string;
+                                };
                                 fields: {
                                     jwksValue: FormAttributes;
                                     pemValue: FormAttributes;
