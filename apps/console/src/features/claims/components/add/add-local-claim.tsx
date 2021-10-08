@@ -84,7 +84,6 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     const [ mappedCustomAttribues, setMappedCustomAttribues ] = useState<Map<string, string>>(null);
     const [ showMapAttributes, setShowMapAttributes ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ skipSCIM, setSkipSCIM ] = useState<boolean>(false);
     const hiddenUserStores: string[] = useSelector((state: AppState) => state.config.ui.hiddenUserStores);
 
     const [ firstStep, setFirstStep ] = useTrigger();
@@ -116,7 +115,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     /**
      * Submit handler that sends the API request to add the local claim
      */
-    const handleSubmit = async (data, customMappings?) => {
+    const handleSubmit = async (data, customMappings?, skipSCIM?) => {
 
         if ( attributeConfig.localAttributes.createCustomDialect ) {
 
@@ -143,18 +142,18 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                     }
                 ));
 
-                if ( attributeConfig.localAttributes.mapClaimToCustomDialect && customMappings && !skipSCIM) {
+                if ( attributeConfig.localAttributes.mapClaimToCustomDialect && customMappings) {
 
-                    attributeConfig.localAttributes.isSCIMCustomDialectAvailable().then(( claimId: string ) => {
-                        addExternalClaim(claimId, {
-                            claimURI: `${attributeConfig.localAttributes.
-                                customDialectURI}:${customMappings.get("scim")}`,
-                            mappedLocalClaimURI: data.claimURI
-                        }).
-                        then(() => {
-                            fetchUpdatedSchemaList();
+                    if (!skipSCIM) {
+                        attributeConfig.localAttributes.isSCIMCustomDialectAvailable().then((claimId: string) => {
+                            addExternalClaim(claimId, {
+                                claimURI: `${attributeConfig.localAttributes.customDialectURI}:${customMappings.get("scim")}`,
+                                mappedLocalClaimURI: data.claimURI
+                            }).then(() => {
+                                fetchUpdatedSchemaList();
+                            });
                         });
-                    });
+                    }
 
                     attributeConfig.localAttributes.getDialect(ClaimManagementConstants.OIDC_MAPPING[0]).then(
                         response => {
@@ -250,13 +249,14 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     const onSubmitBasicDetails = (dataFromForm: Claim, values: Map<string, FormValue>) => {
         const tempData = { ...data, ...dataFromForm };
         const customMappings: Map<string, string> = new Map();
+        let skipSCIM = false;
         setData(tempData);
         setBasicDetailsData(values);
 
         if (values.has("scim") ) {
             customMappings.set("scim", values.get("scim").toString());
         } else {
-            setSkipSCIM(true);
+            skipSCIM = true;
         }
 
         if (values.has("oidc") ) {
@@ -287,7 +287,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                     userstore: "PRIMARY"
                 }
             ];
-            handleSubmit(tempData, customMappings);
+            handleSubmit(tempData, customMappings, skipSCIM);
         } else {
             setCurrentWizardStep(1);
         }
