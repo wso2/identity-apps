@@ -53,14 +53,22 @@
             .header-link {
                 .header-link-inner {
                     background: @appHeaderExtensionLinkBackground;
-                    padding: 15px 5px;
                     border-radius: 25px;
                     color: @appHeaderExtensionLinkColor;
                     width: 50px;
+                    height: 44px;
+                    position: relative;
 
                     &:hover {
                         cursor: pointer;
                         background: @appHeaderExtensionLinkHoverBackground;
+                    }
+
+                    .theme-icon {
+                        position: absolute;
+                        top: 50%;
+                        right: 50%;
+                        transform: translate(50%,-50%);
                     }
                 }
             }
