@@ -58,6 +58,7 @@
     try {
         ReCaptchaProperties reCaptchaProperties = reCaptchaApi.getReCaptcha(tenantDomain, true, "ReCaptcha",
                 "password-recovery");
+
         if (reCaptchaProperties.getReCaptchaEnabled()) {
             Map<String, List<String>> headers = new HashMap<>();
             headers.put("reCaptcha", Arrays.asList(String.valueOf(true)));

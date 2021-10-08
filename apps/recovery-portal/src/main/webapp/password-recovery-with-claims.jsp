@@ -40,6 +40,7 @@
 
 <%
     ReCaptchaApi reCaptchaApi = new ReCaptchaApi();
+
     if (StringUtils.isNotEmpty(tenantDomain)) {
         try {
             IdentityTenantUtil.getTenantId(tenantDomain);
@@ -50,9 +51,11 @@
             return;
         }
     }
+
     try {
         ReCaptchaProperties reCaptchaProperties = reCaptchaApi.getReCaptcha(tenantDomain, true, "ReCaptcha",
                 "password-recovery");
+
         if (reCaptchaProperties != null && reCaptchaProperties.getReCaptchaEnabled()) {
             Map<String, List<String>> headers = new HashMap<>();
             headers.put("reCaptcha", Arrays.asList(String.valueOf(true)));
