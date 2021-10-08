@@ -29,15 +29,15 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { AppState } from "../../../core";
-import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
 import {
     InboundProtocolListItemInterface,
-    OIDCDiscoveryEndpointsInterface,
+    OIDCApplicationConfigurationInterface,
     SAMLApplicationConfigurationInterface
 } from "../../models";
 import { OIDCConfigurations, SAMLConfigurations } from "../help-panel";
+import { ApplicationManagementConstants } from "../../constants";
 
 /**
  * Proptypes for the server endpoints details component.
@@ -80,8 +80,8 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
         [ "data-testid" ]: testId
     } = props;
     
-    const oidcDiscoveryEndpoints: OIDCDiscoveryEndpointsInterface = useSelector(
-        (state: AppState) => state.application.oidcDiscoveryEndpoints);
+    const oidcConfigurations: OIDCApplicationConfigurationInterface = useSelector(
+        (state: AppState) => state.application.oidcConfigurations);
     const samlConfigurations: SAMLApplicationConfigurationInterface = useSelector(
         (state: AppState) => state.application.samlConfigurations);
     const { t } = useTranslation();
@@ -133,7 +133,7 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                                         </DocumentationLink>
                                     </Heading>
                                     <Divider hidden/>
-                                    <OIDCConfigurations endpoints={ oidcDiscoveryEndpoints }/>
+                                    <OIDCConfigurations oidcConfigurations={ oidcConfigurations }/>
                                 </>
                             ) }
                             { isOIDC && isSAML ? (

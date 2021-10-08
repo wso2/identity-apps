@@ -48,18 +48,19 @@ import {
 } from "../../core";
 import { getInboundProtocolConfig } from "../api";
 import { ApplicationManagementConstants } from "../constants";
-import CustomApplicationTemplate
-    from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationInterface,
     ApplicationTemplateInterface,
     AuthProtocolMetaListItemInterface,
-    OIDCDataInterface, OIDCDiscoveryEndpointsInterface,
+    OIDCApplicationConfigurationInterface,
+    OIDCDataInterface,
     SAMLApplicationConfigurationInterface,
     SupportedAuthProtocolTypes,
     URLFragmentTypes
 } from "../models";
 import { ApplicationManagementUtils } from "../utils";
+import CustomApplicationTemplate
+    from "../data/application-templates/templates/custom-application/custom-application.json";
 
 /**
  * Proptypes for the applications edit component.
@@ -136,8 +137,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const availableInboundProtocols: AuthProtocolMetaListItemInterface[] =
         useSelector((state: AppState) => state.application.meta.inboundProtocols);
-    const oidcDiscoveryEndpoints: OIDCDiscoveryEndpointsInterface = useSelector(
-        (state: AppState) => state.application.oidcDiscoveryEndpoints);
+    const oidcConfigurations: OIDCApplicationConfigurationInterface = useSelector(
+        (state: AppState) => state.application.oidcConfigurations);
     const samlConfigurations: SAMLApplicationConfigurationInterface = useSelector(
         (state: AppState) => state.application.samlConfigurations);
     const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
@@ -315,22 +316,17 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             });
     }, [ samlConfigurations, inboundProtocolConfig ]);
 
-    /**
-     * Fetches the OIDC Discovery endpoints and sets them in redux store if not existing.
-     */
     useEffect(() => {
-
-        if (oidcDiscoveryEndpoints !== undefined) {
+        if (oidcConfigurations !== undefined) {
             return;
         }
-
         setOIDCConfigsLoading(true);
 
         ApplicationManagementUtils.getOIDCApplicationMeta()
             .finally(() => {
                 setOIDCConfigsLoading(false);
             });
-    }, [ oidcDiscoveryEndpoints, inboundProtocolConfig ]);
+    }, [ oidcConfigurations, inboundProtocolConfig ]);
 
     useEffect(() => {
         if (tabPaneExtensions && !isApplicationUpdated) {

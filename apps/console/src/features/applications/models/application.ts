@@ -586,6 +586,20 @@ export interface SimpleUserStoreListItemInterface {
 }
 
 /**
+ * OIDC configurations for the application.
+ */
+export interface OIDCApplicationConfigurationInterface {
+    authorizeEndpoint: string;
+    endSessionEndpoint: string;
+    introspectionEndpoint: string;
+    tokenEndpoint: string;
+    tokenRevocationEndpoint: string;
+    userEndpoint: string;
+    jwksEndpoint: string;
+    wellKnownEndpoint: string;
+}
+
+/**
  * SAML configurations for the application.
  */
 export interface SAMLApplicationConfigurationInterface {
@@ -595,6 +609,17 @@ export interface SAMLApplicationConfigurationInterface {
     certificate: string;
     metadata: string;
 }
+
+export const emptyOIDCAppConfiguration = (): OIDCApplicationConfigurationInterface => ({
+    authorizeEndpoint: "",
+    endSessionEndpoint: "",
+    introspectionEndpoint: "",
+    jwksEndpoint: "",
+    tokenEndpoint: "",
+    tokenRevocationEndpoint: "",
+    userEndpoint: "",
+    wellKnownEndpoint: ""
+});
 
 export const emptySAMLAppConfiguration = (): SAMLApplicationConfigurationInterface => ({
     certificate: "",
