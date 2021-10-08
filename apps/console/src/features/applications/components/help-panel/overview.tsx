@@ -27,7 +27,7 @@ import { SAMLConfigurations } from "./saml-configurations";
 import { AppState } from "../../../core";
 import {
     InboundProtocolListItemInterface,
-    OIDCDiscoveryEndpointsInterface,
+    OIDCApplicationConfigurationInterface,
     SAMLApplicationConfigurationInterface
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
@@ -53,8 +53,8 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
     props: HelpPanelOverviewPropsInterface
 ): ReactElement => {
 
-    const oidcDiscoveryEndpoints: OIDCDiscoveryEndpointsInterface = useSelector(
-        (state: AppState) => state.application.oidcDiscoveryEndpoints);
+    const oidcConfigurations: OIDCApplicationConfigurationInterface = useSelector(
+        (state: AppState) => state.application.oidcConfigurations);
     const samlConfigurations: SAMLApplicationConfigurationInterface = useSelector(
         (state: AppState) => state.application.samlConfigurations);
     const { t } = useTranslation();
@@ -83,16 +83,11 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
 
     }, [ inboundProtocols ]);
 
-    /**
-     * Fetches the OIDC Discovery endpoints and sets them in redux store if not existing.
-     */
     useEffect(() => {
-
-        if (oidcDiscoveryEndpoints !== undefined) {
+        if (oidcConfigurations !== undefined) {
             handleMetadataLoading(false);
             return;
         }
-
         handleMetadataLoading(true);
         setOIDCConfigsLoading(true);
 
@@ -101,7 +96,7 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
                 setOIDCConfigsLoading(false);
                 handleMetadataLoading(false);
             });
-    }, [ oidcDiscoveryEndpoints ]);
+    }, [ oidcConfigurations ]);
 
     return (
         <>
@@ -170,7 +165,7 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
                                 <Divider hidden/>
                                 {
                                     isOIDC && (
-                                        <OIDCConfigurations endpoints={ oidcDiscoveryEndpoints }/>
+                                        <OIDCConfigurations oidcConfigurations={ oidcConfigurations }/>
                                     )
                                 }
                                 {

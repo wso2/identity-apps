@@ -18,13 +18,10 @@
 
 import {
     ApplicationTemplateListItemInterface,
+    OIDCApplicationConfigurationInterface,
     SAMLApplicationConfigurationInterface
 } from "./application";
-import {
-    AuthProtocolMetaListItemInterface,
-    OIDCDiscoveryEndpointsInterface,
-    OIDCMetadataInterface
-} from "./application-inbound";
+import { AuthProtocolMetaListItemInterface, OIDCMetadataInterface } from "./application-inbound";
 
 /**
  * Interface for the Application reducer state.
@@ -33,7 +30,7 @@ export interface ApplicationReducerStateInterface {
     meta: ApplicationMetaInterface;
     templates: ApplicationTemplateListItemInterface[];
     groupedTemplates: ApplicationTemplateListItemInterface[];
-    oidcDiscoveryEndpoints: OIDCDiscoveryEndpointsInterface;
+    oidcConfigurations: OIDCApplicationConfigurationInterface;
     samlConfigurations: SAMLApplicationConfigurationInterface;
 }
 

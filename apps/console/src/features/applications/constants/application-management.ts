@@ -294,10 +294,6 @@ export class ApplicationManagementConstants {
         "status code while deleting the protocol config.";
     public static readonly APP_PROTOCOL_DELETE_ERROR: string = "An error occurred while deleting the" +
         "protocol config.";
-    public static readonly OIDC_DISCOVERY_ENDPOINTS_FETCH_RESPONSE_ERROR: string = "Received an invalid " +
-        "response while fetching OIDC discovery endpoints.";
-    public static readonly OIDC_DISCOVERY_ENDPOINTS_FETCH_FETCH_ERROR: string = "An error occurred while fetching " +
-        "the fetching OIDC discovery endpoints.";
     public static readonly APPLICATION_TEMPLATE_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while fetching application template.";
     public static readonly APPLICATION_TEMPLATE_FETCH_ERROR: string = "An error occurred while fetching the " +
@@ -310,6 +306,8 @@ export class ApplicationManagementConstants {
         "code while retrieving the OIDC configurations of the IDP.";
     public static readonly SAML_CONFIGURATIONS_STATUS_CODE_ERROR: string = "Received an invalid status " +
         "code while retrieving the SAML configurations of the IDP.";
+    public static readonly APPLICATION_OIDC_CONFIGURATIONS_FETCH_ERROR: string = "An error occurred while fetching " +
+        "the OIDC configurations of the IDP.";
     public static readonly APPLICATION_SAML_CONFIGURATIONS_FETCH_ERROR: string = "An error occurred while fetching " +
         "the SAML configurations of the IDP.";
     public static readonly REQUEST_PATH_AUTHENTICATORS_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +

@@ -60,7 +60,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
     };
 
     return (
-        <Form className="form-container with-max-width">
+        <Form>
             <Grid verticalAlign="middle">
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>

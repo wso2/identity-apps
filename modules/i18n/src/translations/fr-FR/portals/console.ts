@@ -2189,10 +2189,8 @@ export const console: ConsoleNS = {
                                         authorize: "Authorize",
                                         endSession: "Se déconnecter",
                                         introspection: "Introspection",
-                                        issuer: "Émetteur",
-                                        jwks: "JWKS",
                                         keystore: "Key Set",
-                                        revoke: "Révoquer",
+                                        jwks: "JWKS",
                                         token: "Token",
                                         userInfo: "UserInfo",
                                         wellKnown: "Discovery"

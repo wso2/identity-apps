@@ -18,10 +18,8 @@
 
 import {
     ApplicationTemplateListItemInterface,
-    AuthProtocolMetaListItemInterface,
-    OIDCDiscoveryEndpointsInterface,
-    OIDCMetadataInterface,
-    SAMLApplicationConfigurationInterface
+    AuthProtocolMetaListItemInterface, OIDCApplicationConfigurationInterface,
+    OIDCMetadataInterface, SAMLApplicationConfigurationInterface
 } from "../../../models";
 
 /**
@@ -133,8 +131,8 @@ export interface SetApplicationTemplatesActionInterface extends ApplicationBaseA
 /**
  * Set oidc application configurations action interface.
  */
-export interface SetOIDCDiscoveryEndpointsActionInterface extends ApplicationBaseActionInterface {
-    payload: OIDCDiscoveryEndpointsInterface;
+export interface SetOIDCApplicationConfigurationsActionInterface extends ApplicationBaseActionInterface {
+    payload: OIDCApplicationConfigurationInterface;
     type: ApplicationActionTypes.SET_OIDC_APPLICATION_CONFIGURATIONS;
 }
 
@@ -154,5 +152,5 @@ export type ApplicationActions = CheckAvailableCustomInboundProtocolsMetaInterfa
     | SetAuthProtocolMetaInterface
     | SetApplicationTemplatesActionInterface
     | SetAvailableCustomInboundProtocolsMetaInterface
-    | SetOIDCDiscoveryEndpointsActionInterface
+    | SetOIDCApplicationConfigurationsActionInterface
     | SetSAMLApplicationConfigurationsActionInterface;

@@ -48,18 +48,19 @@ import {
 } from "../../core";
 import { getInboundProtocolConfig } from "../api";
 import { ApplicationManagementConstants } from "../constants";
-import CustomApplicationTemplate
-    from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationInterface,
     ApplicationTemplateInterface,
     AuthProtocolMetaListItemInterface,
-    OIDCDataInterface, OIDCDiscoveryEndpointsInterface,
+    OIDCApplicationConfigurationInterface,
+    OIDCDataInterface,
     SAMLApplicationConfigurationInterface,
     SupportedAuthProtocolTypes,
     URLFragmentTypes
 } from "../models";
 import { ApplicationManagementUtils } from "../utils";
+import CustomApplicationTemplate
+    from "../data/application-templates/templates/custom-application/custom-application.json";
 
 /**
  * Proptypes for the applications edit component.
@@ -136,8 +137,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const availableInboundProtocols: AuthProtocolMetaListItemInterface[] =
         useSelector((state: AppState) => state.application.meta.inboundProtocols);
-    const oidcDiscoveryEndpoints: OIDCDiscoveryEndpointsInterface = useSelector(
-        (state: AppState) => state.application.oidcDiscoveryEndpoints);
+    const oidcConfigurations: OIDCApplicationConfigurationInterface = useSelector(
+        (state: AppState) => state.application.oidcConfigurations);
     const samlConfigurations: SAMLApplicationConfigurationInterface = useSelector(
         (state: AppState) => state.application.samlConfigurations);
     const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
@@ -156,8 +157,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         clientSecretHashDisclaimerModalInputs,
         setClientSecretHashDisclaimerModalInputs
     ] = useState<{ clientSecret: string; clientId: string }>({ clientId: "", clientSecret: "" });
-    const [ isOIDCConfigsLoading, setOIDCConfigsLoading ] = useState<boolean>(undefined);
-    const [ isSAMLConfigsLoading, setSAMLConfigsLoading ] = useState<boolean>(undefined);
+    const [ isOIDCConfigsLoading, setOIDCConfigsLoading ] = useState<boolean>(false);
+    const [ isSAMLConfigsLoading, setSAMLConfigsLoading ] = useState<boolean>(false);
     const [ activeTabIndex, setActiveTabIndex ] = useState<number>(undefined);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(undefined);
     const [ totalTabs, setTotalTabs ] = useState<number>(undefined);
@@ -302,15 +303,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         findConfiguredInboundProtocol(application.id);
     }, [ application?.inboundProtocols ]);
 
-    /**
-     * Fetches the SAML Inbound configs and sets them in redux store if not existing.
-     */
     useEffect(() => {
-
         if (samlConfigurations !== undefined) {
             return;
         }
-
         setSAMLConfigsLoading(true);
 
 
@@ -320,22 +316,17 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             });
     }, [ samlConfigurations, inboundProtocolConfig ]);
 
-    /**
-     * Fetches the OIDC Discovery endpoints and sets them in redux store if not existing.
-     */
     useEffect(() => {
-
-        if (oidcDiscoveryEndpoints !== undefined) {
+        if (oidcConfigurations !== undefined) {
             return;
         }
-
         setOIDCConfigsLoading(true);
 
         ApplicationManagementUtils.getOIDCApplicationMeta()
             .finally(() => {
                 setOIDCConfigsLoading(false);
             });
-    }, [ oidcDiscoveryEndpoints, inboundProtocolConfig ]);
+    }, [ oidcConfigurations, inboundProtocolConfig ]);
 
     useEffect(() => {
         if (tabPaneExtensions && !isApplicationUpdated) {
