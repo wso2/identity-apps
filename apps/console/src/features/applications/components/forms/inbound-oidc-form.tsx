@@ -51,6 +51,7 @@ import OIDCWebApplicationTemplate
 import SinglePageApplicationTemplate
     from "../../data/application-templates/templates/single-page-application/single-page-application.json";
 import {
+    ApplicationTemplateIdTypes,
     ApplicationInterface,
     ApplicationTemplateListItemInterface,
     CertificateInterface,
@@ -1693,7 +1694,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                         ".refreshToken.heading") }
                                 </Heading>
-                                <Divider hidden />
                                 <Field
                                     ref={ refreshToken }
                                     name="RefreshToken"
@@ -1796,7 +1796,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                             ".idToken.heading") }
                     </Heading>
-                    <Divider hidden />
                     <URLInput
                         isAllowEnabled={ false }
                         tenantDomain={ tenantDomain }
@@ -1850,6 +1849,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             </Grid.Row>
             {
                 applicationConfig.inboundOIDCForm.showIdTokenEncryption &&
+                    ApplicationTemplateIdTypes.SPA !== template.templateId &&
                 (
                     <>
                         <Grid.Row columns={ 1 }>
@@ -2145,7 +2145,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                         ".requestObjectSignature.heading") }
                                 </Heading>
-                                <Divider hidden />
                                 <Field
                                     ref={ enableRequestObjectSignatureValidation }
                                     name="enableRequestObjectSignatureValidation"
@@ -2199,7 +2198,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".scopeValidators.heading") }
                         </Heading>
-                        <Divider hidden />
                         <Field
                             ref={ scopeValidator }
                             name="scopeValidator"
