@@ -28,6 +28,7 @@ export * from "./empty-placeholder";
 export * from "./global-loader";
 export * from "./icon";
 export * from "./page-header";
+export * from "./pre-loader";
 export * from "./protected-route";
 export * from "./settings-section";
 export * from "./user-avatar";

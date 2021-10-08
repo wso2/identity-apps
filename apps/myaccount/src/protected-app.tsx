@@ -35,9 +35,9 @@ import {
 } from "@wso2is/core/store";
 import { AuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
-import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, lazy, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { PreLoader } from "./components";
 import { Config } from "./configs";
 import { AppConstants, CommonConstants } from "./constants";
 import { history } from "./helpers";
@@ -269,7 +269,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
     return (
         <SecureApp
-            fallback={ <ContentLoader dimmer /> }
+            fallback={ <PreLoader /> }
             onSignIn={ loginSuccessRedirect }
             overrideSignIn={ async () => {
                 // This is to prompt the SSO page if a user tries to sign in
