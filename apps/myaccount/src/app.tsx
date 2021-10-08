@@ -30,7 +30,6 @@ import {
 import {
     ChunkErrorModal,
     Code,
-    ContentLoader,
     NetworkErrorModal,
     SessionManagementProvider,
     SessionTimeoutModalTypes
@@ -42,7 +41,7 @@ import { Helmet } from "react-helmet";
 import { I18nextProvider, Trans } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
-import { ProtectedRoute } from "./components";
+import { PreLoader, ProtectedRoute } from "./components";
 import { Config, getAppRoutes } from "./configs";
 import { AppConstants } from "./constants";
 import { history } from "./helpers";
@@ -254,7 +253,7 @@ export const App = (): ReactElement => {
                         <Router history={ history }>
                             <div className="container-fluid">
                                 <I18nextProvider i18n={ I18n.instance }>
-                                    <Suspense fallback={ <ContentLoader dimmer/> }>
+                                    <Suspense fallback={ <PreLoader /> }>
                                         <SessionManagementProvider
                                             onSessionTimeoutAbort={ handleSessionTimeoutAbort }
                                             onSessionLogout={ handleSessionLogout }
@@ -351,7 +350,7 @@ export const App = (): ReactElement => {
                             </div>
                         </Router>
                     )
-                    : <ContentLoader dimmer/>
+                    : <PreLoader />
             }
         </>
     );
