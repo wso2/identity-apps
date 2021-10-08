@@ -49,7 +49,7 @@ import {
     ServiceInterface
 } from "../../models";
 import { AppState } from "../../store";
-import { endUserSession } from "../../utils";
+import { useEndUserSession } from "../../utils";
 import { ModalComponent, SettingsSection } from "../shared";
 
 /**
@@ -79,6 +79,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     const userName: string = useSelector((state: AppState) => state?.authenticationInformation?.username);
     const tenantDomain: string = useSelector((state: AppState) => state?.authenticationInformation?.tenantDomain);
     const { t } = useTranslation();
+    const endUserSession = useEndUserSession();
 
     /**
      * Retrieves the consented applications of the user. It will only
