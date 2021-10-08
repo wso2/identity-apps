@@ -14,6 +14,7 @@ export const commonConfig: CommonConfig = {
         enableQuerySearch: false
     },
     header: {
+        organization: "WSO2",
         renderAppSwitcherAsDropdown: false
     },
     userProfilePage: {

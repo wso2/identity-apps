@@ -28,6 +28,7 @@ import {
     Header as ReusableHeader,
     HeaderPropsInterface as ReusableHeaderPropsInterface
 } from "@wso2is/react-components";
+import compact from "lodash-es/compact";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
@@ -37,16 +38,15 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Menu } from "semantic-ui-react";
+import { Label, Menu } from "semantic-ui-react";
 import { AppSwitcherIcons } from "../../configs";
 import { AppConstants } from "../../constants";
+import { commonConfig } from "../../extensions";
 import { history, resolveUserstore } from "../../helpers";
 import { AuthStateInterface, ConfigReducerStateInterface } from "../../models";
 import { AppState } from "../../store";
 import { getProfileInformation, getProfileLinkedAccounts, handleAccountSwitching } from "../../store/actions";
 import { CommonUtils, refreshPage } from "../../utils";
-import compact from "lodash-es/compact";
-import { commonConfig } from "../../extensions";
 
 /**
  * Dashboard layout Prop types.
@@ -75,6 +75,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     // TODO: Get this from profile reducer and cast `ProfileInfoInterface`.
     const profileInfo: any = useSelector((state: AppState) => state.authenticationInformation.profileInfo);
+    const tenantName: string = useSelector((state: AppState) => state.authenticationInformation.tenantDomain);
     // TODO: Use common loaders reducer.
     const isProfileInfoLoading: boolean = useSelector(
         (state: AppState) => state.loaders.isProfileInfoLoading);
@@ -214,7 +215,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     window.open(consoleAppURL, "_blank", "noopener");
                 }
             })
-            : null
+            : null;
 
         return links;
     };
@@ -263,6 +264,20 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             />
         </Menu.Item>
     );
+
+    /**
+     * The following function resolve the organization label in the header.
+     */
+    const resolveOrganizationLabel = (): ReactElement => {
+
+        const organization = (tenantName == "carbon.super") ? commonConfig.header.organization : tenantName;
+
+        return (
+            <Label className="organization-label">
+                { t("myAccount:components.header.organizationLabel") } <strong>{ organization }</strong>
+            </Label>
+        );
+    };
 
     return (
         <ReusableHeader
@@ -344,6 +359,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     : isHeaderAvatarLabelAllowed
             }
             onSidePanelToggleClick={ onSidePanelToggleClick }
+            showOrganizationLabel={ true }
+            organizationLabel={ resolveOrganizationLabel() }
             { ...rest }
         />
     );

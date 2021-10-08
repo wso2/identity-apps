@@ -78,6 +78,14 @@ export interface HeaderPropsInterface extends TestableComponentInterface {
      */
     userDropdownPointing?: DropdownProps[ "pointing" ];
     onAvatarClick?: () => void;
+    /**
+     * Show account management label.
+     */
+    showOrganizationLabel?: boolean;
+    /**
+     * Organization label.
+     */
+    organizationLabel?: ReactNode;
 }
 
 /**
@@ -173,6 +181,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         showUserDropdown,
         showUserDropdownTriggerBars,
         showUserDropdownTriggerLabel,
+        showOrganizationLabel,
+        organizationLabel,
         onLinkedAccountSwitch,
         onSidePanelToggleClick,
         userDropdownIcon,
@@ -519,6 +529,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                                 className="user-dropdown-menu"
                                                 onClick={ handleUserDropdownClick }
                                             >
+                                                { showOrganizationLabel && (organizationLabel) }
                                                 <Item.Group className="authenticated-user" unstackable>
                                                     <Item
                                                         className="header"
