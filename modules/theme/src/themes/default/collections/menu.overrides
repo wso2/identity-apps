@@ -371,6 +371,12 @@
                 margin: 0 !important;
                 min-height: @userDropdownLinkMinHeight;
             }
+            .organization-label {
+                background: #e7f0fe;
+                margin: 5px;
+                min-width: 272px !important;
+                text-align: center;
+            }
         }
     }
 }
