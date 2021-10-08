@@ -36,7 +36,7 @@ import get from "lodash-es/get";
 import intersection from "lodash-es/intersection";
 import isEmpty from "lodash-es/isEmpty";
 import union from "lodash-es/union";
-import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { Fragment, FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Divider, Form, Grid, Label, List, Message } from "semantic-ui-react";
@@ -63,7 +63,7 @@ import {
     OIDCDataInterface,
     OIDCMetadataInterface,
     State,
-    SupportedAccessTokenBindingTypes
+    SupportedAccessTokenBindingTypes, SupportedAuthProtocolTypes
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
 import { ApplicationCertificateWrapper } from "../settings/certificate";
@@ -2218,6 +2218,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
             { /* Certificate Section */ }
             <ApplicationCertificateWrapper
+                protocol={ SupportedAuthProtocolTypes.OIDC }
+                deleteAllowed={ !(initialValues.idToken?.encryption?.enabled) }
+                reasonInsideTooltipWhyDeleteIsNotAllowed={ (
+                    <Fragment>
+                        This certificate is used to encrypt the <Code>id_token</Code>. First, you need
+                        to disable <Code>id_token</Code> encryption to proceed.
+                    </Fragment>
+                ) }
                 onUpdate={ onUpdate }
                 application={ application }
                 updateCertFinalValue={ setFinalCertValue }

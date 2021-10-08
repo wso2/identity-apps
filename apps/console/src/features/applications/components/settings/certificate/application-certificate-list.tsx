@@ -30,7 +30,7 @@ import {
     ResourceListItem
 } from "@wso2is/react-components";
 import moment from "moment";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Icon, Modal, Popup, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
@@ -43,6 +43,16 @@ import { ApplicationInterface, CertificateTypeInterface } from "../../../models"
  * Proptypes for the Application certificate list component.
  */
 interface ApplicationCertificatesPropsListInterface extends TestableComponentInterface {
+    /**
+     * Specifies whether JWKS or Certificates
+     * remove/delete is allowed or not.
+     */
+    deleteAllowed?: boolean;
+    /**
+     * The message or the content of the pop up saying
+     * why it's being disabled.
+     */
+    reasonInsideTooltipWhyDeleteIsNotAllowed?: string | ReactNode;
     application: ApplicationInterface;
     onUpdate: (id: string) => void;
     applicationCertificate: string;
@@ -62,6 +72,8 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
 ): ReactElement => {
 
     const {
+        deleteAllowed,
+        reasonInsideTooltipWhyDeleteIsNotAllowed,
         onUpdate,
         application,
         applicationCertificate,
@@ -287,13 +299,12 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
             onPrimaryActionClick={ deleteCertificate }
             open={ showCertificateDeleteConfirmation }
             type="negative"
-            assertionHint={ t("console:develop.features.secrets.modals.deleteSecret.assertionHint") }
-            assertionType="checkbox"
             primaryAction={ "Delete" }
             secondaryAction={ "Cancel" }
             data-testid={ `${ testId }-delete-confirmation-modal` }
             closeOnDimmerClick={ false }>
-            <ConfirmationModal.Header data-testid={ `${ testId }-delete-confirmation-modal-header` }>
+            <ConfirmationModal.Header
+                data-testid={ `${ testId }-delete-confirmation-modal-header` }>
                 Are you sure?
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
@@ -302,10 +313,6 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
                 data-testid={ `${ testId }-delete-confirmation-modal-message` }>
                 This action is irreversible and will permanently delete the certificate.
             </ConfirmationModal.Message>
-            <ConfirmationModal.Content data-testid={ `${ testId }-delete-confirmation-modal-content` }>
-                If you delete this certificate, Identity Providers depending on this certificate may
-                not function as expected. Please proceed with caution.
-            </ConfirmationModal.Content>
         </ConfirmationModal>
     );
 
@@ -346,10 +353,13 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
                                                     },
                                                     {
                                                         "data-testid": `${ testId }-delete-cert-${ index }-button`,
+                                                        disabled: !deleteAllowed,
                                                         icon: "trash alternate",
                                                         onClick: () => setShowCertificateDeleteConfirmation(true),
-                                                        popupText: t("console:manage.features.users.usersList.list." +
-                                                            "iconPopups.delete"),
+                                                        popupText: deleteAllowed
+                                                            ? t("console:manage.features.users.usersList.list." +
+                                                            "iconPopups.delete")
+                                                            : reasonInsideTooltipWhyDeleteIsNotAllowed,
                                                         type: "button"
                                                     }
                                                 ] }
@@ -431,5 +441,7 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
  * Default proptypes for the application certificate list component.
  */
 ApplicationCertificatesListComponent.defaultProps = {
-    "data-testid": "application-certificate-list"
+    "data-testid": "application-certificate-list",
+    deleteAllowed: true,
+    reasonInsideTooltipWhyDeleteIsNotAllowed: null
 };
