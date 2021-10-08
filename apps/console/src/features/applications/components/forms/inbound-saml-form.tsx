@@ -1654,12 +1654,10 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 initialValues?.requestValidation?.enableSignatureValidation ||
                                 initialValues?.singleSignOnProfile?.assertion.encryption.enabled
                             ) ?? true }
-                            reasonInsideTooltipWhyDeleteIsNotAllowed={ (
-                                <Fragment>
-                                    Make sure request signature validation and assertion encryption
-                                    are disabled to proceed.
-                                </Fragment>
-                            ) }
+                            reasonInsideTooltipWhyDeleteIsNotAllowed={
+                                t("console:develop.features.applications.forms." +
+                                    "inboundSAML.sections.certificates.disabledPopup")
+                            }
                             onUpdate={ onUpdate }
                             application={ application }
                             updateCertFinalValue={ setFinalCertValue }

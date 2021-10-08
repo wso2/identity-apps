@@ -194,6 +194,12 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
         }
     };
 
+    /**
+     * Check the protocol type and render the correct hint for
+     * the certificates field.
+     *
+     * @param protocol {SupportedAuthProtocolTypes}
+     */
     const resolveHintContent = (protocol: SupportedAuthProtocolTypes): ReactNode => {
         switch (protocol) {
             case SupportedAuthProtocolTypes.OAUTH2_OIDC:

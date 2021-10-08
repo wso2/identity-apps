@@ -2222,8 +2222,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 deleteAllowed={ !(initialValues.idToken?.encryption?.enabled) }
                 reasonInsideTooltipWhyDeleteIsNotAllowed={ (
                     <Fragment>
-                        This certificate is used to encrypt the <Code>id_token</Code>. First, you need
-                        to disable <Code>id_token</Code> encryption to proceed.
+                        <Trans
+                            i18nKey={ "console:develop.features.applications.forms" +
+                            ".inboundOIDC.sections.certificates.disabledPopup" }
+                        >
+                            This certificate is used to encrypt the <Code>id_token</Code>. First, you need
+                            to disable <Code>id_token</Code> encryption to proceed.
+                        </Trans>
                     </Fragment>
                 ) }
                 onUpdate={ onUpdate }

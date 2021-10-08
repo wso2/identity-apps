@@ -196,11 +196,12 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
                 id: application?.id,
                 ...(patchObject.general)
             });
-            // TODO: Add i18n strings.
             dispatch(addAlert({
-                description: "Successfully deleted the application certificate.",
+                description: t("console:develop.features.applications.notifications" +
+                    ".deleteCertificateSuccess.description"),
                 level: AlertLevels.SUCCESS,
-                message: "Deleted certificate"
+                message: t("console:develop.features.applications.notifications" +
+                    ".deleteCertificateSuccess.message")
             }));
         } catch (error) {
             if (error.response && error.response.data && error.response.data.description) {
@@ -211,11 +212,12 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
                 }));
                 return;
             }
-            // TODO: Add i18n strings.
             dispatch(addAlert({
-                description: "Something went wrong. We were unable to delete the application certificate.",
+                description: t("console:develop.features.applications.notifications" +
+                    ".deleteCertificateGenericError.description"),
                 level: AlertLevels.ERROR,
-                message: "Failed to update the application"
+                message: t("console:develop.features.applications.notifications." +
+                    "deleteCertificateGenericError.message")
             }));
         } finally {
             setShowCertificateDeleteConfirmation(false);
@@ -286,32 +288,28 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
         );
     };
 
-    // TODO: Add i18n strings for {DeleteCertConfirmationModal}
     const DeleteCertConfirmationModal: ReactElement = (
         <ConfirmationModal
-            onClose={ (): void => {
-                setShowCertificateDeleteConfirmation(false);
-            } }
-            onSecondaryActionClick={ (): void => {
-                setShowCertificateDeleteConfirmation(false);
-            } }
+            onClose={ (): void => setShowCertificateDeleteConfirmation(false) }
+            onSecondaryActionClick={ (): void => setShowCertificateDeleteConfirmation(false) }
             primaryActionLoading={ ongoingDeleteRequest }
             onPrimaryActionClick={ deleteCertificate }
             open={ showCertificateDeleteConfirmation }
             type="negative"
-            primaryAction={ "Delete" }
-            secondaryAction={ "Cancel" }
+            primaryAction={ t("console:develop.features.applications.confirmations.certificateDelete.primaryAction") }
+            secondaryAction={ t("console:develop.features.applications.confirmations" +
+                ".certificateDelete.secondaryAction") }
             data-testid={ `${ testId }-delete-confirmation-modal` }
             closeOnDimmerClick={ false }>
             <ConfirmationModal.Header
                 data-testid={ `${ testId }-delete-confirmation-modal-header` }>
-                Are you sure?
+                { t("console:develop.features.applications.confirmations.certificateDelete.header") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
                 negative
                 data-testid={ `${ testId }-delete-confirmation-modal-message` }>
-                This action is irreversible and will permanently delete the certificate.
+                { t("console:develop.features.applications.confirmations.certificateDelete.message") }
             </ConfirmationModal.Message>
         </ConfirmationModal>
     );

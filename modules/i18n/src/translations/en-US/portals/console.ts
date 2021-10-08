@@ -689,6 +689,14 @@ export const console: ConsoleNS = {
                         header: "Are you sure?",
                         message: "If you revoke this application, authentication flows for this application will " +
                             "stop working. Please proceed with caution."
+                    },
+                    certificateDelete: {
+                        assertionHint: "Please confirm your action.",
+                        content: "N/A",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will permanently delete the certificate.",
+                        primaryAction: "Delete",
+                        secondaryAction: "Cancel"
                     }
                 },
                 dangerZoneGroup: {
@@ -1679,6 +1687,10 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "Scope validators"
+                            },
+                            certificates: {
+                                disabledPopup: "This certificate is used to encrypt the <1>id_token</1>." +
+                                    " First, you need to disable <3>id_token</3> encryption to proceed."
                             }
                         }
                     },
@@ -1998,6 +2010,10 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "Single Sign-On Profile"
+                            },
+                            certificates: {
+                                disabledPopup: "Make sure request signature validation and" +
+                                    " assertion encryption are disabled to proceed."
                             }
                         }
                     },
@@ -2623,6 +2639,14 @@ export const console: ConsoleNS = {
                             " <5>forEach</5> are not allowed in the conditional authentication" +
                             " script.",
                         message: "Failed to update the script"
+                    },
+                    deleteCertificateSuccess: {
+                        description: "Successfully deleted the application certificate.",
+                        message: "Deleted certificate"
+                    },
+                    deleteCertificateGenericError: {
+                        description: "Something went wrong. We were unable to delete the application certificate.",
+                        message: "Failed to update the application"
                     }
                 },
                 placeholders: {

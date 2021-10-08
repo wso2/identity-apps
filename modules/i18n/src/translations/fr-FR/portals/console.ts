@@ -690,6 +690,14 @@ export const console: ConsoleNS = {
                         message: "Si vous révoquez cette application, les flux d'authentification " +
                                  "pour cette application cesseront de fonctionner. Veuillez " +
                                  "procéder avec prudence."
+                    },
+                    certificateDelete: {
+                        assertionHint: "Veuillez confirmer votre action.",
+                        content: "N/A",
+                        header: "Es-tu sûr?",
+                        message: "Cette action est irréversible et supprimera définitivement le certificat.",
+                        primaryAction: "Effacer",
+                        secondaryAction: "Annuler"
                     }
                 },
                 dangerZoneGroup: {
@@ -1710,6 +1718,10 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "Validateurs de scope"
+                            },
+                            certificates: {
+                                disabledPopup: "Ce certificat est utilisé pour chiffrer le <1>id_token</1>." +
+                                    " Tout d'abord, vous devez désactiver le cryptage <3>id_token</3> pour continuer."
                             }
                         }
                     },
@@ -2019,6 +2031,10 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "Profil de connexion unique"
+                            },
+                            certificates: {
+                                disabledPopup: "Assurez-vous que la validation de la signature de la " +
+                                    "demande et le chiffrement des assertions sont désactivés pour continuer."
                             }
                         }
                     },
@@ -2641,6 +2657,15 @@ export const console: ConsoleNS = {
                         description: "Les constructions en boucle telles que <1>for</1>, <3>while</3> et " +
                             "<5>forEach</5> ne sont pas autorisées dans le script d'authentification conditionnelle.",
                         message: "Échec de la mise à jour du script"
+                    },
+                    deleteCertificateSuccess: {
+                        description: "Suppression réussie du certificat d'application.",
+                        message: "Certificat supprimé"
+                    },
+                    deleteCertificateGenericError: {
+                        description: "Quelque chose s'est mal passé. Nous n'avons pas pu supprimer le" +
+                            " certificat d'application.",
+                        message: "Échec de la mise à jour de l'application"
                     }
                 },
                 placeholders: {

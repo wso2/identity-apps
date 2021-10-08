@@ -406,6 +406,7 @@ export interface ConsoleNS {
                            };
                         };
                     };
+                    certificateDelete: Confirmation & Record<string, string>;
                 };
                 dangerZoneGroup: {
                     header: string;
@@ -822,6 +823,9 @@ export interface ConsoleNS {
                                     validator: FormAttributes;
                                 };
                             };
+                            certificates: {
+                                disabledPopup: string;
+                            }
                         };
                         messages: {
                             revokeDisclaimer: Message;
@@ -910,6 +914,9 @@ export interface ConsoleNS {
                                     idpInitiatedSSO: FormAttributes;
                                 };
                             };
+                            certificates: {
+                                disabledPopup: string;
+                            }
                         };
                     };
                     inboundSTS: {
@@ -992,6 +999,8 @@ export interface ConsoleNS {
                     fetchOIDCServiceEndpoints: Notification;
                     secondFactorAuthenticatorToFirstStep: Notification;
                     conditionalScriptLoopingError: NotificationItem;
+                    deleteCertificateSuccess: NotificationItem;
+                    deleteCertificateGenericError: NotificationItem;
                 };
                 popups: {
                     appStatus: {
