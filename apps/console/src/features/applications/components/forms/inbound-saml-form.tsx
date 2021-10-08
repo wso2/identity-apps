@@ -1652,7 +1652,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             protocol={ SupportedAuthProtocolTypes.SAML }
                             deleteAllowed={ !(
                                 initialValues?.requestValidation?.enableSignatureValidation ||
-                                initialValues?.singleSignOnProfile?.assertion.encryption.enabled
+                                initialValues?.singleSignOnProfile?.assertion?.encryption?.enabled
                             ) ?? true }
                             reasonInsideTooltipWhyDeleteIsNotAllowed={
                                 t("console:develop.features.applications.forms." +
