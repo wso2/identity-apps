@@ -23,7 +23,7 @@ import { Code, CopyInputField, Heading, Hint, URLInput } from "@wso2is/react-com
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import union from "lodash-es/union";
-import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { Fragment, FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Label } from "semantic-ui-react";
@@ -39,7 +39,7 @@ import {
     SAML2BindingTypes,
     SAML2ServiceProviderInterface,
     SAMLApplicationConfigurationInterface,
-    SAMLMetaDataInterface
+    SAMLMetaDataInterface, SupportedAuthProtocolTypes
 } from "../../models";
 import { ApplicationCertificateWrapper } from "../settings/certificate";
 
@@ -1649,6 +1649,15 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         }
                         { /* Certificate Section */ }
                         <ApplicationCertificateWrapper
+                            protocol={ SupportedAuthProtocolTypes.SAML }
+                            deleteAllowed={ !(
+                                initialValues?.requestValidation?.enableSignatureValidation ||
+                                initialValues?.singleSignOnProfile?.assertion?.encryption?.enabled
+                            ) ?? true }
+                            reasonInsideTooltipWhyDeleteIsNotAllowed={
+                                t("console:develop.features.applications.forms." +
+                                    "inboundSAML.sections.certificates.disabledPopup")
+                            }
                             onUpdate={ onUpdate }
                             application={ application }
                             updateCertFinalValue={ setFinalCertValue }

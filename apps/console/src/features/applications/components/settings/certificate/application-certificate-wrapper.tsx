@@ -20,17 +20,22 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
-import { Heading, Hint } from "@wso2is/react-components";
+import { Code, Heading, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Message } from "semantic-ui-react";
 import { ApplicationCertificatesListComponent } from "./application-certificate-list";
 import { commonConfig } from "../../../../../extensions";
 import { AppState, ConfigReducerStateInterface } from "../../../../core";
-import { ApplicationInterface, CertificateInterface, CertificateTypeInterface } from "../../../models";
+import {
+    ApplicationInterface,
+    CertificateInterface,
+    CertificateTypeInterface,
+    SupportedAuthProtocolTypes
+} from "../../../models";
 
 /**
  * Proptypes for the application wrapper certificate component.
@@ -42,6 +47,17 @@ interface ApplicationWrapperCertificatesPropsInterface extends TestableComponent
      */
     onUpdate: (id: string) => void;
     application: ApplicationInterface;
+    protocol?: SupportedAuthProtocolTypes;
+    /**
+     * Specifies whether JWKS or Certificates
+     * remove/delete is allowed or not.
+     */
+    deleteAllowed?: boolean;
+    /**
+     * The message or the content of the pop up saying
+     * why it's being disabled.
+     */
+    reasonInsideTooltipWhyDeleteIsNotAllowed?: ReactNode;
     /**
      * Callback to update final certificate value.
      */
@@ -76,6 +92,9 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
 ): ReactElement => {
 
     const {
+        protocol,
+        deleteAllowed,
+        reasonInsideTooltipWhyDeleteIsNotAllowed,
         onUpdate,
         application,
         certificate,
@@ -172,6 +191,32 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                 level: AlertLevels.WARNING,
                 message: t("console:develop.features.authenticationProvider.notifications.changeCertType.jwks.message")
             }));
+        }
+    };
+
+    /**
+     * Check the protocol type and render the correct hint for
+     * the certificates field.
+     *
+     * @param protocol {SupportedAuthProtocolTypes}
+     */
+    const resolveHintContent = (protocol: SupportedAuthProtocolTypes): ReactNode => {
+        switch (protocol) {
+            case SupportedAuthProtocolTypes.OAUTH2_OIDC:
+            case SupportedAuthProtocolTypes.OIDC:
+                return (
+                    <Trans
+                        i18nKey={ "console:develop.features.applications.forms." +
+                        "advancedConfig.sections.certificate.hint.customOidc" }>
+                        This certificate is used to encrypt the <Code>id_token</Code>
+                        returned after the authentication.
+                    </Trans>
+                );
+            case SupportedAuthProtocolTypes.SAML:
+                return t("console:develop.features.applications.forms.advancedConfig" +
+                    ".sections.certificate.hint.customSaml");
+            default:
+                return null;
         }
     };
 
@@ -272,6 +317,8 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                         selectedCertType === CertificateTypeInterface.PEM &&
                         (
                             <ApplicationCertificatesListComponent
+                                deleteAllowed={ deleteAllowed }
+                                reasonInsideTooltipWhyDeleteIsNotAllowed={ reasonInsideTooltipWhyDeleteIsNotAllowed }
                                 onUpdate={ onUpdate }
                                 application={ application }
                                 updatePEMValue={ setPEMValue }
@@ -339,12 +386,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                             content={ t("console:manage.features.certificates.keystore.errorEmpty") }
                         />
                     }
-                    <Hint>
-                        { t("console:develop.features.applications.forms.advancedConfig.sections" +
-                            ".certificate.hint", {
-                            productName: config.ui.productName
-                        }) }
-                    </Hint>
+                    { protocol && <Hint>{ resolveHintContent(protocol) }</Hint> }
                 </Grid.Column>
             </Grid.Row>
         </Forms> : null
@@ -356,7 +398,10 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
  */
 ApplicationCertificateWrapper.defaultProps = {
     "data-testid": "application-certificate-wrapper",
-    isRequired: false,
+    deleteAllowed: true,
     hidden: false,
-    hideJWKS: false
+    hideJWKS: false,
+    isRequired: false,
+    protocol: null,
+    reasonInsideTooltipWhyDeleteIsNotAllowed: null
 };

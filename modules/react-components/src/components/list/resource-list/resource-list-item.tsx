@@ -87,8 +87,9 @@ export interface ResourceListActionInterface extends TestableComponentInterface 
     disabled?: boolean;
     hidden?: boolean;
     icon: SemanticICONS;
+    popupHeader?: ReactNode;
     onClick?: () => void;
-    popupText?: string;
+    popupText?: ReactNode;
     subActions?: DropdownItemProps[];
     type: "button" | "dropdown";
 }
@@ -115,6 +116,7 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
         itemHeader,
         metaContent,
         metaColumnWidth,
+        popupHeader,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -218,18 +220,26 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
                                                         ) :
                                                         (
                                                             <Popup
-                                                                disabled={ action.disabled }
+                                                                header={ popupHeader }
                                                                 trigger={ (
-                                                                    <Icon
-                                                                        data-testid={ action[ "data-testid" ] }
-                                                                        link
-                                                                        className="list-icon"
-                                                                        disabled={ action.disabled }
-                                                                        size="small"
-                                                                        color="grey"
-                                                                        name={ action.icon }
-                                                                        onClick={ action.onClick }
-                                                                    />
+                                                                    <div>
+                                                                        <Icon
+                                                                            data-testid={ action[ "data-testid" ] }
+                                                                            link
+                                                                            className="list-icon"
+                                                                            disabled={ action.disabled }
+                                                                            size="small"
+                                                                            color="grey"
+                                                                            name={ action.icon }
+                                                                            onClick={
+                                                                                action.disabled
+                                                                                    ? (e: React.SyntheticEvent) => {
+                                                                                        e?.preventDefault();
+                                                                                    }
+                                                                                    : action.onClick
+                                                                            }
+                                                                        />
+                                                                    </div>
                                                                 ) }
                                                                 position="top center"
                                                                 content={ action.popupText }
@@ -258,5 +268,6 @@ ResourceListItem.defaultProps = {
     actionsFloated: "left",
     "data-testid": "resource-list-item",
     descriptionColumnWidth: 7,
-    metaColumnWidth: 4
+    metaColumnWidth: 4,
+    popupHeader: null
 };

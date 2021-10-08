@@ -30,7 +30,7 @@ import {
     ResourceListItem
 } from "@wso2is/react-components";
 import moment from "moment";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Icon, Modal, Popup, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
@@ -43,6 +43,16 @@ import { ApplicationInterface, CertificateTypeInterface } from "../../../models"
  * Proptypes for the Application certificate list component.
  */
 interface ApplicationCertificatesPropsListInterface extends TestableComponentInterface {
+    /**
+     * Specifies whether JWKS or Certificates
+     * remove/delete is allowed or not.
+     */
+    deleteAllowed?: boolean;
+    /**
+     * The message or the content of the pop up saying
+     * why it's being disabled.
+     */
+    reasonInsideTooltipWhyDeleteIsNotAllowed?: ReactNode;
     application: ApplicationInterface;
     onUpdate: (id: string) => void;
     applicationCertificate: string;
@@ -62,6 +72,8 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
 ): ReactElement => {
 
     const {
+        deleteAllowed,
+        reasonInsideTooltipWhyDeleteIsNotAllowed,
         onUpdate,
         application,
         applicationCertificate,
@@ -184,11 +196,12 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
                 id: application?.id,
                 ...(patchObject.general)
             });
-            // TODO: Add i18n strings.
             dispatch(addAlert({
-                description: "Successfully deleted the application certificate.",
+                description: t("console:develop.features.applications.notifications" +
+                    ".deleteCertificateSuccess.description"),
                 level: AlertLevels.SUCCESS,
-                message: "Deleted certificate"
+                message: t("console:develop.features.applications.notifications" +
+                    ".deleteCertificateSuccess.message")
             }));
         } catch (error) {
             if (error.response && error.response.data && error.response.data.description) {
@@ -199,11 +212,12 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
                 }));
                 return;
             }
-            // TODO: Add i18n strings.
             dispatch(addAlert({
-                description: "Something went wrong. We were unable to delete the application certificate.",
+                description: t("console:develop.features.applications.notifications" +
+                    ".deleteCertificateGenericError.description"),
                 level: AlertLevels.ERROR,
-                message: "Failed to update the application"
+                message: t("console:develop.features.applications.notifications." +
+                    "deleteCertificateGenericError.message")
             }));
         } finally {
             setShowCertificateDeleteConfirmation(false);
@@ -274,38 +288,29 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
         );
     };
 
-    // TODO: Add i18n strings for {DeleteCertConfirmationModal}
     const DeleteCertConfirmationModal: ReactElement = (
         <ConfirmationModal
-            onClose={ (): void => {
-                setShowCertificateDeleteConfirmation(false);
-            } }
-            onSecondaryActionClick={ (): void => {
-                setShowCertificateDeleteConfirmation(false);
-            } }
+            onClose={ (): void => setShowCertificateDeleteConfirmation(false) }
+            onSecondaryActionClick={ (): void => setShowCertificateDeleteConfirmation(false) }
             primaryActionLoading={ ongoingDeleteRequest }
             onPrimaryActionClick={ deleteCertificate }
             open={ showCertificateDeleteConfirmation }
             type="negative"
-            assertionHint={ t("console:develop.features.secrets.modals.deleteSecret.assertionHint") }
-            assertionType="checkbox"
-            primaryAction={ "Delete" }
-            secondaryAction={ "Cancel" }
+            primaryAction={ t("console:develop.features.applications.confirmations.certificateDelete.primaryAction") }
+            secondaryAction={ t("console:develop.features.applications.confirmations" +
+                ".certificateDelete.secondaryAction") }
             data-testid={ `${ testId }-delete-confirmation-modal` }
             closeOnDimmerClick={ false }>
-            <ConfirmationModal.Header data-testid={ `${ testId }-delete-confirmation-modal-header` }>
-                Are you sure?
+            <ConfirmationModal.Header
+                data-testid={ `${ testId }-delete-confirmation-modal-header` }>
+                { t("console:develop.features.applications.confirmations.certificateDelete.header") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
                 negative
                 data-testid={ `${ testId }-delete-confirmation-modal-message` }>
-                This action is irreversible and will permanently delete the certificate.
+                { t("console:develop.features.applications.confirmations.certificateDelete.message") }
             </ConfirmationModal.Message>
-            <ConfirmationModal.Content data-testid={ `${ testId }-delete-confirmation-modal-content` }>
-                If you delete this certificate, Identity Providers depending on this certificate may
-                not function as expected. Please proceed with caution.
-            </ConfirmationModal.Content>
         </ConfirmationModal>
     );
 
@@ -346,10 +351,13 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
                                                     },
                                                     {
                                                         "data-testid": `${ testId }-delete-cert-${ index }-button`,
+                                                        disabled: !deleteAllowed,
                                                         icon: "trash alternate",
                                                         onClick: () => setShowCertificateDeleteConfirmation(true),
-                                                        popupText: t("console:manage.features.users.usersList.list." +
-                                                            "iconPopups.delete"),
+                                                        popupText: deleteAllowed
+                                                            ? t("console:manage.features.users.usersList.list." +
+                                                            "iconPopups.delete")
+                                                            : reasonInsideTooltipWhyDeleteIsNotAllowed,
                                                         type: "button"
                                                     }
                                                 ] }
@@ -431,5 +439,7 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
  * Default proptypes for the application certificate list component.
  */
 ApplicationCertificatesListComponent.defaultProps = {
-    "data-testid": "application-certificate-list"
+    "data-testid": "application-certificate-list",
+    deleteAllowed: true,
+    reasonInsideTooltipWhyDeleteIsNotAllowed: null
 };
