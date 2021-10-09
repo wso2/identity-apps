@@ -80,6 +80,7 @@ export interface AttributeConfig {
         isSCIMCustomDialectAvailable: () => Promise<string>;
         isUserStoresHidden: (hiddenUserStores: string[]) => Promise<any[]>;
     }
+    systemClaims: string[];
     defaultScimMapping: Object;
     showCustomDialectInSCIM: boolean;
     isRowSelectable: (claim: Claim | ExternalClaim | ClaimDialect) => boolean;

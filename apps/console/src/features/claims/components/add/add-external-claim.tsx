@@ -118,6 +118,10 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
     const { t } = useTranslation();
 
     useEffect(() => {
+        if (claimDialectUri === attributeConfig.localAttributes.customDialectURI) {
+            return;
+        }
+        
         getServerSupportedClaimsForSchema(dialectId).then(response => {
             const serverSupportedClaimList = response.attributes;
             externalClaims.forEach(claim => {
