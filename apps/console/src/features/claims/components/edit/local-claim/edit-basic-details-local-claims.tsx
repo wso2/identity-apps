@@ -143,10 +143,15 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         dialectID.push(SCIMConfigs.scimDialectID.customEnterpriseSchema);
     };
 
-    const isReadOnly = useMemo(() => (
-        !hasRequiredScopes(
-            featureConfig?.attributeDialects, featureConfig?.attributeDialects?.scopes?.update, allowedScopes)
-    ), [ featureConfig, allowedScopes ]);
+    // Temporary fix to check system claims and make them readonly
+    const isReadOnly = useMemo(() => {
+        if (hideSpecialClaims) {
+            return true;
+        } else {
+            return !hasRequiredScopes(
+                featureConfig?.attributeDialects, featureConfig?.attributeDialects?.scopes?.update, allowedScopes)
+        }
+    }, [ featureConfig, allowedScopes, hideSpecialClaims ]);
 
     const deleteConfirmation = (): ReactElement => (
         <ConfirmationModal
