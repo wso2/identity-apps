@@ -35,6 +35,16 @@ export interface DisplayCertificate {
     subjectDN: DistinguishedName[];
     version: number;
     serialNumber: string;
+    infoUnavailable?: boolean;
+}
+
+/**
+ * Validity enumerations.
+ */
+export enum CertificateValidity {
+    EXPIRED,
+    WILL_EXPIRE_SOON,
+    VALID
 }
 
 /**
