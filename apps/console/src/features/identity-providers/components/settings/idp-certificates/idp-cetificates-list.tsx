@@ -16,13 +16,19 @@
  * under the License.
  */
 
-import { AlertLevels, DisplayCertificate, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { CertificateManagementConstants } from "@wso2is/core/constants";
+import {
+    AlertLevels,
+    CertificateValidity,
+    DisplayCertificate,
+    IdentifiableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
 import { Form } from "@wso2is/form";
 import { ResourceList, ResourceListActionInterface, ResourceListItem, UserAvatar } from "@wso2is/react-components";
 import moment from "moment";
-import React, { FC, ReactElement, useEffect, useState } from "react";
+import React, { FC, PropsWithChildren, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Popup, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
@@ -46,10 +52,12 @@ export interface IdpCertificatesListProps extends IdentifiableComponentInterface
  * @param props {IdpCertificatesListProps}
  * @constructor
  */
-export const IdpCertificatesList: FC<IdpCertificatesListProps> = (props): ReactElement => {
+export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
+    props: PropsWithChildren<IdpCertificatesListProps>
+): ReactElement => {
 
     const {
-        ["data-componentid"]: testId,
+        [ "data-componentid" ]: testId,
         currentlyEditingIdP,
         refreshIdP,
         isReadOnly
@@ -98,7 +106,11 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (props): ReactE
         if (currentlyEditingIdP?.certificate?.certificates?.length > 0) {
             const certificatesList: DisplayCertificate[] = [];
             currentlyEditingIdP?.certificate?.certificates?.map((certificate) => {
-                certificatesList?.push(CertificateManagementUtils.displayCertificate(null, certificate));
+                if (CertificateManagementUtils.canSafelyParseCertificate(certificate)) {
+                    certificatesList?.push(CertificateManagementUtils.displayCertificate(null, certificate));
+                } else {
+                    certificatesList?.push(CertificateManagementConstants.DUMMY_DISPLAY_CERTIFICATE);
+                }
             });
             setDisplayingCertificates([ ...certificatesList ]);
         }
@@ -179,26 +191,34 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (props): ReactE
         let icon: SemanticICONS;
         let iconColor: SemanticCOLORS;
 
-        const currentDate = moment(new Date());
         const expiryDate = moment(validTill);
-        const isValid = new Date() >= validFrom && new Date() <= validTill;
 
-        if (isValid) {
-            if (Math.abs(moment.duration(currentDate.diff(expiryDate)).months()) > 1) {
+        const validity: CertificateValidity = CertificateManagementUtils
+            .determineCertificateValidityState({
+                from: validFrom,
+                to: validTill
+            });
+
+        switch (validity) {
+            case CertificateValidity.VALID: {
                 icon = "check circle";
                 iconColor = "green";
-            } else {
+                break;
+            }
+            case CertificateValidity.WILL_EXPIRE_SOON: {
                 icon = "exclamation circle";
                 iconColor = "yellow";
+                break;
             }
-        } else {
-            icon = "times circle";
-            iconColor = "red";
+            default: {
+                icon = "times circle";
+                iconColor = "red";
+            }
         }
 
         return (
             <React.Fragment>
-                { issuer + SPACE_CHAR }
+                { issuer + CertificateManagementConstants.SPACE_CHARACTER }
                 <Popup
                     trigger={ <Icon name={ icon } color={ iconColor }/> }
                     content={ "Expiry date: " + expiryDate.format("DD/MM/YYYY") }
@@ -212,22 +232,40 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (props): ReactE
     };
 
     /**
+     * Creates a dummy label telling that we're unable to visualize
+     * this certificate.
+     * @param certificate {DisplayCertificate}
+     */
+    const createDummyValidityLabel = (certificate: DisplayCertificate): ReactNode => {
+        return (
+            <span className="with-muted-list-item-header">
+                Unable to visualize the certificate details&nbsp;
+                <Popup
+                    trigger={
+                        <Icon
+                            onClick={ () => handleViewCertificate(certificate) }
+                            name={ "info circle" }
+                            color={ "grey" }/> }
+                    content={ "Click for more info" }
+                    inverted
+                    position="top left"
+                    size="mini"
+                />
+            </span>
+        );
+    };
+
+    /**
      * Creates the resource item description.
      *
      * @param validFrom {Date}
      * @param validTill {Date}
      */
     const createDescription = (validFrom: Date, validTill: Date): string => {
-        const isValid = new Date() >= validFrom && new Date() <= validTill;
-        const now = moment(new Date());
-        const receivedDate = moment(validTill);
-        let description;
-        if (isValid) {
-            description = "Valid for " + moment.duration(now.diff(receivedDate)).humanize();
-        } else {
-            description = "Expired " + moment.duration(now.diff(receivedDate)).humanize() + " ago";
-        }
-        return description;
+        return CertificateManagementUtils.getValidityPeriodInHumanReadableFormat(
+            validFrom,
+            validTill
+        );
     };
 
     /**
@@ -239,6 +277,8 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (props): ReactE
     const createCertificateActions = (certificate: DisplayCertificate, index: number) => {
         return [
             {
+                hidden: certificate?.infoUnavailable,
+                disabled: certificate?.infoUnavailable,
                 "data-componentid": `${ testId }-edit-cert-${ index }-button`,
                 icon: "eye",
                 onClick: () => handleViewCertificate(certificate),
@@ -262,7 +302,11 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (props): ReactE
     const createCertificateResourceAvatar = (certificate: DisplayCertificate): ReactElement => {
         return (
             <UserAvatar
-                name={ CertificateManagementUtils.searchIssuerDNAlias(certificate?.issuerDN) }
+                name={
+                    certificate?.infoUnavailable
+                        ? CertificateManagementConstants.QUESTION_MARK
+                        : CertificateManagementUtils.searchIssuerDNAlias(certificate?.issuerDN)
+                }
                 size="mini"
                 floated="left"
             />
@@ -270,11 +314,14 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (props): ReactE
     };
 
     return (
-        <Form onSubmit={ NO_OPERATIONS } uncontrolledForm={ true }>
+        <Form
+            onSubmit={ CertificateManagementConstants.NO_OPERATIONS }
+            uncontrolledForm={ true }>
             <Grid>
                 <Grid.Row>
                     <Grid.Column>
                         <ResourceList
+                            fill
                             relaxed={ false }
                             className="application-list"
                             isLoading={ isLoading }
@@ -287,22 +334,30 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (props): ReactE
                                 displayingCertificates?.map((certificate, index) => (
                                     <ResourceListItem
                                         key={ index }
+                                        actionsColumnWidth={ 3 }
+                                        descriptionColumnWidth={ 9 }
                                         actions={ createCertificateActions(certificate, index) }
                                         actionsFloated="right"
                                         avatar={ createCertificateResourceAvatar(certificate) }
-                                        itemHeader={ createValidityLabel(
-                                            certificate.validFrom,
-                                            certificate.validTill,
-                                            CertificateManagementUtils.searchIssuerDNAlias(certificate?.issuerDN)
-                                        ) }
+                                        itemHeader={
+                                            certificate?.infoUnavailable
+                                                ? createDummyValidityLabel(certificate)
+                                                : createValidityLabel(
+                                                    certificate.validFrom,
+                                                    certificate.validTill,
+                                                    CertificateManagementUtils.searchIssuerDNAlias(
+                                                        certificate?.issuerDN
+                                                    ))
+                                        }
                                         itemDescription={
-                                            createDescription(certificate.validFrom, certificate.validTill)
+                                            certificate?.infoUnavailable
+                                                ? null
+                                                : createDescription(certificate.validFrom, certificate.validTill)
                                         }
                                     />
                                 ))
                             }
                         </ResourceList>
-
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
@@ -314,11 +369,6 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (props): ReactE
     );
 
 };
-
-// Component constants
-
-const SPACE_CHAR = " ";
-const NO_OPERATIONS = (): void => void 0;
 
 /**
  * Default properties of {@link IdpCertificatesList}
