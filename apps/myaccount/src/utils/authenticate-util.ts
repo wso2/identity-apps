@@ -17,24 +17,28 @@
  *
  */
 
-import { AsgardeoSPAClient, AuthReactConfig, ResponseMode, Storage } from "@asgardeo/auth-react";
+import { AuthReactConfig, Hooks, ResponseMode, Storage, useAuthContext } from "@asgardeo/auth-react";
 import { TokenConstants } from "@wso2is/core/constants";
 import UAParser from "ua-parser-js";
 import { store } from "../store";
-import { handleSignOut } from "../store/actions";
 
 /**
  * Clears the session related information and sign out from the session.
  */
-export const endUserSession = (): void => {
-    const auth = AsgardeoSPAClient.getInstance();
-    auth.revokeAccessToken()
-        .then(() => {
-            store.dispatch(handleSignOut());
-        })
-        .catch(() => {
-            // TODO: Add a notification message.
-        });
+export const useEndUserSession = (): () => Promise<boolean> => {
+    const { revokeAccessToken, on } = useAuthContext();
+
+    on(Hooks.RevokeAccessToken, async () => {
+        const LOGOUT_URL = "sign_out_url";
+
+        if (sessionStorage.getItem(LOGOUT_URL)) {
+            location.href = sessionStorage.getItem(LOGOUT_URL);
+        } else {
+            location.reload();
+        }
+    });
+
+    return revokeAccessToken;
 };
 
 /**
