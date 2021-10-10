@@ -277,15 +277,18 @@ export class CertificateManagementUtils {
      * @param validTill {Date}
      */
     public static getValidityPeriodInHumanReadableFormat(validFrom: Date, validTill: Date): string {
+
         const isValid = new Date() >= validFrom && new Date() <= validTill;
         const now = moment(new Date());
         const receivedDate = moment(validTill);
+
         let description;
         if (isValid) {
             description = "Valid for " + moment.duration(now.diff(receivedDate)).humanize();
         } else {
             description = "Expired " + moment.duration(now.diff(receivedDate)).humanize() + " ago";
         }
+
         return description;
     }
 
