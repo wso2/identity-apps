@@ -18,12 +18,12 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
-import { Field, Forms, Validation, useTrigger } from "@wso2is/forms";
+import { Field, Forms, useTrigger, Validation } from "@wso2is/forms";
 import { Code, CopyInputField, Heading, Hint, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import union from "lodash-es/union";
-import React, { Fragment, FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Label } from "semantic-ui-react";
@@ -39,7 +39,8 @@ import {
     SAML2BindingTypes,
     SAML2ServiceProviderInterface,
     SAMLApplicationConfigurationInterface,
-    SAMLMetaDataInterface, SupportedAuthProtocolTypes
+    SAMLMetaDataInterface,
+    SupportedAuthProtocolTypes
 } from "../../models";
 import { ApplicationCertificateWrapper } from "../settings/certificate";
 
@@ -1648,27 +1649,31 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             )
                         }
                         { /* Certificate Section */ }
-                        <ApplicationCertificateWrapper
-                            protocol={ SupportedAuthProtocolTypes.SAML }
-                            deleteAllowed={ !(
-                                initialValues?.requestValidation?.enableSignatureValidation ||
-                                initialValues?.singleSignOnProfile?.assertion?.encryption?.enabled
-                            ) ?? true }
-                            reasonInsideTooltipWhyDeleteIsNotAllowed={
-                                t("console:develop.features.applications.forms." +
-                                    "inboundSAML.sections.certificates.disabledPopup")
-                            }
-                            onUpdate={ onUpdate }
-                            application={ application }
-                            updateCertFinalValue={ setFinalCertValue }
-                            updateCertType={ setSelectedCertType }
-                            certificate={ certificate }
-                            readOnly={ readOnly }
-                            hidden={ false }
-                            isRequired={ true }
-                            hideJWKS={ true }
-                            triggerSubmit={ triggerCertSubmit }
-                        />
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <ApplicationCertificateWrapper
+                                    protocol={ SupportedAuthProtocolTypes.SAML }
+                                    deleteAllowed={ !(
+                                        initialValues?.requestValidation?.enableSignatureValidation ||
+                                        initialValues?.singleSignOnProfile?.assertion?.encryption?.enabled
+                                    ) ?? true }
+                                    reasonInsideTooltipWhyDeleteIsNotAllowed={
+                                        t("console:develop.features.applications.forms." +
+                                            "inboundSAML.sections.certificates.disabledPopup")
+                                    }
+                                    onUpdate={ onUpdate }
+                                    application={ application }
+                                    updateCertFinalValue={ setFinalCertValue }
+                                    updateCertType={ setSelectedCertType }
+                                    certificate={ certificate }
+                                    readOnly={ readOnly }
+                                    hidden={ false }
+                                    isRequired={ true }
+                                    hideJWKS={ true }
+                                    triggerSubmit={ triggerCertSubmit }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
                         {
                             !readOnly && (
                                 <Grid.Row columns={ 1 }>
