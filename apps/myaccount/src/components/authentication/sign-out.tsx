@@ -19,7 +19,7 @@
 import { ReactElement, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../store";
-import { handleSignOut } from "../../store/actions";
+import { useSignOut } from "../../store/actions";
 
 /**
  * This component handles the sign-out function
@@ -27,10 +27,11 @@ import { handleSignOut } from "../../store/actions";
 const SignOut = (): ReactElement => {
     const dispatch = useDispatch();
     const logoutInit = useSelector((state: AppState) => state.authenticationInformation.logoutInit);
+    const signOut = useSignOut();
 
     useEffect(() => {
         if (!logoutInit) {
-            dispatch(handleSignOut());
+            dispatch(signOut());
         }
     }, [ logoutInit]);
 

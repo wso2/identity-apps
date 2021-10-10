@@ -102,6 +102,30 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
+                            icon={ getHelpPanelIcons().endpoints.issuer }
+                            size="micro"
+                            square
+                            transparent
+                            inline
+                            className="left-icon"
+                            verticalAlign="middle"
+                            spaced="right"
+                        />
+                        <label data-testid={ `${ testId }-introspection-label` }>
+                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                                "oidcConfigurations.labels.issuer") }
+                        </label>
+                    </Grid.Column>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
+                        <CopyInputField
+                            value={ oidcConfigurations?.tokenEndpoint }
+                            data-testid={ `${ testId }-introspection-readonly-input` }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 2 }>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
+                        <GenericIcon
                             icon={ getHelpPanelIcons().endpoints.wellKnown }
                             size="micro"
                             square
