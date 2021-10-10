@@ -321,6 +321,7 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
                 <Grid.Row>
                     <Grid.Column>
                         <ResourceList
+                            fill
                             relaxed={ false }
                             className="application-list"
                             isLoading={ isLoading }
