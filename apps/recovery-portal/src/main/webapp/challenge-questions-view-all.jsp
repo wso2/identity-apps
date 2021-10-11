@@ -33,8 +33,8 @@
     List<Question> challengeQuestions = initiateAllQuestionResponse.getQuestions();
 
     RetryError errorResponse = (RetryError) request.getAttribute("errorResponse");
-    boolean reCaptchaEnabled = CaptchaUtil.isRecaptchaEnabled("Recovery.Question.Password.ReCaptcha.Enable",
-                                tenantDomain);
+    boolean reCaptchaEnabled = CaptchaUtil.isReCaptchaEnabled() &&
+                     CaptchaUtil.isReCaptchaEnabledForFlow("Recovery.Question.Password.ReCaptcha.Enable", tenantDomain);
 %>
 
 <html>
@@ -63,7 +63,7 @@
     <![endif]-->
     <%
         if (reCaptchaEnabled) {
-            String reCaptchaAPI = CaptchaUtil.recaptchaAPIURL();
+            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
     <script src='<%=(reCaptchaAPI)%>'></script>
     <%
@@ -122,7 +122,7 @@
                         %>
                         <%
                             if (reCaptchaEnabled) {
-                                String reCaptchaKey = CaptchaUtil.recaptchaSiteKey();
+                                String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
                         %>
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
                             <div class="g-recaptcha"

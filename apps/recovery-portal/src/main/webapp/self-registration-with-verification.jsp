@@ -169,7 +169,7 @@
     }
 %>
 <%
-    boolean reCaptchaEnabled = CaptchaUtil.isRecaptchaEnabled("SelfRegistration.ReCaptcha", tenantDomain);
+    boolean reCaptchaEnabled = CaptchaUtil.isReCaptchaEnabledForFlow("SelfRegistration.ReCaptcha", tenantDomain);
 %>
 
 <!doctype html>
@@ -187,7 +187,7 @@
 
     <%
         if (reCaptchaEnabled) {
-            String reCaptchaAPI = CaptchaUtil.recaptchaAPIURL();
+            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
     <script src='<%=(reCaptchaAPI)%>'></script>
     <%
@@ -469,7 +469,7 @@
                             <div class="field">
                                 <%
                                     if (reCaptchaEnabled) {
-                                        String reCaptchaKey = CaptchaUtil.recaptchaSiteKey();
+                                        String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
                                 %>
                                 <div class="field">
                                     <div class="g-recaptcha"

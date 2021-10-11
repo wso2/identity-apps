@@ -86,12 +86,17 @@
     }
 %>
 <%
-    boolean reCaptchaEnabled = CaptchaUtil.isRecaptchaEnabled("sso.login.recaptcha.enable.always", tenantDomain);
-    boolean reCaptchaResendEnabled = CaptchaUtil.isRecaptchaEnabled("sso.login.recaptcha.enable", tenantDomain);
+    boolean reCaptchaEnabled = false;
+    boolean reCaptchaResendEnabled = false;
+    if (CaptchaUtil.isReCaptchaEnabled()) {
+        reCaptchaEnabled = CaptchaUtil.isReCaptchaEnabledForFlow("sso.login.recaptcha.enable.always", tenantDomain);
+        reCaptchaResendEnabled = CaptchaUtil.isReCaptchaEnabledForFlow("SelfRegistration.ResendConfirmationReCaptcha",
+                                                                        tenantDomain);
+    }
 
     if (reCaptchaEnabled || reCaptchaResendEnabled) {
-        reCaptchaKey = CaptchaUtil.recaptchaSiteKey();
-        reCaptchaAPI = CaptchaUtil.recaptchaAPIURL();
+        reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+        reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     }
 %>
 <%
