@@ -113,6 +113,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isEmptyClaims, setEmptyClaims ] = useState<boolean>(false);
     const [ showMessage, setShowMessage ] = useState<boolean>(false);
+    const [ serverSideClaimsLoading, setServerSideClaimsLoading ] = useState<boolean>(true);
 
     const [ reset, setReset ] = useTrigger();
 
@@ -143,30 +144,37 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
     }, [ serverSupportedClaims, filteredLocalClaims ]);
 
     useEffect(() => {
-        if (claimDialectUri === attributeConfig.localAttributes.customDialectURI) {
-            return;
+        fetchServerSupportedClaims().finally();
+    }, []);
+
+    const fetchServerSupportedClaims = async (): Promise<void> => {
+        setServerSideClaimsLoading(true);
+        try {
+            const response = await getServerSupportedClaimsForSchema(dialectId);
+            setServerSupportedClaims(response.attributes);
+        } catch (error) {
+            dispatch(addAlert({
+                description:
+                    error?.response?.data?.description
+                    || t("console:manage.features.claims.local.notifications.getClaims.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: error?.response?.data?.message
+                    || t("console:manage.features.claims.local.notifications.getClaims.genericError.message")
+            }));
+        } finally {
+            setServerSideClaimsLoading(false);
         }
-        
-        getServerSupportedClaimsForSchema(dialectId).then(response => {
-            const serverSupportedClaimList = response.attributes;
-            externalClaims.forEach(claim => {
-                if (serverSupportedClaimList.indexOf(claim.claimURI) !== -1) {
-                    serverSupportedClaimList.splice(serverSupportedClaimList.indexOf(claim.claimURI), 1)
-                }
-            })
-            setServerSupportedClaims(serverSupportedClaimList);
-        }).catch(error => {
-            dispatch(addAlert(
-                {
-                    description: error?.response?.data?.description
-                        || t("console:manage.features.claims.local.notifications.getClaims.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: error?.response?.data?.message
-                        || t("console:manage.features.claims.local.notifications.getClaims.genericError.message")
-                }
-            ));
-        })
-    }, [ externalClaims ])
+    }
+
+    useEffect(() => {
+        // If there's no externalClaims but has serverSupportedClaims
+        if (externalClaims && externalClaims.length && !serverSideClaimsLoading) {
+            const _extClaims = new Set(externalClaims.map((c) => c.claimURI));
+            setServerSupportedClaims([
+                ...(serverSupportedClaims ?? []).filter((c) => !_extClaims.has(c))
+            ]);
+        }
+    }, [ externalClaims, serverSideClaimsLoading ]);
 
     /**
      * Gets the list of local claims.
@@ -240,7 +248,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
     };
 
     return (
-        !isLocalClaimsLoading ?
+        !(isLocalClaimsLoading && serverSideClaimsLoading) ?
         <Forms
             onSubmit={ (values: Map<string, FormValue>) => {
                 if (wizard) {
