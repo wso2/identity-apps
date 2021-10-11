@@ -106,7 +106,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
     const [ localClaims, setLocalClaims ] = useState<Claim[]>();
     const [ filteredLocalClaims, setFilteredLocalClaims ] = useState<Claim[]>();
     const [ localClaimsSearchResults, setLocalClaimsSearchResults ] = useState<Claim[]>();
-    const [ serverSupportedClaims, setServerSupportedClaims ] = useState<string[]>();
+    const [ serverSupportedClaims, setServerSupportedClaims ] = useState<string[]>([]);
     const [ localClaimsSet, setLocalClaimsSet ] = useState(false);
     const [ claim, setClaim ] = useState<string>("");
     const [ isLocalClaimsLoading, setIsLocalClaimsLoading ] = useState<boolean>(true);
@@ -144,6 +144,10 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
     }, [ serverSupportedClaims, filteredLocalClaims ]);
 
     useEffect(() => {
+        if (claimDialectUri === attributeConfig.localAttributes.customDialectURI) {
+            setServerSideClaimsLoading(false);
+            return;
+        }
         fetchServerSupportedClaims().finally();
     }, []);
 
