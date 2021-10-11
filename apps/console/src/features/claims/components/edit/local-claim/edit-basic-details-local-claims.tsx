@@ -94,7 +94,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const [ hideSpecialClaims, setHideSpecialClaims] = useState<boolean>(false);
+    const [ hideSpecialClaims, setHideSpecialClaims] = useState<boolean>(true);
 
     const { t } = useTranslation();
 
@@ -105,9 +105,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         if (claim?.readOnly) {
             setIsClaimReadOnly(true);
         }
-        if (attributeConfig?.systemClaims.length > 0 
-            && attributeConfig?.systemClaims.indexOf(claim?.claimURI) !== -1) {
-            setHideSpecialClaims(true);
+        if (claim && (attributeConfig?.systemClaims.length <= 0
+            || attributeConfig?.systemClaims.indexOf(claim?.claimURI) === -1)) {
+            setHideSpecialClaims(false);
         }
     }, [ claim ]);
 
@@ -149,7 +149,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             return true;
         } else {
             return !hasRequiredScopes(
-                featureConfig?.attributeDialects, featureConfig?.attributeDialects?.scopes?.update, allowedScopes)
+                featureConfig?.attributeDialects, featureConfig?.attributeDialects?.scopes?.update, allowedScopes);
         }
     }, [ featureConfig, allowedScopes, hideSpecialClaims ]);
 
