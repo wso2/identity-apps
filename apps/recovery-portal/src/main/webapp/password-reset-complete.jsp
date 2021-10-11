@@ -176,6 +176,29 @@
 </head>
 <body>
 
+    <form id="callbackForm" name="callbackForm" method="post" action="/commonauth">
+        <%
+            if (username != null) {
+        %>
+        <div>
+            <input type="hidden" name="username"
+                   value="<%=Encode.forHtmlAttribute(username)%>"/>
+        </div>
+        <%
+            }
+        %>
+        <%
+            if (sessionDataKey != null) {
+        %>
+        <div>
+            <input type="hidden" name="sessionDataKey"
+                   value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
+        </div>
+        <%
+            }
+        %>
+    </form>
+
     <!-- footer -->
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
@@ -193,9 +216,17 @@
                 try {
                     if(isAutoLoginEnable) {
             %>
-                    location.href = "<%= IdentityManagementEndpointUtil.encodeURL(callback)%>";
                     <%
-                           } else {
+                        if (sessionDataKey != null) {
+                    %>
+                            document.callbackForm.submit();
+                    <%
+                        } else {
+                    %>
+                            location.href = "<%= IdentityManagementEndpointUtil.encodeURL(callback)%>";
+                    <%
+                        }
+                    } else {
                     %>
                     location.href = "<%= IdentityManagementEndpointUtil.getURLEncodedCallback(callback)%>&passwordReset=true";
                     <%
