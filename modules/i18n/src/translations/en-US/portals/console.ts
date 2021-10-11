@@ -5847,7 +5847,7 @@ export const console: ConsoleNS = {
                             requiredErrorMessage: "Select a user attribute to map to"
                         },
                         submit: "Add Attribute Mapping",
-                        warningMessage: "Aucun attribut local n'est disponible pour le mappage. "
+                        warningMessage: "There are no local attributes available for mapping. "
                     },
                     notifications: {
                         addExternalAttribute: {
