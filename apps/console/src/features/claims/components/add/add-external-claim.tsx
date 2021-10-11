@@ -390,6 +390,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                     </Grid.Column>
                     <Grid.Column width={ 8 } className="select-attribute">
                         <Field
+                            loading={ isLocalClaimsLoading }
                             type="dropdown"
                             name="localClaim"
                             label={ t("console:manage.features.claims.external.forms.localAttribute.label") }
