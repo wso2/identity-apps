@@ -213,7 +213,7 @@ export const App = (): ReactElement => {
                                             headingI18nKey: "myAccount:common.modals.sessionTimeoutModal.heading",
                                             loginAgainButtonText: t("myAccount:common.modals" +
                                                 ".sessionTimeoutModal.loginAgainButton"),
-                                            primaryButtonText: t("myAccount:modals." +
+                                            primaryButtonText: t("myAccount:common.modals." +
                                                 "sessionTimeoutModal.primaryButton"),
                                             secondaryButtonText: t("myAccount:common.modals" +
                                                 ".sessionTimeoutModal.secondaryButton"),
