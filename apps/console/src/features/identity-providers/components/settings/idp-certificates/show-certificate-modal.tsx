@@ -18,11 +18,12 @@
 
 import { DisplayCertificate, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
-import { Certificate as CertificateDisplay, GenericIcon } from "@wso2is/react-components";
-import React, { FC, ReactElement } from "react";
+import { Certificate as CertificateDisplay, Code, GenericIcon } from "@wso2is/react-components";
+import React, { FC, PropsWithChildren, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { Modal } from "semantic-ui-react";
+import { Modal, Segment } from "semantic-ui-react";
 import { getCertificateIllustrations } from "../../../../core";
+import { CertificateManagementConstants } from "@wso2is/core/constants";
 
 /**
  * Props interface of {@link ShowCertificateModal}
@@ -39,10 +40,12 @@ export interface ShowCertificateModalProps extends IdentifiableComponentInterfac
  * @param props {ShowCertificateModalProps}
  * @constructor
  */
-export const ShowCertificateModal: FC<ShowCertificateModalProps> = (props): ReactElement => {
+export const ShowCertificateModal: FC<ShowCertificateModalProps> = (
+    props: PropsWithChildren<ShowCertificateModalProps>
+): ReactElement => {
 
     const {
-        ["data-componentid"]: testId,
+        [ "data-componentid" ]: testId,
         certificateToDisplay,
         show,
         onCloseClicked
@@ -58,6 +61,25 @@ export const ShowCertificateModal: FC<ShowCertificateModalProps> = (props): Reac
         }
         return EMPTY_STRING;
     };
+
+    /**
+     * Content to render if we cannot read the certificate content.
+     */
+    const CannotReadCertificate = (
+        <Segment className="certificate" data-testid={ testId }>
+            <p className="certificate-field">
+                We were unable to read this certificate. Currently we only
+                support displaying public key information in certificate types of {
+                CertificateManagementConstants.SUPPORTED_KEY_ALGORITHMS.map((algo, index) => (
+                    <span key={ `${ algo }+${ index }` }>
+                        <Code>{ algo }</Code>&nbsp;
+                    </span>
+                ))
+            } key algorithms. Support for <strong>Elliptic Curve Cryptography</strong>&nbsp;
+                key algorithms will be enabled soon.
+            </p>
+        </Segment>
+    );
 
     return (
         <Modal
@@ -85,16 +107,22 @@ export const ShowCertificateModal: FC<ShowCertificateModalProps> = (props): Reac
                 </div>
             </Modal.Header>
             <Modal.Content className="certificate-content">
-                <CertificateDisplay
-                    certificate={ certificateToDisplay }
-                    labels={ {
-                        issuerDN: t("console:manage.features.certificates.keystore.summary.issuerDN"),
-                        subjectDN: t("console:manage.features.certificates.keystore.summary.subjectDN"),
-                        validFrom: t("console:manage.features.certificates.keystore.summary.validFrom"),
-                        validTill: t("console:manage.features.certificates.keystore.summary.validTill"),
-                        version: t("console:manage.features.certificates.keystore.summary.version")
-                    } }
-                />
+                {
+                    certificateToDisplay?.infoUnavailable
+                        ? CannotReadCertificate
+                        : (
+                            <CertificateDisplay
+                                certificate={ certificateToDisplay }
+                                labels={ {
+                                    issuerDN: t("console:manage.features.certificates.keystore.summary.issuerDN"),
+                                    subjectDN: t("console:manage.features.certificates.keystore.summary.subjectDN"),
+                                    validFrom: t("console:manage.features.certificates.keystore.summary.validFrom"),
+                                    validTill: t("console:manage.features.certificates.keystore.summary.validTill"),
+                                    version: t("console:manage.features.certificates.keystore.summary.version")
+                                } }
+                            />
+                        )
+                }
             </Modal.Content>
         </Modal>
     );
