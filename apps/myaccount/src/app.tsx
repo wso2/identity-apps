@@ -211,7 +211,7 @@ export const App = (): ReactElement => {
                                                 </Trans>
                                             ),
                                             headingI18nKey: "myAccount:common.modals.sessionTimeoutModal.heading",
-                                            loginAgainButtonText: t("myAccount:common:modals" +
+                                            loginAgainButtonText: t("myAccount:common.modals" +
                                                 ".sessionTimeoutModal.loginAgainButton"),
                                             primaryButtonText: t("myAccount:modals." +
                                                 "sessionTimeoutModal.primaryButton"),
