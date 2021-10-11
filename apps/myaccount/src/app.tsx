@@ -211,15 +211,15 @@ export const App = (): ReactElement => {
                                                 </Trans>
                                             ),
                                             headingI18nKey: "myAccount:common.modals.sessionTimeoutModal.heading",
-                                            loginAgainButtonText: t("myAccount:common:modals" +
+                                            loginAgainButtonText: t("myAccount:common.modals" +
                                                 ".sessionTimeoutModal.loginAgainButton"),
-                                            primaryButtonText: t("myAccount:modals." +
+                                            primaryButtonText: t("myAccount:common.modals." +
                                                 "sessionTimeoutModal.primaryButton"),
                                             secondaryButtonText: t("myAccount:common.modals" +
                                                 ".sessionTimeoutModal.secondaryButton"),
-                                            sessionTimedOutDescription: t("myAccount:common:" +
+                                            sessionTimedOutDescription: t("myAccount:common." +
                                                 "modals.sessionTimeoutModal.sessionTimedOutDescription"),
-                                            sessionTimedOutHeadingI18nKey: "myAccount:common:modals" +
+                                            sessionTimedOutHeadingI18nKey: "myAccount:common.modals" +
                                                 ".sessionTimeoutModal.sessionTimedOutHeading"
                                         } }
                                         type={ SessionTimeoutModalTypes.DEFAULT }
