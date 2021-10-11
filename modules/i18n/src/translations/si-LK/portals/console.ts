@@ -4439,7 +4439,8 @@ export const console: ConsoleNS = {
                             placeholder: "දේශීය ලක්ෂණයක් තෝරන්න",
                             requiredErrorMessage: "සිතියම් ගත කිරීම සඳහා දේශීය ලක්ෂණයක් තෝරන්න"
                         },
-                        submit: "බාහිර ගුණාංග එකතු කරන්න"
+                        submit: "බාහිර ගුණාංග එකතු කරන්න",
+                        warningMessage: "සිතියම් ගත කිරීම සඳහා දේශීය ගුණාංග නොමැත. "
                     },
                     notifications: {
                         addExternalAttribute: {
