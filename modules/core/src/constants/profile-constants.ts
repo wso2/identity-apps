@@ -79,7 +79,9 @@ export class ProfileConstants {
         .set("RESROUCE_TYPE", "ResourceType")
         .set("EXTERNAL_ID", "ExternalID")
         .set("META_DATA", "MetaData")
-        .set("IDP_TYPE", "idpType");
+        .set("IDP_TYPE", "idpType")
+        .set("IMS", "ims")
+        .set("PHOTOS", "photos");
 
     /**
      * States if the SCIM schema is mutable.
