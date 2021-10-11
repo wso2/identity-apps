@@ -348,15 +348,27 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                     featureConfig?.attributeDialects,
                     featureConfig?.attributeDialects?.scopes?.create, allowedScopes
                 ) && (
-                    <PrimaryButton
-                        onClick={ (): void => setShowAddExternalClaim(true) }
-                        disabled={ showAddExternalClaim }
-                        data-testid={ `${ testId }-list-layout-add-button` }
-                    >
-                        <Icon name="add"/>
-                        { t("console:manage.features.claims.external.pageLayout.edit.primaryAction",
-                            { type: resolveType(attributeType, true) }) }
-                    </PrimaryButton>
+                    /**
+                     * `loading` property is used to check whether the current selected
+                     * dialect is same as the dialect which the claims are loaded. 
+                     * If it's different, this condition will wait until the correct
+                     * dialects are loaded onto the view.
+                     */
+                     <PrimaryButton
+                     loading={ claims && attributeUri !== claims[0]?.claimDialectURI  }
+                     onClick={ (): void => {
+                         if (attributeUri !== claims[0]?.claimDialectURI ) {
+                             return;
+                         }
+                         setShowAddExternalClaim(true) 
+                     } }
+                     disabled={ showAddExternalClaim || (claims && attributeUri !== claims[0]?.claimDialectURI) }
+                     data-testid={ `${ testId }-list-layout-add-button` }
+                 >
+                     <Icon name="add"/>
+                     { t("console:manage.features.claims.external.pageLayout.edit.primaryAction",
+                         { type: resolveType(attributeType, true) }) }
+                 </PrimaryButton>
                 ) }
             data-testid={ `${ testId }-list-layout` }
         >
