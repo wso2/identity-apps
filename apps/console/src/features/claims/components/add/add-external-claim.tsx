@@ -140,7 +140,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
             setEmptyClaims(false);
 
         }
-    }, [serverSupportedClaims, filteredLocalClaims])
+    }, [ serverSupportedClaims, filteredLocalClaims ]);
 
     useEffect(() => {
         if (claimDialectUri === attributeConfig.localAttributes.customDialectURI) {
