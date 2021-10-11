@@ -2645,6 +2645,7 @@ export interface ConsoleNS {
                         attributeURI: FormField;
                         localAttribute: FormField;
                         submit: string;
+                        warningMessage: string;
                     };
                     pageLayout: {
                         edit: {
