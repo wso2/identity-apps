@@ -219,7 +219,7 @@ export const App = (): ReactElement => {
                                                 ".sessionTimeoutModal.secondaryButton"),
                                             sessionTimedOutDescription: t("myAccount:common:" +
                                                 "modals.sessionTimeoutModal.sessionTimedOutDescription"),
-                                            sessionTimedOutHeadingI18nKey: "myAccount:common:modals" +
+                                            sessionTimedOutHeadingI18nKey: "myAccount:common.modals" +
                                                 ".sessionTimeoutModal.sessionTimedOutHeading"
                                         } }
                                         type={ SessionTimeoutModalTypes.DEFAULT }
