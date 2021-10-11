@@ -109,7 +109,8 @@
 
     boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
 
-    boolean reCaptchaEnabled = CaptchaUtil.isRecaptchaEnabled("Recovery.ReCaptcha.Password.Enable", tenantDomain);
+    boolean reCaptchaEnabled = CaptchaUtil.isReCaptchaEnabled() &&
+                    CaptchaUtil.isReCaptchaEnabledForFlow("Recovery.ReCaptcha.Password.Enable", tenantDomain);
 %>
 
 <!doctype html>
@@ -127,7 +128,7 @@
 
     <%
         if (reCaptchaEnabled) {
-            String reCaptchaAPI = CaptchaUtil.recaptchaAPIURL();
+            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
     <script src='<%=(reCaptchaAPI)%>'></script>
     <%
@@ -254,7 +255,7 @@
 
                         <%
                             if (reCaptchaEnabled) {
-                                String reCaptchaKey = CaptchaUtil.recaptchaSiteKey();
+                                String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
                         %>
                         <div class="field">
                             <div class="g-recaptcha"

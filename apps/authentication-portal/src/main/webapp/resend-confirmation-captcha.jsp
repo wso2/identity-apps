@@ -31,7 +31,8 @@
 <jsp:directive.include file="includes/init-url.jsp"/>
 
 <%
-    boolean reCaptchaResendEnabled = CaptchaUtil.isRecaptchaEnabled("SelfRegistration.ResendConfirmationReCaptcha", tenantDomain);
+    boolean reCaptchaResendEnabled = CaptchaUtil.isReCaptchaEnabled() &&
+                    CaptchaUtil.isReCaptchaEnabledForFlow("SelfRegistration.ResendConfirmationReCaptcha", tenantDomain);
 %>
 
 <!doctype html>
@@ -49,7 +50,7 @@
 
     <%
         if (reCaptchaResendEnabled) {
-            String reCaptchaAPI = CaptchaUtil.recaptchaAPIURL();
+            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
         <script src='<%=(Encode.forJavaScriptSource(reCaptchaAPI))%>'></script>
     <%
@@ -85,7 +86,7 @@
         
                     <div class="resend-captcha-container ui hidden" id="resend-captcha-container">
                         <%
-                             String reCaptchaKey = CaptchaUtil.recaptchaSiteKey();
+                             String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
                         %>
                         <div class="field">
                             <div class="text-center>">
