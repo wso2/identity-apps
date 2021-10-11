@@ -455,8 +455,8 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                             <PrimaryButton
                                 type="submit"
                                 data-testid={ `${ testId }-form-submit-button` }
-                                loading={ isSubmitting || isEmptyClaims }
-                                disabled={ isSubmitting }
+                                loading={ isSubmitting }
+                                disabled={ isSubmitting || isEmptyClaims }
                             >
                                     { t("console:manage.features.claims.external.forms.submit") }
                             </PrimaryButton>
