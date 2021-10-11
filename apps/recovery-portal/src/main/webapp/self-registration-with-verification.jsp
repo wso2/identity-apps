@@ -177,7 +177,8 @@
     }
 %>
 <%
-    boolean reCaptchaEnabled = CaptchaUtil.isReCaptchaEnabledForFlow("SelfRegistration.ReCaptcha", tenantDomain);
+    boolean reCaptchaEnabled = CaptchaUtil.isReCaptchaEnabled() &&
+                        CaptchaUtil.isReCaptchaEnabledForFlow("SelfRegistration.ReCaptcha", tenantDomain);
 %>
 <%!
     /**
