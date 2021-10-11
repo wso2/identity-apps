@@ -65,7 +65,8 @@ export const updatePassword = (currentPassword: string, newPassword: string): Pr
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: store.getState().config.endpoints.me
+        url: store.getState().config.endpoints.me,
+        withCredentials: true
     };
 
     return axios.request(requestConfig)
