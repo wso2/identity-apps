@@ -705,6 +705,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".requestValidation.fields.signatureValidation.validations.empty")
                                     }
+                                    disabled={ !isCertAvailableForEncrypt }
                                     type="checkbox"
                                     listen={
                                         (values) => {
