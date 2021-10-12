@@ -294,18 +294,59 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                         <title>{ appTitle }</title>
                                                     </Helmet>
                                                     <NetworkErrorModal
-                                                        heading={ t("common:networkErrorMessage.heading") }
-                                                        description={ t("common:networkErrorMessage" +
-                                                            ".description") }
-                                                        primaryActionText={ t("common:networkErrorMessage" +
-                                                            ".primaryActionText") }
+                                                        heading={
+                                                            <Trans
+                                                                i18nKey={ "common:networkErrorMessage.heading" }
+                                                            >
+                                                                Something went wrong
+                                                            </Trans>
+                                                        }
+                                                        description={
+                                                            <Trans
+                                                                i18nKey={ "common:networkErrorMessage.description" }
+                                                            >
+                                                                Please try reloading the app.
+                                                            </Trans>
+                                                        }
+                                                        primaryActionText={
+                                                            <Trans
+                                                                i18nKey={
+                                                                    "common:networkErrorMessage.primaryActionText"
+                                                                }
+                                                            >
+                                                                Reload the App
+                                                            </Trans>
+                                                        }
                                                     />
                                                     <ChunkErrorModal
-                                                        heading={ t("common:chunkLoadErrorMessage.heading") }
-                                                        description={ t("common:" +
-                                                            "chunkLoadErrorMessage.description") }
-                                                        primaryActionText={ t("common:chunkLoadErrorMessage" +
-                                                            ".primaryActionText") }
+                                                        heading={
+                                                            <Trans
+                                                                i18nKey={
+                                                                    "common:chunkLoadErrorMessage.heading"
+                                                                }
+                                                            >
+                                                                Something went wrong
+                                                            </Trans>
+                                                        }
+                                                        description={
+                                                            <Trans
+                                                                i18nKey={
+                                                                    "common:chunkLoadErrorMessage.description"
+                                                                }
+                                                            >
+                                                                An error occurred when serving the requested
+                                                                application. Please try reloading the app.
+                                                            </Trans>
+                                                        }
+                                                        primaryActionText={
+                                                            <Trans
+                                                                i18nKey={
+                                                                    "common:chunkLoadErrorMessage.primaryActionText"
+                                                                }
+                                                            >
+                                                                Reload the App
+                                                            </Trans>
+                                                        }
                                                     />
                                                     <Switch>
                                                         <Redirect
