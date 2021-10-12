@@ -112,8 +112,8 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
     const [ isLocalClaimsLoading, setIsLocalClaimsLoading ] = useState<boolean>(true);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isEmptyClaims, setEmptyClaims ] = useState<boolean>(false);
-    const [ showMessage, setShowMessage ] = useState<boolean>(false);
     const [ serverSideClaimsLoading, setServerSideClaimsLoading ] = useState<boolean>(true);
+    const [ isEmptyServerSupportedClaims, setEmptyServerSupportedClaims] = useState<boolean>(false);
 
     const [ reset, setReset ] = useTrigger();
 
@@ -133,14 +133,28 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
             } else {
                 setEmptyClaims(false);
             }
-            if (serverSupportedClaims && serverSupportedClaims.length > 0 &&
-                (!filteredLocalClaims || (filteredLocalClaims && filteredLocalClaims.length === 0))) {
-                setShowMessage(true);
-            } else {
-                setShowMessage(false);
-            }
         }
     }, [ serverSupportedClaims, filteredLocalClaims ]);
+
+    /**
+     * Handle the warning message to be shown.
+     */
+    useEffect(() => {
+        if (attributeType !== "oidc"
+            && claimDialectUri !== attributeConfig.localAttributes.customDialectURI) {
+            if (!serverSupportedClaims || serverSupportedClaims.length === 0) {
+                setEmptyServerSupportedClaims(true);
+                setEmptyClaims(false);
+            } else {
+                setEmptyServerSupportedClaims(false);
+                if (!filteredLocalClaims || filteredLocalClaims.length === 0) {
+                    setEmptyClaims(true)
+                } else {
+                    setEmptyClaims(false);
+                }
+            }
+        }
+    }, [ serverSupportedClaims, filteredLocalClaims ])
 
     useEffect(() => {
         if (claimDialectUri === attributeConfig.localAttributes.customDialectURI) {
@@ -441,20 +455,25 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                     </Grid.Column>
                 </Grid.Row>
                 {
-                    showMessage && (
+                    (isEmptyClaims || isEmptyServerSupportedClaims) && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 } textAlign="left" verticalAlign="top">
                                 <Message visible warning>
-                                    <Hint warning>
-                                        { t("console:manage.features.claims.external.forms.warningMessage") }
-                                        Add new local attributes from
-                                        <Link external={ false }
-                                              onClick={ () =>
-                                                  history.push(AppConstants.getPaths().get("LOCAL_CLAIMS"))
-                                              }
-                                        > here
-                                        </Link>.
-                                    </Hint>
+                                    { !isEmptyServerSupportedClaims ?
+                                        <Hint warning>
+                                            { t("console:manage.features.claims.external.forms.warningMessage") }
+                                            Add new local attributes from
+                                            <Link external={ false }
+                                                  onClick={ () =>
+                                                      history.push(AppConstants.getPaths().get("LOCAL_CLAIMS"))
+                                                  }
+                                            > here
+                                            </Link>.
+                                        </Hint> :
+                                        <Hint warning>
+                                            All the SCIM attributes are mapped to local claims.
+                                        </Hint>
+                                    }
                                 </Message>
                             </Grid.Column>
                         </Grid.Row>
@@ -468,7 +487,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                 type="submit"
                                 data-testid={ `${ testId }-form-submit-button` }
                                 loading={ isSubmitting }
-                                disabled={ isSubmitting || isEmptyClaims }
+                                disabled={ isSubmitting || isEmptyClaims || isEmptyServerSupportedClaims }
                             >
                                     { t("console:manage.features.claims.external.forms.submit") }
                             </PrimaryButton>
