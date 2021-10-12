@@ -121,7 +121,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
             .authenticators, id);
 
         if (authenticatorConfig?.isEnabled) {
-            getMultiFactorAuthenticator(id);
+            getMultiFactorAuthenticator(id, authenticatorConfig?.useAuthenticatorsAPI);
 
             return;
         }
