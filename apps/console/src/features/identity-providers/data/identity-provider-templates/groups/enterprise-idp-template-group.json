@@ -1,6 +1,7 @@
 {
     "category": "DEFAULT",
     "description": "Enable login for users with their accounts in your existing identity providers via standard authentication protocols.",    "enabled": true,
+    "enabled": true,
     "displayOrder": 4,
     "id": "enterprise-protocols",
     "image": "enterprise",
