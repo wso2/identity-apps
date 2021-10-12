@@ -211,14 +211,43 @@ export const App = (): ReactElement => {
                                                 </Trans>
                                             ),
                                             headingI18nKey: "myAccount:common.modals.sessionTimeoutModal.heading",
-                                            loginAgainButtonText: t("myAccount:common.modals" +
-                                                ".sessionTimeoutModal.loginAgainButton"),
-                                            primaryButtonText: t("myAccount:common.modals." +
-                                                "sessionTimeoutModal.primaryButton"),
-                                            secondaryButtonText: t("myAccount:common.modals" +
-                                                ".sessionTimeoutModal.secondaryButton"),
-                                            sessionTimedOutDescription: t("myAccount:common." +
-                                                "modals.sessionTimeoutModal.sessionTimedOutDescription"),
+                                            loginAgainButtonText: (
+                                                <Trans
+                                                    i18nKey={
+                                                        "myAccount:common.modals.sessionTimeoutModal.loginAgainButton"
+                                                    }
+                                                >
+                                                    Login again
+                                                </Trans>
+                                            ),
+                                            primaryButtonText: (
+                                                <Trans
+                                                    i18nKey={
+                                                        "myAccount:common.modals.sessionTimeoutModal.primaryButton"
+                                                    }
+                                                >
+                                                    Go back
+                                                </Trans>
+                                            ),
+                                            secondaryButtonText: (
+                                                <Trans
+                                                    i18nKey={
+                                                        "myAccount:common.modals.sessionTimeoutModal.secondaryButton"
+                                                    }
+                                                >
+                                                    Logout
+                                                </Trans>
+                                            ),
+                                            sessionTimedOutDescription: (
+                                                <Trans
+                                                    i18nKey={
+                                                        "myAccount:common.modals.sessionTimeoutModal" +
+                                                        ".sessionTimedOutDescription"
+                                                    }
+                                                >
+                                                    Please log in again to continue from where you left off.
+                                                </Trans>
+                                            ),
                                             sessionTimedOutHeadingI18nKey: "myAccount:common.modals" +
                                                 ".sessionTimeoutModal.sessionTimedOutHeading"
                                         } }
@@ -229,18 +258,59 @@ export const App = (): ReactElement => {
                                                 <title>{ appTitle }</title>
                                             </Helmet>
                                             <NetworkErrorModal
-                                                heading={ t("common:networkErrorMessage.heading") }
-                                                description={ t("common:networkErrorMessage" +
-                                                    ".description") }
-                                                primaryActionText={ t("common:networkErrorMessage" +
-                                                    ".primaryActionText") }
+                                                heading={
+                                                    <Trans
+                                                        i18nKey={ "common:networkErrorMessage.heading" }
+                                                    >
+                                                        Something went wrong
+                                                    </Trans>
+                                                }
+                                                description={
+                                                    <Trans
+                                                        i18nKey={ "common:networkErrorMessage.description" }
+                                                    >
+                                                        Please try reloading the app.
+                                                    </Trans>
+                                                }
+                                                primaryActionText={
+                                                    <Trans
+                                                        i18nKey={
+                                                            "common:networkErrorMessage.primaryActionText"
+                                                        }
+                                                    >
+                                                        Reload the App
+                                                    </Trans>
+                                                }
                                             />
                                             <ChunkErrorModal
-                                                heading={ t("common:chunkLoadErrorMessage.heading") }
-                                                description={ t("common:chunkLoadErrorMessage" +
-                                                    ".description") }
-                                                primaryActionText={ t("common:chunkLoadErrorMessage" +
-                                                    ".primaryActionText") }
+                                                heading={
+                                                    <Trans
+                                                        i18nKey={
+                                                            "common:chunkLoadErrorMessage.heading"
+                                                        }
+                                                    >
+                                                        Something went wrong
+                                                    </Trans>
+                                                }
+                                                description={
+                                                    <Trans
+                                                        i18nKey={
+                                                            "common:chunkLoadErrorMessage.description"
+                                                        }
+                                                    >
+                                                        An error occurred when serving the requested
+                                                        application. Please try reloading the app.
+                                                    </Trans>
+                                                }
+                                                primaryActionText={
+                                                    <Trans
+                                                        i18nKey={
+                                                            "common:chunkLoadErrorMessage.primaryActionText"
+                                                        }
+                                                    >
+                                                        Reload the App
+                                                    </Trans>
+                                                }
                                             />
                                             <Switch>
                                                 <Redirect exact from="/" to={ AppConstants.getAppHomePath() } />
