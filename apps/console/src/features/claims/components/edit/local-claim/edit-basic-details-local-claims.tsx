@@ -36,7 +36,8 @@ import {
     DangerZone,
     DangerZoneGroup,
     EmphasizedSegment,
-    Hint
+    Hint,
+    Link
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -389,8 +390,19 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     <Hint>
                                         {
                                             !hasMapping ? (
-                                                t("console:manage.features.claims.local.forms.infoMessages." +
-                                                    "disabledConfigInfo")
+                                                <>
+                                                    { t("console:manage.features.claims.local.forms.infoMessages." +
+                                                        "disabledConfigInfo") }
+                                                    <div>
+                                                        Add SCIM mapping from
+                                                        <Link external={ false }
+                                                              onClick={ () =>
+                                                                  history.push(AppConstants.getPaths().get("SCIM_MAPPING"))
+                                                              }
+                                                        > here
+                                                        </Link>.
+                                                    </div>
+                                                </>
                                             ):(
                                                 t("console:manage.features.claims.local.forms.infoMessages." +
                                                 "configApplicabilityInfo")
