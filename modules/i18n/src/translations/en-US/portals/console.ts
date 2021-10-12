@@ -3983,8 +3983,9 @@ export const console: ConsoleNS = {
                 templates: {
                     enterprise: {
                         addWizard: {
-                            title: "Enterprise",
-                            subtitle: "Configure a new Identity Provider with standard authentication protocols."
+                            title: "Standard-Based Identity Providers",
+                            subtitle: "Configure a new Identity Provider to connect with standard authentication " +
+                                "protocols."
                         },
                         saml: {
                             preRequisites: {
