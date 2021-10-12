@@ -91,8 +91,14 @@ Object.keys(meta).forEach((key) => {
     }
 });
 
+// Regenerate the meta.json file hash.
+const hash = crypto.createHash("sha1").update(JSON.stringify(meta)).digest("hex");
+const newMetaFileName = "meta." + hash.substr(0, 8) + ".json";
+const newMetaFilePath = path.join(i18nNodeModulesDir, newMetaFileName);
 // Save meta.json file.
-createFile(metaFilePath, JSON.stringify(meta, undefined, 4));
+createFile(newMetaFilePath, JSON.stringify(meta, undefined, 4));
+// Remove stale file.
+fs.removeSync(metaFilePath);
 
 log("Cleaning the tmp directory...");
 execSync("npm run clean:i18n:dist");
