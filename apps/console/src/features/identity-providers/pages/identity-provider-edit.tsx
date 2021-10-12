@@ -345,7 +345,14 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
      */
     const handleMultiFactorAuthenticatorUpdate = (id: string): void => {
 
-        getMultiFactorAuthenticator(id);
+        if (!identityProviderConfig) {
+            return;
+        }
+
+        const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(identityProviderConfig
+            .authenticators, id);
+
+        getMultiFactorAuthenticator(id, authenticatorConfig?.useAuthenticatorsAPI);
     };
 
     /**
