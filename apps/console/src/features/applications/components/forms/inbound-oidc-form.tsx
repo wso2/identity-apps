@@ -16,10 +16,9 @@
  * under the License.
  */
 
-import { AlertInterface, AlertLevels, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
-import { CertificateManagementUtils, URLUtils } from "@wso2is/core/utils";
-import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import { URLUtils } from "@wso2is/core/utils";
+import { Field, Forms, FormValue, useTrigger, Validation } from "@wso2is/forms";
 import {
     Code,
     ConfirmationModal,
@@ -51,8 +50,8 @@ import OIDCWebApplicationTemplate
 import SinglePageApplicationTemplate
     from "../../data/application-templates/templates/single-page-application/single-page-application.json";
 import {
-    ApplicationTemplateIdTypes,
     ApplicationInterface,
+    ApplicationTemplateIdTypes,
     ApplicationTemplateListItemInterface,
     CertificateInterface,
     CertificateTypeInterface,
@@ -63,7 +62,8 @@ import {
     OIDCDataInterface,
     OIDCMetadataInterface,
     State,
-    SupportedAccessTokenBindingTypes, SupportedAuthProtocolTypes
+    SupportedAccessTokenBindingTypes,
+    SupportedAuthProtocolTypes
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
 import { ApplicationCertificateWrapper } from "../settings/certificate";
@@ -176,9 +176,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ callbackURLsErrorLabel, setCallbackURLsErrorLabel ] = useState<ReactElement>(null);
     const [ allowedOriginsErrorLabel, setAllowedOriginsErrorLabel ] = useState<ReactElement>(null);
     const [ isPEMSelected, setPEMSelected ] = useState<boolean>(false);
-    const [ showCertificateModal, setShowCertificateModal ] = useState<boolean>(false);
     const [ PEMValue, setPEMValue ] = useState<string>(undefined);
-    const [ certificateDisplay, setCertificateDisplay ] = useState<DisplayCertificate>(null);
     const [
         isRefreshTokenWithoutAllowedGrantType,
         setRefreshTokenWithoutAlllowdGrantType ] = useState<boolean>(false);
@@ -1108,27 +1106,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * submitOrigin function.
      */
     let submitOrigin: (callback: (origin?: string) => void) => void;
-
-    /**
-     * Construct the details from the pem value.
-     */
-    const viewCertificate = () => {
-        if (isPEMSelected && PEMValue) {
-            const displayCertificate: DisplayCertificate = CertificateManagementUtils.displayCertificate(
-                null, PEMValue);
-
-            if (displayCertificate) {
-                setCertificateDisplay(displayCertificate);
-                setShowCertificateModal(true);
-            } else {
-                dispatch(addAlert<AlertInterface>({
-                    description: t("console:common.notifications.invalidPEMFile.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:common.notifications.invalidPEMFile.genericError.message")
-                }));
-            }
-        }
-    };
 
     /**
      * Check if a given expiry time is valid
@@ -2217,30 +2194,34 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Row>
             }
             { /* Certificate Section */ }
-            <ApplicationCertificateWrapper
-                protocol={ SupportedAuthProtocolTypes.OIDC }
-                deleteAllowed={ !(initialValues.idToken?.encryption?.enabled) }
-                reasonInsideTooltipWhyDeleteIsNotAllowed={ (
-                    <Fragment>
-                        <Trans
-                            i18nKey={ "console:develop.features.applications.forms" +
-                            ".inboundOIDC.sections.certificates.disabledPopup" }
-                        >
-                            This certificate is used to encrypt the <Code>id_token</Code>. First, you need
-                            to disable <Code>id_token</Code> encryption to proceed.
-                        </Trans>
-                    </Fragment>
-                ) }
-                onUpdate={ onUpdate }
-                application={ application }
-                updateCertFinalValue={ setFinalCertValue }
-                updateCertType={ setSelectedCertType }
-                certificate={ certificate }
-                readOnly={ readOnly }
-                hidden={ isSPAApplication || !(applicationConfig.inboundOIDCForm.showCertificates) }
-                isRequired={ true }
-                triggerSubmit={ triggerCertSubmit }
-            />
+            <Grid.Row columns={ 1 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                    <ApplicationCertificateWrapper
+                        protocol={ SupportedAuthProtocolTypes.OIDC }
+                        deleteAllowed={ !(initialValues.idToken?.encryption?.enabled) }
+                        reasonInsideTooltipWhyDeleteIsNotAllowed={ (
+                            <Fragment>
+                                <Trans
+                                    i18nKey={ "console:develop.features.applications.forms" +
+                                    ".inboundOIDC.sections.certificates.disabledPopup" }
+                                >
+                                    This certificate is used to encrypt the <Code>id_token</Code>. First, you need
+                                    to disable <Code>id_token</Code> encryption to proceed.
+                                </Trans>
+                            </Fragment>
+                        ) }
+                        onUpdate={ onUpdate }
+                        application={ application }
+                        updateCertFinalValue={ setFinalCertValue }
+                        updateCertType={ setSelectedCertType }
+                        certificate={ certificate }
+                        readOnly={ readOnly }
+                        hidden={ isSPAApplication || !(applicationConfig.inboundOIDCForm.showCertificates) }
+                        isRequired={ true }
+                        triggerSubmit={ triggerCertSubmit }
+                    />
+                </Grid.Column>
+            </Grid.Row>
             {
                 !readOnly && (
                     <Grid.Row columns={ 1 }>

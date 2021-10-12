@@ -95,6 +95,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const [ hideSpecialClaims, setHideSpecialClaims] = useState<boolean>(false);
 
     const { t } = useTranslation();
 
@@ -104,6 +105,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         }
         if (claim?.readOnly) {
             setIsClaimReadOnly(true);
+        }
+        if (attributeConfig?.systemClaims.length > 0 
+            && attributeConfig?.systemClaims.indexOf(claim?.claimURI) !== -1) {
+            setHideSpecialClaims(true);
         }
     }, [ claim ]);
 
@@ -139,10 +144,15 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         dialectID.push(SCIMConfigs.scimDialectID.customEnterpriseSchema);
     };
 
-    const isReadOnly = useMemo(() => (
-        !hasRequiredScopes(
-            featureConfig?.attributeDialects, featureConfig?.attributeDialects?.scopes?.update, allowedScopes)
-    ), [ featureConfig, allowedScopes ]);
+    // Temporary fix to check system claims and make them readonly
+    const isReadOnly = useMemo(() => {
+        if (hideSpecialClaims) {
+            return true;
+        } else {
+            return !hasRequiredScopes(
+                featureConfig?.attributeDialects, featureConfig?.attributeDialects?.scopes?.update, allowedScopes)
+        }
+    }, [ featureConfig, allowedScopes, hideSpecialClaims ]);
 
     const deleteConfirmation = (): ReactElement => (
         <ConfirmationModal
@@ -353,7 +363,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         hint={ t("console:manage.features.claims.local.forms.descriptionHint") }
                         readOnly={ isReadOnly }
                     />
-                    { attributeConfig.localAttributes.createWizard.showRegularExpression &&
+                    
+                    { attributeConfig.localAttributes.createWizard.showRegularExpression && !hideSpecialClaims &&
                         <Field.Input
                             ariaLabel="regularExpression"
                             inputType="default"
@@ -372,6 +383,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         />
                     }
                     {
+                        !hideSpecialClaims &&
                         <Grid.Row columns={ 1 } >
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                                 <Message color="teal">
@@ -405,7 +417,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         //Hides on user_id, username and groups claims
                         claim && claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI
                             && claim.claimURI !== ClaimManagementConstants.USER_NAME_CLAIM_URI
-                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI &&
+                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI 
+                            && !hideSpecialClaims &&
                         (
                             <Field.Checkbox
                                 ariaLabel="supportedByDefault"
@@ -423,7 +436,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         )
                     }
                     {
-                        attributeConfig.editAttributes.showDisplayOrderInput && isShowDisplayOrder
+                        attributeConfig.editAttributes.showDisplayOrderInput && isShowDisplayOrder 
+                        && !hideSpecialClaims
                         && (
                             <Field.Input
                                 ariaLabel="displayOrder"
@@ -448,7 +462,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     }
                     {
                         claim && attributeConfig.editAttributes.showRequiredCheckBox
-                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI &&
+                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI 
+                            && !hideSpecialClaims &&
                             <Field.Checkbox
                                 ariaLabel="required"
                                 name="required"
@@ -468,7 +483,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         //Hides on user_id, username and groups claims
                         claim && claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI
                             && claim.claimURI !== ClaimManagementConstants.USER_NAME_CLAIM_URI
-                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI &&
+                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI 
+                            && !hideSpecialClaims &&
                         (
                             <Field.Checkbox
                                 ariaLabel="readOnly"
@@ -492,7 +508,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             featureConfig?.attributeDialects,
                             featureConfig?.attributeDialects?.scopes?.update,
                             allowedScopes
-                        ) &&
+                        ) && !hideSpecialClaims &&
                         (
                             <Field.Button
                                 ariaLabel="submit"
@@ -509,7 +525,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             </EmphasizedSegment>
             <Divider hidden />
             {
-                attributeConfig.editAttributes.showDangerZone &&
+                attributeConfig.editAttributes.showDangerZone && !hideSpecialClaims &&
                 <Show when={ AccessControlConstants.ATTRIBUTE_DELETE }>
                     <DangerZoneGroup
                         sectionHeader={ t("common:dangerZone") }
