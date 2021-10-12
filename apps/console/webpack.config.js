@@ -61,7 +61,7 @@ const files = fs.readdirSync(THEME_DIR);
 const file = files ? files.filter(file => file.endsWith(".min.css"))[ 0 ] : null;
 themeHash = file ? file.split(".")[ 1 ] : null;
 
-const I18N_DIR = path.resolve(__dirname, "node_modules", "@wso2is", "i18n", "dist", "bundle");
+const I18N_DIR = path.join(__dirname, "src", "extensions", "i18n", "tmp");
 const metaFiles = fs.readdirSync(I18N_DIR);
 
 const metaFile = metaFiles ? metaFiles.filter(file => file.startsWith("meta"))[ 0 ] : null;
@@ -423,6 +423,11 @@ module.exports = (env) => {
                     {
                         context: path.join(__dirname, "node_modules", "@wso2is", "i18n"),
                         from: path.join("dist", "bundle"),
+                        to: path.join("resources", "i18n")
+                    },
+                    {
+                        context: path.join(__dirname, "src", "extensions", "i18n"),
+                        from: path.join("tmp", metaFile),
                         to: path.join("resources", "i18n")
                     },
                     {
