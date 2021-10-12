@@ -25,11 +25,10 @@ import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Divider, Grid, Message } from "semantic-ui-react";
 import { ApplicationCertificatesListComponent } from "./application-certificate-list";
 import { commonConfig } from "../../../../../extensions";
-import { AppState, ConfigReducerStateInterface } from "../../../../core";
 import {
     ApplicationInterface,
     CertificateInterface,
@@ -114,7 +113,6 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
     const [ selectedCertType, setSelectedCertType ] = useState<CertificateTypeInterface>(CertificateTypeInterface.NONE);
     const [PEMValue, setPEMValue] = useState<string>(undefined);
     const [JWKSValue, setJWKSValue] = useState<string>(undefined);
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     /**
      * Set the certificate type
@@ -125,7 +123,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
             setSelectedCertType(certificate?.type);
         }
 
-    }, [ certificate ])
+    }, [ certificate ]);
 
     /**
      * Set PEM value.
@@ -222,7 +220,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
 
     return ( !hidden ?
         <Forms
-            onSubmit={ (values) => {
+            onSubmit={ () => {
                 updateCertType(selectedCertType);
                 if (selectedCertType === CertificateTypeInterface.PEM && isEmpty(PEMValue)) {
                     setCertEmpty(true);

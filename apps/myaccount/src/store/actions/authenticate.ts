@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient, AuthenticatedUserInfo } from "@asgardeo/auth-react";
+import { AuthenticatedUserInfo, useAuthContext } from "@asgardeo/auth-react";
 import { getProfileSchemas } from "@wso2is/core/api";
 import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
 import { AuthenticateUtils } from "@wso2is/core/utils";
@@ -262,16 +262,18 @@ export const resolveIdpURLSAfterTenantResolves = (originalURL: string, overridde
 /**
  * Handle user sign-out
  */
-export const handleSignOut = () => (dispatch) => {
-    const auth = AsgardeoSPAClient.getInstance();
-    auth
-        .signOut()
-        .then(() => {
-            AuthenticateUtils.removeAuthenticationCallbackUrl(CommonAppConstants.MY_ACCOUNT_APP);
-            dispatch(setSignOut());
-        }).catch(() => {
-            history.push(window["AppUtils"].getConfig().routes.home);
-        });
+export const useSignOut = (): () => (dispatch) => void => {
+    const { signOut } = useAuthContext();
+
+    return () => (dispatch) => {
+        signOut()
+            .then(() => {
+                AuthenticateUtils.removeAuthenticationCallbackUrl(CommonAppConstants.MY_ACCOUNT_APP);
+                dispatch(setSignOut());
+            }).catch(() => {
+                history.push(window[ "AppUtils" ].getConfig().routes.home);
+            });
+    };
 };
 
 /**

@@ -283,7 +283,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                         onAddCertificateClicked={ openAddCertificatesWizard }/>
                 )
                 : (
-                    <Segment compact>
+                    <Segment>
                         <Grid>
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column width={ 16 }>
@@ -326,9 +326,9 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
     return (
         <EmphasizedSegment padded="very">
             <Grid>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column computer={ 8 } mobile={ 16 } tablet={ 16 }>
-                        { enableJWKS && (
+                { enableJWKS && (
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column computer={ 8 } mobile={ 16 } widescreen={ 8 } tablet={ 16 }>
                             <React.Fragment>
                                 <Switcher
                                     widths={ "two" }
@@ -349,11 +349,11 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                                 />
                                 <Divider hidden/>
                             </React.Fragment>
-                        ) }
-                    </Grid.Column>
-                </Grid.Row>
+                        </Grid.Column>
+                    </Grid.Row>
+                ) }
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column computer={ 8 } mobile={ 16 } tablet={ 16 }>
+                    <Grid.Column computer={ 8 } mobile={ 16 } widescreen={ 8 } tablet={ 16 }>
                         { selectedConfigurationMode === "jwks"
                             ? jwksInputForm
                             : (
