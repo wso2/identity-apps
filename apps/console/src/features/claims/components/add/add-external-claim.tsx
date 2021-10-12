@@ -146,7 +146,10 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
     }, [serverSupportedClaims, filteredLocalClaims])
 
     useEffect(() => {
-        if (claimDialectUri === attributeConfig.localAttributes.customDialectURI) {
+        if (
+            claimDialectUri === attributeConfig.localAttributes.customDialectURI ||
+            claimDialectUri === attributeConfig.localAttributes.oidcDialectURI
+        ) {
             setServerSideClaimsLoading(false);
             return;
         }
