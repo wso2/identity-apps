@@ -129,16 +129,15 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
             if (!serverSupportedClaims  || !filteredLocalClaims || serverSupportedClaims.length === 0
                 || filteredLocalClaims.length === 0) {
                 setEmptyClaims(true);
-                return;
+            } else {
+                setEmptyClaims(false);
             }
             if (serverSupportedClaims && serverSupportedClaims.length > 0 &&
-                (!filteredLocalClaims || filteredLocalClaims.length === 0)) {
+                (!filteredLocalClaims || (filteredLocalClaims && filteredLocalClaims.length === 0))) {
                 setShowMessage(true);
-                return;
+            } else {
+                setShowMessage(false);
             }
-            setShowMessage(false);
-            setEmptyClaims(false);
-
         }
     }, [ serverSupportedClaims, filteredLocalClaims ]);
 
