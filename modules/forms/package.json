@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/forms",
-    "version": "1.2.665",
+    "version": "1.2.666",
     "description": "Forms module for WSO2 Identity Server web-apps.",
     "keywords": [
         "WSO2",
