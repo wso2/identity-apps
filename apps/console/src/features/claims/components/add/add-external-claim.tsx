@@ -135,6 +135,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
             if (serverSupportedClaims && serverSupportedClaims.length > 0 &&
                 (!filteredLocalClaims || filteredLocalClaims.length === 0)) {
                 setShowMessage(true);
+
                 return;
             }
             setShowMessage(false);
