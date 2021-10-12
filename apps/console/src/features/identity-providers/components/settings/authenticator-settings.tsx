@@ -87,7 +87,7 @@ interface IdentityProviderSettingsPropsInterface extends TestableComponentInterf
 const GOOGLE_CLIENT_ID_SECRET_MAX_LENGTH = 100;
 const OIDC_CLIENT_ID_SECRET_MAX_LENGTH = 100;
 const URL_MAX_LENGTH: number = 2048;
-const AUTHORIZED_REDIRECT_URL = "callbackUrl";
+const AUTHORIZED_REDIRECT_URL: string = "callbackUrl";
 
 /**
  *  Identity Provider and advance settings component.
@@ -220,8 +220,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             availableAuthenticators.find(authenticator => (
                 identityProvider.federatedAuthenticators.defaultAuthenticatorId === authenticator.id
             ));
-        const search = object => object.key === AUTHORIZED_REDIRECT_URL;
-        const index = authenticator?.data?.properties.findIndex(search);
+        const search = (object): boolean => object.key === AUTHORIZED_REDIRECT_URL;
+        const index: number = authenticator?.data?.properties.findIndex(search);
         if (index >= 0) {
             values.properties.push(authenticator.data.properties[index]);
         }
