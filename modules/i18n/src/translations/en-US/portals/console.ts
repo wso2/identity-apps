@@ -3983,7 +3983,7 @@ export const console: ConsoleNS = {
                 templates: {
                     enterprise: {
                         addWizard: {
-                            title: "Standard based Identity Providers",
+                            title: "Standard-Based Identity Providers",
                             subtitle: "Configure a new Identity Provider to connect with standard authentication " +
                                 "protocols."
                         },
