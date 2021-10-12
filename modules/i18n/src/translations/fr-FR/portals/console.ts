@@ -2210,8 +2210,10 @@ export const console: ConsoleNS = {
                                         authorize: "Authorize",
                                         endSession: "Se déconnecter",
                                         introspection: "Introspection",
-                                        keystore: "Key Set",
+                                        issuer: "Émetteur",
                                         jwks: "JWKS",
+                                        keystore: "Key Set",
+                                        revoke: "Révoquer",
                                         token: "Token",
                                         userInfo: "UserInfo",
                                         wellKnown: "Discovery"
@@ -4509,7 +4511,8 @@ export const console: ConsoleNS = {
                             placeholder: "Sélectionnez un attribut",
                             requiredErrorMessage: "Sélectionnez un attribut auquel mapper"
                         },
-                        submit: "Ajouter un mappage d'attributs"
+                        submit: "Ajouter un mappage d'attributs",
+                        warningMessage: "Aucun attribut local n'est disponible pour le mappage. "
                     },
                     notifications: {
                         addExternalAttribute: {

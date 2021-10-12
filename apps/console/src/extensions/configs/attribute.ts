@@ -132,6 +132,7 @@ export const attributeConfig: AttributeConfig = {
         isUserStoresHidden: () =>  { return Promise.resolve([]); },
         mapClaimToCustomDialect: false
     },
+    systemClaims: [],
     defaultScimMapping: {},
     showCustomDialectInSCIM: false
 };

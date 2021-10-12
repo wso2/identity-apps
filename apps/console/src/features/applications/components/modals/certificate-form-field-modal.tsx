@@ -16,13 +16,14 @@
  * under the License.
  */
 
+import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
-import { Certificate as CertificateDisplay, GenericIcon } from "@wso2is/react-components";
+import { Certificate as CertificateDisplay, Code, GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { Modal, ModalProps } from "semantic-ui-react";
-import { getCertificateIllustrations } from "../../../core/configs";
+import { Modal, ModalProps, Segment } from "semantic-ui-react";
+import { getCertificateIllustrations } from "../../../core";
 
 /**
  * Proptypes for the certificate form field modal component.
@@ -52,6 +53,22 @@ export const CertificateFormFieldModal: FunctionComponent<CertificateFormFieldMo
     } = props;
 
     const { t } = useTranslation();
+
+    const CannotReadCertificate = (
+        <Segment className="certificate" data-testid={ testId }>
+            <p className="certificate-field">
+                We were unable to read this certificate. Currently we only
+                support displaying public key information in certificate types of {
+                CertificateManagementConstants.SUPPORTED_KEY_ALGORITHMS.map((algo, index) => (
+                    <span key={ `${ algo }+${ index }` }>
+                        <Code>{ algo }</Code>&nbsp;
+                    </span>
+                ))
+            } key algorithms. Support for <strong>Elliptic Curve Cryptography</strong>&nbsp;
+                key algorithms will be enabled soon.
+            </p>
+        </Segment>
+    );
 
     return (
         <Modal
@@ -83,16 +100,22 @@ export const CertificateFormFieldModal: FunctionComponent<CertificateFormFieldMo
                 </div>
             </Modal.Header>
             <Modal.Content className="certificate-content">
-                <CertificateDisplay
-                    certificate={ certificate }
-                    labels={ {
-                        issuerDN: t("console:manage.features.certificates.keystore.summary.issuerDN"),
-                        subjectDN: t("console:manage.features.certificates.keystore.summary.subjectDN"),
-                        validFrom: t("console:manage.features.certificates.keystore.summary.validFrom"),
-                        validTill: t("console:manage.features.certificates.keystore.summary.validTill"),
-                        version: t("console:manage.features.certificates.keystore.summary.version")
-                    } }
-                />
+                {
+                    certificate?.infoUnavailable
+                        ? CannotReadCertificate
+                        : (
+                            <CertificateDisplay
+                                certificate={ certificate }
+                                labels={ {
+                                    issuerDN: t("console:manage.features.certificates.keystore.summary.issuerDN"),
+                                    subjectDN: t("console:manage.features.certificates.keystore.summary.subjectDN"),
+                                    validFrom: t("console:manage.features.certificates.keystore.summary.validFrom"),
+                                    validTill: t("console:manage.features.certificates.keystore.summary.validTill"),
+                                    version: t("console:manage.features.certificates.keystore.summary.version")
+                                } }
+                            />
+                        )
+                }
             </Modal.Content>
         </Modal>
     );
