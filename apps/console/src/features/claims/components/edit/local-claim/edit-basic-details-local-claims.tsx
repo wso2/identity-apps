@@ -394,7 +394,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                                     { t("console:manage.features.claims.local.forms.infoMessages." +
                                                         "disabledConfigInfo") }
                                                     <div>
-                                                        Add Scim mapping from
+                                                        Add SCIM mapping from
                                                         <Link external={ false }
                                                               onClick={ () =>
                                                                   history.push(AppConstants.getPaths().get("SCIM_MAPPING"))
