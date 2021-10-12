@@ -136,6 +136,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
         }
     }, [ serverSupportedClaims, filteredLocalClaims ]);
 
+
     /**
      * Handle the warning message to be shown.
      */
@@ -148,11 +149,17 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
             } else {
                 setEmptyServerSupportedClaims(false);
                 if (!filteredLocalClaims || filteredLocalClaims.length === 0) {
-                    setEmptyClaims(true)
+                    setEmptyClaims(true);
                 } else {
                     setEmptyClaims(false);
                 }
             }
+        } else if (attributeType !== "oidc" &&
+            claimDialectUri === attributeConfig.localAttributes.customDialectURI
+            && (!filteredLocalClaims || filteredLocalClaims.length === 0)) {
+            setEmptyClaims(true);
+        } else {
+            setEmptyClaims(false);
         }
     }, [ serverSupportedClaims, filteredLocalClaims ])
 
