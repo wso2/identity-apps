@@ -129,6 +129,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
             if (!serverSupportedClaims  || !filteredLocalClaims || serverSupportedClaims.length === 0
                 || filteredLocalClaims.length === 0) {
                 setEmptyClaims(true);
+
                 return;
             }
             if (serverSupportedClaims && serverSupportedClaims.length > 0 &&
