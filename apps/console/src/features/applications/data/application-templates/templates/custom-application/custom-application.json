@@ -1,7 +1,7 @@
 {
     "id": "custom-application",
     "templateId": "custom-application",
-    "name": "Standard Based Application",
+    "name": "Standard-Based Application",
     "description": "Applications built using standard protocols.",
     "image": "customApp",
     "authenticationProtocol": "",
