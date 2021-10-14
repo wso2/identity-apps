@@ -22,7 +22,7 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
 import { ContentLoader, Hint, Link, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, DropdownItemProps, DropdownOnSearchChangeData, Grid, Header, Label, Message } from "semantic-ui-react";
 import { addExternalClaim, getServerSupportedClaimsForSchema } from "../../api";
@@ -466,20 +466,30 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 } textAlign="left" verticalAlign="top">
                                 <Message visible warning>
-                                    { !isEmptyServerSupportedClaims ?
-                                        <Hint warning>
-                                            { t("console:manage.features.claims.external.forms.warningMessage") }
-                                            Add new local attributes from
-                                            <Link external={ false }
-                                                  onClick={ () =>
-                                                      history.push(AppConstants.getPaths().get("LOCAL_CLAIMS"))
-                                                  }
-                                            > here
-                                            </Link>.
-                                        </Hint> :
-                                        <Hint warning>
-                                            All the SCIM attributes are mapped to local claims.
-                                        </Hint>
+                                    {
+                                        !isEmptyServerSupportedClaims
+                                            ? (
+                                                <Hint warning>
+                                                    <Trans
+                                                        i18nKey={
+                                                            "console:manage.features.claims.external.forms.warningMessage"
+                                                        }
+                                                    >
+                                                        There are no local attributes available for mapping. Add new
+                                                        local attributes from
+                                                    </Trans>
+                                                    <Link external={ false }
+                                                          onClick={ () =>
+                                                              history.push(AppConstants.getPaths().get("LOCAL_CLAIMS"))
+                                                          }
+                                                    > here
+                                                    </Link>.
+                                                </Hint>
+                                            ) : (
+                                                <Hint warning>
+                                                    All the SCIM attributes are mapped to local claims.
+                                                </Hint>
+                                            )
                                     }
                                 </Message>
                             </Grid.Column>

@@ -4512,7 +4512,8 @@ export const console: ConsoleNS = {
                             requiredErrorMessage: "Sélectionnez un attribut auquel mapper"
                         },
                         submit: "Ajouter un mappage d'attributs",
-                        warningMessage: "Aucun attribut local n'est disponible pour le mappage. "
+                        warningMessage: "Aucun attribut local n'est disponible pour le mappage. " +
+                            "Ajouter de nouveaux attributs locaux à partir d'ici"
                     },
                     notifications: {
                         addExternalAttribute: {
