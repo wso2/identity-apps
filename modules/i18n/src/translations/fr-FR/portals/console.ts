@@ -797,7 +797,8 @@ export const console: ConsoleNS = {
                                 attributeComponentHint: "Gérez les attributs utilisateur que vous souhaitez partager" +
                                     " avec cette application.",
                                 attributeComponentHintAlt: "Gérez les attributs utilisateur que vous souhaitez" +
-                                    " partager avec cette application.",
+                                    " partager avec cette application. Vous pouvez ajouter de nouveaux attributs et " +
+                                    "mappages en accédant à <1>Attributs</1>",
                                 description: "Ajoutez les attributs utilisateur autorisés à être partagés avec cette " +
                                     "application.",
                                 mandatoryAttributeHint: "Marquez les attributs utilisateur qui doivent " +

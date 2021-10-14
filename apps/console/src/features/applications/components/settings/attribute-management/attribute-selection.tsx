@@ -991,7 +991,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                 AppConstants.getPaths().get("OIDC_SCOPES")
                                             );
                                         } }>OpenID Connect Scopes.</a>
-                                    You can map additional attributes under
+                                    You can add new attributes and mappings by navigating to
                                     <a
                                             href="javascript:void()"
                                             onClick={ () => {
@@ -1000,16 +1000,27 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                         .get("ATTRIBUTE_MAPPINGS")
                                                         .replace(":type", ClaimManagementConstants.OIDC)
                                                 );
-                                            } }>attribute mappings.</a>
+                                            } }>Attributes.</a>
                                     </Trans>
                                 </Hint>
                             )
                             : (
                                 <Hint>
-                                    {
-                                        t("console:develop.features.applications.edit.sections.attributes." +
-                                            "selection.attributeComponentHintAlt")
-                                    }
+                                    <Trans
+                                        i18nKey={ "console:develop.features.applications.edit.sections.attributes." +
+                                        "selection.attributeComponentHintAlt" }
+                                    >
+                                        Manage the user attributes you want to share with this application.
+                                        You can add new attributes and mappings by navigating to
+                                    <a
+                                        href="javascript:void()"
+                                        onClick={ () => {
+                                            history.push(
+                                                AppConstants.getPaths()
+                                                    .get("LOCAL_CLAIMS")
+                                            );
+                                        } }>Attribute.</a>
+                                    </Trans>
                                 </Hint>
                             )
                         }
