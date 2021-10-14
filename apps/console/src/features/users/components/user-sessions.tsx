@@ -562,7 +562,9 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                 }));
             })
             .finally(() => {
-                fetchUserSessions(user.id);
+                if (authenticatedUser !== user?.userName) {
+                    fetchUserSessions(user.id);
+                }
             });
     };
 

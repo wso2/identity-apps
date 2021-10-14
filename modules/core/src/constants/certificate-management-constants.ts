@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { DisplayCertificate } from "../models";
+
 /**
  * Class containing certificate related constants which can be used across several applications.
  */
@@ -24,12 +26,10 @@ export class CertificateManagementConstants {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
-     *
-     * @hideconstructor
+     * @hideConstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    private constructor() {
-    }
+    private constructor() { }
 
     /**
      * Contains the terminating line of a PEM certificate.
@@ -53,4 +53,62 @@ export class CertificateManagementConstants {
      * @type {string}
      */
     public static readonly END_LINE: string = "";
+
+    /**
+     * Denotes "Not Available"
+     */
+    public static readonly NOT_AVAILABLE = "N/A";
+
+    /**
+     * An empty string. Used in case DN or issuers are empty.
+     */
+    public static readonly EMPTY_STRING = "";
+
+    /**
+     * Used for unreadable certificates avatar name.
+     */
+    public static readonly QUESTION_MARK = "?";
+
+    /**
+     * Used in between intermediate strings in cert interfaces.
+     */
+    public static readonly SPACE_CHARACTER = " ";
+
+    /**
+     * An empty pass.
+     * @constructor
+     */
+    public static readonly NO_OPERATIONS = (): void => void 0;
+
+    /**
+     * Dummy certificate as a placeholder.
+     */
+    public static readonly DUMMY_DISPLAY_CERTIFICATE: DisplayCertificate = {
+        alias: CertificateManagementConstants.NOT_AVAILABLE,
+        infoUnavailable: true,
+        issuerDN: [],
+        serialNumber: CertificateManagementConstants.NOT_AVAILABLE,
+        subjectDN: [],
+        validFrom: new Date(),
+        validTill: new Date(),
+        version: 0
+    };
+
+    /**
+     * Supported key algorithm types.
+     * {@link https://www.npmjs.com/package/node-forge#pki}
+     */
+    public static readonly SUPPORTED_KEY_ALGORITHMS: string[] = [
+        "ED25519",
+        "RSA",
+        "RSA-KEM",
+        "X.509",
+        "PKCS#5",
+        "PKCS#7",
+        "PKCS#8",
+        "PKCS#10",
+        "PKCS#12",
+        "ASN.1"
+    ];
+
 }

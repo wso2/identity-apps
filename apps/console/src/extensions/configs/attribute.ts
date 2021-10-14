@@ -127,11 +127,13 @@ export const attributeConfig: AttributeConfig = {
             showSummary: true
         },
         customDialectURI: "",
+        oidcDialectURI: "",
         getDialect: (dialectURI: string) => { return Promise.resolve(dialectURI); },
         isSCIMCustomDialectAvailable: () =>  { return Promise.resolve(""); },
         isUserStoresHidden: () =>  { return Promise.resolve([]); },
         mapClaimToCustomDialect: false
     },
+    systemClaims: [],
     defaultScimMapping: {},
     showCustomDialectInSCIM: false
 };

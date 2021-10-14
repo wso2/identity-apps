@@ -171,7 +171,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
      * Get the attribute name.
      */
     const resolveClaimURIName = (): string => {
-        const parts = addedClaim.claimURI.split(":");
+        const parts: string[] = addedClaim.claimURI.split(":");
         if (parts.length > 1) {
             return parts[parts.length - 1];
         }
@@ -184,9 +184,9 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
      * @param {Map<string, FormValue>} values - Claim object
      */
     const resolveClaimURI = (values: Map<string, FormValue>): Map<string, FormValue> => {
-        const parts = addedClaim.claimURI.split(":");
+        const parts: string[] = addedClaim.claimURI.split(":");
         if (parts.length > 1) {
-            const claimURI = parts.filter((part,idx) => idx < parts.length - 1).join(":") +
+            const claimURI: string = parts.filter((part,idx) => idx < parts.length - 1).join(":") +
                 ":" + values.get("claimURI");
             values.set("claimURI", claimURI);
         }

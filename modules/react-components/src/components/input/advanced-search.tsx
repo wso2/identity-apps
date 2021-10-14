@@ -121,7 +121,7 @@ export interface AdvancedSearchPropsInterface extends TestableComponentInterface
      */
     enableQuerySearch?: boolean;
     /**
-     * Default filter conditions..
+     * Default filter conditions.
      */
     filterConditionOptions?: any;
     /**

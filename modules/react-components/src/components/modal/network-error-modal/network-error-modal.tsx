@@ -17,7 +17,7 @@
  */
 
 import { AppConstants } from "@wso2is/core/constants";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Heading } from "../../typography";
 import { ConfirmationModal } from "../confirmation-modal";
 
@@ -25,9 +25,9 @@ import { ConfirmationModal } from "../confirmation-modal";
  * Prop type of the `NetworkErrorModal` component.
  */
 interface NetworkErrorModalPropTypes {
-    heading: string;
-    description: string;
-    primaryActionText: string;
+    heading: ReactNode;
+    description: ReactNode;
+    primaryActionText: ReactNode;
 }
 
 /**
