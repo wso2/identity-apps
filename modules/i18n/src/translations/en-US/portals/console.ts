@@ -5220,7 +5220,7 @@ export const console: ConsoleNS = {
             applicationTemplate: {
                 backButton: "Go back to Applications",
                 subTitle: "Register an application using one of the templates given below. If nothing matches your " +
-                    "application type, start with the Standard-based Application template.",
+                    "application type, start with the Standard-Based Application template.",
                 title: "Register New Application"
             },
             applications: {
