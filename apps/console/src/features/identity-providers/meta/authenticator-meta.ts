@@ -200,8 +200,8 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID ]: "GitHub",
             [ IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID ]: "Facebook",
             [ IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID ]: "Twitter",
-            [ IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID ]: "Standard-Based IdP",
-            [ IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID ]: "Standard-Based IdP",
+            [ IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID ]: "OIDC",
+            [ IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID ]: "SAML",
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Predefined",
             [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "Predefined"
         }, authenticatorId);
