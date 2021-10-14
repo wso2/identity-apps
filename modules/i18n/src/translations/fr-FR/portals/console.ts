@@ -3888,9 +3888,9 @@ export const console: ConsoleNS = {
                 templates: {
                     enterprise: {
                         addWizard: {
-                            title: "Entreprise",
-                            subtitle: "Configurez un nouveau fournisseur d'identité avec des protocoles " +
-                                "d'authentification standard."
+                            title: "Fournisseurs d'identité basés sur des normes",
+                            subtitle: "Configurez un nouveau fournisseur d'identité pour vous connecter avec des " +
+                                "protocoles d'authentification standard."
                         },
                         validation: {
                             name: "Merci d'entrer un nom valide",
