@@ -47,7 +47,7 @@
         "update-version": "node scripts/update-version.js",
         "lint": "npm run lint:base .",
         "lint:base": "eslint -c .eslintrc.js --ext .js,.jsx,.ts,.tsx",
-        "lint:ci": "npm run lint:base"
+        "lint:ci": "node scripts/lint-ci.js"
     },
     "author": "WSO2",
     "license": "Apache-2.0",

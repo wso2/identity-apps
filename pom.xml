@@ -565,7 +565,7 @@
                             <arguments>
                                 <argument>run</argument>
                                 <argument>lint:ci</argument>
-                                <argument>${lint.exec.pattern}</argument>
+                                <argument>--changed=${lint.exec.pattern}</argument>
                             </arguments>
                             <skip>${lint.exec.skip}</skip>
                             <workingDirectory>${basedir}</workingDirectory>
