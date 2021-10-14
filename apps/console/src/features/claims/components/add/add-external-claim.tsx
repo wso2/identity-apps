@@ -19,10 +19,10 @@
 import { getAllLocalClaims } from "@wso2is/core/api";
 import { AlertLevels, Claim, ClaimsGetParams, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Forms, FormValue, useTrigger, Validation } from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
 import { ContentLoader, Hint, Link, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, DropdownItemProps, DropdownOnSearchChangeData, Grid, Header, Label, Message } from "semantic-ui-react";
 import { addExternalClaim, getServerSupportedClaimsForSchema } from "../../api";
@@ -112,8 +112,8 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
     const [ isLocalClaimsLoading, setIsLocalClaimsLoading ] = useState<boolean>(true);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isEmptyClaims, setEmptyClaims ] = useState<boolean>(false);
-    const [ showMessage, setShowMessage ] = useState<boolean>(false);
     const [ serverSideClaimsLoading, setServerSideClaimsLoading ] = useState<boolean>(true);
+    const [ isEmptyServerSupportedClaims, setEmptyServerSupportedClaims] = useState<boolean>(false);
 
     const [ reset, setReset ] = useTrigger();
 
@@ -130,20 +130,38 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
             if (!serverSupportedClaims  || !filteredLocalClaims || serverSupportedClaims.length === 0
                 || filteredLocalClaims.length === 0) {
                 setEmptyClaims(true);
-
-                return;
+            } else {
+                setEmptyClaims(false);
             }
-            if (serverSupportedClaims && serverSupportedClaims.length > 0 &&
-                (!filteredLocalClaims || filteredLocalClaims.length === 0)) {
-                setShowMessage(true);
-
-                return;
-            }
-            setShowMessage(false);
-            setEmptyClaims(false);
-
         }
-    }, [serverSupportedClaims, filteredLocalClaims])
+    }, [ serverSupportedClaims, filteredLocalClaims ]);
+
+
+    /**
+     * Handle the warning message to be shown.
+     */
+    useEffect(() => {
+        if (attributeType !== "oidc"
+            && claimDialectUri !== attributeConfig.localAttributes.customDialectURI) {
+            if (!serverSupportedClaims || serverSupportedClaims.length === 0) {
+                setEmptyServerSupportedClaims(true);
+                setEmptyClaims(false);
+            } else {
+                setEmptyServerSupportedClaims(false);
+                if (!filteredLocalClaims || filteredLocalClaims.length === 0) {
+                    setEmptyClaims(true);
+                } else {
+                    setEmptyClaims(false);
+                }
+            }
+        } else if (attributeType !== "oidc" &&
+            claimDialectUri === attributeConfig.localAttributes.customDialectURI
+            && (!filteredLocalClaims || filteredLocalClaims.length === 0)) {
+            setEmptyClaims(true);
+        } else {
+            setEmptyClaims(false);
+        }
+    }, [ serverSupportedClaims, filteredLocalClaims ])
 
     useEffect(() => {
         if (
@@ -447,20 +465,41 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                     </Grid.Column>
                 </Grid.Row>
                 {
-                    showMessage && (
+                    (isEmptyClaims || isEmptyServerSupportedClaims) && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 } textAlign="left" verticalAlign="top">
                                 <Message visible warning>
-                                    <Hint warning>
-                                        { t("console:manage.features.claims.external.forms.warningMessage") }
-                                        Add new local attributes from
-                                        <Link external={ false }
-                                              onClick={ () =>
-                                                  history.push(AppConstants.getPaths().get("LOCAL_CLAIMS"))
-                                              }
-                                        > here
-                                        </Link>.
-                                    </Hint>
+                                    {
+                                        !isEmptyServerSupportedClaims
+                                            ? (
+                                                <Hint warning>
+                                                    <Trans
+                                                        i18nKey={
+                                                            "console:manage.features.claims.external.forms.warningMessage"
+                                                        }
+                                                    >
+                                                        There are no local attributes available for mapping. Add new
+                                                        local attributes from
+                                                    </Trans>
+                                                    <Link external={ false }
+                                                          onClick={ () =>
+                                                              history.push(AppConstants.getPaths().get("LOCAL_CLAIMS"))
+                                                          }
+                                                    > here
+                                                    </Link>.
+                                                </Hint>
+                                            ) : (
+                                                <Hint warning>
+                                                    <Trans
+                                                        i18nKey={
+                                                            "console:manage.features.claims.external.forms.emptyMessage"
+                                                        }
+                                                    >
+                                                        All the SCIM attributes are mapped to local claims.
+                                                    </Trans>
+                                                </Hint>
+                                            )
+                                    }
                                 </Message>
                             </Grid.Column>
                         </Grid.Row>
@@ -470,14 +509,14 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                     wizard && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 } textAlign="right" verticalAlign="top">
-                            <PrimaryButton
-                                type="submit"
-                                data-testid={ `${ testId }-form-submit-button` }
-                                loading={ isSubmitting }
-                                disabled={ isSubmitting || isEmptyClaims}
-                            >
+                                <PrimaryButton
+                                    type="submit"
+                                    data-testid={ `${ testId }-form-submit-button` }
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting || isEmptyClaims || isEmptyServerSupportedClaims }
+                                >
                                     { t("console:manage.features.claims.external.forms.submit") }
-                            </PrimaryButton>
+                                </PrimaryButton>
                             </Grid.Column>
                         </Grid.Row>
                     )
