@@ -487,7 +487,13 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                                 </Hint>
                                             ) : (
                                                 <Hint warning>
-                                                    All the SCIM attributes are mapped to local claims.
+                                                    <Trans
+                                                        i18nKey={
+                                                            "console:manage.features.claims.external.forms.emptyMessage"
+                                                        }
+                                                    >
+                                                        All the SCIM attributes are mapped to local claims.
+                                                    </Trans>
                                                 </Hint>
                                             )
                                     }

@@ -4513,7 +4513,8 @@ export const console: ConsoleNS = {
                         },
                         submit: "Ajouter un mappage d'attributs",
                         warningMessage: "Aucun attribut local n'est disponible pour le mappage. " +
-                            "Ajouter de nouveaux attributs locaux à partir d'ici"
+                            "Ajouter de nouveaux attributs locaux à partir d'ici",
+                        emptyMessage: "Tous les attributs SCIM sont mappés sur des revendications locales."
                     },
                     notifications: {
                         addExternalAttribute: {

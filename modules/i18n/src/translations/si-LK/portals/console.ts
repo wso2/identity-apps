@@ -4440,7 +4440,8 @@ export const console: ConsoleNS = {
                             requiredErrorMessage: "සිතියම් ගත කිරීම සඳහා දේශීය ලක්ෂණයක් තෝරන්න"
                         },
                         submit: "බාහිර ගුණාංග එකතු කරන්න",
-                        warningMessage: "සිතියම් ගත කිරීම සඳහා දේශීය ගුණාංග නොමැත. මෙතැනින් නව දේශීය ගුණාංග එකතු කරන්න."
+                        warningMessage: "සිතියම් ගත කිරීම සඳහා දේශීය ගුණාංග නොමැත. මෙතැනින් නව දේශීය ගුණාංග එකතු කරන්න.",
+                        emptyMessage: "සියලුම SCIM ගුණාංග දේශීය හිමිකම් සඳහා සිතියම් ගත කර ඇත."
                     },
                     notifications: {
                         addExternalAttribute: {

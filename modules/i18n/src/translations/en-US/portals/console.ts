@@ -5848,7 +5848,8 @@ export const console: ConsoleNS = {
                         },
                         submit: "Add Attribute Mapping",
                         warningMessage: "There are no local attributes available for mapping. " +
-                            "Add new local attributes from"
+                            "Add new local attributes from",
+                        emptyMessage: "All the SCIM attributes are mapped to local claims."
                     },
                     notifications: {
                         addExternalAttribute: {
