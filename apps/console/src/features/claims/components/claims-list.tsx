@@ -233,6 +233,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     const { t } = useTranslation();
 
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
+    const OIDC = "oidc";
 
     list?.forEach((element, index) => {
         claimURIText.current.push(claimURIText.current[ index ] || React.createRef());
@@ -494,7 +495,13 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
             listItem = {
                 assertion: deleteItem.claimURI,
                 delete: deleteExternalClaim,
-                message: t("console:manage.features.claims.list.confirmation.external.message"),
+                message: ( t("console:manage.features.claims.list.confirmation.external.message") +
+                    (attributeType && attributeType === OIDC
+                        ?
+                        " If this attribute is attached to any scope, this action will also remove " +
+                        "the attribute from the relevant scope."
+                        : ""
+                    )),
                 name: t("console:manage.features.claims.list.confirmation.external.name")
             };
         }
@@ -829,7 +836,9 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                             </Header>
                         );
                     },
-                    title: t("console:manage.features.claims.list.columns.claimURI")
+                    title: attributeType && attributeType === OIDC
+                        ? "Name"
+                        : t("console:manage.features.claims.list.columns.claimURI")
                 },
                 {
                     allowToggleVisibility: false,
