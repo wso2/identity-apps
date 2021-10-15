@@ -498,9 +498,9 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 message: ( t("console:manage.features.claims.list.confirmation.external.message") +
                     (attributeType && attributeType === OIDC
                         ?
-                        " If this attribute is attached to any scope, this action will also remove " +
+                        "If this attribute is attached to any scope, this action will also remove " +
                         "the attribute from the relevant scope."
-                        : ""
+                        : ClaimManagementConstants.EMPTY_STRING
                     )),
                 name: t("console:manage.features.claims.list.confirmation.external.name")
             };
