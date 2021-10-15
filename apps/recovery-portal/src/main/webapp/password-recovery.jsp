@@ -26,6 +26,8 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.ReCaptchaApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.ReCaptchaProperties" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="java.io.File" %>
@@ -78,7 +80,8 @@
     isEmailNotificationEnabled = Boolean.parseBoolean(application.getInitParameter(
             IdentityManagementEndpointConstants.ConfigConstants.ENABLE_EMAIL_NOTIFICATION));
 
-    boolean reCaptchaEnabled = CaptchaUtil.isRecaptchaEnabled("Recovery.ReCaptcha.Password.Enable", tenantDomain);
+    boolean reCaptchaEnabled = CaptchaUtil.isReCaptchaEnabled() &&
+                            CaptchaUtil.isReCaptchaEnabledForFlow("Recovery.ReCaptcha.Password.Enable", tenantDomain);
 
     Boolean isQuestionBasedPasswordRecoveryEnabledByTenant;
     Boolean isNotificationBasedPasswordRecoveryEnabledByTenant;
