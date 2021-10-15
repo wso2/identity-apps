@@ -320,4 +320,17 @@ export class IdentityProviderManagementConstants {
         "console:develop.features.idp.notifications.apiLimitReachedError.error.message",
         "cec1f247-32fd-4624-9915-f469195a53ac"
     )
+
+    /**
+     * AuthenticationProvider Connections create limit reached error.
+     * @constant
+     * @type IdentityAppsError
+     * @default
+     */
+     public static readonly ERROR_CREATE_LIMIT_REACHED_IDP = new IdentityAppsError(
+        "IDP-60035",
+        "console:develop.features.idp.notifications.apiLimitReachedError.error.description",
+        "console:develop.features.authenticationProvider.notifications.apiLimitReachedError.error.message",
+        "cec1f247-32fd-4624-9915-f469195a53ac"
+    )
 }

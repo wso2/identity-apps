@@ -2261,7 +2261,7 @@ export const console: ConsoleNS = {
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "This organisation reached the maximum limit of 200 applications allowed.",
+                            description: "Maximum number of allowed applications have been reached.",
                             message: "Failed to create the application"
                         }
                     },
@@ -3911,6 +3911,11 @@ export const console: ConsoleNS = {
                             description: "Successfully updated the outbound provisioning connectors.",
                             message: "Update Successful"
                         }
+                    },
+                    apiLimitReachedError: {
+                        error: {
+                            description: "Maximum number of allowed connections have been reached."
+                        }
                     }
                 },
                 popups: {
@@ -4478,8 +4483,7 @@ export const console: ConsoleNS = {
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "This organisation reached the maximum limit of 200 identity providers " +
-                                "allowed.",
+                            description: "Maximum number of allowed identity providers have been reached.",
                             message: "Failed to create the identity provider"
                         }
                     },
@@ -8555,7 +8559,7 @@ export const console: ConsoleNS = {
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "This organisation reached the maximum limit of 15 user stores allowed.",
+                            description: "Maximum number of allowed user stores have been reached.",
                             message: "Failed to create the user store"
                         }
                     },

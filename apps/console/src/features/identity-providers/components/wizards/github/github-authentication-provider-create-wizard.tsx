@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -37,6 +38,7 @@ import { Grid } from "semantic-ui-react";
 import {
     GitHubAuthenticationProviderCreateWizardContent
 } from "./github-authentication-provider-create-wizard-content";
+import { identityProviderConfig } from "../../../../../extensions/configs";
 import {
     AppConstants,
     AppState,
@@ -191,20 +193,24 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
             })
             .catch((error) => {
 
+                const identityAppsError: IdentityAppsError = identityProviderConfig.useNewConnectionsView
+                ? IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED
+                : IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED_IDP;
+
                 if (error.response.status === 403 &&
                     error?.response?.data?.code ===
-                    IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
+                    identityAppsError.getErrorCode()) {
 
                     setAlert({
-                        code: IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode(),
+                        code: identityAppsError.getErrorCode(),
                         description: t(
-                            IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorDescription()
+                            identityAppsError.getErrorDescription()
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorMessage()
+                            identityAppsError.getErrorMessage()
                         ),
-                        traceId: IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorTraceId()
+                        traceId: identityAppsError.getErrorTraceId()
                     });
 
                     return;
