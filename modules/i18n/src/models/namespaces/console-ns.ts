@@ -1543,6 +1543,7 @@ export interface ConsoleNS {
                     apiLimitReachedError: {
                         error: {
                             description: string;
+                            message: string;
                         }
                     }
                 };

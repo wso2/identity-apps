@@ -2225,7 +2225,7 @@ export const console: ConsoleNS = {
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "අවසර දී ඇති උපරිම අයදුම්පත් සංඛ්‍යාව ළඟා වී ඇත.",
+                            description: "ඔබ අවසර දී ඇති උපරිම අයදුම්පත් සංඛ්‍යාවට පැමිණ ඇත.",
                             message: "යෙදුම නිර්මාණය කිරීමට අපොහොසත් විය"
                         }
                     },
@@ -3086,7 +3086,7 @@ export const console: ConsoleNS = {
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "අවසර ලත් අනන්‍යතා සපයන්නන්ගේ උපරිම සංඛ්‍යාවට පැමිණ ඇත.",
+                            description: "ඔබ අවසර දී ඇති අනන්‍යතා සපයන්නන්ගේ උපරිම සංඛ්‍යාවට පැමිණ ඇත.",
                             message: "අනන්‍යතා සැපයුම්කරු නිර්මාණය කිරීමට අපොහොසත් විය"
                         }
                     },
@@ -7159,7 +7159,7 @@ export const console: ConsoleNS = {
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "අවසර දී ඇති පරිශීලක ගබඩා උපරිම සංඛ්‍යාවට පැමිණ ඇත.",
+                            description: "ඔබ අවසර දී ඇති උපරිම පරිශීලක ගබඩා සංඛ්‍යාවට පැමිණ ඇත.",
                             message: "පරිශීලක ගබඩාව නිර්මාණය කිරීමට අපොහොසත් විය"
                         }
                     },

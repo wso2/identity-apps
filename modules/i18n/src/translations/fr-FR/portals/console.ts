@@ -2280,7 +2280,7 @@ export const console: ConsoleNS = {
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "Le nombre maximum d'applications autorisées a été atteint.",
+                            description: "Vous avez atteint le nombre maximum de candidatures autorisé.",
                             message: "Échec de la création de l'application"
                         }
                     },
@@ -3148,7 +3148,7 @@ export const console: ConsoleNS = {
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "Le nombre maximal de fournisseurs d'identité autorisés a été atteint",
+                            description: "Vous avez atteint le nombre maximum de fournisseurs d'identité autorisés.",
                             message: "Échec de la création du fournisseur d'identité"
                         }
                     },
@@ -7257,7 +7257,7 @@ export const console: ConsoleNS = {
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "Le nombre maximal de magasins d'utilisateurs autorisés a été atteint.",
+                            description: "Vous avez atteint le nombre maximum de magasins d'utilisateurs autorisés.",
                             message: "Échec de la création du magasin d'utilisateurs"
                         }
                     },

@@ -2261,7 +2261,7 @@ export const console: ConsoleNS = {
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "Maximum number of allowed applications have been reached.",
+                            description: "You have reached the maximum number of applications allowed.",
                             message: "Failed to create the application"
                         }
                     },
@@ -3914,7 +3914,8 @@ export const console: ConsoleNS = {
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "Maximum number of allowed connections have been reached."
+                            description: "You have reached the maximum number of connections allowed.",
+                            message: "Failed to create the connection"
                         }
                     }
                 },
@@ -4483,7 +4484,7 @@ export const console: ConsoleNS = {
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "Maximum number of allowed identity providers have been reached.",
+                            description: "You have reached the maximum number of identity providers allowed.",
                             message: "Failed to create the identity provider"
                         }
                     },
@@ -8559,7 +8560,7 @@ export const console: ConsoleNS = {
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "Maximum number of allowed user stores have been reached.",
+                            description: "You have reached the maximum number of user stores allowed.",
                             message: "Failed to create the user store"
                         }
                     },
