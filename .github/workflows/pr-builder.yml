@@ -62,4 +62,4 @@ jobs:
         URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${{ github.event.pull_request.number }}/files"
         FILES=$(curl -s -X GET -G $URL | jq -r '.[] | .filename')
         echo -n "$FILES" | tr '\n' ' ' >> $GITHUB_PATH
-        mvn clean install -U -Dlint.exec.skip=false -Dlint.exec.pattern="$FILES"
+        mvn clean install -U -Dlint.exec.skip=false -Dlint.exec.pattern="'$FILES'"
