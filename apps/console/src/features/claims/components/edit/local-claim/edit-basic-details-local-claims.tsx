@@ -48,6 +48,7 @@ import { SCIMConfigs } from "../../../../../extensions/configs/scim";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../core";
 import { deleteAClaim, getExternalClaims, updateAClaim } from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";
+import Axios from "axios";
 
 /**
  * Prop types for `EditBasicDetailsLocalClaims` component
@@ -87,6 +88,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const [ isClaimReadOnly, setIsClaimReadOnly ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ hasMapping, setHasMapping ] = useState<boolean>(false);
+    const [ mappingChecked, setMappingChecked ] = useState<boolean>(false);
 
     const nameField = useRef<HTMLElement>(null);
     const regExField = useRef<HTMLElement>(null);
@@ -116,24 +118,31 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         const dialectID = [];
         getDialectID(dialectID);
         if(claim) {
+            const externalClaimRequest = []
             dialectID.forEach((dialectId) => {
-                let tempMappings = [];
-                getExternalClaims(dialectId).then((response) => {
-                    tempMappings = response;
-                    tempMappings.forEach((tempMapping:ExternalClaim) => {
-                        if(tempMapping.mappedLocalClaimURI === claim.claimURI) {
+                externalClaimRequest.push(getExternalClaims(dialectId));
+            })
+
+            let tempMappings = [];
+            Axios.all(externalClaimRequest).then(response => {
+                for (let i = 0; i < response.length; i++) {
+                    tempMappings = response[i];
+                    for (let j = 0; j < tempMappings.length; j++) {
+                        if (tempMappings[j].mappedLocalClaimURI === claim.claimURI) {
                             setHasMapping(true);
-                            return;
+                            break;
                         }
-                    });
-                }).catch((error) => {
-                    dispatch(addAlert({
-                        description: error.response.description,
-                        level: AlertLevels.ERROR,
-                        message: "Error occurred while trying to get external mappings for the claim."
-                    }));
-                });
-                });
+                    }
+                }
+            }).catch((error) => {
+                dispatch(
+                    addAlert({
+                    description: error.response.description,
+                    level: AlertLevels.ERROR,
+                    message: "Error occurred while trying to get external mappings for the claim."
+                })
+                );
+            }).finally(() => setMappingChecked(true));
         }
     }, [claim]);
 
@@ -382,7 +391,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             readOnly={ isReadOnly }
                         />
                     }
-                    {
+                    { mappingChecked
+                        ?
                         !hideSpecialClaims &&
                         <Grid.Row columns={ 1 } >
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
@@ -412,13 +422,14 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 </Message>
                             </Grid.Column>
                         </Grid.Row>
+                        : null
                     }
                     {
                         //Hides on user_id, username and groups claims
                         claim && claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI
                             && claim.claimURI !== ClaimManagementConstants.USER_NAME_CLAIM_URI
                             && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI 
-                            && !hideSpecialClaims &&
+                            && !hideSpecialClaims && mappingChecked &&
                         (
                             <Field.Checkbox
                                 ariaLabel="supportedByDefault"
@@ -463,7 +474,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     {
                         claim && attributeConfig.editAttributes.showRequiredCheckBox
                             && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI 
-                            && !hideSpecialClaims &&
+                            && !hideSpecialClaims && mappingChecked &&
                             <Field.Checkbox
                                 ariaLabel="required"
                                 name="required"
@@ -484,7 +495,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         claim && claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI
                             && claim.claimURI !== ClaimManagementConstants.USER_NAME_CLAIM_URI
                             && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI 
-                            && !hideSpecialClaims &&
+                            && !hideSpecialClaims && mappingChecked &&
                         (
                             <Field.Checkbox
                                 ariaLabel="readOnly"
