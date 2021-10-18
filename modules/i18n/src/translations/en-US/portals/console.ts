@@ -2261,7 +2261,7 @@ export const console: ConsoleNS = {
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "This organisation reached the maximum limit of 200 applications allowed.",
+                            description: "You have reached the maximum number of applications allowed.",
                             message: "Failed to create the application"
                         }
                     },
@@ -3911,6 +3911,12 @@ export const console: ConsoleNS = {
                             description: "Successfully updated the outbound provisioning connectors.",
                             message: "Update Successful"
                         }
+                    },
+                    apiLimitReachedError: {
+                        error: {
+                            description: "You have reached the maximum number of connections allowed.",
+                            message: "Failed to create the connection"
+                        }
                     }
                 },
                 popups: {
@@ -4479,8 +4485,7 @@ export const console: ConsoleNS = {
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "This organisation reached the maximum limit of 200 identity providers " +
-                                "allowed.",
+                            description: "You have reached the maximum number of identity providers allowed.",
                             message: "Failed to create the identity provider"
                         }
                     },
@@ -8556,7 +8561,7 @@ export const console: ConsoleNS = {
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "This organisation reached the maximum limit of 15 user stores allowed.",
+                            description: "You have reached the maximum number of user stores allowed.",
                             message: "Failed to create the user store"
                         }
                     },

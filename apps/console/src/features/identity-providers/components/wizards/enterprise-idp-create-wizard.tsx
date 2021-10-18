@@ -16,8 +16,10 @@
  * under the License.
  */
 
+import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { URLUtils } from "@wso2is/core/utils";
 import { Field, Wizard2, WizardPage } from "@wso2is/form";
 import {
     CertFileStrategy,
@@ -55,6 +57,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Card, Dimmer, Divider, Grid, Icon } from "semantic-ui-react";
+import { commonConfig, identityProviderConfig } from "../../../../extensions";
 import {
     AppConstants,
     AppState,
@@ -76,8 +79,6 @@ import {
 } from "../../models";
 import { handleGetIDPListCallError } from "../utils";
 import { getAvailableNameIDFormats, getAvailableProtocolBindingTypes } from "../utils/saml-idp-utils";
-import { URLUtils } from "@wso2is/core/utils";
-import { commonConfig } from "../../../../extensions";
 
 /**
  * Proptypes for the enterprise identity provider
@@ -350,21 +351,24 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 onIDPCreate();
             })
             .catch((error) => {
+                const identityAppsError: IdentityAppsError = identityProviderConfig.useNewConnectionsView
+                ? IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED
+                : IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED_IDP;
 
                 if (error.response.status === 403 &&
                     error?.response?.data?.code ===
-                    IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
+                    identityAppsError.getErrorCode()) {
 
                     setAlert({
-                        code: IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode(),
+                        code: identityAppsError.getErrorCode(),
                         description: t(
-                            IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorDescription()
+                            identityAppsError.getErrorDescription()
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorMessage()
+                            identityAppsError.getErrorMessage()
                         ),
-                        traceId: IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorTraceId()
+                        traceId: identityAppsError.getErrorTraceId()
                     });
                     setTimeout(() => setAlert(undefined), 4000);
                     return;

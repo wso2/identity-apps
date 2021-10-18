@@ -1540,6 +1540,12 @@ export interface ConsoleNS {
                     updateJITProvisioning: Notification;
                     updateOutboundProvisioningConnectors: Notification;
                     updateOutboundProvisioningConnector: Notification;
+                    apiLimitReachedError: {
+                        error: {
+                            description: string;
+                            message: string;
+                        }
+                    }
                 };
                 popups?: {
                     appStatus: {

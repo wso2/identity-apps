@@ -2280,8 +2280,7 @@ export const console: ConsoleNS = {
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "Cette organisation a atteint la limite maximale de 200 candidatures " +
-                                "autorisées.",
+                            description: "Vous avez atteint le nombre maximum de candidatures autorisé.",
                             message: "Échec de la création de l'application"
                         }
                     },
@@ -3149,8 +3148,7 @@ export const console: ConsoleNS = {
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "Cette organisation a atteint la limite maximale de 200 fournisseurs " +
-                                "d'identité autorisés.",
+                            description: "Vous avez atteint le nombre maximum de fournisseurs d'identité autorisés.",
                             message: "Échec de la création du fournisseur d'identité"
                         }
                     },
@@ -7262,8 +7260,7 @@ export const console: ConsoleNS = {
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "Cette organisation a atteint la limite maximale de 15 magasins " +
-                                "d'utilisateurs autorisés..",
+                            description: "Vous avez atteint le nombre maximum de magasins d'utilisateurs autorisés.",
                             message: "Échec de la création du magasin d'utilisateurs"
                         }
                     },
