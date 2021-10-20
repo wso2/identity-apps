@@ -34,8 +34,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
-    String templateId = request.getParameter("templateId");
-    String promptId = request.getParameter("promptId");
+    String templateId = Encode.forHtmlAttribute(request.getParameter("templateId"));
+    String promptId = Encode.forHtmlAttribute(request.getParameter("promptId"));
 
     String authAPIURL = application.getInitParameter(Constants.AUTHENTICATION_REST_ENDPOINT_URL);
     if (StringUtils.isBlank(authAPIURL)) {
@@ -44,7 +44,7 @@
     if (!authAPIURL.endsWith("/")) {
         authAPIURL += "/";
     }
-    authAPIURL += "context/" + request.getParameter("promptId");
+    authAPIURL += "context/" + promptId;
     String contextProperties = AuthContextAPIClient.getContextProperties(authAPIURL);
 
 
