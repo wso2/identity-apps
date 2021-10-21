@@ -49,6 +49,9 @@ export interface DashboardLayoutPropsInterface {
      * Is layout fluid.
      */
     fluid?: boolean;
+    /**
+     * Side panel to be used in the layout.
+     */
     sidePanel?: DashboardLayoutSkeletonPropsInterface["sidePanel"];
 }
 
