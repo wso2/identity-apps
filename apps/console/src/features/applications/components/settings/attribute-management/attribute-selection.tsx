@@ -24,6 +24,7 @@ import {
     EmptyPlaceholder,
     Heading,
     Hint,
+    Link,
     PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
@@ -983,24 +984,30 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                 <Hint>
                                     <Trans
                                         i18nKey={ "console:develop.features.applications.edit.sections." +
-                                            "attributes.selection.attributeComponentHint" }
+                                        "attributes.selection.attributeComponentHint" }
                                     >
                                         Manage the user attributes you want to share with this application via
-                                    <a href="javascript:void()" onClick={ () => {
-                                            history.push(
-                                                AppConstants.getPaths().get("OIDC_SCOPES")
-                                            );
-                                        } }>OpenID Connect Scopes.</a>
-                                    You can add new attributes and mappings by navigating to
-                                    <a
-                                            href="javascript:void()"
+                                        <Link
+                                            external={false}
+                                            onClick={ () => {
+                                                history.push(
+                                                    AppConstants.getPaths().get("OIDC_SCOPES")
+                                                );
+                                            } }
+                                        > OpenID Connect Scopes.
+                                        </Link>
+                                        You can map additional attributes under
+                                        <Link
+                                            external={false}
                                             onClick={ () => {
                                                 history.push(
                                                     AppConstants.getPaths()
                                                         .get("ATTRIBUTE_MAPPINGS")
                                                         .replace(":type", ClaimManagementConstants.OIDC)
                                                 );
-                                            } }>Attributes.</a>
+                                            } }
+                                        > Attribute.
+                                        </Link>
                                     </Trans>
                                 </Hint>
                             )
@@ -1012,14 +1019,16 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                     >
                                         Manage the user attributes you want to share with this application.
                                         You can add new attributes and mappings by navigating to
-                                    <a
-                                        href="javascript:void()"
-                                        onClick={ () => {
-                                            history.push(
-                                                AppConstants.getPaths()
-                                                    .get("LOCAL_CLAIMS")
-                                            );
-                                        } }>Attribute.</a>
+                                        <Link
+                                            external={false}
+                                            onClick={ () => {
+                                                history.push(
+                                                    AppConstants.getPaths()
+                                                        .get("LOCAL_CLAIMS")
+                                                );
+                                            } }
+                                        > Attribute.
+                                        </Link>
                                     </Trans>
                                 </Hint>
                             )
