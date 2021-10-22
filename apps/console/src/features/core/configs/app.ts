@@ -177,8 +177,6 @@ export class Config {
             ...getRemoteFetchConfigResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getSecretsManagementEndpoints(this.getDeploymentConfig().serverHost),
             CORSOrigins: `${this.getDeploymentConfig().serverHost}/api/server/v1/cors/origins`,
-            documentationContent: this.getDeploymentConfig().documentation.contentBaseURL,
-            documentationStructure: this.getDeploymentConfig().documentation.structureFileURL,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${this.getDeploymentConfig().serverHost}/scim2/Me`,
             saml2Meta: `${this.getDeploymentConfig().serverHost}/identity/metadata/saml2`,
