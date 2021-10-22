@@ -303,7 +303,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             }
                         />
                     ) }
-                    version={ config.ui.productVersion?.versionOverride }
+                    version={ config.ui.productVersion?.productVersion }
                     versionUISettings={ {
                         allowSnapshot: config.ui.productVersion?.allowSnapshot,
                         labelColor: config.ui.productVersion?.labelColor,

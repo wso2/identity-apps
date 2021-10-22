@@ -289,7 +289,7 @@ OIDC Session management configs.
 
 Idle session timeout interval.
 
-**Supported Values -** Any numerical value. (in seconds) 
+**Supported Values -** Any numerical value. (in seconds)
 
 ```toml
 [console]
@@ -302,7 +302,7 @@ session.params.userIdleTimeOut = 600
 
 When will the warning modal appear to warn about idle timeout.
 
-**Supported Values -** Any numerical value. (in seconds and should be less than `userIdleTimeOut`) 
+**Supported Values -** Any numerical value. (in seconds and should be less than `userIdleTimeOut`)
 
 ```toml
 [console]
@@ -315,7 +315,7 @@ session.params.userIdleWarningTimeOut = 580
 
 When to send the session extension request.
 
-**Supported Values -** Any numerical value. (in seconds) 
+**Supported Values -** Any numerical value. (in seconds)
 
 ```toml
 [console]
@@ -328,7 +328,7 @@ session.params.sessionRefreshTimeOut = 300
 
 At what interval should the app poll for session state.
 
-**Supported Values -** Any numerical value. (in seconds) 
+**Supported Values -** Any numerical value. (in seconds)
 
 ```toml
 [console]
@@ -372,7 +372,7 @@ documentation.is_sass = true
 
 Path to be redirected on login.
 
-**Supported Values -** Any route determined in the app. 
+**Supported Values -** Any route determined in the app.
 
 ```toml
 [console]
@@ -385,7 +385,7 @@ documentation.login_callback_path = "/login"
 
 Path to be redirected on logout.
 
-**Supported Values -** Any route determined in the app. 
+**Supported Values -** Any route determined in the app.
 
 ```toml
 [console]
@@ -554,7 +554,7 @@ ui.app_title = "Console | WSO2 Identity Server"
 
 > :white_check_mark: Default JSON value - `"Console"` (for Console) | `"My Account"` (for My Account)
 
-Display name of the app. 
+Display name of the app.
 
 **Supported Values -** Any string.
 
@@ -651,7 +651,7 @@ Shows the snapshot label if present in product version.
 product_version.configs.allowSnapshot = false
 ```
 
-#### `versionOverride`
+#### `productVersion`
 
 > :bulb: No value defined in Default JSON
 
@@ -661,7 +661,7 @@ Overrides the version number. Use "" if version should be hidden. Drop the attri
 
 ```toml
 [console]
-product_version.configs.versionOverride = "ALPHA"
+product_version.configs.productVersion = "ALPHA"
 ```
 
 #### `textCase`

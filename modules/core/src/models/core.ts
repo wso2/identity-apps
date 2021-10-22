@@ -134,7 +134,7 @@ export interface LoadableComponentInterface {
  */
 export interface ReferableComponentInterface<T = {}> {
     /**
-     * 
+     *
      */
     ref: RefObject<T>;
 }
@@ -183,7 +183,7 @@ export interface ProductVersionConfigInterface {
     /**
      * Override the parent POM version.
      */
-    versionOverride?: string;
+    productVersion?: string;
     /**
      * Text case.
      */
