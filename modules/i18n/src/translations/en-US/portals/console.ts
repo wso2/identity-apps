@@ -793,10 +793,11 @@ export const console: ConsoleNS = {
                                 },
                                 heading: "User Attribute Selection",
                                 attributeComponentHint: "Manage the user attributes you want to share with this " +
-                                    "application via <1>OpenID Connect Scopes.</1> You can map additional attributes " +
-                                    "by navigating to <3>Attribute Mappings.</3>",
+                                    "application via <1>OpenID Connect Scopes.</1> You can add new attributes " +
+                                    "and mappings by navigating to <3>Attributes.</3>",
                                 attributeComponentHintAlt: "Manage the user attributes you want to share with this" +
-                                    " application.",
+                                    " application. You can add new attributes and mappings by navigating to " +
+                                    "<1>Attributes.</1>",
                                 description: "Add the user attributes that are allowed to be shared with this " +
                                     "application.",
                                 mandatoryAttributeHint: "Mark which user attributes are mandatory to be shared " +
