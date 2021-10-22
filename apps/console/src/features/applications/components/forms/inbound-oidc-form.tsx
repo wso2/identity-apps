@@ -1826,7 +1826,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             </Grid.Row>
             {
                 applicationConfig.inboundOIDCForm.showIdTokenEncryption &&
-                    ApplicationTemplateIdTypes.SPA !== template.templateId &&
+                    ApplicationTemplateIdTypes.SPA !== template?.templateId &&
                 (
                     <>
                         <Grid.Row columns={ 1 }>
