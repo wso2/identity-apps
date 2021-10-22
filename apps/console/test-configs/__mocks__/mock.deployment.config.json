@@ -48,7 +48,7 @@
     "isSaas": true,
     "loginCallbackURL": "https://localhost:9443/console/login",
     "logoutCallbackURL": "https://localhost:9443/console/login",
-    "productVersionConfig": {},
+    "productVersion": {},
     "routes": {
         "home": "/console/develop/applications",
         "login": "/console/login",
@@ -178,7 +178,7 @@
         },
         "isGroupAndRoleSeparationEnabled": false,
         "productName": "Identity Server",
-        "productVersionConfig": {},
+        "productVersion": {},
         "theme": {
             "name": "default"
         }

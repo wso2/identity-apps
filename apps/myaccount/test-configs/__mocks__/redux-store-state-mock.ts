@@ -200,7 +200,7 @@ const ReduxStoreStateMock = {
                 visibleOnFooter: true
             },
             productName: "WSO2 Identity Server",
-            productVersionConfig: {
+            productVersion: {
                 allowSnapshot: true,
                 textCase: "uppercase",
                 labelColor: "primary"

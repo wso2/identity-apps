@@ -764,7 +764,7 @@
             {% endif %}
         },
         "productName": "{{ console.ui.product_name }}",
-        "productVersionConfig": {
+        "productVersion": {
             {% if console.product_version.configs.items() is defined %}
             {% for key, value in console.product_version.configs.items() %}
             {% if value is string %}

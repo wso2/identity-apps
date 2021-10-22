@@ -221,7 +221,7 @@ export class Config {
             listAllAttributeDialects: window["AppUtils"].getConfig().ui.listAllAttributeDialects,
             privacyPolicyConfigs: window["AppUtils"].getConfig().ui.privacyPolicyConfigs,
             productName: window["AppUtils"].getConfig().ui.productName,
-            productVersionConfig: window["AppUtils"].getConfig().ui.productVersionConfig,
+            productVersion: window["AppUtils"].getConfig().ui.productVersion,
             selfAppIdentifier: window["AppUtils"].getConfig().ui.selfAppIdentifier,
             systemAppsIdentifiers: window["AppUtils"].getConfig().ui.systemAppsIdentifiers,
             theme: window["AppUtils"].getConfig().ui.theme,
