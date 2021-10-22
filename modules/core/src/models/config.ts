@@ -185,7 +185,7 @@ export interface CommonUIConfigInterface<T = {}> {
      * Product version UI configurations.
      * ex: allowSnapshot, override etc.
      */
-    productVersion?: ProductVersionConfigInterface;
+    productVersionConfig?: ProductVersionConfigInterface;
     /**
      * Theme configs.
      */

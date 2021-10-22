@@ -184,7 +184,7 @@ export const AppUtils = (function() {
                 isSaas: this.isSaas(),
                 loginCallbackURL: this.constructRedirectURLs(_config.loginCallbackPath),
                 logoutCallbackURL: this.constructRedirectURLs(_config.logoutCallbackPath),
-                productVersion: _config.ui.productVersion,
+                productVersionConfig: _config.ui.productVersionConfig,
                 routes: {
                     home: this.constructAppPaths(_config.routePaths.home),
                     login: this.constructAppPaths(_config.routePaths.login),

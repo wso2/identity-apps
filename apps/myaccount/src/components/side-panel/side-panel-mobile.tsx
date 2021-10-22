@@ -80,11 +80,11 @@ export const SidePanelMobile: React.FunctionComponent<SidePanelMobileProps> = (
                             />
                         ) }
                         productName={ config.ui.productName }
-                        version={ config.ui.productVersion?.productVersion }
+                        version={ config.ui.productVersionConfig?.productVersion }
                         versionUISettings={ {
-                            allowSnapshot: config.ui.productVersion?.allowSnapshot,
-                            labelColor: config.ui.productVersion?.labelColor,
-                            textCase: config.ui.productVersion?.textCase
+                            allowSnapshot: config.ui.productVersionConfig?.allowSnapshot,
+                            labelColor: config.ui.productVersionConfig?.labelColor,
+                            textCase: config.ui.productVersionConfig?.textCase
                         } }
                     />
                 </Container>

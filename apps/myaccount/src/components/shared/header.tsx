@@ -303,12 +303,12 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             }
                         />
                     ) }
-                    version={ config.ui.productVersion?.productVersion }
+                    version={ config.ui.productVersionConfig?.productVersion }
                     versionUISettings={ {
-                        allowSnapshot: config.ui.productVersion?.allowSnapshot,
-                        labelColor: config.ui.productVersion?.labelColor,
+                        allowSnapshot: config.ui.productVersionConfig?.allowSnapshot,
+                        labelColor: config.ui.productVersionConfig?.labelColor,
                         labelPosition: "absolute",
-                        textCase: config.ui.productVersion?.textCase
+                        textCase: config.ui.productVersionConfig?.textCase
                     } }
                 />
             ) }

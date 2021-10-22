@@ -147,7 +147,7 @@ export class Config {
             isProfileUsernameReadonly: window["AppUtils"].getConfig().ui.isProfileUsernameReadonly,
             privacyPolicyConfigs: window["AppUtils"].getConfig().ui.privacyPolicyConfigs,
             productName: window["AppUtils"].getConfig().ui.productName,
-            productVersion: window["AppUtils"].getConfig().ui.productVersion,
+            productVersionConfig: window["AppUtils"].getConfig().ui.productVersionConfig,
             showAppSwitchButton: window["AppUtils"].getConfig().ui.showAppSwitchButton,
             theme: window["AppUtils"].getConfig().ui.theme
         };
