@@ -81,7 +81,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     } = props;
 
     const dispatch = useDispatch();
-    const [ isDisplayCheck, setDisplayCheck] = useState<boolean>(false);
+    const [ shouldShowOnProfile, isSupportedByDefault ] = useState<boolean>(false);
     const [ isShowDisplayOrder, setIsShowDisplayOrder ] = useState(false);
     const [ confirmDelete, setConfirmDelete ] = useState(false);
     const [ isClaimReadOnly, setIsClaimReadOnly ] = useState<boolean>(false);
@@ -429,7 +429,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 listen={ (values) => {
                                     setIsShowDisplayOrder(!!values?.supportedByDefault);
                                 } }
-                                checked = {isDisplayCheck}
+                                checked={ shouldShowOnProfile }
                                 data-testid={ `${testId}-form-supported-by-default-input` }
                                 readOnly={ isReadOnly }
                                 disabled={ !hasMapping }
@@ -474,9 +474,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 data-testid={ `${ testId }-form-required-checkbox` }
                                 readOnly={ isReadOnly }
                                 hint={ t("console:manage.features.claims.local.forms.requiredHint") }
-                                listen = {(value) =>{
-                                    setDisplayCheck(value);
-                                }}
+                                listen ={ (value) => {
+                                    isSupportedByDefault(value);
+                                } }
                                 disabled={ isClaimReadOnly || !hasMapping }
                                 { ...( isClaimReadOnly ?
                                     { value: false } :
