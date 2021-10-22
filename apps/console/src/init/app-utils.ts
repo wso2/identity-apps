@@ -208,7 +208,6 @@ export const AppUtils = (function() {
                 docSiteUrl: _config.docSiteUrl,
                 documentation: _config.documentation,
                 extensions: _config.extensions,
-                helpCenterUrl: _config.helpCenterUrl,
                 idpConfigs: this.resolveIdpConfigs(),
                 isSaas: this.isSaas(),
                 loginCallbackURL: this.constructRedirectURLs(_config.loginCallbackPath),
