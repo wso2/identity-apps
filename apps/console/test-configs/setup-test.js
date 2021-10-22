@@ -15,6 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+import { TextDecoder, TextEncoder } from "util";
 require("../jest.config");
 require("@testing-library/jest-dom/extend-expect");
 require("babel-polyfill");
@@ -74,3 +76,8 @@ window.AppUtils = {
 };
 
 window.Worker = Worker;
+
+// jsdom Doesn't seem to have TextEncoder defined in global for the DOM.
+// Hence adding the node.js one. See https://github.com/jsdom/jsdom/issues/2524.
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;

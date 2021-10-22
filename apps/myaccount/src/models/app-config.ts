@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ResponseModeTypes, Storage } from "@asgardio/oidc-js";
+import { ResponseMode, Storage } from "@asgardio/oidc-js";
 import {
     CommonConfigInterface,
     CommonDeploymentConfigInterface,
@@ -153,4 +153,4 @@ export interface UIConfigInterface extends CommonUIConfigInterface {
 /**
  * Portal Deployment config interface inheriting the common configs from core module.
  */
-export type DeploymentConfigInterface = CommonDeploymentConfigInterface<ResponseModeTypes, Storage>;
+export type DeploymentConfigInterface = CommonDeploymentConfigInterface<ResponseMode, Storage>;
