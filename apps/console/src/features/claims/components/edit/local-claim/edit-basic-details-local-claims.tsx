@@ -27,7 +27,6 @@ import {
     ProfileSchemaInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
-import { ExternalClaim } from "@wso2is/core/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import {
@@ -36,18 +35,17 @@ import {
     DangerZone,
     DangerZoneGroup,
     EmphasizedSegment,
-    Hint,
-    Link
+    Hint
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid, Message, Form as SemanticForm } from "semantic-ui-react";
+import { Divider, Grid , Form as SemanticForm } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
-import { SCIMConfigs } from "../../../../../extensions/configs/scim";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../core";
-import { deleteAClaim, getExternalClaims, updateAClaim } from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";
+import { deleteAClaim, updateAClaim } from "../../../api";
+import { values } from "lodash";
 
 /**
  * Prop types for `EditBasicDetailsLocalClaims` component
@@ -81,21 +79,19 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     } = props;
 
     const dispatch = useDispatch();
-
+    const [isDisplayChecked,setDisplayChecked] = useState<boolean> (false);
     const [ isShowDisplayOrder, setIsShowDisplayOrder ] = useState(false);
     const [ confirmDelete, setConfirmDelete ] = useState(false);
     const [ isClaimReadOnly, setIsClaimReadOnly ] = useState<boolean>(false);
-    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ hasMapping, setHasMapping ] = useState<boolean>(false);
 
     const nameField = useRef<HTMLElement>(null);
     const regExField = useRef<HTMLElement>(null);
     const displayOrderField = useRef<HTMLElement>(null);
     const descriptionField = useRef<HTMLElement>(null);
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const [ hideSpecialClaims, setHideSpecialClaims] = useState<boolean>(true);
+
 
     const { t } = useTranslation();
 
@@ -106,53 +102,12 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         if (claim?.readOnly) {
             setIsClaimReadOnly(true);
         }
-        if (claim && (attributeConfig?.systemClaims.length <= 0
-            || attributeConfig?.systemClaims.indexOf(claim?.claimURI) === -1)) {
-            setHideSpecialClaims(false);
-        }
     }, [ claim ]);
 
-    useEffect(() => {
-        const dialectID = [];
-        getDialectID(dialectID);
-        if(claim) {
-            dialectID.forEach((dialectId) => {
-                let tempMappings = [];
-                getExternalClaims(dialectId).then((response) => {
-                    tempMappings = response;
-                    tempMappings.forEach((tempMapping:ExternalClaim) => {
-                        if(tempMapping.mappedLocalClaimURI === claim.claimURI) {
-                            setHasMapping(true);
-                            return;
-                        }
-                    });
-                }).catch((error) => {
-                    dispatch(addAlert({
-                        description: error.response.description,
-                        level: AlertLevels.ERROR,
-                        message: "Error occurred while trying to get external mappings for the claim."
-                    }));
-                });
-                });
-        }
-    }, [claim]);
-
-    const getDialectID = (dialectID: string[]) => {
-        dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE"));
-        dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE_USER"));
-        dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_ENT_USER"));
-        dialectID.push(SCIMConfigs.scimDialectID.customEnterpriseSchema);
-    };
-
-    // Temporary fix to check system claims and make them readonly
-    const isReadOnly = useMemo(() => {
-        if (hideSpecialClaims) {
-            return true;
-        } else {
-            return !hasRequiredScopes(
-                featureConfig?.attributeDialects, featureConfig?.attributeDialects?.scopes?.update, allowedScopes);
-        }
-    }, [ featureConfig, allowedScopes, hideSpecialClaims ]);
+    const isReadOnly = useMemo(() => (
+        !hasRequiredScopes(
+            featureConfig?.attributeDialects, featureConfig?.attributeDialects?.scopes?.update, allowedScopes)
+    ), [ featureConfig, allowedScopes ]);
 
     const deleteConfirmation = (): ReactElement => (
         <ConfirmationModal
@@ -262,9 +217,6 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             supportedByDefault: values?.supportedByDefault !== undefined
                 ? !!values.supportedByDefault : claim?.supportedByDefault
         };
-
-        setIsSubmitting(true);
-
         updateAClaim(claim.id, data).then(() => {
             dispatch(addAlert(
                 {
@@ -289,9 +241,6 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             "updateClaim.genericError.description")
                 }
             ));
-        })
-        .finally(() => {
-            setIsSubmitting(false);
         });
     };
 
@@ -363,8 +312,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         hint={ t("console:manage.features.claims.local.forms.descriptionHint") }
                         readOnly={ isReadOnly }
                     />
-                    
-                    { attributeConfig.localAttributes.createWizard.showRegularExpression && !hideSpecialClaims &&
+                    { attributeConfig.localAttributes.createWizard.showRegularExpression &&
                         <Field.Input
                             ariaLabel="regularExpression"
                             inputType="default"
@@ -383,42 +331,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         />
                     }
                     {
-                        !hideSpecialClaims &&
-                        <Grid.Row columns={ 1 } >
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                                <Message color="teal">
-                                    <Hint>
-                                        {
-                                            !hasMapping ? (
-                                                <>
-                                                    { t("console:manage.features.claims.local.forms.infoMessages." +
-                                                        "disabledConfigInfo") }
-                                                    <div>
-                                                        Add SCIM mapping from
-                                                        <Link external={ false }
-                                                              onClick={ () =>
-                                                                  history.push(AppConstants.getPaths().get("SCIM_MAPPING"))
-                                                              }
-                                                        > here
-                                                        </Link>.
-                                                    </div>
-                                                </>
-                                            ):(
-                                                t("console:manage.features.claims.local.forms.infoMessages." +
-                                                "configApplicabilityInfo")
-                                            )
-                                        }
-                                    </Hint>
-                                </Message>
-                            </Grid.Column>
-                        </Grid.Row>
-                    }
-                    {
                         //Hides on user_id, username and groups claims
                         claim && claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI
                             && claim.claimURI !== ClaimManagementConstants.USER_NAME_CLAIM_URI
-                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI 
-                            && !hideSpecialClaims &&
+                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI &&
                         (
                             <Field.Checkbox
                                 ariaLabel="supportedByDefault"
@@ -429,15 +345,15 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 listen={ (values) => {
                                     setIsShowDisplayOrder(!!values?.supportedByDefault);
                                 } }
+                                checked={isDisplayChecked}
+                                disabled={ isClaimReadOnly }
                                 data-testid={ `${testId}-form-supported-by-default-input` }
                                 readOnly={ isReadOnly }
-                                disabled={ !hasMapping }
                             />
                         )
                     }
                     {
-                        attributeConfig.editAttributes.showDisplayOrderInput && isShowDisplayOrder 
-                        && !hideSpecialClaims
+                        attributeConfig.editAttributes.showDisplayOrderInput && isShowDisplayOrder
                         && (
                             <Field.Input
                                 ariaLabel="displayOrder"
@@ -462,8 +378,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     }
                     {
                         claim && attributeConfig.editAttributes.showRequiredCheckBox
-                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI 
-                            && !hideSpecialClaims &&
+                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI &&
                             <Field.Checkbox
                                 ariaLabel="required"
                                 name="required"
@@ -473,9 +388,12 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 data-testid={ `${ testId }-form-required-checkbox` }
                                 readOnly={ isReadOnly }
                                 hint={ t("console:manage.features.claims.local.forms.requiredHint") }
-                                disabled={ isClaimReadOnly || !hasMapping }
-                                { ...( isClaimReadOnly ?
-                                    { value: false } :
+                                listen={(value) => {
+                                    setDisplayChecked(value);
+                                }}
+                                disabled={ isClaimReadOnly }
+                                { ...( isClaimReadOnly ? 
+                                    { value: false } : 
                                     { defaultValue : claim?.required } ) }
                             />
                     }
@@ -483,8 +401,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         //Hides on user_id, username and groups claims
                         claim && claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI
                             && claim.claimURI !== ClaimManagementConstants.USER_NAME_CLAIM_URI
-                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI 
-                            && !hideSpecialClaims &&
+                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI &&
                         (
                             <Field.Checkbox
                                 ariaLabel="readOnly"
@@ -499,7 +416,6 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 listen={ (value) => {
                                     setIsClaimReadOnly(value);
                                 } }
-                                disabled={ !hasMapping }
                             />
                         )
                     }
@@ -508,14 +424,12 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             featureConfig?.attributeDialects,
                             featureConfig?.attributeDialects?.scopes?.update,
                             allowedScopes
-                        ) && !hideSpecialClaims &&
+                        ) &&
                         (
                             <Field.Button
                                 ariaLabel="submit"
                                 size="small"
                                 buttonType="primary_btn"
-                                loading={ isSubmitting }
-                                disabled={ isSubmitting }
                                 label={ t("common:update") }
                                 name="submit"
                             />
@@ -525,7 +439,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             </EmphasizedSegment>
             <Divider hidden />
             {
-                attributeConfig.editAttributes.showDangerZone && !hideSpecialClaims &&
+                attributeConfig.editAttributes.showDangerZone &&
                 <Show when={ AccessControlConstants.ATTRIBUTE_DELETE }>
                     <DangerZoneGroup
                         sectionHeader={ t("common:dangerZone") }
