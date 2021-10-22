@@ -91,7 +91,6 @@ export class Config {
             helpCenterURL: window["AppUtils"].getConfig().helpCenterUrl,
             idpConfigs: window["AppUtils"].getConfig().idpConfigs,
             loginCallbackUrl: window["AppUtils"].getConfig().loginCallbackURL,
-            productVersion: window["AppUtils"].getConfig().productVersion,
             serverHost: window["AppUtils"].getConfig().serverOriginWithTenant,
             serverOrigin: window["AppUtils"].getConfig().serverOrigin,
             superTenant: window["AppUtils"].getConfig().superTenant,

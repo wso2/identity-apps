@@ -213,7 +213,6 @@ export const AppUtils = (function() {
                 isSaas: this.isSaas(),
                 loginCallbackURL: this.constructRedirectURLs(_config.loginCallbackPath),
                 logoutCallbackURL: this.constructRedirectURLs(_config.logoutCallbackPath),
-                productVersion: _config.productVersion,
                 productVersionConfig: _config.ui.productVersionConfig,
                 routes: {
                     home: this.constructAppPaths(_config.routePaths.home),
@@ -321,8 +320,8 @@ export const AppUtils = (function() {
          */
         getTenantQualifiedAccountAppPath: function() {
             return ((this.getTenantPrefix() !== "") && (this.getTenantName() !== "")) ?
-                _config.accountAppOrigin + 
-                "/" + this.getTenantPrefix() + 
+                _config.accountAppOrigin +
+                "/" + this.getTenantPrefix() +
                 "/" + this.getTenantName() : "";
         },
 

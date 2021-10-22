@@ -90,7 +90,6 @@ const ReduxStoreStateMock = {
                 storage: "webWorker"
             },
             loginCallbackUrl: "https://localhost:9001/console/login",
-            productVersion: "",
             serverHost: "https://localhost:9443",
             serverOrigin: "https://localhost:9443",
             superTenant: "carbon.super",

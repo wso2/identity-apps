@@ -39,7 +39,6 @@
     "isSaas": true,
     "loginCallbackPath": "",
     "logoutCallbackPath": "",
-    "productVersion": "",
     "serverOrigin": "https://localhost:9443",
     "routePaths": {
         "home": "/develop/applications",
