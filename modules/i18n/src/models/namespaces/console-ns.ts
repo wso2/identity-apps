@@ -2611,6 +2611,7 @@ export interface ConsoleNS {
                             attributeName: {
                                 validation: {
                                     invalid: string;
+                                    alreadyExists: string;
                                 };
                             };
                         };

@@ -5686,7 +5686,8 @@ export const console: ConsoleNS = {
                             attributeName: {
                                 validation: {
                                     invalid: "Attribute name can only contain alphanumeric characters "
-                                        +"and _. And must be of length between 3 to 30 characters."
+                                        +"and _. And must be of length between 3 to 30 characters.",
+                                    alreadyExists: "An Attribute already exists with the given Attribute name."
                                 }
                             }
                         },

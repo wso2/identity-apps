@@ -45,6 +45,14 @@ interface BasicDetailsLocalClaimsPropsInterface extends TestableComponentInterfa
      * The base claim URI string
      */
     claimURIBase: string;
+    /**
+     * State for button loading
+     */
+    validateMapping: boolean;
+    /**
+     * Called to initiate button loading
+     */
+    setValidateMapping: (state: boolean) => void;
 }
 
 /**
@@ -61,6 +69,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
         onSubmit,
         values,
         claimURIBase,
+        validateMapping,
+        setValidateMapping,
         [ "data-testid" ]: testId
     } = props;
 
@@ -78,7 +88,6 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
     const [ isInlineEditMode, setIsInlineEditMode ] = useState<boolean>(false);
     const [ oidcMapping, setOidcMapping ] = useState<string>(values?.get("oidc")?.toString());
     const [ scimMapping, setScimMapping ] = useState<string>(values?.get("scim")?.toString());
-    const [ validateMapping, setValidateMapping ] = useState<boolean>(false);
     const [ isScimMappingRemoved, setIsScimMappingRemoved] = useState<boolean>(false);
 
     const nameField = useRef<HTMLElement>(null);
@@ -101,6 +110,20 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
         setIsShow(values?.get("supportedByDefault")?.length > 0);
         setClaimID(values?.get("claimURI")?.toString());
     }, [ values ]);
+
+    /**
+     * Trigger the validation once the attribute name
+     * is checked for availability.
+     */
+    useEffect(() => {
+        if (!noUniqueSCIMAttrib || !noUniqueOIDCAttrib) {
+            const claimElement = claimField.current.children[0].children[1].children[0] as HTMLInputElement;
+            claimElement.focus();
+            claimElement.blur();
+            setNoUniqueOIDCAttrib(true);
+            setNoUniqueSCIMAttrib(true);
+        }
+    }, [ noUniqueSCIMAttrib, noUniqueOIDCAttrib])
 
 
     /**
@@ -161,7 +184,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                     values.set("oidc", oidcMapping);
                 }
 
-                if (noUniqueOIDCAttrib && noUniqueSCIMAttrib) {
+                if (noUniqueOIDCAttrib && noUniqueSCIMAttrib && !validateMapping) {
                     onSubmit(data, values);
                 }
 
@@ -216,6 +239,14 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                             validation.isValid = false;
                                             validation.errorMessages.push(t("console:manage.features.claims."
                                                 +"dialects.forms.fields.attributeName.validation.invalid"));
+                                            return;
+                                        }
+
+                                        if (!noUniqueOIDCAttrib || !noUniqueSCIMAttrib) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(t("console:manage.features.claims."
+                                                +"dialects.forms.fields.attributeName.validation.alreadyExists"));
+                                            return;
                                         }
 
                                         // TODO: Move constants to constants file

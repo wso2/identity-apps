@@ -84,6 +84,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     const [ mappedCustomAttribues, setMappedCustomAttribues ] = useState<Map<string, string>>(null);
     const [ showMapAttributes, setShowMapAttributes ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ validateMapping, setValidateMapping ] = useState<boolean>(false);
     const hiddenUserStores: string[] = useSelector((state: AppState) => state.config.ui.hiddenUserStores);
 
     const [ firstStep, setFirstStep ] = useTrigger();
@@ -325,6 +326,8 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
             content: (
                 <BasicDetailsLocalClaims
                     submitState={ firstStep }
+                    validateMapping={ validateMapping }
+                    setValidateMapping={ setValidateMapping }
                     onSubmit={ onSubmitBasicDetails }
                     values={ basicDetailsData }
                     claimURIBase={ claimURIBase }
@@ -455,6 +458,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                                 <PrimaryButton
                                     floated="right"
                                     onClick={ next }
+                                    loading={ validateMapping }
                                     data-testid={ `${ testId }-next-button` }
                                 >
                                     { t("common:next") } <Icon name="arrow right" />
@@ -465,7 +469,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                                     floated="right"
                                     onClick={ next }
                                     data-testid={ `${ testId }-finish-button` }
-                                    loading={ isSubmitting }
+                                    loading={ isSubmitting || validateMapping }
                                     disabled={ isSubmitting }
                                 >
                                     { t("common:finish") }</PrimaryButton>
