@@ -1,20 +1,20 @@
 /**
-* Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
-*
-* WSO2 Inc. licenses this file to you under the Apache License,
-* Version 2.0 (the 'License'); you may not use this file except
-* in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied. See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the 'License'); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
@@ -45,6 +45,11 @@ interface BasicDetailsLocalClaimsPropsInterface extends TestableComponentInterfa
      * The base claim URI string
      */
     claimURIBase: string;
+    /**
+     * Handle button loading
+     */
+    validateMapping: boolean;
+    setValidateMapping: (state:boolean) => void;
 }
 
 /**
@@ -61,6 +66,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
         onSubmit,
         values,
         claimURIBase,
+        validateMapping,
+        setValidateMapping,
         [ "data-testid" ]: testId
     } = props;
 
@@ -78,7 +85,6 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
     const [ isInlineEditMode, setIsInlineEditMode ] = useState<boolean>(false);
     const [ oidcMapping, setOidcMapping ] = useState<string>(values?.get("oidc").toString());
     const [ scimMapping, setScimMapping ] = useState<string>(values?.get("scim").toString());
-    const [ validateMapping, setValidateMapping ] = useState<boolean>(false);
     const [ isScimMappingRemoved, setIsScimMappingRemoved] = useState<boolean>(false);
 
     const nameField = useRef<HTMLElement>(null);
@@ -101,6 +107,20 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
         setIsShow(values?.get("supportedByDefault")?.length > 0);
         setClaimID(values?.get("claimURI")?.toString());
     }, [ values ]);
+
+    /**
+     * Trigger the validation once the attribute name
+     * is checked for availability.
+     */
+    useEffect(() => {
+        if (!noUniqueSCIMAttrib || !noUniqueOIDCAttrib) {
+            const claimElement = claimField.current.children[0].children[1].children[0] as HTMLInputElement;
+            claimElement.focus();
+            claimElement.blur();
+            setNoUniqueOIDCAttrib(true);
+            setNoUniqueSCIMAttrib(true);
+        }
+    }, [ noUniqueSCIMAttrib, noUniqueOIDCAttrib])
 
 
     /**
@@ -161,7 +181,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                     values.set("oidc", oidcMapping);
                 }
 
-                if (noUniqueOIDCAttrib && noUniqueSCIMAttrib) {
+                if (noUniqueOIDCAttrib && noUniqueSCIMAttrib && !validateMapping) {
                     onSubmit(data, values);
                 }
 
@@ -216,6 +236,14 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                             validation.isValid = false;
                                             validation.errorMessages.push(t("console:manage.features.claims."
                                                 +"dialects.forms.fields.attributeName.validation.invalid"));
+                                            return;
+                                        }
+
+                                        if (!noUniqueOIDCAttrib || !noUniqueSCIMAttrib) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(t("console:manage.features.claims."
+                                                +"dialects.forms.fields.attributeName.validation.alreadyExists"));
+                                            return;
                                         }
 
                                         // TODO: Move constants to constants file

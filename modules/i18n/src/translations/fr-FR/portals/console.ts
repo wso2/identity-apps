@@ -4306,7 +4306,8 @@ export const console: ConsoleNS = {
                                 validation: {
                                     invalid: "Le nom d'attribut ne peut contenir que des caractères "
                                         +"alphanumériques et _. Et doit avoir une longueur comprise "
-                                        +"entre 3 et 30 caractères."
+                                        +"entre 3 et 30 caractères.",
+                                    alreadyExists: "Un attribut existe déjà avec le nom d'attribut donné."
                                 }
                             }
                         },
