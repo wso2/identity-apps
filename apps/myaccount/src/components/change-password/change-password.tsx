@@ -28,7 +28,7 @@ import { CommonConstants } from "../../constants";
 import { AlertInterface, AlertLevels } from "../../models";
 import { AppState } from "../../store";
 import { setActiveForm } from "../../store/actions";
-import { endUserSession } from "../../utils";
+import { useEndUserSession } from "../../utils";
 import { EditSection, SettingsSection } from "../shared";
 
 /**
@@ -78,6 +78,8 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
+    const endUserSession = useEndUserSession();
+
     /**
      * Handles the `onSubmit` event of forms.
      *
@@ -112,7 +114,6 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                         )
                     });
 
-                    // Terminate the user session.
                     endUserSession();
                 }
             })

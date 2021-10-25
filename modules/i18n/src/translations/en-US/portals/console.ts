@@ -689,6 +689,14 @@ export const console: ConsoleNS = {
                         header: "Are you sure?",
                         message: "If you revoke this application, authentication flows for this application will " +
                             "stop working. Please proceed with caution."
+                    },
+                    certificateDelete: {
+                        assertionHint: "Please confirm your action.",
+                        content: "N/A",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will permanently delete the certificate.",
+                        primaryAction: "Delete",
+                        secondaryAction: "Cancel"
                     }
                 },
                 dangerZoneGroup: {
@@ -785,10 +793,11 @@ export const console: ConsoleNS = {
                                 },
                                 heading: "User Attribute Selection",
                                 attributeComponentHint: "Manage the user attributes you want to share with this " +
-                                    "application via <1>OpenID Connect Scopes.</1> You can map additional attributes " +
-                                    "by navigating to <3>Attribute Mappings.</3>",
+                                    "application via <1>OpenID Connect Scopes.</1> You can add new attributes " +
+                                    "and mappings by navigating to <3>Attributes.</3>",
                                 attributeComponentHintAlt: "Manage the user attributes you want to share with this" +
-                                    " application.",
+                                    " application. You can add new attributes and mappings by navigating to " +
+                                    "<1>Attributes.</1>",
                                 description: "Add the user attributes that are allowed to be shared with this " +
                                     "application.",
                                 mandatoryAttributeHint: "Mark which user attributes are mandatory to be shared " +
@@ -941,12 +950,15 @@ export const console: ConsoleNS = {
                                                 }
                                             },
                                             secretsList: {
-                                                iconTooltip: "Securely store access keys as secrets. A secret can " +
-                                                    "replace the API key in callChoreo function in the conditional " +
-                                                    "authentication scripts.",
                                                 create: "Create new secret",
                                                 emptyPlaceholder: "No secrets available",
-                                                search: "Search by secret name"
+                                                search: "Search by secret name",
+                                                tooltips: {
+                                                    keyIcon: "Securely store access keys as secrets. A secret can " +
+                                                        "replace the API key in <1>callChoreo()</1> function in the " +
+                                                        "conditional authentication scripts.",
+                                                    plusIcon: "Add to the script"
+                                                }
                                             },
                                             heading: "Script-based configuration",
                                             hint: "Define the authentication flow via an adaptive script. You can " +
@@ -1283,9 +1295,13 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "Certificate",
-                                hint: "This certificate is used to validate the signatures of the signed " +
-                                    "requests and to decrypt the encrypted requests from the" +
-                                    " application to {{productName}}."
+                                hint: {
+                                    customOidc: "This certificate is used to encrypt the <1>id_token</1>" +
+                                        " returned after the authentication.",
+                                    customSaml: "This certificate is used to validate the signatures of the " +
+                                        "signed requests and to encrypt the SAML assertions returned after " +
+                                        "authentication."
+                                }
                             }
                         }
                     },
@@ -1672,6 +1688,10 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "Scope validators"
+                            },
+                            certificates: {
+                                disabledPopup: "This certificate is used to encrypt the <1>id_token</1>." +
+                                    " First, you need to disable <3>id_token</3> encryption to proceed."
                             }
                         }
                     },
@@ -1991,6 +2011,10 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "Single Sign-On Profile"
+                            },
+                            certificates: {
+                                disabledPopup: "Make sure request signature validation and" +
+                                    " assertion encryption are disabled to proceed."
                             }
                         }
                     },
@@ -2238,7 +2262,7 @@ export const console: ConsoleNS = {
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "This organisation reached the maximum limit of 200 applications allowed.",
+                            description: "You have reached the maximum number of applications allowed.",
                             message: "Failed to create the application"
                         }
                     },
@@ -2617,6 +2641,14 @@ export const console: ConsoleNS = {
                             " <5>forEach</5> are not allowed in the conditional authentication" +
                             " script.",
                         message: "Failed to update the script"
+                    },
+                    deleteCertificateSuccess: {
+                        description: "Successfully deleted the application certificate.",
+                        message: "Deleted certificate"
+                    },
+                    deleteCertificateGenericError: {
+                        description: "Something went wrong. We were unable to delete the application certificate.",
+                        message: "Failed to update the application"
                     }
                 },
                 placeholders: {
@@ -2835,12 +2867,12 @@ export const console: ConsoleNS = {
                 dangerZoneGroup: {
                     deleteIDP: {
                         actionTitle: "Delete",
-                        header: "Delete identity provider",
+                        header: "Delete connection",
                         subheader: "Once you delete it, it cannot be recovered. Please be certain."
                     },
                     disableIDP: {
-                        actionTitle: "{{ state }} Identity Provider",
-                        header: "{{ state }} identity provider",
+                        actionTitle: "{{ state }} Connection",
+                        header: "{{ state }} connection",
                         subheader: "Once you disable it, it can no longer be used until you enable it again.",
                         subheader2: "Enable the identity provider to use it with your applications."
                     },
@@ -2985,7 +3017,8 @@ export const console: ConsoleNS = {
                                 }
                             },
                             clientId: {
-                                hint: "The generated unique ID which is generated when the Facebook OAuth app is created.",
+                                hint: "The generated unique ID which is generated when the Facebook OAuth app is " +
+                                    "created.",
                                 label: "App ID",
                                 placeholder: "Enter App ID from Facebook application.",
                                 validations: {
@@ -3002,7 +3035,8 @@ export const console: ConsoleNS = {
                             },
                             scopes: {
                                 heading: "Permissions",
-                                hint: "Permissions granted for the connected apps to access data from Facebook. Click <1>here</> to learn more.",
+                                hint: "Permissions granted for the connected apps to access data from Facebook. " +
+                                    "Click <1>here</> to learn more.",
                                 list: {
                                     email: {
                                         description: "Grants read access to a user's primary email address."
@@ -3132,7 +3166,7 @@ export const console: ConsoleNS = {
                             AuthRedirectUrl: {
                                 ariaLabel: "SAML assertion consumer service URL",
                                 hint: "The Assertion Consumer Service (ACS) URL determines where" +
-                                    " {{productName}} expects the external identity provider to send the" + 
+                                    " {{productName}} expects the external identity provider to send the" +
                                     " SAML response.",
                                 label: "Assertion Consumer Service (ACS) URL",
                                 placeholder: "Assertion Consumer Service (ACS) URL"
@@ -3192,8 +3226,8 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter logout URL",
                                 ariaLabel: "Specify SAML 2.0 IdP Logout URL",
                                 label: "IdP logout URL",
-                                hint: "Enter the IdP's logout" +
-                                    " URL value if it's different from above."
+                                hint: "Enter the IdP's logout URL value if it's different from the Single Sign-On URL" +
+                                    " mentioned above."
                             },
                             IsAuthnRespSigned: {
                                 ariaLabel: "Authentication response must be signed always?",
@@ -3261,9 +3295,9 @@ export const console: ConsoleNS = {
                             placeholder: "https://myapp-resources.io/my_app_image.png"
                         },
                         name: {
-                            hint: "Enter a unique name for this identity provider.",
+                            hint: "Enter a unique name for this connection.",
                             label: "Name",
-                            placeholder: "Enter a name for the identity provider.",
+                            placeholder: "Enter a name for the connection.",
                             validations: {
                                 duplicate: "An identity provider already exists with this name",
                                 empty: "Identity Provider name is required",
@@ -3413,7 +3447,7 @@ export const console: ConsoleNS = {
                             message: "Create error"
                         },
                         success: {
-                            description: "Successfully created the identity provider.",
+                            description: "Successfully created the connection.",
                             message: "Create successful"
                         }
                     },
@@ -3801,11 +3835,11 @@ export const console: ConsoleNS = {
                             message: "Update error"
                         },
                         genericError: {
-                            description: "An error occurred while updating the identity provider.",
+                            description: "An error occurred while updating the connection.",
                             message: "Update Error"
                         },
                         success: {
-                            description: "Successfully updated the identity provider.",
+                            description: "Successfully updated the connection.",
                             message: "Update successful"
                         }
                     },
@@ -3819,7 +3853,7 @@ export const console: ConsoleNS = {
                             message: "Update Error"
                         },
                         success: {
-                            description: "Successfully updated the identity provider certificate.",
+                            description: "Successfully updated the connection certificate.",
                             message: "Update successful"
                         }
                     },
@@ -3877,6 +3911,12 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Successfully updated the outbound provisioning connectors.",
                             message: "Update Successful"
+                        }
+                    },
+                    apiLimitReachedError: {
+                        error: {
+                            description: "You have reached the maximum number of connections allowed.",
+                            message: "Failed to create the connection"
                         }
                     }
                 },
@@ -3950,17 +3990,18 @@ export const console: ConsoleNS = {
                 templates: {
                     enterprise: {
                         addWizard: {
-                            title: "Enterprise",
-                            subtitle: "Configure a new Identity Provider with standard authentication protocols."
+                            title: "Standard based Identity Providers",
+                            subtitle: "Configure a new Identity Provider to connect with standard authentication " +
+                                "protocols."
                         },
                         saml: {
                             preRequisites: {
                                 configureIdp: "See Asgardeo guide on configuring SAML IdP",
-                                configureRedirectURL: "Use the following URL as the " + 
+                                configureRedirectURL: "Use the following URL as the " +
                                     "<1>Assertion Consumer Service (ACS) URL</1>.",
                                 heading: "Prerequisite",
                                 hint: "The Assertion Consumer Service (ACS) URL determines" +
-                                    " where {{productName}} expects the external identity" + 
+                                    " where {{productName}} expects the external identity" +
                                     " provider to send the SAML response."
                             }
                         },
@@ -4445,8 +4486,7 @@ export const console: ConsoleNS = {
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "This organisation reached the maximum limit of 200 identity providers " +
-                                "allowed.",
+                            description: "You have reached the maximum number of identity providers allowed.",
                             message: "Failed to create the identity provider"
                         }
                     },
@@ -5083,9 +5123,9 @@ export const console: ConsoleNS = {
                         }
                     },
                     actions: {
-                        finishButton: {
-                            label: "Finish",
-                            ariaLabel: "Finish and Submit"
+                        createButton: {
+                            label: "Create",
+                            ariaLabel: "Create and Submit"
                         },
                         cancelButton: {
                             label: "Cancel",
@@ -5097,7 +5137,7 @@ export const console: ConsoleNS = {
                     secretIsHidden: {
                         title: "Why can't I see the secret?",
                         content: "Once created, you won't be able to see the secret value again. " +
-                            "You will only be able to update the secret value or delete the secret. "
+                            "You will only be able to delete the secret. "
                     },
                     adaptiveAuthSecretType: {
                         title: "Conditional Authentication Secrets",
@@ -5237,7 +5277,7 @@ export const console: ConsoleNS = {
             applicationTemplate: {
                 backButton: "Go back to Applications",
                 subTitle: "Register an application using one of the templates given below. If nothing matches your " +
-                    "application type, start with the Standard-based Application template.",
+                    "application type, start with the Standard-Based Application template.",
                 title: "Register New Application"
             },
             applications: {
@@ -5814,7 +5854,10 @@ export const console: ConsoleNS = {
                             placeholder: "Select a user attribute",
                             requiredErrorMessage: "Select a user attribute to map to"
                         },
-                        submit: "Add Attribute Mapping"
+                        submit: "Add Attribute Mapping",
+                        warningMessage: "There are no local attributes available for mapping. " +
+                            "Add new local attributes from",
+                        emptyMessage: "All the SCIM attributes are mapped to local claims."
                     },
                     notifications: {
                         addExternalAttribute: {
@@ -6031,6 +6074,12 @@ export const console: ConsoleNS = {
                         "attribute on the profile.",
                         supportedByDefault: {
                             label: "Display this attribute on the user's profile"
+                        },
+                        infoMessages: {
+                            disabledConfigInfo: "Please note that below section is disabled as there is no " +
+                                "external claim mapping found for this claim attribute.",
+                            configApplicabilityInfo: "Please note that the following attribute configurations will " +
+                                "only affect the customer users' profiles."
                         }
                     },
                     mappedAttributes: {
@@ -8514,7 +8563,7 @@ export const console: ConsoleNS = {
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "This organisation reached the maximum limit of 15 user stores allowed.",
+                            description: "You have reached the maximum number of user stores allowed.",
                             message: "Failed to create the user store"
                         }
                     },

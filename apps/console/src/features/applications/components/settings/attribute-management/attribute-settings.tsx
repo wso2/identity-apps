@@ -574,7 +574,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             claimMapping.map((mapping) => mapping.applicationClaim)
         );
 
-        if (mappedValues.size === claimMapping.length) {
+        if (!claimMappingOn || mappedValues.size === claimMapping.length) {
             submitAdvanceForm();
             setTriggerAdvanceSettingFormSubmission();
         }

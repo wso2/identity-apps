@@ -464,7 +464,9 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                             ) => (
                                                 <ResourceGrid.Card
                                                     key={ templateIndex }
-                                                    resourceName={ template.name }
+                                                    resourceName={
+                                                        template.name === "Enterprise" ? "Standard-Based IdP" : template.name
+                                                    }
                                                     isResourceComingSoon={ template.comingSoon }
                                                     disabled={ template.disabled }
                                                     comingSoonRibbonLabel={ t("common:comingSoon") }

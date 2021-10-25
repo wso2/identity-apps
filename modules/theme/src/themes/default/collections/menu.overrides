@@ -369,6 +369,13 @@
                 margin: 0 !important;
                 min-height: @userDropdownLinkMinHeight;
             }
+            .organization-label {
+                background: #ffebd2;
+                margin: 5px;
+                min-width: 272px !important;
+                text-align: center;
+                width: calc(100% - 10px);
+            }
         }
     }
 }
@@ -626,6 +633,13 @@
 .ui.menu {
     .ui.dropdown {
         .menu {
+            &.create-button-item {
+                .item {
+                    .text {
+                        color: @primaryColor;
+                    }
+                }
+            }
             &.custom-dropdown {
                 max-height: 200px;
                 max-width: 50px;

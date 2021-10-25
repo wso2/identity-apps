@@ -448,7 +448,8 @@ export const myAccount: MyAccountNS = {
                     name: "My Account"
                 },
                 tooltip: "Apps"
-            }
+            },
+            organizationLabel: "இந்தக் கணக்கு நிர்வகிக்கப்படுகிறது"
         },
         linkedAccounts: {
             accountTypes: {

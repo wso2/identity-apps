@@ -12,6 +12,7 @@ export interface CommonConfig {
         enableQuerySearch: boolean;
     };
     header: {
+        organization: string;
         /**
          * Should the app switcher be shown as nine dots dropdown.
          */

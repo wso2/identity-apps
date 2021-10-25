@@ -48,7 +48,6 @@
     "isSaas": true,
     "loginCallbackURL": "https://localhost:9443/console/login",
     "logoutCallbackURL": "https://localhost:9443/console/login",
-    "productVersion": "5.11.0-m36-SNAPSHOT",
     "productVersionConfig": {},
     "routes": {
         "home": "/console/develop/applications",

@@ -72,6 +72,15 @@ interface ExternalClaimsPropsInterface extends TestableComponentInterface {
      */
     wizard?: boolean;
     /**
+     * Specifies the dialect id required to filter
+     * mappable claims
+     */
+    dialectId?: string;
+    /**
+     * list of mapped local claims
+     */
+    mappedLocalClaims?: string[];
+    /**
      * Specifies if the submit button have to be displayed.
      */
     onClaimListChange?: (buttonState: boolean) => void;
@@ -97,17 +106,24 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
         attributeType,
         claimDialectUri,
         wizard,
+        dialectId,
+        mappedLocalClaims,
         onClaimListChange,
         [ "data-testid" ]: testId
     } = props;
 
     const [ claims, setClaims ] = useState<AddExternalClaim[]>([]);
     const [ initialList, setInitialList ] = useState<AddExternalClaim[]>([]);
+    const [ tempMappedLocalClaims, setTempMappedLocalClaims ] = useState<string[]>();
 
     const ref = useRef(true);
     const firstTimeValueChanges = useRef(true);
 
     const { t } = useTranslation();
+
+    useEffect(() => {
+        setTempMappedLocalClaims(mappedLocalClaims);
+    }, [ mappedLocalClaims ])
 
     useEffect(() => {
         if (ref.current) {
@@ -158,6 +174,9 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
             mappedLocalClaimURI: values.get("localClaim").toString()
         };
         const newState = [ ...claims, newClaim ];
+        setTempMappedLocalClaims(prevLocalClaims => 
+            [ ...prevLocalClaims, newClaim.mappedLocalClaimURI
+        ]);
         setClaims(newState);
         onExternalClaimsChanged && onExternalClaimsChanged(newState);
     };
@@ -175,8 +194,10 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
      * @param {ClaimEventClickItem} editingClaim
      */
     const onExternalClaimDelete = (editingClaim: ClaimEventClickItem): void => {
+        const deletedClaim = editingClaim as AddExternalClaim
         const filteredClaims = claims.filter((claim: AddExternalClaim) => !isEqual(editingClaim, claim));
         setClaims(filteredClaims);
+        setTempMappedLocalClaims(tempMappedLocalClaims.filter(claim => claim !== deletedClaim.mappedLocalClaimURI));
         onExternalClaimsChanged && onExternalClaimsChanged(filteredClaims);
     };
 
@@ -225,6 +246,8 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
                         data-testid={ `${ testId }-add-external-claims` }
                         attributeType={ attributeType }
                         claimDialectUri={ claimDialectUri }
+                        dialectId={ dialectId }
+                        mappedLocalClaims={ tempMappedLocalClaims }
                     />
                     <Divider hidden />
                     {
@@ -238,6 +261,7 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
                                     onDelete={ onExternalClaimDelete }
                                     data-testid={ `${ testId }-list` }
                                     attributeType={ attributeType }
+                                    isEditable={ false }
                                 />
                             )
                             : wizard && (

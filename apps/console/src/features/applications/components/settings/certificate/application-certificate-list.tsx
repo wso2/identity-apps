@@ -16,28 +16,46 @@
  * under the License.
  */
 
-import { DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, CertificateValidity, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
 import { Forms } from "@wso2is/forms";
 import {
-    Certificate as CertificateDisplay,
+    ConfirmationModal,
     EmptyPlaceholder,
-    GenericIcon,
     PrimaryButton,
     ResourceList,
-    ResourceListItem
+    ResourceListItem,
+    UserAvatar
 } from "@wso2is/react-components";
 import moment from "moment";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Divider, Grid, Icon, Modal, Popup, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
+import { useDispatch } from "react-redux";
+import { Divider, Grid, Icon, Popup, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 import { AddApplicationCertificateWizard } from "./add-certificate-wizard";
-import { UIConstants, getCertificateIllustrations, getEmptyPlaceholderIllustrations } from "../../../../core";
+import { getEmptyPlaceholderIllustrations, UIConstants } from "../../../../core";
+import { updateApplicationDetails } from "../../../api";
+import { ApplicationInterface, CertificateTypeInterface } from "../../../models";
+import { CertificateManagementConstants } from "@wso2is/core/constants";
+import { CertificateFormFieldModal } from "../../modals";
 
 /**
  * Proptypes for the Application certificate list component.
  */
 interface ApplicationCertificatesPropsListInterface extends TestableComponentInterface {
+    /**
+     * Specifies whether JWKS or Certificates
+     * remove/delete is allowed or not.
+     */
+    deleteAllowed?: boolean;
+    /**
+     * The message or the content of the pop up saying
+     * why it's being disabled.
+     */
+    reasonInsideTooltipWhyDeleteIsNotAllowed?: ReactNode;
+    application: ApplicationInterface;
+    onUpdate: (id: string) => void;
     applicationCertificate: string;
     applicationName?: string;
     updatePEMValue: (value: string) => void;
@@ -55,25 +73,36 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
 ): ReactElement => {
 
     const {
+        deleteAllowed,
+        reasonInsideTooltipWhyDeleteIsNotAllowed,
+        onUpdate,
+        application,
         applicationCertificate,
         updatePEMValue,
-        ["data-testid"]: testId
+        [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
+    const dispatch = useDispatch();
 
     const [ certificates, setCertificates ] = useState<DisplayCertificate[]>(null);
     const [ certificateModal, setCertificateModal ] = useState<boolean>(false);
     const [ certificateDisplay, setCertificateDisplay ] = useState<DisplayCertificate>(null);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
+    const [ showCertificateDeleteConfirmation, setShowCertificateDeleteConfirmation ] = useState<boolean>(false);
+    const [ ongoingDeleteRequest, setOngoingDeleteRequest ] = useState<boolean>(false);
 
     useEffect(() => {
         if (applicationCertificate) {
             const certificatesList: DisplayCertificate[] = [];
-            certificatesList?.push(CertificateManagementUtils.displayCertificate(null, applicationCertificate));
+            if (CertificateManagementUtils.canSafelyParseCertificate(applicationCertificate)) {
+                certificatesList?.push(CertificateManagementUtils.displayCertificate(null, applicationCertificate));
+            } else {
+                certificatesList?.push(CertificateManagementConstants.DUMMY_DISPLAY_CERTIFICATE);
+            }
             setCertificates(certificatesList);
         }
-    }, [applicationCertificate]);
+    }, [ applicationCertificate ]);
 
     useEffect(() => {
         if (!certificateDisplay) {
@@ -89,130 +118,133 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
     }, [certificateModal]);
 
     /**
-     * Shows the certificate details in modal.
-     */
-    const showCertificateModal = (): ReactElement => {
-        return (
-            <Modal
-                className="certificate-display"
-                dimmer="blurring"
-                size="tiny"
-                open={ certificateModal }
-                onClose={ () => {
-                    setCertificateModal(false);
-                } }
-                data-testid={ `${testId}-view-certificate-modal` }
-            >
-                <Modal.Header>
-                    <div className="certificate-ribbon">
-                        <GenericIcon
-                            inline
-                            transparent
-                            size="auto"
-                            icon={ getCertificateIllustrations().ribbon }
-                        />
-                        <div className="certificate-alias">
-                            View Certificate - {
-                            certificateDisplay?.alias
-                                ? certificateDisplay?.alias
-                                : certificateDisplay?.issuerDN && (
-                                CertificateManagementUtils.searchIssuerDNAlias(certificateDisplay?.issuerDN)
-                            )
-                        }
-                        </div>
-                        <br/>
-                        <div className="certificate-serial">Serial Number: { certificateDisplay?.serialNumber }</div>
-                    </div>
-                </Modal.Header>
-                <Modal.Content className="certificate-content">
-                    <CertificateDisplay
-                        certificate={ certificateDisplay }
-                        labels={ {
-                            issuerDN: t("console:manage.features.certificates.keystore.summary.issuerDN"),
-                            subjectDN: t("console:manage.features.certificates.keystore.summary.subjectDN"),
-                            validFrom: t("console:manage.features.certificates.keystore.summary.validFrom"),
-                            validTill: t("console:manage.features.certificates.keystore.summary.validTill"),
-                            version: t("console:manage.features.certificates.keystore.summary.version")
-                        } }
-                    />
-                </Modal.Content>
-            </Modal>
-        );
-    };
-
-    /**
      * Show the certificate details.
-     *
      * @param certificate
      */
     const handleViewCertificate = (certificate: DisplayCertificate) => {
         setCertificateDisplay(certificate);
     };
 
-    /**
-     * Remove the certificate from the certificated list.
-     * The path attribute of the patch request requires the certificate index.
-     * At the moment, the index of the certificate to be deleted is obtained from the indexes of
-     * @see certificates array. This may cause unexpected behaviours if the certificates array is manipulated
-     * for some reason.
-     *
-     * @param certificateIndex
-     */
-    const deleteCertificate = () => {
-        updatePEMValue("");
+    const deleteCertificate = async (): Promise<void> => {
+
+        const EMPTY_STRING = "";
+
+        setOngoingDeleteRequest(true);
+        updatePEMValue(EMPTY_STRING);
         setCertificates(null);
+
+        try {
+            const patchObject: any = {
+                general: {
+                    advancedConfigurations: {
+                        certificate: {
+                            type: CertificateTypeInterface.PEM,
+                            value: EMPTY_STRING
+                        }
+                    }
+                }
+            };
+            await updateApplicationDetails({
+                id: application?.id,
+                ...(patchObject.general)
+            });
+            dispatch(addAlert({
+                description: t("console:develop.features.applications.notifications" +
+                    ".deleteCertificateSuccess.description"),
+                level: AlertLevels.SUCCESS,
+                message: t("console:develop.features.applications.notifications" +
+                    ".deleteCertificateSuccess.message")
+            }));
+        } catch (error) {
+            if (error.response && error.response.data && error.response.data.description) {
+                dispatch(addAlert({
+                    description: error.response.data.description,
+                    level: AlertLevels.ERROR,
+                    message: error.response.data.message
+                }));
+                return;
+            }
+            dispatch(addAlert({
+                description: t("console:develop.features.applications.notifications" +
+                    ".deleteCertificateGenericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("console:develop.features.applications.notifications." +
+                    "deleteCertificateGenericError.message")
+            }));
+        } finally {
+            setShowCertificateDeleteConfirmation(false);
+            setOngoingDeleteRequest(false);
+            onUpdate(application.id);
+        }
+
     };
 
-    /**
-     * Creates the resource item description.
-     *
-     * @param validFrom
-     * @param validTill
-     */
-    const showDescription = (validFrom: Date, validTill: Date): string => {
-        const isValid = new Date() >= validFrom && new Date() <= validTill;
-        const now = moment(new Date());
-        const recievedDate = moment(validTill);
-        let description = "";
-
-        isValid
-            ? description = "Valid for " + moment.duration(now.diff(recievedDate)).humanize()
-            : description = "Expired " + moment.duration(now.diff(recievedDate)).humanize() + " ago";
-
-        return description;
-    };
+    const DeleteCertConfirmationModal: ReactElement = (
+        <ConfirmationModal
+            onClose={ (): void => setShowCertificateDeleteConfirmation(false) }
+            onSecondaryActionClick={ (): void => setShowCertificateDeleteConfirmation(false) }
+            primaryActionLoading={ ongoingDeleteRequest }
+            onPrimaryActionClick={ deleteCertificate }
+            open={ showCertificateDeleteConfirmation }
+            type="negative"
+            primaryAction={ t("console:develop.features.applications.confirmations.certificateDelete.primaryAction") }
+            secondaryAction={ t("console:develop.features.applications.confirmations" +
+                ".certificateDelete.secondaryAction") }
+            data-testid={ `${ testId }-delete-confirmation-modal` }
+            closeOnDimmerClick={ false }>
+            <ConfirmationModal.Header
+                data-testid={ `${ testId }-delete-confirmation-modal-header` }>
+                { t("console:develop.features.applications.confirmations.certificateDelete.header") }
+            </ConfirmationModal.Header>
+            <ConfirmationModal.Message
+                attached
+                negative
+                data-testid={ `${ testId }-delete-confirmation-modal-message` }>
+                { t("console:develop.features.applications.confirmations.certificateDelete.message") }
+            </ConfirmationModal.Message>
+        </ConfirmationModal>
+    );
 
     /**
      * Creates the resource item header.
      *
-     * @param validFrom
-     * @param validTill
-     * @param issuer
+     * @param validFrom {Date}
+     * @param validTill {Date}
+     * @param issuer {string}
      */
-    const showValidityLabel = (validFrom: Date, validTill: Date, issuer: string): ReactElement => {
-        let icon: SemanticICONS = null;
-        let iconColor: SemanticCOLORS = null;
+    const createValidityLabel = (validFrom: Date, validTill: Date, issuer: string): ReactElement => {
 
-        const currentDate = moment(new Date());
+        let icon: SemanticICONS;
+        let iconColor: SemanticCOLORS;
+
         const expiryDate = moment(validTill);
-        const isValid = new Date() >= validFrom && new Date() <= validTill;
 
-        if (isValid) {
-            if (Math.abs(moment.duration(currentDate.diff(expiryDate)).months()) > 1) {
+        const validity: CertificateValidity = CertificateManagementUtils
+            .determineCertificateValidityState({
+                from: validFrom,
+                to: validTill
+            });
+
+        switch (validity) {
+            case CertificateValidity.VALID: {
                 icon = "check circle";
                 iconColor = "green";
-            } else {
+                break;
+            }
+            case CertificateValidity.WILL_EXPIRE_SOON: {
                 icon = "exclamation circle";
                 iconColor = "yellow";
+                break;
             }
-        } else {
-            icon = "times circle";
-            iconColor = "red";
+            default: {
+                icon = "times circle";
+                iconColor = "red";
+            }
         }
 
         return (
-            <>
-                { issuer + " " }
+            <React.Fragment>
+                { issuer + CertificateManagementConstants.SPACE_CHARACTER }
                 <Popup
                     trigger={ <Icon name={ icon } color={ iconColor }/> }
                     content={ "Expiry date: " + expiryDate.format("DD/MM/YYYY") }
@@ -220,7 +252,50 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
                     position="top left"
                     size="mini"
                 />
-            </>
+            </React.Fragment>
+        );
+
+    };
+
+    /**
+     * Creates what to show as the resource list item avatar.
+     * @param certificate {DisplayCertificate}
+     */
+    const createCertificateResourceAvatar = (certificate: DisplayCertificate): ReactElement => {
+        return (
+            <UserAvatar
+                name={
+                    certificate?.infoUnavailable
+                        ? CertificateManagementConstants.QUESTION_MARK
+                        : CertificateManagementUtils.searchIssuerDNAlias(certificate?.issuerDN)
+                }
+                size="mini"
+                floated="left"
+            />
+        );
+    };
+
+    /**
+     * Creates a dummy label telling that we're unable to visualize
+     * this certificate.
+     * @param certificate {DisplayCertificate}
+     */
+    const createDummyValidityLabel = (certificate: DisplayCertificate): ReactNode => {
+        return (
+            <span className="with-muted-list-item-header">
+                Unable to visualize the certificate details&nbsp;
+                <Popup
+                    trigger={
+                        <Icon
+                            onClick={ () => handleViewCertificate(certificate) }
+                            name={ "info circle" }
+                            color={ "grey" }/> }
+                    content={ "Click for more info" }
+                    inverted
+                    position="top left"
+                    size="mini"
+                />
+            </span>
         );
     };
 
@@ -233,8 +308,9 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
                             <Grid.Column width={ 16 }>
                                 <Divider hidden/>
                                 <ResourceList
-                                    className="application-list"
                                     fill
+                                    relaxed={ false }
+                                    className="application-list"
                                     loadingStateOptions={ {
                                         count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                                         imageType: "circular"
@@ -244,45 +320,59 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
                                         certificates?.map((certificate, index) => (
                                             <ResourceListItem
                                                 key={ index }
+                                                actionsColumnWidth={ 3 }
+                                                descriptionColumnWidth={ 9 }
                                                 actions={ [
                                                     {
-                                                        "data-testid": `${testId}-edit-cert-${index}-button`,
+                                                        "data-testid": `${ testId }-edit-cert-${ index }-button`,
                                                         icon: "pencil",
                                                         onClick: () => setShowWizard(true),
                                                         popupText: "Change certificate",
                                                         type: "button"
                                                     },
                                                     {
-                                                        "data-testid": `${testId}-edit-cert-${index}-button`,
+                                                        hidden: certificate?.infoUnavailable,
+                                                        disabled: certificate?.infoUnavailable,
+                                                        "data-testid": `${ testId }-edit-cert-${ index }-button`,
                                                         icon: "eye",
                                                         onClick: () => handleViewCertificate(certificate),
                                                         popupText: "View certificate",
                                                         type: "button"
                                                     },
                                                     {
-                                                        "data-testid": `${testId}-delete-cert-${index}-button`,
+                                                        "data-testid": `${ testId }-delete-cert-${ index }-button`,
+                                                        disabled: !deleteAllowed,
                                                         icon: "trash alternate",
-                                                        onClick: () => deleteCertificate(),
-                                                        popupText: t("console:manage.features.users.usersList.list." +
-                                                            "iconPopups.delete"),
+                                                        onClick: () => setShowCertificateDeleteConfirmation(true),
+                                                        popupText: deleteAllowed
+                                                            ? t("console:manage.features.users.usersList.list." +
+                                                                "iconPopups.delete")
+                                                            : reasonInsideTooltipWhyDeleteIsNotAllowed,
                                                         type: "button"
                                                     }
                                                 ] }
                                                 actionsFloated="right"
-                                                avatar={ <GenericIcon
-                                                    inline
-                                                    transparent
-                                                    size="nano"
-                                                    icon={ getCertificateIllustrations().ribbon }
-                                                /> }
-                                                itemHeader={ showValidityLabel(
-                                                    certificate.validFrom,
-                                                    certificate.validTill,
-                                                    CertificateManagementUtils.searchIssuerDNAlias(
-                                                        certificate?.issuerDN)
-                                                ) }
-                                                itemDescription={ showDescription(certificate.validFrom,
-                                                    certificate.validTill) }
+                                                avatar={ createCertificateResourceAvatar(certificate) }
+                                                itemHeader={
+                                                    certificate?.infoUnavailable
+                                                        ? createDummyValidityLabel(certificate)
+                                                        : createValidityLabel(
+                                                        certificate.validFrom,
+                                                        certificate.validTill,
+                                                        CertificateManagementUtils.searchIssuerDNAlias(
+                                                            certificate?.issuerDN
+                                                        ))
+
+                                                }
+                                                itemDescription={
+                                                    certificate?.infoUnavailable
+                                                        ? null
+                                                        : CertificateManagementUtils
+                                                            .getValidityPeriodInHumanReadableFormat(
+                                                                certificate.validFrom,
+                                                                certificate.validTill
+                                                            )
+                                                }
                                             />
                                         ))
                                     }
@@ -292,7 +382,7 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
                     </Grid>
                 ) : (
                     <Grid>
-                        <Grid.Row>
+                        <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 }>
                                 <Divider hidden/>
                                 <Segment>
@@ -332,11 +422,18 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
                     <AddApplicationCertificateWizard
                         closeWizard={ () => setShowWizard(false) }
                         updatePEMValue={ updatePEMValue }
-                        data-testid={ `${testId}-add-certificate-wizard` }
+                        data-testid={ `${ testId }-add-certificate-wizard` }
                     />
                 )
             }
-            { showCertificateModal() }
+            { DeleteCertConfirmationModal }
+            { certificateModal && (
+                <CertificateFormFieldModal
+                    open={ certificateModal }
+                    certificate={ certificateDisplay }
+                    onClose={ () => setCertificateModal(false) }
+                />
+            ) }
         </Forms>
     );
 };
@@ -345,5 +442,7 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
  * Default proptypes for the application certificate list component.
  */
 ApplicationCertificatesListComponent.defaultProps = {
-    "data-testid": "application-certificate-list"
+    "data-testid": "application-certificate-list",
+    deleteAllowed: true,
+    reasonInsideTooltipWhyDeleteIsNotAllowed: null
 };

@@ -22,7 +22,7 @@ import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { LinkButton, ListLayout, PrimaryButton, SecondaryButton } from "@wso2is/react-components";
 import kebabCase from "lodash-es/kebabCase";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import React, { Dispatch, FunctionComponent, ReactElement, SetStateAction, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, DropdownProps, Grid, Icon, Modal, PaginationProps } from "semantic-ui-react";
@@ -68,6 +68,14 @@ interface EditExternalClaimsPropsInterface extends TestableComponentInterface {
      * Attribute URI
      */
     attributeUri: string;
+    /**
+     * Mapped local claim list
+     */
+    mappedLocalClaims: string[];
+    /**
+     * Update mapped claims on delete or edit
+     */
+    updateMappedClaims?: Dispatch<SetStateAction<boolean>>;
 }
 
 /**
@@ -84,6 +92,8 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
     const {
         attributeType,
         attributeUri,
+        mappedLocalClaims,
+        updateMappedClaims,
         [ "data-testid" ]: testId
     } = props;
 
@@ -256,6 +266,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                 }
             ));
             update();
+            updateMappedClaims(true);
         }).catch(error => {
             dispatch(addAlert(
                 {
@@ -337,28 +348,27 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                     featureConfig?.attributeDialects,
                     featureConfig?.attributeDialects?.scopes?.create, allowedScopes
                 ) && (
-                    canAddNewAttributes ? (
-                        <PrimaryButton
-                            onClick={ (): void => setShowAddExternalClaim(true) }
-                            disabled={ showAddExternalClaim }
-                            data-testid={ `${ testId }-list-layout-add-button` }
-                        >
-                            <Icon name="add"/>
-                            { t("console:manage.features.claims.external.pageLayout.edit.primaryAction",
-                                { type: resolveType(attributeType, true) }) }
-                        </PrimaryButton>
-                    ) : (
-                        <SecondaryButton
-                            onClick={ undefined }
-                            disabled={ true }
-                            data-testid={ `${ testId }-list-layout-add-coming-soon-button` }
-                        >
-                            <Icon name="add"/>
-                            { t("console:manage.features.claims.external.pageLayout.edit.primaryAction",
-                                { type: resolveType(attributeType, true) }) }
-                            { !canAddNewAttributes && <span>&nbsp;(Coming Soon)</span> }
-                        </SecondaryButton>
-                    )
+                    /**
+                     * `loading` property is used to check whether the current selected
+                     * dialect is same as the dialect which the claims are loaded. 
+                     * If it's different, this condition will wait until the correct
+                     * dialects are loaded onto the view.
+                     */
+                     <PrimaryButton
+                     loading={ claims && attributeUri !== claims[0]?.claimDialectURI  }
+                     onClick={ (): void => {
+                         if (attributeUri !== claims[0]?.claimDialectURI ) {
+                             return;
+                         }
+                         setShowAddExternalClaim(true) 
+                     } }
+                     disabled={ showAddExternalClaim || (claims && attributeUri !== claims[0]?.claimDialectURI) }
+                     data-testid={ `${ testId }-list-layout-add-button` }
+                 >
+                     <Icon name="add"/>
+                     { t("console:manage.features.claims.external.pageLayout.edit.primaryAction",
+                         { type: resolveType(attributeType, true) }) }
+                 </PrimaryButton>
                 ) }
             data-testid={ `${ testId }-list-layout` }
         >
@@ -387,7 +397,9 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                                 shouldShowInitialValues={ false }
                                 attributeType={ attributeType }
                                 claimDialectUri={ attributeUri }
+                                dialectId={ dialectID }
                                 wizard={ false }
+                                mappedLocalClaims={ mappedLocalClaims }
                                 onClaimListChange={ handleClaimListChange }
                             />
                         </Modal.Content>
@@ -458,6 +470,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                                 data-testid={ `${ testId }-list-advanced-search` }
                             />
                         ) }
+                        showTableHeaders={ true }
                         isLoading={ isLoading }
                         list={ paginate(filteredClaims, listItemLimit, offset) }
                         localClaim={ ListType.EXTERNAL }
@@ -469,6 +482,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                         data-testid={ `${ testId }-list` }
                         attributeType={ attributeType }
                         featureConfig={ featureConfig }
+                        updateMappedClaims={ updateMappedClaims }
                     />
                 </Grid.Column>
             </Grid>

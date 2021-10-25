@@ -61,7 +61,7 @@ const files = fs.readdirSync(THEME_DIR);
 const file = files ? files.filter(file => file.endsWith(".min.css"))[ 0 ] : null;
 themeHash = file ? file.split(".")[ 1 ] : null;
 
-const I18N_DIR = path.resolve(__dirname, "node_modules", "@wso2is", "i18n", "dist", "bundle");
+const I18N_DIR = path.join(__dirname, "src", "extensions", "i18n", "tmp");
 const metaFiles = fs.readdirSync(I18N_DIR);
 
 const metaFile = metaFiles ? metaFiles.filter(file => file.startsWith("meta"))[ 0 ] : null;
@@ -426,6 +426,11 @@ module.exports = (env) => {
                         to: path.join("resources", "i18n")
                     },
                     {
+                        context: path.join(__dirname, "src", "extensions", "i18n"),
+                        from: path.join("tmp", metaFile),
+                        to: path.join("resources", "i18n")
+                    },
+                    {
                         context: path.join(__dirname, "src"),
                         force: true,
                         from: "public",
@@ -455,7 +460,8 @@ module.exports = (env) => {
                         "pageEncoding=\"UTF-8\" %>",
                     filename: path.join(distFolder, "index.jsp"),
                     hash: true,
-                    hotjarSystemVariable: "<% String hotjar_track_code = System.getenv(\"hotjar_tracking_code\"); %>",
+                    // eslint-disable-next-line max-len
+                    hotjarSystemVariable: "<% String hotjar_track_code = System.getenv().getOrDefault(\"hotjar_tracking_code\", null); %>",
                     hotjarTrackingCode: "<%= hotjar_track_code %>",
                     importSuperTenantConstant: !isDeployedOnExternalServer
                         ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
@@ -489,7 +495,8 @@ module.exports = (env) => {
                         : "",
                     themeHash: themeHash,
                     vwoScriptVariable: "<%= vwo_ac_id %>",
-                    vwoSystemVariable: "<% String vwo_ac_id = System.getenv(\"vwo_account_id\"); %>"
+                    // eslint-disable-next-line max-len
+                    vwoSystemVariable: "<% String vwo_ac_id = System.getenv().getOrDefault(\"vwo_account_id\", null); %>"
                 })
                 : new HtmlWebpackPlugin({
                     filename: path.join(distFolder, "index.html"),

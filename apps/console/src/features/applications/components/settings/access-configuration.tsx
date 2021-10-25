@@ -52,9 +52,9 @@ import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
 import {
+    ApplicationInterface,
     ApplicationTemplateListItemInterface,
-    CertificateInterface,
-    OIDCDataInterface,
+    CertificateInterface, OIDCDataInterface,
     SAMLConfigModes,
     SupportedAuthProtocolMetaTypes,
     SupportedAuthProtocolTypes
@@ -68,6 +68,10 @@ import { ApplicationCreateWizard } from "../wizard";
  * Proptypes for the applications settings component.
  */
 interface AccessConfigurationPropsInterface extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
+    /**
+     * The application model.
+     */
+    application: ApplicationInterface;
     /**
      * Currently editing application id.
      */
@@ -149,6 +153,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
 ): ReactElement => {
 
     const {
+        application,
         appId,
         appName,
         certificate,
@@ -161,7 +166,6 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         allowedOriginList,
         onAllowedOriginsUpdate,
         onApplicationSecretRegenerate,
-        inboundProtocolsLoading,
         isInboundProtocolConfigRequestLoading,
         readOnly,
         template,
@@ -546,15 +550,18 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         const renderProtocolIntegrationHelpMessage = (): ReactElement => {
 
             let docLink: string = undefined;
+            let i18nKey: string = undefined;
 
             if (applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC) {
                 docLink = getLink("develop.applications.editApplication.standardBasedApplication" +
                     ".oauth2OIDC.protocol.learnMore");
+                i18nKey = "console:develop.features.applications.forms.inboundOIDC.documentation";
             }
 
             if (applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) {
                 docLink = getLink("develop.applications.editApplication.standardBasedApplication" +
                     ".saml.protocol.learnMore");
+                i18nKey = "console:develop.features.applications.forms.inboundSAML.documentation";
             }
 
             if (!docLink) {
@@ -566,10 +573,11 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     <Message visible>
                         <Text>
                             <Trans
-                                i18nKey={
-                                    "extensions:console.application.quickStart" +
-                                    ".technologySelectionWrapper.subHeading"
-                                }
+                                i18nKey={ i18nKey }
+                                tOptions={ {
+                                    protocol: ApplicationManagementUtils
+                                        .resolveProtocolDisplayName(selectedProtocol as SupportedAuthProtocolTypes)
+                                } }
                             >
                                 Read through our
                                 <DocumentationLink link={ docLink }>documentation</DocumentationLink>
@@ -601,6 +609,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                             .includes(selectedProtocol as SupportedAuthProtocolTypes)
                             ? (
                                 <InboundFormFactory
+                                    onUpdate={ onUpdate }
+                                    application={ application }
                                     isLoading={ isLoading }
                                     setIsLoading={ setIsLoading }
                                     certificate={ certificate }
@@ -650,6 +660,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                             )
                             : (
                                 <InboundFormFactory
+                                    onUpdate={ onUpdate }
+                                    application={ application }
                                     isLoading={ isLoading }
                                     setIsLoading={ setIsLoading }
                                     certificate={ certificate }

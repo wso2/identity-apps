@@ -107,7 +107,7 @@ export type CertificateConfigurationMode = "jwks" | "certificates";
 export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props): ReactElement => {
 
     const {
-        ["data-componentid"]: testId,
+        [ "data-componentid" ]: testId,
         editingIDP,
         onUpdate,
         isReadOnly,
@@ -117,6 +117,8 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
     const [ selectedConfigurationMode, setSelectedConfigurationMode ] = useState<CertificateConfigurationMode>();
     const [ addCertificateModalOpen, setAddCertificateModalOpen ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isJwksValueValid, setIsJwksValueValid ] = useState<boolean>(false);
+    const [ jwksValue, setJwksValue ] = useState<string>();
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -136,6 +138,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
             } else {
                 // Even if editingIDP?.certificate?.jwksUri?.trim() empty or not
                 // if above is not configured it's always JWKS.
+                setJwksValue(editingIDP?.certificate?.jwksUri ?? EMPTY_STRING);
                 setSelectedConfigurationMode("jwks");
             }
         } else {
@@ -234,14 +237,19 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                 inputType="url"
                 width={ 16 }
                 validation={ (value: string) => {
-                    if (!FormValidation.url(value)) {
+                    if (!value || !FormValidation.url(value)) {
+                        setIsJwksValueValid(false);
                         return t("console:develop.features.applications.forms.inboundSAML" +
                             ".fields.metaURL.validations.invalid");
                     }
                     if (commonConfig?.blockLoopBackCalls && URLUtils.isLoopBackCall(value)) {
+                        setIsJwksValueValid(false);
                         return t("console:develop.features.idp.forms.common.internetResolvableErrorMessage");
                     }
-                }}
+                    setIsJwksValueValid(true);
+                    return undefined;
+                } }
+                listen={ (value: string) => setJwksValue(value) }
                 placeholder="https://{ oauth-provider-url }/oauth/jwks"
                 maxLength={ JWKS_MAX_LENGTH }
                 minLength={ JWKS_MIN_LENGTH }
@@ -252,8 +260,14 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                     type="submit"
                     data-testid={ `${ testId }-save-button` }
                     loading={ isSubmitting }
-                    disabled={ isSubmitting }
-                >
+                    disabled={
+                        (
+                            !jwksValue ||
+                            !isJwksValueValid ||
+                            jwksValue === editingIDP?.certificate?.jwksUri
+                        ) ||
+                        isSubmitting
+                    }>
                     { t("common:update") }
                 </PrimaryButton>
             </Show>
@@ -269,7 +283,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                         onAddCertificateClicked={ openAddCertificatesWizard }/>
                 )
                 : (
-                    <Segment compact>
+                    <Segment>
                         <Grid>
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column width={ 16 }>
@@ -311,30 +325,35 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
 
     return (
         <EmphasizedSegment padded="very">
-            { enableJWKS && (
-                <React.Fragment>
-                    <Switcher
-                        compact
-                        data-testid={ `${ testId }-switcher` }
-                        selectedValue={ selectedConfigurationMode }
-                        onChange={ onSelectionChange }
-                        options={ [
-                            {
-                                label: "Use JWKS Endpoint",
-                                value: ("jwks" as CertificateConfigurationMode)
-                            },
-                            {
-                                label: "Provide Certificates",
-                                value: ("certificates" as CertificateConfigurationMode)
-                            }
-                        ] }
-                    />
-                    <Divider hidden/>
-                </React.Fragment>
-            ) }
             <Grid>
+                { enableJWKS && (
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column computer={ 8 } mobile={ 16 } widescreen={ 8 } tablet={ 16 }>
+                            <React.Fragment>
+                                <Switcher
+                                    widths={ "two" }
+                                    compact
+                                    data-testid={ `${ testId }-switcher` }
+                                    selectedValue={ selectedConfigurationMode }
+                                    onChange={ onSelectionChange }
+                                    options={ [
+                                        {
+                                            label: "Use JWKS Endpoint",
+                                            value: ("jwks" as CertificateConfigurationMode)
+                                        },
+                                        {
+                                            label: "Provide Certificates",
+                                            value: ("certificates" as CertificateConfigurationMode)
+                                        }
+                                    ] }
+                                />
+                                <Divider hidden/>
+                            </React.Fragment>
+                        </Grid.Column>
+                    </Grid.Row>
+                ) }
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column computer={ 8 } mobile={ 16 } tablet={ 16 }>
+                    <Grid.Column computer={ 8 } mobile={ 16 } widescreen={ 8 } tablet={ 16 }>
                         { selectedConfigurationMode === "jwks"
                             ? jwksInputForm
                             : (
@@ -373,3 +392,4 @@ IdpCertificates.defaultProps = {
 
 const JWKS_MAX_LENGTH = 2048;
 const JWKS_MIN_LENGTH = 10;
+const EMPTY_STRING = "";

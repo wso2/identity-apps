@@ -17,7 +17,6 @@
  */
 
 import axios from "axios";
-import log from "log";
 import { HttpRequestConfig } from "../../models";
 import { apiRequestEnd, apiRequestStart } from "../actions";
 import { API_REQUEST } from "../actions/types";
@@ -64,7 +63,6 @@ export const apiMiddleware = ({ dispatch }) => (next) => (action): void => {
             });
         })
         .catch((error) => {
-            log.error(error);
             dispatch({
                 payload: error,
                 type: onError

@@ -21,20 +21,23 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { InboundCustomProtocolForm } from "./inbound-custom-form";
 import { InboundOIDCForm } from "./inbound-oidc-form";
 import { InboundPassiveStsForm } from "./inbound-passive-sts-form";
+import { InboundSAMLCreationForm } from "./inbound-saml-creation-form";
 import { InboundSAMLForm } from "./inbound-saml-form";
 import { InboundWSTrustForm } from "./inbound-ws-trust-form";
 import {
+    ApplicationInterface,
     ApplicationTemplateListItemInterface,
     CertificateInterface,
-    SupportedAuthProtocolTypes,
-    SAMLConfigModes
+    SAMLConfigModes,
+    SupportedAuthProtocolTypes
 } from "../../models";
-import { InboundSAMLCreationForm } from "./inbound-saml-creation-form";
 
 /**
  * Proptypes for the inbound form factory component.
  */
 interface InboundFormFactoryInterface extends TestableComponentInterface {
+    onUpdate: (id: string) => void;
+    application: ApplicationInterface;
     /**
      * Current certificate configurations.
      */
@@ -92,6 +95,8 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
 ): ReactElement => {
 
     const {
+        onUpdate,
+        application,
         certificate,
         metadata,
         initialValues,
@@ -114,6 +119,8 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         case SupportedAuthProtocolTypes.OIDC:
             return (
                 <InboundOIDCForm
+                    onUpdate={ onUpdate }
+                    application={ application }
                     isLoading={ isLoading }
                     setIsLoading={ setIsLoading }
                     certificate={ certificate }
@@ -132,6 +139,8 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         case SupportedAuthProtocolTypes.OAUTH2_OIDC:
             return (
                 <InboundOIDCForm
+                    onUpdate={ onUpdate }
+                    application={ application }
                     isLoading={ isLoading }
                     setIsLoading={ setIsLoading }
                     certificate={ certificate }
@@ -161,6 +170,8 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
             }
             return (
                 <InboundSAMLForm
+                    onUpdate={ onUpdate }
+                    application={ application }
                     isLoading={ isLoading }
                     certificate={ certificate }
                     initialValues={ initialValues }

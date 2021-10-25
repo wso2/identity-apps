@@ -61,6 +61,7 @@ export const getServerConfigurationsResourceEndpoints = (
       selfSignUp: `${ serverHost }/api/server/v1/identity-governance/${
           ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID
           }/connectors/${ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID}`,
-      serverConfigurations: `${ serverHost }/api/server/v1/configs`
+      serverConfigurations: `${ serverHost }/api/server/v1/configs`,
+      serverSupportedSchemas: `${ serverHost }/api/server/v1/configs/schemas`
   };
 };

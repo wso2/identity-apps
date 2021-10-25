@@ -261,6 +261,7 @@ export interface MyAccountNS {
                 myAccount: AppSwitchItemInterface;
                 tooltip: string;
             };
+            organizationLabel: string;
         },
         linkedAccounts: {
             accountTypes: {

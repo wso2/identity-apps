@@ -20,15 +20,17 @@ import { getAllLocalClaims } from "@wso2is/core/api";
 import { AlertLevels, Claim, ClaimsGetParams, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
-import { ContentLoader, PrimaryButton } from "@wso2is/react-components";
+import { ContentLoader, Hint, Link, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { DropdownItemProps, DropdownOnSearchChangeData, Grid, Header, Label } from "semantic-ui-react";
-import { addExternalClaim } from "../../api";
+import { Button, DropdownItemProps, DropdownOnSearchChangeData, Grid, Header, Label, Message } from "semantic-ui-react";
+import { addExternalClaim, getServerSupportedClaimsForSchema } from "../../api";
 import { ClaimManagementConstants } from "../../constants";
 import { AddExternalClaim } from "../../models";
+import { attributeConfig } from "../../../../extensions";
 import { resolveType } from "../../utils";
+import { AppConstants, history } from "../../../core";
 
 /**
  * Prop types for the `AddExternalClaims` component.
@@ -70,6 +72,10 @@ interface AddExternalClaimsPropsInterface extends TestableComponentInterface {
      * Claim dialect URI
      */
     claimDialectUri?: string;
+    /**
+     * Mapped local claim list
+     */
+    mappedLocalClaims: string[];
 }
 
 /**
@@ -92,6 +98,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
         triggerSubmit,
         attributeType,
         claimDialectUri,
+        mappedLocalClaims,
         cancel,
         [ "data-testid" ]: testId
     } = props;
@@ -99,16 +106,102 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
     const [ localClaims, setLocalClaims ] = useState<Claim[]>();
     const [ filteredLocalClaims, setFilteredLocalClaims ] = useState<Claim[]>();
     const [ localClaimsSearchResults, setLocalClaimsSearchResults ] = useState<Claim[]>();
+    const [ serverSupportedClaims, setServerSupportedClaims ] = useState<string[]>([]);
     const [ localClaimsSet, setLocalClaimsSet ] = useState(false);
     const [ claim, setClaim ] = useState<string>("");
     const [ isLocalClaimsLoading, setIsLocalClaimsLoading ] = useState<boolean>(true);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isEmptyClaims, setEmptyClaims ] = useState<boolean>(false);
+    const [ serverSideClaimsLoading, setServerSideClaimsLoading ] = useState<boolean>(true);
+    const [ isEmptyServerSupportedClaims, setEmptyServerSupportedClaims] = useState<boolean>(false);
 
     const [ reset, setReset ] = useTrigger();
 
     const dispatch = useDispatch();
 
     const { t } = useTranslation();
+
+    /**
+     * Handle the visibility of button `Add Attribute Mapping` and warning message.
+     */
+    useEffect(() => {
+        if (attributeType !== "oidc"
+            && claimDialectUri !== attributeConfig.localAttributes.customDialectURI) {
+            if (!serverSupportedClaims  || !filteredLocalClaims || serverSupportedClaims.length === 0
+                || filteredLocalClaims.length === 0) {
+                setEmptyClaims(true);
+            } else {
+                setEmptyClaims(false);
+            }
+        }
+    }, [ serverSupportedClaims, filteredLocalClaims ]);
+
+
+    /**
+     * Handle the warning message to be shown.
+     */
+    useEffect(() => {
+        if (attributeType !== "oidc"
+            && claimDialectUri !== attributeConfig.localAttributes.customDialectURI) {
+            if (!serverSupportedClaims || serverSupportedClaims.length === 0) {
+                setEmptyServerSupportedClaims(true);
+                setEmptyClaims(false);
+            } else {
+                setEmptyServerSupportedClaims(false);
+                if (!filteredLocalClaims || filteredLocalClaims.length === 0) {
+                    setEmptyClaims(true);
+                } else {
+                    setEmptyClaims(false);
+                }
+            }
+        } else if (attributeType !== "oidc" &&
+            claimDialectUri === attributeConfig.localAttributes.customDialectURI
+            && (!filteredLocalClaims || filteredLocalClaims.length === 0)) {
+            setEmptyClaims(true);
+        } else {
+            setEmptyClaims(false);
+        }
+    }, [ serverSupportedClaims, filteredLocalClaims ])
+
+    useEffect(() => {
+        if (
+            claimDialectUri === attributeConfig.localAttributes.customDialectURI ||
+            claimDialectUri === attributeConfig.localAttributes.oidcDialectURI
+        ) {
+            setServerSideClaimsLoading(false);
+            return;
+        }
+        fetchServerSupportedClaims().finally();
+    }, []);
+
+    const fetchServerSupportedClaims = async (): Promise<void> => {
+        setServerSideClaimsLoading(true);
+        try {
+            const response = await getServerSupportedClaimsForSchema(dialectId);
+            setServerSupportedClaims(response.attributes);
+        } catch (error) {
+            dispatch(addAlert({
+                description:
+                    error?.response?.data?.description
+                    || t("console:manage.features.claims.local.notifications.getClaims.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: error?.response?.data?.message
+                    || t("console:manage.features.claims.local.notifications.getClaims.genericError.message")
+            }));
+        } finally {
+            setServerSideClaimsLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        // If there's no externalClaims but has serverSupportedClaims
+        if (externalClaims && externalClaims.length && !serverSideClaimsLoading) {
+            const _extClaims = new Set(externalClaims.map((c) => c.claimURI));
+            setServerSupportedClaims([
+                ...(serverSupportedClaims ?? []).filter((c) => !_extClaims.has(c))
+            ]);
+        }
+    }, [ externalClaims, serverSideClaimsLoading ]);
 
     /**
      * Gets the list of local claims.
@@ -150,8 +243,8 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
     useEffect(() => {
         if (externalClaims && localClaims) {
             let tempLocalClaims: Claim[] = [ ...localClaims ];
-            externalClaims.forEach((externalClaim: ExternalClaim) => {
-                tempLocalClaims = [ ...removeMappedLocalClaim(externalClaim.mappedLocalClaimURI, tempLocalClaims) ];
+            mappedLocalClaims.forEach((externalClaim: string) => {
+                tempLocalClaims = [ ...removeMappedLocalClaim(externalClaim, tempLocalClaims) ];
             });
             setLocalClaimsSearchResults(tempLocalClaims);
             setFilteredLocalClaims(tempLocalClaims);
@@ -182,7 +275,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
     };
 
     return (
-        !isLocalClaimsLoading ?
+        !(isLocalClaimsLoading && serverSideClaimsLoading) ?
         <Forms
             onSubmit={ (values: Map<string, FormValue>) => {
                 if (wizard) {
@@ -231,55 +324,96 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
             <Grid>
                 <Grid.Row columns={ 2 }>
                     <Grid.Column width={ 8 }>
-                        <Field
-                            name="claimURI"
-                            label={ t("console:manage.features.claims.external.forms.attributeURI.label",
-                                { type: resolveType(attributeType, true) }) }
-                            required={ true }
-                            requiredErrorMessage={ t("console:manage.features.claims.external.forms." +
-                                "attributeURI.requiredErrorMessage", { type: resolveType(attributeType, true) }) }
-                            placeholder={ t("console:manage.features.claims.external.forms.attributeURI.placeholder",
-                                { type: resolveType(attributeType) }) }
-                            type="text"
-                            listen={ (values: Map<string, FormValue>) => {
-                                setClaim(values.get("claimURI").toString());
-                            } }
-                            maxLength={ 30 }
-                            data-testid={ `${ testId }-form-claim-uri-input` }
-                            validation={ (value: string, validation: Validation) => {
-                                for (const claim of externalClaims) {
-                                    const parts = claim.claimURI.split(":");
-                                    if (parts[parts.length - 1].toLowerCase() === value.toLowerCase()) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push(t("console:manage.features.claims.external" +
-                                            ".forms.attributeURI.validationErrorMessages.duplicateName",
-                                            { type: resolveType(attributeType) }));
-                                        break;
+                        { attributeType !== "oidc" 
+                            && claimDialectUri !== attributeConfig.localAttributes.customDialectURI ?
+                            <Field
+                                name="claimURI"
+                                label={ t("console:manage.features.claims.external.forms.attributeURI.label",
+                                    { type: resolveType(attributeType, true) }) }
+                                required={ true }
+                                requiredErrorMessage={ t("console:manage.features.claims.external.forms." +
+                                    "attributeURI.requiredErrorMessage", { type: resolveType(attributeType, true) }) }
+                                placeholder={ t("console:manage.features.claims.external.forms.attributeURI.placeholder",
+                                    { type: resolveType(attributeType) }) }
+                                type={ "dropdown" }
+                                data-testid={ `${ testId }-form-claim-uri-input` }
+                                listen={ (values: Map<string, FormValue>) => {
+                                    setClaim(values.get("claimURI").toString());
+                                } }
+                                validation={ (value: string, validation: Validation) => {
+                                    for (const claim of externalClaims) {
+                                        if (claim.claimURI === value) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(t("console:manage.features.claims.external" +
+                                                ".forms.attributeURI.validationErrorMessages.duplicateName",
+                                                { type: resolveType(attributeType) }));
+                                            break;
+                                        }
                                     }
-                                }
 
-                                if (attributeType === ClaimManagementConstants.OIDC) {
-                                    if (!value.toString().match(/^[A-za-z0-9#_]+$/)) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push(t("console:manage.features.claims.external" +
-                                            ".forms.attributeURI.validationErrorMessages.invalidName",
-                                            { type: resolveType(attributeType) }));
+                                    if (attributeType === ClaimManagementConstants.OIDC) {
+                                        if (!value.toString().match(/^[A-za-z0-9#_]+$/)) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(t("console:manage.features.claims.external" +
+                                                ".forms.attributeURI.validationErrorMessages.invalidName",
+                                                { type: resolveType(attributeType) }));
+                                        }
                                     }
+                                } }
+                                children={
+                                    serverSupportedClaims?.map((claim: string, index) => {
+                                        return {
+                                            key: index,
+                                            text: claim.split(":").pop(),
+                                            value: claim.split(":").pop()
+                                        };
+                                    })
+                                    ?? []
                                 }
-                                if (attributeType === ClaimManagementConstants.SCIM) {
-                                    if (!value.toString().match(/^[a-zA-Z]([-_\w])+$/)) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push(t("console:manage.features.claims.external" +
-                                            ".forms.attributeURI.validationErrorMessages.scimInvalidName",
-                                            { type: resolveType(attributeType) }));
+                            />
+                        :
+                            <Field
+                                name="claimURI"
+                                label={ t("console:manage.features.claims.external.forms.attributeURI.label",
+                                    { type: resolveType(attributeType, true) }) }
+                                required={ true }
+                                requiredErrorMessage={ t("console:manage.features.claims.external.forms." +
+                                    "attributeURI.requiredErrorMessage", { type: resolveType(attributeType, true) }) }
+                                placeholder={ t("console:manage.features.claims.external.forms.attributeURI.placeholder",
+                                    { type: resolveType(attributeType) }) }
+                                type="text"
+                                listen={ (values: Map<string, FormValue>) => {
+                                    setClaim(values.get("claimURI").toString());
+                                } }
+                                maxLength={ 30 }
+                                data-testid={ `${ testId }-form-claim-uri-input` }
+                                validation={ (value: string, validation: Validation) => {
+                                    for (const claim of externalClaims) {
+                                        if (claim.claimURI === value) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(t("console:manage.features.claims.external" +
+                                                ".forms.attributeURI.validationErrorMessages.duplicateName",
+                                                { type: resolveType(attributeType) }));
+                                            break;
+                                        }
                                     }
-                                }
-                            } }
-                        />
+
+                                    if (attributeType === ClaimManagementConstants.OIDC) {
+                                        if (!value.toString().match(/^[A-za-z0-9#_]+$/)) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(t("console:manage.features.claims.external" +
+                                                ".forms.attributeURI.validationErrorMessages.invalidName",
+                                                { type: resolveType(attributeType) }));
+                                        }
+                                    }
+                                } }
+                            />
+                        }
 
                     </Grid.Column>
                     <Grid.Column width={ 8 } className="select-attribute">
                         <Field
+                            loading={ isLocalClaimsLoading }
                             type="dropdown"
                             name="localClaim"
                             label={ t("console:manage.features.claims.external.forms.localAttribute.label") }
@@ -331,17 +465,58 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                     </Grid.Column>
                 </Grid.Row>
                 {
+                    (isEmptyClaims || isEmptyServerSupportedClaims) && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column width={ 16 } textAlign="left" verticalAlign="top">
+                                <Message visible warning>
+                                    {
+                                        !isEmptyServerSupportedClaims
+                                            ? (
+                                                <Hint warning>
+                                                    <Trans
+                                                        i18nKey={
+                                                            "console:manage.features.claims.external.forms.warningMessage"
+                                                        }
+                                                    >
+                                                        There are no local attributes available for mapping. Add new
+                                                        local attributes from
+                                                    </Trans>
+                                                    <Link external={ false }
+                                                          onClick={ () =>
+                                                              history.push(AppConstants.getPaths().get("LOCAL_CLAIMS"))
+                                                          }
+                                                    > here
+                                                    </Link>.
+                                                </Hint>
+                                            ) : (
+                                                <Hint warning>
+                                                    <Trans
+                                                        i18nKey={
+                                                            "console:manage.features.claims.external.forms.emptyMessage"
+                                                        }
+                                                    >
+                                                        All the SCIM attributes are mapped to local claims.
+                                                    </Trans>
+                                                </Hint>
+                                            )
+                                    }
+                                </Message>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
+                {
                     wizard && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 } textAlign="right" verticalAlign="top">
-                            <PrimaryButton
-                                type="submit"
-                                data-testid={ `${ testId }-form-submit-button` }
-                                loading={ isSubmitting }
-                                disabled={ isSubmitting }
-                            >
+                                <PrimaryButton
+                                    type="submit"
+                                    data-testid={ `${ testId }-form-submit-button` }
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting || isEmptyClaims || isEmptyServerSupportedClaims }
+                                >
                                     { t("console:manage.features.claims.external.forms.submit") }
-                            </PrimaryButton>
+                                </PrimaryButton>
                             </Grid.Column>
                         </Grid.Row>
                     )

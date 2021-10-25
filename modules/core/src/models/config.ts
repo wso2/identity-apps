@@ -102,10 +102,6 @@ export interface CommonDeploymentConfigInterface<T = {}, S = {}> {
      */
     loginCallbackUrl: string;
     /**
-     * Product version.
-     */
-    productVersion: string;
-    /**
      * Host of the Identity Sever.
      * ex: https://localhost:9443
      */
@@ -226,7 +222,7 @@ export interface AppThemeConfigInterface {
      */
     name: string;
     /**
-     * App theme path. Used to override the default theme path defined in the source. 
+     * App theme path. Used to override the default theme path defined in the source.
      * ex: "https://cdn.wso2.com/is/assets/theme.min.css".
      */
     path?: string;

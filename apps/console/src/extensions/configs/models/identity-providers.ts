@@ -104,4 +104,8 @@ export interface AuthenticatorExtensionsConfigInterface {
      * @remarks This configuration is not applicable if `identityProviderList.useLegacyListing` is set to true.
      */
     isEnabled: boolean;
+    /**
+     * Flag to decide whether the details of the authenticator should be fetched from the authenticators API.
+     */
+    useAuthenticatorsAPI?: boolean;
 }

@@ -406,6 +406,7 @@ export interface ConsoleNS {
                            };
                         };
                     };
+                    certificateDelete: Confirmation & Record<string, string>;
                 };
                 dangerZoneGroup: {
                     header: string;
@@ -596,10 +597,13 @@ export interface ConsoleNS {
                                                 };
                                             };
                                             secretsList: {
-                                                iconTooltip: string;
                                                 create: string;
                                                 emptyPlaceholder: string;
                                                 search: string;
+                                                tooltips: {
+                                                    keyIcon: string;
+                                                    plusIcon: string;
+                                                }
                                             }
                                         };
                                         stepBased: {
@@ -721,7 +725,10 @@ export interface ConsoleNS {
                         sections: {
                             certificate: {
                                 heading: string;
-                                hint: string;
+                                hint?: {
+                                    customOidc: string;
+                                    customSaml: string;
+                                };
                                 fields: {
                                     jwksValue: FormAttributes;
                                     pemValue: FormAttributes;
@@ -816,6 +823,9 @@ export interface ConsoleNS {
                                     validator: FormAttributes;
                                 };
                             };
+                            certificates: {
+                                disabledPopup: string;
+                            }
                         };
                         messages: {
                             revokeDisclaimer: Message;
@@ -904,6 +914,9 @@ export interface ConsoleNS {
                                     idpInitiatedSSO: FormAttributes;
                                 };
                             };
+                            certificates: {
+                                disabledPopup: string;
+                            }
                         };
                     };
                     inboundSTS: {
@@ -986,6 +999,8 @@ export interface ConsoleNS {
                     fetchOIDCServiceEndpoints: Notification;
                     secondFactorAuthenticatorToFirstStep: Notification;
                     conditionalScriptLoopingError: NotificationItem;
+                    deleteCertificateSuccess: NotificationItem;
+                    deleteCertificateGenericError: NotificationItem;
                 };
                 popups: {
                     appStatus: {
@@ -1525,6 +1540,12 @@ export interface ConsoleNS {
                     updateJITProvisioning: Notification;
                     updateOutboundProvisioningConnectors: Notification;
                     updateOutboundProvisioningConnector: Notification;
+                    apiLimitReachedError: {
+                        error: {
+                            description: string;
+                            message: string;
+                        }
+                    }
                 };
                 popups?: {
                     appStatus: {
@@ -2053,7 +2074,7 @@ export interface ConsoleNS {
                         }
                     },
                     actions: {
-                        finishButton: {
+                        createButton: {
                             label: string;
                             ariaLabel: string;
                         };
@@ -2631,6 +2652,8 @@ export interface ConsoleNS {
                         attributeURI: FormField;
                         localAttribute: FormField;
                         submit: string;
+                        warningMessage: string;
+                        emptyMessage: string;
                     };
                     pageLayout: {
                         edit: {
@@ -2741,6 +2764,10 @@ export interface ConsoleNS {
                         readOnly: FormField;
                         readOnlyHint: string;
                         attribute: FormField;
+                        infoMessages?: {
+                            disabledConfigInfo: string;
+                            configApplicabilityInfo: string;
+                        }
                     };
                     dangerZone: DangerZone;
                     mappedAttributes: {

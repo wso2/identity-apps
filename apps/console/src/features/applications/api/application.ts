@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient, OIDCEndpoints } from "@asgardeo/auth-react";
+import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
@@ -30,8 +30,10 @@ import {
     ApplicationTemplateInterface,
     ApplicationTemplateListInterface,
     AuthProtocolMetaListItemInterface,
-    OIDCDataInterface, OIDCDiscoveryEndpointsInterface,
-    SAMLApplicationConfigurationInterface
+    OIDCApplicationConfigurationInterface,
+    OIDCDataInterface,
+    SAMLApplicationConfigurationInterface,
+    SupportedAuthProtocolTypes
 } from "../models";
 import { ApplicationManagementUtils } from "../utils";
 
@@ -343,6 +345,17 @@ export const updateOIDCData = (id: string, OIDC: object): Promise<any> => {
  */
 export const updateAuthProtocolConfig = <T>(id: string, config: any,
                                             protocol: string): Promise<T> => {
+
+    /**
+     * On template level we use {@link SupportedAuthProtocolTypes.OAUTH2_OIDC}
+     * to determine custom oidc applications. But for the API "oauth2-oidc" is
+     * an unknown protocol. We manually switch out the protocol or re-correct
+     * in this API call to avoid unattended PUT errors.
+     */
+    if (SupportedAuthProtocolTypes.OAUTH2_OIDC === protocol) {
+        protocol = SupportedAuthProtocolTypes.OIDC;
+    }
+
     const requestConfig = {
         data: config,
         headers: {
@@ -727,32 +740,47 @@ export const getApplicationTemplateList = (limit?: number, offset?: number,
 };
 
 /**
- * Gets the OIDC Discovery Endpoints using the SDK.
+ * Gets the OIDC application configurations.
  *
- * @return {Promise<OIDCDiscoveryEndpointsInterface>} A promise containing the oidc discovery endpoints.
- * @throws {IdentityAppsApiException}
+ * @return {Promise<OIDCApplicationConfigurationInterface>} A promise containing the oidc configurations.
  */
-export const getOIDCDiscoveryEndpoints = (): Promise<OIDCDiscoveryEndpointsInterface> => {
+export const getOIDCApplicationConfigurations = (): Promise<OIDCApplicationConfigurationInterface> => {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.wellKnown
+    };
 
-    const skdClient: AsgardeoSPAClient = AsgardeoSPAClient.getInstance();
-
-    return skdClient.getOIDCServiceEndpoints()
-        .then((response: OIDCEndpoints) => {
-            if (!response) {
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
                 throw new IdentityAppsApiException(
-                    ApplicationManagementConstants.OIDC_DISCOVERY_ENDPOINTS_FETCH_RESPONSE_ERROR,
+                    ApplicationManagementConstants.OIDC_CONFIGURATIONS_STATUS_CODE_ERROR,
                     null,
-                    null,
-                    null,
+                    response.status,
+                    response.request,
                     response,
-                    null);
+                    response.config);
             }
 
-            return Promise.resolve(response as OIDCEndpoints);
-        })
-        .catch((error: AxiosError) => {
+            const oidcConfigs = {
+                authorizeEndpoint: response.data.authorization_endpoint,
+                endSessionEndpoint: response.data.end_session_endpoint,
+                introspectionEndpoint: response.data.introspection_endpoint,
+                jwksEndpoint: response.data.jwks_uri,
+                tokenEndpoint: response.data.token_endpoint,
+                tokenRevocationEndpoint: response.data.revocation_endpoint,
+                userEndpoint: response.data.userinfo_endpoint,
+                wellKnownEndpoint: store.getState().config.endpoints.wellKnown
+            };
+            return Promise.resolve(oidcConfigs);
+        }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                ApplicationManagementConstants.OIDC_DISCOVERY_ENDPOINTS_FETCH_FETCH_ERROR,
+                ApplicationManagementConstants.APPLICATION_OIDC_CONFIGURATIONS_FETCH_ERROR,
                 error.stack,
                 error.code,
                 error.request,

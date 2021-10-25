@@ -19,6 +19,7 @@
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
 import { store } from "../store";
+import { SCIMConfigs } from "../extensions/configs/scim";
 
 /**
  * Get an axios instance.
@@ -192,6 +193,37 @@ export const getTOTPSecret = (): Promise<any> => {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
             return Promise.resolve(response);
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * This API is used to check if the TOTP secret key is added for the user
+ */
+export const checkIfTOTPEnabled = (): Promise<any> => {
+    const requestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.me
+    };
+
+    return httpClient(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(`An error occurred. The server returned ${response.status}`);
+            }
+            const totpEnabled = response?.["data"]?.[SCIMConfigs.scim.customEnterpriseSchema]?.["totpEnabled"];
+
+            if (totpEnabled && totpEnabled == "true") {
+                return true;
+            } else {
+                return false;
+            }
         })
         .catch((error) => {
             return Promise.reject(error);

@@ -16,10 +16,9 @@
  * under the License.
  */
 
-import { AlertInterface, AlertLevels, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
-import { CertificateManagementUtils, URLUtils } from "@wso2is/core/utils";
-import { Field, FormValue, Forms, useTrigger, Validation } from "@wso2is/forms";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import { URLUtils } from "@wso2is/core/utils";
+import { Field, Forms, FormValue, useTrigger, Validation } from "@wso2is/forms";
 import {
     Code,
     ConfirmationModal,
@@ -28,7 +27,6 @@ import {
     GenericIcon,
     Heading,
     Hint,
-    LinkButton,
     Text,
     URLInput
 } from "@wso2is/react-components";
@@ -37,20 +35,23 @@ import get from "lodash-es/get";
 import intersection from "lodash-es/intersection";
 import isEmpty from "lodash-es/isEmpty";
 import union from "lodash-es/union";
-import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { Fragment, FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Divider, Form, Grid, Label, List, Message } from "semantic-ui-react";
 import { applicationConfig } from "../../../../extensions";
 import { AppState, ConfigReducerStateInterface } from "../../../core";
+import { getGeneralIcons } from "../../configs";
 import { ApplicationManagementConstants } from "../../constants";
-import SinglePageApplicationTemplate
-    from "../../data/application-templates/templates/single-page-application/single-page-application.json";
-import OIDCWebApplicationTemplate
-    from "../../data/application-templates/templates/oidc-web-application/oidc-web-application.json";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
+import OIDCWebApplicationTemplate
+    from "../../data/application-templates/templates/oidc-web-application/oidc-web-application.json";
+import SinglePageApplicationTemplate
+    from "../../data/application-templates/templates/single-page-application/single-page-application.json";
 import {
+    ApplicationInterface,
+    ApplicationTemplateIdTypes,
     ApplicationTemplateListItemInterface,
     CertificateInterface,
     CertificateTypeInterface,
@@ -61,17 +62,18 @@ import {
     OIDCDataInterface,
     OIDCMetadataInterface,
     State,
-    SupportedAccessTokenBindingTypes
+    SupportedAccessTokenBindingTypes,
+    SupportedAuthProtocolTypes
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
-import { CertificateFormFieldModal } from "../modals";
-import { getGeneralIcons } from "../../configs";
 import { ApplicationCertificateWrapper } from "../settings/certificate";
 
 /**
  * Proptypes for the inbound OIDC form component.
  */
 interface InboundOIDCFormPropsInterface extends TestableComponentInterface {
+    onUpdate: (id: string) => void;
+    application: ApplicationInterface;
     /**
      * Current certificate configurations.
      */
@@ -126,6 +128,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 ): ReactElement => {
 
     const {
+        onUpdate,
+        application,
         certificate,
         metadata,
         initialValues,
@@ -172,9 +176,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ callbackURLsErrorLabel, setCallbackURLsErrorLabel ] = useState<ReactElement>(null);
     const [ allowedOriginsErrorLabel, setAllowedOriginsErrorLabel ] = useState<ReactElement>(null);
     const [ isPEMSelected, setPEMSelected ] = useState<boolean>(false);
-    const [ showCertificateModal, setShowCertificateModal ] = useState<boolean>(false);
     const [ PEMValue, setPEMValue ] = useState<string>(undefined);
-    const [ certificateDisplay, setCertificateDisplay ] = useState<DisplayCertificate>(null);
     const [
         isRefreshTokenWithoutAllowedGrantType,
         setRefreshTokenWithoutAlllowdGrantType ] = useState<boolean>(false);
@@ -205,7 +207,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const scopeValidator = useRef<HTMLElement>();
     const [ isSPAApplication, setSPAApplication ] = useState<boolean>(false);
     const [ isOIDCWebApplication, setOIDCWebApplication ] = useState<boolean>(false);
-    const [ isCustomApplication, setCustomApplication ] = useState<boolean>(false);
 
     const [ finalCertValue, setFinalCertValue ] = useState<string>(undefined);
     const [ selectedCertType, setSelectedCertType ] = useState<CertificateTypeInterface>(CertificateTypeInterface.NONE);
@@ -1107,27 +1108,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     let submitOrigin: (callback: (origin?: string) => void) => void;
 
     /**
-     * Construct the details from the pem value.
-     */
-    const viewCertificate = () => {
-        if (isPEMSelected && PEMValue) {
-            const displayCertificate: DisplayCertificate = CertificateManagementUtils.displayCertificate(
-                null, PEMValue);
-
-            if (displayCertificate) {
-                setCertificateDisplay(displayCertificate);
-                setShowCertificateModal(true);
-            } else {
-                dispatch(addAlert<AlertInterface>({
-                    description: t("console:common.notifications.invalidPEMFile.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:common.notifications.invalidPEMFile.genericError.message")
-                }));
-            }
-        }
-    };
-
-    /**
      * Check if a given expiry time is valid
      * @param value expiry time as a string
      */
@@ -1649,7 +1629,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     }
                                     value={ initialValues.accessToken ?
                                         initialValues.accessToken.applicationAccessTokenExpiryInSeconds.toString() :
-                                        metadata.defaultApplicationAccessTokenExpiryTime}
+                                        metadata.defaultApplicationAccessTokenExpiryTime }
                                     validation={ async (value: FormValue, validation: Validation) => {
                                         if (!isValidExpiryTime(value.toString())) {
                                             validation.isValid = false;
@@ -1658,7 +1638,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                     ".accessToken.fields.applicationTokenExpiry.validations.invalid")
                                             );
                                         }
-                                    }}
+                                    } }
                                     placeholder={
                                         t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                             ".accessToken.fields.applicationTokenExpiry.placeholder")
@@ -1691,7 +1671,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                         ".refreshToken.heading") }
                                 </Heading>
-                                <Divider hidden />
                                 <Field
                                     ref={ refreshToken }
                                     name="RefreshToken"
@@ -1794,7 +1773,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                             ".idToken.heading") }
                     </Heading>
-                    <Divider hidden />
                     <URLInput
                         isAllowEnabled={ false }
                         tenantDomain={ tenantDomain }
@@ -1848,6 +1826,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             </Grid.Row>
             {
                 applicationConfig.inboundOIDCForm.showIdTokenEncryption &&
+                    ApplicationTemplateIdTypes.SPA !== template?.templateId &&
                 (
                     <>
                         <Grid.Row columns={ 1 }>
@@ -2143,7 +2122,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                         ".requestObjectSignature.heading") }
                                 </Heading>
-                                <Divider hidden />
                                 <Field
                                     ref={ enableRequestObjectSignatureValidation }
                                     name="enableRequestObjectSignatureValidation"
@@ -2197,7 +2175,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".scopeValidators.heading") }
                         </Heading>
-                        <Divider hidden />
                         <Field
                             ref={ scopeValidator }
                             name="scopeValidator"
@@ -2216,16 +2193,35 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     </Grid.Column>
                 </Grid.Row>
             }
-            {/* Certificate Section */}
-            <ApplicationCertificateWrapper
-                updateCertFinalValue={ setFinalCertValue }
-                updateCertType={ setSelectedCertType }
-                certificate={ certificate }
-                readOnly={ readOnly }
-                hidden={ isSPAApplication || !(applicationConfig.inboundOIDCForm.showCertificates) }
-                isRequired={ true }
-                triggerSubmit={ triggerCertSubmit }
-            />
+            { /* Certificate Section */ }
+            <Grid.Row columns={ 1 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                    <ApplicationCertificateWrapper
+                        protocol={ SupportedAuthProtocolTypes.OIDC }
+                        deleteAllowed={ !(initialValues.idToken?.encryption?.enabled) }
+                        reasonInsideTooltipWhyDeleteIsNotAllowed={ (
+                            <Fragment>
+                                <Trans
+                                    i18nKey={ "console:develop.features.applications.forms" +
+                                    ".inboundOIDC.sections.certificates.disabledPopup" }
+                                >
+                                    This certificate is used to encrypt the <Code>id_token</Code>. First, you need
+                                    to disable <Code>id_token</Code> encryption to proceed.
+                                </Trans>
+                            </Fragment>
+                        ) }
+                        onUpdate={ onUpdate }
+                        application={ application }
+                        updateCertFinalValue={ setFinalCertValue }
+                        updateCertType={ setSelectedCertType }
+                        certificate={ certificate }
+                        readOnly={ readOnly }
+                        hidden={ isSPAApplication || !(applicationConfig.inboundOIDCForm.showCertificates) }
+                        isRequired={ true }
+                        triggerSubmit={ triggerCertSubmit }
+                    />
+                </Grid.Column>
+            </Grid.Row>
             {
                 !readOnly && (
                     <Grid.Row columns={ 1 }>
