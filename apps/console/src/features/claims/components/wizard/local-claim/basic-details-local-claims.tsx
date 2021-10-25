@@ -52,7 +52,7 @@ interface BasicDetailsLocalClaimsPropsInterface extends TestableComponentInterfa
     /**
      * Called to initiate button loading
      */
-    setValidateMapping: (state:boolean) => void;
+    setValidateMapping: (state: boolean) => void;
 }
 
 /**
