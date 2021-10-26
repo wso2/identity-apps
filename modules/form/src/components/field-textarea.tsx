@@ -97,7 +97,7 @@ export const FieldTextarea = (props: FieldTextareaPropsInterface): ReactElement 
                 parse={ value => value }
                 component={ TextAreaAdapter }
                 validate={ (value,allValues, meta) =>
-                    getValidation(value, meta, props.type, props.required)
+                    getValidation(value, meta, "textarea", props.required, props.type, props.validation)
                 }
                 { ...rest }
             />
