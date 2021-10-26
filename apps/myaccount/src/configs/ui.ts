@@ -69,7 +69,7 @@ import FederatedAssociationsMini from "../themes/default/assets/images/illustrat
 import FederatedAssociations from "../themes/default/assets/images/illustrations/federated-associations.svg";
 import {
     ReactComponent as EmptySearchResultsIllustration
-} from "../themes/default/assets/images/illustrations/no-search-results.svg";
+} from "../themes/default/assets/images/placeholder-illustrations/empty-search-illustration.svg";
 import ProfileExportMini from "../themes/default/assets/images/illustrations/profile-export-mini.svg";
 import ProfileExport from "../themes/default/assets/images/illustrations/profile-export.svg";
 import {
