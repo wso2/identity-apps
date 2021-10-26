@@ -28,6 +28,8 @@ import {
     PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
+import sortBy from "lodash-es/sortBy";
+import union from "lodash-es/union";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -56,8 +58,6 @@ import {
     ClaimMappingInterface,
     RequestedClaimConfigurationInterface
 } from "../../../models";
-import sortBy from "lodash-es/sortBy";
-import union from "lodash-es/union";
 
 interface AttributeSelectionPropsInterface extends TestableComponentInterface {
     claims: ExtendedClaimInterface[];
