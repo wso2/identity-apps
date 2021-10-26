@@ -123,7 +123,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             advancedConfigurations: {
                 discoverableByEndUsers: values.discoverableByEndUsers
             },
-            description: values.description?.toString(),
+            description: values.description?.toString().trim(),
             id: appId,
             name: values.name?.toString(),
             ...!hiddenFields?.includes("imageUrl") && { imageUrl: values.imageUrl.toString() }
