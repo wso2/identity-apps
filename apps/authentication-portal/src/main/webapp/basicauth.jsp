@@ -42,6 +42,14 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClientException" %>
 
 <jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
+
+<%
+    String proxyContextPath = ServerConfiguration.getInstance().getFirstProperty(IdentityCoreConstants
+            .PROXY_CONTEXT_PATH);
+    if (proxyContextPath == null) {
+        proxyContextPath = "";
+    }
+%>
 <script>
     function goBack() {
         window.history.back();
@@ -67,9 +75,15 @@
                     }
 
                     if (userName.value) {
+                        let contextPath = "<%=proxyContextPath%>"
+                        if (contextPath !== "") {
+                            contextPath = contextPath.startsWith('/') ? contextPath : "/" + contextPath
+                            contextPath = contextPath.endsWith('/') ?
+                                contextPath.substring(0, contextPath.length - 1) : contextPath
+                        }
                         $.ajax({
                             type: "GET",
-                            url: "<%=loginContextRequestUrl%>",
+                            url: contextPath + "<%=loginContextRequestUrl%>",
                             success: function (data) {
                                 if (data && data.status == 'redirect' && data.redirectUrl && data.redirectUrl.length > 0) {
                                     window.location.href = data.redirectUrl;
@@ -118,11 +132,6 @@
         selfRegistrationRequest.setUser(userDTO);
 
         String path = config.getServletContext().getInitParameter(Constants.ACCOUNT_RECOVERY_REST_ENDPOINT_URL);
-        String proxyContextPath = ServerConfiguration.getInstance().getFirstProperty(IdentityCoreConstants
-                .PROXY_CONTEXT_PATH);
-        if (proxyContextPath == null) {
-            proxyContextPath = "";
-        }
         String url;
         if (StringUtils.isNotBlank(EndpointConfigManager.getServerOrigin())) {
             url = EndpointConfigManager.getServerOrigin() + proxyContextPath + path;

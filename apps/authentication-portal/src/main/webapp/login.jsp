@@ -22,6 +22,7 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityCoreConstants" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
+<%@ page import="org.wso2.carbon.base.ServerConfiguration" %>
 <%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.STATUS" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.STATUS_MSG" %>
@@ -375,12 +376,28 @@
     <% } else { %>
         <jsp:include page="includes/footer.jsp"/>
     <% } %>
-
+    
+    <%
+        String contextPath =
+                ServerConfiguration.getInstance().getFirstProperty(IdentityCoreConstants.PROXY_CONTEXT_PATH);
+        if (contextPath != null && contextPath != "") {
+            if (contextPath.trim().charAt(0) != '/') {
+                contextPath = "/" + contextPath;
+            }
+            if (contextPath.trim().charAt(contextPath.length() - 1) == '/') {
+                contextPath = contextPath.substring(0, contextPath.length() - 1);
+            }
+            contextPath = contextPath.trim();
+        } else {
+            contextPath = "";
+        }
+    %>
     <script>
         function checkSessionKey() {
+            var proxyPath = "<%=contextPath%>"
             $.ajax({
                 type: "GET",
-                url: "<%=loginContextRequestUrl%>",
+                url: proxyPath + "<%=loginContextRequestUrl%>",
                 success: function (data) {
                     if (data && data.status == 'redirect' && data.redirectUrl && data.redirectUrl.length > 0) {
                         window.location.href = data.redirectUrl;
