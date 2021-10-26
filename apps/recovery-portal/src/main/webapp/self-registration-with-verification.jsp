@@ -161,6 +161,8 @@
         if (uniquePIIs != null) {
             claims = uniquePIIs.values().toArray(new Claim[0]);
         }
+        IdentityManagementEndpointUtil.addReCaptchaHeaders(request,
+                                usernameRecoveryApi.getApiClient().getResponseHeaders());
 
     } catch (ApiException e) {
         IdentityManagementEndpointUtil.addErrorInformation(request, e);
