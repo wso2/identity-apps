@@ -56,6 +56,8 @@ import {
     ClaimMappingInterface,
     RequestedClaimConfigurationInterface
 } from "../../../models";
+import sortBy from "lodash-es/sortBy";
+import union from "lodash-es/union";
 
 interface AttributeSelectionPropsInterface extends TestableComponentInterface {
     claims: ExtendedClaimInterface[];
@@ -298,8 +300,11 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     const searchFilter = (changeValue) => {
 
         if (selectedDialect.localDialect) {
-            setFilterSelectedClaims(selectedClaims.filter((item) =>
-                item.displayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
+            const displayNameFilterClaims = selectedClaims.filter((item) =>
+                item.displayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+            const uriFilterClaims = selectedClaims.filter((item) =>
+                item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+            setFilterSelectedClaims(sortBy(union(displayNameFilterClaims, uriFilterClaims), "displayName"));
         } else {
             setFilterSelectedExternalClaims(selectedExternalClaims.filter((item) =>
                 item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
