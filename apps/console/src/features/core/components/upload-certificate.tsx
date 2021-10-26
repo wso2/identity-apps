@@ -101,7 +101,9 @@ interface UploadCertificatePropsInterface extends TestableComponentInterface {
      */
     hideAliasInput?: boolean;
     /**
-     * Sets the visibility of the finish button
+     * Sets the visibility of the finish button.
+     *
+     * @param buttonState - Active state of the button.
      */
     setShowFinishButton?: (buttonState: boolean) => void;
 }
