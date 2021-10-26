@@ -28,6 +28,8 @@ import {
     PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
+import sortBy from "lodash-es/sortBy";
+import union from "lodash-es/union";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -298,8 +300,11 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     const searchFilter = (changeValue) => {
 
         if (selectedDialect.localDialect) {
-            setFilterSelectedClaims(selectedClaims.filter((item) =>
-                item.displayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
+            const displayNameFilterClaims = selectedClaims.filter((item) =>
+                item.displayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+            const uriFilterClaims = selectedClaims.filter((item) =>
+                item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+            setFilterSelectedClaims(sortBy(union(displayNameFilterClaims, uriFilterClaims), "displayName"));
         } else {
             setFilterSelectedExternalClaims(selectedExternalClaims.filter((item) =>
                 item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
