@@ -317,21 +317,6 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                 </Message>
                                             }
                                             <Grid verticalAlign="middle">
-                                                { !noUniqueOIDCAttrib || !noUniqueSCIMAttrib ?
-                                                    <Grid.Row columns={ 1 } >
-                                                        <Grid.Column>
-                                                            <Message size="tiny" negative>
-                                                                { `The mapping names generated for ${ 
-                                                                    !noUniqueOIDCAttrib ? "OpenID Connect" : ""} ${ 
-                                                                        !noUniqueOIDCAttrib && !noUniqueSCIMAttrib 
-                                                                        ? "and" : "" } ${ 
-                                                                            !noUniqueSCIMAttrib ? "SCIM" : ""
-                                                                            } protocol is already available.` 
-                                                                }
-                                                            </Message>
-                                                        </Grid.Column>
-                                                    </Grid.Row> : <></>
-                                                }
                                                 <Grid.Row columns={ 2 } >
                                                     <Grid.Column width={ 5 }>
                                                         <GenericIcon
