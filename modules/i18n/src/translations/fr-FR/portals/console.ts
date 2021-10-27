@@ -1513,7 +1513,6 @@ export const console: ConsoleNS = {
                                                 "et httpOnly.",
                                             none: "Pas de liaison. {{productName}} émettra un nouveau jeton d'accès " +
                                                 "uniquement lorsque le jeton expirera ou sera révoqué.",
-                                            // eslint-disable-next-line @typescript-eslint/camelcase
                                             sso_session: "Lie le jeton d'accès à la session de connexion. " +
                                                 "{{productName}} émettra un nouveau jeton d'accès pour chaque " +
                                                 "nouvelle connexion et le révoquera lors de la déconnexion."
@@ -6456,7 +6455,6 @@ export const console: ConsoleNS = {
                 },
                 profile: {
                     fields: {
-                        /* eslint-disable @typescript-eslint/camelcase */
                         userId: "Identifiant d'utilisateur",
                         addresses_home: "Adresse personnelle",
                         addresses_work: "Adresse professionnelle",
@@ -6478,7 +6476,6 @@ export const console: ConsoleNS = {
                         photos: "Photos",
                         profileUrl: "URL",
                         userName: "Nom d'utilisateur"
-                        /* eslint-enable @typescript-eslint/camelcase */
                     },
                     forms: {
                         emailChangeForm: {

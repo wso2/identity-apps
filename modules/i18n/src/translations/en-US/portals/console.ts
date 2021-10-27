@@ -1490,7 +1490,6 @@ export const console: ConsoleNS = {
                                                 "and httpOnly parameters.",
                                             none: "No binding. {{productName}} will issue a new access token only " +
                                                 "when the token expires or is revoked.",
-                                            // eslint-disable-next-line @typescript-eslint/camelcase
                                             sso_session: "Binds the access token to the login session. " +
                                                 "{{productName}} will issue a new access token for each new login " +
                                                 "and revoke the token upon logout."
@@ -7779,7 +7778,6 @@ export const console: ConsoleNS = {
                 },
                 profile: {
                     fields: {
-                        /* eslint-disable @typescript-eslint/camelcase */
                         userId: "User ID",
                         addresses_home: "Home Address",
                         addresses_work: "Work Address",
@@ -7801,7 +7799,6 @@ export const console: ConsoleNS = {
                         photos: "Photos",
                         profileUrl: "URL",
                         userName: "Username"
-                        /* eslint-enable @typescript-eslint/camelcase */
                     },
                     forms: {
                         emailChangeForm: {

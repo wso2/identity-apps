@@ -1477,7 +1477,6 @@ export const console: ConsoleNS = {
                                             "ටෝකනය බැඳ තබන්න.",
                                             none: "බන්ධනයක් නැත. {{productName}} නව ප්‍රවේශ ටෝකනයක් නිකුත් කරන්නේ " +
                                                 "ටෝකනය කල් ඉකුත් වූ විට හෝ අවලංගු කළ විට පමණි.",
-                                            // eslint-disable-next-line @typescript-eslint/camelcase
                                             sso_session: "පිවිසුම් සැසියට ප්‍රවේශ ටෝකනය බැඳ තබයි. {{productName}} සෑම නව " +
                                                 "ප්‍රවේශයක් සඳහාම නව ප්‍රවේශ ටෝකනයක් නිකුත් කරනු ඇති අතර පිටවීමෙන් පසු ටෝකනය " +
                                                 "අවලංගු කරයි."
@@ -6374,7 +6373,6 @@ export const console: ConsoleNS = {
                 },
                 profile: {
                     fields: {
-                        /* eslint-disable @typescript-eslint/camelcase */
                         userId: "පරිශීලක ID",
                         addresses_home: "නිවසේ ලිපිනය",
                         addresses_work: "වැඩ ලිපිනය",
@@ -6396,7 +6394,6 @@ export const console: ConsoleNS = {
                         photos: "ඡායාරූප",
                         profileUrl: "URL",
                         userName: "පරිශීලක නාමය"
-                        /* eslint-enable @typescript-eslint/camelcase */
                     },
                     forms: {
                         emailChangeForm: {
