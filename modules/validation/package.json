@@ -19,11 +19,15 @@
         "compile": "npx run-script-os",
         "compile:win32": "..\\..\\node_modules\\.bin\\tsc -p tsconfig.json",
         "compile:default": "../../node_modules/.bin/tsc -p tsconfig.json",
-        "lint": "tslint -t stylish --project ."
+        "lint": "npm run lint:all",
+        "lint:all": "npm run lint:targeted -- .",
+        "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to ."
     },
     "author": "WSO2",
     "license": "Apache-2.0",
     "devDependencies": {
+        "eslint": "^7.20.0",
+        "eslint-plugin-import": "^2.20.2",
         "rimraf": "^3.0.2",
         "run-script-os": "^1.0.7"
     },
