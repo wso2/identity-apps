@@ -440,10 +440,12 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 listen={ (values) => {
                                     setIsShowDisplayOrder(!!values?.supportedByDefault);
                                 } }
-                                checked={ shouldShowOnProfile }
                                 data-testid={ `${testId}-form-supported-by-default-input` }
                                 readOnly={ isReadOnly }
                                 disabled={ !hasMapping }
+                                { ...( shouldShowOnProfile ? 
+                                    { checked: true } : 
+                                    { defaultValue : claim?.supportedByDefault } ) }
                             />
                         )
                     }
