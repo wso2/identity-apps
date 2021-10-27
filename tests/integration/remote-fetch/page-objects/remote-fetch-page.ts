@@ -38,7 +38,7 @@ export class RemoteConfigurationPage {
      */
     public clickOnSidePanelItem(): void {
         cy.dataTestId(SidePanelDomConstants.REMOTE_FETCH_PARENT_ITEM_DATA_ATTR).click();
-    };
+    }
 
     /**
      * Get the remote configuration page layout header element.
@@ -46,7 +46,7 @@ export class RemoteConfigurationPage {
      */
     public getPageLayoutHeader(): Cypress.Chainable<Element> {
         return cy.dataTestId(RemoteConfigurationPageConstants.PAGE_LAYOUT_HEADER_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the remote configuration page layout header title element.
@@ -54,7 +54,7 @@ export class RemoteConfigurationPage {
      */
     public getPageLayoutHeaderTitle(): Cypress.Chainable<Element> {
         return cy.dataTestId(RemoteConfigurationPageConstants.PAGE_LAYOUT_HEADER_TITLE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the remote configuration page git url element.
@@ -62,7 +62,7 @@ export class RemoteConfigurationPage {
      */
     public getSaveConfigGitURL(): Cypress.Chainable<Element> {
         return cy.dataTestId(RemoteConfigurationPageConstants.CONFIG_FORM_GIT_URL_DATA_ATTR);
-    };
+    }
     
     /**
      * Get the remote configuration page git branch element.
@@ -70,7 +70,7 @@ export class RemoteConfigurationPage {
      */
     public getSaveConfigGitBranch(): Cypress.Chainable<Element> {
         return cy.dataTestId(RemoteConfigurationPageConstants.CONFIG_FORM_GIT_BRANCH_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the remote configuration page git directory element.
@@ -78,7 +78,7 @@ export class RemoteConfigurationPage {
      */
     public getSaveConfigGitDirecotry(): Cypress.Chainable<Element> {
         return cy.dataTestId(RemoteConfigurationPageConstants.CONFIG_FORM_GIT_DIRECTORY_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the remote configuration page git username element.
@@ -86,7 +86,7 @@ export class RemoteConfigurationPage {
      */
     public getSaveConfigGitUserName(): Cypress.Chainable<Element> {
         return cy.dataTestId(RemoteConfigurationPageConstants.CONFIG_FORM_GIT_USERNAME_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the remote configuration page git access token element.
@@ -94,7 +94,7 @@ export class RemoteConfigurationPage {
      */
     public getSaveConfigGitAccessToken(): Cypress.Chainable<Element> {
         return cy.dataTestId(RemoteConfigurationPageConstants.CONFIG_FORM_GIT_ACCESS_TOKEN_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the remote configuration page git connectivity polling element.
@@ -102,7 +102,7 @@ export class RemoteConfigurationPage {
      */
     public getSaveConfigGitConnectivityPolling(): Cypress.Chainable<Element> {
         return cy.dataTestId(RemoteConfigurationPageConstants.CONFIG_FORM_GIT_POLLING_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the remote configuration page git save config status element.
@@ -110,7 +110,7 @@ export class RemoteConfigurationPage {
      */
     public getSaveConfigStatus(): Cypress.Chainable<Element> {
         return cy.dataTestId(RemoteConfigurationPageConstants.CONFIG_FORM_GIT_STATUS_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the remote configuration page remove config modal element.
@@ -118,7 +118,7 @@ export class RemoteConfigurationPage {
      */
     public getConfigRemoveModal(): Cypress.Chainable<Element> {
         return cy.dataTestId(RemoteConfigurationPageConstants.REMOVE_CONFIG_MODAL_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the remote configuration page remove config modal assert input element.
@@ -126,7 +126,7 @@ export class RemoteConfigurationPage {
      */
     public getConfigRemoveModalAssertInput(): Cypress.Chainable<Element> {
         return cy.dataTestId(RemoteConfigurationPageConstants.REMOVE_CONFIG_MODAL_ASSERT_INPUT_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the remote configuration status element.
@@ -134,7 +134,7 @@ export class RemoteConfigurationPage {
      */
     public getApplicationRemoteFetchStatus(): Cypress.Chainable<Element> {
         return cy.dataTestId(RemoteConfigurationPageConstants.REMOTE_FETCH_APPLICATION_STATUS);
-    };
+    }
 
     /**
      * Get the remote configuration success status element.
@@ -142,7 +142,7 @@ export class RemoteConfigurationPage {
      */
     public getApplicationRemoteFetchSuccess(): Cypress.Chainable<Element> {
         return cy.dataTestId(RemoteConfigurationPageConstants.REMOTE_FETCH_TRIGGER_SUCCESS);
-    };
+    }
 
     /**
      * click the remote configuration trigger button.
@@ -150,7 +150,7 @@ export class RemoteConfigurationPage {
      */
     public clickRemoteFetchTrigger(): void {
         cy.dataTestId(RemoteConfigurationPageConstants.REMOTE_FETCH_TRIGGER_CONFIG).click();
-    };
+    }
 
     /**
      * click the remote configuration page remove config confirm button.
@@ -158,7 +158,7 @@ export class RemoteConfigurationPage {
      */
     public clickRemoveConfigurationConfirm(): void {
         cy.dataTestId(RemoteConfigurationPageConstants.REMOVE_CONFIG_MODAL_CONFIRM_DATA_ATTR).click();
-    };
+    }
 
     /**
      * click the remote configuration page save configuration button.
@@ -166,7 +166,7 @@ export class RemoteConfigurationPage {
      */
     public clickSaveConfiguration(): void {
         cy.dataTestId(RemoteConfigurationPageConstants.CONFIG_FORM_GIT_SAVE_CONFIG_DATA_ATTR).click();
-    };
+    }
 
     /**
      * click the remote configuration page remove config button.
@@ -174,7 +174,7 @@ export class RemoteConfigurationPage {
      */
     public clickRemoveConfiguration(): void {
         cy.dataTestId(RemoteConfigurationPageConstants.REMOVE_CONFIG_DATA_ATTR).click();
-    };
+    }
 
     /**
      * Click on the remote configuration add configuration button

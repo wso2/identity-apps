@@ -21,9 +21,9 @@
 /// <reference types="../../types" />
 
 import { CookieUtils, HousekeepingUtils } from "@wso2/identity-cypress-test-base/ui";
-import { ApplicationEditPageConstants, ApplicationsListPageConstants } from "./constants";
-import { ApplicationEditPage, ApplicationsListPage, ApplicationTemplatesPage } from "./page-objects";
 import { v4 as uuidv4 } from "uuid";
+import { ApplicationEditPageConstants, ApplicationsListPageConstants } from "./constants";
+import { ApplicationEditPage, ApplicationTemplatesPage, ApplicationsListPage } from "./page-objects";
 
 const USERNAME: string = Cypress.env("TENANT_USERNAME");
 const PASSWORD: string = Cypress.env("TENANT_PASSWORD");

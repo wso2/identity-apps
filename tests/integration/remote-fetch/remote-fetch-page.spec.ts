@@ -20,8 +20,8 @@
 /// <reference types="cypress" />
 
 import { CookieUtils, HousekeepingUtils } from "@wso2/identity-cypress-test-base/ui";
-import { RemoteConfigurationPage } from "./page-objects";
 import { v4 as uuidv4 } from "uuid";
+import { RemoteConfigurationPage } from "./page-objects";
 
 const USERNAME: string = Cypress.env("TENANT_USERNAME");
 const PASSWORD: string = Cypress.env("TENANT_PASSWORD");
