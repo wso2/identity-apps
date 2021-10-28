@@ -49,6 +49,14 @@
 
 <jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
 <jsp:directive.include file="plugins/basicauth-extensions.jsp"/>
+
+<%
+    String proxyContextPath = ServerConfiguration.getInstance().getFirstProperty(IdentityCoreConstants
+            .PROXY_CONTEXT_PATH);
+    if (proxyContextPath == null) {
+        proxyContextPath = "";
+    }
+%>
 <script>
     function goBack() {
         document.getElementById("restartFlowForm").submit();
@@ -70,9 +78,15 @@
                     userName.value = userName.value.trim();
 
                     if (userName.value) {
+                        let contextPath = "<%=proxyContextPath%>"
+                        if (contextPath !== "") {
+                            contextPath = contextPath.startsWith('/') ? contextPath : "/" + contextPath
+                            contextPath = contextPath.endsWith('/') ?
+                                contextPath.substring(0, contextPath.length - 1) : contextPath
+                        }
                         $.ajax({
                             type: "GET",
-                            url: "<%=loginContextRequestUrl%>",
+                            url: contextPath + "<%=loginContextRequestUrl%>",
                             xhrFields: { withCredentials: true },
                             success: function (data) {
                                 if (data && data.status == 'redirect' && data.redirectUrl && data.redirectUrl.length > 0) {
@@ -159,11 +173,6 @@
         selfRegistrationRequest.setUser(userDTO);
 
         String path = config.getServletContext().getInitParameter(Constants.ACCOUNT_RECOVERY_REST_ENDPOINT_URL);
-        String proxyContextPath = ServerConfiguration.getInstance().getFirstProperty(IdentityCoreConstants
-                .PROXY_CONTEXT_PATH);
-        if (proxyContextPath == null) {
-            proxyContextPath = "";
-        }
         String url;
         if (StringUtils.isNotBlank(EndpointConfigManager.getServerOrigin())) {
             url = EndpointConfigManager.getServerOrigin() + proxyContextPath + path;
