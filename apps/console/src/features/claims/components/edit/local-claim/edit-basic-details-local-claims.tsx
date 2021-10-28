@@ -406,10 +406,13 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                                     <div>
                                                         Add SCIM mapping from
                                                         <Link external={ false }
-                                                              onClick={ () =>
-                                                                  history.push(AppConstants.getPaths().get("SCIM_MAPPING"))
-                                                              }
-                                                        > here
+                                                              onClick={ () => {
+                                                                history.push(
+                                                                    AppConstants.getPaths().get("SCIM_MAPPING")
+                                                                );
+                                                              } 
+                                                            }
+                                                        >
                                                         </Link>.
                                                     </div>
                                                 </>
@@ -440,10 +443,15 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 listen={ (values) => {
                                     setIsShowDisplayOrder(!!values?.supportedByDefault);
                                 } }
-                                checked={ shouldShowOnProfile }
                                 data-testid={ `${testId}-form-supported-by-default-input` }
                                 readOnly={ isReadOnly }
                                 disabled={ !hasMapping }
+                                { 
+                                    ...( shouldShowOnProfile
+                                        ? { checked: true }
+                                        : { defaultValue : claim?.supportedByDefault } 
+                                     ) 
+                                }   
                             />
                         )
                     }
@@ -489,9 +497,12 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     isSupportedByDefault(value);
                                 } }
                                 disabled={ isClaimReadOnly || !hasMapping }
-                                { ...( isClaimReadOnly ?
-                                    { value: false } :
-                                    { defaultValue : claim?.required } ) }
+                                { 
+                                    ...( isClaimReadOnly 
+                                        ? { value: false }
+                                        : { defaultValue : claim?.required }
+                                     ) 
+                                }
                             />
                     }
                     {
