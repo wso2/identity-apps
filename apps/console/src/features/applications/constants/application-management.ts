@@ -386,7 +386,8 @@ export class ApplicationManagementConstants {
      */
     public static readonly FORM_FIELD_CONSTRAINTS = {
         APP_NAME_MAX_LENGTH: 50,
-        APP_NAME_PATTERN: new RegExp("^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$")
+        APP_NAME_PATTERN: new RegExp("^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$"),
+        APP_DESCRIPTION_PATTERN: new RegExp("^[a-zA-Z0-9.+=!$#()@&%*~_-]+(?: [a-zA-Z0-9.+=!$#()@&%*~_-]+)*$")
     };
 
     public static readonly CONDITIONAL_AUTH_TOUR_STATUS_STORAGE_KEY = "isConditionalAuthTourViewed";
