@@ -160,8 +160,9 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      */
     const validateName = (name: string): string | void => {
 
-        // eslint-disable-next-line max-len
-        const isValid: boolean = name && !!name.match(ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_PATTERN);
+        const isValid: boolean = name && !!name.match(
+            ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_PATTERN
+        );
 
         if (!isValid) {
             return "Please enter a valid input.";
@@ -176,8 +177,9 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      */
     const validateDescription = (description: string): string | void => {
 
-        // eslint-disable-next-line max-len
-        const isValid: boolean = description && !!description.match(ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_DESCRIPTION_PATTERN);
+        const isValid: boolean = description && !!description.match(
+            ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_DESCRIPTION_PATTERN
+        );
 
         if (!isValid) {
             return "Please enter a valid input.";
