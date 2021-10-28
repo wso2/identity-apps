@@ -39,7 +39,7 @@ export class IdentityProvidersListPage {
      */
     public clickOnSidePanelItem(): void {
         cy.dataTestId(SidePanelDomConstants.IDP_PARENT_ITEM_DATA_ATTR).click();
-    };
+    }
 
     /**
      * Get the idp table element.
@@ -47,7 +47,7 @@ export class IdentityProvidersListPage {
      */
     public getTable(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProvidersListPageConstants.TABLE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the idp table body element.
@@ -55,7 +55,7 @@ export class IdentityProvidersListPage {
      */
     public getTableBody(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProvidersListPageConstants.TABLE_BODY_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the idp table first element.
@@ -67,7 +67,7 @@ export class IdentityProvidersListPage {
                 cy.dataTestId("data-table-row")
                     .eq(0);
             });
-    };
+    }
 
     /**
      * Click on the idp table first element's edit button.
@@ -77,7 +77,7 @@ export class IdentityProvidersListPage {
             .within(() => {
                 this.getTableItemEditButton().trigger("mouseover").click();
             });
-    };
+    }
 
     /**
      * Click on the idp table first element's view button.
@@ -87,7 +87,7 @@ export class IdentityProvidersListPage {
             .within(() => {
                 this.getTableItemViewButton().trigger("mouseover").click();
             });
-    };
+    }
 
     /**
      * Get the the idp table item heading.
@@ -95,7 +95,7 @@ export class IdentityProvidersListPage {
      */
     public getTableItemHeading(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProvidersListPageConstants.TABLE_ROW_HEADING_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the the idp table item edit button.
@@ -103,7 +103,7 @@ export class IdentityProvidersListPage {
      */
     public getTableItemEditButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProvidersListPageConstants.TABLE_ROW_EDIT_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the the idp table item delete button.
@@ -111,7 +111,7 @@ export class IdentityProvidersListPage {
      */
     public getTableItemViewButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProvidersListPageConstants.TABLE_ROW_DELETE_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the idp page layout header element.
@@ -119,7 +119,7 @@ export class IdentityProvidersListPage {
      */
     public getPageLayoutHeader(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProvidersListPageConstants.PAGE_LAYOUT_HEADER_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the idp page layout header title element.
@@ -127,7 +127,7 @@ export class IdentityProvidersListPage {
      */
     public getPageLayoutHeaderTitle(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProvidersListPageConstants.PAGE_LAYOUT_HEADER_TITLE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the idp page layout header sub title element.
@@ -135,7 +135,7 @@ export class IdentityProvidersListPage {
      */
     public getPageLayoutHeaderSubTitle(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProvidersListPageConstants.PAGE_LAYOUT_HEADER_SUB_TITLE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the idp page layout header action element.
@@ -145,7 +145,7 @@ export class IdentityProvidersListPage {
      */
     public getPageLayoutHeaderAction(options?: object): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProvidersListPageConstants.PAGE_LAYOUT_HEADER_ACTION);
-    };
+    }
 
     /**
      * Get the idp list new placeholder element.
@@ -153,7 +153,7 @@ export class IdentityProvidersListPage {
      */
     public getNewTablePlaceholder(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProvidersListPageConstants.NEW_LIST_PLACEHOLDER);
-    };
+    }
 
     /**
      * Get the idp list new placeholder action element.
@@ -164,7 +164,7 @@ export class IdentityProvidersListPage {
     public getNewTablePlaceholderAction(options?: object): Cypress.Chainable<JQuery<HTMLButtonElement>> {
         return cy.dataTestId(IdentityProvidersListPageConstants.NEW_LIST_PLACEHOLDER_ACTION_CONTAINER)
             .find("button");
-    };
+    }
 
     /**
      * Click on the new idp button.
@@ -180,5 +180,5 @@ export class IdentityProvidersListPage {
                     this.getNewTablePlaceholderAction().click();
                 }
             });
-    };
+    }
 }
