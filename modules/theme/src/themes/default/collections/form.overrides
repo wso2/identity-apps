@@ -119,23 +119,6 @@
 }
 
 /*-------------------------------
-      Attributes Select
---------------------------------*/
-.select-attribute {
-    .ui.search.selection.dropdown {
-        >.text {
-            height: 13.5px;
-            overflow: hidden;
-
-            .header {
-                font-size: 0.93rem;
-            }
-        }
-    }
-}
-
-
-/*-------------------------------
       Secret Value Editor
 --------------------------------*/
 .ui.form {
