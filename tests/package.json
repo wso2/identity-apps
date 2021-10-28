@@ -21,6 +21,7 @@
         "cy:report": "generate-mochawesome-report",
         "lint": "npm run lint:all",
         "lint:all": "npm run lint:targeted -- .",
+        "lint:autofix": "npm run lint:all -- --fix",
         "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to .",
         "precypress:run": "npm run cy:clean:results && npm run cy:clean:screenshots",
         "precypressbuild": "node scripts/pre-build.js",

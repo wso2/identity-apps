@@ -23,8 +23,6 @@ npm run lint
 
 #### For a specific module/app.
 
-Navigate to the module/app you want to run the linter on, and execute the following command.
-
 ##### Example: To run linter on Console
 
 ```bash
@@ -35,6 +33,7 @@ npm run lint
 or
 
 ```bash
+# From anywhere in the project.
 npx lerna run lint --scope @wso2is/console --stream
 ```
 
@@ -48,6 +47,7 @@ npm run lint
 or
 
 ```bash
+# From anywhere in the project.
 npx lerna run lint --scope @wso2is/react-components --stream
 ```
 
@@ -67,4 +67,51 @@ npm run lint:targeted -- src/features/applications
 ```bash
 cd tests
 npm run lint:targeted -- integration/applications/basic-application.spec.ts
+```
+
+### Auto-fixing Issues
+
+ESLint has the ability to [auto-fix](https://eslint.org/docs/user-guide/command-line-interface#fixing-problems) certain warnings and errors.
+
+This can be done using the **CLI** as well as via the IDE/Code Editor using the integrated ESLint Plugin.
+
+Execute the following commands to auto-fix possible issues using the **CLI**.
+
+#### Auto-fix issues in the entire Mono-repo
+
+```bash
+# Run this from the root.
+npm run lint:autofix
+```
+
+#### Auto-fix issues in a specific module/app.
+
+##### Example: To fix issues in Core module
+
+```bash
+cd modules/core
+npm run lint:autofix
+```
+
+or
+
+```bash
+# From anywhere in the project.
+npx lerna run lint:autofix --scope @wso2is/core --stream
+```
+
+#### Auto-fix issues in a specific folder or a file.
+
+##### Example: To fix issues in `api` directory inside the My Account
+
+```bash
+cd apps/myaccount
+npm run lint:targeted -- src/api --fix
+```
+
+##### Example: To fix issues in `url-utils.ts` file inside the Core module.
+
+```bash
+cd modules/core
+npm run lint:targeted -- src/utils/url-utils.ts --fix
 ```

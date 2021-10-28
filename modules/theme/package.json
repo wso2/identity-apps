@@ -18,6 +18,7 @@
         "compile": "node scripts/build.js",
         "lint": "npm run lint:all",
         "lint:all": "npm run lint:targeted -- .",
+        "lint:autofix": "npm run lint:all -- --fix",
         "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to .",
         "watch": "watch \"npm run build\" src"
     },
@@ -26,10 +27,14 @@
     "devDependencies": {
         "@babel/core": "^7.11.4",
         "@babel/register": "^7.8.6",
+        "@typescript-eslint/eslint-plugin": "^4.17.0",
+        "@typescript-eslint/parser": "^4.17.0",
         "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
         "clean-css": "^4.2.1",
         "eslint": "^7.20.0",
         "eslint-plugin-import": "^2.20.2",
+        "eslint-plugin-react": "^7.18.3",
+        "eslint-plugin-react-hooks": "^4.0.0",
         "fs-extra": "^9.0.1",
         "less": "^3.10.3",
         "less-plugin-rewrite-variable": "0.1.0",
