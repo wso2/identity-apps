@@ -406,11 +406,13 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                                     <div>
                                                         Add SCIM mapping from
                                                         <Link external={ false }
-                                                              onClick={ () =>
-                                                                  // eslint-disable-next-line max-len
-                                                                  history.push(AppConstants.getPaths().get("SCIM_MAPPING"))
-                                                              }
-                                                        > here
+                                                              onClick={ () => {
+                                                                history.push(
+                                                                    AppConstants.getPaths().get("SCIM_MAPPING")
+                                                                );
+                                                              } 
+                                                            }
+                                                        >
                                                         </Link>.
                                                     </div>
                                                 </>
