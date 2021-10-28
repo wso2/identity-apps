@@ -407,6 +407,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                                         Add SCIM mapping from
                                                         <Link external={ false }
                                                               onClick={ () =>
+                                                                  // eslint-disable-next-line max-len
                                                                   history.push(AppConstants.getPaths().get("SCIM_MAPPING"))
                                                               }
                                                         > here
@@ -443,9 +444,12 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 data-testid={ `${testId}-form-supported-by-default-input` }
                                 readOnly={ isReadOnly }
                                 disabled={ !hasMapping }
-                                { ...( shouldShowOnProfile ? 
-                                    { checked: true } : 
-                                    { defaultValue : claim?.supportedByDefault } ) }
+                                { 
+                                    ...( shouldShowOnProfile
+                                        ? { checked: true }
+                                        : { defaultValue : claim?.supportedByDefault } 
+                                     ) 
+                                }   
                             />
                         )
                     }
@@ -491,9 +495,12 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     isSupportedByDefault(value);
                                 } }
                                 disabled={ isClaimReadOnly || !hasMapping }
-                                { ...( isClaimReadOnly ?
-                                    { value: false } :
-                                    { defaultValue : claim?.required } ) }
+                                { 
+                                    ...( isClaimReadOnly 
+                                        ? { value: false }
+                                        : { defaultValue : claim?.required }
+                                     ) 
+                                }
                             />
                     }
                     {
