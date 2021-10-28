@@ -161,12 +161,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             return "Please enter a valid input.";
         }
     };
-    const appDescriptionValidation= (description) => {
-        const isValid = description && !!description.match(ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_DESCRIPTION_PATTERN);
-        if (!isValid) {
-            return "Please enter a valid input.";
-        }
-    };
 
     return (
         <Form
@@ -218,7 +212,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 }
                 value={ description }
                 readOnly={ readOnly }
-                validation ={ (value) => appDescriptionValidation(value).toString().trim() }
                 maxLength={ 300 }
                 minLength={ 3 }
                 data-testid={ `${ testId }-application-description-textarea` }
