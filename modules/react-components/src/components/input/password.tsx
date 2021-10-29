@@ -16,7 +16,7 @@
  * under the License.
  */
 
- import { TestableComponentInterface } from "@wso2is/core/models";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { useState } from "react";
 import { Form, Icon, Popup, SemanticWIDTHS } from "semantic-ui-react";
 
@@ -49,7 +49,7 @@ interface PasswordPropsInterface extends TestableComponentInterface {
 export const Password: React.FunctionComponent<PasswordPropsInterface> = (
     props: PasswordPropsInterface
 ): JSX.Element => {
-    const [isShow, setIsShow] = useState(false);
+    const [ isShow, setIsShow ] = useState(false);
 
     const {
         label,

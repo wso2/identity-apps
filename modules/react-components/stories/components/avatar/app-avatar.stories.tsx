@@ -19,8 +19,8 @@
 
 import { boolean, radios, select, text } from "@storybook/addon-knobs";
 import React, { ReactElement } from "react";
-import { AppAvatar } from "../../../src";
 import { meta } from "./app-avatar.stories.meta";
+import { AppAvatar } from "../../../src";
 
 export default {
     parameters: {
@@ -107,6 +107,7 @@ AppAvatarFromImage.story = {
         }
     }
 };
+
 /**
  * Story to display the app avatar loading status.
  *
@@ -175,26 +176,28 @@ AppAvatarSizes.story = {
 export const AppAvatarPlayground = (): ReactElement => (
     <AppAvatar
         name={ text("Application name", "My Account") }
-        // tslint:disable:object-literal-sort-keys
-        size={ select(
-            "Size",
-            {
-                Mini: "mini",
-                Little: "little",
-                Tiny: "tiny",
-                Small: "small",
-                Medium: "medium",
-                Large: "large",
-                Big: "big",
-                Huge: "huge",
-                Massive: "massive"
-            },
-            "tiny"
-        ) }
+        size={
+            /* eslint-disable sort-keys */
+            select(
+                "Size",
+                {
+                    Mini: "mini",
+                    Little: "little",
+                    Tiny: "tiny",
+                    Small: "small",
+                    Medium: "medium",
+                    Large: "large",
+                    Big: "big",
+                    Huge: "huge",
+                    Massive: "massive"
+                },
+                "tiny"
+            )
+            /* eslint-enable sort-keys */
+        }
         image={ text("Image URL", null) }
         isLoading={ boolean("Loading", false) }
-        // tslint:enable:object-literal-sort-keys
-        spaced={ radios("Spaced", { Right: "right", Left: "left" }, "right") }
+        spaced={ radios("Spaced", { Left: "left",  Right: "right" }, "right") }
     />
 );
 

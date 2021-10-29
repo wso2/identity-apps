@@ -123,7 +123,7 @@ export const DataTableColumnSelector: FunctionComponent<DataTableColumnSelectorI
                             width: `${ columnSelectorWidth }px`
                         } }
                         content={
-                            <>
+                            (<>
                                 <div className="data-table-column-selector-popup-heading-container">
                                     <Heading as="h6">
                                         { columnSelectorHeader }
@@ -160,18 +160,18 @@ export const DataTableColumnSelector: FunctionComponent<DataTableColumnSelectorI
                                                             onChange={ handleColumnVisibilityChange }
                                                         />
                                                     </Form.Field>
-                                                )
+                                                );
                                             }
-                                        )
+                                            )
                                         }
                                     </Form>
                                 </div>
-                            </>
+                            </>)
                         }
                         position="bottom right"
                         on="click"
                         trigger={
-                            <GenericIcon
+                            (<GenericIcon
                                 fill
                                 link
                                 hoverable
@@ -179,7 +179,7 @@ export const DataTableColumnSelector: FunctionComponent<DataTableColumnSelectorI
                                 floated={ floated }
                                 icon={ triggerIcon }
                                 size="micro"
-                            />
+                            />)
                         }
                     />
                 </div>

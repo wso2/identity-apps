@@ -198,7 +198,7 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                         data-testid={ `${ testId }-${ action.type }-action-${ index }` }
                         { ...actionsRest }
                     />
-                )
+                );
             }
             case "checkbox": {
                 return (
@@ -212,7 +212,7 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                         data-testid={ `${ testId }-${ action.type }-action-${ index }` }
                         { ...actionsRest }
                     />
-                )
+                );
             }
             case "icon": {
                 if (typeof icon === "string") {
@@ -230,11 +230,11 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                                         transparent
                                         verticalAlign="middle"
                                         icon={
-                                            <Icon
+                                            (<Icon
                                                 name={ icon as SemanticICONS }
                                                 color="grey"
-                                                className={ classNames({"disabled": disabled}, "") }
-                                            />
+                                                className={ classNames({ "disabled": disabled }, "") }
+                                            />)
                                         }
                                         onClick={
                                             (e: MouseEvent<HTMLDivElement>) => handleActionOnClick(onClick, e, id)
@@ -247,7 +247,7 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                             content={ popoverText }
                             inverted
                         />
-                    )
+                    );
                 }
 
                 return (
@@ -273,7 +273,7 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                         content={ popoverText }
                         inverted
                     />
-                )
+                );
             }
             default: {
                 return null;

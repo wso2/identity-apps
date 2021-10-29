@@ -237,7 +237,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                     githubRepoMetaInfo.languageLogo && (
                                         <Popup
                                             trigger={
-                                                <div className="language">
+                                                (<div className="language">
                                                     <GenericIcon
                                                         icon={ githubRepoMetaInfo.languageLogo }
                                                         data-testid={ `${ testId }-github-repo-language-logo` }
@@ -248,7 +248,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                                         spaced="right"
                                                         floated="left"
                                                     />
-                                                </div>
+                                                </div>)
                                             }
                                             content={ githubRepoMetaInfo.language }
                                             inverted
@@ -309,7 +309,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                             githubRepoMetaInfo.languageLogo && (
                                 <Popup
                                     trigger={
-                                        <div className="language">
+                                        (<div className="language">
                                             <GenericIcon
                                                 icon={ githubRepoMetaInfo.languageLogo }
                                                 data-testid={ `${ testId }-github-repo-language-logo` }
@@ -320,7 +320,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                                 spaced="right"
                                                 floated="left"
                                             />
-                                        </div>
+                                        </div>)
                                     }
                                     content={ githubRepoMetaInfo.language }
                                     inverted

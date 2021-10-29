@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { CSSProperties, FunctionComponent, ReactElement } from "react";
 import { GenericIcon } from "../icon";
 
 /**
@@ -48,7 +48,7 @@ export interface StepPropsInterface extends TestableComponentInterface {
     /**
      * Custom styles object
      */
-    style?: object;
+    style?: CSSProperties | undefined;
     /**
      * Title for the step.
      */

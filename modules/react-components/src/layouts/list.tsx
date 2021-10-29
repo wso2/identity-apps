@@ -152,8 +152,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
         sortStrategy,
         totalListSize,
         totalPages,
-        [ "data-testid" ]: testId,
-        ...rest
+        [ "data-testid" ]: testId
     } = props;
 
     const [ isAscending, setIsAscending ] = useState(true);
@@ -187,7 +186,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                                                 sortStrategy &&
                                                 onSortStrategyChange &&
                                                 onSortOrderChange &&
-                                                <div className="sort-list">
+                                                (<div className="sort-list">
                                                     <Dropdown
                                                         onChange={ onSortStrategyChange }
                                                         options={ sortOptions }
@@ -203,7 +202,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                                                     />
                                                     <Popup
                                                         trigger={
-                                                            <Button
+                                                            (<Button
                                                                 icon
                                                                 onClick={ () => {
                                                                     setIsAscending(!isAscending);
@@ -218,7 +217,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                                                                             : "sort amount up"
                                                                     }
                                                                 />
-                                                            </Button>
+                                                            </Button>)
                                                         }
                                                         content={
                                                             isAscending
@@ -227,7 +226,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                                                         }
                                                         inverted
                                                     />
-                                                </div>
+                                                </div>)
                                             }
                                         </div>
                                     </Grid.Column>

@@ -18,8 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode, useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { CSSProperties, FunctionComponent, MouseEvent, ReactElement, ReactNode, useState } from "react";
 import { Card, CardProps, Icon, Label, Popup } from "semantic-ui-react";
 import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
 
@@ -181,9 +180,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
         className
     );
 
-    const { t } = useTranslation();
-
-    const [ dimmerState, setDimmerState ] = useState<boolean>(false);
+    const [ , setDimmerState ] = useState<boolean>(false);
 
     /**
      * Renders the tag based on render type.
@@ -194,13 +191,13 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
      * @return {React.ReactElement}
      */
     const renderTag = (tag: TemplateCardTagInterface | string, as: "icon" | "label" | "default",
-                       index: number): ReactElement => {
+        index: number): ReactElement => {
 
         if (typeof tag === "string") {
-            return <span className="tag default" key={ index }>
+            return (<span className="tag default" key={ index }>
                 { tag }
                 { (tags.length === 1 || index === tags.length - 1) ? "" : "," }
-            </span>;
+            </span>);
         }
 
         if (as === "icon") {
@@ -241,16 +238,16 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
             );
         }
 
-        return <span className="tag default" key={ index }>
+        return (<span className="tag default" key={ index }>
             { tag.displayName }
             { (tags.length === 1 || index === tags.length - 1) ? "" : ", " }
-        </span>;
+        </span>);
     };
 
     /**
      * Inline styles for image container.
      */
-    const imageContainerStyles = (): object => {
+    const imageContainerStyles = (): CSSProperties | undefined => {
 
         return {
             opacity: disabled ? overlayOpacity : 1
@@ -260,7 +257,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
     /**
      * Inline styles for text container.
      */
-    const textContainerStyles = (): object => {
+    const textContainerStyles = (): CSSProperties => {
 
         return {
             textAlign

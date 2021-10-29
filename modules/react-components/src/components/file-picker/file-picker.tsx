@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import { CertificateManagementUtils } from "@wso2is/core/utils";
+import { KJUR, X509 } from "jsrsasign";
+import * as forge from "node-forge";
 import React, { FC, PropsWithChildren, ReactElement, useEffect, useRef, useState } from "react";
 import {
     Button,
@@ -30,9 +33,6 @@ import {
     TextArea
 } from "semantic-ui-react";
 import { GenericIcon } from "../icon";
-import { KJUR, X509 } from "jsrsasign";
-import * as forge from "node-forge";
-import { CertificateManagementUtils } from "@wso2is/core/utils";
 
 // TODO: Move polyfills to a generalized module.
 
@@ -44,6 +44,7 @@ function poly() {
     // this: File or Blob
     return new Promise<ArrayBuffer>((resolve) => {
         const fr = new FileReader();
+
         fr.onload = () => {
             resolve(fr.result as ArrayBuffer);
         };
@@ -206,17 +207,19 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
             setHasError(true);
             setErrorMessage(emptyFileErrorMsg? emptyFileErrorMsg : "Please add a file");
         }
-    },[emptyFileError]);
+    },[ emptyFileError ]);
 
     useEffect(() => {
         if (initialFile) {
             addFileToState(initialFile);
             setActiveIndex(FIRST_TAB_INDEX);
+
             return;
         }
         if (initialPastedContent) {
             addPastedDataToState(initialPastedContent);
             setActiveIndex(SECOND_TAB_INDEX);
+
             return;
         }
     }, [ initialFile, initialPastedContent ]);
@@ -224,16 +227,19 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
     useEffect(() => {
         // Query the preferred color scheme.
         const mql = window.matchMedia("(prefers-color-scheme:dark)");
+
         // Check and set the dark mode initially.
         if (mql?.matches) setDark(true);
         // Callback for triggering the same for change events.
         const triggerColorScheme = (event): void => {
             setDark(event.matches ?? false);
         };
+
         // Check to see if match media API is available with the browser.
         if (mql?.addEventListener) {
             mql.addEventListener("change", triggerColorScheme);
         }
+
         // Cleanup logic.
         return () => {
             if (mql?.addEventListener) {
@@ -266,6 +272,7 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
             await fileStrategy.validate(data);
             setHasError(false);
             setErrorMessage(null);
+
             return true;
         } catch (error) {
             // Ideally the validation result must be type
@@ -274,6 +281,7 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
             // or a Error object we need to gracefully handle
             // the result.
             readDynamicErrorAndSetToState(error);
+
             return false;
         }
     };
@@ -291,7 +299,7 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
                 setErrorMessage("Your input has unknown errors.");
             }
         }
-    }
+    };
 
     // TODO: As a improvement add multiple tabs option. The implementation
     //       of that is a little tricky. We can achieve the behaviour using
@@ -309,6 +317,7 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
     const addFileToState = async (file: File): Promise<void> => {
         if (await validate(file)) {
             setFile(file);
+
             try {
                 setSerializedData(await fileStrategy.serialize(file));
             } catch (error) {
@@ -339,6 +348,7 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
         setDragOver(false);
         if (event.dataTransfer.files[ FIRST_FILE_INDEX ]) {
             const file = event.dataTransfer.files[ FIRST_FILE_INDEX ];
+
             if (file) {
                 addFileToState(file);
                 setFileFieldTouched(true);
@@ -347,7 +357,7 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
                 setFile(null);
             }
         }
-    }
+    };
 
     const handleOnDragOver = (event: React.DragEvent<HTMLDivElement>): void => {
         if (event) {
@@ -355,7 +365,7 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
             event.stopPropagation();
         }
         setDragOver(true);
-    }
+    };
 
     const handleOnDragLeave = (event: React.DragEvent<HTMLDivElement>): void => {
         if (event) {
@@ -363,13 +373,14 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
             event.stopPropagation();
         }
         setDragOver(false);
-    }
+    };
 
     // Events that takes care of the manual input. Where the user
     // clicks the upload button and related file input field changes.
 
     const handleOnFileInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         const file: File = event.target.files[ FIRST_FILE_INDEX ];
+
         event.target.value = null;
         addFileToState(file);
         setFileFieldTouched(true);
@@ -444,7 +455,7 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
                                     normalizeSerializationOnFileRemoval();
                                 }
                             } }>
-                            <Icon name='trash alternate'/> Remove
+                            <Icon name="trash alternate"/> Remove
                         </Button>
                     </Segment>
                 </Segment>
@@ -454,7 +465,7 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
                     onDrop={ handleOnDrop }
                     onDragOver={ handleOnDragOver }
                     onDragLeave={ handleOnDragLeave }
-                    data-testid={ `generic-file-upload-dropzone` }
+                    data-testid={ "generic-file-upload-dropzone" }
                 >
                     <Segment placeholder className={ `drop-zone ${ dragOver && "drag-over" }` }>
                         <div className="certificate-upload-placeholder">
@@ -468,6 +479,7 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
                     </Segment>
                 </div>
             );
+
             return (file) ? previewPlaceholder : dragDropArea;
         }
     };
@@ -527,21 +539,22 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
             { /*A dynamic input should be placed here so that we can*/ }
             { /*take a preferred file name for the picked file. */ }
             { !hidePasteOption ?
-                <Tab
+                (<Tab
                     className="tabs resource-tabs"
-                    menu={{ pointing: true, secondary: true }}
-                    panes={[dragOption, pasteOption]}
-                    activeIndex={activeIndex}
-                    onTabChange={(event, { activeIndex }) => {
+                    menu={ { pointing: true, secondary: true } }
+                    panes={ [ dragOption, pasteOption ] }
+                    activeIndex={ activeIndex }
+                    onTabChange={ (event, { activeIndex }) => {
                         const index = parseInt(activeIndex.toString());
+
                         setActiveIndex(index);
                         if (index === FIRST_TAB_INDEX && fileFieldTouched && !pastedContent) {
                             validate(file);
                         } else if (index === SECOND_TAB_INDEX && pasteFieldTouched && !file) {
                             validate(pastedContent);
                         }
-                    }}
-                /> :
+                    } }
+                />) :
                 (
                     <>
                         <Divider hidden/>
@@ -553,9 +566,9 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
                 <Message
                     error
                     visible={ hasError }
-                    data-testid={ `file-picker-error-message` }
+                    data-testid={ "file-picker-error-message" }
                 >
-                    <Icon name='file'/>
+                    <Icon name="file"/>
                     { errorMessage }
                 </Message>
             }
@@ -624,7 +637,7 @@ interface ValidationResult {
 }
 
 function isTypeValidationResult(obj: any): boolean {
-    return obj && ('valid' in obj || 'errorMessage' in obj);
+    return obj && ("valid" in obj || "errorMessage" in obj);
 }
 
 // Concrete strategies implementations.
@@ -637,11 +650,11 @@ export class DefaultFileStrategy implements PickerStrategy<string> {
         this.mimeTypes = [ "*" ];
     }
 
-    async serialize(data: File | string): Promise<string> {
+    async serialize(): Promise<string> {
         return Promise.resolve("");
     }
 
-    async validate(data: File | string): Promise<ValidationResult> {
+    async validate(): Promise<ValidationResult> {
         return Promise.resolve({ valid: true });
     }
 
@@ -654,6 +667,7 @@ export class XMLFileStrategy implements PickerStrategy<string> {
         "text/xml",
         "application/xml"
     ];
+
     static readonly MEGABYTE: number = 1e+6;
     static readonly MAX_FILE_SIZE: number = 3 * XMLFileStrategy.MEGABYTE;
 
@@ -670,18 +684,20 @@ export class XMLFileStrategy implements PickerStrategy<string> {
         return new Promise<string>((resolve, reject) => {
             if (!data) {
                 reject({ valid: false });
+
                 return;
             }
             if (data instanceof File) {
                 const reader = new FileReader();
+
                 reader.readAsText(data, XMLFileStrategy.ENCODING);
                 reader.onload = () => {
                     this.parseXML(reader.result).then((rawXML) => {
                         resolve(btoa(rawXML));
                     }).catch((error) => {
                         reject({
-                            valid: false,
-                            errorMessage: error ?? "XML file content is invalid"
+                            errorMessage: error ?? "XML file content is invalid",
+                            valid: false
                         });
                     });
                 };
@@ -690,8 +706,8 @@ export class XMLFileStrategy implements PickerStrategy<string> {
                     resolve(btoa(rawXML));
                 }).catch((error) => {
                     reject({
-                        valid: false,
-                        errorMessage: error ?? "XML string is invalid"
+                        errorMessage: error ?? "XML string is invalid",
+                        valid: false
                     });
                 });
             }
@@ -702,21 +718,23 @@ export class XMLFileStrategy implements PickerStrategy<string> {
         return new Promise<ValidationResult>((resolve, reject) => {
             if (data instanceof File) {
                 const expected = XMLFileStrategy.MAX_FILE_SIZE * XMLFileStrategy.MEGABYTE;
+
                 if ((data as File).size > expected) {
                     reject({
-                        valid: false,
-                        errorMessage: `File exceeds max size of ${ XMLFileStrategy.MAX_FILE_SIZE } MB`
+                        errorMessage: `File exceeds max size of ${ XMLFileStrategy.MAX_FILE_SIZE } MB`,
+                        valid: false
                     });
                 }
                 const reader = new FileReader();
+
                 reader.readAsText(data, XMLFileStrategy.ENCODING);
                 reader.onload = () => {
                     this.parseXML(reader.result).then(() => {
                         resolve({ valid: true });
                     }).catch((error) => {
                         reject({
-                            valid: false,
-                            errorMessage: error ?? "XML file has errors"
+                            errorMessage: error ?? "XML file has errors",
+                            valid: false
                         });
                     });
                 };
@@ -725,8 +743,8 @@ export class XMLFileStrategy implements PickerStrategy<string> {
                     resolve({ valid: true });
                 }).catch((error) => {
                     reject({
-                        valid: false,
-                        errorMessage: error ?? "XML string has errors"
+                        errorMessage: error ?? "XML string has errors",
+                        valid: false
                     });
                 });
             }
@@ -735,6 +753,7 @@ export class XMLFileStrategy implements PickerStrategy<string> {
 
     async parseXML(xml: string | ArrayBuffer): Promise<string> {
         const domParser = new DOMParser();
+
         // If the xml is a instance of ArrayBuffer then first
         // convert it to a primitive string.
         if (xml instanceof ArrayBuffer) {
@@ -742,14 +761,17 @@ export class XMLFileStrategy implements PickerStrategy<string> {
             // https://github.com/inexorabletash/text-encoding
             const enc = new TextDecoder(XMLFileStrategy.ENCODING);
             const arr = new Uint8Array(xml);
+
             xml = enc.decode(arr);
         }
         // Below this point we can ensure that xml is
         // a string type and proceed to parse.
-        const dom = domParser.parseFromString(xml, 'text/xml');
+        const dom = domParser.parseFromString(xml, "text/xml");
+
         if (dom.getElementsByTagName("parsererror").length > 0) {
             throw "Error while parsing XML file";
         }
+
         return xml;
     }
 
@@ -791,10 +813,10 @@ export class CertFileStrategy implements PickerStrategy<CertificateDecodeResult>
                     resolve({ valid: true });
                 }).catch(() => {
                     reject({
-                        valid: false,
                         errorMessage: "Invalid certificate file. " +
                             "Please use one of the following formats " +
-                            this.mimeTypes.join(",")
+                            this.mimeTypes.join(","),
+                        valid: false
                     });
                 });
             } else {
@@ -802,8 +824,8 @@ export class CertFileStrategy implements PickerStrategy<CertificateDecodeResult>
                     resolve({ valid: true });
                 }).catch(() => {
                     reject({
-                        valid: false,
-                        errorMessage: "Invalid certificate pem string."
+                        errorMessage: "Invalid certificate pem string.",
+                        valid: false
                     });
                 });
             }
@@ -814,10 +836,11 @@ export class CertFileStrategy implements PickerStrategy<CertificateDecodeResult>
         return new Promise<CertificateDecodeResult>((resolve, reject) => {
             try {
                 const certificateForge = new X509().readCertFromPEM(text);
+
                 resolve({
                     forgeObject: certificateForge,
-                    pemStripped: CertificateManagementUtils.stripPem(text),
-                    pem: text
+                    pem: text,
+                    pemStripped: CertificateManagementUtils.stripPem(text)
                 });
             } catch {
                 try {
@@ -825,11 +848,12 @@ export class CertFileStrategy implements PickerStrategy<CertificateDecodeResult>
                     const certificate = forge.pki.certificateFromPem(pemValue);
                     const pem = forge.pki.certificateToPem(certificate);
                     const certificateForge = new X509();
+
                     certificateForge.readCertPEM(pem);
                     resolve({
                         forgeObject: certificateForge,
-                        pemStripped: CertificateManagementUtils.stripPem(text),
-                        pem: text
+                        pem: text,
+                        pemStripped: CertificateManagementUtils.stripPem(text)
                     });
                 } catch (error) {
                     reject("Failed to decode pem certificate data.");
@@ -847,10 +871,12 @@ export class CertFileStrategy implements PickerStrategy<CertificateDecodeResult>
                         (x) => ("00" + x.toString(16)).slice(-2)
                     ).join("");
                     const cert = new X509();
+
                     cert.readCertHex(hex);
                     const certificate = new KJUR.asn1.x509.Certificate(cert.getParam());
                     const pem = certificate.getPEM();
                     const pemStripped = CertificateManagementUtils.stripPem(pem);
+
                     resolve({
                         forgeObject: cert,
                         pem: pem,
@@ -858,13 +884,16 @@ export class CertFileStrategy implements PickerStrategy<CertificateDecodeResult>
                     });
                 } catch {
                     const byteString = forge.util.createBuffer(buf);
+
                     try {
                         const asn1 = forge.asn1.fromDer(byteString);
                         const certificate = forge.pki.certificateFromAsn1(asn1);
                         const pem = forge.pki.certificateToPem(certificate);
                         const cert = new X509();
+
                         cert.readCertPEM(pem);
                         const pemStripped = CertificateManagementUtils.stripPem(pem);
+
                         resolve({
                             forgeObject: cert,
                             pem: pem,
@@ -873,10 +902,12 @@ export class CertFileStrategy implements PickerStrategy<CertificateDecodeResult>
                     } catch {
                         try {
                             const cert = new X509();
+
                             cert.readCertPEM(byteString.data);
                             const certificate = new KJUR.asn1.x509.Certificate(cert.getParam());
                             const pem = certificate.getPEM();
                             const pemStripped = CertificateManagementUtils.stripPem(pem);
+
                             resolve({
                                 forgeObject: cert,
                                 pem: pem,
@@ -887,8 +918,10 @@ export class CertFileStrategy implements PickerStrategy<CertificateDecodeResult>
                                 const certificate = forge.pki.certificateFromPem(byteString.data);
                                 const pem = forge.pki.certificateToPem(certificate);
                                 const cert = new X509();
+
                                 cert.readCertPEM(pem);
                                 const pemStripped = CertificateManagementUtils.stripPem(pem);
+
                                 resolve({
                                     forgeObject: cert,
                                     pem: pem,
@@ -896,8 +929,8 @@ export class CertFileStrategy implements PickerStrategy<CertificateDecodeResult>
                                 });
                             } catch {
                                 reject({
-                                    valid: false,
-                                    errorMessage: "Certificate file has errors."
+                                    errorMessage: "Certificate file has errors.",
+                                    valid: false
                                 });
                             }
                         }

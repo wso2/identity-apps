@@ -100,7 +100,7 @@ export const Alert: FunctionComponent<AlertPropsInterface> = (
         [ "data-testid" ]: testId
     } = props;
 
-    const [ intermediateDissmissInterval, setIntermediateDissmissInterval ] = useState<number>(dismissInterval);
+    const [ , setIntermediateDissmissInterval ] = useState<number>(dismissInterval);
 
     const classes = classNames({
         absolute
@@ -125,18 +125,22 @@ export const Alert: FunctionComponent<AlertPropsInterface> = (
         switch (alert.level) {
             case AlertLevels.SUCCESS as string: {
                 icon = AlertIcons.success;
+
                 break;
             }
             case AlertLevels.WARNING as string: {
                 icon = AlertIcons.warning;
+
                 break;
             }
             case AlertLevels.ERROR as string: {
                 icon = AlertIcons.error;
+
                 break;
             }
             case AlertLevels.INFO as string: {
                 icon = AlertIcons.info;
+
                 break;
             }
             default:
@@ -191,13 +195,15 @@ export const Alert: FunctionComponent<AlertPropsInterface> = (
             className={ `alert-wrapper ${ classes }` } 
             data-testid={ testId }
         >
-            <NotificationSystem ref={ alertRef } style={ {
-                NotificationItem: {
-                    DefaultStyle: {
-                        cursor: "unset"
+            <NotificationSystem
+                ref={ alertRef }
+                style={ {
+                    NotificationItem: {
+                        DefaultStyle: {
+                            cursor: "unset"
+                        }
                     }
-                }
-            } }/>
+                } }/>
         </div>
     );
 };

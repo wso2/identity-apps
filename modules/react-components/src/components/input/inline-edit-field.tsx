@@ -59,7 +59,7 @@ export const InlineEditInput: FunctionComponent<InlineEditInputPropsInterface> =
     const [ prevText, setPrevText ] = useState<string>(text);
     const [ textValue, setTextValue ] = useState<string>(text);
     const [ regExValidation, setRegExValidation ] = useState<RegExp>();
-    const [ fieldError, setFieldError] = useState<boolean>(false);
+    const [ fieldError, setFieldError ] = useState<boolean>(false);
 
     useEffect(() => {
         setTextValue(text);
@@ -69,13 +69,14 @@ export const InlineEditInput: FunctionComponent<InlineEditInputPropsInterface> =
     useEffect(() => {
         if ( validation ) {
             const regEx = new RegExp(validation);
+
             setRegExValidation(regEx);
         }
-    }, [validation]);
+    }, [ validation ]);
     
     return (
         editMode ? 
-            <Grid verticalAlign="middle">
+            (<Grid verticalAlign="middle">
                 <Grid.Row columns={ 2 }>
                     <GridColumn width={ 12 }>
                         <Input 
@@ -106,6 +107,7 @@ export const InlineEditInput: FunctionComponent<InlineEditInputPropsInterface> =
                                             if (errorHandler) {
                                                 errorHandler(true);
                                             }
+
                                             return;
                                         }
                                         
@@ -138,13 +140,13 @@ export const InlineEditInput: FunctionComponent<InlineEditInputPropsInterface> =
                         />
                     </Grid.Column>
                 </Grid.Row>
-            </Grid>
-        :
-            <Grid columns="equal" verticalAlign="middle">
+            </Grid>)
+            :
+            (<Grid columns="equal" verticalAlign="middle">
                 <Grid.Row>
                     <GridColumn width="16">
                         { text && text !== "" && 
-                            <>
+                            (<>
                                 <span className="mr-3">
                                     { textPrefix && textPrefix }
                                     <b>{ text && text  }</b>
@@ -166,10 +168,10 @@ export const InlineEditInput: FunctionComponent<InlineEditInputPropsInterface> =
                                     position="top center"
                                     inverted
                                 />
-                            </>
+                            </>)
                         }
                     </GridColumn>
                 </Grid.Row>
-            </Grid>
+            </Grid>)
     );
 };

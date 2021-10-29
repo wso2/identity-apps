@@ -207,6 +207,7 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
         // If user didn't provide a value for {@link selectedValue}
         // try to set the first option as the default value.
         let specifiedDefault = options.find(({ value }) => value === selectedValue);
+
         if (!specifiedDefault) {
             specifiedDefault = options[FIRST_ELEMENT_INDEX];
         }
@@ -238,6 +239,7 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
             // the same functionality. Hence, no need to invoke two
             // handlers at the same time.
             const fromActiveState = data.active;
+
             if (!fromActiveState && data?.onSelect) {
                 data.onSelect(data);
             }
@@ -255,6 +257,7 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
         >
             { options.map((opt: SwitcherOptionProps, index: number): ReactElement => {
                 const { value, label, disabled, ...optRest } = opt;
+
                 if (disabled) {
                     return (
                         <Popup
@@ -265,7 +268,7 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
                             // https://react.semantic-ui.com/modules/popup/
                             // https://github.com/Semantic-Org/Semantic-UI-React/issues/1413
                             trigger={
-                                <div>
+                                (<div>
                                     <Button
                                         style={ STYLED_BUTTON }
                                         disabled
@@ -274,11 +277,12 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
                                         content={ label }
                                         onClick={ OPERATION_PASS }
                                     />
-                                </div>
+                                </div>)
                             }
                         />
                     );
                 }
+
                 return (
                     <Button
                         key={ index }

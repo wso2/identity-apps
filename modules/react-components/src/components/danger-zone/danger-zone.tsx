@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, SyntheticEvent } from "react";
-import { Button, Checkbox, CheckboxProps, Header, Responsive, Segment, Popup } from "semantic-ui-react";
+import { Button, Checkbox, CheckboxProps, Header, Popup, Responsive, Segment } from "semantic-ui-react";
 
 /**
  * Danger zone component Prop types.
@@ -107,18 +107,18 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
             </Header>
             {
                 toggle ?
-                    <Checkbox
+                    (<Checkbox
                         toggle
                         id={ toggle?.id }
                         onChange={ toggle?.onChange }
                         checked={ toggle?.checked }
                         className="danger-zone toggle-switch"
                         data-testid={ `${ testId }-toggle` }
-                    />
+                    />)
                     :
-                    <Popup
+                    (<Popup
                         trigger={
-                            <div
+                            (<div
                                 className={
                                     (window.innerWidth <= Responsive.onlyTablet.maxWidth)
                                         ? "mb-1x mt-1x inline-button button-width"
@@ -134,7 +134,7 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
                                 >
                                     { actionTitle }
                                 </Button>
-                            </div>
+                            </div>)
                         }
                         content={ buttonDisableHint }
                         position={
@@ -145,7 +145,7 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
                         size="mini"
                         wide
                         disabled={ !isButtonDisabled || !buttonDisableHint }
-                    />
+                    />)
             }
         </Segment>
     );

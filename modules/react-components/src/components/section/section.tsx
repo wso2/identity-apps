@@ -219,43 +219,43 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                         </Grid.Column>
                         {
                             icon || iconMini ? (
-                                    <Grid.Column width={ 6 } className="no-padding">
-                                        <Responsive as={ Fragment } { ...Responsive.onlyComputer }>
-                                            {
-                                                icon ? (
-                                                        <GenericIcon
-                                                            icon={ icon }
-                                                            transparent
-                                                            size={ iconSize }
-                                                            floated={ iconFloated }
-                                                            defaultIcon={ iconStyle === "default" }
-                                                            twoTone={ iconStyle === "twoTone" }
-                                                            colored={ iconStyle === "colored" }
-                                                            data-testid={ `${ testId }-icon` }
-                                                        />
-                                                    )
-                                                    : null
-                                            }
-                                        </Responsive>
-                                        <Responsive as={ Fragment } maxWidth={ Responsive.onlyTablet.maxWidth }>
-                                            {
-                                                iconMini ? (
-                                                        <GenericIcon
-                                                            icon={ iconMini }
-                                                            transparent
-                                                            size={ iconSize }
-                                                            floated={ iconFloated }
-                                                            defaultIcon={ iconStyle === "default" }
-                                                            twoTone={ iconStyle === "twoTone" }
-                                                            colored={ iconStyle === "colored" }
-                                                            data-testid={ `${ testId }-icon-mini` }
-                                                        />
-                                                    )
-                                                    : null
-                                            }
-                                        </Responsive>
-                                    </Grid.Column>
-                                )
+                                <Grid.Column width={ 6 } className="no-padding">
+                                    <Responsive as={ Fragment } { ...Responsive.onlyComputer }>
+                                        {
+                                            icon ? (
+                                                <GenericIcon
+                                                    icon={ icon }
+                                                    transparent
+                                                    size={ iconSize }
+                                                    floated={ iconFloated }
+                                                    defaultIcon={ iconStyle === "default" }
+                                                    twoTone={ iconStyle === "twoTone" }
+                                                    colored={ iconStyle === "colored" }
+                                                    data-testid={ `${ testId }-icon` }
+                                                />
+                                            )
+                                                : null
+                                        }
+                                    </Responsive>
+                                    <Responsive as={ Fragment } maxWidth={ Responsive.onlyTablet.maxWidth }>
+                                        {
+                                            iconMini ? (
+                                                <GenericIcon
+                                                    icon={ iconMini }
+                                                    transparent
+                                                    size={ iconSize }
+                                                    floated={ iconFloated }
+                                                    defaultIcon={ iconStyle === "default" }
+                                                    twoTone={ iconStyle === "twoTone" }
+                                                    colored={ iconStyle === "colored" }
+                                                    data-testid={ `${ testId }-icon-mini` }
+                                                />
+                                            )
+                                                : null
+                                        }
+                                    </Responsive>
+                                </Grid.Column>
+                            )
                                 : null
                         }
                     </Grid.Row>
@@ -263,7 +263,7 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                         <Grid.Column className="no-padding" width={ 16 }>
                             {
                                 topActionBar
-                                ? (
+                                    ? (
                                         <Menu
                                             className="top-action-panel no-margin-bottom"
                                             data-testid={ `${ testId }-top-action-panel` }
@@ -273,7 +273,7 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                                             </Menu.Menu>
                                         </Menu>
                                     )
-                                : null
+                                    : null
                             }
                             { children }
                         </Grid.Column>
@@ -282,32 +282,32 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
             </Card.Content>
             {
                 (primaryAction || secondaryAction || placeholder) && showActionBar ? (
-                        <Card.Content className="extra-content" extra>
-                            <List selection={ !secondaryAction } verticalAlign="middle">
-                                <List.Item
-                                    className="action-button"
-                                    disabled={ !!placeholder }
-                                    // if both `primaryAction` & `secondaryAction` are passed in,
-                                    // disable list item `onClick`.
-                                    onClick={ !(primaryAction && secondaryAction)
-                                        ? onSecondaryActionClick || onPrimaryActionClick
-                                        : null
-                                    }
-                                >
-                                    {
-                                        placeholder
-                                            ? (
-                                                <List.Header className="action-button-text">
-                                                    <Message info>
-                                                        <Icon name="info circle" />{ placeholder }
-                                                    </Message>
-                                                </List.Header>
-                                            )
-                                            : (
-                                                <>
-                                                    {
-                                                        primaryAction
-                                                            ? constructAction(
+                    <Card.Content className="extra-content" extra>
+                        <List selection={ !secondaryAction } verticalAlign="middle">
+                            <List.Item
+                                className="action-button"
+                                disabled={ !!placeholder }
+                                // if both `primaryAction` & `secondaryAction` are passed in,
+                                // disable list item `onClick`.
+                                onClick={ !(primaryAction && secondaryAction)
+                                    ? onSecondaryActionClick || onPrimaryActionClick
+                                    : null
+                                }
+                            >
+                                {
+                                    placeholder
+                                        ? (
+                                            <List.Header className="action-button-text">
+                                                <Message info>
+                                                    <Icon name="info circle" />{ placeholder }
+                                                </Message>
+                                            </List.Header>
+                                        )
+                                        : (
+                                            <>
+                                                {
+                                                    primaryAction
+                                                        ? constructAction(
                                                             primaryAction,
                                                             primaryActionIcon,
                                                             primaryActionDisabled,
@@ -315,12 +315,12 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                                                                 ? onPrimaryActionClick
                                                                 : null,
                                                             "primary"
-                                                            )
-                                                            : null
-                                                    }
-                                                    {
-                                                        secondaryAction
-                                                            ? constructAction(
+                                                        )
+                                                        : null
+                                                }
+                                                {
+                                                    secondaryAction
+                                                        ? constructAction(
                                                             secondaryAction,
                                                             secondaryActionIcon,
                                                             secondaryActionDisabled,
@@ -328,16 +328,16 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                                                                 ? onSecondaryActionClick
                                                                 : null,
                                                             "secondary"
-                                                            )
-                                                            : null
-                                                    }
-                                                </>
-                                            )
-                                    }
-                                </List.Item>
-                            </List>
-                        </Card.Content>
-                    )
+                                                        )
+                                                        : null
+                                                }
+                                            </>
+                                        )
+                                }
+                            </List.Item>
+                        </List>
+                    </Card.Content>
+                )
                     : (
                         accordion
                     )

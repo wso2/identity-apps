@@ -126,13 +126,14 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
     return (
         <List.Item className={ classes } data-testid={ testId } { ...rest }>
             <Grid>
-                <Grid.Row columns={
-                    metaContent instanceof Array
-                        ? (metaContent.length + 2) as StrictGridRowProps[ "columns" ]
-                        : (itemHeader || itemDescription)
-                            ? 3
-                            : 2
-                }>
+                <Grid.Row
+                    columns={
+                        metaContent instanceof Array
+                            ? (metaContent.length + 2) as StrictGridRowProps[ "columns" ]
+                            : (itemHeader || itemDescription)
+                                ? 3
+                                : 2
+                    }>
                     { (itemDescription || itemHeader)
                         ? (
                             <Grid.Column width={ descriptionColumnWidth } className="resource-item-column">
@@ -164,7 +165,7 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
                                                 { content }
                                             </List.Content>
                                         </Grid.Column>
-                                    )
+                                    );
                                 })
                             )
                             : (

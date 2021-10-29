@@ -84,13 +84,13 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
                                             <Table.Row>
                                                 {
                                                     !selectionComponent &&
-                                                    <Table.HeaderCell>
+                                                    (<Table.HeaderCell>
                                                         <Checkbox
                                                             data-testid={ testId }
                                                             checked={ isHeaderCheckboxChecked }
                                                             onChange={ handleHeaderCheckboxChange }
                                                         />
-                                                    </Table.HeaderCell>
+                                                    </Table.HeaderCell>)
                                                 }
                                                 {
                                                     listHeaders?.map((header, index) => {

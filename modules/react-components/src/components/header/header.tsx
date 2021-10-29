@@ -563,11 +563,11 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                                                 >
                                                                     {
                                                                         isProfileInfoLoading
-                                                                            ? <Placeholder>
+                                                                            ? (<Placeholder>
                                                                                 <Placeholder.Line/>
-                                                                            </Placeholder>
+                                                                            </Placeholder>)
                                                                             : resolveUserDisplayName(
-                                                                            profileInfo, basicProfileInfo
+                                                                                profileInfo, basicProfileInfo
                                                                             )
                                                                     }
                                                                 </div>
