@@ -19,7 +19,7 @@
 /**
  * Interface for the Claim Management feature resource endpoints.
  */
- export interface ClaimResourceEndpointsInterface {
+export interface ClaimResourceEndpointsInterface {
     claims: string;
     externalClaims: string;
     localClaims: string;

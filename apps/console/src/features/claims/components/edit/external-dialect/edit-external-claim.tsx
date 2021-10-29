@@ -119,6 +119,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
             offset: null,
             sort: null
         };
+
         getAllLocalClaims(params).then(response => {
             setIsClaimsLoading(false);
             setLocalClaims(sortList(response, "displayName", true));
@@ -159,6 +160,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
     useEffect(() => {
         if (externalClaims && localClaims && (claim || addedClaim)) {
             let tempLocalClaims: Claim[] = [ ...localClaims ];
+
             externalClaims.forEach((externalClaim: ExternalClaim) => {
                 tempLocalClaims = [ ...removeMappedLocalClaim(externalClaim.mappedLocalClaimURI, tempLocalClaims) ];
             });
@@ -172,9 +174,11 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
      */
     const resolveClaimURIName = (): string => {
         const parts: string[] = addedClaim.claimURI.split(":");
+
         if (parts.length > 1) {
             return parts[parts.length - 1];
         }
+
         return addedClaim.claimURI;
     };
 
@@ -185,11 +189,14 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
      */
     const resolveClaimURI = (values: Map<string, FormValue>): Map<string, FormValue> => {
         const parts: string[] = addedClaim.claimURI.split(":");
+
         if (parts.length > 1) {
             const claimURI: string = parts.filter((part,idx) => idx < parts.length - 1).join(":") +
                 ":" + values.get("claimURI");
+
             values.set("claimURI", claimURI);
         }
+
         return values;
     };
 
@@ -234,7 +241,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                             {
                                 description: t("console:manage.features.claims.external.notifications." +
                                     "updateExternalAttribute.success.description",
-                                    { type: resolveType(attributeType) }),
+                                { type: resolveType(attributeType) }),
                                 level: AlertLevels.SUCCESS,
                                 message: t("console:manage.features.claims.external.notifications." +
                                     "updateExternalAttribute.success.message", { type: resolveType(attributeType) })
@@ -247,7 +254,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                                 description: error?.description
                                     || t("console:manage.features.claims.external.notifications." +
                                         "updateExternalAttribute.genericError.description",
-                                        { type: resolveType(attributeType) }),
+                                    { type: resolveType(attributeType) }),
                                 level: AlertLevels.ERROR,
                                 message: error?.message
                                     || t("console:manage.features.claims.external.notifications." +
@@ -288,7 +295,8 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                                                 validation.isValid = false;
                                                 validation.errorMessages.push(t("console:manage.features.claims." +
                                                     "external.forms.attributeURI.validationErrorMessages.duplicateName",
-                                                    { type: resolveType(attributeType) }));
+                                                { type: resolveType(attributeType) }));
+
                                                 break;
                                             }
                                         }

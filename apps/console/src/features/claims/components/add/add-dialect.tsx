@@ -224,15 +224,18 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
      */
     const next = () => {
         switch (currentWizardStep) {
-            case 0:
-                setFirstStep();
-                break;
-            case 1:
-                setSecondStep();
-                break;
-            case 2:
-                handleSubmit();
-                break;
+        case 0:
+            setFirstStep();
+
+            break;
+        case 1:
+            setSecondStep();
+
+            break;
+        case 2:
+            handleSubmit();
+
+            break;
         }
     };
 

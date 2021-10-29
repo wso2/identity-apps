@@ -148,7 +148,8 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                     if (!skipSCIM) {
                         attributeConfig.localAttributes.isSCIMCustomDialectAvailable().then((claimId: string) => {
                             addExternalClaim(claimId, {
-                                claimURI: `${attributeConfig.localAttributes.customDialectURI}:${customMappings.get("scim")}`,
+                                claimURI: `${attributeConfig.localAttributes.customDialectURI}:
+                                    ${customMappings.get("scim")}`,
                                 mappedLocalClaimURI: data.claimURI
                             }).then(() => {
                                 fetchUpdatedSchemaList();
@@ -162,7 +163,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                                 claimURI: `${customMappings.get("oidc")}`,
                                 mappedLocalClaimURI: data.claimURI
                             });
-                    });
+                        });
                 }
 
                 // The created resource's id is sent as a location header.
@@ -218,10 +219,10 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
             .catch((error: IdentityAppsApiException) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
-                            description: error.response.data.description,
-                            level: AlertLevels.ERROR,
-                            message: t("console:manage.notifications.getProfileSchema.error.message")
-                        })
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.notifications.getProfileSchema.error.message")
+                    })
                     );
                 }
 
@@ -251,6 +252,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
         const tempData = { ...data, ...dataFromForm };
         const customMappings: Map<string, string> = new Map();
         let skipSCIM = false;
+
         setData(tempData);
         setBasicDetailsData(values);
 
@@ -273,10 +275,10 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                     value: "TRUE"
                 } );
             } else {
-                tempData.properties = [{
+                tempData.properties = [ {
                     key: "USER_CUSTOM_ATTRIBUTE",
                     value: "TRUE"
-                }];
+                } ];
             }
 
         }
@@ -301,6 +303,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
      */
     const onSubmitMappedAttributes = (dataFromForm: Claim, values: Map<string, FormValue>) => {
         const tempData = { ...data, ...dataFromForm };
+
         setData(tempData);
         setMappedAttributesData(values);
 
@@ -354,18 +357,18 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
         ),
         (
             attributeConfig.localAttributes.createWizard.showSummary ?
-            {
-                content: (
-                    <SummaryLocalClaims
-                        data={ data }
-                        data-testid={ `${ testId }-local-claims-summary` }
-                    />
-                ),
-                icon: getAddLocalClaimWizardStepIcons().general,
-                title: t("console:manage.features.claims.local.wizard.steps.summary")
+                {
+                    content: (
+                        <SummaryLocalClaims
+                            data={ data }
+                            data-testid={ `${ testId }-local-claims-summary` }
+                        />
+                    ),
+                    icon: getAddLocalClaimWizardStepIcons().general,
+                    title: t("console:manage.features.claims.local.wizard.steps.summary")
 
-            }
-            : undefined
+                }
+                : undefined
         )
     ].filter(el => el !== undefined);
 
@@ -380,25 +383,30 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 
         if (STEPS.length === 2) {
             switch (currentWizardStep) {
-                case 0:
-                    setFirstStep();
-                    break;
-                case 1:
-                    setSecondStep();
-                    break;
+            case 0:
+                setFirstStep();
+
+                break;
+            case 1:
+                setSecondStep();
+
+                break;
             }
         }
 
         switch (currentWizardStep) {
-            case 0:
-                setFirstStep();
-                break;
-            case 1:
-                setSecondStep();
-                break;
-            case 2:
-                handleSubmit(data);
-                break;
+        case 0:
+            setFirstStep();
+
+            break;
+        case 1:
+            setSecondStep();
+
+            break;
+        case 2:
+            handleSubmit(data);
+
+            break;
         }
     };
 
@@ -428,7 +436,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                 }
             </Modal.Header>
             { STEPS.length > 1 &&
-                <Modal.Content className="steps-container" data-testid={ `${ testId }-steps` }>
+                (<Modal.Content className="steps-container" data-testid={ `${ testId }-steps` }>
                     <Steps.Group
                         current={ currentWizardStep }
                     >
@@ -441,7 +449,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                             />
                         )) }
                     </Steps.Group>
-                </Modal.Content >
+                </Modal.Content >)
             }
             <Modal.Content className="content-container" scrolling>
                 { alert && alertComponent }
