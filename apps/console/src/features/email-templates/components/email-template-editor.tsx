@@ -103,83 +103,85 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
     return (
         <div className={ "email-code-editor " + customClass } data-testid={ testId }>
             {
-                isPreviewOnly ?
-                    (<div className="render-view" data-testid={ `${ testId }-preview-only-render-view` }>
-                        <iframe
-                            id="iframe"
-                            ref={ (ref) => {
-                                iframe.current = ref;
-                                iframe.current && writeToIframe();
-                            } }>
-                            <p data-testid={ `${ testId }-iframe-unsupported-error` }>
-                                { t("console:manage.features.emailTemplates.notifications.iframeUnsupported" +
-                                    ".genericError.description") }
-                            </p>
-                        </iframe>
-                    </div>)
-                    :
-                    (<ResourceTab
-                        onTabChange={ () => {
-                            if (updateHtmlContent) {
-                                updateHtmlContent(updatedContent.current);
-                            }
-                        } }
-                        defaultActiveTab={ isAddFlow ? 1 : 0 }
-                        panes={ [
-                            {
-                                menuItem: t("console:manage.features.emailTemplates.editor.tabs.preview.tabName"),
-                                render: () => (
-                                    <ResourceTab.Pane
-                                        className="render-view"
-                                        attached={ false }
-                                        data-testid="preview-tab-pane"
-                                    >
-                                        <iframe
-                                            id="iframe"
-                                            ref={ (ref) => {
-                                                iframe.current = ref;
-                                                iframe.current && writeToIframe();
-                                            } }>
-                                            <p data-testid={ `${ testId }-iframe-unsupported-error` }>
-                                                { t("console:manage.features.emailTemplates.notifications" +
-                                                    ".iframeUnsupported.genericError.description") }
-                                            </p>
-                                        </iframe>
-                                    </ResourceTab.Pane>
-                                )
-                            },
-                            {
-                                menuItem: t("console:manage.features.emailTemplates.editor.tabs.code.tabName"),
-                                render: () => (
-                                    <ResourceTab.Pane
-                                        attached={ false }
-                                        data-testid="html-code-tab-pane"
-                                    >
-                                        <CodeEditor
-                                            lint
-                                            language="htmlmixed"
-                                            sourceCode={ content }
-                                            options={ {
-                                                lineWrapping: true
-                                            } }
-                                            onChange={ (editor, data, value) => {
-                                                updatedContent.current = value;
-                                            } }
-                                            onBlur={ () => {
-                                                if (updateHtmlContent) {
-                                                    updateHtmlContent(updatedContent.current);
-                                                }
-                                            } }
-                                            readOnly={ isReadOnly }
-                                            theme={ "dark" }
-                                            data-testid={ `${ testId }-code-editor` }
-                                        />
-                                    </ResourceTab.Pane>
-                                )
-                            }
-                        ] }
-                        data-testid={ `${ testId }-tabs` }
-                    />)
+                isPreviewOnly
+                    ? (
+                        <div className="render-view" data-testid={ `${ testId }-preview-only-render-view` }>
+                            <iframe
+                                id="iframe"
+                                ref={ (ref) => {
+                                    iframe.current = ref;
+                                    iframe.current && writeToIframe();
+                                } }>
+                                <p data-testid={ `${ testId }-iframe-unsupported-error` }>
+                                    { t("console:manage.features.emailTemplates.notifications.iframeUnsupported" +
+                                        ".genericError.description") }
+                                </p>
+                            </iframe>
+                        </div>)
+                    : (
+                        <ResourceTab
+                            onTabChange={ () => {
+                                if (updateHtmlContent) {
+                                    updateHtmlContent(updatedContent.current);
+                                }
+                            } }
+                            defaultActiveTab={ isAddFlow ? 1 : 0 }
+                            panes={ [
+                                {
+                                    menuItem: t("console:manage.features.emailTemplates.editor.tabs.preview.tabName"),
+                                    render: () => (
+                                        <ResourceTab.Pane
+                                            className="render-view"
+                                            attached={ false }
+                                            data-testid="preview-tab-pane"
+                                        >
+                                            <iframe
+                                                id="iframe"
+                                                ref={ (ref) => {
+                                                    iframe.current = ref;
+                                                    iframe.current && writeToIframe();
+                                                } }>
+                                                <p data-testid={ `${ testId }-iframe-unsupported-error` }>
+                                                    { t("console:manage.features.emailTemplates.notifications" +
+                                                        ".iframeUnsupported.genericError.description") }
+                                                </p>
+                                            </iframe>
+                                        </ResourceTab.Pane>
+                                    )
+                                },
+                                {
+                                    menuItem: t("console:manage.features.emailTemplates.editor.tabs.code.tabName"),
+                                    render: () => (
+                                        <ResourceTab.Pane
+                                            attached={ false }
+                                            data-testid="html-code-tab-pane"
+                                        >
+                                            <CodeEditor
+                                                lint
+                                                language="htmlmixed"
+                                                sourceCode={ content }
+                                                options={ {
+                                                    lineWrapping: true
+                                                } }
+                                                onChange={ (editor, data, value) => {
+                                                    updatedContent.current = value;
+                                                } }
+                                                onBlur={ () => {
+                                                    if (updateHtmlContent) {
+                                                        updateHtmlContent(updatedContent.current);
+                                                    }
+                                                } }
+                                                readOnly={ isReadOnly }
+                                                theme={ "dark" }
+                                                data-testid={ `${ testId }-code-editor` }
+                                            />
+                                        </ResourceTab.Pane>
+                                    )
+                                }
+                            ] }
+                            data-testid={ `${ testId }-tabs` }
+                        />
+                    )
             }
         </div>
     );
