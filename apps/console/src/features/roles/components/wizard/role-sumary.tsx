@@ -62,7 +62,8 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
 
             if (summary && summary.PermissionList) {
                 const permissions = summary.PermissionList;
-                setSelectedPermissions([...selectedPermissions, ...permissions.map( permission => permission.key )]);
+
+                setSelectedPermissions([ ...selectedPermissions, ...permissions.map( permission => permission.key ) ]);
             }
         });
     }, [ permissions.length > 0 ]);
@@ -88,6 +89,7 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
         if (eventObject.isLeaf) {
             return null;
         }
+
         return (
             <div className="tree-arrow-wrap">
                 <span className={ `tree-arrow ${ !eventObject.expanded ? "active" : "" }` }>
@@ -133,34 +135,34 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                 summary.PermissionList instanceof Array &&
                 summary.PermissionList.length > 0 &&
                      (
-                        <Grid.Row className="summary-field" columns={ 2 }>
-                            <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                                <div
-                                    data-testid={ `${ testId }-permissions-label` }
-                                    className="label"
-                                >
-                                    { t("console:manage.features.roles.addRoleWizard.summary.labels.permissions") }
-                                </div>
-                            </Grid.Column>
-                            <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                                <Label.Group>
-                                    <Tree
-                                        className={ "customIcon" }
-                                        data-testid={ `${ testId }-tree` }
-                                        disabled
-                                        checkedKeys={ selectedPermissions }
-                                        defaultExpandedKeys={ defaultExpandedKeys }
-                                        showLine
-                                        showIcon={ false }
-                                        checkable
-                                        selectable={ false }
-                                        treeData={ permissions }
-                                        switcherIcon={ switcherIcon }
-                                    />
-                                </Label.Group>
-                            </Grid.Column>
-                        </Grid.Row>
-                    )
+                         <Grid.Row className="summary-field" columns={ 2 }>
+                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                                 <div
+                                     data-testid={ `${ testId }-permissions-label` }
+                                     className="label"
+                                 >
+                                     { t("console:manage.features.roles.addRoleWizard.summary.labels.permissions") }
+                                 </div>
+                             </Grid.Column>
+                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                                 <Label.Group>
+                                     <Tree
+                                         className={ "customIcon" }
+                                         data-testid={ `${ testId }-tree` }
+                                         disabled
+                                         checkedKeys={ selectedPermissions }
+                                         defaultExpandedKeys={ defaultExpandedKeys }
+                                         showLine
+                                         showIcon={ false }
+                                         checkable
+                                         selectable={ false }
+                                         treeData={ permissions }
+                                         switcherIcon={ switcherIcon }
+                                     />
+                                 </Label.Group>
+                             </Grid.Column>
+                         </Grid.Row>
+                     )
             }
             {
                 summary?.UserList && summary?.UserList instanceof Array &&

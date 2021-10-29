@@ -82,8 +82,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     const [ usersList, setUsersList ] = useState<UserBasicInterface[]>([]);
     const [ initialUserList, setInitialUserList ] = useState<UserBasicInterface[]>([]);
     const [ selectedUsers, setSelectedUsers ] = useState<UserBasicInterface[]>([]);
-    const [ initialSelectedUsers, setInitialSelectedUsers ] = useState<UserBasicInterface[]>([]);
-    const [ listOffset, setListOffset ] = useState<number>(0);
+    const [ , setInitialSelectedUsers ] = useState<UserBasicInterface[]>([]);
+    const [ listOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
     const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
 
@@ -141,6 +141,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
             .then((response) => {
                 const responseUsers = response.Resources.filter((user
                 ) => user.userName.split("/")[0] !== CONSUMER_USERSTORE);
+
                 responseUsers.sort((userObject, comparedUserObject) =>
                     userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
                 );
@@ -149,6 +150,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
 
                 if (assignedUsers && assignedUsers.length !== 0) {
                     const selectedUserList: UserBasicInterface[] = [];
+
                     if (responseUsers && responseUsers instanceof Array ) {
                         responseUsers.slice().reverse().forEach(user => {
                             assignedUsers.forEach(assignedUser => {
@@ -169,6 +171,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
 
                 if (initialValues && initialValues instanceof Array) {
                     const selectedUserList: UserBasicInterface[] = [];
+
                     if (responseUsers && responseUsers instanceof Array ) {
                         responseUsers.forEach(user => {
                             initialValues.forEach(assignedUser => {
@@ -194,14 +197,14 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     useEffect(() => {
         setListItemLimit(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
         setUserListMetaContent(new Map<string, string>([
-            ["name", "name"],
-            ["emails", "emails"],
-            ["name", "name"],
-            ["userName", "userName"],
-            ["id", ""],
-            ["profileUrl", "profileUrl"],
-            ["meta.lastModified", "meta.lastModified"],
-            ["meta.created", ""]
+            [ "name", "name" ],
+            [ "emails", "emails" ],
+            [ "name", "name" ],
+            [ "userName", "userName" ],
+            [ "id", "" ],
+            [ "profileUrl", "profileUrl" ],
+            [ "meta.lastModified", "meta.lastModified" ],
+            [ "meta.created", "" ]
         ]));
     }, []);
 
@@ -227,6 +230,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     useEffect(() => {
         if (userListMetaContent) {
             const attributes = generateAttributesString(userListMetaContent.values());
+
             if (isGroup) {
                 getList(listItemLimit, listOffset, null, attributes, userStore);
             } else {
@@ -474,7 +478,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     return (
         <>
             { isEdit ?
-                <Grid>
+                (<Grid>
                     <Grid.Row>
                         <Grid.Column computer={ 8 }>
                             {
@@ -572,9 +576,9 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                         </Grid.Column>
                     </Grid.Row>
                     { addNewUserModal() }
-                </Grid>
+                </Grid>)
                 :
-                <Forms
+                (<Forms
                     onSubmit={ () => {
                         onSubmit(tempUserList);
                     } }
@@ -659,7 +663,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                             </TransferComponent>
                         </Grid.Row>
                         { isEdit &&
-                            <Grid.Row columns={ 1 }>
+                            (<Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                     <Button
                                         data-testid={ `${ testId }-update-user-list-button` }
@@ -673,10 +677,10 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                         { t("common.update") }
                                     </Button>
                                 </Grid.Column>
-                            </Grid.Row>
+                            </Grid.Row>)
                         }
                     </Grid>
-                </Forms>
+                </Forms>)
             }
         </>
     );

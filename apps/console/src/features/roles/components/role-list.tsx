@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { RoleConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
@@ -38,7 +39,7 @@ import {
     TableColumnInterface
 } from "@wso2is/react-components";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import {
@@ -50,7 +51,6 @@ import {
     history
 } from "../../core";
 import { APPLICATION_DOMAIN } from "../constants";
-import { Show, AccessControlConstants } from "@wso2is/access-control";
 
 interface RoleListProps extends LoadableComponentInterface, TestableComponentInterface {
     /**
@@ -391,7 +391,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
             />
             {
                 showRoleDeleteConfirmation &&
-                <ConfirmationModal
+                (<ConfirmationModal
                     data-testid={ `${ testId }-delete-item-confirmation-modal` }
                     onClose={ (): void => setShowDeleteConfirmationModal(false) }
                     type="warning"
@@ -418,7 +418,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                         { t("console:manage.features.roles.list.confirmations.deleteItem.content",
                             { type: "role" }) }
                     </ConfirmationModal.Content>
-                </ConfirmationModal>
+                </ConfirmationModal>)
             }
         </>
     );

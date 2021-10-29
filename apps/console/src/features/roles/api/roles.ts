@@ -154,7 +154,7 @@ export const createRole = (data: CreateRoleInterface): Promise<any> => {
  * @param roleId - ID of the role which needs to be updated
  * @param data - Permission data of the role
  */
-export const updateRolePermissions = (roleId: string, data: any): Promise<any> => {
+export const updateRolePermissions = (roleId: string, data: unknown): Promise<any> => {
     const requestConfig = {
         data,
         headers: {
