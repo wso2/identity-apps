@@ -84,11 +84,9 @@ import {
 import DummyUser from "../themes/default/assets/images/user.png";
  
 export const UserImage: string = DummyUser;
-
 export const ConsentedAppIcon = PackageIcon;
-
 export const DefaultAppIcon = CodeIcon;
- 
+
 export const getSidePanelIcons = (): {
     account: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     apps: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
@@ -250,20 +248,17 @@ export const AlertIcons = (): {
     };
 };
  
-export const AppSwitcherIcons = (): Record<string, any> => {
- 
+export const AppSwitcherIcons = (): Record<string, any> => { 
     return {
         console: ConsoleIcon,
         myAccount: MyAccountIcon
     };
 };
  
-export const getQRCodeScanIcon = (): React.FunctionComponent<React.SVGProps<SVGSVGElement>> => {
- 
+export const getQRCodeScanIcon = (): React.FunctionComponent<React.SVGProps<SVGSVGElement>> => { 
     return QRCodeScanIcon;
 };
  
-export const getEnterCodeIcon = (): React.FunctionComponent<React.SVGProps<SVGSVGElement>> => {
- 
+export const getEnterCodeIcon = (): React.FunctionComponent<React.SVGProps<SVGSVGElement>> => { 
     return EnterVerificationCodeIcon;
 };
