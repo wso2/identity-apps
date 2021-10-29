@@ -33,7 +33,7 @@ const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAC
  *
  * @returns {Promise<any>} a promise containing the server configurations.
  */
-export const getServerConfigs = () => {
+export const getServerConfigs = () : any => {
 
     const requestConfig = {
         headers: {
@@ -55,6 +55,7 @@ export const getServerConfigs = () => {
                     response,
                     response.config);
             }
+
             return Promise.resolve(response.data);
         })
         .catch((error) => {
