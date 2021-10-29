@@ -96,7 +96,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ applicationTemplate, setApplicationTemplate ] = useState<ApplicationTemplateListItemInterface>(undefined);
     const [ isApplicationRequestLoading, setApplicationRequestLoading ] = useState<boolean>(false);
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>(undefined);
-    const [ inboundProtocolConfigs, setInboundProtocolConfigs ] = useState<Record<string, unknown>>(undefined);
+    const [ inboundProtocolConfigs, setInboundProtocolConfigs ] = useState<Record<string, any>>(undefined);
 
     /**
      * Get whether to show the help panel

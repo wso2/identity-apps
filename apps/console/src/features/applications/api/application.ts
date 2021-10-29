@@ -30,6 +30,7 @@ import {
     ApplicationTemplateInterface,
     ApplicationTemplateListInterface,
     AuthProtocolMetaListItemInterface,
+    MainApplicationInterface,
     OIDCApplicationConfigurationInterface,
     OIDCDataInterface,
     SAMLApplicationConfigurationInterface,
@@ -479,10 +480,10 @@ export const updateApplicationConfigurations = (id: string, configs: Record<stri
 /**
  * Creates a new application.
  *
- * @param {Record<string, unknown>} application - Application settings data.
+ * @param {MainApplicationInterface} application - Application settings data.
  * @return {Promise<any>}
  */
-export const createApplication = (application: Record<string, unknown>): Promise<any> => {
+export const createApplication = (application: MainApplicationInterface): Promise<any> => {
     const requestConfig = {
         data: application,
         headers: {

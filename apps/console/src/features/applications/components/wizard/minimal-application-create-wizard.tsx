@@ -133,7 +133,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         state.config.ui.isClientSecretHashEnabled);
 
     const [ templateSettings, setTemplateSettings ] = useState<ApplicationTemplateInterface>(null);
-    const [ protocolFormValues, setProtocolFormValues ] = useState<Record<string, unknown>>(undefined);
+    const [ protocolFormValues, setProtocolFormValues ] = useState<Record<string, any>>(undefined);
     const [
         customApplicationProtocol,
         setCustomApplicationProtocol 

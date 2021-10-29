@@ -49,6 +49,7 @@ import {
     setOIDCApplicationConfigs,
     setSAMLApplicationConfigs
 } from "../store";
+import { FunctionComponent, SVGProps } from "react";
 
 /**
  * Utility class for application(service provider) operations.
@@ -151,10 +152,12 @@ export class ApplicationManagementUtils {
      * Finds the icon from the given object.
      *
      * @param {string} imageName Name on the image to be found.
-     * @param {Record<string, string>} illustrationObject Collection of images.
-     * @return {string}
+     * @param {FunctionComponent<SVGProps<SVGSVGElement>> | string} illustrationObject Collection of images.
+     * @return {FunctionComponent<SVGProps<SVGSVGElement>> | string}
      */
-    public static findIcon(imageName: string, illustrationObject: Record<string, string>): string {
+    public static findIcon(imageName: string,
+        illustrationObject: Record<string, FunctionComponent<SVGProps<SVGSVGElement>> | string>
+    ): FunctionComponent<SVGProps<SVGSVGElement>> | string {
 
         const key: string = Object.keys(illustrationObject).find((key) => key === imageName);
 
