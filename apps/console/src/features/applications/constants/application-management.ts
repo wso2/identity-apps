@@ -218,7 +218,7 @@ export class ApplicationManagementConstants {
      * @constant
      * @type {string[]}
      */
-    public static readonly TEMPLATE_WISE_ALLOWED_GRANT_TYPES: Record<string, unknown> = {
+    public static readonly TEMPLATE_WISE_ALLOWED_GRANT_TYPES: Record<string, string[]> = {
         [ "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
