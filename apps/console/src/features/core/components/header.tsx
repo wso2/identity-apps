@@ -152,6 +152,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
         if (!validAnnouncement) {
             setAnnouncement(null);
+
             return;
         }
 
@@ -262,7 +263,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             }
         ];
 
-        sortBy([ ...itemExtensions, ...defaultItems ], [ "order"]).filter((item: HeaderSubPanelItemInterface) => {
+        sortBy([ ...itemExtensions, ...defaultItems ], [ "order" ]).filter((item: HeaderSubPanelItemInterface) => {
             if (item.floated === floated) {
                 const {
                     component: Component

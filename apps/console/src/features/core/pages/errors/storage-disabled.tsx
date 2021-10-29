@@ -37,6 +37,7 @@ const SessionStorageDisabled: FunctionComponent<RouteComponentProps> = (): React
     useEffect(() => {
         try {
             const storage = sessionStorage;
+
             if (storage) {
                 history.push(AppConstants.getAppHomePath());
             }

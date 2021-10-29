@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
@@ -26,12 +27,14 @@ import { getEmptyPlaceholderIllustrations } from "../../configs";
 import { ConfigReducerStateInterface } from "../../models";
 import { AppState } from "../../store";
 
+type PageNotFoundInterface = IdentifiableComponentInterface;
+
 /**
  * 404 error page.
  *
  * @return {React.ReactElement}
  */
-const PageNotFound: FunctionComponent<{}> = (): ReactElement => {
+const PageNotFound: FunctionComponent<PageNotFoundInterface> = (): ReactElement => {
 
     const { t } = useTranslation();
 

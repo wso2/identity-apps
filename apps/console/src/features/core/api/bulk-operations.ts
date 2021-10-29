@@ -21,6 +21,14 @@ import { HttpMethods } from "@wso2is/core/models";
 import { store } from "../store";
 
 /**
+ * Proptypes for bulk data.
+ */
+interface BulkDataPropsInterface {
+    Operations?: any,
+    failOnErrors?: number,
+    schemas?: string[]
+}
+/**
  * Get an axios instance.
  *
  */
@@ -34,7 +42,7 @@ const httpClient = AsgardeoSPAClient.getInstance()
  * @param data request payload
  * @returns {Promise<any>} a promise containing the response.
  */
-export const updateResources = (data: object): Promise<any> => {
+export const updateResources = (data: BulkDataPropsInterface): Promise<any> => {
     const requestConfig = {
         data,
         headers: {

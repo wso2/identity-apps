@@ -36,6 +36,7 @@ function myArrayBuffer() {
     // this: File or Blob
     return new Promise<ArrayBuffer>((resolve) => {
         const fr = new FileReader();
+
         fr.onload = () => {
             resolve(fr.result as ArrayBuffer);
         };
@@ -275,6 +276,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
      */
     const convertFromPem = (pem: string): PemCertificate => {
         const pemValue = CertificateManagementUtils.enclosePem(pem);
+
         try {
             const certificateForge = new X509().readCertFromPEM(pemValue);
 
@@ -289,6 +291,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                 const certificate = forge.pki.certificateFromPem(pemValue);
                 const pem = forge.pki.certificateToPem(certificate);
                 const cert = new X509();
+
                 cert.readCertPEM(pem);
 
                 return {
@@ -297,6 +300,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                 };
             } catch (error) {
                 setFileError(true);
+
                 return null;
             }
         }
@@ -315,18 +319,23 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                 const hex = Array.prototype.map
                     .call(new Uint8Array(value), x => ("00" + x.toString(16)).slice(-2)).join("");
                 const cert = new X509();
+
                 cert.readCertHex(hex);
                 const certificate = new KJUR.asn1.x509.Certificate(cert.getParam());
                 const pem = certificate.getPEM();
+
                 setForgeCertificate(cert);
+
                 return Promise.resolve(CertificateManagementUtils.stripPem(pem));
             } catch {
                 const byteString = forge.util.createBuffer(value);
+
                 try {
                     const asn1 = forge.asn1.fromDer(byteString);
                     const certificate = forge.pki.certificateFromAsn1(asn1);
                     const pem = forge.pki.certificateToPem(certificate);
                     const cert = new X509();
+
                     cert.readCertPEM(pem);
                     setForgeCertificate(cert);
 
@@ -334,15 +343,19 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                 } catch {
                     try {
                         const cert = new X509();
+
                         cert.readCertPEM(byteString.data);
                         const certificate = new KJUR.asn1.x509.Certificate(cert.getParam());
                         const pem = certificate.getPEM();
+
                         setForgeCertificate(cert);
+
                         return Promise.resolve(CertificateManagementUtils.stripPem(pem));
                     } catch {
                         const certificate = forge.pki.certificateFromPem(byteString.data);
                         const pem = forge.pki.certificateToPem(certificate);
                         const cert = new X509();
+
                         cert.readCertPEM(pem);
                         setForgeCertificate(cert);
 
@@ -426,6 +439,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                                 setDragOver(false);
                                 if (event.dataTransfer.files[ 0 ]) {
                                     const file = event.dataTransfer.files[ 0 ];
+
                                     addFile(file);
                                 }
                             }
@@ -454,10 +468,14 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                                     </p>
                                     <p className="description">– or –</p>
                                 </div>
-                                <Button basic primary onClick={ (event) => {
-                                    event.preventDefault();
-                                    fileUpload.current.click();
-                                } }>
+                                <Button
+                                    basic
+                                    primary
+                                    onClick={ (event) => {
+                                        event.preventDefault();
+                                        fileUpload.current.click();
+                                    } }
+                                >
                                     { t("console:manage.features.certificates.keystore.wizard.dropZone.action") }
                                 </Button>
                             </Segment>
@@ -473,11 +491,15 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                                     icon={ getCertificateIllustrations().file }
                                 />
                                 <p className="file-name">{ file.name }</p>
-                                <Icon name="trash alternate" link onClick={ () => {
-                                    setFile(null);
-                                    setFileError(false);
-                                    setFileDecoded("");
-                                } } />
+                                <Icon
+                                    name="trash alternate"
+                                    link
+                                    onClick={ () => {
+                                        setFile(null);
+                                        setFileError(false);
+                                        setFileDecoded("");
+                                    } }
+                                />
                             </Segment>
                         </Segment>
                     )
@@ -518,6 +540,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
             setFileError(false);
 
             const fileName = file.name.split(".");
+
             // removes the file extension
             fileName.pop();
             !name && setName(fileName.join("."));
@@ -536,6 +559,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                 hidden
                 onChange={ (event) => {
                     const file: File = event.target.files[ 0 ];
+
                     event.target.value = null;
                     addFile(file);
                 } }
@@ -586,16 +610,18 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
             />
 
             {
-                (fileError || certEmpty) &&
-                <Message
-                    negative
-                    data-testid={ `${ testId }-error-message` }
-                    content =
-                        { fileError
-                            ? t("console:manage.features.certificates.keystore.errorCertificate")
-                            : t("console:manage.features.certificates.keystore.errorEmpty")
-                        }
-                />
+                (fileError || certEmpty) && (
+                    <Message
+                        negative
+                        data-testid={ `${ testId }-error-message` }
+                        content =
+                            {
+                                fileError
+                                    ? t("console:manage.features.certificates.keystore.errorCertificate")
+                                    : t("console:manage.features.certificates.keystore.errorEmpty")
+                            }
+                    />
+                )
             }
         </>
 
