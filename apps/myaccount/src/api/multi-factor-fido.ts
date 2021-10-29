@@ -33,7 +33,6 @@ const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAC
  *
  * @return {Promise<any>} a promise containing the response.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export const getMetaData = (): Promise<any> => {
     const requestConfig = {
         headers: {
@@ -51,6 +50,7 @@ export const getMetaData = (): Promise<any> => {
                     new Error(`Failed get meta info from: ${store.getState().config.endpoints.fidoMetaData}`)
                 );
             }
+
             return Promise.resolve(response);
         })
         .catch((error) => {
@@ -63,14 +63,13 @@ export const getMetaData = (): Promise<any> => {
  * @param credentialId
  * @param deviceName
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export const updateDeviceName = (credentialId: string, deviceName: string): Promise<any> => {
     const requestConfig = {
-        data: [{
+        data: [ {
             operation: "REPLACE",
             path: "/displayName",
             value: deviceName
-        }],
+        } ],
         headers: {
             "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost.clientHost,
             "Content-Type": "application/json"
@@ -86,6 +85,7 @@ export const updateDeviceName = (credentialId: string, deviceName: string): Prom
                     new Error(`Failed update device name from: ${store.getState().config.endpoints.fidoMetaData}`)
                 );
             }
+
             return Promise.resolve(response);
         })
         .catch((error) => {
@@ -98,8 +98,7 @@ export const updateDeviceName = (credentialId: string, deviceName: string): Prom
  *
  * @return {Promise<any>} a promise containing the response.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export const deleteDevice = (credentialId): Promise<any> => {
+export const deleteDevice = (credentialId: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -134,8 +133,9 @@ const responseToObject = (response): Record<string, any> => {
         try {
             clientExtensionResults = response.getClientExtensionResults();
         } catch (e) {
-            // eslint-disable-next-line no-console
-            console.error("getClientExtensionResults failed", e);
+            // No need to show UI errors here.
+            // Add debug logs here one a logger is added.
+            // Tracked here https://github.com/wso2/product-is/issues/11650.
         }
 
         if (response.response.attestationObject) {
@@ -171,8 +171,7 @@ const responseToObject = (response): Record<string, any> => {
  *
  * @return {Promise<any>} a promise containing the response.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export const endFidoFlow = (clientResponse): Promise<any> => {
+export const endFidoFlow = (clientResponse: string): Promise<any> => {
     const requestConfig = {
         data: clientResponse,
         headers: {
@@ -191,6 +190,7 @@ export const endFidoFlow = (clientResponse): Promise<any> => {
                     new Error(`Failed to end registration flow at: ${store.getState().config.endpoints.fidoEnd}`)
                 );
             }
+
             return Promise.resolve(response);
         })
         .catch((error) => {
@@ -207,7 +207,6 @@ export const endFidoFlow = (clientResponse): Promise<any> => {
  *
  * @return {Promise<any>} a promise containing the response.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 const connectToDevice = (requestId, credentialCreationOptions): Promise<any> => {
     return navigator.credentials
         .create({ publicKey: credentialCreationOptions })
@@ -216,8 +215,10 @@ const connectToDevice = (requestId, credentialCreationOptions): Promise<any> => 
                 credential: {},
                 requestId: ""
             };
+
             payload.requestId = requestId;
             payload.credential = responseToObject(credential);
+
             return endFidoFlow(JSON.stringify(payload))
                 .then((response) => {
                     return Promise.resolve(response);
@@ -261,7 +262,6 @@ const decodePublicKeyCredentialCreationOptions = (request): Record<string, any> 
  *
  * @return {Promise<any>} a promise containing the response.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export const startFidoFlow = (): Promise<any> => {
     const requestConfig = {
         data: { appId: window.location.origin },
@@ -280,6 +280,7 @@ export const startFidoFlow = (): Promise<any> => {
                     new Error(`Failed to start registration flow at: ${store.getState().config.endpoints.fidoStart}`)
                 );
             }
+
             return connectToDevice(
                 response.data.requestId,
                 decodePublicKeyCredentialCreationOptions(response.data.publicKeyCredentialCreationOptions)
@@ -301,7 +302,6 @@ export const startFidoFlow = (): Promise<any> => {
  *
  * @return {Promise<any>} a promise containing the response.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export const startFidoUsernamelessFlow = (): Promise<any> => {
     const requestConfig = {
         data: { appId: window.location.origin },
@@ -321,6 +321,7 @@ export const startFidoUsernamelessFlow = (): Promise<any> => {
                     ${store.getState().config.endpoints.fidoStartUsernameless}`)
                 );
             }
+
             return connectToDevice(
                 response.data.requestId,
                 decodePublicKeyCredentialCreationOptions(response.data.publicKeyCredentialCreationOptions)

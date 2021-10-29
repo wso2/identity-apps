@@ -49,6 +49,7 @@ export const validateSMSOTPCode = (code: string): Promise<any> => {
             if (response.status == 202) {
                 return true;
             }
+
             return Promise.reject(`An error occurred. The server returned ${response.status}`);
         })
         .catch((error) => {
@@ -65,6 +66,7 @@ export const resendSMSOTPCode = (): Promise<any> => {
         "key": "RecoveryScenario",
         "value": "MOBILE_VERIFICATION_ON_UPDATE"
     };
+
     properties.push(propertyData);
     const requestConfig = {
         data: {
