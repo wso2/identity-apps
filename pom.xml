@@ -551,6 +551,7 @@
                                 <argument>run</argument>
                                 <argument>bootstrap:hoist</argument>
                             </arguments>
+                            <skip>${bootstrap.exec.skip}</skip>
                             <workingDirectory>${basedir}</workingDirectory>
                         </configuration>
                     </execution>
@@ -669,5 +670,7 @@
         <json.wso2.version>3.0.0.wso2v1</json.wso2.version>
         <taglibs-standard-impl.version>1.2.5</taglibs-standard-impl.version>
         <apache.tomcat-catalina.version>9.0.11</apache.tomcat-catalina.version>
+
+        <bootstrap.exec.skip>true</bootstrap.exec.skip>
     </properties>
 </project>
