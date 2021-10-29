@@ -18,15 +18,18 @@
 
 import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
 
-export const getAddEmailTemplateTypeWizardStepIcons = () => {
-
+export const getAddEmailTemplateTypeWizardStepIcons = (): { 
+    general: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;  
+ } => {
     return {
         general: DocumentIcon
     };
+    
 };
 
-export const getViewLocaleTemplateWizardStepIcons = () => {
-
+export const getViewLocaleTemplateWizardStepIcons = (): { 
+    general: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;  
+ } => {
     return {
         general: DocumentIcon
     };

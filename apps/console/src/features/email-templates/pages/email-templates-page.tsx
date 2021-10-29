@@ -258,7 +258,7 @@ const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = 
             title={
                 (emailTemplateTypeDetails && emailTemplateTypeDetails.displayName)
                     ? t("console:manage.pages.emailTemplatesWithDisplayName.title",
-                    { displayName: emailTemplateTypeDetails.displayName })
+                        { displayName: emailTemplateTypeDetails.displayName })
                     : t("console:manage.pages.emailTemplates.title")
             }
             backButton={ {
