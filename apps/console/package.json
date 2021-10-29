@@ -18,7 +18,7 @@
         "clean": "rimraf build && npm run clean:themes:src",
         "clean:themes:src": "rimraf src/themes",
         "copy:themes:src": "node scripts/copy-themes-to-source.js",
-        "lint": "npm run lint:all",
+        "lint": "npm run lint:all -- --max-warnings=20",
         "lint:all": "npm run lint:targeted -- .",
         "lint:autofix": "npm run lint:all -- --fix",
         "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to .",
