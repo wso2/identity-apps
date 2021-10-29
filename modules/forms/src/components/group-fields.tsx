@@ -26,6 +26,7 @@ interface InnerGroupFieldsPropsInterface {
         wrapperProps: any;
         children: React.ReactNode;
 }
+
 /**
  * This function generates a Group component
  * @param props

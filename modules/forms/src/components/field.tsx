@@ -202,6 +202,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                                     && (event.ctrlKey === true || event.metaKey === true)) ||
                                     (event.key === "ArrowRight" || event.key == "ArrowLeft") ||
                                     (event.key === "Delete" || event.key === "Backspace");
+
                                 !isNumber && !isAllowed && event.preventDefault();
                             }) : (): void => {
                                 return;
@@ -211,6 +212,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                             ((event: React.ClipboardEvent) => {
                                 const data = event.clipboardData.getData("Text") ;
                                 const isNumber = /^[0-9]+$/i.test(data);
+
                                 !isNumber && event.preventDefault();
                             }) : (): void => {
                                 return;
@@ -257,6 +259,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                                 />
                             </Form.Field>
                         );
+
                         if (hint && hint.content) {
                             return (
                                 <Popup
@@ -313,10 +316,10 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                                 <label>{ inputField.label }</label>
                             </div>
                         ) : (
-                                <div className={ "field" }>
-                                    <label>{ inputField.label }</label>
-                                </div>
-                            )
+                            <div className={ "field" }>
+                                <label>{ inputField.label }</label>
+                            </div>
+                        )
                     }
                     { inputField.hint && <FieldHint hint={ inputField.hint }/> }
                     { inputField.children.map((checkbox, index) => {
@@ -361,6 +364,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                                 />
                             </Form.Field>
                         );
+
                         if (checkbox.hint && checkbox.hint.content) {
                             return (
                                 <Popup
@@ -483,6 +487,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
             return inputField.element;
         }
     };
+
     return (
         <Form.Field className={ formFieldClasses }>
             <div ref={ ref }>{ formFieldGenerator(formField) }</div>

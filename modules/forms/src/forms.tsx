@@ -157,6 +157,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
             const tempTouchedFields: Map<string, boolean> = new Map(touchedFields);
 
             let itemIndex = -1;
+
             selectedItems.forEach((item, index) => {
                 if (item === value) {
                     itemIndex = index;
@@ -192,6 +193,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
             if (isInputField(inputField) && !isRadioField(inputField) && inputField.required) {
                 if (!isCheckBoxField(inputField) && !isToggleField(inputField)) {
                     const tempForm: Map<string, FormValue> = new Map(form);
+
                     tempForm.set(name, tempForm.get(name)?.toString()?.trim());
                     setForm(tempForm);
 
@@ -328,6 +330,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                      *
                      */
                     const value = tempForm.get(inputField.name);
+
                     (
                         !((value instanceof Array && value.length > 0)
                             || (!(value instanceof Array) && value.trim && !!value.trim()))
@@ -431,11 +434,13 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
          */
         const checkRequiredFieldsFilled = (): boolean => {
             let requiredFilled = true;
+
             requiredFieldsRef.current.forEach((requiredFieldParam) => {
                 if (!requiredFieldParam) {
                     requiredFilled = false;
                 }
             });
+
             return requiredFilled;
         };
 
@@ -444,6 +449,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
          */
         const checkValidated = (): boolean => {
             let isValidated = true;
+
             validFieldsRef.current.forEach((validField) => {
                 if (!validField.isValid) {
                     isValidated = false;
@@ -559,6 +565,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                     if (element.type === Field) {
                         fields.push(element.props);
                         flatReactChildren.push(element);
+
                         return React.createElement(InnerField, {
                             formProps: {
                                 checkError,
