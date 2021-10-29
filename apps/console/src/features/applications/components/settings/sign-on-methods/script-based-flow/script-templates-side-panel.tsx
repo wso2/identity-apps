@@ -20,8 +20,8 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Heading, Tooltip } from "@wso2is/react-components";
 import sortBy from "lodash-es/sortBy";
 import React, {
-    ForwardedRef,
     FunctionComponent,
+    MutableRefObject,
     PropsWithChildren,
     ReactElement,
     ReactNode,
@@ -82,7 +82,8 @@ interface ScriptTemplatesSidePanelInterface extends TestableComponentInterface {
  */
 export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePanelInterface> =
     forwardRef<ScriptTemplatesSidePanelRefType, ScriptTemplatesSidePanelInterface>((
-        props: PropsWithChildren<ScriptTemplatesSidePanelInterface>, ref: ForwardedRef<ScriptTemplatesSidePanelRefType>
+        props: PropsWithChildren<ScriptTemplatesSidePanelInterface>,
+        ref: MutableRefObject<ScriptTemplatesSidePanelRefType>
     ): ReactElement => {
 
         const {
