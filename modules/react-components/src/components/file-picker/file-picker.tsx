@@ -538,29 +538,32 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
             { /*TODO: Improvement*/ }
             { /*A dynamic input should be placed here so that we can*/ }
             { /*take a preferred file name for the picked file. */ }
-            { !hidePasteOption ?
-                (<Tab
-                    className="tabs resource-tabs"
-                    menu={ { pointing: true, secondary: true } }
-                    panes={ [ dragOption, pasteOption ] }
-                    activeIndex={ activeIndex }
-                    onTabChange={ (event, { activeIndex }) => {
-                        const index = parseInt(activeIndex.toString());
+            {
+                !hidePasteOption
+                    ? (
+                        <Tab
+                            className="tabs resource-tabs"
+                            menu={ { pointing: true, secondary: true } }
+                            panes={ [ dragOption, pasteOption ] }
+                            activeIndex={ activeIndex }
+                            onTabChange={ (event, { activeIndex }) => {
+                                const index = parseInt(activeIndex.toString());
 
-                        setActiveIndex(index);
-                        if (index === FIRST_TAB_INDEX && fileFieldTouched && !pastedContent) {
-                            validate(file);
-                        } else if (index === SECOND_TAB_INDEX && pasteFieldTouched && !file) {
-                            validate(pastedContent);
-                        }
-                    } }
-                />) :
-                (
-                    <>
-                        <Divider hidden/>
-                        { dragOption.render() }
-                    </>
-                )
+                                setActiveIndex(index);
+                                if (index === FIRST_TAB_INDEX && fileFieldTouched && !pastedContent) {
+                                    validate(file);
+                                } else if (index === SECOND_TAB_INDEX && pasteFieldTouched && !file) {
+                                    validate(pastedContent);
+                                }
+                            } }
+                        />
+                    )
+                    : (
+                        <>
+                            <Divider hidden/>
+                            { dragOption.render() }
+                        </>
+                    )
             }
             {
                 <Message

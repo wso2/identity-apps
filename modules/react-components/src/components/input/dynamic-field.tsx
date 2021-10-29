@@ -190,11 +190,11 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                     ? (
                         <>
                             {
-                                showAddErrorMsg &&
-                                (<Message error>
-                                    { duplicateKeyErrorMsg }
-                                </Message>)
-
+                                showAddErrorMsg && (
+                                    <Message error>
+                                        { duplicateKeyErrorMsg }
+                                    </Message>
+                                )
                             }
                             <Forms
                                 onSubmit={
@@ -324,11 +324,11 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                     ? (
                         <>
                             {
-                                showEditErrorMsg &&
-                                (<Message error>
-                                    { duplicateKeyErrorMsg }
-                                </Message>)
-
+                                showEditErrorMsg && (
+                                    <Message error>
+                                        { duplicateKeyErrorMsg }
+                                    </Message>
+                                )
                             }
                             <Forms
                                 onSubmit={ (values: Map<string, FormValue>) => {

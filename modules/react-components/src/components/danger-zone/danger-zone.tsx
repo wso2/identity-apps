@@ -106,46 +106,49 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
                 </Header.Subheader>
             </Header>
             {
-                toggle ?
-                    (<Checkbox
-                        toggle
-                        id={ toggle?.id }
-                        onChange={ toggle?.onChange }
-                        checked={ toggle?.checked }
-                        className="danger-zone toggle-switch"
-                        data-testid={ `${ testId }-toggle` }
-                    />)
-                    :
-                    (<Popup
-                        trigger={
-                            (<div
-                                className={
-                                    (window.innerWidth <= Responsive.onlyTablet.maxWidth)
-                                        ? "mb-1x mt-1x inline-button button-width"
-                                        : "inline-button"
-                                }
-                            >
-                                <Button
-                                    data-testid={ testId + "-delete-button" }
-                                    fluid={ window.innerWidth <= Responsive.onlyTablet.maxWidth }
-                                    negative
-                                    onClick={ onActionClick }
-                                    disabled={ isButtonDisabled }
+                toggle
+                    ? (
+                        <Checkbox
+                            toggle
+                            id={ toggle?.id }
+                            onChange={ toggle?.onChange }
+                            checked={ toggle?.checked }
+                            className="danger-zone toggle-switch"
+                            data-testid={ `${ testId }-toggle` }
+                        />
+                    )
+                    : (
+                        <Popup
+                            trigger={
+                                (<div
+                                    className={
+                                        (window.innerWidth <= Responsive.onlyTablet.maxWidth)
+                                            ? "mb-1x mt-1x inline-button button-width"
+                                            : "inline-button"
+                                    }
                                 >
-                                    { actionTitle }
-                                </Button>
-                            </div>)
-                        }
-                        content={ buttonDisableHint }
-                        position={
-                            (window.innerWidth <= Responsive.onlyTablet.maxWidth)
-                                ? "top center"
-                                : "top right"
-                        }
-                        size="mini"
-                        wide
-                        disabled={ !isButtonDisabled || !buttonDisableHint }
-                    />)
+                                    <Button
+                                        data-testid={ testId + "-delete-button" }
+                                        fluid={ window.innerWidth <= Responsive.onlyTablet.maxWidth }
+                                        negative
+                                        onClick={ onActionClick }
+                                        disabled={ isButtonDisabled }
+                                    >
+                                        { actionTitle }
+                                    </Button>
+                                </div>)
+                            }
+                            content={ buttonDisableHint }
+                            position={
+                                (window.innerWidth <= Responsive.onlyTablet.maxWidth)
+                                    ? "top center"
+                                    : "top right"
+                            }
+                            size="mini"
+                            wide
+                            disabled={ !isButtonDisabled || !buttonDisableHint }
+                        />
+                    )
             }
         </Segment>
     );

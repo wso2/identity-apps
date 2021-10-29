@@ -289,6 +289,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
      * @return Predefined image if available. If not, return input parameter.
      */
     const resolveTemplateImage = (image: any) => {
+
         if (image) {
             if (typeof image !== "string") {
                 return image;
@@ -438,64 +439,76 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
             }
             <Grid.Row>
                 <Grid.Column>
-                    { useSelectionCard
-                        ?
-                        (
-                            (
-                                (templateList && templateList instanceof Array && templateList.length > 0) ||
-                                (secondaryTemplateList && secondaryTemplateList instanceof Array
-                                    && secondaryTemplateList.length > 0)
+                    {
+                        useSelectionCard
+                            ? (
+                                (
+                                    (
+                                        templateList
+                                        && templateList instanceof Array
+                                        && templateList.length > 0
+                                    )
+                                    || (
+                                        secondaryTemplateList
+                                        && secondaryTemplateList instanceof Array
+                                        && secondaryTemplateList.length > 0
+                                    )
+                                )
+                                    ? (
+                                        <>
+                                            {
+                                                resolveCardListing(templateList, onTemplateSelect, false)
+                                            }
+                                            {
+                                                resolveCardListing(
+                                                    secondaryTemplateList,
+                                                    onSecondaryTemplateSelect,
+                                                    useNameInitialAsImage
+                                                )
+                                            }
+                                        </>
+                                    )
+                                    : emptyPlaceholder && emptyPlaceholder
                             )
-                                ?
-                                (<>
-                                    {
-                                        resolveCardListing(templateList, onTemplateSelect, false)
-                                    }
-                                    {
-                                        resolveCardListing(
-                                            secondaryTemplateList,
-                                            onSecondaryTemplateSelect,
-                                            useNameInitialAsImage
-                                        )
-                                    }
-                                </>)
-                                : emptyPlaceholder && emptyPlaceholder
-                        )
-                        : (
-                            (templateList && templateList instanceof Array && templateList.length > 0)
-                                ? (<Card.Group>
-                                    {
-                                        templateList.map((template, index) => (
-                                            <TemplateCard
-                                                key={ index }
-                                                description={ template.description }
-                                                image={ resolveTemplateImage(template.image) }
-                                                imageOptions={ templateIconOptions }
-                                                tagsSectionTitle={ tagsSectionTitle }
-                                                tags={ get(template, tagsKey) }
-                                                tagsAs={ tagsAs }
-                                                showTags={ showTags }
-                                                showTagIcon={ showTagIcon }
-                                                name={ template.name }
-                                                id={ template.id }
-                                                onClick={
-                                                    (template.disabled || template.comingSoon)
-                                                        ? null
-                                                        : onTemplateSelect
-                                                }
-                                                overlayOpacity={ overlayOpacity }
-                                                imageSize={ templateIconSize }
-                                                renderDisabledItemsAsGrayscale={ renderDisabledItemsAsGrayscale }
-                                                tagSize={ tagSize }
-                                                data-testid={ template.id }
-                                                disabled={ template.disabled || template.comingSoon }
-                                                ribbon={ template.comingSoon ? comingSoonRibbonLabel : null }
-                                            />
-                                        ))
-                                    }
-                                </Card.Group>)
-                                : emptyPlaceholder && emptyPlaceholder
-                        )
+                            : (
+                                (templateList && templateList instanceof Array && templateList.length > 0)
+                                    ? (
+                                        <Card.Group>
+                                            {
+                                                templateList.map((template, index) => (
+                                                    <TemplateCard
+                                                        key={ index }
+                                                        description={ template.description }
+                                                        image={ resolveTemplateImage(template.image) }
+                                                        imageOptions={ templateIconOptions }
+                                                        tagsSectionTitle={ tagsSectionTitle }
+                                                        tags={ get(template, tagsKey) }
+                                                        tagsAs={ tagsAs }
+                                                        showTags={ showTags }
+                                                        showTagIcon={ showTagIcon }
+                                                        name={ template.name }
+                                                        id={ template.id }
+                                                        onClick={
+                                                            (template.disabled || template.comingSoon)
+                                                                ? null
+                                                                : onTemplateSelect
+                                                        }
+                                                        overlayOpacity={ overlayOpacity }
+                                                        imageSize={ templateIconSize }
+                                                        renderDisabledItemsAsGrayscale={
+                                                            renderDisabledItemsAsGrayscale
+                                                        }
+                                                        tagSize={ tagSize }
+                                                        data-testid={ template.id }
+                                                        disabled={ template.disabled || template.comingSoon }
+                                                        ribbon={ template.comingSoon ? comingSoonRibbonLabel : null }
+                                                    />
+                                                ))
+                                            }
+                                        </Card.Group>
+                                    )
+                                    : emptyPlaceholder && emptyPlaceholder
+                            )
                     }
                 </Grid.Column>
             </Grid.Row>

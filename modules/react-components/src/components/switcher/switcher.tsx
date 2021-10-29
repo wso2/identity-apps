@@ -267,8 +267,8 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
                             // Popup only triggers: {hover, click, focus} events.
                             // https://react.semantic-ui.com/modules/popup/
                             // https://github.com/Semantic-Org/Semantic-UI-React/issues/1413
-                            trigger={
-                                (<div>
+                            trigger={ (
+                                <div>
                                     <Button
                                         style={ STYLED_BUTTON }
                                         disabled
@@ -277,8 +277,8 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
                                         content={ label }
                                         onClick={ OPERATION_PASS }
                                     />
-                                </div>)
-                            }
+                                </div>
+                            ) }
                         />
                     );
                 }

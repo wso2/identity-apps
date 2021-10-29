@@ -229,13 +229,13 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                                         disabled={ disabled }
                                         transparent
                                         verticalAlign="middle"
-                                        icon={
-                                            (<Icon
+                                        icon={ (
+                                            <Icon
                                                 name={ icon as SemanticICONS }
                                                 color="grey"
                                                 className={ classNames({ "disabled": disabled }, "") }
-                                            />)
-                                        }
+                                            />
+                                        ) }
                                         onClick={
                                             (e: MouseEvent<HTMLDivElement>) => handleActionOnClick(onClick, e, id)
                                         }

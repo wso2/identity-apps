@@ -194,10 +194,12 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
         index: number): ReactElement => {
 
         if (typeof tag === "string") {
-            return (<span className="tag default" key={ index }>
-                { tag }
-                { (tags.length === 1 || index === tags.length - 1) ? "" : "," }
-            </span>);
+            return (
+                <span className="tag default" key={ index }>
+                    { tag }
+                    { (tags.length === 1 || index === tags.length - 1) ? "" : "," }
+                </span>
+            );
         }
 
         if (as === "icon") {
@@ -238,10 +240,12 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
             );
         }
 
-        return (<span className="tag default" key={ index }>
-            { tag.displayName }
-            { (tags.length === 1 || index === tags.length - 1) ? "" : ", " }
-        </span>);
+        return (
+            <span className="tag default" key={ index }>
+                { tag.displayName }
+                { (tags.length === 1 || index === tags.length - 1) ? "" : ", " }
+            </span>
+        );
     };
 
     /**

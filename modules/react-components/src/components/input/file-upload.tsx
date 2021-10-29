@@ -404,10 +404,11 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
             />
             {
                 fileError
-                    ?
-                    (<Message negative attached="bottom">
-                        <Message.Header> Either add a file or paste the content of the file</Message.Header>
-                    </Message>)
+                    ? (
+                        <Message negative attached="bottom">
+                            <Message.Header> Either add a file or paste the content of the file</Message.Header>
+                        </Message>
+                    )
                     : <Divider hidden/>
             }
             <Tab

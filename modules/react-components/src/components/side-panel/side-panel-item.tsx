@@ -150,8 +150,8 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
     return (
         <>
             {
-                route &&
-                    (<Menu.Item
+                route && (
+                    <Menu.Item
                         name={ route.name }
                         className={ classes }
                         active={ selected && (selected.path === route.path) }
@@ -196,7 +196,8 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
                                 )
                                 : null
                         }
-                    </Menu.Item>)
+                    </Menu.Item>
+                )
             }
             {
                 (route.children && route.children.length && route.children.length > 0)

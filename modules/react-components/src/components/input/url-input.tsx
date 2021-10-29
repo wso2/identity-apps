@@ -428,79 +428,80 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
          * Issue to track. {@link https://github.com/wso2/product-is/issues/10693}
          */
         return (
-            (!isCustom || isValid) ?
-                (<LabelWithPopup
-                    className="cors-details-popup"
-                    trigger={
-                        (<Icon
-                            className={ "p-1" }
-                            name={ positive ? "check" : "exclamation triangle" }
-                            color={ positive ? "green" : "grey" }
-                        />)
-                    }
-                    popupHeader={
-                        positive ?
-                            t("console:develop.features.URLInput.withLabel.positive.header") :
-                            t("console:develop.features.URLInput.withLabel.negative.header")
-                    }
-                    popupSubHeader={
-                        (<React.Fragment>
-                            <Icon name={ positive ? "check" : "times" } color={ positive ? "green" : "red" }/>
-                            { origin && origin !== "null" ? origin : href }
-                        </React.Fragment>)
-                    }
-                    popupContent={
-                        (<React.Fragment>
-                            {
-                                positive ?
-                                    t("console:develop.features.URLInput.withLabel.positive.content", {
-                                        productName: productName
-                                    }) :
-                                    t("console:develop.features.URLInput.withLabel.negative.content", {
-                                        productName: productName, urlLink: origin
-                                    })
-                            }
-                            { !restrictSecondaryContent &&
-                                (<>
-                                    <a onClick={ () => setShowMore(!showMore) }>
-                                        &nbsp;{ showMore ? t("common:showLess") : t("common:showMore") }
-                                    </a><br/>
-                                    {
-                                        showMore && (
-                                            <React.Fragment>
-                                                {
-                                                    positive ?
-                                                        t("console:develop.features.URLInput." +
-                                                            "withLabel.positive.detailedContent.0") :
-                                                        t("console:develop.features.URLInput." +
-                                                            "withLabel.negative.detailedContent.0")
-                                                }
-                                                <br/>
-                                                <Trans
-                                                    i18nKey={
+            (!isCustom || isValid)
+                ? (
+                    <LabelWithPopup
+                        className="cors-details-popup"
+                        trigger={ (
+                            <Icon
+                                className={ "p-1" }
+                                name={ positive ? "check" : "exclamation triangle" }
+                                color={ positive ? "green" : "grey" }
+                            />
+                        ) }
+                        popupHeader={
+                            positive ?
+                                t("console:develop.features.URLInput.withLabel.positive.header") :
+                                t("console:develop.features.URLInput.withLabel.negative.header")
+                        }
+                        popupSubHeader={ (
+                            <React.Fragment>
+                                <Icon name={ positive ? "check" : "times" } color={ positive ? "green" : "red" }/>
+                                { origin && origin !== "null" ? origin : href }
+                            </React.Fragment>
+                        ) }
+                        popupContent={ (
+                            <React.Fragment>
+                                {
+                                    positive ?
+                                        t("console:develop.features.URLInput.withLabel.positive.content", {
+                                            productName: productName
+                                        }) :
+                                        t("console:develop.features.URLInput.withLabel.negative.content", {
+                                            productName: productName, urlLink: origin
+                                        })
+                                }
+                                { !restrictSecondaryContent && (
+                                    <>
+                                        <a onClick={ () => setShowMore(!showMore) }>
+                                            &nbsp;{ showMore ? t("common:showLess") : t("common:showMore") }
+                                        </a><br/>
+                                        {
+                                            showMore && (
+                                                <React.Fragment>
+                                                    {
                                                         positive ?
-                                                            "console:develop.features.URLInput." +
-                                                            "withLabel.positive.detailedContent.1" :
-                                                            "console:develop.features.URLInput." +
-                                                            "withLabel.negative.detailedContent.1"
+                                                            t("console:develop.features.URLInput." +
+                                                                "withLabel.positive.detailedContent.0") :
+                                                            t("console:develop.features.URLInput." +
+                                                                "withLabel.negative.detailedContent.0")
                                                     }
-                                                    tOptions={ { tenantName: tenantDomain } }
-                                                >
-                                                    Therefore enabling CORS for this origin will allow you to access
-                                                    Identity Server APIs from the applications registered in the
-                                                    <strong>{ tenantDomain }</strong> organization.
-                                                </Trans>
-                                            </React.Fragment>
-                                        )
-                                    }
-                                </>)
-                            }
-
-                        </React.Fragment>)
-                    }
-                    popupOptions={ { basic: true, on: "hover" } }
-                    labelColor={ positive ? "green" : "red" }
-                />)
+                                                    <br/>
+                                                    <Trans
+                                                        i18nKey={
+                                                            positive ?
+                                                                "console:develop.features.URLInput." +
+                                                                "withLabel.positive.detailedContent.1" :
+                                                                "console:develop.features.URLInput." +
+                                                                "withLabel.negative.detailedContent.1"
+                                                        }
+                                                        tOptions={ { tenantName: tenantDomain } }
+                                                    >
+                                                        Therefore enabling CORS for this origin will allow you to access
+                                                        Identity Server APIs from the applications registered in the
+                                                        <strong>{ tenantDomain }</strong> organization.
+                                                    </Trans>
+                                                </React.Fragment>
+                                            )
+                                        }
+                                    </>
+                                ) }
+                            </React.Fragment>
+                        ) }
+                        popupOptions={ { basic: true, on: "hover" } }
+                        labelColor={ positive ? "green" : "red" }
+                    />
+                )
                 : null
         );
     };
@@ -675,116 +676,118 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         );
     };
 
-    return (!hideEntireComponent &&
-        (<>
-            <Grid.Row columns={ 1 } className={ "urlComponentLabelRow" }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>
-                    {
-                        required ? (
-                            <div className={ "required field" }>
-                                <label>{ labelName }</label>
-                            </div>
-                        ) : (
-                            <div className={ "field" }>
-                                <label>{ labelName }</label>
-                            </div>
-                        )
-                    }
-                </Grid.Column>
-            </Grid.Row>
-            <Grid.Row className={ "urlComponentInputRow" }>
-                <Grid.Column mobile={ 14 } tablet={ 14 } computer={ computerSize }>
-                    <Input
-                        fluid
-                        error={ !(validURL && !duplicateURL) }
-                        focus={ keepFocus }
-                        value={ changeUrl }
-                        onKeyDown={ keyPressed }
-                        onChange={ handleChange }
-                        onBlur={ handleOnBlur }
-                        placeholder={ placeholder }
-                        action
-                        readOnly={ readOnly }
-                        data-testid={ testId }
-                    >
-                        <input
-                            disabled={ disabled ? disabled : false }
-                        />
-                        <Popup
-                            disabled={ readOnly }
-                            trigger={
-                                (
-                                    <Button
-                                        onClick={ (e) => addFormButton(e) }
-                                        icon="add"
-                                        type="button"
-                                        disabled={ readOnly || disabled || (!allowEmptyValues && !changeUrl) }
-                                        data-testid={ `${ testId }-add-button` }
-                                    />
-                                )
-                            }
-                            position="top center"
-                            content={ addURLTooltip }
-                            inverted
-                        />
-                    </Input>
-                    { resolveValidationLabel() }
-                </Grid.Column>
-            </Grid.Row>
-            {
-                showPredictions && (
-                    <Grid.Row className={ "urlComponentInputRow" }>
-                        <Grid.Column mobile={ 14 } tablet={ 14 } computer={ computerSize }>
-                            {
-                                (predictValue.length > 0) && predictValue.map((predict) => {
-                                    return (
-                                        <Label
-                                            key={ predict }
-                                            basic
-                                            color="grey"
-                                            onClick={ () => onPredictClick(predict) }
-                                        >
-                                            { predict }
-                                        </Label>
-                                    );
-                                })
-                            }
-                        </Grid.Column>
-                    </Grid.Row>
-                )
-            }
-            { urlState && urlState.split(",").map((url) => {
-                if (url !== "") {
-                    if (skipValidation || skipInternalValidation) {
-                        return (
-                            <Grid.Row key={ url } className={ "urlComponentTagRow" }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>
-                                    <p>
-                                        <Label data-testid={ `${ testId }-${ url }` }>
-                                            <span>{ url }</span>
-                                            { !readOnly && urlRemoveButtonWidget(url) }
-                                        </Label>
-                                    </p>
-                                </Grid.Column>
-                            </Grid.Row>
-                        );
-                    }
-
-                    if (URLUtils.isURLValid(url, true)) {
-                        return urlChipItemWidget(url);
-                    }
-                }
-            }) }
-            { hint && (
-                <Grid.Row className={ "urlComponentTagRow" }>
+    return (
+        !hideEntireComponent && (
+            <>
+                <Grid.Row columns={ 1 } className={ "urlComponentLabelRow" }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>
-                        <Hint>
-                            { hint }
-                        </Hint>
+                        {
+                            required ? (
+                                <div className={ "required field" }>
+                                    <label>{ labelName }</label>
+                                </div>
+                            ) : (
+                                <div className={ "field" }>
+                                    <label>{ labelName }</label>
+                                </div>
+                            )
+                        }
                     </Grid.Column>
                 </Grid.Row>
-            ) }
-        </>)
+                <Grid.Row className={ "urlComponentInputRow" }>
+                    <Grid.Column mobile={ 14 } tablet={ 14 } computer={ computerSize }>
+                        <Input
+                            fluid
+                            error={ !(validURL && !duplicateURL) }
+                            focus={ keepFocus }
+                            value={ changeUrl }
+                            onKeyDown={ keyPressed }
+                            onChange={ handleChange }
+                            onBlur={ handleOnBlur }
+                            placeholder={ placeholder }
+                            action
+                            readOnly={ readOnly }
+                            data-testid={ testId }
+                        >
+                            <input
+                                disabled={ disabled ? disabled : false }
+                            />
+                            <Popup
+                                disabled={ readOnly }
+                                trigger={
+                                    (
+                                        <Button
+                                            onClick={ (e) => addFormButton(e) }
+                                            icon="add"
+                                            type="button"
+                                            disabled={ readOnly || disabled || (!allowEmptyValues && !changeUrl) }
+                                            data-testid={ `${ testId }-add-button` }
+                                        />
+                                    )
+                                }
+                                position="top center"
+                                content={ addURLTooltip }
+                                inverted
+                            />
+                        </Input>
+                        { resolveValidationLabel() }
+                    </Grid.Column>
+                </Grid.Row>
+                {
+                    showPredictions && (
+                        <Grid.Row className={ "urlComponentInputRow" }>
+                            <Grid.Column mobile={ 14 } tablet={ 14 } computer={ computerSize }>
+                                {
+                                    (predictValue.length > 0) && predictValue.map((predict) => {
+                                        return (
+                                            <Label
+                                                key={ predict }
+                                                basic
+                                                color="grey"
+                                                onClick={ () => onPredictClick(predict) }
+                                            >
+                                                { predict }
+                                            </Label>
+                                        );
+                                    })
+                                }
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
+                { urlState && urlState.split(",").map((url) => {
+                    if (url !== "") {
+                        if (skipValidation || skipInternalValidation) {
+                            return (
+                                <Grid.Row key={ url } className={ "urlComponentTagRow" }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>
+                                        <p>
+                                            <Label data-testid={ `${ testId }-${ url }` }>
+                                                <span>{ url }</span>
+                                                { !readOnly && urlRemoveButtonWidget(url) }
+                                            </Label>
+                                        </p>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            );
+                        }
+
+                        if (URLUtils.isURLValid(url, true)) {
+                            return urlChipItemWidget(url);
+                        }
+                    }
+                }) }
+                { hint && (
+                    <Grid.Row className={ "urlComponentTagRow" }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>
+                            <Hint>
+                                { hint }
+                            </Hint>
+                        </Grid.Column>
+                    </Grid.Row>
+                ) }
+            </>
+        )
     );
 };
 
