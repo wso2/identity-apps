@@ -671,6 +671,6 @@
         <taglibs-standard-impl.version>1.2.5</taglibs-standard-impl.version>
         <apache.tomcat-catalina.version>9.0.11</apache.tomcat-catalina.version>
 
-        <bootstrap.exec.skip>true</bootstrap.exec.skip>
+        <bootstrap.exec.skip>false</bootstrap.exec.skip>
     </properties>
 </project>
