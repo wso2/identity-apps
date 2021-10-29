@@ -120,10 +120,10 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
             return (
                 <EmptyPlaceholder
                     action={
-                        <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
+                        (<PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
                             <Icon name="add"/>
                             { t("console:manage.features.emailTemplates.placeholders.emptyList.action") }
-                        </PrimaryButton>
+                        </PrimaryButton>)
                     }
                     title={ t("console:manage.features.emailTemplates.placeholders.emptyList.title") }
                     subtitle={ [
@@ -275,7 +275,7 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                         open={ showTemplateDeleteConfirmation }
                         assertion={ currentDeletingTemplate.id }
                         assertionHint={
-                            <p>
+                            (<p>
                                 <Trans
                                     i18nKey={ "console:manage.features.emailTemplates.confirmations.deleteTemplate" +
                                     ".assertionHint" }
@@ -283,7 +283,7 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                                 >
                                     Please type <strong>{ currentDeletingTemplate.id }</strong> to confirm.
                                 </Trans>
-                            </p>
+                            </p>)
                         }
                         assertionType="input"
                         primaryAction={ t("common:confirm") }
