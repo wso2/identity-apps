@@ -139,12 +139,12 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
         if (templateList?.length === 0) {
             return (
                 <EmptyPlaceholder
-                    action={
-                        (<PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
+                    action={ (
+                        <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
                             <Icon name="add"/>
                             { t("console:manage.features.emailTemplateTypes.placeholders.emptyList.action") }
-                        </PrimaryButton>)
-                    }
+                        </PrimaryButton>
+                    ) }
                     title={ t("console:manage.features.emailTemplateTypes.placeholders.emptyList.title") }
                     subtitle={ [
                         t("console:manage.features.emailTemplateTypes.placeholders.emptyList.subtitles.0"),
@@ -272,8 +272,8 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
                         type="warning"
                         open={ showTemplateTypeDeleteConfirmation }
                         assertion={ currentDeletingTemplate.displayName }
-                        assertionHint={
-                            (<p>
+                        assertionHint={ (
+                            <p>
                                 <Trans
                                     i18nKey={ "console:manage.features.emailTemplateTypes.confirmations" +
                                     ".deleteTemplateType.assertionHint" }
@@ -281,8 +281,8 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
                                 >
                                     Please type <strong>{ currentDeletingTemplate.displayName }</strong> to confirm.
                                 </Trans>
-                            </p>)
-                        }
+                            </p>
+                        ) }
                         assertionType="input"
                         primaryAction={ t("common:confirm") }
                         secondaryAction={ t("common:cancel") }
