@@ -19,7 +19,6 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     ConfirmationModal,
-    ContentLoader,
     DocumentationLink,
     EmptyPlaceholder,
     Heading,
@@ -165,6 +164,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     useEffect(() => {
         const tempFilterSelectedExternalClaims = [ ...filterSelectedExternalClaims ];
+
         claimConfigurations?.claimMappings?.map((claim) => {
             if (
                 !filterSelectedExternalClaims.find(
@@ -174,6 +174,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 const availableExternalClaim = availableExternalClaims.find(
                     (availableClaim) => availableClaim?.mappedLocalClaimURI === claim.localClaim.uri
                 );
+
                 if (availableExternalClaim) {
                     tempFilterSelectedExternalClaims.push(availableExternalClaim);
                 }
@@ -196,11 +197,12 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 setUserAttributesLoading(false);
             }
         }
-    }, [availableClaims, availableExternalClaims, claimConfigurations, initializationFinished]);
+    }, [ availableClaims, availableExternalClaims, claimConfigurations, initializationFinished ]);
 
     const updateMandatory = (claimURI: string, mandatory: boolean) => {
         if (selectedDialect.localDialect) {
             const localClaims = [ ...selectedClaims ];
+
             localClaims.forEach((mapping) => {
                 if (mapping.claimURI === claimURI) {
                     mapping.mandatory = mandatory;
@@ -209,6 +211,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             setSelectedClaims(localClaims);
         } else {
             const externalClaims = [ ...selectedExternalClaims ];
+
             externalClaims.forEach((mapping) => {
                 if (mapping.claimURI === claimURI) {
                     mapping.mandatory = mandatory;
@@ -221,6 +224,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     const updateRequested = (claimURI: string, requested: boolean) => {
         if (selectedDialect.localDialect) {
             const localClaims = [ ...selectedClaims ];
+
             localClaims.forEach((mapping) => {
                 if (mapping.claimURI === claimURI) {
                     mapping.requested = requested;
@@ -232,6 +236,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     const getInitiallySelectedClaimsURI = ((): string[] => {
         const requestURI: string[] = [];
+
         if (claimConfigurations?.dialect === "CUSTOM") {
             claimConfigurations.claimMappings?.map((element: ClaimMappingInterface) => {
                 requestURI.push(element.localClaim.uri);
@@ -241,6 +246,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 requestURI.push(element.claim.uri);
             });
         }
+
         return requestURI;
     });
 
@@ -251,13 +257,16 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
      */
     const checkInitialRequestMandatory = (uri: string) => {
         let requestURI = false;
+
         // If custom mapping there then retrieve the relevant uri and check for requested section.
         if (claimConfigurations.dialect === "CUSTOM") {
             const requestURI = claimConfigurations.claimMappings.find(
                 (mapping) => mapping?.localClaim?.uri === uri)?.applicationClaim;
+
             if (requestURI) {
                 const checkInRequested = claimConfigurations.requestedClaims.find(
                     (requestClaims) => requestClaims?.claim?.uri === requestURI);
+
                 if (checkInRequested) {
                     return checkInRequested.mandatory;
                 }
@@ -280,6 +289,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             const requestURI = claimConfigurations.claimMappings.find(
                 (mapping) => mapping?.localClaim?.uri === uri)?.applicationClaim;
             let checkInRequested;
+
             if (requestURI) {
                 checkInRequested = claimConfigurations.requestedClaims.find(
                     (requestClaims) => requestClaims?.claim?.uri === requestURI);
@@ -304,6 +314,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 item.displayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
             const uriFilterClaims = selectedClaims.filter((item) =>
                 item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+
             setFilterSelectedClaims(sortBy(union(displayNameFilterClaims, uriFilterClaims), "displayName"));
         } else {
             setFilterSelectedExternalClaims(selectedExternalClaims.filter((item) =>
@@ -318,6 +329,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
      */
     const handleChange = (event) => {
         const changeValue = event.target.value;
+
         if (changeValue.length > 0) {
             // setSearchOn(true);
             searchFilter(changeValue);
@@ -338,6 +350,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             const initialRequest = getInitiallySelectedClaimsURI();
             const initialSelectedClaims: ExtendedClaimInterface[] = [];
             const initialAvailableClaims: ExtendedClaimInterface[] = [];
+
             applicationConfig.attributeSettings.attributeSelection.getClaims(claims)
                 .map((claim) => {
                     if (initialRequest.includes(claim.claimURI) &&
@@ -347,6 +360,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                             mandatory: checkInitialRequestMandatory(claim.claimURI),
                             requested: checkInitialRequested(claim.claimURI)
                         };
+
                         initialSelectedClaims.push(newClaim);
                     } else {
                         initialAvailableClaims.push(claim);
@@ -359,6 +373,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             //Handle claim mapping initialization
             if (claimConfigurations?.dialect === "CUSTOM") {
                 const initialClaimMappingList: ExtendedClaimMappingInterface[] = [];
+
                 claimConfigurations.claimMappings.map((claim) => {
                     if (!claim || !claim.localClaim) {
                         return;
@@ -376,11 +391,13 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                             uri: claim.localClaim.uri
                         }
                     };
+
                     initialClaimMappingList.push(claimMapping);
                 });
                 setClaimMapping(initialClaimMappingList);
             } else {
                 const initialClaimMappingList: ExtendedClaimMappingInterface[] = [];
+
                 initialSelectedClaims.map((claim: ExtendedClaimInterface) => {
                     // createMapping(claim);
                     const claimMapping: ExtendedClaimMappingInterface = {
@@ -392,6 +409,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                             uri: claim.claimURI
                         }
                     };
+
                     initialClaimMappingList.push(claimMapping);
                 });
                 setClaimMapping(initialClaimMappingList);
@@ -401,6 +419,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             const initialRequest = getInitiallySelectedClaimsURI();
             const initialSelectedClaims: ExtendedExternalClaimInterface[] = [];
             const initialAvailableClaims: ExtendedExternalClaimInterface[] = [];
+
             applicationConfig.attributeSettings.attributeSelection.getExternalClaims(externalClaims)
                 .map((claim) => {
                     if (initialRequest.includes(claim.mappedLocalClaimURI)) {
@@ -409,6 +428,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                             mandatory: checkInitialRequestMandatory(claim.mappedLocalClaimURI),
                             requested: true
                         };
+
                         initialSelectedClaims.push(newClaim);
 
                     } else {
@@ -490,6 +510,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 />
             );
         }
+
         return (
 
             <AttributeSelectionWizardOtherDialect
@@ -510,8 +531,10 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     const deleteAttribute = (claimURI: string): void => {
         if (selectedDialect.localDialect) {
             const removing = selectedClaims.find(claim => claim.claimURI === claimURI);
+
             setSelectedClaims(selectedClaims.filter(claim => claim.claimURI !== claimURI));
             const claim = claims.find(claim => claim.claimURI === claimURI);
+
             if (!claim) {
                 setClaims([ removing, ...claims ]);
             }
@@ -520,10 +543,12 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             }
         } else {
             const removing = selectedExternalClaims.find(claim => claim.mappedLocalClaimURI === claimURI);
+
             setSelectedExternalClaims(selectedExternalClaims.filter(claim => claim.mappedLocalClaimURI !== claimURI));
             setFilterSelectedExternalClaims(filterSelectedExternalClaims
                 .filter(claim => claim.mappedLocalClaimURI !== claimURI));
             const externalClaim = externalClaims.find(claim => claim.mappedLocalClaimURI === claimURI);
+
             if (!externalClaim) {
                 setExternalClaims([ removing, ...externalClaims ]);
             }
@@ -543,9 +568,11 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     const resolveClaimValue = (localClaimURI: string): string => {
         if (claimMappingOn) {
             const claimMappingValue = getCurrentMapping(localClaimURI);
+
             // The mapping might not exist if it is deleted from the list.
             return claimMappingValue !== undefined ? claimMappingValue.applicationClaim : localClaimURI;
         }
+
         return localClaimURI;
     };
 
@@ -625,7 +652,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     return (
         (!isUserAttributesLoading && claimConfigurations && initializationFinished)
             ?
-            <>
+            (<>
                 <Grid.Row data-testid={ testId }>
                     <Grid.Column computer={ 16 } tablet={ 16 } largeScreen={ 12 } widescreen={ 12 } >
                         <Heading as="h4">
@@ -766,7 +793,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                         ".applications.edit.sections" +
                                                                                         ".attributes.selection" +
                                                                                         ".mandatoryAttributeHint",
-                                                                                        { productName:
+                                                                                    { productName:
                                                                                             config.ui.productName })
                                                                                 }
                                                                             </Hint>
@@ -804,7 +831,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                         ".applications.edit.sections" +
                                                                                         ".attributes.selection" +
                                                                                         ".mandatoryAttributeHint",
-                                                                                        { productName:
+                                                                                    { productName:
                                                                                             config.ui.productName })
                                                                                 }
                                                                             </Hint>
@@ -823,7 +850,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             claimURI={ claim.claimURI }
                                                                             displayName={ claim.displayName }
                                                                             mappedURI={ claim.claimURI }
-                                                                            localDialect={ selectedDialect.localDialect }
+                                                                            localDialect={
+                                                                                selectedDialect.localDialect
+                                                                            }
                                                                             updateMapping={ updateClaimMapping }
                                                                             addToMapping={ addToClaimMapping }
                                                                             mapping={
@@ -898,7 +927,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                 ".applications.edit.sections" +
                                                                                 ".attributes.selection" +
                                                                                 ".mandatoryAttributeHint",
-                                                                                { productName:
+                                                                            { productName:
                                                                                     config.ui.productName })
                                                                         }
                                                                     </Hint>
@@ -915,7 +944,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             claimURI={ claim.claimURI }
                                                                             displayName={ claim.claimURI }
                                                                             mappedURI={ claim.mappedLocalClaimURI }
-                                                                            localDialect={ selectedDialect.localDialect }
+                                                                            localDialect={
+                                                                                selectedDialect.localDialect
+                                                                            }
                                                                             initialMandatory={
                                                                                 (selectedSubjectValue
                                                                                     === claim.mappedLocalClaimURI &&
@@ -955,33 +986,33 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                     </Segment>
                                 </>
                             ) : (
-                                    <Segment>
-                                        <EmptyPlaceholder
-                                            title={
-                                                applicationConfig.attributeSettings
-                                                    .attributeSelection.showAttributePlaceholderTitle &&
+                                <Segment>
+                                    <EmptyPlaceholder
+                                        title={
+                                            applicationConfig.attributeSettings
+                                                .attributeSelection.showAttributePlaceholderTitle &&
                                                 t("console:develop.features.applications.placeholders." +
                                                     "emptyAttributesList.title")
-                                            }
-                                            subtitle={ [
-                                                t("console:develop.features.applications.placeholders." +
+                                        }
+                                        subtitle={ [
+                                            t("console:develop.features.applications.placeholders." +
                                                     "emptyAttributesList.subtitles")
-                                            ] }
-                                            action={
-                                                !readOnly && (
-                                                    <PrimaryButton basic onClick={ handleOpenSelectionModal }>
-                                                        <Icon name="plus" />
-                                                        { t("console:develop.features.applications.placeholders" +
+                                        ] }
+                                        action={
+                                            !readOnly && (
+                                                <PrimaryButton basic onClick={ handleOpenSelectionModal }>
+                                                    <Icon name="plus" />
+                                                    { t("console:develop.features.applications.placeholders" +
                                                             ".emptyAttributesList.action") }
-                                                    </PrimaryButton>
-                                                )
-                                            }
-                                            image={ getEmptyPlaceholderIllustrations().emptyList }
-                                            imageSize="tiny"
-                                            data-testid={ `${ testId }-empty-placeholder` }
-                                        />
-                                    </Segment>
-                                )
+                                                </PrimaryButton>
+                                            )
+                                        }
+                                        image={ getEmptyPlaceholderIllustrations().emptyList }
+                                        imageSize="tiny"
+                                        data-testid={ `${ testId }-empty-placeholder` }
+                                    />
+                                </Segment>
+                            )
                         }
                         { !readOnly && applicationConfig.attributeSettings.attributeSelection
                             .showShareAttributesHint(selectedDialect)
@@ -993,7 +1024,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                     >
                                         Manage the user attributes you want to share with this application via
                                         <Link
-                                            external={false}
+                                            external={ false }
                                             onClick={ () => {
                                                 history.push(
                                                     AppConstants.getPaths().get("OIDC_SCOPES")
@@ -1003,7 +1034,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                         </Link>
                                         You can map additional attributes under
                                         <Link
-                                            external={false}
+                                            external={ false }
                                             onClick={ () => {
                                                 history.push(
                                                     AppConstants.getPaths()
@@ -1025,7 +1056,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                         Manage the user attributes you want to share with this application.
                                         You can add new attributes and mappings by navigating to
                                         <Link
-                                            external={false}
+                                            external={ false }
                                             onClick={ () => {
                                                 history.push(
                                                     AppConstants.getPaths()
@@ -1042,7 +1073,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 </Grid.Row>
                 { addSelectionModal() }
                 { removeAttributeModal() }
-            </>
+            </>)
             : null
     );
 };

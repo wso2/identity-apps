@@ -147,7 +147,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
      * @return {ReactElement}
      */
     const resolveStepOption = (option: AuthenticatorInterface, stepIndex: number,
-                               optionIndex: number): ReactElement => {
+        optionIndex: number): ReactElement => {
 
         if (authenticators && authenticators instanceof Array && authenticators.length > 0) {
 
@@ -213,10 +213,10 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                         transparent
                                     />
                                     <span data-testid={ `${ testId }-option-name` }>
-                                    {
-                                        AuthenticatorMeta.getAuthenticatorDisplayName(option.authenticator)
+                                        {
+                                            AuthenticatorMeta.getAuthenticatorDisplayName(option.authenticator)
                                         || authenticator.displayName
-                                    }
+                                        }
                                     </span>
                                 </Card.Content>
                             </Card>
@@ -296,7 +296,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                         !(step.options && step.options instanceof Array && step.options.length > 0)
                             ? "empty-placeholder-container"
                             : ""
-                        }` }
+                    }` }
                 >
                     {
                         (step.options && step.options instanceof Array && step.options.length > 0)

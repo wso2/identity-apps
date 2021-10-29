@@ -63,13 +63,13 @@ export const InboundSAMLCreationForm: FunctionComponent<SAMLProtocolCreationWiza
 
     const { t } = useTranslation();
 
-    const [configureMode, setConfigureMode] = useState<string>(undefined);
+    const [ configureMode, setConfigureMode ] = useState<string>(undefined);
 
     // State related to file picker
-    const [xmlBase64String, setXmlBase64String] = useState<string>();
-    const [selectedMetadataFile, setSelectedMetadataFile] = useState<File>(null);
-    const [pastedMetadataContent, setPastedMetadataContent] = useState<string>(null);
-    const [emptyFileError, setEmptyFileError] = useState(false);
+    const [ xmlBase64String, setXmlBase64String ] = useState<string>();
+    const [ selectedMetadataFile, setSelectedMetadataFile ] = useState<File>(null);
+    const [ pastedMetadataContent, setPastedMetadataContent ] = useState<string>(null);
+    const [ emptyFileError, setEmptyFileError ] = useState(false);
 
     useEffect(() => {
         if (isEmpty(initialValues?.inboundProtocolConfiguration?.saml)) {
@@ -84,7 +84,7 @@ export const InboundSAMLCreationForm: FunctionComponent<SAMLProtocolCreationWiza
                 setXmlBase64String(initialValues?.inboundProtocolConfiguration?.saml?.metadataFile);
             }
         }
-    }, [initialValues]);
+    }, [ initialValues ]);
 
     /**
      * Reset empty file error.
@@ -93,14 +93,14 @@ export const InboundSAMLCreationForm: FunctionComponent<SAMLProtocolCreationWiza
         if (xmlBase64String && emptyFileError) {
             setEmptyFileError(false);
         }
-    }, [xmlBase64String]);
+    }, [ xmlBase64String ]);
 
     /**
      * Watch metaFile selected or not.
      */
     useEffect(() => {
         setConfigureMode(creationOption);
-    }, [creationOption]);
+    }, [ creationOption ]);
 
     /**
      * Sanitizes and prepares the form values for submission.
@@ -111,6 +111,7 @@ export const InboundSAMLCreationForm: FunctionComponent<SAMLProtocolCreationWiza
     const getFormValues = (values: Map<string, FormValue>): any => {
 
         let result = {};
+
         if (configureMode === SAMLConfigModes.META_URL) {
             result = {
                 inbound: {
@@ -124,24 +125,25 @@ export const InboundSAMLCreationForm: FunctionComponent<SAMLProtocolCreationWiza
                 }
             };
         }
+
         return result;
     };
 
     return (configureMode
-            ?
-            <Forms
-                onSubmit={ (values: Map<string, FormValue>): void => {
-                    // check whether assertionConsumer url is empty or not
-                    if (configureMode === SAMLConfigModes.META_FILE && isEmpty(xmlBase64String)) {
-                        setEmptyFileError(true);
-                    } else {
-                        onSubmit(getFormValues(values));
-                    }
-                } }
-            >
-                <Grid>
-                    {
-                        (SAMLConfigModes.META_URL === configureMode) &&
+        ?
+        (<Forms
+            onSubmit={ (values: Map<string, FormValue>): void => {
+                // check whether assertionConsumer url is empty or not
+                if (configureMode === SAMLConfigModes.META_FILE && isEmpty(xmlBase64String)) {
+                    setEmptyFileError(true);
+                } else {
+                    onSubmit(getFormValues(values));
+                }
+            } }
+        >
+            <Grid>
+                {
+                    (SAMLConfigModes.META_URL === configureMode) &&
                         (
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
@@ -188,9 +190,9 @@ export const InboundSAMLCreationForm: FunctionComponent<SAMLProtocolCreationWiza
                                 </Grid.Column>
                             </Grid.Row>
                         )
-                    }
-                    {
-                        (SAMLConfigModes.META_FILE === configureMode) &&
+                }
+                {
+                    (SAMLConfigModes.META_FILE === configureMode) &&
 
                         (
                             <Grid.Row columns={ 1 } mobile={ 16 } tablet={ 16 } computer={ 10 }>
@@ -217,26 +219,26 @@ export const InboundSAMLCreationForm: FunctionComponent<SAMLProtocolCreationWiza
                                 </Grid.Column>
                             </Grid.Row>
                         )
-                    }
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            <Divider hidden/>
-                            <Button
-                                primary
-                                type="submit"
-                                size="small"
-                                loading={ isLoading }
-                                disabled={ isLoading }
-                                className="form-button"
-                                data-testid={ `${testId}-submit-button` }
-                            >
-                                { t("common:update") }
-                            </Button>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </Forms>
-            : <ContentLoader/>
+                }
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                        <Divider hidden/>
+                        <Button
+                            primary
+                            type="submit"
+                            size="small"
+                            loading={ isLoading }
+                            disabled={ isLoading }
+                            className="form-button"
+                            data-testid={ `${testId}-submit-button` }
+                        >
+                            { t("common:update") }
+                        </Button>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        </Forms>)
+        : <ContentLoader/>
     );
 };
 

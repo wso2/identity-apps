@@ -108,7 +108,7 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                 }
             });
         }
-    }, [inboundProtocols]);
+    }, [ inboundProtocols ]);
 
     return (
         !isLoading ? (
@@ -171,9 +171,9 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                 </Grid>
             </EmphasizedSegment> 
         ) :
-            <EmphasizedSegment padded="very">
+            (<EmphasizedSegment padded="very">
                 <ContentLoader inline="centered" active/>
-            </EmphasizedSegment>
+            </EmphasizedSegment>)
     );
 };
 

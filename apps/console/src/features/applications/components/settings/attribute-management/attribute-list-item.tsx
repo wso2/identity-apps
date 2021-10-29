@@ -84,12 +84,12 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
 
     const { t } = useTranslation();
 
-    const [mappingOn, setMappingOn] = useState(false);
-    const [errorInClaimMapping, setErrorInClaimMapping] = useState(false);
-    const [mandatory, setMandatory] = useState(false);
-    const [requested, setRequested] = useState(true);
-    const [mappedAttribute, setMappedAttribute] = useState(claimURI);
-    const [defaultMappedAttribute, setDefaultMappedAttribute] = useState(mappedAttribute);
+    const [ mappingOn, setMappingOn ] = useState(false);
+    const [ errorInClaimMapping, setErrorInClaimMapping ] = useState(false);
+    const [ mandatory, setMandatory ] = useState(false);
+    const [ requested, setRequested ] = useState(true);
+    const [ mappedAttribute, setMappedAttribute ] = useState(claimURI);
+    const [ defaultMappedAttribute ] = useState(mappedAttribute);
 
     const handleMandatoryCheckChange = () => {
         if (mandatory) {
@@ -115,17 +115,17 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
 
     useEffect(() => {
         setMandatory(initialMandatory);
-    }, [initialMandatory]);
+    }, [ initialMandatory ]);
 
     useEffect(() => {
         setRequested(initialRequested);
-    }, [initialRequested]);
+    }, [ initialRequested ]);
 
     useEffect(() => {
         if (isEmpty(mapping?.applicationClaim) && isEmpty(mapping)) {
             setErrorInClaimMapping(claimMappingError);
         }
-    }, [claimMappingError]);
+    }, [ claimMappingError ]);
 
     useEffect(() => {
         setMappingOn(claimMappingOn);
@@ -142,7 +142,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                 updateMapping(claimURI,defaultMappedAttribute);
             }
         }
-    }, [claimMappingOn]);
+    }, [ claimMappingOn ]);
 
     return (
         <Table.Row data-testid={ testId }>
@@ -161,13 +161,13 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
             </Table.Cell>
             {
                 localDialect && mappingOn &&
-                <>
+                (<>
                     <Table.Cell error={ errorInClaimMapping }>
                         <Input
                             placeholder={
                                 t("console:develop.features.applications.edit.sections.attributes.selection" +
                                     ".mappingTable.listItem.fields.claim.placeholder",
-                                    { name: displayName })
+                                { name: displayName })
                             }
                             value={ mappingOn ? mappedAttribute : defaultMappedAttribute }
                             onChange={ !readOnly && handleClaimMapping }
@@ -177,7 +177,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                             error={ errorInClaimMapping }
                         />
                     </Table.Cell>
-                </>
+                </>)
             }
             <Table.Cell
                 { ...(localDialect && !mappingOn && { textAlign: "center" }) }

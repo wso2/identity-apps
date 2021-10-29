@@ -96,7 +96,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ applicationTemplate, setApplicationTemplate ] = useState<ApplicationTemplateListItemInterface>(undefined);
     const [ isApplicationRequestLoading, setApplicationRequestLoading ] = useState<boolean>(false);
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>(undefined);
-    const [ inboundProtocolConfigs, setInboundProtocolConfigs ] = useState<object>(undefined);
+    const [ inboundProtocolConfigs, setInboundProtocolConfigs ] = useState<Record<string, unknown>>(undefined);
 
     /**
      * Get whether to show the help panel
@@ -121,9 +121,11 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         }
 
         const newPref: StorageIdentityAppsSettingsInterface = cloneDeep(userPreferences);
+
         newPref.identityAppsSettings.devPortal[ applicationHelpShownStatusKey ] = true;
         AppUtils.setUserPreferences(newPref);
     };
+
     /**
      * Fetch the application details on initial component load.
      */
@@ -152,10 +154,11 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         }
 
         let template = applicationTemplates.find((template) => template.id === application.templateId);
+
         if (application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
             || application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
             || application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
-                template = applicationTemplates.find((template) => template.id === CustomApplicationTemplate.id );
+            template = applicationTemplates.find((template) => template.id === CustomApplicationTemplate.id );
         }
 
         setApplicationTemplate(template);
@@ -320,69 +323,69 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     };
 
     return (
-            <PageLayout
-                title={ (
-                    <>
-                        <span>{ application.name }</span>
-                        { /*TODO - Application status is not shown until the backend support for disabling is given
+        <PageLayout
+            title={ (
+                <>
+                    <span>{ application.name }</span>
+                    { /*TODO - Application status is not shown until the backend support for disabling is given
                         @link https://github.com/wso2/product-is/issues/11453
                         { resolveApplicationStatusLabel() }*/ }
-                    </>
-                ) }
-                contentTopMargin={ true }
-                description={ (
-                    <div className="with-label ellipsis">
-                        { applicationTemplate?.name && <Label size="small">{ applicationTemplate.name }</Label> }
-                        { application.description }
-                    </div>
-                ) }
-                image={
-                    application.imageUrl
-                        ? (
-                            <AppAvatar
-                                name={ application.name }
-                                image={ application.imageUrl }
-                                size="tiny"
-                            />
-                        )
-                        : (
-                            <AnimatedAvatar
-                                name={ application.name }
-                                size="tiny"
-                                floated="left"
-                            />
-                        )
-                }
-                backButton={ {
-                    "data-testid": `${ testId }-page-back-button`,
-                    onClick: handleBackButtonClick,
-                    text: t("console:develop.pages.applicationsEdit.backButton")
+                </>
+            ) }
+            contentTopMargin={ true }
+            description={ (
+                <div className="with-label ellipsis">
+                    { applicationTemplate?.name && <Label size="small">{ applicationTemplate.name }</Label> }
+                    { application.description }
+                </div>
+            ) }
+            image={
+                application.imageUrl
+                    ? (
+                        <AppAvatar
+                            name={ application.name }
+                            image={ application.imageUrl }
+                            size="tiny"
+                        />
+                    )
+                    : (
+                        <AnimatedAvatar
+                            name={ application.name }
+                            size="tiny"
+                            floated="left"
+                        />
+                    )
+            }
+            backButton={ {
+                "data-testid": `${ testId }-page-back-button`,
+                onClick: handleBackButtonClick,
+                text: t("console:develop.pages.applicationsEdit.backButton")
+            } }
+            titleTextAlign="left"
+            bottomMargin={ false }
+            pageHeaderMaxWidth={ true }
+            data-testid={ `${ testId }-page-layout` }
+            truncateContent={ true }
+        >
+            <EditApplication
+                application={ application }
+                featureConfig={ featureConfig }
+                isLoading={ isApplicationRequestLoading }
+                setIsLoading={ setApplicationRequestLoading }
+                onDelete={ handleApplicationDelete }
+                onUpdate={ handleApplicationUpdate }
+                template={ applicationTemplate }
+                data-testid={ testId }
+                urlSearchParams={ urlSearchParams }
+                getConfiguredInboundProtocolsList={ (list: string[]) => {
+                    setInboundProtocolList(list);
                 } }
-                titleTextAlign="left"
-                bottomMargin={ false }
-                pageHeaderMaxWidth={ true }
-                data-testid={ `${ testId }-page-layout` }
-                truncateContent={ true }
-            >
-                <EditApplication
-                    application={ application }
-                    featureConfig={ featureConfig }
-                    isLoading={ isApplicationRequestLoading }
-                    setIsLoading={ setApplicationRequestLoading }
-                    onDelete={ handleApplicationDelete }
-                    onUpdate={ handleApplicationUpdate }
-                    template={ applicationTemplate }
-                    data-testid={ testId }
-                    urlSearchParams={ urlSearchParams }
-                    getConfiguredInboundProtocolsList={ (list: string[]) => {
-                        setInboundProtocolList(list);
-                    } }
-                    getConfiguredInboundProtocolConfigs={ (configs: object) => {
-                        setInboundProtocolConfigs(configs);
-                    } }
-                    readOnly={ resolveReadOnlyState() }
-                />
-            </PageLayout>
+                getConfiguredInboundProtocolConfigs={ (configs: Record<string, unknown>) => {
+                    setInboundProtocolConfigs(configs);
+                } }
+                readOnly={ resolveReadOnlyState() }
+            />
+        </PageLayout>
     );
 };
 

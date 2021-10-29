@@ -109,10 +109,10 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
-    const [certEmpty, setCertEmpty] = useState(false);
+    const [ certEmpty, setCertEmpty ] = useState(false);
     const [ selectedCertType, setSelectedCertType ] = useState<CertificateTypeInterface>(CertificateTypeInterface.NONE);
-    const [PEMValue, setPEMValue] = useState<string>(undefined);
-    const [JWKSValue, setJWKSValue] = useState<string>(undefined);
+    const [ PEMValue, setPEMValue ] = useState<string>(undefined);
+    const [ JWKSValue, setJWKSValue ] = useState<string>(undefined);
 
     /**
      * Set the certificate type
@@ -137,7 +137,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
         } else if (CertificateTypeInterface.JWKS === selectedCertType) {
             updateCertFinalValue(JWKSValue);
         }
-    }, [PEMValue, JWKSValue]);
+    }, [ PEMValue, JWKSValue ]);
 
     /**
      * Set initial PEM values.
@@ -152,7 +152,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                 setJWKSValue(certificate.value);
             }
         }
-    }, [certificate]);
+    }, [ certificate ]);
 
     /**
      * Change related to cert type changne.
@@ -166,7 +166,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
         } else {
             updateCertFinalValue("");
         }
-    }, [selectedCertType]);
+    }, [ selectedCertType ]);
 
     /**
      * The following function handle the certificate type change.
@@ -219,7 +219,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
     };
 
     return ( !hidden ?
-        <Forms
+        (<Forms
             onSubmit={ () => {
                 updateCertType(selectedCertType);
                 if (selectedCertType === CertificateTypeInterface.PEM && isEmpty(PEMValue)) {
@@ -256,35 +256,35 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                         type="radio"
                         value={ certificate?.type }
                         children={ !hideJWKS ? [
-                                {
-                                    label: "None",
-                                    value: CertificateTypeInterface.NONE
-                                },
-                                {
-                                    hint: {
-                                        content: t("console:develop.features.applications.forms." +
+                            {
+                                label: "None",
+                                value: CertificateTypeInterface.NONE
+                            },
+                            {
+                                hint: {
+                                    content: t("console:develop.features.applications.forms." +
                                             "advancedConfig.sections.certificate.fields.jwksValue.description"),
-                                        header: t("console:develop.features.applications.forms." +
+                                    header: t("console:develop.features.applications.forms." +
                                             "advancedConfig.sections.certificate.fields.type.children." +
                                             "jwks.label")
-                                    },
-                                    label: t("console:develop.features.applications.forms." +
-                                        "advancedConfig.sections.certificate.fields.type.children.jwks.label"),
-                                    value: CertificateTypeInterface.JWKS
                                 },
-                                {
-                                    hint: {
-                                        content: t("console:develop.features.applications.forms." +
+                                label: t("console:develop.features.applications.forms." +
+                                        "advancedConfig.sections.certificate.fields.type.children.jwks.label"),
+                                value: CertificateTypeInterface.JWKS
+                            },
+                            {
+                                hint: {
+                                    content: t("console:develop.features.applications.forms." +
                                             "advancedConfig.sections.certificate.fields.pemValue.description"),
-                                        header: t("console:develop.features.applications.forms." +
+                                    header: t("console:develop.features.applications.forms." +
                                             "advancedConfig.sections.certificate.fields.type.children." +
                                             "pem.label")
-                                    },
-                                    label: t("console:develop.features.applications.forms." +
+                                },
+                                label: t("console:develop.features.applications.forms." +
                                         "advancedConfig.sections.certificate.fields.type.children.pem.label"),
-                                    value: CertificateTypeInterface.PEM
-                                }
-                            ]
+                                value: CertificateTypeInterface.PEM
+                            }
+                        ]
                             : [
                                 {
                                     label: "None",
@@ -378,16 +378,16 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                     }
                     {
                         certEmpty && isEmpty(PEMValue) && (CertificateTypeInterface.PEM === selectedCertType) &&
-                        <Message
+                        (<Message
                             negative
                             data-testid={ `${testId}-error-message` }
                             content={ t("console:manage.features.certificates.keystore.errorEmpty") }
-                        />
+                        />)
                     }
                     { protocol && <Hint>{ resolveHintContent(protocol) }</Hint> }
                 </Grid.Column>
             </Grid.Row>
-        </Forms> : null
+        </Forms>) : null
     );
 };
 

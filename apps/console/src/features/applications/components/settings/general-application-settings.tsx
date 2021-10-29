@@ -27,7 +27,7 @@ import {
     EmphasizedSegment
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import { AppState, FeatureConfigInterface, UIConfigInterface } from "../../../core";
@@ -321,10 +321,10 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                     </ConfirmationModal>
                 </>
             ) :
-                <EmphasizedSegment padded="very">
-                    <ContentLoader inline="centered" active/>
-                </EmphasizedSegment>
-        );
+            (<EmphasizedSegment padded="very">
+                <ContentLoader inline="centered" active/>
+            </EmphasizedSegment>)
+    );
 };
 
 /**

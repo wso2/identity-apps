@@ -48,6 +48,8 @@ import {
 } from "../../core";
 import { getInboundProtocolConfig } from "../api";
 import { ApplicationManagementConstants } from "../constants";
+import CustomApplicationTemplate
+    from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationInterface,
     ApplicationTemplateInterface,
@@ -59,8 +61,6 @@ import {
     URLFragmentTypes
 } from "../models";
 import { ApplicationManagementUtils } from "../utils";
-import CustomApplicationTemplate
-    from "../data/application-templates/templates/custom-application/custom-application.json";
 
 /**
  * Proptypes for the applications edit component.
@@ -77,7 +77,7 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
     /**
      * Used to the configured inbound protocol configs from the parent component.
      */
-    getConfiguredInboundProtocolConfigs?: (configs: object) => void;
+    getConfiguredInboundProtocolConfigs?: (configs: Record<string, unknown>) => void;
     /**
      * Is the data still loading.
      */
@@ -208,7 +208,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 handleActiveTabIndexChange(4);
             }
         }
-    },[template]);
+    },[ template ]);
 
     /**
      * Called when the URL fragment updates.
@@ -247,6 +247,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      */
     useEffect(() => {
         const allowedCORSOrigins = [];
+
         getCORSOrigins()
             .then((response: CORSOriginsListInterface[]) => {
                 response.map((origin) => {
@@ -389,6 +390,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
         if (template.id === CustomApplicationTemplate.id && defaultActiveIndex > 0) {
             handleActiveTabIndexChange(defaultActiveIndex - 1);
+
             return;
         }
 
@@ -430,6 +432,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      */
     const mapProtocolTypeToName = ((type: string): string => {
         let protocolName = type;
+
         if (protocolName === "oauth2") {
             protocolName = SupportedAuthProtocolTypes.OIDC;
         } else if (protocolName === "passivests") {
@@ -451,10 +454,13 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      */
     const normalizeSAMLNameIDFormat = (protocolConfigs: any): void => {
         const key = "saml";
+
         if (protocolConfigs[ key ]) {
             const assertion = protocolConfigs[ key ].singleSignOnProfile?.assertion;
+
             if (assertion) {
                 const ref = assertion.nameIdFormat as string;
+
                 assertion.nameIdFormat = ref.replace(/\//g, ":");
             }
         }
@@ -674,7 +680,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const ProvisioningSettingsTabPane = (): ReactElement => (
         applicationConfig.editApplication.showProvisioningSettings
-            ? < ResourceTab.Pane controlledSegmentation>
+            ? (< ResourceTab.Pane controlledSegmentation>
                 <ProvisioningSettings
                     application={ application }
                     provisioningConfigurations={ application.provisioningConfigurations }
@@ -683,7 +689,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     readOnly={ readOnly }
                     data-testid={ `${ testId }-provisioning-settings` }
                 />
-            </ResourceTab.Pane>
+            </ResourceTab.Pane>)
             : null
     );
 

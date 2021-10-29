@@ -192,13 +192,10 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ showProtocolSwitchModal, setShowProtocolSwitchModal ] = useState<boolean>(false);
-    const [ protocolToDelete, setProtocolToDelete ] = useState<string>(undefined);
-    const [ showLandingPage, setShowLandingPage ] = useState<boolean>(true);
+    const [ protocolToDelete ] = useState<string>(undefined);
     const [ requestLoading, setRequestLoading ] = useState<boolean>(false);
 
     const [ samlCreationOption, setSAMLCreationOption ] = useState<SAMLConfigModes>(undefined);
-
-    const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
 
     /**
      * Handles the inbound config delete action.
@@ -271,9 +268,9 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                         ".genericError.message")
                 }));
             }).finally(() => {
-            setRequestLoading(false);
-            setSelectedProtocol(undefined);
-        });
+                setRequestLoading(false);
+                setSelectedProtocol(undefined);
+            });
     };
 
     /**
@@ -284,6 +281,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
      */
     const handleInboundConfigFormSubmit = (values: any, protocol: string): void => {
         let updateError: boolean = false;
+
         updateAuthProtocolConfig(appId, values, protocol)
             .then(() => {
                 dispatch(addAlert({
@@ -321,7 +319,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 if (!updateError) {
                     createSAMLApplication();
                 }
-        });
+            });
     };
 
     const createSAMLApplication= () => {
@@ -364,7 +362,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
             })
             .finally(() => {
                 setIsLoading(false);
-             });
+            });
     };
 
     /**
@@ -446,15 +444,15 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
 
 
         if (applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) {
-            return [SupportedAuthProtocolTypes.SAML];
+            return [ SupportedAuthProtocolTypes.SAML ];
         }
 
         if (applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC) {
-            return [SupportedAuthProtocolTypes.OAUTH2_OIDC];
+            return [ SupportedAuthProtocolTypes.OAUTH2_OIDC ];
         }
 
         if (applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
-            return [SupportedAuthProtocolTypes.WS_FEDERATION];
+            return [ SupportedAuthProtocolTypes.WS_FEDERATION ];
         }
 
         // Filter out legacy and unsupported auth protocols.
@@ -503,7 +501,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         // Sort the list of protocols.
         supportedProtocols = sortBy(supportedProtocols, (element) => {
 
-            let customOrder: object = {
+            let customOrder: Record<string, unknown> = {
                 [ SupportedAuthProtocolTypes.OIDC ] : 0,
                 [ SupportedAuthProtocolTypes.SAML ] : 1
             };
@@ -623,7 +621,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                             selectedProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
                                                 ? SupportedAuthProtocolTypes.OIDC
                                                 : selectedProtocol
-                                            ]
+                                        ]
                                     }
                                     initialValues={
                                         get(
@@ -636,7 +634,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                 selectedProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
                                                     ? SupportedAuthProtocolTypes.OIDC
                                                     : selectedProtocol
-                                                ]
+                                            ]
                                             : undefined
                                     }
                                     onSubmit={ handleSubmit }
@@ -671,7 +669,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                             selectedProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
                                                 ? SupportedAuthProtocolTypes.OIDC
                                                 : selectedProtocol
-                                            ]
+                                        ]
                                     }
                                     initialValues={
                                         get(
@@ -684,7 +682,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                 selectedProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
                                                     ? SupportedAuthProtocolTypes.OIDC
                                                     : selectedProtocol
-                                                ]
+                                            ]
                                             : undefined
                                     }
                                     onSubmit={ handleSubmit }
@@ -717,48 +715,46 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 <Grid.Row>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                         {
-                            supportedProtocolList.map((protocol, index) => (
-                                <>
-                                    <Popup
-                                        trigger={
-                                            <SemButton
-                                                basic
-                                                color={ selectedProtocol === protocol ? "red": "grey" }
-                                                content={ selectedProtocol === protocol ? "red": "grey" }
-                                                className={ "mr-3 protocol-button" }
-                                                onClick={ () => setSelectedProtocol(protocol) }
+                            supportedProtocolList.map((protocol: string, index: number) => (
+                                <Popup
+                                    key={ index }
+                                    trigger={ (
+                                        <SemButton
+                                            basic
+                                            color={ selectedProtocol === protocol ? "red" : "grey" }
+                                            content={ selectedProtocol === protocol ? "red" : "grey" }
+                                            className={ "mr-3 protocol-button" }
+                                            onClick={ () => setSelectedProtocol(protocol) }
+                                        >
+                                            <GenericIcon
+                                                fill={ selectedProtocol === protocol ? "primary" : "accent1" }
+                                                inline
+                                                transparent
+                                                icon={ getInboundProtocolLogos()[protocol] }
+                                                size="micro"
+                                                spaced="left"
+                                                verticalAlign="middle"
+                                                className={ "protocol-button-icon" }
+                                            />
+                                            <div
+                                                className={ "protocol-change-title" }
                                             >
-                                                <GenericIcon
-                                                    fill={ selectedProtocol === protocol ? "primary" : "accent1" }
-                                                    inline
-                                                    transparent
-                                                    icon={ getInboundProtocolLogos()[protocol] }
-                                                    size="micro"
-                                                    spaced="left"
-                                                    verticalAlign="middle"
-                                                    className={ "protocol-button-icon" }
-                                                />
-                                                <div
-                                                    className={ "protocol-change-title" }
-                                                >
-                                                    {
-                                                        ApplicationManagementUtils.resolveProtocolDisplayName(
-                                                            protocol as SupportedAuthProtocolTypes)
-                                                    }
-                                                </div>
-                                            </SemButton>
-                                        }
-                                        content={
-                                            ApplicationManagementUtils.resolveProtocolDescription(
-                                                protocol as SupportedAuthProtocolTypes)
-                                        }
-                                        position="top center"
-                                        size="mini"
-                                        hideOnScroll
-                                        inverted
-                                    />
-
-                                </>
+                                                {
+                                                    ApplicationManagementUtils.resolveProtocolDisplayName(
+                                                        protocol as SupportedAuthProtocolTypes)
+                                                }
+                                            </div>
+                                        </SemButton>
+                                    ) }
+                                    content={
+                                        ApplicationManagementUtils.resolveProtocolDescription(
+                                            protocol as SupportedAuthProtocolTypes)
+                                    }
+                                    position="top center"
+                                    size="mini"
+                                    hideOnScroll
+                                    inverted
+                                />
                             ))
                         }
                         <Divider hidden/>
@@ -767,6 +763,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 </Grid.Row>
             );
         }
+
         return (
             <>
                 <Header as="h3" className="display-flex">
@@ -869,6 +866,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 </Header>
             );
         }
+
         // Description for other types.
         return null;
     };
@@ -921,11 +919,6 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         });
     }, [ inboundProtocols ]);
 
-    const selectInitialProtocol = (protocol: string): void =>{
-        setSelectedProtocol(protocol);
-        inboundProtocolList.push(protocol);
-    };
-
     const selectSAMLCreationProtocol = (samlOption: SAMLConfigModes): void =>{
         setSAMLCreationOption(samlOption);
         setSelectedProtocol(SupportedAuthProtocolTypes.SAML);
@@ -936,142 +929,151 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         !isLoading && !requestLoading && !isInboundProtocolConfigRequestLoading
             ? ( !selectedProtocol && inboundProtocols.length === 0 && !allowMultipleProtocol
             && applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) ?
-                <SAMLSelectionLanding
+                (<SAMLSelectionLanding
                     setSAMLProtocol={ selectSAMLCreationProtocol }
-                />
-            : (
-                <Grid>
-                    { loadSupportedProtocols() }
-                    <Grid.Row>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            { resolveInboundProtocolSettingsForm() }
-                        </Grid.Column>
-                    </Grid.Row>
-                    {
-                        showWizard && (
-                            <ApplicationCreateWizard
-                                title={
-                                    t("console:develop.features.applications.edit.sections.access.addProtocolWizard" +
-                                        ".heading")
-                                }
-                                subTitle={
-                                    t("console:develop.features.applications.edit.sections.access.addProtocolWizard" +
-                                        ".subHeading",
+                />)
+                : (
+                    <Grid>
+                        { loadSupportedProtocols() }
+                        <Grid.Row>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                { resolveInboundProtocolSettingsForm() }
+                            </Grid.Column>
+                        </Grid.Row>
+                        {
+                            showWizard && (
+                                <ApplicationCreateWizard
+                                    title={
+                                        t("console:develop.features.applications.edit.sections" +
+                                            ".access.addProtocolWizard.heading")
+                                    }
+                                    subTitle={
+                                        t("console:develop.features.applications.edit.sections" +
+                                            ".access.addProtocolWizard.subHeading",
                                         { appName: appName })
-                                }
-                                closeWizard={ (): void => setShowWizard(false) }
-                                addProtocol={ true }
-                                selectedProtocols={ inboundProtocols }
-                                onUpdate={ onUpdate }
-                                appId={ appId }
-                                data-testid={ `${ testId }-protocol-add-wizard` }
-                            />
-                        )
-                    }
-                    {
-                        showDeleteConfirmationModal && (
-                            <ConfirmationModal
-                                onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                                type="warning"
-                                open={ showDeleteConfirmationModal }
-                                assertion={ protocolToDelete }
-                                assertionHint={ (
-                                    <p>
-                                        <Trans
-                                            i18nKey={
-                                                "console:develop.features.applications.confirmations.deleteProtocol" +
-                                                ".assertionHint"
-                                            }
-                                            tOptions={ { name: protocolToDelete } }
-                                        >
+                                    }
+                                    closeWizard={ (): void => setShowWizard(false) }
+                                    addProtocol={ true }
+                                    selectedProtocols={ inboundProtocols }
+                                    onUpdate={ onUpdate }
+                                    appId={ appId }
+                                    data-testid={ `${ testId }-protocol-add-wizard` }
+                                />
+                            )
+                        }
+                        {
+                            showDeleteConfirmationModal && (
+                                <ConfirmationModal
+                                    onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                                    type="warning"
+                                    open={ showDeleteConfirmationModal }
+                                    assertion={ protocolToDelete }
+                                    assertionHint={ (
+                                        <p>
+                                            <Trans
+                                                i18nKey={
+                                                    "console:develop.features.applications.confirmations" +
+                                                    ".deleteProtocol.assertionHint"
+                                                }
+                                                tOptions={ { name: protocolToDelete } }
+                                            >
                                             Please type <strong>{ protocolToDelete }</strong> to confirm.
-                                        </Trans>
-                                    </p>
-                                ) }
-                                assertionType="input"
-                                primaryAction={ t("common:confirm") }
-                                secondaryAction={ t("common:cancel") }
-                                onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
-                                onPrimaryActionClick={
-                                    (): void => {
-                                        handleInboundConfigDelete(protocolToDelete);
-                                        setShowDeleteConfirmationModal(false);
+                                            </Trans>
+                                        </p>
+                                    ) }
+                                    assertionType="input"
+                                    primaryAction={ t("common:confirm") }
+                                    secondaryAction={ t("common:cancel") }
+                                    onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
+                                    onPrimaryActionClick={
+                                        (): void => {
+                                            handleInboundConfigDelete(protocolToDelete);
+                                            setShowDeleteConfirmationModal(false);
+                                        }
                                     }
-                                }
-                                data-testid={ `${ testId }-protocol-delete-confirmation-modal` }
-                                closeOnDimmerClick={ false }
-                            >
-                                <ConfirmationModal.Header
-                                    data-testid={ `${ testId }-protocol-delete-confirmation-modal-header` }
+                                    data-testid={ `${ testId }-protocol-delete-confirmation-modal` }
+                                    closeOnDimmerClick={ false }
                                 >
-                                    { t("console:develop.features.applications.confirmations.deleteProtocol.header") }
-                                </ConfirmationModal.Header>
-                                <ConfirmationModal.Message
-                                    attached
-                                    warning
-                                    data-testid={ `${ testId }-protocol-delete-confirmation-modal-message` }
-                                >
-                                    { t("console:develop.features.applications.confirmations.deleteProtocol.message") }
-                                </ConfirmationModal.Message>
-                                <ConfirmationModal.Content
-                                    data-testid={ `${ testId }-protocol-delete-confirmation-modal-content` }
-                                >
-                                    { t("console:develop.features.applications.confirmations.deleteProtocol.content") }
-                                </ConfirmationModal.Content>
-                            </ConfirmationModal>
-                        )
-                    }
-                    {
-                        showProtocolSwitchModal && (
-                            <ConfirmationModal
-                                onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                                type="warning"
-                                open={ showProtocolSwitchModal }
-                                primaryAction={ t("common:confirm") }
-                                secondaryAction={ t("common:cancel") }
-                                onSecondaryActionClick={
-                                    (): void => {
-                                        setShowProtocolSwitchModal(false);
+                                    <ConfirmationModal.Header
+                                        data-testid={ `${ testId }-protocol-delete-confirmation-modal-header` }
+                                    >
+                                        {
+                                            t("console:develop.features.applications.confirmations" +
+                                                ".deleteProtocol.header")
+                                        }
+                                    </ConfirmationModal.Header>
+                                    <ConfirmationModal.Message
+                                        attached
+                                        warning
+                                        data-testid={ `${ testId }-protocol-delete-confirmation-modal-message` }
+                                    >
+                                        {
+                                            t("console:develop.features.applications.confirmations" +
+                                                ".deleteProtocol.message")
+                                        }
+                                    </ConfirmationModal.Message>
+                                    <ConfirmationModal.Content
+                                        data-testid={ `${ testId }-protocol-delete-confirmation-modal-content` }
+                                    >
+                                        {
+                                            t("console:develop.features.applications.confirmations" +
+                                                ".deleteProtocol.content")
+                                        }
+                                    </ConfirmationModal.Content>
+                                </ConfirmationModal>
+                            )
+                        }
+                        {
+                            showProtocolSwitchModal && (
+                                <ConfirmationModal
+                                    onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                                    type="warning"
+                                    open={ showProtocolSwitchModal }
+                                    primaryAction={ t("common:confirm") }
+                                    secondaryAction={ t("common:cancel") }
+                                    onSecondaryActionClick={
+                                        (): void => {
+                                            setShowProtocolSwitchModal(false);
+                                        }
                                     }
-                                }
-                                onPrimaryActionClick={
-                                    (): void => {
-                                        handleInboundConfigSwitch(selectedProtocol);
-                                        setShowProtocolSwitchModal(false);
+                                    onPrimaryActionClick={
+                                        (): void => {
+                                            handleInboundConfigSwitch(selectedProtocol);
+                                            setShowProtocolSwitchModal(false);
+                                        }
                                     }
-                                }
-                                data-testid={ `${ testId }-protocol-delete-confirmation-modal` }
-                                closeOnDimmerClick={ false }
-                            >
-                                <ConfirmationModal.Header
-                                    data-testid={ `${ testId }-protocol-delete-confirmation-modal-header` }
+                                    data-testid={ `${ testId }-protocol-delete-confirmation-modal` }
+                                    closeOnDimmerClick={ false }
                                 >
-                                    { t("console:develop.features.applications.confirmations." +
+                                    <ConfirmationModal.Header
+                                        data-testid={ `${ testId }-protocol-delete-confirmation-modal-header` }
+                                    >
+                                        { t("console:develop.features.applications.confirmations." +
                                         "changeProtocol.header") }
-                                </ConfirmationModal.Header>
-                                <ConfirmationModal.Message
-                                    attached
-                                    warning
-                                    data-testid={ `${ testId }-protocol-delete-confirmation-modal-message` }
-                                >
-                                    { t("console:develop.features.applications.confirmations" +
+                                    </ConfirmationModal.Header>
+                                    <ConfirmationModal.Message
+                                        attached
+                                        warning
+                                        data-testid={ `${ testId }-protocol-delete-confirmation-modal-message` }
+                                    >
+                                        { t("console:develop.features.applications.confirmations" +
                                         ".changeProtocol.message",
                                         { name: selectedProtocol }) }
-                                </ConfirmationModal.Message>
-                                <ConfirmationModal.Content
-                                    data-testid={ `${ testId }-protocol-delete-confirmation-modal-content` }
-                                >
-                                    { t("console:develop.features.applications.confirmations." +
+                                    </ConfirmationModal.Message>
+                                    <ConfirmationModal.Content
+                                        data-testid={ `${ testId }-protocol-delete-confirmation-modal-content` }
+                                    >
+                                        { t("console:develop.features.applications.confirmations." +
                                         "changeProtocol.content") }
-                                </ConfirmationModal.Content>
-                            </ConfirmationModal>
-                        )
-                    }
-                </Grid>
-            ) :
-                <EmphasizedSegment padded="very">
-                    <ContentLoader inline="centered" active/>
-                </EmphasizedSegment>
+                                    </ConfirmationModal.Content>
+                                </ConfirmationModal>
+                            )
+                        }
+                    </Grid>
+                ) :
+            (<EmphasizedSegment padded="very">
+                <ContentLoader inline="centered" active/>
+            </EmphasizedSegment>)
     );
 };
 

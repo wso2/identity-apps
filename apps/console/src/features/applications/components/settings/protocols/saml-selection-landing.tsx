@@ -21,10 +21,9 @@ import { EmphasizedSegment, Heading, Text } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, ReactElement } from "react";
-import { useTranslation } from "react-i18next";
 import { Card, Divider, Grid } from "semantic-ui-react";
 import { FeatureConfigInterface } from "../../../../core";
-import { ProtocolCard } from "../../../../core/components/protocol-card";
+import { ProtocolCard } from "../../../../core/components";
 import { getSAMLModeIcons } from "../../../configs";
 import { SAMLConfigModes } from "../../../models";
 import { ApplicationManagementUtils } from "../../../utils";
@@ -72,25 +71,23 @@ export const SAMLSelectionLanding: FunctionComponent<SAMLSelectionLandingPropsIn
         ["data-testid"]: testId
     } = props;
 
-    const { t } = useTranslation();
-
 
     const resolveSAMLMode = (): SAMLConfigModeInterface[] => {
         const samlModeList: SAMLConfigModeInterface[] = [
             {
-                name: ApplicationManagementUtils.resolveSAMLConfigModeDisplayName(SAMLConfigModes.MANUAL),
                 image: getSAMLModeIcons().manual,
-                mode: SAMLConfigModes.MANUAL
+                mode: SAMLConfigModes.MANUAL,
+                name: ApplicationManagementUtils.resolveSAMLConfigModeDisplayName(SAMLConfigModes.MANUAL)
             },
             {
-                name: ApplicationManagementUtils.resolveSAMLConfigModeDisplayName(SAMLConfigModes.META_FILE),
                 image: getSAMLModeIcons().fileBased,
-                mode: SAMLConfigModes.META_FILE
+                mode: SAMLConfigModes.META_FILE,
+                name: ApplicationManagementUtils.resolveSAMLConfigModeDisplayName(SAMLConfigModes.META_FILE)
             },
             {
-                name: ApplicationManagementUtils.resolveSAMLConfigModeDisplayName(SAMLConfigModes.META_URL),
                 image: getSAMLModeIcons().URLBased,
-                mode: SAMLConfigModes.META_URL
+                mode: SAMLConfigModes.META_URL,
+                name: ApplicationManagementUtils.resolveSAMLConfigModeDisplayName(SAMLConfigModes.META_URL)
             }
         ];
 

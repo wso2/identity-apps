@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { AlertInterface, AlertLevels, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
@@ -30,7 +31,6 @@ import { Button, Divider, Grid } from "semantic-ui-react";
 import { ApplicationManagementConstants } from "../../constants";
 import { CertificateInterface, CertificateTypeInterface, PassiveStsConfigurationInterface } from "../../models";
 import { CertificateFormFieldModal } from "../modals";
-import { CertificateManagementConstants } from "@wso2is/core/constants";
 
 /**
  * Proptypes for the inbound Passive Sts form component.

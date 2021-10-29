@@ -73,76 +73,76 @@ export const PassiveStsProtocolSettingsWizardForm: FunctionComponent<PassiveStsS
     };
 
     return (templateValues
-            ?
-            <Forms
-                onSubmit={ (values: Map<string, FormValue>): void => {
-                    onSubmit(getFormValues(values));
-                } }
-                submitState={ triggerSubmit }
-            >
-                <Grid>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Field
-                                name="realm"
-                                label={
-                                    t("console:develop.features.applications.forms.inboundSTS.fields.realm.label")
-                                }
-                                required={ true }
-                                requiredErrorMessage={
-                                    t("console:develop.features.applications.forms.inboundSTS.fields.realm" +
+        ?
+        (<Forms
+            onSubmit={ (values: Map<string, FormValue>): void => {
+                onSubmit(getFormValues(values));
+            } }
+            submitState={ triggerSubmit }
+        >
+            <Grid>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Field
+                            name="realm"
+                            label={
+                                t("console:develop.features.applications.forms.inboundSTS.fields.realm.label")
+                            }
+                            required={ true }
+                            requiredErrorMessage={
+                                t("console:develop.features.applications.forms.inboundSTS.fields.realm" +
                                         ".validations.empty")
-                                }
-                                placeholder={
-                                    t("console:develop.features.applications.forms.inboundSTS.fields.realm" +
+                            }
+                            placeholder={
+                                t("console:develop.features.applications.forms.inboundSTS.fields.realm" +
                                         ".placeholder")
-                                }
-                                type="text"
-                                value={ initialValues ? initialValues?.realm : templateValues?.realm }
-                                data-testid={ `${ testId }-realm-input` }
-                            />
-                            <Hint>
-                                { t("console:develop.features.applications.forms.inboundSTS.fields.realm.hint") }
-                            </Hint>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Field
-                                name="replyTo"
-                                label={
-                                    t("console:develop.features.applications.forms.inboundSTS.fields.replyTo.label")
-                                }
-                                required={ true }
-                                requiredErrorMessage={
-                                    t("console:develop.features.applications.forms.inboundSTS.fields.replyTo" +
+                            }
+                            type="text"
+                            value={ initialValues ? initialValues?.realm : templateValues?.realm }
+                            data-testid={ `${ testId }-realm-input` }
+                        />
+                        <Hint>
+                            { t("console:develop.features.applications.forms.inboundSTS.fields.realm.hint") }
+                        </Hint>
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Field
+                            name="replyTo"
+                            label={
+                                t("console:develop.features.applications.forms.inboundSTS.fields.replyTo.label")
+                            }
+                            required={ true }
+                            requiredErrorMessage={
+                                t("console:develop.features.applications.forms.inboundSTS.fields.replyTo" +
                                         ".validations.empty")
-                                }
-                                placeholder={
-                                    t("console:develop.features.applications.forms.inboundSTS.fields.replyTo" +
+                            }
+                            placeholder={
+                                t("console:develop.features.applications.forms.inboundSTS.fields.replyTo" +
                                         ".placeholder")
-                                }
-                                validation={ (value: string, validation: Validation) => {
-                                    if (!FormValidation.url(value)) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push(
-                                            t("console:develop.features.applications.forms.inboundSTS.fields.replyTo" +
+                            }
+                            validation={ (value: string, validation: Validation) => {
+                                if (!FormValidation.url(value)) {
+                                    validation.isValid = false;
+                                    validation.errorMessages.push(
+                                        t("console:develop.features.applications.forms.inboundSTS.fields.replyTo" +
                                                 ".validations.invalid")
-                                        );
-                                    }
-                                } }
-                                type="text"
-                                value={ initialValues ? initialValues?.replyTo : templateValues?.replyTo }
-                                data-testid={ `${ testId }-reply-url-input` }
-                            />
-                            <Hint>
-                                { t("console:develop.features.applications.forms.inboundSTS.fields.replyTo.hint") }
-                            </Hint>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </Forms>
-            : <ContentLoader/>
+                                    );
+                                }
+                            } }
+                            type="text"
+                            value={ initialValues ? initialValues?.replyTo : templateValues?.replyTo }
+                            data-testid={ `${ testId }-reply-url-input` }
+                        />
+                        <Hint>
+                            { t("console:develop.features.applications.forms.inboundSTS.fields.replyTo.hint") }
+                        </Hint>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        </Forms>)
+        : <ContentLoader/>
     );
 };
 

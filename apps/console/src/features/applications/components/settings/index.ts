@@ -17,9 +17,15 @@
  */
 
 export * from "./attribute-management";
+
 export * from "./provisioning";
+
 export * from "./sign-on-methods";
+
 export * from "./general-application-settings";
+
 export * from "./access-configuration";
+
 export * from "./advanced-settings";
+
 export * from "./general-application-settings";

@@ -184,7 +184,7 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
                                 Object.entries(template.defaultStepsDescription)
                                     .map(([ step, description ], index: number, steps) => {
                                         return (
-                                            <div className="stepper" key={ index }>
+                                            <div className="stepper" key={ `${ index }-${ step }` }>
                                                 <div className="step-number">{ index + 1 }</div>
                                                 <div className="step-text">{ description }</div>
                                                 { steps.length !== (index + 1) && (<div className="step-connector">
@@ -209,8 +209,10 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
                             <Message icon info>
                                 <Icon name="help circle"/>
                                 <Message.Content>
-                                    <a target="_blank" href={ template.helpLink }
-                                       rel="noreferrer">{ template.helpLink }</a>
+                                    <a
+                                        target="_blank"
+                                        href={ template.helpLink }
+                                        rel="noreferrer">{ template.helpLink }</a>
                                 </Message.Content>
                             </Message>
                         </>

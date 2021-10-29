@@ -133,7 +133,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         state.config.ui.isClientSecretHashEnabled);
 
     const [ templateSettings, setTemplateSettings ] = useState<ApplicationTemplateInterface>(null);
-    const [ protocolFormValues, setProtocolFormValues ] = useState<object>(undefined);
+    const [ protocolFormValues, setProtocolFormValues ] = useState<Record<string, unknown>>(undefined);
     const [
         customApplicationProtocol,
         setCustomApplicationProtocol 
@@ -150,7 +150,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const metaUrlRef = useRef<HTMLDivElement>();
 
     // Maintain SAML configuration mode
-    const [samlConfigureMode, setSAMLConfigureMode] = useState<string>(undefined);
+    const [ samlConfigureMode, setSAMLConfigureMode ] = useState<string>(undefined);
 
     const [ alert, setAlert, notification ] = useWizardAlert();
 
@@ -163,6 +163,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         }
 
         const allowedCORSOrigins = [];
+
         getCORSOrigins()
             .then((response: CORSOriginsListInterface[]) => {
                 response.map((origin) => {
@@ -184,11 +185,13 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         // Stop fetching template details if the selected template is `Expert Mode`.
         if (selectedTemplate.id === CustomApplicationTemplate.id) {
             setTemplateSettings(CustomApplicationTemplate);
+
             return;
         }
 
         if (isEmpty(subTemplates) || !Array.isArray(subTemplates) || subTemplates.length < 1) {
             loadTemplateDetails(template.id, template);
+
             return;
         }
 
@@ -477,21 +480,26 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         switch (field) {
             case "name":
                 nameRef.current.scrollIntoView(options);
+
                 break;
             case "issuer":
             {
                 issuerRef.current.scrollIntoView(options);
                 const issuerElement = issuerRef.current.children[0].children[1].children[0] as HTMLInputElement;
+
                 issuerElement.focus();
                 issuerElement.blur();
+
                 break;
             }
             case "metaUrl":
             {
                 metaUrlRef.current.scrollIntoView(options);
                 const metaUrlElement = metaUrlRef.current.children[0].children[1].children[0] as HTMLInputElement;
+
                 metaUrlElement.focus();
                 metaUrlElement.blur();
+
                 break;
             }
         }
@@ -515,10 +523,12 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         switch (field) {
             case "issuer":
                 setIssuerError(state);
+
                 break;
             case "metaUrl":
             {
                 setMetaUrlError(state);
+
                 break;
             }
             default:
@@ -680,7 +690,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                             {
                                 templates
                                     .map((subTemplate: SupportedAuthProtocolTypes | ApplicationTemplateInterface,
-                                          index: number) => {
+                                        index: number) => {
 
                                         const id: string = isCustom
                                             ? subTemplate as SupportedAuthProtocolTypes
@@ -781,6 +791,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     while (!result.done) {
                         if (!result.value[ 1 ] || !validFields.get(result.value[ 0 ]).isValid) {
                             scrollToInValidField(result.value[ 0 ]);
+
                             break;
                         } else {
                             result = iterator.next();
@@ -824,15 +835,16 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                         validation.errorMessages.push(
                                             t("console:develop.features.applications.forms." +
                                                 "spaProtocolSettingsWizard.fields.name.validations.invalid",
-                                                { appName: value.toString(),
-                                                    characterLimit: ApplicationManagementConstants
-                                                        .FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
+                                            { appName: value.toString(),
+                                                characterLimit: ApplicationManagementConstants
+                                                    .FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
                                             )
                                         );
 
                                         return;
                                     }
                                     let response: ApplicationListInterface = null;
+
                                     try {
                                         response = await getApplicationList(null, null, "name eq " + value.toString());
                                     } catch (error) {
@@ -960,14 +972,14 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 <ModalWithSidePanel.Header className="wizard-header">
                     { title }
                     { subTitle &&
-                        <Heading as="h6">
+                        (<Heading as="h6">
                             { subTitle }
                             <DocumentationLink
                                 link={ resolveDocumentationLink() }
                             >
                                 { t("common:learnMore") }
                             </DocumentationLink>
-                        </Heading>
+                        </Heading>)
                     }
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content>{ resolveContent() }</ModalWithSidePanel.Content>
