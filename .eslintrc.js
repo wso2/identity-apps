@@ -37,6 +37,7 @@ const LINE_PADDING_RULES = [
     { blankLine: "always", next: "continue", prev: "*" },
     // Add a new line before exports.
     { blankLine: "always", next: "export", prev: "*" },
+    { blankLine: "any", next: "export", prev: "export" },
     // Add a new line before for loops.
     { blankLine: "always", next: "for", prev: "*" },
     // Add a new line before classes.
@@ -90,7 +91,9 @@ module.exports = {
             1,
             { maximum: 1, when: "multiline" },
         ],
-        "indent": [ 1, 4 ],
+        "indent": [ 1, 4, {
+            SwitchCase: 1
+        } ],
         "array-bracket-spacing": [ 1, "always" ],
         "no-unreachable": "error",
         "no-alert": 1,
