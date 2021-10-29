@@ -175,9 +175,10 @@ export const AppSwitcher: FunctionComponent<AppSwitcherPropsInterface> = (
                                                                             { name }
                                                                         </Item.Header>
                                                                         <Item.Meta
-                                                                            data-testid={ `${
-                                                                                appRest[ "data-testid" ]
-                                                                            }-description`
+                                                                            data-testid={
+                                                                                `${ 
+                                                                                    appRest[ "data-testid" ]
+                                                                                }-description`
                                                                             }
                                                                         >
                                                                             { description }

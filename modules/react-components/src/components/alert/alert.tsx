@@ -203,7 +203,8 @@ export const Alert: FunctionComponent<AlertPropsInterface> = (
                             cursor: "unset"
                         }
                     }
-                } }/>
+                } }
+            />
         </div>
     );
 };

@@ -154,8 +154,8 @@ export const WithOperationsBar = (): ReactElement => (
             }
         ] }
         data={ DEMO_DATA_LIST }
-        externalSearch={
-            (<AdvancedSearch
+        externalSearch={ (
+            <AdvancedSearch
                 aligned="left"
                 dropdownPosition="bottom left"
                 fill="white"
@@ -233,8 +233,8 @@ export const WithOperationsBar = (): ReactElement => (
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-            </AdvancedSearch>)
-        }
+            </AdvancedSearch>
+        ) }
         columns={ [
             {
                 allowToggleVisibility: false,

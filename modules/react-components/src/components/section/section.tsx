@@ -222,35 +222,37 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                                 <Grid.Column width={ 6 } className="no-padding">
                                     <Responsive as={ Fragment } { ...Responsive.onlyComputer }>
                                         {
-                                            icon ? (
-                                                <GenericIcon
-                                                    icon={ icon }
-                                                    transparent
-                                                    size={ iconSize }
-                                                    floated={ iconFloated }
-                                                    defaultIcon={ iconStyle === "default" }
-                                                    twoTone={ iconStyle === "twoTone" }
-                                                    colored={ iconStyle === "colored" }
-                                                    data-testid={ `${ testId }-icon` }
-                                                />
-                                            )
+                                            icon
+                                                ? (
+                                                    <GenericIcon
+                                                        icon={ icon }
+                                                        transparent
+                                                        size={ iconSize }
+                                                        floated={ iconFloated }
+                                                        defaultIcon={ iconStyle === "default" }
+                                                        twoTone={ iconStyle === "twoTone" }
+                                                        colored={ iconStyle === "colored" }
+                                                        data-testid={ `${ testId }-icon` }
+                                                    />
+                                                )
                                                 : null
                                         }
                                     </Responsive>
                                     <Responsive as={ Fragment } maxWidth={ Responsive.onlyTablet.maxWidth }>
                                         {
-                                            iconMini ? (
-                                                <GenericIcon
-                                                    icon={ iconMini }
-                                                    transparent
-                                                    size={ iconSize }
-                                                    floated={ iconFloated }
-                                                    defaultIcon={ iconStyle === "default" }
-                                                    twoTone={ iconStyle === "twoTone" }
-                                                    colored={ iconStyle === "colored" }
-                                                    data-testid={ `${ testId }-icon-mini` }
-                                                />
-                                            )
+                                            iconMini
+                                                ? (
+                                                    <GenericIcon
+                                                        icon={ iconMini }
+                                                        transparent
+                                                        size={ iconSize }
+                                                        floated={ iconFloated }
+                                                        defaultIcon={ iconStyle === "default" }
+                                                        twoTone={ iconStyle === "twoTone" }
+                                                        colored={ iconStyle === "colored" }
+                                                        data-testid={ `${ testId }-icon-mini` }
+                                                    />
+                                                )
                                                 : null
                                         }
                                     </Responsive>
@@ -281,63 +283,64 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                 </Grid>
             </Card.Content>
             {
-                (primaryAction || secondaryAction || placeholder) && showActionBar ? (
-                    <Card.Content className="extra-content" extra>
-                        <List selection={ !secondaryAction } verticalAlign="middle">
-                            <List.Item
-                                className="action-button"
-                                disabled={ !!placeholder }
-                                // if both `primaryAction` & `secondaryAction` are passed in,
-                                // disable list item `onClick`.
-                                onClick={ !(primaryAction && secondaryAction)
-                                    ? onSecondaryActionClick || onPrimaryActionClick
-                                    : null
-                                }
-                            >
-                                {
-                                    placeholder
-                                        ? (
-                                            <List.Header className="action-button-text">
-                                                <Message info>
-                                                    <Icon name="info circle" />{ placeholder }
-                                                </Message>
-                                            </List.Header>
-                                        )
-                                        : (
-                                            <>
-                                                {
-                                                    primaryAction
-                                                        ? constructAction(
-                                                            primaryAction,
-                                                            primaryActionIcon,
-                                                            primaryActionDisabled,
-                                                            (primaryAction && secondaryAction)
-                                                                ? onPrimaryActionClick
-                                                                : null,
-                                                            "primary"
-                                                        )
-                                                        : null
-                                                }
-                                                {
-                                                    secondaryAction
-                                                        ? constructAction(
-                                                            secondaryAction,
-                                                            secondaryActionIcon,
-                                                            secondaryActionDisabled,
-                                                            (primaryAction && secondaryAction)
-                                                                ? onSecondaryActionClick
-                                                                : null,
-                                                            "secondary"
-                                                        )
-                                                        : null
-                                                }
-                                            </>
-                                        )
-                                }
-                            </List.Item>
-                        </List>
-                    </Card.Content>
-                )
+                (primaryAction || secondaryAction || placeholder) && showActionBar
+                    ? (
+                        <Card.Content className="extra-content" extra>
+                            <List selection={ !secondaryAction } verticalAlign="middle">
+                                <List.Item
+                                    className="action-button"
+                                    disabled={ !!placeholder }
+                                    // if both `primaryAction` & `secondaryAction` are passed in,
+                                    // disable list item `onClick`.
+                                    onClick={ !(primaryAction && secondaryAction)
+                                        ? onSecondaryActionClick || onPrimaryActionClick
+                                        : null
+                                    }
+                                >
+                                    {
+                                        placeholder
+                                            ? (
+                                                <List.Header className="action-button-text">
+                                                    <Message info>
+                                                        <Icon name="info circle" />{ placeholder }
+                                                    </Message>
+                                                </List.Header>
+                                            )
+                                            : (
+                                                <>
+                                                    {
+                                                        primaryAction
+                                                            ? constructAction(
+                                                                primaryAction,
+                                                                primaryActionIcon,
+                                                                primaryActionDisabled,
+                                                                (primaryAction && secondaryAction)
+                                                                    ? onPrimaryActionClick
+                                                                    : null,
+                                                                "primary"
+                                                            )
+                                                            : null
+                                                    }
+                                                    {
+                                                        secondaryAction
+                                                            ? constructAction(
+                                                                secondaryAction,
+                                                                secondaryActionIcon,
+                                                                secondaryActionDisabled,
+                                                                (primaryAction && secondaryAction)
+                                                                    ? onSecondaryActionClick
+                                                                    : null,
+                                                                "secondary"
+                                                            )
+                                                            : null
+                                                    }
+                                                </>
+                                            )
+                                    }
+                                </List.Item>
+                            </List>
+                        </Card.Content>
+                    )
                     : (
                         accordion
                     )

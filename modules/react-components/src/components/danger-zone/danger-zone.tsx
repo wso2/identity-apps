@@ -119,8 +119,8 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
                     )
                     : (
                         <Popup
-                            trigger={
-                                (<div
+                            trigger={ (
+                                <div
                                     className={
                                         (window.innerWidth <= Responsive.onlyTablet.maxWidth)
                                             ? "mb-1x mt-1x inline-button button-width"
@@ -136,8 +136,8 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
                                     >
                                         { actionTitle }
                                     </Button>
-                                </div>)
-                            }
+                                </div>
+                            ) }
                             content={ buttonDisableHint }
                             position={
                                 (window.innerWidth <= Responsive.onlyTablet.maxWidth)

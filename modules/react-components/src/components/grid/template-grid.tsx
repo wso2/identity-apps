@@ -356,8 +356,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
                     selected={ selectedTemplate?.id === template.id }
                     data-testid={ `${ testId }-selection-card` }
                 />
-            )
-            );
+            ));
         }
 
         return null;

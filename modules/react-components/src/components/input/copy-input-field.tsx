@@ -111,8 +111,8 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
             value={ value }
             labelPosition="right"
             readOnly
-            action={
-                (<Popup
+            action={ (
+                <Popup
                     trigger={
                         (
                             <Button
@@ -132,8 +132,8 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
                     position="top center"
                     content={ copied ? "Copied!" : "Copy to clipboard" }
                     inverted
-                />)
-            }
+                />
+            ) }
             fluid
             className={ classes }
             type={

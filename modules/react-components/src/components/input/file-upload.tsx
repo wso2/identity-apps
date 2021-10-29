@@ -313,7 +313,8 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
                                     onClick={ (event) => {
                                         event.preventDefault();
                                         fileUpload.current.click();
-                                    } }>
+                                    } }
+                                >
                                     Upload
                                 </Button>
                             </Segment>
@@ -332,7 +333,8 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
                                         setContent("");
                                         setEncodedContent("");
                                         setFileError(false);
-                                    } }/>
+                                    } }
+                                />
                             </Segment>
                         </Segment>
                     )

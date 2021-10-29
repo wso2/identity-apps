@@ -133,7 +133,8 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
                             : (itemHeader || itemDescription)
                                 ? 3
                                 : 2
-                    }>
+                    }
+                >
                     { (itemDescription || itemHeader)
                         ? (
                             <Grid.Column width={ descriptionColumnWidth } className="resource-item-column">
