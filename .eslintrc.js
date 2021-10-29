@@ -91,7 +91,9 @@ module.exports = {
             1,
             { maximum: 1, when: "multiline" },
         ],
-        "indent": [ 1, 4 ],
+        "indent": [ 1, 4, {
+            SwitchCase: 1
+        } ],
         "array-bracket-spacing": [ 1, "always" ],
         "no-unreachable": "error",
         "no-alert": 1,
