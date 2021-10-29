@@ -24,5 +24,6 @@
  */
 export const base64MimeType = (encodedString: string): string => {
     const mime = encodedString.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/);
+
     return mime && mime.length ? mime[1] : null;
 };
