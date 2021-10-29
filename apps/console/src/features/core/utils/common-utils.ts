@@ -70,6 +70,7 @@ export class CommonUtils {
 
         const newPref: StorageIdentityAppsSettingsInterface = cloneDeep(userPreferences);
         const seen = get(userPreferences, CommonConstants.SEEN_ANNOUNCEMENTS_KEY, []);
+
         set(newPref, CommonConstants.SEEN_ANNOUNCEMENTS_KEY, [ ...seen, id ]);
 
         AppUtils.setUserPreferences(newPref);

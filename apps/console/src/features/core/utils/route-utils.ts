@@ -46,9 +46,9 @@ export class RouteUtils {
      * @param {boolean} navigateToUnAuthorized - Should navigate to un-authorized page.
      */
     public static gracefullyHandleRouting(routes: RouteInterface[],
-                                          view: string,
-                                          pathname: string,
-                                          navigateToUnAuthorized: boolean = true): void {
+        view: string,
+        pathname: string,
+        navigateToUnAuthorized: boolean = true): void {
 
         if (RouteUtils.isOnlyPageNotFoundPresent(routes)) {
             if (RouteUtils.isHomePath(view)) {
@@ -142,6 +142,7 @@ export class RouteUtils {
             .filter(({ path = EMPTY_STRING }) => path?.match(view)) // #1
             .map((route: RouteInterface) => {
                 descendants.add(route.path); // #2
+
                 return route.children || [] as ChildRouteInterface[]; // #3
             });
         const allChildPaths: string[] = flatten(nestedChildren) // #4 [ [], [], [], [], [] ] => single array []
@@ -173,10 +174,12 @@ export class RouteUtils {
          */
         const pathToARegex = (path: string): string => {
             if (!path || !path.trim().length) return EMPTY_STRING;
+
             return path.split("/").map((fragment: string) => {
                 if (fragment && fragment.startsWith(":")) {
                     return /[\w~\-\\.!*'(), ]+/.source;
                 }
+
                 return fragment ?? EMPTY_STRING;
             }).join("/");
         };
@@ -205,8 +208,10 @@ export class RouteUtils {
             if (path) {
                 const expression = RegExp(`^${pathToARegex(path)}$`);
                 const match = expression.exec(pathname);
+
                 if (match && match.length > 0) {
                     qualifiedPaths.push(...match);
+
                     break;
                 }
             }
@@ -258,7 +263,7 @@ export class RouteUtils {
      * @param {string[]} pathsToSkip - Set of paths to skip.
      * @return {boolean}
      */
-    public static isViewPresentable(routes: RouteInterface[], pathsToSkip?: string[]) {
+    public static isViewPresentable(routes: RouteInterface[], pathsToSkip?: string[]): boolean {
 
         const presentableRoutes: RouteInterface[] = RouteUtils.filterPresentableRoutes(routes, pathsToSkip);
 
@@ -274,7 +279,7 @@ export class RouteUtils {
      * @param {string[]} pathsToSkip - Set of paths to skip.
      * @return {RouteInterface[]}
      */
-    public static filterPresentableRoutes(routes: RouteInterface[], pathsToSkip?: string[]) {
+    public static filterPresentableRoutes(routes: RouteInterface[], pathsToSkip?: string[]): RouteInterface[] {
 
         return routes.filter((route: RouteInterface) => {
             if (!route.showOnSidePanel) {

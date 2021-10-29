@@ -20,6 +20,7 @@ export interface AnalyticsConfig {
     EventPublisherExtension: {
         compute: (computation: () => void) => void;
         init: () => void;
-        publish: (eventId: string, customProperties?: { [key: string]: string | Record<string, unknown> }) => void;
+        publish: (eventId: string, customProperties?: { [key: string]: string | Record<string, unknown> |
+                number}) => void;
     }
 }
