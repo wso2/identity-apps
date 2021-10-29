@@ -390,35 +390,36 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 data-testid={ testId }
             />
             {
-                showRoleDeleteConfirmation &&
-                (<ConfirmationModal
-                    data-testid={ `${ testId }-delete-item-confirmation-modal` }
-                    onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                    type="warning"
-                    open={ showRoleDeleteConfirmation }
-                    assertionHint={ t("console:manage.features.roles.list.confirmations.deleteItem.assertionHint") }
-                    assertionType="checkbox"
-                    primaryAction="Confirm"
-                    secondaryAction="Cancel"
-                    onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
-                    onPrimaryActionClick={ (): void => {
-                        handleRoleDelete(currentDeletedRole);
-                        setShowDeleteConfirmationModal(false);
-                    } }
-                    closeOnDimmerClick={ false }
-                >
-                    <ConfirmationModal.Header>
-                        { t("console:manage.features.roles.list.confirmations.deleteItem.header") }
-                    </ConfirmationModal.Header>
-                    <ConfirmationModal.Message attached warning>
-                        { t("console:manage.features.roles.list.confirmations.deleteItem.message",
-                            { type: "role" }) }
-                    </ConfirmationModal.Message>
-                    <ConfirmationModal.Content>
-                        { t("console:manage.features.roles.list.confirmations.deleteItem.content",
-                            { type: "role" }) }
-                    </ConfirmationModal.Content>
-                </ConfirmationModal>)
+                showRoleDeleteConfirmation && (
+                    <ConfirmationModal
+                        data-testid={ `${ testId }-delete-item-confirmation-modal` }
+                        onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                        type="warning"
+                        open={ showRoleDeleteConfirmation }
+                        assertionHint={ t("console:manage.features.roles.list.confirmations.deleteItem.assertionHint") }
+                        assertionType="checkbox"
+                        primaryAction="Confirm"
+                        secondaryAction="Cancel"
+                        onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
+                        onPrimaryActionClick={ (): void => {
+                            handleRoleDelete(currentDeletedRole);
+                            setShowDeleteConfirmationModal(false);
+                        } }
+                        closeOnDimmerClick={ false }
+                    >
+                        <ConfirmationModal.Header>
+                            { t("console:manage.features.roles.list.confirmations.deleteItem.header") }
+                        </ConfirmationModal.Header>
+                        <ConfirmationModal.Message attached warning>
+                            { t("console:manage.features.roles.list.confirmations.deleteItem.message",
+                                { type: "role" }) }
+                        </ConfirmationModal.Message>
+                        <ConfirmationModal.Content>
+                            { t("console:manage.features.roles.list.confirmations.deleteItem.content",
+                                { type: "role" }) }
+                        </ConfirmationModal.Content>
+                    </ConfirmationModal>
+                )
             }
         </>
     );

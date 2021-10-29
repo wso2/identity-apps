@@ -407,8 +407,8 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                 )
             }
             {
-                showRoleDeleteConfirmation &&
-                    (<ConfirmationModal
+                showRoleDeleteConfirmation && (
+                    <ConfirmationModal
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="warning"
                         open={ showRoleDeleteConfirmation }
@@ -436,7 +436,8 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                             { t("console:manage.features.roles.edit.basics.confirmation.content",
                                 { type: isGroup ? "group." : "role." }) }
                         </ConfirmationModal.Content>
-                    </ConfirmationModal>)
+                    </ConfirmationModal>
+                )
             }
         </>
     );

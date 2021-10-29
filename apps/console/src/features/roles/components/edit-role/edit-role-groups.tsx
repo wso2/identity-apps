@@ -628,12 +628,16 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                     <Table.Cell>
                                         {
                                             userGroup?.length === 1
-                                                ? (<Label color="olive">
-                                                    { PRIMARY_DOMAIN }
-                                                </Label>)
-                                                : (<Label color="olive">
-                                                    { userGroup[ 0 ] }
-                                                </Label>)
+                                                ? (
+                                                    <Label color="olive">
+                                                        { PRIMARY_DOMAIN }
+                                                    </Label>
+                                                )
+                                                : (
+                                                    <Label color="olive">
+                                                        { userGroup[ 0 ] }
+                                                    </Label>
+                                                )
                                         }
                                     </Table.Cell>
                                     <Table.Cell>
