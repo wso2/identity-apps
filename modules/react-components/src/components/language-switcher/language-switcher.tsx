@@ -69,7 +69,7 @@ export interface SupportedLanguagesInterface {
         /**
          * Country Flag.
          */
-        flag: FlagNameValues;
+        flag?: FlagNameValues;
         /**
          * Country Name.
          */
