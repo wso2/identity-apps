@@ -16,7 +16,7 @@
  * under the License.
  */
 
- /* eslint-disable no-undef */
+/* eslint-disable no-undef */
 
 const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
 
@@ -25,6 +25,7 @@ const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
  * @type {Uint8Array}
  */
 const lookup = new Uint8Array(256);
+
 for (let i = 0; i < chars.length; i++) {
     lookup[chars.charCodeAt(i)] = i;
 }
