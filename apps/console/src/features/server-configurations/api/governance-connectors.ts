@@ -22,7 +22,12 @@ import { HttpMethods } from "@wso2is/core/models";
 import { AxiosResponse } from "axios";
 import { store } from "../../core";
 import { ServerConfigurationsConstants } from "../constants";
-import { GovernanceConnectorInterface, UpdateGovernanceConnectorConfigInterface } from "../models";
+import {
+    GovernanceConnectorInterface,
+    RealmConfigInterface,
+    UpdateGovernanceConnectorConfigInterface
+} from "../models";
+import { LocalAuthenticatorInterface } from ",,/../../src/features/identity-providers/models/identity-provider";
 
 /**
  * Initialize an axios Http client.
@@ -127,7 +132,7 @@ export const getConnectorCategory = (categoryId: string): Promise<any> => {
  * @param connectorId ID of the connector
  * @returns {Promise<any>} a promise containing the response.
  */
-export const updateGovernanceConnector = (data: UpdateGovernanceConnectorConfigInterface, categoryId: string, 
+export const updateGovernanceConnector = (data: UpdateGovernanceConnectorConfigInterface, categoryId: string,
     connectorId: string): Promise<any> => {
     const url = store.getState().config.endpoints.governanceConnectorCategories +
         "/" + categoryId + "/connectors/" + connectorId;
@@ -177,3 +182,25 @@ export const getConnectorDetails = (categoryId: string, connectorId: string): Pr
     return getData(store.getState().config.endpoints.governanceConnectorCategories + "/" + categoryId +
         "/connectors/" + connectorId);
 };
+
+interface ServerConfigurationCorsInterface {
+    allowAnyOrigin: boolean;
+    allowGenericHttpRequests: boolean;
+    allowSubdomains: boolean;
+    exposedHeaders: string[];
+    maxAge: number;
+    supportAnyHeader: boolean;
+    supportedHeaders: {[key: string]: string}[];
+    supportedMethods: string[];
+    supportsCredentials: boolean;
+}
+
+export interface ServerConfigurationsInterface {
+    authenticators: LocalAuthenticatorInterface;
+    cors: ServerConfigurationCorsInterface;
+    realmConfig: RealmConfigInterface;
+    homeRealmIdentifiers: string[];
+    idleSessionTimeoutPeriod: string[];
+    provisioning: any;
+    rememberMePeriod: string;
+}
