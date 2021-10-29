@@ -63,7 +63,7 @@ export interface DataTableSubComponentsInterface {
 /**
  * Interface for the data table component.
  */
-export interface DataTablePropsInterface<T = Record<string, unknown>> extends Omit<TableProps, "columns" | "sortable">,
+export interface DataTablePropsInterface<T = Record<string, any>> extends Omit<TableProps, "columns" | "sortable">,
     TestableComponentInterface {
 
     /**
@@ -197,7 +197,7 @@ export interface DataRendererPropsInterface {
  * Table Data Interface.
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export interface TableDataInterface<T = Record<string, unknown>> extends StrictDataPropsInterface,
+export interface TableDataInterface<T = Record<string, any>> extends StrictDataPropsInterface,
     DynamicTableDataInterface, DataTableCellPropsInterface { }
 
 /**
@@ -274,7 +274,7 @@ export interface DynamicTableColumnInterface {
 /**
  * Table Actions Interface.
  */
-export interface TableActionsInterface<T = Record<string, unknown>>
+export interface TableActionsInterface<T = Record<string, any>>
     extends TestableComponentInterface, Partial<IdentifiableComponentInterface> {
     /**
      * Component render node.
@@ -351,7 +351,7 @@ export interface TableExtensionInterface {
  * @return {React.ReactElement}
  */
 
-export const DataTable = <T extends Record<string, unknown> = Record<string, unknown>>(
+export const DataTable = <T extends Record<string, any> = Record<string, any>>(
     props: DataTablePropsInterface<T>
 ): ReactElement => {
 
