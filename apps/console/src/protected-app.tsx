@@ -283,7 +283,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         debug: window[ "AppUtils" ].getConfig().debug
                     },
                     Config.getI18nConfig()?.overrideOptions,
-                    window["AppUtils"].getConfig().ui.i18nConfigs.langAutoDetectEnabled,
+                    Config.getI18nConfig()?.langAutoDetectEnabled,
                     Config.getI18nConfig()?.xhrBackendPluginEnabled
                 ).then(() => {
                     // Set the supported languages in redux store.
