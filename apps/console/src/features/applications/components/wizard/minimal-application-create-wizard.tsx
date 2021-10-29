@@ -971,16 +971,16 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             <ModalWithSidePanel.MainPanel>
                 <ModalWithSidePanel.Header className="wizard-header">
                     { title }
-                    { subTitle &&
-                        (<Heading as="h6">
+                    { subTitle && (
+                        <Heading as="h6">
                             { subTitle }
                             <DocumentationLink
                                 link={ resolveDocumentationLink() }
                             >
                                 { t("common:learnMore") }
                             </DocumentationLink>
-                        </Heading>)
-                    }
+                        </Heading>
+                    ) }
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content>{ resolveContent() }</ModalWithSidePanel.Content>
                 <ModalWithSidePanel.Actions>

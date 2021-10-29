@@ -680,16 +680,18 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const ProvisioningSettingsTabPane = (): ReactElement => (
         applicationConfig.editApplication.showProvisioningSettings
-            ? (< ResourceTab.Pane controlledSegmentation>
-                <ProvisioningSettings
-                    application={ application }
-                    provisioningConfigurations={ application.provisioningConfigurations }
-                    onUpdate={ handleApplicationUpdate }
-                    featureConfig={ featureConfig }
-                    readOnly={ readOnly }
-                    data-testid={ `${ testId }-provisioning-settings` }
-                />
-            </ResourceTab.Pane>)
+            ? (
+                < ResourceTab.Pane controlledSegmentation>
+                    <ProvisioningSettings
+                        application={ application }
+                        provisioningConfigurations={ application.provisioningConfigurations }
+                        onUpdate={ handleApplicationUpdate }
+                        featureConfig={ featureConfig }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-provisioning-settings` }
+                    />
+                </ResourceTab.Pane>
+            )
             : null
     );
 

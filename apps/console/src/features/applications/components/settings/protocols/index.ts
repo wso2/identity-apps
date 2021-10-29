@@ -17,5 +17,4 @@
  */
 
 export * from "./protocol-landing";
-
 export * from "./saml-selection-landing";

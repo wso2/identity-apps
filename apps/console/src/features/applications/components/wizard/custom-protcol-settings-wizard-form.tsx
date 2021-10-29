@@ -253,19 +253,21 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
         }
     }, [ metadata ]);
 
-    return (metadata
-        ?
-        (<Forms
-            onSubmit={ (values) => {
-                onSubmit(updateConfiguration(values));
-            } }
-            submitState={ triggerSubmit }
-        >
-            <Grid>
-                { generateFormElements() }
-            </Grid>
-        </Forms>)
-        : <ContentLoader/>
+    return (
+        metadata
+            ? (
+                <Forms
+                    onSubmit={ (values) => {
+                        onSubmit(updateConfiguration(values));
+                    } }
+                    submitState={ triggerSubmit }
+                >
+                    <Grid>
+                        { generateFormElements() }
+                    </Grid>
+                </Forms>
+            )
+            : <ContentLoader/>
     );
 };
 

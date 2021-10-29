@@ -160,24 +160,25 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                 }
             </Table.Cell>
             {
-                localDialect && mappingOn &&
-                (<>
-                    <Table.Cell error={ errorInClaimMapping }>
-                        <Input
-                            placeholder={
-                                t("console:develop.features.applications.edit.sections.attributes.selection" +
-                                    ".mappingTable.listItem.fields.claim.placeholder",
-                                { name: displayName })
-                            }
-                            value={ mappingOn ? mappedAttribute : defaultMappedAttribute }
-                            onChange={ !readOnly && handleClaimMapping }
-                            disabled={ !mappingOn }
-                            readOnly={ readOnly }
-                            required
-                            error={ errorInClaimMapping }
-                        />
-                    </Table.Cell>
-                </>)
+                localDialect && mappingOn && (
+                    <>
+                        <Table.Cell error={ errorInClaimMapping }>
+                            <Input
+                                placeholder={
+                                    t("console:develop.features.applications.edit.sections.attributes" +
+                                        ".selection.mappingTable.listItem.fields.claim.placeholder",
+                                    { name: displayName })
+                                }
+                                value={ mappingOn ? mappedAttribute : defaultMappedAttribute }
+                                onChange={ !readOnly && handleClaimMapping }
+                                disabled={ !mappingOn }
+                                readOnly={ readOnly }
+                                required
+                                error={ errorInClaimMapping }
+                            />
+                        </Table.Cell>
+                    </>
+                )
             }
             <Table.Cell
                 { ...(localDialect && !mappingOn && { textAlign: "center" }) }

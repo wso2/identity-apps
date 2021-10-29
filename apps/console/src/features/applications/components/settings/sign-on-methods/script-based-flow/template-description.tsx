@@ -187,9 +187,11 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
                                             <div className="stepper" key={ `${ index }-${ step }` }>
                                                 <div className="step-number">{ index + 1 }</div>
                                                 <div className="step-text">{ description }</div>
-                                                { steps.length !== (index + 1) && (<div className="step-connector">
-                                                    <div className="step-line"></div>
-                                                </div>) }
+                                                { steps.length !== (index + 1) && (
+                                                    <div className="step-connector">
+                                                        <div className="step-line"></div>
+                                                    </div>
+                                                ) }
                                             </div>
                                         );
                                     })

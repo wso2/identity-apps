@@ -771,19 +771,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     };
 
     /**
-     * Show Revoke confirmation.
-     * TODO - Currently revoke functionality is disabled until proper backend support is provided for disabling
-     * @link https://github.com/wso2/product-is/issues/11453
-     *
-     * @param event Button click event.
-     */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const handleRevokeButton = (event: MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault();
-        setShowRevokeConfirmationModal(true);
-    };
-
-    /**
      * Show Reactivate confirmation.
      *
      * @param event Button click event.
@@ -1845,8 +1832,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         showError={ showAudienceError }
                         setShowError={ setShowAudienceError }
-                        hint={
-                            (<Trans
+                        hint={ (
+                            <Trans
                                 i18nKey={
                                     "console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
                                     ".fields.audience.hint"
@@ -1854,8 +1841,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             >
                                 Specify the recipient(s) that this <Code withBackground>id_token</Code> is intended
                                 for. By default, the client ID of this application is added as an audience.
-                            </Trans>)
-                        }
+                            </Trans>
+                        ) }
                         readOnly={ readOnly }
                         addURLTooltip={ t("common:addURL") }
                         duplicateURLErrorMessage={ t("common:duplicateURLError") }
@@ -2116,8 +2103,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     </>
                 )
             }
-            { applicationConfig.inboundOIDCForm.showFrontChannelLogout &&
-                (<Grid.Row columns={ 1 }>
+            { applicationConfig.inboundOIDCForm.showFrontChannelLogout && (
+                <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Field
                             ref={ frontChannelLogoutUrl }
@@ -2150,7 +2137,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             data-testid={ `${ testId }-front-channel-logout-url-input` }
                         />
                     </Grid.Column>
-                </Grid.Row>) }
+                </Grid.Row>
+            ) }
             { /*Request Object Signature*/ }
             {
                 (!isSPAApplication && applicationConfig.inboundOIDCForm.showRequestObjectSignatureValidation) &&
@@ -2208,8 +2196,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 )
             }
             { /* Scope Validators */ }
-            { applicationConfig.inboundOIDCForm.showScopeValidators &&
-                (<Grid.Row columns={ 2 }>
+            { applicationConfig.inboundOIDCForm.showScopeValidators && (
+                <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Divider />
                         <Divider hidden />
@@ -2235,8 +2223,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             data-testid={ `${ testId }-scope-validator-checkbox` }
                         />
                     </Grid.Column>
-                </Grid.Row>)
-            }
+                </Grid.Row>
+            ) }
             { /* Certificate Section */ }
             <Grid.Row columns={ 1 }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -2414,90 +2402,92 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * @return {ReactElement}
      */
     const renderReactivateConfirmationModal = (): ReactElement => {
-        return (<ConfirmationModal
-            onClose={ (): void => setShowReactiveConfirmationModal(false) }
-            type="warning"
-            open={ showReactiveConfirmationModal }
-            assertion={ initialValues?.clientId }
-            assertionHint={ isSPAApplication ? (
-                <p>
-                    <Trans
-                        i18nKey={
-                            "console:develop.features.applications.confirmations" +
-                            ".reactivateSPA.assertionHint"
-                        }
-                        tOptions={ { id: initialValues?.clientId } }
-                    >
-                        Please type <strong>{ initialValues?.clientId }</strong> to confirm.
-                    </Trans>
-                </p>
-            ) : (
-                <p>
-                    <Trans
-                        i18nKey={
-                            "console:develop.features.applications.confirmations" +
-                                ".reactivateOIDC.assertionHint"
-                        }
-                        tOptions={ { id: initialValues?.clientId } }
-                    >
-                            Please type <strong>{ initialValues?.clientId }</strong> to confirm.
-                    </Trans>
-                </p>
-            )
-            }
-            assertionType="input"
-            primaryAction={ t("common:confirm") }
-            secondaryAction={ t("common:cancel") }
-            onSecondaryActionClick={ (): void =>
-                setShowReactiveConfirmationModal(false)
-            }
-            onPrimaryActionClick={ (): void => {
-                onApplicationRegenerate();
-                setShowReactiveConfirmationModal(false);
-            } }
-            data-testid={ `${ testId }-oidc-reactivate-confirmation-modal` }
-            closeOnDimmerClick={ false }
-        >
-            <ConfirmationModal.Header
-                data-testid={ `${ testId }-oidc-reactivate-confirmation-modal-header` }
-            >
-                {
-                    !isSPAApplication
+        return (
+            <ConfirmationModal
+                onClose={ (): void => setShowReactiveConfirmationModal(false) }
+                type="warning"
+                open={ showReactiveConfirmationModal }
+                assertion={ initialValues?.clientId }
+                assertionHint={
+                    isSPAApplication
                         ? (
-                            t("console:develop.features.applications.confirmations" +
-                                ".reactivateSPA.header"))
-                        : (
-                            t("console:develop.features.applications.confirmations" +
-                                ".reactivateOIDC.header"))
+                            <p>
+                                <Trans
+                                    i18nKey={
+                                        "console:develop.features.applications.confirmations" +
+                                    ".reactivateSPA.assertionHint"
+                                    }
+                                    tOptions={ { id: initialValues?.clientId } }
+                                >
+                                Please type <strong>{ initialValues?.clientId }</strong> to confirm.
+                                </Trans>
+                            </p>
+                        ) : (
+                            <p>
+                                <Trans
+                                    i18nKey={
+                                        "console:develop.features.applications.confirmations" +
+                                    ".reactivateOIDC.assertionHint"
+                                    }
+                                    tOptions={ { id: initialValues?.clientId } }
+                                >
+                                Please type <strong>{ initialValues?.clientId }</strong> to confirm.
+                                </Trans>
+                            </p>
+                        ) }
+                assertionType="input"
+                primaryAction={ t("common:confirm") }
+                secondaryAction={ t("common:cancel") }
+                onSecondaryActionClick={ (): void =>
+                    setShowReactiveConfirmationModal(false)
                 }
-            </ConfirmationModal.Header>
-            {
-                isSPAApplication
-                    ? (
-                        <ConfirmationModal.Message
-                            attached
-                            warning
-                            data-testid={ `${ testId }-oidc-reactivate-confirmation-modal-message` }
-                        >
-                            { t("console:develop.features.applications.confirmations" +
-                                ".reactivateSPA.message") }
-                        </ConfirmationModal.Message>
-                    ) : null
-            }
-            <ConfirmationModal.Content
-                data-testid={ `${ testId }-oidc-reactivate-confirmation-modal-content` }
+                onPrimaryActionClick={ (): void => {
+                    onApplicationRegenerate();
+                    setShowReactiveConfirmationModal(false);
+                } }
+                data-testid={ `${ testId }-oidc-reactivate-confirmation-modal` }
+                closeOnDimmerClick={ false }
             >
+                <ConfirmationModal.Header
+                    data-testid={ `${ testId }-oidc-reactivate-confirmation-modal-header` }
+                >
+                    {
+                        !isSPAApplication
+                            ? (
+                                t("console:develop.features.applications.confirmations" +
+                                ".reactivateSPA.header"))
+                            : (
+                                t("console:develop.features.applications.confirmations" +
+                                ".reactivateOIDC.header"))
+                    }
+                </ConfirmationModal.Header>
                 {
                     isSPAApplication
                         ? (
-                            t("console:develop.features.applications.confirmations" +
-                                ".reactivateSPA.content"))
-                        : (
-                            t("console:develop.features.applications.confirmations" +
-                                ".reactivateOIDC.content"))
+                            <ConfirmationModal.Message
+                                attached
+                                warning
+                                data-testid={ `${ testId }-oidc-reactivate-confirmation-modal-message` }
+                            >
+                                { t("console:develop.features.applications.confirmations" +
+                                ".reactivateSPA.message") }
+                            </ConfirmationModal.Message>
+                        ) : null
                 }
-            </ConfirmationModal.Content>
-        </ConfirmationModal>
+                <ConfirmationModal.Content
+                    data-testid={ `${ testId }-oidc-reactivate-confirmation-modal-content` }
+                >
+                    {
+                        isSPAApplication
+                            ? (
+                                t("console:develop.features.applications.confirmations" +
+                                ".reactivateSPA.content"))
+                            : (
+                                t("console:develop.features.applications.confirmations" +
+                                ".reactivateOIDC.content"))
+                    }
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
         );
     };
 
@@ -2708,42 +2698,39 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                     value={ initialValues?.clientId }
                                                     data-testid={ `${ testId }-client-id-readonly-input` }
                                                 />
-                                                { /*TODO - Application revoke is disabled until proper
-                                                backend support for application disabling is provided
-                                                @link https://github.com/wso2/product-is/issues/11453
                                                 {
-                                                    (!readOnly
-                                                        && initialValues?.clientSecret
-                                                        && (initialValues?.state !== State.REVOKED)) && (
-                                                        <Button
-                                                            color="red"
-                                                            className="oidc-action-button"
-                                                            onClick={ handleRevokeButton }
-                                                            data-testid={ `${ testId }-oidc-revoke-button` }
-                                                        >
-                                                            { t("common:revoke") }
-                                                        </Button>
-                                                    )
-                                                }*/ }
+                                                    /**
+                                                     * TODO - Application revoke is disabled until proper
+                                                     * backend support for application disabling is provided
+                                                     * Issue - https://github.com/wso2/product-is/issues/11453
+                                                     * Comment - #issuecomment-954842169
+                                                     */
+                                                }
                                             </div>
                                         </Form.Field>
-                                        { ( applicationConfig.inboundOIDCForm.showNativeClientSecretMessage &&
-                                            (initialValues?.state !== State.REVOKED) &&
-                                            isSPAApplication ) ?
-                                            (<Message info={ true }>
-                                                <Trans
-                                                    i18nKey={
-                                                        "console:develop.features.applications." +
-                                                        "forms.inboundOIDC.fields.clientSecret.message"
-                                                    }
-                                                    values={ { productName: config.ui.productName } }
-                                                >
-                                                    productName does not issue a&nbsp;
-                                                    <Code withBackground>client_secret</Code> to native
-                                                    applications or web browser-based applications for the purpose
-                                                    of client authentication.
-                                                </Trans>
-                                            </Message>) : null
+                                        {
+                                            (
+                                                applicationConfig.inboundOIDCForm.showNativeClientSecretMessage && (
+                                                    initialValues?.state !== State.REVOKED
+                                                ) && isSPAApplication
+                                            )
+                                                ? (
+                                                    <Message info={ true }>
+                                                        <Trans
+                                                            i18nKey={
+                                                                "console:develop.features.applications." +
+                                                                "forms.inboundOIDC.fields.clientSecret.message"
+                                                            }
+                                                            values={ { productName: config.ui.productName } }
+                                                        >
+                                                            productName does not issue a&nbsp;
+                                                            <Code withBackground>client_secret</Code> to native
+                                                            applications or web browser-based applications for 
+                                                            the purpose of client authentication.
+                                                        </Trans>
+                                                    </Message>
+                                                )
+                                                : null
                                         }
                                     </Grid.Column>
                                 </Grid.Row>
@@ -2842,9 +2829,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     { showLowExpiryTimesConfirmationModal && lowExpiryTimesConfirmationModal }
                 </Forms>
             ) :
-            (<Container>
-                <ContentLoader inline="centered" active/>
-            </Container>)
+            (
+                <Container>
+                    <ContentLoader inline="centered" active/>
+                </Container>
+            )
     );
 };
 

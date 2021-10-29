@@ -129,116 +129,121 @@ export const InboundSAMLCreationForm: FunctionComponent<SAMLProtocolCreationWiza
         return result;
     };
 
-    return (configureMode
-        ?
-        (<Forms
-            onSubmit={ (values: Map<string, FormValue>): void => {
-                // check whether assertionConsumer url is empty or not
-                if (configureMode === SAMLConfigModes.META_FILE && isEmpty(xmlBase64String)) {
-                    setEmptyFileError(true);
-                } else {
-                    onSubmit(getFormValues(values));
-                }
-            } }
-        >
-            <Grid>
-                {
-                    (SAMLConfigModes.META_URL === configureMode) &&
-                        (
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                    <Field
-                                        name="url"
-                                        displayErrorOn="blur"
-                                        label={
-                                            t("console:develop.features.applications.forms.inboundSAML.fields" +
-                                                ".metaURL.label")
-                                        }
-                                        required={ true }
-                                        requiredErrorMessage={
-                                            t("console:develop.features.applications.forms.inboundSAML.fields" +
-                                                ".metaURL.validations.empty")
-                                        }
-                                        type="text"
-                                        placeholder={
-                                            t("console:develop.features.applications.forms.inboundSAML.fields" +
-                                                ".metaURL.placeholder")
-                                        }
-                                        validation={ (value: string, validation: Validation) => {
-                                            if (!FormValidation.url(value)) {
-                                                validation.isValid = false;
-                                                validation.errorMessages.push(
-                                                    t("console:develop.features.applications.forms.inboundSAML" +
-                                                        ".fields.metaURL.validations.invalid")
-                                                );
+    return (
+        configureMode
+            ? (
+                <Forms
+                    onSubmit={ (values: Map<string, FormValue>): void => {
+                        // check whether assertionConsumer url is empty or not
+                        if (configureMode === SAMLConfigModes.META_FILE && isEmpty(xmlBase64String)) {
+                            setEmptyFileError(true);
+                        } else {
+                            onSubmit(getFormValues(values));
+                        }
+                    } }
+                >
+                    <Grid>
+                        {
+                            (SAMLConfigModes.META_URL === configureMode) && (
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                        <Field
+                                            name="url"
+                                            displayErrorOn="blur"
+                                            label={
+                                                t("console:develop.features.applications.forms.inboundSAML.fields" +
+                                            ".metaURL.label")
                                             }
-                                            if (commonConfig?.blockLoopBackCalls && URLUtils.isLoopBackCall(value)) {
-                                                validation.isValid = false;
-                                                validation.errorMessages.push(
-                                                    t("console:develop.features.idp.forms.common." +
-                                                        "internetResolvableErrorMessage")
-                                                );
+                                            required={ true }
+                                            requiredErrorMessage={
+                                                t("console:develop.features.applications.forms.inboundSAML.fields" +
+                                            ".metaURL.validations.empty")
                                             }
-                                        } }
-                                        value={ initialValues?.inboundProtocolConfiguration?.saml?.metadataURL }
-                                        data-testid={ `${testId}-meta-url-input` }
-                                    />
-                                    <Hint>
-                                        { t("console:develop.features.applications.forms.inboundSAML.fields.metaURL" +
-                                            ".hint") }
-                                    </Hint>
-                                </Grid.Column>
-                            </Grid.Row>
-                        )
-                }
-                {
-                    (SAMLConfigModes.META_FILE === configureMode) &&
+                                            type="text"
+                                            placeholder={
+                                                t("console:develop.features.applications.forms.inboundSAML.fields" +
+                                            ".metaURL.placeholder")
+                                            }
+                                            validation={ (value: string, validation: Validation) => {
 
-                        (
-                            <Grid.Row columns={ 1 } mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                    <FilePicker
-                                        key={ 1 }
-                                        fileStrategy={ XML_FILE_PROCESSING_STRATEGY }
-                                        file={ selectedMetadataFile }
-                                        pastedContent={ pastedMetadataContent }
-                                        onChange={ (result) => {
-                                            setSelectedMetadataFile(result.file);
-                                            setPastedMetadataContent(result.pastedContent);
-                                            setXmlBase64String(result.serialized as string);
-                                        } }
-                                        uploadButtonText="Upload Metadata File"
-                                        dropzoneText="Drag and drop a XML file here."
-                                        data-testid={ `${testId}-form-wizard-saml-xml-config-file-picker` }
-                                        icon={ getCertificateIllustrations().uploadPlaceholder }
-                                        placeholderIcon={ <Icon name="file code" size="huge"/> }
-                                        normalizeStateOnRemoveOperations={ true }
-                                        emptyFileError={ emptyFileError }
-                                        hidePasteOption={ true }
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
-                        )
-                }
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                        <Divider hidden/>
-                        <Button
-                            primary
-                            type="submit"
-                            size="small"
-                            loading={ isLoading }
-                            disabled={ isLoading }
-                            className="form-button"
-                            data-testid={ `${testId}-submit-button` }
-                        >
-                            { t("common:update") }
-                        </Button>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        </Forms>)
-        : <ContentLoader/>
+                                                if (!FormValidation.url(value)) {
+                                                    validation.isValid = false;
+                                                    validation.errorMessages.push(
+                                                        t("console:develop.features.applications.forms.inboundSAML" +
+                                                    ".fields.metaURL.validations.invalid")
+                                                    );
+                                                }
+
+                                                if (commonConfig?.blockLoopBackCalls
+                                                    && URLUtils.isLoopBackCall(value)) {
+
+                                                    validation.isValid = false;
+                                                    validation.errorMessages.push(
+                                                        t("console:develop.features.idp.forms.common." +
+                                                    "internetResolvableErrorMessage")
+                                                    );
+                                                }
+                                            } }
+                                            value={ initialValues?.inboundProtocolConfiguration?.saml?.metadataURL }
+                                            data-testid={ `${ testId }-meta-url-input` }
+                                        />
+                                        <Hint>
+                                            {
+                                                t("console:develop.features.applications.forms" +
+                                                    ".inboundSAML.fields.metaURL.hint")
+                                            }
+                                        </Hint>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            )
+                        }
+                        {
+                            (SAMLConfigModes.META_FILE === configureMode) && (
+                                <Grid.Row columns={ 1 } mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                        <FilePicker
+                                            key={ 1 }
+                                            fileStrategy={ XML_FILE_PROCESSING_STRATEGY }
+                                            file={ selectedMetadataFile }
+                                            pastedContent={ pastedMetadataContent }
+                                            onChange={ (result) => {
+                                                setSelectedMetadataFile(result.file);
+                                                setPastedMetadataContent(result.pastedContent);
+                                                setXmlBase64String(result.serialized as string);
+                                            } }
+                                            uploadButtonText="Upload Metadata File"
+                                            dropzoneText="Drag and drop a XML file here."
+                                            data-testid={ `${ testId }-form-wizard-saml-xml-config-file-picker` }
+                                            icon={ getCertificateIllustrations().uploadPlaceholder }
+                                            placeholderIcon={ <Icon name="file code" size="huge"/> }
+                                            normalizeStateOnRemoveOperations={ true }
+                                            emptyFileError={ emptyFileError }
+                                            hidePasteOption={ true }
+                                        />
+                                    </Grid.Column>
+                                </Grid.Row>
+                            )
+                        }
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Divider hidden/>
+                                <Button
+                                    primary
+                                    type="submit"
+                                    size="small"
+                                    loading={ isLoading }
+                                    disabled={ isLoading }
+                                    className="form-button"
+                                    data-testid={ `${testId}-submit-button` }
+                                >
+                                    { t("common:update") }
+                                </Button>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </Forms>
+            )
+            : <ContentLoader/>
     );
 };
 

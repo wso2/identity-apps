@@ -295,24 +295,24 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 )
             }
             title={ t("console:develop.pages.applications.title") }
-            description={ 
-                (<p>
+            description={ (
+                <p>
                     { t("console:develop.pages.applications.subTitle") }
                     <DocumentationLink
                         link={ getLink("develop.applications.learnMore") }
                     >
                         { t("common:learnMore") }
                     </DocumentationLink>
-                </p>) 
-            }
+                </p>
+            ) }
             data-testid={ `${ testId }-page-layout` }
         >
             { !isLoading? (
                 <>
                     { renderRemoteFetchStatus() }
                     <ListLayout
-                        advancedSearch={
-                            (<AdvancedSearchWithBasicFilters
+                        advancedSearch={ (
+                            <AdvancedSearchWithBasicFilters
                                 onFilter={ handleApplicationFilter }
                                 filterAttributeOptions={ [
                                     {
@@ -338,8 +338,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                 defaultSearchOperator="co"
                                 triggerClearQuery={ triggerClearQuery }
                                 data-testid={ `${ testId }-list-advanced-search` }
-                            />)
-                        }
+                            />
+                        ) }
                         currentListSize={ appList.count }
                         listItemLimit={ listItemLimit }
                         onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
@@ -359,8 +359,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         data-testid={ `${ testId }-list-layout` }
                     >
                         <ApplicationList
-                            advancedSearch={
-                                (<AdvancedSearchWithBasicFilters
+                            advancedSearch={ (
+                                <AdvancedSearchWithBasicFilters
                                     onFilter={ handleApplicationFilter }
                                     filterAttributeOptions={ [
                                         {
@@ -388,8 +388,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     defaultSearchOperator="co"
                                     triggerClearQuery={ triggerClearQuery }
                                     data-testid={ `${ testId }-list-advanced-search` }
-                                />)
-                            }
+                                />
+                            ) }
                             featureConfig={ featureConfig }
                             isLoading={ isApplicationListRequestLoading }
                             list={ appList }

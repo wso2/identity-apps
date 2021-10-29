@@ -972,8 +972,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                     }
                                 </ConfirmationModal.Content>
                             </ConfirmationModal>
-                            { applicationConfig.attributeSettings.roleMapping &&
-                                (<RoleMapping
+                            { applicationConfig.attributeSettings.roleMapping && (
+                                <RoleMapping
                                     submitState={ triggerAdvanceSettingFormSubmission }
                                     onSubmit={ setRoleMapping }
                                     initialMappings={ claimConfigurations?.role?.mappings }
@@ -984,8 +984,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                             allowedScopes)
                                     }
                                     data-testid={ `${ testId }-role-mapping` }
-                                />)
-                            }
+                                />
+                            ) }
                             {
                                 !readOnly
                                 && hasRequiredScopes(featureConfig?.applications,
@@ -1011,9 +1011,11 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     }
                 </EmphasizedSegment>
             ) :
-            (<EmphasizedSegment padded="very">
-                <ContentLoader inline="centered" active/>
-            </EmphasizedSegment>)
+            (
+                <EmphasizedSegment padded="very">
+                    <ContentLoader inline="centered" active/>
+                </EmphasizedSegment>
+            )
     );
 };
 

@@ -125,82 +125,84 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
         getMetaData();
     }, []);
 
-    return (templateValues && showWSTrustMetaData
-        ?
-        (<Forms
-            onSubmit={ (values: Map<string, FormValue>): void => {
-                onSubmit(getFormValues(values));
-            } }
-            submitState={ triggerSubmit }
-        >
-            <Grid>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Field
-                            name="audience"
-                            label={
-                                t("console:develop.features.applications.forms.inboundWSTrust.fields" +
-                                        ".audience.label")
-                            }
-                            required={ true }
-                            requiredErrorMessage={
-                                t("console:develop.features.applications.forms.inboundWSTrust" +
-                                        ".fields.audience.validations.empty")
-                            }
-                            placeholder={
-                                t("console:develop.features.applications.forms.inboundWSTrust.fields" +
-                                        ".audience.placeholder")
-                            }
-                            type="text"
-                            validation={ (value: string, validation: Validation) => {
-                                if (!FormValidation.url(value)) {
-                                    validation.isValid = false;
-                                    validation.errorMessages.push(
+    return (
+        templateValues && showWSTrustMetaData
+            ? (
+                <Forms
+                    onSubmit={ (values: Map<string, FormValue>): void => {
+                        onSubmit(getFormValues(values));
+                    } }
+                    submitState={ triggerSubmit }
+                >
+                    <Grid>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Field
+                                    name="audience"
+                                    label={
                                         t("console:develop.features.applications.forms.inboundWSTrust.fields" +
+                                        ".audience.label")
+                                    }
+                                    required={ true }
+                                    requiredErrorMessage={
+                                        t("console:develop.features.applications.forms.inboundWSTrust" +
+                                        ".fields.audience.validations.empty")
+                                    }
+                                    placeholder={
+                                        t("console:develop.features.applications.forms.inboundWSTrust.fields" +
+                                        ".audience.placeholder")
+                                    }
+                                    type="text"
+                                    validation={ (value: string, validation: Validation) => {
+                                        if (!FormValidation.url(value)) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(
+                                                t("console:develop.features.applications.forms.inboundWSTrust.fields" +
                                                 ".audience.validations.invalid")
-                                    );
-                                }
-                            } }
-                            value={ initialValues ? initialValues?.audience : templateValues?.audience }
-                            data-testid={ `${ testId }-audience-input` }
-                        />
-                        <Hint>
-                            { t("console:develop.features.applications.forms.inboundWSTrust.fields" +
+                                            );
+                                        }
+                                    } }
+                                    value={ initialValues ? initialValues?.audience : templateValues?.audience }
+                                    data-testid={ `${ testId }-audience-input` }
+                                />
+                                <Hint>
+                                    { t("console:develop.features.applications.forms.inboundWSTrust.fields" +
                                     ".audience.hint") }
-                        </Hint>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Field
-                            label={
-                                t("console:develop.features.applications.forms.inboundWSTrust.fields" +
+                                </Hint>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Field
+                                    label={
+                                        t("console:develop.features.applications.forms.inboundWSTrust.fields" +
                                         ".certificateAlias.label")
-                            }
-                            name="certificateAlias"
-                            type="dropdown"
-                            required={ true }
-                            requiredErrorMessage={
-                                t("console:develop.features.applications.forms.inboundWSTrust.fields" +
+                                    }
+                                    name="certificateAlias"
+                                    type="dropdown"
+                                    required={ true }
+                                    requiredErrorMessage={
+                                        t("console:develop.features.applications.forms.inboundWSTrust.fields" +
                                         ".certificateAlias.validations.empty")
-                            }
-                            default={ showWSTrustMetaData.certificateAlias.defaultValue }
-                            value={
-                                initialValues ?
-                                    initialValues?.certificateAlias : templateValues?.certificateAlias
-                            }
-                            children={ getCertificateOptions(showWSTrustMetaData?.certificateAlias) }
-                            data-testid={ `${ testId }-certificate-alias-dropdown` }
-                        />
-                        <Hint>
-                            { t("console:develop.features.applications.forms.inboundWSTrust.fields" +
+                                    }
+                                    default={ showWSTrustMetaData.certificateAlias.defaultValue }
+                                    value={
+                                        initialValues ?
+                                            initialValues?.certificateAlias : templateValues?.certificateAlias
+                                    }
+                                    children={ getCertificateOptions(showWSTrustMetaData?.certificateAlias) }
+                                    data-testid={ `${ testId }-certificate-alias-dropdown` }
+                                />
+                                <Hint>
+                                    { t("console:develop.features.applications.forms.inboundWSTrust.fields" +
                                     ".certificateAlias.hint") }
-                        </Hint>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        </Forms>)
-        : <ContentLoader/>
+                                </Hint>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </Forms>
+            ) 
+            : <ContentLoader/>
     );
 };
 

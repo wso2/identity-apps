@@ -778,36 +778,37 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
                         {
-                            isSignatureValidationCertificateAliasEnabled &&
-                            (<Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <Field
-                                        ref={ signatureValidationCertAlias }
-                                        label={
-                                            t("console:develop.features.applications.forms.inboundSAML.sections" +
+                            isSignatureValidationCertificateAliasEnabled && (
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Field
+                                            ref={ signatureValidationCertAlias }
+                                            label={
+                                                t("console:develop.features.applications.forms.inboundSAML.sections" +
                                                 ".requestValidation.fields.signatureValidationCertAlias.label")
-                                        }
-                                        name="signatureValidationCertAlias"
-                                        type="dropdown"
-                                        required={ false }
-                                        disabled={ !isRequestSignatureValidationEnabled }
-                                        value={ initialValues?.requestValidation.signatureValidationCertAlias }
-                                        requiredErrorMessage={
-                                            t("console:develop.features.applications.forms.inboundSAML.sections" +
+                                            }
+                                            name="signatureValidationCertAlias"
+                                            type="dropdown"
+                                            required={ false }
+                                            disabled={ !isRequestSignatureValidationEnabled }
+                                            value={ initialValues?.requestValidation.signatureValidationCertAlias }
+                                            requiredErrorMessage={
+                                                t("console:develop.features.applications.forms.inboundSAML.sections" +
                                                 ".requestValidation.fields.signatureValidationCertAlias.validations" +
                                                 ".empty")
-                                        }
-                                        default={ metadata?.certificateAlias.defaultValue }
-                                        children={ getAllowedOptions(metadata?.certificateAlias) }
-                                        readOnly={ readOnly }
-                                        data-testid={ `${ testId }-request-validation-certificate-alias-dropdown` }
-                                    />
-                                    <Hint disabled={ !isRequestSignatureValidationEnabled }>
-                                        { t("console:develop.features.applications.forms.inboundSAML.sections" +
+                                            }
+                                            default={ metadata?.certificateAlias.defaultValue }
+                                            children={ getAllowedOptions(metadata?.certificateAlias) }
+                                            readOnly={ readOnly }
+                                            data-testid={ `${ testId }-request-validation-certificate-alias-dropdown` }
+                                        />
+                                        <Hint disabled={ !isRequestSignatureValidationEnabled }>
+                                            { t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".requestValidation.fields.signatureValidationCertAlias.hint") }
-                                    </Hint>
-                                </Grid.Column>
-                            </Grid.Row>)
+                                        </Hint>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            )
                         }
 
                         { /*Response/Assertion Signing*/ }

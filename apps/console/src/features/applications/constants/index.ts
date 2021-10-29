@@ -17,5 +17,4 @@
  */
 
 export * from "./application-management";
-
 export * from "./documentation-constants";

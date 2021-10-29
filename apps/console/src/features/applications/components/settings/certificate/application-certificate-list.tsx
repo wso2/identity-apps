@@ -290,11 +290,13 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
             <span className="with-muted-list-item-header">
                 Unable to visualize the certificate details&nbsp;
                 <Popup
-                    trigger={
-                        (<Icon
+                    trigger={ (
+                        <Icon
                             onClick={ () => handleViewCertificate(certificate) }
                             name={ "info circle" }
-                            color={ "grey" }/>) }
+                            color={ "grey" }
+                        />
+                    ) }
                     content={ "Click for more info" }
                     inverted
                     position="top left"

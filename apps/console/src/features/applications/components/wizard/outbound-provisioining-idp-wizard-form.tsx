@@ -243,12 +243,14 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                             }
                             data-testid={ `${ testId }-provisioning-connector-dropdown` }
                         />
-                        { connectorListOptions?.length <= 0 &&
-                            (<Hint icon="warning sign">
-                                { t("console:develop.features.applications.edit.sections.provisioning." +
-                                "outbound.addIdpWizard.errors.noProvisioningConnector") }
-                            </Hint>)
-                        }
+                        { connectorListOptions?.length <= 0 && (
+                            <Hint icon="warning sign">
+                                {
+                                    t("console:develop.features.applications.edit.sections.provisioning." +
+                                        "outbound.addIdpWizard.errors.noProvisioningConnector")
+                                }
+                            </Hint>
+                        ) }
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>

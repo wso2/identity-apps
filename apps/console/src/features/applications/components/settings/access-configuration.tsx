@@ -927,11 +927,18 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
 
     return (
         !isLoading && !requestLoading && !isInboundProtocolConfigRequestLoading
-            ? ( !selectedProtocol && inboundProtocols.length === 0 && !allowMultipleProtocol
-            && applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) ?
-                (<SAMLSelectionLanding
-                    setSAMLProtocol={ selectSAMLCreationProtocol }
-                />)
+            ? (
+                !selectedProtocol
+                && inboundProtocols.length === 0
+                && !allowMultipleProtocol
+                && applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
+            )
+                ?
+                (
+                    <SAMLSelectionLanding
+                        setSAMLProtocol={ selectSAMLCreationProtocol }
+                    />
+                )
                 : (
                     <Grid>
                         { loadSupportedProtocols() }
@@ -1071,9 +1078,11 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                         }
                     </Grid>
                 ) :
-            (<EmphasizedSegment padded="very">
-                <ContentLoader inline="centered" active/>
-            </EmphasizedSegment>)
+            (
+                <EmphasizedSegment padded="very">
+                    <ContentLoader inline="centered" active/>
+                </EmphasizedSegment>
+            )
     );
 };
 

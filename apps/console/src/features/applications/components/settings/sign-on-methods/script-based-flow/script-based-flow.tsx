@@ -729,8 +729,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                 button
                 upward={ false }
                 options={ filteredSecretList }
-                icon ={
-                    (<Popup
+                icon ={ (
+                    <Popup
                         trigger={ (
                             <div>
                                 <GenericIcon
@@ -746,8 +746,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                 />
                             </div>
                         ) }
-                        content={
-                            (<Trans
+                        content={ (
+                            <Trans
                                 i18nKey={
                                     "console:develop.features.applications.edit." +
                                     "sections.signOnMethod.sections.authenticationFlow." +
@@ -757,12 +757,12 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                 Securely store access keys as secrets. A secret can
                                 replace the API key in <Code>callChoreo()</Code> function
                                 in the conditional authentication scripts.
-                            </Trans>)
-                        }
+                            </Trans>
+                        ) }
                         position="bottom center"
                         pinned={ true }
-                    />)
-                }
+                    />
+                ) }
             >
                 <Dropdown.Menu>
                     {
@@ -811,15 +811,15 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                 transparent
                                                 floated="right"
                                                 size="micro"
-                                                icon={
-                                                    (<Tooltip
+                                                icon={ (
+                                                    <Tooltip
                                                         trigger={ (
                                                             <Icon name="trash alternate"/>
                                                         ) }
                                                         content={ t("common:delete") }
                                                         size="mini"
-                                                    />)
-                                                }
+                                                    />
+                                                ) }
                                                 onClick={ () => {
                                                     handleSecretDelete(secret);
                                                 } }
@@ -832,8 +832,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                 linkType="primary"
                                                 floated="right"
                                                 size="micro"
-                                                icon={
-                                                    (<Tooltip
+                                                icon={ (
+                                                    <Tooltip
                                                         trigger={ (
                                                             <Icon name="plus"/>
                                                         ) }
@@ -841,8 +841,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                             "sections.signOnMethod.sections.authenticationFlow." +
                                                             "sections.scriptBased.secretsList.tooltips.plusIcon") }
                                                         size="mini"
-                                                    />)
-                                                }
+                                                    />
+                                                ) }
                                                 onClick={ () => {
                                                     addSecretToScript(secret);
                                                 } }

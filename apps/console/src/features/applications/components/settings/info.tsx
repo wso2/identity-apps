@@ -111,69 +111,72 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
     }, [ inboundProtocols ]);
 
     return (
-        !isLoading ? (
-            <EmphasizedSegment loading={ isLoading } padded="very" data-testid={ testId }>
-                <Grid className="form-container with-max-width">
-                    <Grid.Row>
-                        <Grid.Column>
+        !isLoading
+            ? (
+                <EmphasizedSegment loading={ isLoading } padded="very" data-testid={ testId }>
+                    <Grid className="form-container with-max-width">
+                        <Grid.Row>
+                            <Grid.Column>
 
-                            { (isOIDC || templateId === CustomApplicationTemplate.id
+                                { (isOIDC || templateId === CustomApplicationTemplate.id
                                 || templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC) && (
-                                <>
-                                    <Heading ellipsis as="h4">
-                                        { t("console:develop.features.applications.edit.sections.info." +
+                                    <>
+                                        <Heading ellipsis as="h4">
+                                            { t("console:develop.features.applications.edit.sections.info." +
                                             "oidcHeading") }
-                                    </Heading>
-                                    <Heading as="h6" color="grey" compact>
-                                        { t("console:develop.features.applications.edit.sections.info." +
+                                        </Heading>
+                                        <Heading as="h6" color="grey" compact>
+                                            { t("console:develop.features.applications.edit.sections.info." +
                                             "oidcSubHeading") }
-                                        <DocumentationLink
-                                            link={ templateId === SinglePageApplication.id
-                                                ? getLink("develop.applications.editApplication." +
+                                            <DocumentationLink
+                                                link={ templateId === SinglePageApplication.id
+                                                    ? getLink("develop.applications.editApplication." +
                                                     "singlePageApplication.info.learnMore")
-                                                : getLink("develop.applications.editApplication." +
+                                                    : getLink("develop.applications.editApplication." +
                                                     "oidcApplication.info.learnMore") }
-                                        >
-                                            { t("common:learnMore") }
-                                        </DocumentationLink>
-                                    </Heading>
-                                    <Divider hidden/>
-                                    <OIDCConfigurations oidcConfigurations={ oidcConfigurations }/>
-                                </>
-                            ) }
-                            { isOIDC && isSAML ? (
-                                <>
-                                    <Divider className="x2" hidden/>
-                                </>
-                            ) : null }
-                            { (isSAML || templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) && (
-                                <>
-                                    <Heading ellipsis as="h4">
-                                        { t("console:develop.features.applications.edit.sections.info." +
+                                            >
+                                                { t("common:learnMore") }
+                                            </DocumentationLink>
+                                        </Heading>
+                                        <Divider hidden/>
+                                        <OIDCConfigurations oidcConfigurations={ oidcConfigurations }/>
+                                    </>
+                                ) }
+                                { isOIDC && isSAML ? (
+                                    <>
+                                        <Divider className="x2" hidden/>
+                                    </>
+                                ) : null }
+                                { (isSAML || templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) && (
+                                    <>
+                                        <Heading ellipsis as="h4">
+                                            { t("console:develop.features.applications.edit.sections.info." +
                                             "samlHeading") }
-                                    </Heading>
-                                    <Heading as="h6" color="grey" compact>
-                                        { t("console:develop.features.applications.edit.sections.info." +
+                                        </Heading>
+                                        <Heading as="h6" color="grey" compact>
+                                            { t("console:develop.features.applications.edit.sections.info." +
                                             "samlSubHeading") }
-                                        <DocumentationLink
-                                            link={ getLink("develop.applications.editApplication." +
+                                            <DocumentationLink
+                                                link={ getLink("develop.applications.editApplication." +
                                                 "samlApplication.info.learnMore") }
-                                        >
-                                            { t("common:learnMore") }
-                                        </DocumentationLink>
-                                    </Heading>
-                                    <Divider hidden/>
-                                    <SAMLConfigurations samlConfigurations={ samlConfigurations }/>
-                                </>
-                            ) }
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </EmphasizedSegment> 
-        ) :
-            (<EmphasizedSegment padded="very">
-                <ContentLoader inline="centered" active/>
-            </EmphasizedSegment>)
+                                            >
+                                                { t("common:learnMore") }
+                                            </DocumentationLink>
+                                        </Heading>
+                                        <Divider hidden/>
+                                        <SAMLConfigurations samlConfigurations={ samlConfigurations }/>
+                                    </>
+                                ) }
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </EmphasizedSegment> 
+            ) :
+            (
+                <EmphasizedSegment padded="very">
+                    <ContentLoader inline="centered" active/>
+                </EmphasizedSegment>
+            )
     );
 };
 
