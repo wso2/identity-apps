@@ -277,8 +277,8 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
             data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
-                advancedSearch={
-                    (<AdvancedSearchWithBasicFilters
+                advancedSearch={ (
+                    <AdvancedSearchWithBasicFilters
                         onFilter={ handleSearch }
                         filterAttributeOptions={ [
                             {
@@ -306,8 +306,8 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
                         defaultSearchOperator="co"
                         triggerClearQuery={ triggerClearQuery }
                         data-testid={ `${ testId }-advanced-search` }
-                    />)
-                }
+                    />
+                ) }
                 currentListSize={ listItemLimit }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
