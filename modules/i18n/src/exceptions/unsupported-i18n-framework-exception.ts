@@ -27,10 +27,10 @@ export class UnsupportedI18nFrameworkException extends I18nModuleException {
 
     /**
      * Constructor.
-     * @param {any} framework - Requested framework.
-     * @param {any} stack - Stack trace.
+     * @param {string} framework - Requested framework.
+     * @param {string | Record<string, unknown>} stack - Stack trace.
      */
-    constructor(framework?: any, stack?: any) {
+    constructor(framework?: string, stack?: string | Record<string, unknown>) {
         super(`The requested i18n framework (${ framework }) is currently not supported`, stack);
         this.framework = framework;
     }

@@ -796,7 +796,7 @@ export interface MyAccountNS {
         sessionTimeoutModal: {
             description: string;
             heading: string;
-            content?: object;
+            content?: Record<string, unknown>;
             primaryButton: string;
             secondaryButton: string;
             loginAgainButton: string;

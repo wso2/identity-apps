@@ -177,7 +177,7 @@ interface TransferListSearchPlaceholders {
 export interface ModalInterface {
     description: string;
     heading: string;
-    content?: object;
+    content?: Record<string, unknown>;
     primaryButton: string;
     secondaryButton: string;
 }
