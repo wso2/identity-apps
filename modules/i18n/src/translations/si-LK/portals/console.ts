@@ -690,6 +690,14 @@ export const console: ConsoleNS = {
                         header: "ඔයාට විශ්වාස ද?",
                         message: "ඔබ මෙම යෙදුම අවලංගු කළහොත්, මෙම යෙදුම සඳහා සත්‍යාපන " +
                                  "ප්‍රවාහයන් ක්‍රියා නොකරනු ඇත. කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න."
+                    },
+                    certificateDelete: {
+                        assertionHint: "කරුණාකර ඔබේ ක්‍රියාව තහවුරු කරන්න.",
+                        content: "N/A",
+                        header: "ඔබට විශ්වාසද?",
+                        message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර සහතිකය ස්ථිරවම මකනු ඇත.",
+                        primaryAction: "මකන්න",
+                        secondaryAction: "අවලංගු කරන්න"
                     }
                 },
                 dangerZoneGroup: {
@@ -789,7 +797,8 @@ export const console: ConsoleNS = {
                                 attributeComponentHint: "මෙම යෙදුම සමඟ ඔබට බෙදා ගැනීමට අවශ්‍ය පරිශීලක ගුණාංග" +
                                     " කළමනාකරණය කරන්න.",
                                 attributeComponentHintAlt: "මෙම යෙදුම සමඟ ඔබට බෙදා ගැනීමට අවශ්‍ය පරිශීලක ගුණාංග" +
-                                    " කළමනාකරණය කරන්න.",
+                                    " කළමනාකරණය කරන්න. <1> ගුණාංග </1> වෙත යාමෙන් ඔබට නව ගුණාංග සහ සිතියම් එකතු කළ " +
+                                    "හැකියය",
                                 description: "මෙම යෙදුම සමඟ බෙදා ගැනීමට අවසර දී ඇති පරිශීලක ගුණාංග එකතු කරන්න.",
                                 mandatoryAttributeHint: "යෙදුම සමඟ බෙදා ගැනීමට අනිවාර්යය වන පරිශීලක ගුණාංග මොනවාදැයි " +
                                     "ලකුණු කරන්න. පුරනය වීමේ දී, පරිශීලකයාගේ පැතිකඩෙහි දැනටමත් සපයා නොමැති නම්, මෙම " +
@@ -937,10 +946,15 @@ export const console: ConsoleNS = {
                                                 }
                                             },
                                             secretsList: {
-                                                iconTooltip: "API යතුරක් ලෙස රහස් එකතු කරන්න",
                                                 create: "නව රහසක් සාදන්න",
                                                 emptyPlaceholder: "රහස් නොමැත",
-                                                search: "රහස් නාමයෙන් සොයන්න"
+                                                search: "රහස් නාමයෙන් සොයන්න",
+                                                tooltips: {
+                                                    keyIcon: "රහස්‍ය ලෙස ප්‍රවේශ යතුරු ආරක්ෂිතව ගබඩා කරන්න. " +
+                                                        "කොන්දේසි සහිත සත්‍යාපනය සඳහා <1>callChoreo</1> ශ්‍රිතයේ API යතුර රහස් " +
+                                                        "වලට ආදේශ කළ හැකිය.",
+                                                    plusIcon: "ස්ක්‍රිප්ට් එකට එකතු කරන්න"
+                                                }
                                             },
                                             heading: "ස්ක්‍රිප්ට් මත පදනම් වූ වින්‍යාසය",
                                             hint: "අනුවර්තන පිටපතක් හරහා සත්‍යාපන ප්‍රවාහය නිර්වචනය කරන්න. " +
@@ -1271,8 +1285,12 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "සහතිකය",
-                                hint: "මෙම සහතිකය අත්සන් කරන ලද ඉල්ලීම්වල අත්සන් වලංගු කිරීම සහ යෙදුමෙන් " +
-                                    "{{productName}} වෙත සංකේතාත්මක ඉල්ලීම් විකේතනය කිරීම සඳහා යොදා ගනී."
+                                hint: {
+                                    customOidc: "මෙම සහතිකය සත්‍යාපනයෙන් පසු ලැබුණු <1>id_token</1> සංකේතනය " +
+                                        "කිරීමට භාවිතා කරයි.",
+                                    customSaml: "මෙම සහතිකය භාවිතා කරනුයේ අත්සන් කරන ලද ඉල්ලීම් වල අත්සන් තහවුරු " +
+                                        "කිරීම සඳහා සහ සත්‍යාපනයෙන් පසු ලබා දුන් SAML ප්‍රකාශයන් සංකේතනය කිරීමට ය."
+                                }
                             }
                         }
                     },
@@ -1349,7 +1367,9 @@ export const console: ConsoleNS = {
                         }
                     },
                     inboundOIDC: {
-                        description: "ඔබේ OpenID Connect සම්බන්ධක සැකසුම් පහත දක්වා ඇත",
+                        description: "ඔබේ {{protocol}} සම්බන්ධක සැකසුම් පහත දක්වා ඇත",
+                        documentation: "ඔබේ යෙදුම් වල ප්‍රවේශය ක්‍රියාත්මක කිරීම සඳහා <3>{{ප්‍රොටොකෝලය}</3> ප්‍රොටෝකෝලය " +
+                            "භාවිතා කිරීම ගැන වැඩිදුර දැන ගැනීමට අපගේ <1>ප්‍රලේඛනය</1> කියවන්න.",
                         messages: {
                             revokeDisclaimer: {
                                 content: "යෙදුම අවලංගු කර ඇත. ඔබට යෙදුම නැවත සක්‍රිය කිරීමට අවශ්‍ය නම් " +
@@ -1458,7 +1478,6 @@ export const console: ConsoleNS = {
                                             "ටෝකනය බැඳ තබන්න.",
                                             none: "බන්ධනයක් නැත. {{productName}} නව ප්‍රවේශ ටෝකනයක් නිකුත් කරන්නේ " +
                                                 "ටෝකනය කල් ඉකුත් වූ විට හෝ අවලංගු කළ විට පමණි.",
-                                            // eslint-disable-next-line @typescript-eslint/camelcase
                                             sso_session: "පිවිසුම් සැසියට ප්‍රවේශ ටෝකනය බැඳ තබයි. {{productName}} සෑම නව " +
                                                 "ප්‍රවේශයක් සඳහාම නව ප්‍රවේශ ටෝකනයක් නිකුත් කරනු ඇති අතර පිටවීමෙන් පසු ටෝකනය " +
                                                 "අවලංගු කරයි."
@@ -1644,11 +1663,17 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "විෂය පථ වලංගු කරන්නන්"
+                            },
+                            certificates: {
+                                disabledPopup: "මෙම සහතිකය <1>id_token</1> සංකේතනය කිරීමට භාවිතා කරයි. පළමුව, " +
+                                    "ඉදිරියට යාමට ඔබට <3>id_token</3> සංකේතනය අක්‍රීය කළ යුතුය."
                             }
                         }
                     },
                     inboundSAML: {
                         description: "ඔබේ අයදුම්පත සඳහා වූ SAML සැකසුම් පහත දක්වා ඇත.",
+                        documentation: "ඔබේ යෙදුම් වල ප්‍රවේශය ක්‍රියාත්මක කිරීම සඳහා <3>{{ප්‍රොටොකෝලය}</3> ප්‍රොටෝකෝලය " +
+                            "භාවිතා කිරීම ගැන වැඩිදුර දැන ගැනීමට අපගේ <1>ප්‍රලේඛනය</1> කියවන්න.",
                         fields: {
                             assertionURLs: {
                                 hint: "සත්‍යාපනය සාර්ථක වූ පසු බ්‍රව්සරය යළි හරවා යැවිය යුතු බවට පාරිභෝගික " +
@@ -1950,6 +1975,10 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "පැතිකඩ මත තනි සං Sign ා"
+                            },
+                            certificates: {
+                                disabledPopup: "ඉදිරියට යාමට ඉල්ලීම් අත්සන් වලංගුකරණය සහ තහවුරු කිරීමේ " +
+                                    "සංකේතනය අබල කර ඇති බවට වග බලා ගන්න."
                             }
                         }
                     },
@@ -2126,8 +2155,10 @@ export const console: ConsoleNS = {
                                         authorize: "අවසරලත්",
                                         endSession: "පිටතට",
                                         introspection: "ස්වයං විමර්ශනය",
-                                        keystore: "යතුරු කට්ටලය",
+                                        issuer: "නිකුත් කරන්නා",
                                         jwks: "JWKS",
+                                        keystore: "යතුරු කට්ටලය",
+                                        revoke: "අහෝසි කරන්න",
                                         token: "ටෝකන්",
                                         userInfo: "UserInfo",
                                         wellKnown: "සොයාගැනීම"
@@ -2194,7 +2225,7 @@ export const console: ConsoleNS = {
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "මෙම සංවිධානය අවසර දී ඇති අයදුම්පත් 200 ක උපරිම සීමාවට ළඟා විය.",
+                            description: "ඔබ අවසර දී ඇති උපරිම අයදුම්පත් සංඛ්‍යාවට පැමිණ ඇත.",
                             message: "යෙදුම නිර්මාණය කිරීමට අපොහොසත් විය"
                         }
                     },
@@ -2569,6 +2600,14 @@ export const console: ConsoleNS = {
                         description: "කොන්දේසි සහිත සත්‍යාපන පිටපත තුළ <1>for</1>, <3>while</3>, සහ <5>forEach</5>" +
                             " වැනි ලූප් ඉදි කිරීම් වලට ඉඩ නොදේ.",
                         message: "පිටපත යාවත්කාලීන කිරීමට අසමත් විය"
+                    },
+                    deleteCertificateSuccess: {
+                        description: "අයදුම්පත්‍රය සාර්ථකව මකා දමන ලදි.",
+                        message: "මකා දැමූ සහතිකය"
+                    },
+                    deleteCertificateGenericError: {
+                        description: "මොකක්හරි වැරැද්දක් වෙලා. අපට අයදුම්පත්‍ර සහතිකය මැකීමට නොහැකි විය.",
+                        message: "යෙදුම යාවත්කාලීන කිරීමට අසමත් විය"
                     }
                 },
                 placeholders: {
@@ -2790,7 +2829,7 @@ export const console: ConsoleNS = {
                     },
                     disableIDP: {
                         actionTitle: "හැඳුනුම්පත් සපයන්නා සක්‍රීය කරන්න",
-                        header: "අනන්‍යතා සැපයුම්කරු සක්‍රීය කරන්න",
+                        header: "සම්බන්ධතාවය සක්‍රීය කරන්න",
                         subheader: "ඔබ අක්‍රිය කළ පසු, ඔබ එය නැවත සක්‍රිය කරන තුරු එය " +
                             "තවදුරටත් භාවිතා කළ නොහැක. කරුණාකර ස්ථිර වන්න."
                     },
@@ -3037,17 +3076,17 @@ export const console: ConsoleNS = {
                             message: "දෝෂයක් සාදන්න"
                         },
                         genericError: {
-                            description: "අනන්‍යතා සැපයුම්කරු නිර්මාණය කිරීමේදී දෝෂයක් ඇතිවිය.",
+                            description: "සම්බන්ධතාවය නිර්මාණය කිරීමේදී දෝෂයක් ඇතිවිය.",
                             message: "දෝෂයක් සාදන්න"
                         },
                         success: {
-                            description: "අනන්‍යතා සැපයුම්කරු සාර්ථකව නිර්මාණය කළේය.",
+                            description: "සම්බන්ධතාවය සාර්ථකව නිර්මාණය කළේය.",
                             message: "සාර්ථක ලෙස නිර්මාණය කරන්න"
                         }
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "මෙම සංවිධානය අවසර දී ඇති අනන්‍යතා සැපයුම්කරුවන් 200 ක උපරිම සීමාවට ළඟා විය.",
+                            description: "ඔබ අවසර දී ඇති අනන්‍යතා සපයන්නන්ගේ උපරිම සංඛ්‍යාවට පැමිණ ඇත.",
                             message: "අනන්‍යතා සැපයුම්කරු නිර්මාණය කිරීමට අපොහොසත් විය"
                         }
                     },
@@ -3377,11 +3416,11 @@ export const console: ConsoleNS = {
                             message: "යාවත්කාලීන දෝෂයකි"
                         },
                         genericError: {
-                            description: "අනන්‍යතා සැපයුම්කරු යාවත්කාලීන කිරීමේදී දෝෂයක් ඇතිවිය.",
+                            description: "සම්බන්ධතාවය යාවත්කාලීන කිරීමේදී දෝෂයක් ඇතිවිය.",
                             message: "යාවත්කාලීන කිරීමේ දෝෂයකි"
                         },
                         success: {
-                            description: "අනන්‍යතා සැපයුම්කරු සාර්ථකව යාවත්කාලීන කරන ලදි.",
+                            description: "සම්බන්ධතාවය සාර්ථකව යාවත්කාලීන කරන ලදි.",
                             message: "යාවත්කාලීන කිරීම සාර්ථකයි"
                         }
                     },
@@ -3655,9 +3694,9 @@ export const console: ConsoleNS = {
                         }
                     },
                     actions: {
-                        finishButton: {
-                            label: "අවසන් කරන්න",
-                            ariaLabel: "මාදිලිය අවසන් කර ඉදිරිපත් කරන්න"
+                        createButton: {
+                            label: "සාදන්න",
+                            ariaLabel: "සාදන්න සහ ඉදිරිපත් කරන්න"
                         },
                         cancelButton: {
                             label: "අවලංගු කරන්න",
@@ -3669,7 +3708,7 @@ export const console: ConsoleNS = {
                     secretIsHidden: {
                         title: "ඇයි මට රහස නොපෙනෙන්නේ?",
                         content: "වරක් නිර්මාණය කළ පසු ඔබට එහි රහස්‍ය වටිනාකම නැවත දැක ගැනීමට නොහැකි වනු ඇත. ඔබට කළ " +
-                            "හැක්කේ රහස්‍ය වටිනාකම යාවත්කාලීන කිරීමට හෝ රහස මැකීමට පමණි."
+                            "හැක්කේ රහස මැකීම පමණි."
                     },
                     adaptiveAuthSecretType: {
                         title: "අනුවර්තී සත්‍යාපන රහස්",
@@ -3785,6 +3824,11 @@ export const console: ConsoleNS = {
             authenticationProvider: {
                 templates: {
                     enterprise: {
+                        addWizard: {
+                            title: "සම්මත පදනම් කරගත් හැඳුනුම්පත් සපයන්නන්",
+                            subtitle: "සම්මත සත්‍යාපන ප්‍රොටෝකෝල සමඟ සම්බන්ධ වීම සඳහා නව අනන්‍යතා සැපයුම්කරුවෙකු " +
+                                "වින්‍යාස කරන්න."
+                        },
                         validation: {
                             name: "වලංගු නමක් ඇතුළත් කරන්න",
                             invalidName: "වලංගු නමක් ඇතුළත් කරන්න"
@@ -4231,7 +4275,8 @@ export const console: ConsoleNS = {
                             attributeName: {
                                 validation: {
                                     invalid: "ගුණාංග නාමයේ අඩංගු විය හැක්කේ අක්ෂර සංඛ්‍යා සහ _ පමණි. "
-                                        + "අක්ෂර 3 ත් 30 ත් අතර දිගකින් යුක්ත විය යුතුය."
+                                        + "අක්ෂර 3 ත් 30 ත් අතර දිගකින් යුක්ත විය යුතුය.",
+                                    alreadyExists: "ලබා දී ඇති ගුණාංග නාමය සමඟ දැනටමත් ගුණාංගයක් පවතී."
                                 }
                             }
                         },
@@ -4396,7 +4441,9 @@ export const console: ConsoleNS = {
                             placeholder: "දේශීය ලක්ෂණයක් තෝරන්න",
                             requiredErrorMessage: "සිතියම් ගත කිරීම සඳහා දේශීය ලක්ෂණයක් තෝරන්න"
                         },
-                        submit: "බාහිර ගුණාංග එකතු කරන්න"
+                        submit: "බාහිර ගුණාංග එකතු කරන්න",
+                        warningMessage: "සිතියම් ගත කිරීම සඳහා දේශීය ගුණාංග නොමැත. මෙතැනින් නව දේශීය ගුණාංග එකතු කරන්න.",
+                        emptyMessage: "සියලුම SCIM ගුණාංග දේශීය හිමිකම් සඳහා සිතියම් ගත කර ඇත."
                     },
                     notifications: {
                         addExternalAttribute: {
@@ -4613,6 +4660,12 @@ export const console: ConsoleNS = {
                         "කළ යුතුය.",
                         supportedByDefault: {
                             label: "පරිශීලක පැතිකඩ සහ පරිශීලක ලියාපදිංචි පිටුවෙහි මෙම ගුණාංගය පෙන්වන්න"
+                        },
+                        infoMessages: {
+                            disabledConfigInfo: "මෙම හිමිකම් පෑමේ ගුණාංගය සඳහා බාහිර හිමිකම් සිතියම් ගත කිරීමක් හමු නොවන " +
+                                "හෙයින් පහත කොටස අබල කර ඇති බව කරුණාවෙන් සලකන්න.",
+                            configApplicabilityInfo: "පහත දැක්වෙන ගුණාංග වින්‍යාසයන් පාරිභෝගික පරිශීලක පැතිකඩවලට පමණක් " +
+                                "බලපාන බව කරුණාවෙන් සලකන්න."
                         }
                     },
                     mappedAttributes: {
@@ -6322,7 +6375,6 @@ export const console: ConsoleNS = {
                 },
                 profile: {
                     fields: {
-                        /* eslint-disable @typescript-eslint/camelcase */
                         userId: "පරිශීලක ID",
                         addresses_home: "නිවසේ ලිපිනය",
                         addresses_work: "වැඩ ලිපිනය",
@@ -6344,7 +6396,6 @@ export const console: ConsoleNS = {
                         photos: "ඡායාරූප",
                         profileUrl: "URL",
                         userName: "පරිශීලක නාමය"
-                        /* eslint-enable @typescript-eslint/camelcase */
                     },
                     forms: {
                         emailChangeForm: {
@@ -7108,7 +7159,7 @@ export const console: ConsoleNS = {
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "මෙම සංවිධානය අවසර දී ඇති පරිශීලක ගබඩා 15 ක උපරිම සීමාවට ළඟා විය.",
+                            description: "ඔබ අවසර දී ඇති උපරිම පරිශීලක ගබඩා සංඛ්‍යාවට පැමිණ ඇත.",
                             message: "පරිශීලක ගබඩාව නිර්මාණය කිරීමට අපොහොසත් විය"
                         }
                     },

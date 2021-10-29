@@ -37,7 +37,7 @@
 @wizardContentHorizontalPadding: 3em;
 @wizardSummaryFieldValueColor: @nobel;
 
-@minimalApplicationCreateWizardSubTemplateSelectionCardFontSize: 0.8em;
+@minimalApplicationCreateWizardSubTemplateSelectionCardFontSize: 0.9em;
 
 /*-------------------------------
         Side Panel Modal

@@ -27,10 +27,13 @@ import {
     setUIConfigs
 } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
-import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
+import {
+    I18nModuleOptionsInterface
+} from "@wso2is/i18n";
 import {
     ChunkErrorModal,
     Code,
+    DocumentationProvider,
     NetworkErrorModal,
     SessionManagementProvider,
     SessionTimeoutModalTypes
@@ -38,17 +41,18 @@ import {
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { I18nextProvider, Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { EventPublisher, PreLoader } from "./features/core";
 import { ProtectedRoute } from "./features/core/components";
-import { Config, getBaseRoutes } from "./features/core/configs";
+import { Config, DocumentationLinks, getBaseRoutes } from "./features/core/configs";
 import { AppConstants } from "./features/core/constants";
 import { history } from "./features/core/helpers";
 import {
     ConfigReducerStateInterface,
     DeploymentConfigInterface,
+    DocumentationLinksInterface,
     FeatureConfigInterface,
     ServiceResourceEndpointsInterface,
     UIConfigInterface
@@ -61,7 +65,6 @@ import { AppState } from "./features/core/store";
  * @return {React.ReactElement}
  */
 export const App: FunctionComponent<Record<string, never>> = (): ReactElement => {
-
     const dispatch = useDispatch();
 
     const userName: string = useSelector((state: AppState) => state.auth.username);
@@ -76,6 +79,8 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const { trySignInSilently } = useAuthContext();
+
+    const { t } = useTranslation();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
 
@@ -115,7 +120,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
         const tenantAppSettings = JSON.parse(LocalStorageUtils.getValueFromLocalStorage(tenant));
         const appSettings = {};
 
-        appSettings[userName] = emptyIdentityAppsSettings();
+        appSettings[ userName ] = emptyIdentityAppsSettings();
 
         if (!tenantAppSettings) {
             LocalStorageUtils.setValueInLocalStorage(tenant, JSON.stringify(appSettings));
@@ -123,12 +128,11 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
             if (CommonHelpers.lookupKey(tenantAppSettings, userName) === null) {
                 const newUserSettings = {
                     ...tenantAppSettings,
-                    [userName]: emptyIdentityAppsSettings()
+                    [ userName ]: emptyIdentityAppsSettings()
                 };
                 LocalStorageUtils.setValueInLocalStorage(tenant, JSON.stringify(newUserSettings));
             }
         }
-
     }, [ config?.deployment?.tenant, userName ]);
 
     /**
@@ -150,15 +154,15 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     }, [ config, loginInit ]);
 
     /**
-    * Publish page visit when the UUID is set.
-    */
+     * Publish page visit when the UUID is set.
+     */
     useEffect(() => {
-        if(!UUID) {
+        if (!UUID) {
             return;
         }
 
         eventPublisher.publish("page-visit-console-landing-page");
-    }, [UUID]);
+    }, [ UUID ]);
 
     /**
      * Handles session timeout abort.
@@ -218,7 +222,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                     ? (
                         <Router history={ history }>
                             <div className="container-fluid">
-                                <I18nextProvider i18n={ I18n.instance }>
+                                <DocumentationProvider<DocumentationLinksInterface> links={ DocumentationLinks }>
                                     <Suspense fallback={ <PreLoader /> }>
                                         <AccessControlProvider
                                             allowedScopes={ allowedScopes }
@@ -232,26 +236,55 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                     description: (
                                                         <Trans
                                                             i18nKey={
-                                                                "console:common.modals.sessionTimeoutModal.description"
+                                                                "console:common.modals.sessionTimeoutModal." +
+                                                                "description"
                                                             }
                                                         >
-                                                            When you click on the <Code>Go back</Code> button, we will
-                                                            try to recover the session if it exists. If you don&apos;t
-                                                            have an active session, you will be redirected to the login
-                                                            page
+                                                            When you click on the <Code>Go back</Code> button, we
+                                                            will try to recover the session if it exists. If you
+                                                            don&apos;t have an active session, you will be
+                                                            redirected to the login page
                                                         </Trans>
                                                     ),
-                                                    headingI18nKey: "console:common.modals.sessionTimeoutModal.heading",
-                                                    loginAgainButtonText: I18n.instance.t("console:common:modals" +
-                                                        ".sessionTimeoutModal.loginAgainButton"),
-                                                    primaryButtonText: I18n.instance.t("console:common.modals" +
-                                                        ".sessionTimeoutModal.primaryButton"),
-                                                    secondaryButtonText: I18n.instance.t("console:common.modals" +
-                                                        ".sessionTimeoutModal.secondaryButton"),
-                                                    sessionTimedOutDescription: I18n.instance
-                                                        .t("console:common:modals" +
-                                                        ".sessionTimeoutModal.sessionTimedOutDescription"),
-                                                    sessionTimedOutHeadingI18nKey: "console:common:modals" +
+                                                    headingI18nKey: "console:common.modals.sessionTimeoutModal" +
+                                                        ".heading",
+                                                    loginAgainButtonText: (
+                                                        <Trans
+                                                            i18nKey={
+                                                                "console:common.modals" +
+                                                                ".sessionTimeoutModal.loginAgainButton"
+                                                            }>
+                                                            Login again
+                                                        </Trans>
+                                                    ),
+                                                    primaryButtonText: (
+                                                        <Trans
+                                                            i18nKey={
+                                                                "console:common.modals" +
+                                                                ".sessionTimeoutModal.primaryButton"
+                                                            }>
+                                                            Go back
+                                                        </Trans>
+                                                    ),
+                                                    secondaryButtonText: (
+                                                        <Trans
+                                                            i18nKey={
+                                                                "console:common.modals" +
+                                                                ".sessionTimeoutModal.secondaryButton"
+                                                            }>
+                                                            Logout
+                                                        </Trans>
+                                                    ),
+                                                    sessionTimedOutDescription: (
+                                                        <Trans
+                                                            i18nKey={
+                                                                "console:common.modals" +
+                                                                ".sessionTimeoutModal.sessionTimedOutDescription"
+                                                            }>
+                                                            Please log in again to continue from where you left off.
+                                                        </Trans>
+                                                    ),
+                                                    sessionTimedOutHeadingI18nKey: "console:common.modals" +
                                                         ".sessionTimeoutModal.sessionTimedOutHeading"
                                                 } }
                                                 type={ SessionTimeoutModalTypes.DEFAULT }
@@ -261,26 +294,66 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                         <title>{ appTitle }</title>
                                                     </Helmet>
                                                     <NetworkErrorModal
-                                                        heading={ I18n.instance
-                                                            .t("common:networkErrorMessage.heading") }
-                                                        description={ I18n.instance
-                                                            .t("common:networkErrorMessage" +
-                                                            ".description") }
-                                                        primaryActionText={ I18n.instance
-                                                            .t("common:networkErrorMessage" +
-                                                            ".primaryActionText") }
+                                                        heading={
+                                                            <Trans
+                                                                i18nKey={ "common:networkErrorMessage.heading" }
+                                                            >
+                                                                Something went wrong
+                                                            </Trans>
+                                                        }
+                                                        description={
+                                                            <Trans
+                                                                i18nKey={ "common:networkErrorMessage.description" }
+                                                            >
+                                                                Please try reloading the app.
+                                                            </Trans>
+                                                        }
+                                                        primaryActionText={
+                                                            <Trans
+                                                                i18nKey={
+                                                                    "common:networkErrorMessage.primaryActionText"
+                                                                }
+                                                            >
+                                                                Reload the App
+                                                            </Trans>
+                                                        }
                                                     />
                                                     <ChunkErrorModal
-                                                        heading={ I18n.instance
-                                                            .t("common:chunkLoadErrorMessage.heading") }
-                                                        description={ I18n.instance.t("common:chunkLoadErrorMessage" +
-                                                            ".description") }
-                                                        primaryActionText={ I18n.instance
-                                                            .t("common:chunkLoadErrorMessage" +
-                                                            ".primaryActionText") }
+                                                        heading={
+                                                            <Trans
+                                                                i18nKey={
+                                                                    "common:chunkLoadErrorMessage.heading"
+                                                                }
+                                                            >
+                                                                Something went wrong
+                                                            </Trans>
+                                                        }
+                                                        description={
+                                                            <Trans
+                                                                i18nKey={
+                                                                    "common:chunkLoadErrorMessage.description"
+                                                                }
+                                                            >
+                                                                An error occurred when serving the requested
+                                                                application. Please try reloading the app.
+                                                            </Trans>
+                                                        }
+                                                        primaryActionText={
+                                                            <Trans
+                                                                i18nKey={
+                                                                    "common:chunkLoadErrorMessage.primaryActionText"
+                                                                }
+                                                            >
+                                                                Reload the App
+                                                            </Trans>
+                                                        }
                                                     />
                                                     <Switch>
-                                                        <Redirect exact from="/" to={ AppConstants.getAppHomePath() }/>
+                                                        <Redirect
+                                                            exact
+                                                            from="/"
+                                                            to={ AppConstants.getAppHomePath() }
+                                                        />
                                                         {
                                                             baseRoutes.map((route, index) => {
                                                                 return (
@@ -298,7 +371,9 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                                             <Route
                                                                                 path={ route.path }
                                                                                 render={ (props) =>
-                                                                                    (<route.component { ...props } />)
+                                                                                (<route.component
+                                                                                    { ...props }
+                                                                                />)
                                                                                 }
                                                                                 key={ index }
                                                                                 exact={ route.exact }
@@ -312,7 +387,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                             </SessionManagementProvider>
                                         </AccessControlProvider>
                                     </Suspense>
-                                </I18nextProvider>
+                                </DocumentationProvider>
                             </div>
                         </Router>
                     )

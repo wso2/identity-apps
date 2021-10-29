@@ -116,7 +116,8 @@
                                 <%
                                     if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
                                 %>
-                                <input id="tenantDomain" name="tenantDomain" value="<%= tenantDomain %>" type="hidden">
+                                <input id="tenantDomain" name="tenantDomain" value="<%= Encode.forHtmlAttribute(tenantDomain) %>"
+                                       type="hidden">
                                 <%
                                     }
                                 %>

@@ -285,6 +285,7 @@ export class AppConstants {
             .set("LOCAL_CLAIMS", `${ AppConstants.getAdminViewBasePath() }/attributes`)
             .set("LOCAL_CLAIMS_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attributes/:id`)
             .set("LOGIN",  window[ "AppUtils" ].getConfig().routes.login)
+            .set("SCIM_MAPPING", `${ AppConstants.getAdminViewBasePath() }/attribute-mappings/scim`)
             .set("LOGOUT",  window[ "AppUtils" ].getConfig().routes.logout)
             .set("OIDC_SCOPES", `${ AppConstants.getAdminViewBasePath() }/oidc-scopes`)
             .set("OIDC_SCOPES_EDIT", `${ AppConstants.getAdminViewBasePath() }/oidc-scopes/:id`)

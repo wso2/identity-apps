@@ -1,7 +1,7 @@
 {
     "id": "8ea23303-49c0-4253-b81f-82c0fe6fb4a0",
     "name": "Google",
-    "description": "Login users with existing Google accounts.",
+    "description": "Enable login for users with existing Google accounts.",
     "image": "google",
     "category": "DEFAULT",
     "displayOrder": 1,

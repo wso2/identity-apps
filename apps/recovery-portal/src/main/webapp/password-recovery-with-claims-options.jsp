@@ -222,8 +222,8 @@
                         </div>
                     </div>
 
-                    <input type="hidden" name="username" value="<%=username%>"/>
-                    <input type="hidden" name="g-recaptcha-response" value="<%=recaptchaResponse%>"/>
+                    <input type="hidden" name="username" value="<%=Encode.forHtmlAttribute(username)%>"/>
+                    <input type="hidden" name="g-recaptcha-response" value="<%=Encode.forHtmlAttribute(recaptchaResponse)%>"/>
                     <%
                         }
                         if (sessionDataKey != null) {

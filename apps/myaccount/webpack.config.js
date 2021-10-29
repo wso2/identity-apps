@@ -463,7 +463,8 @@ module.exports = (env) => {
                         : "",
                     themeHash: themeHash,
                     vwoScriptVariable: "<%= vwo_ac_id %>",
-                    vwoSystemVariable: "<% String vwo_ac_id = System.getenv(\"vwo_account_id\"); %>"
+                    // eslint-disable-next-line max-len
+                    vwoSystemVariable: "<% String vwo_ac_id = System.getenv().getOrDefault(\"vwo_account_id\", null); %>"
                 })
                 : new HtmlWebpackPlugin({
                     filename: path.join(distFolder, "index.html"),

@@ -34,7 +34,13 @@ import {
     Modal, 
     Popup,
     Segment  } from "semantic-ui-react";
-import { deleteTOTP, initTOTPCode, refreshTOTPCode, validateTOTPCode } from "../../../api";
+import {
+    checkIfTOTPEnabled,
+    deleteTOTP,
+    initTOTPCode,
+    refreshTOTPCode,
+    validateTOTPCode
+} from "../../../api";
 import { getMFAIcons } from "../../../configs";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { AlertInterface, AlertLevels, AuthStateInterface } from "../../../models";
@@ -63,7 +69,6 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
         [ "data-testid" ]: testId
     } = props;
 
-    const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const [ openWizard, setOpenWizard ] = useState(false);
     const [ qrCode, setQrCode ] = useState("");
     const [ step, setStep ] = useState(0);
@@ -113,17 +118,10 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     useEffect(() => {
-        // Verifies if the user has added a TOTP secret(QR) to his profile.
-        const totpEnabled = profileDetails?.profileInfo?.[SCIMConfigs.scim.customEnterpriseSchema]?.
-            ["totpEnabled"];
-
-        if (totpEnabled && totpEnabled == "true") {
-            setIsTOTPConfigured(true);
-        } else {
-            setIsTOTPConfigured(false);
-        }
-
-    }, [profileDetails?.profileInfo]);
+        checkIfTOTPEnabled().then((response) => {
+            setIsTOTPConfigured(response);
+        });
+    }, [ ]);
 
     /**
      * Reset pin code value in Error state

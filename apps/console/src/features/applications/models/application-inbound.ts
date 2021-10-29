@@ -132,6 +132,7 @@ export interface OIDCDataInterface {
 export enum SupportedAuthProtocolTypes {
     SAML = "saml",
     OIDC = "oidc",
+    OAUTH2_OIDC = "oauth2-oidc",
     WS_FEDERATION = "passive-sts",
     WS_TRUST = "ws-trust",
     CUSTOM= "custom"

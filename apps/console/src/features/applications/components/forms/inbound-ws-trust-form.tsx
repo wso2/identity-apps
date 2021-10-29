@@ -36,6 +36,7 @@ import {
     WSTrustMetaDataInterface
 } from "../../models";
 import { CertificateFormFieldModal } from "../modals";
+import { CertificateManagementConstants } from "@wso2is/core/constants";
 
 /**
  * Proptypes for the inbound WS Trust form component.
@@ -144,8 +145,14 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
      */
     const viewCertificate = () => {
         if (isPEMSelected && PEMValue) {
-            const displayCertificate: DisplayCertificate = CertificateManagementUtils.displayCertificate(
-                null, PEMValue);
+
+            let displayCertificate: DisplayCertificate;
+
+            if (CertificateManagementUtils.canSafelyParseCertificate(PEMValue)) {
+                displayCertificate = CertificateManagementUtils.displayCertificate(null, PEMValue);
+            } else {
+                displayCertificate = CertificateManagementConstants.DUMMY_DISPLAY_CERTIFICATE;
+            }
 
             if (displayCertificate) {
                 setCertificateDisplay(displayCertificate);
@@ -168,7 +175,7 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                         onSubmit(updateConfiguration(values));
                     } }
                 >
-                    <Grid className="form-container with-max-width">
+                    <Grid>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field

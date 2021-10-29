@@ -92,7 +92,9 @@ export class ProfileUtils {
                 // Add the email schema.
                 if (schema.multiValued && schema.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ROLES") &&
                     schema.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS") &&
-                    schema.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ADDRESSES")) {
+                    schema.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ADDRESSES") &&
+                    schema.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("IMS") &&
+                    schema.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("PHOTOS")) {
                     tempSchemas.push(schema);
                 }
 

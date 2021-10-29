@@ -16,8 +16,10 @@
  * under the License.
  */
 
+import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { URLUtils } from "@wso2is/core/utils";
 import { Field, Wizard2, WizardPage } from "@wso2is/form";
 import {
     CertFileStrategy,
@@ -54,7 +56,8 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Dimmer, Divider, Grid, Icon } from "semantic-ui-react";
+import { Card, Dimmer, Divider, Grid, Icon } from "semantic-ui-react";
+import { commonConfig, identityProviderConfig } from "../../../../extensions";
 import {
     AppConstants,
     AppState,
@@ -76,8 +79,6 @@ import {
 } from "../../models";
 import { handleGetIDPListCallError } from "../utils";
 import { getAvailableNameIDFormats, getAvailableProtocolBindingTypes } from "../utils/saml-idp-utils";
-import { URLUtils } from "@wso2is/core/utils";
-import { commonConfig } from "../../../../extensions";
 
 /**
  * Proptypes for the enterprise identity provider
@@ -350,21 +351,24 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 onIDPCreate();
             })
             .catch((error) => {
+                const identityAppsError: IdentityAppsError = identityProviderConfig.useNewConnectionsView
+                ? IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED
+                : IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED_IDP;
 
                 if (error.response.status === 403 &&
                     error?.response?.data?.code ===
-                    IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
+                    identityAppsError.getErrorCode()) {
 
                     setAlert({
-                        code: IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode(),
+                        code: identityAppsError.getErrorCode(),
                         description: t(
-                            IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorDescription()
+                            identityAppsError.getErrorDescription()
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorMessage()
+                            identityAppsError.getErrorMessage()
                         ),
-                        traceId: IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorTraceId()
+                        traceId: identityAppsError.getErrorTraceId()
                     });
                     setTimeout(() => setAlert(undefined), 4000);
                     return;
@@ -439,7 +443,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 width={ 15 }
                 format = { (values: any) => {
                     return values.toString().trimStart();
-                }}
+                } }
                 validation={ (values: any) => {
                     let errors: "";
                     errors = composeValidators(required, length(IDP_NAME_LENGTH))(values);
@@ -450,7 +454,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     if (!FormValidation.isValidResourceName(values)) {
                         errors = t("console:develop.features.authenticationProvider." +
                             "templates.enterprise.validation.invalidName",
-                            { idpName: values});
+                            { idpName: values });
                     }
 
                     if (errors === "" || errors === undefined) {
@@ -463,38 +467,50 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             <Grid>
                 <Grid.Row>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                        <div>
-                            <p><b>Select protocol</b></p>
-                            <SelectionCard
-                                inline
-                                image={ getIdPIcons().oidc }
-                                size="x120"
-                                className="sub-template-selection-card"
-                                header={ "OIDC" }
-                                selected={ selectedProtocol === "oidc" }
-                                onClick={ () => setSelectedProtocol("oidc") }
-                                imageSize="mini"
-                                contentTopBorder={ false }
-                                showTooltips={ true }
-                                data-testid={ `${ testId }-form-wizard-oidc-selection-card` }
-                            />
-                            <SelectionCard
-                                inline
-                                image={ getIdPIcons().saml }
-                                size="x120"
-                                className="sub-template-selection-card"
-                                header={ "SAML" }
-                                selected={ selectedProtocol === "saml" }
-                                onClick={ () => setSelectedProtocol("saml") }
-                                imageSize="mini"
-                                showTooltips={ true }
-                                disabled={ false }
-                                overlay={ renderDimmerOverlay() }
-                                contentTopBorder={ false }
-                                renderDisabledItemsAsGrayscale={ false }
-                                overlayOpacity={ 0.6 }
-                                data-testid={ `${ testId }-form-wizard-saml-selection-card` }
-                            />
+                        <div className="sub-template-selection">
+                            <label className="sub-templates-label">Select protocol</label>
+                            <Card.Group itemsPerRow={ 3 } className="sub-templates">
+                                <SelectionCard
+                                    inline
+                                    image={ getIdPIcons().oidc }
+                                    size="small"
+                                    className="sub-template-selection-card"
+                                    header={ "OpenID Connect" }
+                                    selected={ selectedProtocol === "oidc" }
+                                    onClick={ () => setSelectedProtocol("oidc") }
+                                    imageSize="x30"
+                                    imageOptions={ {
+                                        relaxed: true,
+                                        square: false,
+                                        width: "auto"
+                                    } }
+                                    contentTopBorder={ false }
+                                    showTooltips={ true }
+                                    data-testid={ `${ testId }-form-wizard-oidc-selection-card` }
+                                />
+                                <SelectionCard
+                                    inline
+                                    image={ getIdPIcons().saml }
+                                    size="small"
+                                    className="sub-template-selection-card"
+                                    header={ "SAML" }
+                                    selected={ selectedProtocol === "saml" }
+                                    onClick={ () => setSelectedProtocol("saml") }
+                                    imageSize="x30"
+                                    imageOptions={ {
+                                        relaxed: true,
+                                        square: false,
+                                        width: "auto"
+                                    } }
+                                    showTooltips={ true }
+                                    disabled={ false }
+                                    overlay={ renderDimmerOverlay() }
+                                    contentTopBorder={ false }
+                                    renderDisabledItemsAsGrayscale={ false }
+                                    overlayOpacity={ 0.6 }
+                                    data-testid={ `${ testId }-form-wizard-saml-selection-card` }
+                                />
+                            </Card.Group>
                         </div>
                     </Grid.Column>
                 </Grid.Row>

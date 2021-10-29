@@ -39,6 +39,7 @@ import {
     SubmitFormCustomPropertiesInterface
 } from "../../models";
 import { CertificateFormFieldModal } from "../modals";
+import { CertificateManagementConstants } from "@wso2is/core/constants";
 
 /**
  * Proptypes for the inbound custom protocol form component.
@@ -293,8 +294,14 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
      */
     const viewCertificate = () => {
         if (isPEMSelected && PEMValue) {
-            const displayCertificate: DisplayCertificate = CertificateManagementUtils.displayCertificate(
-                null, PEMValue);
+
+            let displayCertificate: DisplayCertificate;
+
+            if (CertificateManagementUtils.canSafelyParseCertificate(PEMValue)) {
+                displayCertificate = CertificateManagementUtils.displayCertificate(null, PEMValue);
+            } else {
+                displayCertificate = CertificateManagementConstants.DUMMY_DISPLAY_CERTIFICATE;
+            }
 
             if (displayCertificate) {
                 setCertificateDisplay(displayCertificate);
@@ -315,7 +322,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                 onSubmit(updateConfiguration(values));
             } }
         >
-            <Grid className="form-container with-max-width">
+            <Grid>
                 { generateFormElements() }
                 { /* Certificates */ }
                 <Grid.Row columns={ 1 }>

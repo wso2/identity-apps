@@ -45,7 +45,18 @@ import {
     useConfirmationModalAlert
 } from "@wso2is/react-components";
 import isEqual from "lodash-es/isEqual";
-import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useRef, useState } from "react";
+import 
+    React,{ 
+    Dispatch, 
+    FunctionComponent, 
+    ReactElement, 
+    ReactNode, 
+    SetStateAction, 
+    SyntheticEvent, 
+    useEffect, 
+    useRef, 
+    useState 
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Header, Icon, ItemHeader, Popup, SemanticICONS } from "semantic-ui-react";
@@ -145,6 +156,11 @@ interface ClaimsListPropsInterface extends SBACInterface<FeatureConfigInterface>
      */
     showListItemActions?: boolean;
     /**
+     * Show or hide table headers. By default they are hidden.
+     * You have to explicitly mark them as enabled.
+     */
+    showTableHeaders?: boolean;
+    /**
      * Search query for the list.
      */
     searchQuery?: string;
@@ -152,6 +168,15 @@ interface ClaimsListPropsInterface extends SBACInterface<FeatureConfigInterface>
      * Specifies the attribute type.
      */
     attributeType?: string;
+    /**
+     * Update mapped claims on delete or edit
+     */
+    updateMappedClaims?: Dispatch<SetStateAction<boolean>>;
+    /**
+     * Depending on the attribute type
+     * disables the edit functionality.
+     */
+    isEditable?: boolean;
 }
 
 /**
@@ -166,6 +191,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
 ): ReactElement => {
 
     const {
+        showTableHeaders,
         advancedSearch,
         defaultListItemLimit,
         featureConfig,
@@ -183,6 +209,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         searchQuery,
         attributeType,
         showListItemActions,
+        isEditable,
+        updateMappedClaims,
         [ "data-testid" ]: testId
     } = props;
 
@@ -205,6 +233,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     const { t } = useTranslation();
 
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
+    const OIDC = "oidc";
 
     list?.forEach((element, index) => {
         claimURIText.current.push(claimURIText.current[ index ] || React.createRef());
@@ -313,6 +342,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         deleteAClaim(id).then(() => {
             update();
             closeDeleteConfirm();
+            updateMappedClaims(true);
             dispatch(addAlert(
                 {
                     description: t("console:manage.features.claims.local.notifications.deleteClaim.success."+
@@ -346,6 +376,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 fetchUpdatedSchemaList();
             });
 
+            updateMappedClaims(true);
             closeDeleteConfirm();
             dispatch(addAlert(
                 {
@@ -464,7 +495,13 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
             listItem = {
                 assertion: deleteItem.claimURI,
                 delete: deleteExternalClaim,
-                message: t("console:manage.features.claims.list.confirmation.external.message"),
+                message: ( t("console:manage.features.claims.list.confirmation.external.message") +
+                    (attributeType && attributeType === OIDC
+                        ?
+                        "If this attribute is attached to any scope, this action will also remove " +
+                        "the attribute from the relevant scope."
+                        : ClaimManagementConstants.EMPTY_STRING
+                    )),
                 name: t("console:manage.features.claims.list.confirmation.external.name")
             };
         }
@@ -687,7 +724,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     id: "actions",
                     key: "actions",
                     textAlign: "right",
-                    title: t("console:manage.features.claims.list.columns.actions")
+                    title: ClaimManagementConstants.EMPTY_STRING
                 }
             ];
         }
@@ -734,7 +771,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     id: "actions",
                     key: "actions",
                     textAlign: "right",
-                    title: t("console:manage.features.claims.list.columns.actions")
+                    title: ClaimManagementConstants.EMPTY_STRING
                 }
             ];
         }
@@ -799,7 +836,9 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                             </Header>
                         );
                     },
-                    title: t("console:manage.features.claims.list.columns.claimURI")
+                    title: attributeType && attributeType === OIDC
+                        ? "Name"
+                        : t("console:manage.features.claims.list.columns.claimURI")
                 },
                 {
                     allowToggleVisibility: false,
@@ -907,7 +946,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("console:manage.features.claims.list.columns.actions")
+                title: ClaimManagementConstants.EMPTY_STRING
             }
         ];
     };
@@ -1004,9 +1043,24 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     renderer: "semantic-icon"
                 },
                 attributeConfig.externalAttributes.showDeleteIcon(dialectID, list) && {
-                    hidden: (claim: ExternalClaim): boolean => !hasRequiredScopes(featureConfig?.attributeDialects,
-                        featureConfig?.attributeDialects?.scopes?.delete, allowedScopes)
-                        || attributeConfig.externalAttributes.hideDeleteIcon(claim),
+                    hidden: (claim: ExternalClaim): boolean => {
+                        if (!hasRequiredScopes(featureConfig?.attributeDialects, 
+                            featureConfig?.attributeDialects?.scopes?.delete, allowedScopes) 
+                            || attributeConfig.externalAttributes.hideDeleteIcon(claim)) {
+                            return true;
+                        }
+                        
+                        if (attributeConfig.defaultScimMapping 
+                            && Object.keys(attributeConfig.defaultScimMapping).length > 0) {
+                            const defaultSCIMClaims: Map<string, string> = attributeConfig
+                            .defaultScimMapping[claim.claimDialectURI];
+                            if (defaultSCIMClaims && defaultSCIMClaims.get(claim.claimURI)) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    },
                     icon: (): SemanticICONS => "trash alternate",
                     onClick: (e: SyntheticEvent, claim: ExternalClaim): void =>
                         initDelete(ListType.EXTERNAL, claim),
@@ -1025,6 +1079,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 renderer: "semantic-icon"
             },
             {
+                hidden: () => !isEditable,
                 icon: (claim: AddExternalClaim): SemanticICONS => isEqual(editExternalClaim, claim)
                         ? "times"
                         : "pencil alternate",
@@ -1066,6 +1121,9 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 setEditClaim(editClaim ? "" : item.id);
             }
         } else {
+            if (!isEditable) {
+                return;
+            }
             setEditExternalClaim(item);
         }
 
@@ -1089,7 +1147,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 onRowClick={ resolveTableRowClick }
                 placeholders={ showPlaceholders() }
                 selectable={ selection }
-                showHeader={ true }
+                showHeader={ showTableHeaders }
                 transparent={ !isLoading && (showPlaceholders() !== null) }
                 data-testid={ testId }
                 isRowSelectable={ (claim: Claim | ExternalClaim | ClaimDialect) =>
@@ -1106,5 +1164,6 @@ ClaimsList.defaultProps = {
     attributeType: ClaimManagementConstants.OTHERS,
     "data-testid": "claims-list",
     selection: true,
-    showListItemActions: true
+    showListItemActions: true,
+    showTableHeaders: false
 };

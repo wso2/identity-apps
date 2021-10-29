@@ -90,7 +90,6 @@ const ReduxStoreStateMock = {
                 storage: "webWorker"
             },
             loginCallbackUrl: "https://localhost:9001/console/login",
-            productVersion: "",
             serverHost: "https://localhost:9443",
             serverOrigin: "https://localhost:9443",
             superTenant: "carbon.super",
@@ -131,8 +130,6 @@ const ReduxStoreStateMock = {
             oidcScopes: "https://localhost:9443/api/server/v1/oidc/scopes",
             remoteFetchConfig: "https://localhost:9443/api/server/v1/remote-fetch",
             CORSOrigins: "https://localhost:9443/api/server/v1/cors/origins",
-            documentationContent: "https://api.github.com/repos/wso2/docs-is/contents/en/docs",
-            documentationStructure: "https://api.github.com/repos/wso2/docs-is/contents/en/mkdocs.yml",
             me: "https://localhost:9443/scim2/Me",
             saml2Meta: "https://localhost:9443/identity/metadata/saml2",
             wellKnown: "https://localhost:9443/oauth2/token/.well-known/openid-configuration"

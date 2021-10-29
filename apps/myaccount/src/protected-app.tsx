@@ -31,17 +31,28 @@ import {
     setI18nConfigs,
     setServiceResourceEndpoints,
     setSignIn,
+    setSupportedI18nLanguages,
     setUIConfigs
 } from "@wso2is/core/store";
-import { AuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
-import { I18nModuleOptionsInterface } from "@wso2is/i18n";
-import { ContentLoader } from "@wso2is/react-components";
+import { AuthenticateUtils, ContextUtils, StringUtils } from "@wso2is/core/utils";
+import {
+    I18n,
+    I18nInstanceInitException,
+    I18nModuleConstants,
+    I18nModuleOptionsInterface,
+    LanguageChangeException,
+    isLanguageSupported
+} from "@wso2is/i18n";
+import axios from "axios";
 import React, { FunctionComponent, ReactElement, lazy, useEffect } from "react";
+import { I18nextProvider } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { PreLoader } from "./components";
 import { Config } from "./configs";
 import { AppConstants, CommonConstants } from "./constants";
 import { history } from "./helpers";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "./models";
+import { store } from "./store";
 import { getProfileInformation, resolveIdpURLSAfterTenantResolves } from "./store/actions";
 import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "./utils";
 
@@ -65,6 +76,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         getOIDCServiceEndpoints,
         getDecodedIDToken,
         updateConfig,
+        signIn,
         state: { isAuthenticated }
     } = useAuthContext();
 
@@ -117,14 +129,19 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         window[ "AppUtils" ].getAppBase(),
                         window[ "AppUtils" ].getAppBaseWithTenant()
                     );
-                    logoutRedirectUrl = window[ "AppUtils" ].getAppBaseWithTenant();
+                    logoutRedirectUrl = window[ "AppUtils" ]
+                        .getConfig()
+                        .logoutCallbackURL.replace(
+                            window[ "AppUtils" ].getAppBase(),
+                            window[ "AppUtils" ].getAppBaseWithTenant()
+                        );
                 } else {
                     logoutUrl = logoutUrl.replace(
                         window[ "AppUtils" ].getConfig().logoutCallbackURL,
                         window[ "AppUtils" ].getConfig().clientOrigin + window[ "AppUtils" ].getConfig().routes.login
                     );
-                    logoutRedirectUrl = window[ "AppUtils" ].getConfig().clientOrigin
-                        + window[ "AppUtils" ].getConfig().routes.login;
+                    logoutRedirectUrl =
+                        window[ "AppUtils" ].getConfig().clientOrigin + window[ "AppUtils" ].getConfig().routes.login;
                 }
 
                 // If an override URL is defined in config, use that instead.
@@ -150,6 +167,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 .then((idToken) => {
                     const subParts = idToken.sub.split("@");
                     const tenantDomain = subParts[ subParts.length - 1 ];
+                    const username = idToken.sub;
 
                     dispatch(
                         setSignIn<AuthenticatedUserInfo>({
@@ -158,7 +176,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                             email: response.email,
                             scope: response.allowedScopes,
                             tenantDomain: response.tenantDomain ?? tenantDomain,
-                            username: response.username
+                            username: username
                         })
                     );
                 })
@@ -262,12 +280,80 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         }
     }, [ isAuthenticated ]);
 
+    /**
+     * Load localization files.
+     */
+    useEffect(() => {
+        if (!isAuthenticated) {
+            return;
+        }
+
+        // If `appBaseNameWithoutTenant` is "", avoids adding a forward slash.
+        const resolvedAppBaseNameWithoutTenant: string = StringUtils.removeSlashesFromPath(
+            Config.getDeploymentConfig().appBaseNameWithoutTenant
+        )
+            ? `/${ StringUtils.removeSlashesFromPath(Config.getDeploymentConfig().appBaseNameWithoutTenant) }`
+            : "";
+
+        const metaFileNames = I18nModuleConstants.META_FILENAME.split(".");
+        const metaFileName = `${ metaFileNames[ 0 ] }.${ process.env.metaHash }.${ metaFileNames[ 1 ] }`;
+
+        // Since the portals are not deployed per tenant, looking for static resources in tenant qualified URLs
+        // will fail. This constructs the path without the tenant, therefore it'll look for the file in
+        // `https://localhost:9443/<PORTAL>/resources/i18n/meta.json` rather than looking for the file in
+        // `https://localhost:9443/t/wso2.com/<PORTAL>/resources/i18n/meta.json`.
+        const metaPath = `${ resolvedAppBaseNameWithoutTenant }/${ StringUtils.removeSlashesFromPath(
+            Config.getI18nConfig().resourcePath
+        ) }/${ metaFileName }`;
+
+        // Fetch the meta file to get the supported languages.
+        axios
+            .get(metaPath)
+            .then((response) => {
+                // Set up the i18n module.
+                I18n.init(
+                    {
+                        ...Config.getI18nConfig(response?.data)?.initOptions,
+                        debug: window[ "AppUtils" ].getConfig().debug
+                    },
+                    Config.getI18nConfig()?.overrideOptions,
+                    Config.getI18nConfig()?.langAutoDetectEnabled,
+                    Config.getI18nConfig()?.xhrBackendPluginEnabled
+                ).then(() => {
+                    // Set the supported languages in redux store.
+                    store.dispatch(setSupportedI18nLanguages(response?.data));
+
+                    const isSupported = isLanguageSupported(I18n.instance.language, null, response?.data);
+
+                    if (!isSupported) {
+                        I18n.instance.changeLanguage(I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE).catch((error) => {
+                            throw new LanguageChangeException(I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE, error);
+                        });
+                    }
+                });
+            })
+            .catch((error) => {
+                throw new I18nInstanceInitException(error);
+            });
+    }, [ isAuthenticated ]);
+
     return (
         <SecureApp
-            fallback={ <ContentLoader dimmer /> }
+            fallback={ <PreLoader /> }
             onSignIn={ loginSuccessRedirect }
+            overrideSignIn={ async () => {
+                // This is to prompt the SSO page if a user tries to sign in
+                // through a federated IdP using an existing email address.
+                if (new URL(location.href).searchParams.get("prompt")) {
+                    await signIn({ prompt: "login" });
+                } else {
+                    await signIn();
+                }
+            } }
         >
-            <App />
+            <I18nextProvider i18n={ I18n.instance }>
+                <App />
+            </I18nextProvider>
         </SecureApp>
     );
 };

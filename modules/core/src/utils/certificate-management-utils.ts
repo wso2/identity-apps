@@ -19,7 +19,8 @@
 import { saveAs } from "file-saver";
 import * as forge from "node-forge";
 import { CertificateManagementConstants } from "../constants";
-import { Certificate, DisplayCertificate } from "../models";
+import { Certificate, CertificateValidity, DisplayCertificate } from "../models";
+import moment from "moment";
 
 /**
  * Utility class for certificate management operations.
@@ -68,7 +69,25 @@ export class CertificateManagementUtils {
         try {
             return forge.pki.certificateFromPem(pemCert);
         } catch (e) {
-            return null
+            return null;
+        }
+    }
+
+    /**
+     * decodeCertificate|displayCertificate|decodeForgeCertificate|searchIssuerDNAlias|exportCertificate
+     * @param pemCert
+     * @param isBase64Encoded
+     */
+    public static canSafelyParseCertificate(pemCert: string, isBase64Encoded: boolean = true): boolean {
+        if (isBase64Encoded) {
+            pemCert = this.getBase64DecodedCertificate(pemCert);
+        }
+        if (!pemCert) return false;
+        try {
+            forge.pki.certificateFromPem(pemCert);
+            return true;
+        } catch (error) {
+            return false;
         }
     }
 
@@ -144,6 +163,10 @@ export class CertificateManagementUtils {
      * @param issuerDN
      */
     public static searchIssuerDNAlias(issuerDN: object[]): string {
+
+        if (!issuerDN || issuerDN.length === 0)
+            return CertificateManagementConstants.NOT_AVAILABLE;
+
         let issuerAlias = "";
         issuerDN.map((issuer) => {
             if (Object.prototype.hasOwnProperty.call(issuer, "CN")) {
@@ -218,7 +241,7 @@ export class CertificateManagementUtils {
         pemValue[ pemValue.length - 1 ]?.includes(CertificateManagementConstants.CERTIFICATE_END)
         && pemValue.pop();
         return pemValue.join("\n");
-    };
+    }
 
     /**
      * This encloses a stripped PEM string with **BEGIN CERTIFICATE** and **END CERTIFICATE**.
@@ -246,7 +269,56 @@ export class CertificateManagementUtils {
             pemValue.push(lastLine);
         }
         return pemValue.join("\n");
-    };
+    }
+
+    /**
+     * Get validity period of a certificate in human readable format.
+     * @param validFrom {Date}
+     * @param validTill {Date}
+     */
+    public static getValidityPeriodInHumanReadableFormat(validFrom: Date, validTill: Date): string {
+
+        const isValid = new Date() >= validFrom && new Date() <= validTill;
+        const now = moment(new Date());
+        const receivedDate = moment(validTill);
+
+        let description;
+        if (isValid) {
+            description = "Valid for " + moment.duration(now.diff(receivedDate)).humanize();
+        } else {
+            description = "Expired " + moment.duration(now.diff(receivedDate)).humanize() + " ago";
+        }
+
+        return description;
+    }
+
+    /**
+     * Returns the validity of a certificate.
+     * @param from {Date}
+     * @param to {Date}
+     * @public
+     */
+    public static determineCertificateValidityState({ from, to }: { from: Date; to: Date; }): CertificateValidity {
+
+        const _now = moment(new Date());
+        const _from = moment(from);
+        const _to = moment(to);
+
+        const isValid = _now.isAfter(_from) && _now.isBefore(_to);
+
+        if (isValid) {
+            if (_now.diff(_to, 'minute') < 0 && _now.diff(_to, 'year') >= -1) {
+                return CertificateValidity.WILL_EXPIRE_SOON;
+            } else if (_now.diff(_to, 'minute') < 0) {
+                return CertificateValidity.VALID;
+            } else {
+                return CertificateValidity.EXPIRED;
+            }
+        } else {
+            return CertificateValidity.EXPIRED;
+        }
+
+    }
 
     /**
      * Base 64 decodes the certificate content. If not a valid base 64 content, returns null.

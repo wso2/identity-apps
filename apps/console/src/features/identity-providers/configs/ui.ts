@@ -54,7 +54,7 @@ import {
 import {
     ReactComponent as YahooIdPIllustration
 } from "../../../themes/default/assets/images/identity-providers/yahoo-idp-illustration.svg";
-import OIDCLogo from "../../../themes/default/assets/images/protocols/oidc.png";
+import OIDCLogo from "../../../themes/default/assets/images/protocols/openid-connect.png";
 import OpenIDLogo from "../../../themes/default/assets/images/protocols/openid.png";
 import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
 import WSFedLogo from "../../../themes/default/assets/images/protocols/ws-fed.png";

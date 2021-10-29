@@ -302,12 +302,29 @@
                 }
             }
         }
-        &.minimal-application-create-wizard {
+        &.minimal-application-create-wizard, &.identity-provider-create-wizard {
             .sub-template-selection {
+                .sub-templates-label {
+                    display: block;
+                    margin: 0em 0em @4px 0em;
+                    color: @textColor;
+                    font-size: @relativeSmall;
+                    font-weight: @bold;
+                    text-transform: none;
+                }
                 .sub-template-selection-card {
                     .card-text-container {
                         .header {
-                            font-size: @minimalApplicationCreateWizardSubTemplateSelectionCardFontSize;
+                            font-size: @minimalApplicationCreateWizardSubTemplateSelectionCardFontSize !important;
+                        }
+                    }
+                    &.image-inline {
+                        .card-image-container {
+                            .theme-icon {
+                                margin-right: 10px;
+                                border-right: @defaultBorderWidth solid lighten(@defaultBorderColor, 10);
+                                padding-right: 10px;
+                            }
                         }
                     }
                 }

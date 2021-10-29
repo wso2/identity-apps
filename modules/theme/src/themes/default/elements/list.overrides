@@ -399,3 +399,19 @@
         }
     }
 }
+
+/*******************************
+      UI List Certificates
+*******************************/
+
+.ui.list {
+    .with-muted-list-item-header {
+        color: grey !important;
+        font-style: italic !important;
+
+        i {
+           color: grey !important;
+           cursor: pointer;
+        }
+    }
+}

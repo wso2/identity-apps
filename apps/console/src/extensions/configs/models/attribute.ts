@@ -73,6 +73,7 @@ export interface AttributeConfig {
             identifyAsCustomAttrib: boolean;
         }
         customDialectURI: string;
+        oidcDialectURI: string;
         createCustomDialect: boolean;
         mapClaimToCustomDialect: boolean;
         checkAttributeNameAvailability: (attributeName: string, protocol: string) => Promise<Map<string, boolean>>;
@@ -80,6 +81,8 @@ export interface AttributeConfig {
         isSCIMCustomDialectAvailable: () => Promise<string>;
         isUserStoresHidden: (hiddenUserStores: string[]) => Promise<any[]>;
     }
+    systemClaims: string[];
+    defaultScimMapping: Object;
     showCustomDialectInSCIM: boolean;
     isRowSelectable: (claim: Claim | ExternalClaim | ClaimDialect) => boolean;
     isSCIMEditable: boolean;

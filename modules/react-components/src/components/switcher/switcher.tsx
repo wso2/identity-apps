@@ -250,8 +250,8 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
             labeled
             basic
             icon={ canButtonGroupHaveIcons(options) }
+            widths={ options.length }
             { ...(rest ?? EMPTY_OBJECT) }
-            widths={options.length}
         >
             { options.map((opt: SwitcherOptionProps, index: number): ReactElement => {
                 const { value, label, disabled, ...optRest } = opt;
@@ -259,7 +259,7 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
                     return (
                         <Popup
                             content={ disabledMessage ?? DEFAULT_DISABLED_MESSAGE }
-                            // Why a <span> wrapping the button? Well, buttons doesn't
+                            // Why a <div> wrapping the button? Well, buttons doesn't
                             // trigger hovers when they're disabled...
                             // Popup only triggers: {hover, click, focus} events.
                             // https://react.semantic-ui.com/modules/popup/
@@ -300,6 +300,7 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
 
 const DEFAULT_DISABLED_MESSAGE = "This action is disabled.";
 const STYLED_BUTTON = { height: "100%" };
+
 const OPERATION_PASS = (
     event: React.MouseEvent<HTMLButtonElement>
 ): void => {

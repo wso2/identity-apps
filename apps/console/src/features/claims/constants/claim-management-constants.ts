@@ -141,6 +141,7 @@ export class ClaimManagementConstants {
     public static readonly USER_ID_CLAIM_URI: string = "http://wso2.org/claims/userid";
     public static readonly USER_NAME_CLAIM_URI: string = "http://wso2.org/claims/username";
     public static readonly GROUPS_CLAIM_URI: string = "http://wso2.org/claims/groups";
+    public static readonly LOCATION_CLAIM_URI: string = "http://wso2.org/claims/location";
 
     public static readonly EMPTY_STRING = "";
 

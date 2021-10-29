@@ -101,9 +101,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const consoleAppURL: string = useSelector((state: AppState) => state.config.deployment.appHomePath);
     const activeView: AppViewTypes = useSelector((state: AppState) => state.global.activeView);
 
-    const isDevelopAllowed: boolean = 
+    const isDevelopAllowed: boolean =
         useSelector((state: AppState) => state.accessControl.isDevelopAllowed);
-    const isManageAllowed: boolean = 
+    const isManageAllowed: boolean =
         useSelector((state: AppState) => state.accessControl.isManageAllowed);
 
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>(undefined);
@@ -311,7 +311,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             }
                         />
                     ) }
-                    version={ config.ui.productVersionConfig?.versionOverride ?? config.deployment.productVersion }
+                    version={ config.ui.productVersionConfig?.productVersion }
                     versionUISettings={ {
                         allowSnapshot: config.ui.productVersionConfig?.allowSnapshot,
                         labelColor: config.ui.productVersionConfig?.labelColor,
@@ -340,15 +340,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         category: "APPS",
                         categoryLabel: t("common:apps"),
                         links: [
-                            {
-                                "data-testid": "app-switch-console",
-                                icon: AppSwitcherIcons().console,
-                                name: t("console:common.header.appSwitch.console.name"),
-                                onClick: () => {
-                                    eventPublisher.publish("console-click-visit-console");
-                                    window.open(consoleAppURL, "_self");
-                                }
-                            },
                             {
                                 "data-testid": "app-switch-myaccount",
                                 icon: AppSwitcherIcons().myAccount,

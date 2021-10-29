@@ -145,19 +145,9 @@ Read through our [configurations guidelines](./CONFIGURATION.md) to learn about 
 Make sure that you set up the required developer tools as mentioned [here](#setting-up-development-tools) before
 starting off with the coding.
 
-#### ESLint
+#### Static Code Analysis
 
-We use [ESLint][eslint-official-site] as the primary code analysis tool and it's important that you adhere to the
-defined ruleset in the configuration. Setup the ESLint plugin corresponding to the IDE/Code editor you are using. For more
-information, follow the instructions [here](#setting-up-development-tools).
-
-Always keep an eye out for the inline warnings and errors given out by the plugin and also execute the following
-command before making a commit to make sure that you don't violate the rules.
-
-```bash
-# Run this from the root.
-npm run lint:staged
-```
+Follow through [this guide](./STATIC_CODE_ANALYSIS.md) to set-up and understand the different static code analysis tools that are being used in the project.
 
 ### React Rules of Thumb
 

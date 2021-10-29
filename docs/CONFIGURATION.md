@@ -289,7 +289,7 @@ OIDC Session management configs.
 
 Idle session timeout interval.
 
-**Supported Values -** Any numerical value. (in seconds) 
+**Supported Values -** Any numerical value. (in seconds)
 
 ```toml
 [console]
@@ -302,7 +302,7 @@ session.params.userIdleTimeOut = 600
 
 When will the warning modal appear to warn about idle timeout.
 
-**Supported Values -** Any numerical value. (in seconds and should be less than `userIdleTimeOut`) 
+**Supported Values -** Any numerical value. (in seconds and should be less than `userIdleTimeOut`)
 
 ```toml
 [console]
@@ -315,7 +315,7 @@ session.params.userIdleWarningTimeOut = 580
 
 When to send the session extension request.
 
-**Supported Values -** Any numerical value. (in seconds) 
+**Supported Values -** Any numerical value. (in seconds)
 
 ```toml
 [console]
@@ -328,7 +328,7 @@ session.params.sessionRefreshTimeOut = 300
 
 At what interval should the app poll for session state.
 
-**Supported Values -** Any numerical value. (in seconds) 
+**Supported Values -** Any numerical value. (in seconds)
 
 ```toml
 [console]
@@ -349,47 +349,6 @@ In SaaS mode, the tenant will be extracted from the logged in users ID token. Ot
 ```toml
 [console]
 tenantResolutionStrategy = "id_token"
-```
-
-### `is_sass`
-
-> :bulb: No value defined in Default JSON
-
-> :checkered_flag: Fallback Value - `true`
-
-Determines whether the app is SaaS.
-
-**Supported Values -** `true` | `false`
-
-```toml
-[console]
-documentation.is_sass = true
-```
-
-### `login_callback_path`
-
-> :white_check_mark: Default JSON value - `"/login"`
-
-Path to be redirected on login.
-
-**Supported Values -** Any route determined in the app. 
-
-```toml
-[console]
-documentation.login_callback_path = "/login"
-```
-
-### `logout_callback_path`
-
-> :white_check_mark: Default JSON value - `"/login"`
-
-Path to be redirected on logout.
-
-**Supported Values -** Any route determined in the app. 
-
-```toml
-[console]
-documentation.logout_callback_path = "/login"
 ```
 
 ### `server_origin`
@@ -554,7 +513,7 @@ ui.app_title = "Console | WSO2 Identity Server"
 
 > :white_check_mark: Default JSON value - `"Console"` (for Console) | `"My Account"` (for My Account)
 
-Display name of the app. 
+Display name of the app.
 
 **Supported Values -** Any string.
 
@@ -651,7 +610,7 @@ Shows the snapshot label if present in product version.
 product_version.configs.allowSnapshot = false
 ```
 
-#### `versionOverride`
+#### `productVersion`
 
 > :bulb: No value defined in Default JSON
 
@@ -661,7 +620,7 @@ Overrides the version number. Use "" if version should be hidden. Drop the attri
 
 ```toml
 [console]
-product_version.configs.versionOverride = "ALPHA"
+product_version.configs.productVersion = "ALPHA"
 ```
 
 #### `textCase`
@@ -747,106 +706,6 @@ Console app's **Develop** section configs.
 applications.developer_app.configs.basePath = "<BASE_PATH>" # Defaults to the `/develop`.
 applications.developer_app.configs.displayName = "<DISPLAY_NAME>" # Name to displayed in the tab. Defaults to the `Develop`.
 applications.developer_app.configs.path = "<PATH>" # Path to navigate the users when the manage tab is clicked. Defaults to the `/develop/applications`.
-```
-
-### `documentation`
-
-In app Documentation deployment related configurations. These will be used to display docs in applications help panel etc..
-
-#### `base_url`
-
-> :white_check_mark: Default JSON value - `"https://api.github.com"`
-
-Base URL of the hosted docs site. By default, IS docs hosted on [GitHub](https://github.com/wso2/docs-is) is used, hence base URL is the GitHub API.
-
-**Supported Values -** Any absolute URL.
-
-```toml
-[console]
-documentation.base_url = "https://docs.wso2.is.com"
-```
-
-#### `content_base_url`
-
-> :white_check_mark: Default JSON value- `"https://api.github.com/repos/wso2/docs-is/contents/en/docs"`
-
-Where to find docs content. By default, main content is available inside `/en/docs`.
-
-**Supported Values -** Any absolute URL.
-
-```toml
-[console]
-documentation.base_url = "https://docs.wso2.is.com/en/docs"
-```
-
-#### `github_options`
-
-Extra config options if the docs are hosted on GitHub.
-
-##### `branch`
-
-> :white_check_mark: Default JSON value - `"new_restructure"`,
-
-GitHub branch to look for content.
-
-**Supported Values -** Any string.
-
-```toml
-[console]
-documentation.github_options.branch = "main"
-```
-
-#### `image_prefix_url`
-
-> :white_check_mark: Default JSON value - `"https://github.com/wso2/docs-is/raw/new_restructure/en/docs/"`
-
-URL to prefix to relative image paths.
-
-**Supported Values -** Any URL.
-
-```toml
-[console]
-documentation.image_prefix_url = "https://docs.wso2.is.com/en/docs"
-```
-
-#### `provider`
-
-> :white_check_mark: Default JSON value - `"GITHUB"`
-
-Documentation provider.
-
-**Supported Values -** `"GITHUB"` | `"CUSTOM"`
-
-```toml
-[console]
-documentation.provider = "CUSTOM"
-```
-
-#### `structure_file_type`
-
-> :white_check_mark: Default JSON value - `"YAML"`
-
-File type of the docs structure file. Currently in [docs-is](https://github.com/wso2/docs-is), a [YAML file](https://github.com/wso2/docs-is/blob/master/en/mkdocs.yml) is used to maintain the structure of the repo.
-So in order to read the file in react context, it has to be parsed. This config will tell the code base to parse the YAML. Any other file type will be returned raw as pwe current implementation.
-
-**Supported Values -** `"YAML"` | `undefined`
-
-```toml
-[console]
-documentation.structure_file_type = "YAML"
-```
-
-#### `structure_file_url`
-
-> :white_check_mark: Default JSON value - `"https://api.github.com/repos/wso2/docs-is/contents/en/mkdocs.yml"`
-
-URL for the structure file.
-
-**Supported Values -** Any absolute URL.
-
-```toml
-[console]
-documentation.structure_file_url = "https://docs.wso2.is.com/en/mkdocs.yml"
 ```
 
 ### `extensions`

@@ -690,6 +690,14 @@ export const console: ConsoleNS = {
                         message: "Si vous révoquez cette application, les flux d'authentification " +
                                  "pour cette application cesseront de fonctionner. Veuillez " +
                                  "procéder avec prudence."
+                    },
+                    certificateDelete: {
+                        assertionHint: "Veuillez confirmer votre action.",
+                        content: "N/A",
+                        header: "Es-tu sûr?",
+                        message: "Cette action est irréversible et supprimera définitivement le certificat.",
+                        primaryAction: "Effacer",
+                        secondaryAction: "Annuler"
                     }
                 },
                 dangerZoneGroup: {
@@ -789,7 +797,8 @@ export const console: ConsoleNS = {
                                 attributeComponentHint: "Gérez les attributs utilisateur que vous souhaitez partager" +
                                     " avec cette application.",
                                 attributeComponentHintAlt: "Gérez les attributs utilisateur que vous souhaitez" +
-                                    " partager avec cette application.",
+                                    " partager avec cette application. Vous pouvez ajouter de nouveaux attributs et " +
+                                    "mappages en accédant à <1>Attributs</1>",
                                 description: "Ajoutez les attributs utilisateur autorisés à être partagés avec cette " +
                                     "application.",
                                 mandatoryAttributeHint: "Marquez les attributs utilisateur qui doivent " +
@@ -949,10 +958,16 @@ export const console: ConsoleNS = {
                                                 }
                                             },
                                             secretsList: {
-                                                iconTooltip: "Ajouter un secret en tant que clé API",
                                                 create: "Créer un nouveau secret",
                                                 emptyPlaceholder: "Aucun secret disponible",
-                                                search: "Recherche par nom secret"
+                                                search: "Recherche par nom secret",
+                                                tooltips: {
+                                                    keyIcon: "Stockez en toute sécurité les clés d'accès en tant que " +
+                                                        "secrets. Les secrets peuvent remplacer la clé API dans la " +
+                                                        "fonction <1>callChoreo</1> pour l'authentification " +
+                                                        "conditionnelle.",
+                                                    plusIcon: "Ajouter au script"
+                                                }
                                             },
                                             heading: "Configuration basée sur des scripts",
                                             hint: "Définissez le flux d'authentification via un script adaptatif. Vous pouvez " +
@@ -1253,7 +1268,8 @@ export const console: ConsoleNS = {
                                 }
                             },
                             skipConsentLogout: {
-                                hint: "Le consentement de l'utilisateur sera ignoré pendant le processus de déconnexion.",
+                                hint: "Le consentement de l'utilisateur sera ignoré pendant le processus de " +
+                                    "déconnexion.",
                                 label: "Sauter le consentement à la déconnexion",
                                 validations: {
                                     empty: "Ceci est un champ obligatoire."
@@ -1297,8 +1313,13 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "Certificat",
-                                hint: "Ce certificat permet de valider les signatures des requêtes signées et de " +
-                                    "décrypter les requêtes cryptées de l'application vers {{productName}}."
+                                hint: {
+                                    customOidc: "Ce certificat est utilisé pour chiffrer le <1>id_token</1>" +
+                                        " renvoyé après l'authentification.",
+                                    customSaml: "Ce certificat permet de valider les signatures des " +
+                                        "requêtes signées et de chiffrer les assertions SAML renvoyées " +
+                                        "après authentification."
+                                }
                             }
                         }
                     },
@@ -1376,7 +1397,9 @@ export const console: ConsoleNS = {
                         }
                     },
                     inboundOIDC: {
-                        description: "Ci-dessous sont les paramètres OpenID Connect pour votre application",
+                        description: "Ci-dessous sont les paramètres {{protocol}} pour votre application",
+                        documentation: "Lisez notre <1>documentation</1> pour en savoir plus sur l'utilisation " +
+                            "du protocole <3>{{protocol}}</3> pour implémenter la connexion dans vos applications.",
                         fields: {
                             allowedOrigins: {
                                 hint: "Les origines autorisées sont des URL qui seront autorisées à effectuer des requêtes " +
@@ -1491,7 +1514,6 @@ export const console: ConsoleNS = {
                                                 "et httpOnly.",
                                             none: "Pas de liaison. {{productName}} émettra un nouveau jeton d'accès " +
                                                 "uniquement lorsque le jeton expirera ou sera révoqué.",
-                                            // eslint-disable-next-line @typescript-eslint/camelcase
                                             sso_session: "Lie le jeton d'accès à la session de connexion. " +
                                                 "{{productName}} émettra un nouveau jeton d'accès pour chaque " +
                                                 "nouvelle connexion et le révoquera lors de la déconnexion."
@@ -1696,11 +1718,17 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "Validateurs de scope"
+                            },
+                            certificates: {
+                                disabledPopup: "Ce certificat est utilisé pour chiffrer le <1>id_token</1>." +
+                                    " Tout d'abord, vous devez désactiver le cryptage <3>id_token</3> pour continuer."
                             }
                         }
                     },
                     inboundSAML: {
                         description: "Vous trouverez ci-dessous les paramètres SAML de votre application.",
+                        documentation: "Lisez notre <1>documentation</1> pour en savoir plus sur l'utilisation " +
+                            "du protocole <3>{{protocol}}</3> pour implémenter la connexion dans vos applications.",
                         fields: {
                             assertionURLs: {
                                 hint: "Elle précise les URL des consommateurs vers lesquels le navigateur " +
@@ -1742,8 +1770,8 @@ export const console: ConsoleNS = {
                                 }
                             },
                             issuer: {
-                                hint: "Ceci précise l'émetteur. C'est l'élément 'saml:Issuer' qui contient l'identifiant " +
-                                    "unique de la demande. C'est également la valeur de l'émetteur" +
+                                hint: "Ceci précise l'émetteur. C'est l'élément 'saml:Issuer' qui contient " +
+                                    "l'identifiant unique de la demande. C'est également la valeur de l'émetteur" +
                                     "spécifiée dans la demande d'authentification SAML émise par l'application.",
                                 label: "Emetteur",
                                 placeholder: "sample-app.com",
@@ -2003,6 +2031,10 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "Profil de connexion unique"
+                            },
+                            certificates: {
+                                disabledPopup: "Assurez-vous que la validation de la signature de la " +
+                                    "demande et le chiffrement des assertions sont désactivés pour continuer."
                             }
                         }
                     },
@@ -2178,8 +2210,10 @@ export const console: ConsoleNS = {
                                         authorize: "Authorize",
                                         endSession: "Se déconnecter",
                                         introspection: "Introspection",
-                                        keystore: "Key Set",
+                                        issuer: "Émetteur",
                                         jwks: "JWKS",
+                                        keystore: "Key Set",
+                                        revoke: "Révoquer",
                                         token: "Token",
                                         userInfo: "UserInfo",
                                         wellKnown: "Discovery"
@@ -2246,8 +2280,7 @@ export const console: ConsoleNS = {
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "Cette organisation a atteint la limite maximale de 200 candidatures " +
-                                "autorisées.",
+                            description: "Vous avez atteint le nombre maximum de candidatures autorisé.",
                             message: "Échec de la création de l'application"
                         }
                     },
@@ -2625,6 +2658,15 @@ export const console: ConsoleNS = {
                         description: "Les constructions en boucle telles que <1>for</1>, <3>while</3> et " +
                             "<5>forEach</5> ne sont pas autorisées dans le script d'authentification conditionnelle.",
                         message: "Échec de la mise à jour du script"
+                    },
+                    deleteCertificateSuccess: {
+                        description: "Suppression réussie du certificat d'application.",
+                        message: "Certificat supprimé"
+                    },
+                    deleteCertificateGenericError: {
+                        description: "Quelque chose s'est mal passé. Nous n'avons pas pu supprimer le" +
+                            " certificat d'application.",
+                        message: "Échec de la mise à jour de l'application"
                     }
                 },
                 placeholders: {
@@ -2846,12 +2888,12 @@ export const console: ConsoleNS = {
                 dangerZoneGroup: {
                     deleteIDP: {
                         actionTitle: "Effacer",
-                        header: "Supprimer le fournisseur d'identité",
+                        header: "Supprimer la connexion",
                         subheader: "Une fois supprimé, il ne peut pas être récupéré. S'il vous plaît soyez certain."
                     },
                     disableIDP: {
-                        actionTitle: "Activer le fournisseur d'identité",
-                        header: "Activer le fournisseur d'identité",
+                        actionTitle: "Désactiver la connexion",
+                        header: "Désactiver la connexion",
                         subheader: "Une fois désactivé, il ne peut plus être utilisé jusqu'à ce que vous le réactiviez."
                     },
                     header: "Zone de danger"
@@ -2942,9 +2984,9 @@ export const console: ConsoleNS = {
                     },
                     generalDetails: {
                         description: {
-                            hint: "Une description significative du fournisseur d'identité.",
+                            hint: "Une description textuelle de la connexion.",
                             label: "Description",
-                            placeholder: "Saisir un e description pour le fournisseur d'identité."
+                            placeholder: "Une description textuelle de la connexion."
                         },
                         image: {
                             hint: "Une URL pour récupérer l'image du fournisseur d'identité.",
@@ -2952,9 +2994,9 @@ export const console: ConsoleNS = {
                             placeholder: "Par exemple: https://example.com/image.png"
                         },
                         name: {
-                            hint: "Entrez un nom unique pour ce fournisseur d'identité.",
+                            hint: "Saisissez un nom unique pour cette connexion.",
                             label: "Nom du fournisseur d'identité",
-                            placeholder: "Saisissez un nom pour le fournisseur d'identité.",
+                            placeholder: "Saisissez un nom unique pour cette connexion.",
                             validations: {
                                 duplicate: "Un fournisseur d'identité existe déjà avec ce nom",
                                 empty: "Le nom du fournisseur d'identité est requis",
@@ -3096,18 +3138,17 @@ export const console: ConsoleNS = {
                             message: "Erreur de création"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la création du fournisseur d'identité.",
+                            description: "Une erreur s'est produite lors de la création de la connexion.",
                             message: "Erreur de création"
                         },
                         success: {
-                            description: "Création réussie du fournisseur d'identité.",
+                            description: "Création réussie de la connexion.",
                             message: "Créer avec succès"
                         }
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "Cette organisation a atteint la limite maximale de 200 fournisseurs " +
-                                "d'identité autorisés.",
+                            description: "Vous avez atteint le nombre maximum de fournisseurs d'identité autorisés.",
                             message: "Échec de la création du fournisseur d'identité"
                         }
                     },
@@ -3439,11 +3480,11 @@ export const console: ConsoleNS = {
                             message: "Erreur de mise à jour"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la mise à jour du fournisseur d'identité.",
+                            description: "Une erreur s'est produite lors de la mise à jour de la connexion.",
                             message: "Erreur de mise à jour"
                         },
                         success: {
-                            description: "Mise à jour réussie du fournisseur d'identité.",
+                            description: "La connexion a été mise à jour avec succès.",
                             message: "Mise à jour réussie"
                         }
                     },
@@ -3740,9 +3781,9 @@ export const console: ConsoleNS = {
                         }
                     },
                     actions: {
-                        finishButton: {
-                            label: "Finir",
-                            ariaLabel: "Terminer et soumettre"
+                        createButton: {
+                            label: "Créer",
+                            ariaLabel: "Créer et soumettre"
                         },
                         cancelButton: {
                             label: "Annuler",
@@ -3753,8 +3794,8 @@ export const console: ConsoleNS = {
                 banners: {
                     secretIsHidden: {
                         title: "Pourquoi ne puis-je pas voir le secret ?",
-                        content: "Une fois créé, vous ne pourrez plus voir la valeur secrète. Vous ne pourrez que" +
-                            " mettre à jour la valeur secrète ou supprimer le secret."
+                        content: "Une fois créé, vous ne pourrez plus voir la valeur secrète. Vous ne pourrez " +
+                            "supprimer que le secret."
                     },
                     adaptiveAuthSecretType: {
                         title: "Secrets d'authentification adaptative",
@@ -3844,9 +3885,17 @@ export const console: ConsoleNS = {
             authenticationProvider: {
                 templates: {
                     enterprise: {
+                        addWizard: {
+                            title: "Fournisseurs d'identité basés sur des normes",
+                            subtitle: "Configurez un nouveau fournisseur d'identité pour vous connecter avec des " +
+                                "protocoles d'authentification standard."
+                        },
                         validation: {
                             name: "Merci d'entrer un nom valide",
-                            invalidName: "Merci d'entrer un nom valide"
+                            invalidName: "{{idpName}} n'est pas un nom valide. " +
+                                "Il ne doit pas contenir d'autres caractères alphanumériques, " +
+                                "à l'exception des points (.), des tirets (-), " +
+                                "des traits de soulignement (_) et des espaces."
                         }
                     }
                 }
@@ -4293,7 +4342,8 @@ export const console: ConsoleNS = {
                                 validation: {
                                     invalid: "Le nom d'attribut ne peut contenir que des caractères "
                                         +"alphanumériques et _. Et doit avoir une longueur comprise "
-                                        +"entre 3 et 30 caractères."
+                                        +"entre 3 et 30 caractères.",
+                                    alreadyExists: "Un attribut existe déjà avec le nom d'attribut donné."
                                 }
                             }
                         },
@@ -4463,7 +4513,10 @@ export const console: ConsoleNS = {
                             placeholder: "Sélectionnez un attribut",
                             requiredErrorMessage: "Sélectionnez un attribut auquel mapper"
                         },
-                        submit: "Ajouter un mappage d'attributs"
+                        submit: "Ajouter un mappage d'attributs",
+                        warningMessage: "Aucun attribut local n'est disponible pour le mappage. " +
+                            "Ajouter de nouveaux attributs locaux à partir d'ici",
+                        emptyMessage: "Tous les attributs SCIM sont mappés sur des revendications locales."
                     },
                     notifications: {
                         addExternalAttribute: {
@@ -4681,6 +4734,12 @@ export const console: ConsoleNS = {
                         "cet attribut sur le profil.",
                         supportedByDefault: {
                             label: "Afficher cet attribut sur le profil de l'utilisateur et la page d'enregistrement de l'utilisateur"
+                        },
+                        infoMessages: {
+                            disabledConfigInfo: "Veuillez noter que la section ci-dessous est désactivée car aucun" +
+                                " mappage de revendication externe n'a été trouvé pour cet attribut de revendication.",
+                            configApplicabilityInfo: "Veuillez noter que les configurations d'attributs suivantes " +
+                                "n'affecteront que les profils d'utilisateurs des clients."
                         }
                     },
                     mappedAttributes: {
@@ -6398,7 +6457,6 @@ export const console: ConsoleNS = {
                 },
                 profile: {
                     fields: {
-                        /* eslint-disable @typescript-eslint/camelcase */
                         userId: "Identifiant d'utilisateur",
                         addresses_home: "Adresse personnelle",
                         addresses_work: "Adresse professionnelle",
@@ -6420,7 +6478,6 @@ export const console: ConsoleNS = {
                         photos: "Photos",
                         profileUrl: "URL",
                         userName: "Nom d'utilisateur"
-                        /* eslint-enable @typescript-eslint/camelcase */
                     },
                     forms: {
                         emailChangeForm: {
@@ -7202,8 +7259,7 @@ export const console: ConsoleNS = {
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "Cette organisation a atteint la limite maximale de 15 magasins " +
-                                "d'utilisateurs autorisés..",
+                            description: "Vous avez atteint le nombre maximum de magasins d'utilisateurs autorisés.",
                             message: "Échec de la création du magasin d'utilisateurs"
                         }
                     },

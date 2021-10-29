@@ -21,7 +21,7 @@ import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { GenericIcon, Hint, InlineEditInput } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Card, Grid, Label, Message, Popup } from "semantic-ui-react";
+import { Card, Grid, Label, Message, Popup, Icon } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
 import { getTechnologyLogos } from "../../../../core";
 
@@ -45,6 +45,14 @@ interface BasicDetailsLocalClaimsPropsInterface extends TestableComponentInterfa
      * The base claim URI string
      */
     claimURIBase: string;
+    /**
+     * State for button loading
+     */
+    validateMapping: boolean;
+    /**
+     * Called to initiate button loading
+     */
+    setValidateMapping: (state: boolean) => void;
 }
 
 /**
@@ -61,6 +69,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
         onSubmit,
         values,
         claimURIBase,
+        validateMapping,
+        setValidateMapping,
         [ "data-testid" ]: testId
     } = props;
 
@@ -76,9 +86,9 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
     const [ noUniqueOIDCAttrib, setNoUniqueOIDCAttrib ] = useState<boolean>(true);
     const [ noUniqueSCIMAttrib, setNoUniqueSCIMAttrib ] = useState<boolean>(true);
     const [ isInlineEditMode, setIsInlineEditMode ] = useState<boolean>(false);
-    const [ oidcMapping, setOidcMapping ] = useState<string>(values?.get("oidc").toString());
-    const [ scimMapping, setScimMapping ] = useState<string>(values?.get("scim").toString());
-    const [ validateMapping, setValidateMapping ] = useState<boolean>(false);
+    const [ oidcMapping, setOidcMapping ] = useState<string>(values?.get("oidc")?.toString());
+    const [ scimMapping, setScimMapping ] = useState<string>(values?.get("scim")?.toString());
+    const [ isScimMappingRemoved, setIsScimMappingRemoved] = useState<boolean>(false);
 
     const nameField = useRef<HTMLElement>(null);
     const claimField = useRef<HTMLElement>(null);
@@ -100,6 +110,20 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
         setIsShow(values?.get("supportedByDefault")?.length > 0);
         setClaimID(values?.get("claimURI")?.toString());
     }, [ values ]);
+
+    /**
+     * Trigger the validation once the attribute name
+     * is checked for availability.
+     */
+    useEffect(() => {
+        if (!noUniqueSCIMAttrib || !noUniqueOIDCAttrib) {
+            const claimElement = claimField.current.children[0].children[1].children[0] as HTMLInputElement;
+            claimElement.focus();
+            claimElement.blur();
+            setNoUniqueOIDCAttrib(true);
+            setNoUniqueSCIMAttrib(true);
+        }
+    }, [ noUniqueSCIMAttrib, noUniqueOIDCAttrib])
 
 
     /**
@@ -149,15 +173,18 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                         return;
                     }
 
-                    if (oidcMapping === "" || scimMapping === "") {
+                    if (oidcMapping === "") {
                         return;
                     }
 
+                    if (scimMapping !== "") {
+                        values.set("scim", scimMapping);
+                    }
+
                     values.set("oidc", oidcMapping);
-                    values.set("scim", scimMapping);
                 }
 
-                if (noUniqueOIDCAttrib && noUniqueSCIMAttrib) {
+                if (noUniqueOIDCAttrib && noUniqueSCIMAttrib && !validateMapping) {
                     onSubmit(data, values);
                 }
 
@@ -187,6 +214,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                         setClaimID(values.get("claimURI").toString());
                                         setOidcMapping(values.get("claimURI").toString().replace(/\./g,""));
                                         setScimMapping(values.get("claimURI").toString().replace(/\./g,""));
+                                        setIsScimMappingRemoved(false);
                                     } }
                                     onMouseOver={ () => {
                                         delayPopup(setIsShowClaimIDHint, claimTimer);
@@ -211,6 +239,14 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                             validation.isValid = false;
                                             validation.errorMessages.push(t("console:manage.features.claims."
                                                 +"dialects.forms.fields.attributeName.validation.invalid"));
+                                            return;
+                                        }
+
+                                        if (!noUniqueOIDCAttrib || !noUniqueSCIMAttrib) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(t("console:manage.features.claims."
+                                                +"dialects.forms.fields.attributeName.validation.alreadyExists"));
+                                            return;
                                         }
 
                                         // TODO: Move constants to constants file
@@ -281,21 +317,6 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                 </Message>
                                             }
                                             <Grid verticalAlign="middle">
-                                                { !noUniqueOIDCAttrib || !noUniqueSCIMAttrib ?
-                                                    <Grid.Row columns={ 1 } >
-                                                        <Grid.Column>
-                                                            <Message size="tiny" negative>
-                                                                { `The mapping names generated for ${ 
-                                                                    !noUniqueOIDCAttrib ? "OpenID Connect" : ""} ${ 
-                                                                        !noUniqueOIDCAttrib && !noUniqueSCIMAttrib 
-                                                                        ? "and" : "" } ${ 
-                                                                            !noUniqueSCIMAttrib ? "SCIM" : ""
-                                                                            } protocol is already available.` 
-                                                                }
-                                                            </Message>
-                                                        </Grid.Column>
-                                                    </Grid.Row> : <></>
-                                                }
                                                 <Grid.Row columns={ 2 } >
                                                     <Grid.Column width={ 5 }>
                                                         <GenericIcon
@@ -338,8 +359,9 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                         />
                                                     </Grid.Column>
                                                 </Grid.Row>
-                                                <Grid.Row columns={ 2 } >
-                                                    <Grid.Column width={ 5 }>
+                                                { !isScimMappingRemoved &&
+                                                <Grid.Row columns={ 3 }>
+                                                    <Grid.Column width={ 3 }>
                                                         <GenericIcon
                                                             transparent
                                                             verticalAlign="middle"
@@ -381,8 +403,29 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                             text={ scimMapping }
                                                         />
                                                     </Grid.Column>
+                                                    <Grid.Column width={ 2 }>
+                                                        { scimMapping
+                                                            ? <Popup
+                                                                trigger={
+                                                                    <Icon name="trash alternate"
+                                                                          link
+                                                                          onClick={() => {
+                                                                              setScimMapping("");
+                                                                              setIsScimMappingRemoved(true);
+                                                                          }}
+                                                                    />
+                                                                }
+                                                                content={ "Remove Mapping" }
+                                                                position="top center"
+                                                                size="mini"
+                                                                hideOnScroll
+                                                                inverted
+                                                             />
+                                                            : null
+                                                        }
+                                                    </Grid.Column>
                                                 </Grid.Row>
-
+                                                }
                                             </Grid>
                                         </Card.Description>
                                     </Card.Content>

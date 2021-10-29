@@ -369,6 +369,13 @@
                 margin: 0 !important;
                 min-height: @userDropdownLinkMinHeight;
             }
+            .organization-label {
+                background: #ffebd2;
+                margin: 5px;
+                min-width: 272px !important;
+                text-align: center;
+                width: calc(100% - 10px);
+            }
         }
     }
 }
@@ -614,6 +621,46 @@
             }
             &:focus {
                 outline: none;
+            }
+        }
+    }
+}
+
+/*-------------------
+   Secrets Dropdown
+--------------------*/
+
+.ui.menu {
+    .ui.dropdown {
+        .menu {
+            &.create-button-item {
+                .item {
+                    .text {
+                        color: @primaryColor;
+                    }
+                }
+            }
+            &.custom-dropdown {
+                max-height: 200px;
+                max-width: 50px;
+
+                .item {
+                    height: 43px;
+
+                    .theme-icon {
+                        padding-right: 0;
+                        padding-left: 0;
+                        background: 0 0!important;
+                    }
+
+                    .icon:hover {
+                        cursor: pointer;
+                    }
+                }
+                .item:hover {
+                    background: 0 0!important;
+                    cursor: default;
+                }
             }
         }
     }

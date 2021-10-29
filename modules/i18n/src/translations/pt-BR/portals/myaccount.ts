@@ -444,7 +444,8 @@ export const myAccount: MyAccountNS = {
                     name: "My Account"
                 },
                 tooltip: "Apps"
-            }
+            },
+            organizationLabel: "Esta conta é gerenciada por"
         },
         linkedAccounts: {
             accountTypes: {

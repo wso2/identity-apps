@@ -30,6 +30,7 @@ import { Button, Divider, Grid } from "semantic-ui-react";
 import { ApplicationManagementConstants } from "../../constants";
 import { CertificateInterface, CertificateTypeInterface, PassiveStsConfigurationInterface } from "../../models";
 import { CertificateFormFieldModal } from "../modals";
+import { CertificateManagementConstants } from "@wso2is/core/constants";
 
 /**
  * Proptypes for the inbound Passive Sts form component.
@@ -121,8 +122,14 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
      */
     const viewCertificate = () => {
         if (isPEMSelected && PEMValue) {
-            const displayCertificate: DisplayCertificate = CertificateManagementUtils.displayCertificate(
-                null, PEMValue);
+
+            let displayCertificate: DisplayCertificate;
+
+            if (CertificateManagementUtils.canSafelyParseCertificate(PEMValue)) {
+                displayCertificate = CertificateManagementUtils.displayCertificate(null, PEMValue);
+            } else {
+                displayCertificate = CertificateManagementConstants.DUMMY_DISPLAY_CERTIFICATE;
+            }
 
             if (displayCertificate) {
                 setCertificateDisplay(displayCertificate);
@@ -143,7 +150,7 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                 onSubmit(updateConfiguration(values));
             } }
         >
-            <Grid className="form-container with-max-width">
+            <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Field

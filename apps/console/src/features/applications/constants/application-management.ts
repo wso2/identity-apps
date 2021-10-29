@@ -19,6 +19,7 @@
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { DocumentationConstants } from "./documentation-constants";
 import { IdentityProviderManagementConstants } from "../../identity-providers/constants";
+import { SupportedAuthenticators } from "../../identity-providers/models";
 import { ApplicationTemplateCategories, ApplicationTemplateLoadingStrategies } from "../models";
 
 /**
@@ -226,7 +227,6 @@ export class ApplicationManagementConstants {
         ["b9c5e11e-fc78-484b-9bec-015d247561b8"]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.IMPLICIT_GRANT,
-            ApplicationManagementConstants.PASSWORD,
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT
         ],
@@ -365,6 +365,12 @@ export class ApplicationManagementConstants {
         ...ApplicationManagementConstants.SOCIAL_AUTHENTICATORS
     ];
 
+    // Enterprise EIDP Authenticators
+    public static readonly EIDP_AUTHENTICATORS: SupportedAuthenticators[] = [
+        SupportedAuthenticators.OIDC,
+        SupportedAuthenticators.SAML
+    ];
+
     /**
      * PEM certificate field default placeholder.
      */
@@ -380,7 +386,8 @@ export class ApplicationManagementConstants {
      */
     public static readonly FORM_FIELD_CONSTRAINTS = {
         APP_NAME_MAX_LENGTH: 50,
-        APP_NAME_PATTERN: new RegExp("^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$")
+        APP_NAME_PATTERN: new RegExp("^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$"),
+        APP_DESCRIPTION_PATTERN: new RegExp("^[a-zA-Z0-9.+=!$#()@&%*~_-]+(?: [a-zA-Z0-9.+=!$#()@&%*~_-]+)*$")
     };
 
     public static readonly CONDITIONAL_AUTH_TOUR_STATUS_STORAGE_KEY = "isConditionalAuthTourViewed";

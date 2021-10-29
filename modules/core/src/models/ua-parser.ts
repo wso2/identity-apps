@@ -16,7 +16,6 @@
  * under the License.
  */
 
-/* eslint-disable @typescript-eslint/interface-name-prefix */
 export interface IBrowser {
     /**
      * Possible values :

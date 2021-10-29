@@ -262,8 +262,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]][schemaNames[1]])
                                 );
                         } else {
-                            const subValue = userInfo[schemaNames[0]]
-                                && userInfo[schemaNames[0]]
+                            const subValue = userInfo[schemaNames[0]] &&
+                                Array.isArray(userInfo[schemaNames[0]]) &&
+                                userInfo[schemaNames[0]]
                                     .find((subAttribute) => subAttribute.type === schemaNames[1]);
                             if (schemaNames[0] === "addresses") {
                                 tempProfileInfo.set(
