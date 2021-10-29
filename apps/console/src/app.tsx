@@ -65,6 +65,9 @@ import { AppState } from "./features/core/store";
  * @return {React.ReactElement}
  */
 export const App: FunctionComponent<Record<string, never>> = (): ReactElement => {
+    
+    const a = "test";
+
     const dispatch = useDispatch();
 
     const userName: string = useSelector((state: AppState) => state.auth.username);
