@@ -17,7 +17,7 @@
  */
 
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
-import { HttpMethods } from "../models";
+import { HttpMethods, PreferenceRequest } from "../models";
 import { store } from "../store";
 
 /**
@@ -32,7 +32,7 @@ const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAC
  *
  * @param data connector & property details
  */
-export const getPreference = (data: object): Promise<any> => {
+export const getPreference = (data: PreferenceRequest[]): Promise<any> => {
     const requestConfig = {
         data,
         headers: {
