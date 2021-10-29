@@ -549,8 +549,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
                         {
-                            (applicationConfig.inboundSAMLForm.showApplicationQualifier) &&
-                            (
+                            (applicationConfig.inboundSAMLForm.showApplicationQualifier) && (
                                 <>
                                     <Grid.Row columns={ 1 }>
                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -1317,8 +1316,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
                         {
-                            (applicationConfig.inboundSAMLForm.showAttributeConsumingServiceIndex) &&
-                            (
+                            (applicationConfig.inboundSAMLForm.showAttributeConsumingServiceIndex) && (
                                 <>
                                     <Grid.Row columns={ 1 }>
                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -1655,8 +1653,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
 
                         { /* Assertion Query/Request Profile */ }
                         {
-                            (applicationConfig.inboundSAMLForm.showQueryRequestProfile) &&
-                            (
+                            (applicationConfig.inboundSAMLForm.showQueryRequestProfile) && (
                                 <>
                                     <Grid.Row columns={ 1 }>
                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>

@@ -2434,7 +2434,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 Please type <strong>{ initialValues?.clientId }</strong> to confirm.
                                 </Trans>
                             </p>
-                        ) }
+                        )
+                }
                 assertionType="input"
                 primaryAction={ t("common:confirm") }
                 secondaryAction={ t("common:cancel") }
