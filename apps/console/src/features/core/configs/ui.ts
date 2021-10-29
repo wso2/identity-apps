@@ -230,8 +230,9 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
         connectors: {
             [ ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID ]: AccountManagementOutlineIcon,
             [ ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID ]: UserOnboardingOutlineIcon,
-            [ ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID]:
-            LoginAttemptSecurityOutlineIcon,
+            [
+            ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID
+            ]: LoginAttemptSecurityOutlineIcon,
             [ ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID ]: KeyOutlineIcon,
             [ ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID ]: OtherSettingsOutlineIcon,
             default: PlugIcon
@@ -469,7 +470,7 @@ export const AppSwitcherIcons = (): GetAppSwitcherIconsInterface => {
 };
 
 /**
- * Typed interface of {@link AppgetGeneralIconsSwitcherIcons}
+ * Typed interface of {@link getGeneralIcons}
  */
 export type GetGeneralIconsInterface = {
     crossIcon: FunctionComponent,

@@ -62,6 +62,6 @@ export const useUIElementSizes = (): ElementSizesForUIPropsInterface => {
 
     // This method has to tracked in both identity apps and extensions to fix the eslint issues,
     // hence it can be fixed later.
-    // Tracked here: https://github.com/wso2/product-is/issues/12726
+    // Tracked here: https://github.com/wso2/product-is/issues/12726#issuecomment-954835957
     return { headerHeight, footerHeight };
 };

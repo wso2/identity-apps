@@ -166,7 +166,8 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
                         ))
                     }
                 </SegmentedAccordion>
-            ) : <ContentLoader/>
+            )
+            : <ContentLoader/>
     );
 };
 

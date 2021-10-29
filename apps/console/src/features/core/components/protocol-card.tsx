@@ -70,6 +70,7 @@ export interface ProtocolCardPropsInterface extends Omit<CardProps, "image">, Te
 export interface ImageContainerStylesPropsInterface {
     opacity: number;
 }
+
 /**
  * Technology card component.
  *

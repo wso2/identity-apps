@@ -28,6 +28,7 @@ import { ConfigReducerStateInterface } from "../../models";
 import { AppState } from "../../store";
 
 type PageNotFoundInterface = IdentifiableComponentInterface;
+
 /**
  * 404 error page.
  *
