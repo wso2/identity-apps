@@ -98,6 +98,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
 
         if ( initialValues && initialValues.length > 0 ) {
             const previousFormCheckedKeys: string[] = [];
+
             initialValues.forEach(initialKey => {
                 previousFormCheckedKeys.push(initialKey.key.toString());
             });
@@ -174,6 +175,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
             if (!checkedPermission.find(permission => permission.key === info.node.key)) {
                 const parentNode: TreeNode = getNodeByKey(info.node.key, permissions, true);
                 let checkedChildren: number = 1;
+
                 parentNode?.children?.forEach((childPermission: TreeNode) => {
                     if ( checkedPermission.filter((checkedPermission: TreeNode) =>
                         checkedPermission.key === childPermission.key).length > 0 ) {
@@ -185,9 +187,10 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                         permission.key.toString().replace(/^\/|\/$/g, "").split("/") === parentNode.key.toString()
                             .replace(/^\/|\/$/g, "").split("/");
                     });
-                    setCheckedPermission([...filteredCheckedPermissions, parentNode]);
+
+                    setCheckedPermission([ ...filteredCheckedPermissions, parentNode ]);
                 } else {
-                    setCheckedPermission([...checkedPermission, info.node]);
+                    setCheckedPermission([ ...checkedPermission, info.node ]);
                 }
             }
         } else {
@@ -204,8 +207,10 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
      */
     const getNodeByKey = (key: string, permissionTree: TreeNode[], isParent: boolean = false): TreeNode => {
         const flattenedTree = [ permissionTree[0] ];
+
         while ( flattenedTree.length ) {
             const node = flattenedTree.shift();
+
             if (isParent) {
                 if ( node.key === key.slice(0,key.lastIndexOf("/")) ) {
                     return node;
@@ -220,6 +225,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                 flattenedTree.push(...node.children);
             }
         }
+
         return null;
     };
 
@@ -232,6 +238,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
         if (eventObject.isLeaf) {
             return null;
         }
+
         return (
             <div className="tree-arrow-wrap">
                 <span className={ `tree-arrow ${ !eventObject.expanded ? "active" : "" }` }>
@@ -251,22 +258,22 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                 {
                     !isPermissionsLoading
                         ? (
-                        <div className="treeview-container">
-                            <Tree
-                                className={ "customIcon" }
-                                data-testid={ `${ testId }-tree` }
-                                disabled={ isReadOnly }
-                                checkedKeys={ checkedPermission.map( permission => permission.key ) }
-                                defaultExpandedKeys={ defaultExpandedKeys }
-                                showLine
-                                showIcon={ false }
-                                checkable
-                                selectable={ false }
-                                onCheck={ onCheck }
-                                treeData={ permissions }
-                                switcherIcon={ switcherIcon }
-                            />
-                        </div>
+                            <div className="treeview-container">
+                                <Tree
+                                    className={ "customIcon" }
+                                    data-testid={ `${ testId }-tree` }
+                                    disabled={ isReadOnly }
+                                    checkedKeys={ checkedPermission.map( permission => permission.key ) }
+                                    defaultExpandedKeys={ defaultExpandedKeys }
+                                    showLine
+                                    showIcon={ false }
+                                    checkable
+                                    selectable={ false }
+                                    onCheck={ onCheck }
+                                    treeData={ permissions }
+                                    switcherIcon={ switcherIcon }
+                                />
+                            </div>
                         )
                         : <ContentLoader className="p-3" active />
                 }

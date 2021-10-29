@@ -50,7 +50,7 @@ export class RoleManagementUtils {
             startIndex: 1
         };
 
-         return searchRoleList(searchData)
+        return searchRoleList(searchData)
             .then((response) => {
                 return response?.data?.totalResults === 0;
             });
@@ -62,11 +62,13 @@ export class RoleManagementUtils {
      * @param permissionString permission string
      * @param joinLocation location to join the string
      */
-    public static permissionJoining = (permissionString, joinLocation) => {
-        permissionString = permissionString.split("/");
-        const first = permissionString.splice(0, joinLocation);
-        permissionString = [first.join("/"), ...permissionString];
-        return permissionString;
+    public static permissionJoining = (permissionString: string , joinLocation: number): string[] => {
+        let permissionStringList = permissionString.split("/");
+        const first = permissionStringList.splice(0, joinLocation);
+
+        permissionStringList = [ first.join("/"), ...permissionString ];
+
+        return permissionStringList;
     };
 
     /**
@@ -80,14 +82,17 @@ export class RoleManagementUtils {
             if (response.status === 200 && response.data && response.data instanceof Array) {
 
                 const permissionStringArray: PermissionObject[] = !isEmpty(permissionsToSkip)
-                    ? response.data.filter((permission) => !permissionsToSkip.includes(permission.resourcePath))
+                    ? response.data.filter((permission: { resourcePath: string; }) => 
+                        !permissionsToSkip.includes(permission.resourcePath))
                     : response.data;
 
                 let permissionTree: TreeNode[] = [];
                 let isStartingWithTwoNodes: boolean = false;
+
                 permissionTree = permissionStringArray.reduce((arr, path, index) => {
 
                     let nodes: TreeNode[] = [];
+
                     if(index === 0 && path.resourcePath.replace(/^\/|\/$/g, "").split("/").length == 2) {
                         isStartingWithTwoNodes = true;
                     }
@@ -107,6 +112,7 @@ export class RoleManagementUtils {
                     
                     return nodes;
                 },[]);
+
                 return permissionTree;
             }
         });
