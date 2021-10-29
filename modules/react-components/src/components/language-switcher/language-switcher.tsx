@@ -74,6 +74,10 @@ export interface SupportedLanguagesInterface {
          * Country Name.
          */
         name: string;
+        /**
+         * Dynamic values.
+         */
+        [ key: string ]: any;
     }
 }
 
