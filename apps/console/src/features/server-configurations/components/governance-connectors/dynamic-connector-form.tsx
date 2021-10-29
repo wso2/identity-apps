@@ -63,13 +63,22 @@ const getFieldType = (property: ConnectorPropertyInterface) => {
 const required =
     (value: string) => value ? undefined : I18n.instance.t("common:required");
 
+interface DynamicConnectorFormPropsInterface {
+    isSubmitting: boolean;
+    handleSubmit: (values: any) => void;
+    [ "data-testid" ]: string;
+    props?: any;
+    form: string;
+    change: any;
+}
+
 /**
  * Dynamically render governance connector forms.
  *
  * @param props
  * @constructor
  */
-const DynamicConnectorForm = (props) => {
+const DynamicConnectorForm = (props: DynamicConnectorFormPropsInterface) => {
     const { isSubmitting, handleSubmit, [ "data-testid" ]: testId } = props;
     const properties: ConnectorPropertyInterface[] = props.props.properties;
 
@@ -117,8 +126,8 @@ const DynamicConnectorForm = (props) => {
                                         readOnly={ isReadOnly }
                                     />
                                 ) : (
-                                        <label>{ property.displayName }</label>
-                                    ) }
+                                    <label>{ property.displayName }</label>
+                                ) }
                                 { property.description !== "" && <Hint>{ property.description }</Hint> }
                             </Grid.Column>
                             <Grid.Column
@@ -187,14 +196,14 @@ const DynamicConnectorForm = (props) => {
                         className={ !serverConfigurationConfig.intendSettings && "pl-0" }
                     >
                         { !isReadOnly &&
-                            <PrimaryButton
+                            (<PrimaryButton
                                 data-testid={ `${ testId }-update-button` }
                                 type="submit"
                                 loading={ isSubmitting }
                                 disabled={ isSubmitting }
                             >
                                 { t("common:update") }
-                            </PrimaryButton>
+                            </PrimaryButton>)
                         }
                     </Grid.Column>
                 </Grid.Row>

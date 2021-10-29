@@ -37,7 +37,7 @@ const initialState: GovernanceConnectorsInterface = {
  * @returns The new state
  */
 export const governanceConnectorReducer = (state: GovernanceConnectorsInterface = initialState,
-                                   action: GovernanceConnectorActions): GovernanceConnectorsInterface => {
+    action: GovernanceConnectorActions): GovernanceConnectorsInterface => {
 
     switch (action.type) {
         case GovernanceConnectorActionTypes.SET_GOVERNANCE_CONNECTOR_CATEGORY:

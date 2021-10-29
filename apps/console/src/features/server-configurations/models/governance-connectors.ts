@@ -58,3 +58,13 @@ export interface GovernanceConnectorCategoryInterface {
 export interface GovernanceConnectorsInterface {
 	categories?: GovernanceConnectorCategoryInterface[];
 }
+
+export interface UpdateGovernanceConnectorConfigPropertyInterface {
+	name: string;
+	value: any;
+}
+
+export interface UpdateGovernanceConnectorConfigInterface {
+	operation: string;
+	properties: UpdateGovernanceConnectorConfigPropertyInterface[];
+}
