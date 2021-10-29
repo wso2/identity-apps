@@ -37,6 +37,7 @@ const LINE_PADDING_RULES = [
     { blankLine: "always", next: "continue", prev: "*" },
     // Add a new line before exports.
     { blankLine: "always", next: "export", prev: "*" },
+    { blankLine: "any", next: "export", prev: "export" },
     // Add a new line before for loops.
     { blankLine: "always", next: "for", prev: "*" },
     // Add a new line before classes.
