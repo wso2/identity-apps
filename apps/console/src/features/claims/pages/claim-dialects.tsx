@@ -123,7 +123,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                     } else {
                         if (attributeConfig.showCustomDialectInSCIM
                             && attributeMapping.dialectURI !== attributeConfig.localAttributes.customDialectURI ){
-                                others.push(attributeMapping);
+                            others.push(attributeMapping);
                         }
                     }
                 });
@@ -175,20 +175,20 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
             <PageLayout
                 action={
                     attributeConfig.addAttributeMapping && (
-                    <Show when={ AccessControlConstants.ATTRIBUTE_WRITE }>
-                        <PrimaryButton
-                            disabled={ isLoading }
-                            loading={ isLoading }
-                            onClick={ () => {
-                                setAddEditClaim(true);
-                            } }
-                            data-testid={ `${ testId }-list-layout-add-button` }
-                        >
-                            <Icon name="add" />
-                            { t("console:manage.features.claims.dialects.pageLayout.list.primaryAction") }
-                        </PrimaryButton>
-                    </Show>
-                ) }
+                        <Show when={ AccessControlConstants.ATTRIBUTE_WRITE }>
+                            <PrimaryButton
+                                disabled={ isLoading }
+                                loading={ isLoading }
+                                onClick={ () => {
+                                    setAddEditClaim(true);
+                                } }
+                                data-testid={ `${ testId }-list-layout-add-button` }
+                            >
+                                <Icon name="add" />
+                                { t("console:manage.features.claims.dialects.pageLayout.list.primaryAction") }
+                            </PrimaryButton>
+                        </Show>
+                    ) }
                 title={ t("console:manage.features.claims.dialects.pageLayout.list.title") }
                 description={ t("console:manage.features.claims.dialects.pageLayout.list.description") }
                 data-testid={ `${ testId }-page-layout` }
@@ -198,93 +198,93 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                     showTopActionPanel={ false }
                 >
                     { hasRequiredScopes(
-                            featureConfig?.attributeDialects,
-                            featureConfig?.attributeDialects?.scopes?.read,
-                            allowedScopes
-                        ) && (
-                                <>
-                                    <Header as="h4">
-                                        { t("console:manage.features.claims.dialects." +
+                        featureConfig?.attributeDialects,
+                        featureConfig?.attributeDialects?.scopes?.read,
+                        allowedScopes
+                    ) && (
+                        <>
+                            <Header as="h4">
+                                { t("console:manage.features.claims.dialects." +
                                             "sections.manageAttributes.heading") }
-                                    </Header>
-                                    <Divider hidden />
-                                    <EmphasizedSegment
-                                        onClick={ () => {
-                                            history.push(AppConstants.getPaths().get("LOCAL_CLAIMS"));
-                                        } }
-                                        className="clickable"
-                                        data-testid={ `${ testId }-local-dialect-container` }
-                                    >
-                                        <List>
-                                            <List.Item>
-                                                <Grid>
-                                                    <Grid.Row columns={ 2 }>
-                                                        <Grid.Column width={ 12 }>
-                                                            <GenericIcon
-                                                                verticalAlign="middle"
-                                                                fill="primary"
-                                                                transparent
-                                                                rounded
-                                                                icon={ getSidePanelIcons().claims }
-                                                                spaced="right"
-                                                                size="mini"
-                                                                floated="left"
-                                                            />
-                                                            <List.Header>
-                                                                { t(
-                                                                    "console:manage.features." +
+                            </Header>
+                            <Divider hidden />
+                            <EmphasizedSegment
+                                onClick={ () => {
+                                    history.push(AppConstants.getPaths().get("LOCAL_CLAIMS"));
+                                } }
+                                className="clickable"
+                                data-testid={ `${ testId }-local-dialect-container` }
+                            >
+                                <List>
+                                    <List.Item>
+                                        <Grid>
+                                            <Grid.Row columns={ 2 }>
+                                                <Grid.Column width={ 12 }>
+                                                    <GenericIcon
+                                                        verticalAlign="middle"
+                                                        fill="primary"
+                                                        transparent
+                                                        rounded
+                                                        icon={ getSidePanelIcons().claims }
+                                                        spaced="right"
+                                                        size="mini"
+                                                        floated="left"
+                                                    />
+                                                    <List.Header>
+                                                        { t(
+                                                            "console:manage.features." +
                                                                     "claims.dialects.sections." +
                                                                     "manageAttributes.attributes.heading"
-                                                                ) }
-                                                            </List.Header>
-                                                            <List.Description
-                                                                data-testid={ `${ testId }-local-dialect` }
-                                                            >
-                                                                { t(
-                                                                    "console:manage.features." +
+                                                        ) }
+                                                    </List.Header>
+                                                    <List.Description
+                                                        data-testid={ `${ testId }-local-dialect` }
+                                                    >
+                                                        { t(
+                                                            "console:manage.features." +
                                                                     "claims.dialects.sections." +
                                                                     "manageAttributes.attributes.description"
-                                                                ) }
-                                                            </List.Description>
-                                                        </Grid.Column>
-                                                        <Grid.Column
-                                                            width={ 4 }
-                                                            verticalAlign="middle"
-                                                            textAlign="right"
-                                                            data-testid={ `${ testId }-local-dialect-` +
+                                                        ) }
+                                                    </List.Description>
+                                                </Grid.Column>
+                                                <Grid.Column
+                                                    width={ 4 }
+                                                    verticalAlign="middle"
+                                                    textAlign="right"
+                                                    data-testid={ `${ testId }-local-dialect-` +
                                                             "attributes-edit-icon" }
-                                                        >
-                                                            <Popup
-                                                                content={
-                                                                    hasRequiredScopes(
-                                                                        featureConfig?.attributeDialects,
-                                                                        featureConfig?.attributeDialects?.
-                                                                        scopes?.create,
-                                                                        allowedScopes
-                                                                    ) ?
-                                                                    t("common:edit") :
-                                                                    t("common:view")
-                                                                }
-                                                                trigger={
-                                                                    hasRequiredScopes(
-                                                                        featureConfig?.attributeDialects,
-                                                                        featureConfig?.attributeDialects?.
-                                                                        scopes?.create,
-                                                                        allowedScopes
-                                                                    ) ?
-                                                                    <Icon color="grey" name="pencil" /> :
-                                                                    <Icon color="grey" name="eye" />
-                                                                }
-                                                                inverted
-                                                            />
-                                                        </Grid.Column>
-                                                    </Grid.Row>
-                                                </Grid>
-                                            </List.Item>
-                                        </List>
-                                    </EmphasizedSegment>
-                                </>
-                            )
+                                                >
+                                                    <Popup
+                                                        content={
+                                                            hasRequiredScopes(
+                                                                featureConfig?.attributeDialects,
+                                                                featureConfig?.attributeDialects?.
+                                                                    scopes?.create,
+                                                                allowedScopes
+                                                            ) ?
+                                                                t("common:edit") :
+                                                                t("common:view")
+                                                        }
+                                                        trigger={
+                                                            hasRequiredScopes(
+                                                                featureConfig?.attributeDialects,
+                                                                featureConfig?.attributeDialects?.
+                                                                    scopes?.create,
+                                                                allowedScopes
+                                                            ) ?
+                                                                <Icon color="grey" name="pencil" /> :
+                                                                <Icon color="grey" name="eye" />
+                                                        }
+                                                        inverted
+                                                    />
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        </Grid>
+                                    </List.Item>
+                                </List>
+                            </EmphasizedSegment>
+                        </>
+                    )
                     }
                     <Divider hidden />
                     <Divider hidden />
@@ -343,8 +343,8 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                 featureConfig?.attributeDialects?.scopes?.create,
                                                                 allowedScopes
                                                             ) ?
-                                                            t("common:edit") :
-                                                            t("common:view")
+                                                                t("common:edit") :
+                                                                t("common:view")
                                                         }
                                                         trigger={
                                                             hasRequiredScopes(
@@ -352,8 +352,8 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                 featureConfig?.attributeDialects?.scopes?.create,
                                                                 allowedScopes
                                                             ) ?
-                                                            <Icon color="grey" name="pencil" /> :
-                                                            <Icon color="grey" name="eye" />
+                                                                <Icon color="grey" name="pencil" /> :
+                                                                <Icon color="grey" name="eye" />
                                                         }
                                                         inverted
                                                     />
@@ -410,11 +410,13 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                             ? t("common:edit")
                                                             : t("common:view") }
                                                         trigger={
-                                                            <Icon color="grey" name={
-                                                                attributeConfig.isSCIMEditable
-                                                                    ? "pencil"
-                                                                    : "eye"
-                                                            } />
+                                                            (<Icon
+                                                                color="grey"
+                                                                name={
+                                                                    attributeConfig.isSCIMEditable
+                                                                        ? "pencil"
+                                                                        : "eye"
+                                                                } />)
                                                         }
                                                         inverted
                                                     />
@@ -477,16 +479,18 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                             ? t("common:edit")
                                                             : t("common:view") }
                                                         trigger={
-                                                            <Icon color="grey" name={
-                                                                hasRequiredScopes(
-                                                                    featureConfig?.attributeDialects,
-                                                                    featureConfig?.attributeDialects?.
-                                                                    scopes?.create,
-                                                                    allowedScopes
-                                                                )
-                                                                    ? "pencil"
-                                                                    : "eye"
-                                                            } />
+                                                            (<Icon
+                                                                color="grey"
+                                                                name={
+                                                                    hasRequiredScopes(
+                                                                        featureConfig?.attributeDialects,
+                                                                        featureConfig?.attributeDialects?.
+                                                                            scopes?.create,
+                                                                        allowedScopes
+                                                                    )
+                                                                        ? "pencil"
+                                                                        : "eye"
+                                                                } />)
                                                         }
                                                         inverted
                                                     />

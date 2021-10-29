@@ -92,13 +92,13 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             type="warning"
             open={ confirmDelete }
             assertion={ dialect.dialectURI }
-            assertionHint={
+            assertionHint={ (
                 <p>
                     <Trans i18nKey="console:manage.features.claims.dialects.confirmations.hint">
                         Please type <strong>{ { confirm: dialect.dialectURI } }</strong> to confirm.
                     </Trans>
                 </p>
-            }
+            ) }
             assertionType="input"
             primaryAction={ t("console:manage.features.claims.dialects.confirmations.action") }
             secondaryAction={ t("common:cancel") }
@@ -178,6 +178,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                         attributeType,
                         response
                     );
+
                     setClaims(sortList(claims, "claimURI", true));
                 })
                 .catch((error) => {
@@ -272,13 +273,13 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                                             <Placeholder.Line length="medium" />
                                         </Placeholder>
                                     ) : (
-                                            <EditDialectDetails
-                                                dialect={ dialect }
-                                                data-testid={ `${ testId }-edit-dialect-details` }
-                                                attributeType={ attributeType }
-                                                onUpdate={ (id?: string) => { getDialect(id); } }
-                                            />
-                                        ) }
+                                        <EditDialectDetails
+                                            dialect={ dialect }
+                                            data-testid={ `${ testId }-edit-dialect-details` }
+                                            attributeType={ attributeType }
+                                            onUpdate={ (id?: string) => { getDialect(id); } }
+                                        />
+                                    ) }
                                 </EmphasizedSegment>
                             </Grid.Column>
                         </Grid.Row>

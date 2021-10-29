@@ -45,8 +45,7 @@ import {
     useConfirmationModalAlert
 } from "@wso2is/react-components";
 import isEqual from "lodash-es/isEqual";
-import 
-    React,{ 
+import React,{
     Dispatch, 
     FunctionComponent, 
     ReactElement, 
@@ -288,7 +287,6 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
      * @return {boolean} `true` if the data is a local claim.
      */
     const isLocalClaim = (
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         toBeDetermined: Claim[] | ExternalClaim[] | ClaimDialect[] | AddExternalClaim[]
             | Claim | ExternalClaim | ClaimDialect
     ): toBeDetermined is Claim[] | Claim => {
@@ -303,7 +301,6 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
      * @return {boolean} `true` if the data is a dialect.
      */
     const isDialect = (
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         toBeDetermined: Claim[] | ExternalClaim[] | ClaimDialect[] | AddExternalClaim[]
             | Claim | ExternalClaim | ClaimDialect
     ): toBeDetermined is ClaimDialect[] | ClaimDialect => {
@@ -318,7 +315,6 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
      * @return {boolean} `true` if the data is a an external claim.
      */
     const isExternalClaim = (
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         toBeDetermined: Claim[] | ExternalClaim[] | ClaimDialect[] | AddExternalClaim[]
             | Claim | ExternalClaim | ClaimDialect
     ): toBeDetermined is ExternalClaim[] | ExternalClaim => {
@@ -477,6 +473,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
      */
     const showDeleteConfirm = (): ReactElement => {
         let listItem: ListItem;
+
         if (isLocalClaim(deleteItem)) {
             listItem = {
                 assertion: deleteItem.displayName,
@@ -596,22 +593,24 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 <EmptyPlaceholder
                     action={ attributeConfig.attributesPlaceholderAddButton(attributeType)
                         && (
-                        <Show when={ AccessControlConstants.SCOPE_WRITE }>
-                            <PrimaryButton
-                                onClick={ onEmptyListPlaceholderActionClick }
-                            >
-                                <Icon name="add"/>
-                                {
-                                isLocalClaim(list)
-                                    ?  t("console:manage.features.claims.list.placeholders.emptyList.action.local")
-                                    : isDialect(list)
-                                        ? t("console:manage.features.claims.list.placeholders.emptyList.action.dialect")
-                                        : t("console:manage.features.claims.list.placeholders." +
+                            <Show when={ AccessControlConstants.SCOPE_WRITE }>
+                                <PrimaryButton
+                                    onClick={ onEmptyListPlaceholderActionClick }
+                                >
+                                    <Icon name="add"/>
+                                    {
+                                        isLocalClaim(list)
+                                            ?  t("console:manage.features.claims.list.placeholders.emptyList." +
+                                                "action.local")
+                                            : isDialect(list)
+                                                ? t("console:manage.features.claims.list.placeholders.emptyList." +
+                                                    "action.dialect")
+                                                : t("console:manage.features.claims.list.placeholders." +
                                             "emptyList.action.external")
-                                }
-                            </PrimaryButton>
-                        </Show>
-                    ) }
+                                    }
+                                </PrimaryButton>
+                            </Show>
+                        ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     title={
@@ -641,6 +640,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
      */
     const generateInitialLetter = (claim: Claim): string => {
         const parts = claim.claimURI.split("/");
+
         return parts[ parts.length - 1 ];
     };
 
@@ -666,15 +666,15 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                 <>
                                     { attributeConfig.attributes.showUserstoreMappingWarningIcon && showWarning && (
                                         <Popup
-                                            trigger={
+                                            trigger={ (
                                                 <Icon
                                                     className="notification-icon"
                                                     name="warning circle"
                                                     size="small"
                                                     color="red"
                                                 />
-                                            }
-                                            content={
+                                            ) }
+                                            content={ (
                                                 <div>
                                                     { t("console:manage.features.claims.list.warning") }
                                                     <ul>
@@ -689,7 +689,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                                         }
                                                     </ul>
                                                 </div>
-                                            }
+                                            ) }
                                             inverted
                                         />
                                     ) }
@@ -801,6 +801,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                         featureConfig?.attributeDialects?.scopes?.delete,
                         allowedScopes
                     );
+
                 return showEditAction || showDeleteAction;
             };
 
@@ -1053,7 +1054,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                         if (attributeConfig.defaultScimMapping 
                             && Object.keys(attributeConfig.defaultScimMapping).length > 0) {
                             const defaultSCIMClaims: Map<string, string> = attributeConfig
-                            .defaultScimMapping[claim.claimDialectURI];
+                                .defaultScimMapping[claim.claimDialectURI];
+
                             if (defaultSCIMClaims && defaultSCIMClaims.get(claim.claimURI)) {
                                 return true;
                             } else {
@@ -1081,8 +1083,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
             {
                 hidden: () => !isEditable,
                 icon: (claim: AddExternalClaim): SemanticICONS => isEqual(editExternalClaim, claim)
-                        ? "times"
-                        : "pencil alternate",
+                    ? "times"
+                    : "pencil alternate",
                 onClick: (e: SyntheticEvent, claim: AddExternalClaim) => {
                     setEditExternalClaim(editExternalClaim ? undefined : claim);
                 },
@@ -1109,7 +1111,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         //Disables inline edit if create scope is not available
         if (!hasRequiredScopes(featureConfig?.attributeDialects,
             featureConfig?.attributeDialects?.scopes?.create, allowedScopes)) {
-                return;
+            return;
         }
 
         if (isLocalClaim(list)) {
