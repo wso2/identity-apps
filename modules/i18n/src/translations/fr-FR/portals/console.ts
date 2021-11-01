@@ -6458,12 +6458,7 @@ export const console: ConsoleNS = {
                 profile: {
                     fields: {
                         userId: "Identifiant d'utilisateur",
-                        addresses_home: "Adresse personnelle",
-                        addresses_work: "Adresse professionnelle",
                         emails: "Email",
-                        emails_home: "E-mail personnel",
-                        emails_other: "Autre adresse e-mail",
-                        emails_work: "E-mail professionnel",
                         generic: {
                             default: "Ajouter l'attribut {{fieldName}}"
                         },
@@ -6471,10 +6466,6 @@ export const console: ConsoleNS = {
                         name_givenName: "Prénom",
                         oneTimePassword: "Mot de passe à usage unique",
                         phoneNumbers: "Numéros de téléphone",
-                        phoneNumbers_home: "Numéro de téléphone personnel",
-                        phoneNumbers_mobile: "Numéro de téléphone portable",
-                        phoneNumbers_other: "Autre numéro de téléphone",
-                        phoneNumbers_work: "Numéro de téléphone au professionnel",
                         photos: "Photos",
                         profileUrl: "URL",
                         userName: "Nom d'utilisateur"

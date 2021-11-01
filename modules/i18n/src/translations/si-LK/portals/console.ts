@@ -6376,12 +6376,7 @@ export const console: ConsoleNS = {
                 profile: {
                     fields: {
                         userId: "පරිශීලක ID",
-                        addresses_home: "නිවසේ ලිපිනය",
-                        addresses_work: "වැඩ ලිපිනය",
                         emails: "විද්යුත් තැපෑල",
-                        emails_home: "මුල් පිටුව විද්‍යුත් තැපෑල",
-                        emails_other: "වෙනත් විද්‍යුත් තැපෑල",
-                        emails_work: "වැඩ ඊමේල්",
                         generic: {
                             default: "{{FieldName} එකතු කරන්න"
                         },
@@ -6389,10 +6384,6 @@ export const console: ConsoleNS = {
                         name_givenName: "මුල් නම",
                         oneTimePassword: "එක් වරක් මුරපදය",
                         phoneNumbers: "දුරකතන අංකය",
-                        phoneNumbers_home: "නිවසේ දුරකථන අංකය",
-                        phoneNumbers_mobile: "ජංගම දූරකථන අංකය",
-                        phoneNumbers_other: "වෙනත් දුරකථන අංකය",
-                        phoneNumbers_work: "වැඩ කරන දුරකථන අංකය",
                         photos: "ඡායාරූප",
                         profileUrl: "URL",
                         userName: "පරිශීලක නාමය"

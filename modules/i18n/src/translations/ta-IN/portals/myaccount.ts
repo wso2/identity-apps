@@ -1046,22 +1046,13 @@ export const myAccount: MyAccountNS = {
         },
         profile: {
             fields: {
-                addressesHome: "வீட்டு முகவரி",
-                addressesWork: "தொழில் முகவரி",
                 emails: "மின்னஞ்சல் முகவரி",
-                emailsHome: "வீட்டு மின்னஞ்சல் முகவரி",
-                emailsOther: "வேறு மின்னஞ்சல் முகவரி",
-                emailsWork: "தொழில் மின்னஞ்சல் முகவரி",
                 generic: {
                     default: "ஐச் சேருங்கள் {{fieldName}}"
                 },
                 nameFamilyName: "இறுதிப்பெயர்",
                 nameGivenName: "முதற்பெயர்",
                 phoneNumbers: "தொலைபேசி இலக்கம்",
-                phoneNumbersHome: "வீட்டு தொலைபேசி இலக்கம்",
-                phoneNumbersMobile: "கையடக்க தொலைபேசி இலக்கம்",
-                phoneNumbersOther: "வேறு தொலைபேசி இலக்கம்",
-                phoneNumbersWork: "தொழில் தொலைபேசி இலக்கம்",
                 profileImage: "பயனர் படம்",
                 profileUrl: "URL",
                 userName: "பயனர் பெயர்"
