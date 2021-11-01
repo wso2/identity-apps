@@ -163,8 +163,8 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                 <SettingsSection
                     data-testid={ `${testId}-settings-section` }
                     description={
-                        accountRecoveryConfig.sections.accountRecovery.description == undefined ?
-                        t("myAccount:sections.accountRecovery.description") 
+                        accountRecoveryConfig.sections.accountRecovery.description == undefined 
+                        ? t("myAccount:sections.accountRecovery.description") 
                         : accountRecoveryConfig.sections.accountRecovery.description
                     }
                     header={ t("myAccount:sections.accountRecovery.heading") }
