@@ -535,7 +535,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         } }>
             <Field.Input
                 ariaLabel="Service provider entity id"
-                inputType="default"
+                inputType="url"
                 name="SPEntityId"
                 label="Service provider entity ID"
                 required={ true }
@@ -582,7 +582,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             data-testid={ `${ testId }-form-wizard-saml-sso-url` }
                         />
                         <Field.Input
-                            inputType="default"
+                            inputType="url"
                             ariaLabel="Identity provider entity ID"
                             name="IdPEntityId"
                             label="Identity provider entity ID"
