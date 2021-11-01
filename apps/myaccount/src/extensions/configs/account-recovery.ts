@@ -16,5 +16,13 @@
  * under the License.
  */
 
-export * from "./common";
-export * from "./account-recovery";
+import { AccountRecoveryConfig } from "./models";
+
+export const accountRecoveryConfig: AccountRecoveryConfig = {
+    sections: {
+        accountRecovery: {
+            description:
+                undefined
+        }
+    }
+};
