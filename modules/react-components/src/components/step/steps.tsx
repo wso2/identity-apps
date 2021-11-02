@@ -19,6 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, {
+    CSSProperties,
     Children,
     FunctionComponent,
     PropsWithChildren,
@@ -53,7 +54,7 @@ export interface StepsPropsInterface extends TestableComponentInterface {
     /**
      * Custom styles object
      */
-    style?: object;
+    style?:  CSSProperties | undefined;
 }
 
 /**

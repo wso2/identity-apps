@@ -93,13 +93,15 @@ export const LabelWithPopup: FunctionComponent<LabelWithPopupPropsInterface> = (
             className={ classes }
             position="right center"
             trigger={
-                trigger ?? <Label
-                    circular
-                    size="mini"
-                    className="micro spaced-right status-label-with-popup"
-                    color={ labelColor }
-                    { ...rest }
-                />
+                trigger ?? (
+                    <Label
+                        circular
+                        size="mini"
+                        className="micro spaced-right status-label-with-popup"
+                        color={ labelColor }
+                        { ...rest }
+                    />
+                )
             }
             on="hover"
             { ...popupOptions }
@@ -133,26 +135,26 @@ export const LabelWithPopup: FunctionComponent<LabelWithPopupPropsInterface> = (
                     }
                     {
                         (popupFooterLeftContent || popupFooterRightActions) && (
-                           <>
-                               <Divider/>
-                               <Grid.Row>
-                                   {
-                                       popupFooterLeftContent && (
-                                           <Grid.Column verticalAlign="middle" floated="left" width={ 10 }>
-                                               { popupFooterLeftContent }
-                                           </Grid.Column>
-                                       )
-                                   }
-                                   {
-                                       popupFooterRightActions && (
-                                           <Grid.Column verticalAlign="middle" floated="right" width={ 6 }>
-                                               { popupFooterRightActions }
-                                           </Grid.Column>
-                                       )
-                                   }
-                               </Grid.Row>
-                           </>
-                       )
+                            <>
+                                <Divider/>
+                                <Grid.Row>
+                                    {
+                                        popupFooterLeftContent && (
+                                            <Grid.Column verticalAlign="middle" floated="left" width={ 10 }>
+                                                { popupFooterLeftContent }
+                                            </Grid.Column>
+                                        )
+                                    }
+                                    {
+                                        popupFooterRightActions && (
+                                            <Grid.Column verticalAlign="middle" floated="right" width={ 6 }>
+                                                { popupFooterRightActions }
+                                            </Grid.Column>
+                                        )
+                                    }
+                                </Grid.Row>
+                            </>
+                        )
                     }
                 </Grid>
             </Popup.Content>

@@ -108,7 +108,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
      * @return {boolean} Should the child item section be opened or not.
      */
     const validateOpenState = (isOpen: boolean, selectedRoute: RouteInterface | ChildRouteInterface,
-                               children: ChildRouteInterface[]): boolean => {
+        children: ChildRouteInterface[]): boolean => {
         if (isOpen) {
             return true;
         }
@@ -150,7 +150,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
     return (
         <>
             {
-                route &&
+                route && (
                     <Menu.Item
                         name={ route.name }
                         className={ classes }
@@ -197,6 +197,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
                                 : null
                         }
                     </Menu.Item>
+                )
             }
             {
                 (route.children && route.children.length && route.children.length > 0)

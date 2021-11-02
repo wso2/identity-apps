@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { CSSProperties, FunctionComponent, ReactElement } from "react";
 import { GenericIcon, GenericIconSizes } from "../icon";
 
 /**
@@ -40,7 +40,7 @@ export interface LogoPropsInterface extends TestableComponentInterface {
     /**
      * Custom styles object.
      */
-    style?: object;
+    style?: CSSProperties | undefined;
 }
 
 /**

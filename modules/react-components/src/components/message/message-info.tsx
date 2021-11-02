@@ -19,8 +19,8 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Divider, Header, Icon, Message } from "semantic-ui-react";
-import { SemanticShorthandContent, SemanticShorthandItem } from "semantic-ui-react/dist/commonjs/generic";
 import { MessageHeaderProps } from "semantic-ui-react/dist/commonjs/collections/Message/MessageHeader";
+import { SemanticShorthandContent, SemanticShorthandItem } from "semantic-ui-react/dist/commonjs/generic";
 
 /**
  * Proptypes for the messageInfo component.
@@ -53,31 +53,32 @@ export const MessageInfo: FunctionComponent<MessageInfoProps> = (props: MessageI
 
     const generateContent = () => {
 
-            return (
-                <>
-                    <Divider
-                        hidden
-                        className={ 'message-info-text' }/>
-                    <div>
-                        { (content) }
-                    </div>
-                </>
-            );
+        return (
+            <>
+                <Divider
+                    hidden
+                    className={ "message-info-text" }/>
+                <div>
+                    { (content) }
+                </div>
+            </>
+        );
     };
 
     return (
-            <Message
-                info
-                header={ (
-                    <Header as="h4">
-                        <Header.Content>
-                            <Icon name="info circle"/>
-                            { (header) }
-                        </Header.Content>
-                    </Header>
-                ) }
-                content={ generateContent() }
-            />
+        <Message
+            info
+            header={ (
+                <Header as="h4">
+                    <Header.Content>
+                        <Icon name="info circle"/>
+                        { (header) }
+                    </Header.Content>
+                </Header>
+            ) }
+            content={ generateContent() }
+            data-testid={ testId }
+        />
     );
 };
 
@@ -85,7 +86,7 @@ export const MessageInfo: FunctionComponent<MessageInfoProps> = (props: MessageI
  * Default proptypes for the message info component.
  */
 MessageInfo.defaultProps = {
-    header: null,
     content: null,
     "data-testid": "message-info",
+    header: null
 };

@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from "react";
+import React, { CSSProperties, FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from "react";
 import { HeaderProps, Responsive, Segment, SegmentProps } from "semantic-ui-react";
 import { SemanticCOLORS } from "semantic-ui-react/dist/commonjs/generic";
 import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
@@ -55,7 +55,7 @@ export interface JumbotronPropsInterface extends Omit<SegmentProps, "color">, Te
     /**
      * Custom style object.
      */
-    style?: object;
+    style?: CSSProperties | undefined;
     /**
      * Jumbotron sub heading.
      */
@@ -141,14 +141,15 @@ export const Jumbotron: FunctionComponent<PropsWithChildren<JumbotronPropsInterf
      *
      * @return {object} Styles object.
      */
-    const getStyle = () => {
-        let modifiedStyle: object = style;
+    const getStyle = (): CSSProperties => {
+
+        let modifiedStyle: CSSProperties = style;
 
         if (typeof borderRadius === "number") {
             modifiedStyle = {
                 ...modifiedStyle,
                 borderRadius: `${ borderRadius }px`
-            }
+            };
         }
 
         return modifiedStyle;
@@ -157,16 +158,17 @@ export const Jumbotron: FunctionComponent<PropsWithChildren<JumbotronPropsInterf
     /**
      * Resolves additional properties.
      *
-     * @return {object} Additional props.
+     * @return {Record<string, unknown>} Additional props.
      */
-    const resolveAdditionalProps = (): object => {
-        let additionalProps: object = {};
+    const resolveAdditionalProps = (): Record<string, unknown> => {
+
+        let additionalProps: Record<string, unknown> = {};
 
         if (background && !(background === "white" || background === "default")) {
             additionalProps = {
                 ...additionalProps,
                 inverted: true
-            }
+            };
         }
 
         return additionalProps;
