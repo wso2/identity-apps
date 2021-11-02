@@ -55,6 +55,7 @@ import {
     ApplicationInterface,
     ApplicationTemplateListItemInterface,
     CertificateInterface, OIDCDataInterface,
+    SAML2ConfigurationInterface,
     SAMLConfigModes,
     SupportedAuthProtocolMetaTypes,
     SupportedAuthProtocolTypes
@@ -282,7 +283,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const handleInboundConfigFormSubmit = (values: any, protocol: string): void => {
         let updateError: boolean = false;
 
-        updateAuthProtocolConfig(appId, values, protocol)
+        updateAuthProtocolConfig <OIDCDataInterface | SAML2ConfigurationInterface>(appId, values, protocol)
             .then(() => {
                 dispatch(addAlert({
                     description: t("console:develop.features.applications.notifications.updateInboundProtocolConfig" +

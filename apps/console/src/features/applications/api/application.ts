@@ -354,7 +354,7 @@ export const updateOIDCData = (id: string, OIDC: Record<string, unknown>): Promi
  * @return {Promise<T>} Promise of type T.
  * @throws {IdentityAppsApiException}
  */
-export const updateAuthProtocolConfig = <T>(id: string, config: Record<string, unknown>,
+export const updateAuthProtocolConfig = <T>(id: string, config: T,
     protocol: string): Promise<T> => {
 
     /**
