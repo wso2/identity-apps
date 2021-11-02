@@ -18,15 +18,20 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
-import { FormValue, Forms } from "@wso2is/forms";
 import { Code, Heading, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Divider, Grid } from "semantic-ui-react";
+import { Divider } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "./attribute-settings";
 import { applicationConfig } from "../../../../../extensions";
-import { InboundProtocolListItemInterface, RoleConfigInterface, SubjectConfigInterface } from "../../../models";
 import { ApplicationManagementConstants } from "../../../constants";
+import {
+    InboundProtocolListItemInterface,
+    RoleConfigInterface,
+    RoleInterface,
+    SubjectConfigInterface,
+    SubjectInterface
+} from "../../../models";
 
 interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterface {
     dropDownOptions: any;
@@ -85,11 +90,13 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         if (claimMappingOn && dropDownOptions && dropDownOptions.length > 0) {
             if (selectedSubjectValueLocalClaim) {
                 const index = dropDownOptions.findIndex(option => option?.key === selectedSubjectValueLocalClaim);
+
                 if (index > -1) {
                     setSelectedSubjectValue(dropDownOptions[ index ]?.value);
                 } else {
                     const defaultSubjectClaimIndex =
                         dropDownOptions.findIndex(option => option?.key === defaultSubjectAttribute);
+
                     setSelectedSubjectValue(
                         defaultSubjectClaimIndex > -1
                             ? dropDownOptions[ defaultSubjectClaimIndex ]?.value
@@ -99,6 +106,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
             } else if (selectedSubjectValue) {
                 const subjectValueLocalMapping =
                     dropDownOptions.find(option => option?.value === selectedSubjectValue)?.key;
+
                 if (subjectValueLocalMapping) {
                     setSelectedSubjectValueLocalClaim(subjectValueLocalMapping);
                     setSelectedSubjectValue(selectedSubjectValue);
@@ -126,6 +134,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         if (selectedSubjectValue && dropDownOptions) {
             const subjectValueLocalMapping =
                 dropDownOptions.find(option => option?.value === selectedSubjectValue)?.key;
+
             setSelectedSubjectValueLocalClaim(subjectValueLocalMapping);
         }
     }, [ selectedSubjectValue ]);
@@ -136,16 +145,22 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     const getDefaultDropDownValue = ((options, checkValue): string => {
         const dropDownOptions: DropdownOptionsInterface[] = options as DropdownOptionsInterface[];
         let claimURI = "";
+
         dropDownOptions.map((option) => {
             if (option.value === checkValue) {
                 claimURI = checkValue;
             }
         });
+
         return claimURI;
     });
 
     const submitValues = (values) => {
-        const settingValues = {
+
+        const settingValues: {
+            role: RoleInterface;
+            subject: SubjectInterface
+        } = {
             role: {
                 claim: getDefaultDropDownValue(dropDownOptions, values.roleAttribute),
                 includeUserDomain: !!values.role,
@@ -158,6 +173,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                 useMappedLocalSubject: !!values.subjectUseMappedLocalSubject
             }
         };
+
         const config = applicationConfig.attributeSettings.advancedAttributeSettings;
 
         !config.showIncludeUserstoreDomainSubject && delete settingValues.subject.includeUserDomain;
@@ -229,6 +245,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                 </Hint>
             );
         }
+
         return (
             <Hint compact>
                 { t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
@@ -246,7 +263,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         !onlyOIDCConfigured &&
                         { subjectAttribute: selectedSubjectValue }
                     }
-                    onSubmit={ (values, form) => {
+                    onSubmit={ (values) => {
                         submitValues(values);
                     } }
                     triggerSubmit={ (submitFunction) => triggerSubmission(submitFunction) }

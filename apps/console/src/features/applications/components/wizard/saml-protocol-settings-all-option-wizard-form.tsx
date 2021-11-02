@@ -18,17 +18,17 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
-import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { ContentLoader, FilePicker, Hint, LinkButton, URLInput, XMLFileStrategy } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Button, Grid, Icon, Message } from "semantic-ui-react";
-import { getCertificateIllustrations } from "../../../core";
-import { SAMLConfigModes, SupportedAuthProtocolTypes } from "../../models";
-import { ApplicationManagementUtils } from "../../utils";
 import { commonConfig } from "../../../../extensions";
+import { getCertificateIllustrations } from "../../../core";
+import { SAMLConfigModes } from "../../models";
+import { ApplicationManagementUtils } from "../../utils";
 
 /**
  * Proptypes for the saml protocol all settings wizard form component.
@@ -124,6 +124,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
             const tempAssertionConsumerUrls = templateValues?.inboundProtocolConfiguration?.saml?.manualConfiguration
                 .assertionConsumerUrls;
             const tempIssuer = templateValues?.inboundProtocolConfiguration?.saml?.manualConfiguration.issuer;
+
             if (!isEmpty(tempAssertionConsumerUrls)) {
                 setAssertionConsumerUrls(tempAssertionConsumerUrls.toString());
             } else {
@@ -142,7 +143,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
             setIssuer(initialValues?.inboundProtocolConfiguration?.saml?.manualConfiguration
                 .issuer?.toString());
         }
-    }, [initialValues]);
+    }, [ initialValues ]);
 
     /**
      * Reset empty file error.
@@ -151,7 +152,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
         if (xmlBase64String && emptyFileError) {
             setEmptyFileError(false);
         }
-    }, [xmlBase64String]);
+    }, [ xmlBase64String ]);
 
     /**
      * Update SAML config mode to the parent element.
@@ -160,7 +161,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
         if (configureMode) {
             setSAMLConfigureMode(configureMode);
         }
-    }, [configureMode]);
+    }, [ configureMode ]);
 
     /**
      * Sets the mandatory status of the ACS URL component by reading
@@ -184,7 +185,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
         if (templatedIssuer) {
             setIssuerLFromTemplate(templatedIssuer);
         }
-    }, [templateValues]);
+    }, [ templateValues ]);
 
     /**
      * Sanitizes and prepares the form values for submission.
@@ -195,6 +196,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
      */
     const getFormValues = (values: Map<string, FormValue>, urls?: string): any => {
         let config;
+
         if (configureMode === SAMLConfigModes.MANUAL) {
             config = {
                 inboundProtocolConfiguration: {
@@ -433,23 +435,23 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                                     at a later step.)
                                                 </Trans>
                                             }
-                                                {
-                                                    (assertionConsumerUrls === undefined ||
+                                            {
+                                                (assertionConsumerUrls === undefined ||
                                                         assertionConsumerUrls === "") && (
-                                                        <LinkButton
-                                                            className={ "m-1 p-1 with-no-border orange" }
-                                                            onClick={ (e) => {
-                                                                e.preventDefault();
-                                                                setAssertionConsumerUrls(
-                                                                    assertionConsumerURLFromTemplate);
-                                                                setIssuer(issuerFromTemplate);
-                                                            } }
-                                                            data-testid={ `${testId}-add-now-button` }
-                                                        >
-                                                            <span style={ { fontWeight: "bold" } }>Add Now</span>
-                                                        </LinkButton>
-                                                    )
-                                                }
+                                                    <LinkButton
+                                                        className={ "m-1 p-1 with-no-border orange" }
+                                                        onClick={ (e) => {
+                                                            e.preventDefault();
+                                                            setAssertionConsumerUrls(
+                                                                assertionConsumerURLFromTemplate);
+                                                            setIssuer(issuerFromTemplate);
+                                                        } }
+                                                        data-testid={ `${testId}-add-now-button` }
+                                                    >
+                                                        <span style={ { fontWeight: "bold" } }>Add Now</span>
+                                                    </LinkButton>
+                                                )
+                                            }
                                             </Message.Content>
                                         </Message>
                                     )
@@ -556,7 +558,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
     let submitUrl: (callback: (url?: string) => void) => void;
 
     return (
-         configureMode
+        configureMode
             ? (
                 <Forms
                     onSubmit={ (values: Map<string, FormValue>): void => {

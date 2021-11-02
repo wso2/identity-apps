@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { AlertInterface, AlertLevels, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
@@ -36,7 +37,6 @@ import {
     WSTrustMetaDataInterface
 } from "../../models";
 import { CertificateFormFieldModal } from "../modals";
-import { CertificateManagementConstants } from "@wso2is/core/constants";
 
 /**
  * Proptypes for the inbound WS Trust form component.
@@ -107,6 +107,7 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
      */
     const getCertificateOptions = (metadataProp: MetadataPropertyInterface) => {
         const allowedOptions = [];
+
         if (metadataProp) {
             metadataProp.options.map((ele) => {
                 allowedOptions.push({ key: metadataProp.options.indexOf(ele), text: ele, value: ele });
