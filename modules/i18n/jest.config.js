@@ -20,29 +20,29 @@ module.exports = {
     globals: {
         "window": true
     },
-    moduleFileExtensions: ["js", "jsx", "ts", "tsx", "json", "node"],
-    roots: [
-        "src"
-    ],
-    testMatch: ["<rootDir>/**/?(*.)test.{ts,tsx}"],
-    transform: {
-        "^.+\\.(ts|tsx)?$": "ts-jest",
-        "^.+\\.(js|jsx)?$": "babel-jest"
-    },
+    moduleFileExtensions: [ "js", "jsx", "ts", "tsx", "json", "node" ],
     moduleNameMapper: {
         "^lodash-es": "<rootDir>/../../node_modules/lodash"
     },
     modulePaths: [
         "<rootDir>"
     ],
-    transformIgnorePatterns: [
-        "/node_modules/?(?!@wso2is)"
-    ],
-    testPathIgnorePatterns: [
-        "<rootDir>/(build|docs|node_modules)/"
+    roots: [
+        "src"
     ],
     setupFilesAfterEnv: [
         "<rootDir>/test-configs/setup-test.js"
+    ],
+    testMatch: [ "<rootDir>/**/?(*.)test.{ts,tsx}" ],
+    testPathIgnorePatterns: [
+        "<rootDir>/(build|docs|node_modules)/"
+    ],
+    transform: {
+        "^.+\\.(js|jsx)?$": "babel-jest",
+        "^.+\\.(ts|tsx)?$": "ts-jest"
+    },
+    transformIgnorePatterns: [
+        "/node_modules/?(?!@wso2is)"
     ],
     verbose: true
 };

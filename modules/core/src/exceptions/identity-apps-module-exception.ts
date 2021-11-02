@@ -28,10 +28,10 @@ export class IdentityAppsModuleException extends IdentityAppsException {
     /**
      * Constructor.
      * @param {string} message - Message for the exception.
-     * @param {any} stack - Stack trace for the error.
+     * @param {string | Record<string, unknown>} stack - Stack trace.
      * @param {string} module - Name of the module which threw the exception.
      */
-    constructor(message?: string, stack?: any, module?: string) {
+    constructor(message?: string, stack?: string | Record<string, unknown>, module?: string) {
         super(message, stack);
         this.module = module;
     }
