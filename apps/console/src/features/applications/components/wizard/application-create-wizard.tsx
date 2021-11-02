@@ -290,8 +290,9 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
     const handleApplicationProtocolsUpdate = (values: any): void => {
         setIsSubmitting(true);
 
-        updateAuthProtocolConfig<OIDCDataInterface | SAML2ConfigurationInterface>
-        (appId, values, selectedTemplate.authenticationProtocol)
+        updateAuthProtocolConfig<
+            OIDCDataInterface | SAML2ConfigurationInterface
+        >(appId, values, selectedTemplate.authenticationProtocol)
             .then(() => {
                 dispatch(addAlert({
                     description: t("console:develop.features.applications.notifications.updateProtocol.success" +
