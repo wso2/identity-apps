@@ -19,14 +19,25 @@
 
 require("@babel/register");
 
-const { Theme } = require("../src/theme");
+const crypto = require("crypto");
 const path = require("path");
-const fs = require("fs-extra");
 const CleanCSS = require("clean-css");
-const replace = require("replace");
+const fs = require("fs-extra");
 const lessToJson = require("less-to-json");
 const mergeFiles = require("merge-files");
-const crypto = require("crypto");
+const replace = require("replace");
+const { Theme } = require("../src/theme");
+
+/**
+ * TODO: Remove this once the logger is added.
+ * Tracked here https://github.com/wso2/product-is/issues/11650.
+ */
+const log = {
+    // eslint-disable-next-line no-console
+    error: console.error,
+    // eslint-disable-next-line no-console
+    info: console.log
+};
 
 const srcDir = path.join(__dirname, "..", "src");
 const distDir = path.join(__dirname, "..", "dist");
@@ -67,13 +78,13 @@ const createVariablesLessJson = async () => {
     const variablesJson =  lessToJson(exportMergeLessFile);
 
     fs.writeFileSync(exportJsFile, JSON.stringify(variablesJson, null, 4), (error) => {
-        console.error(exportJsFileName + " generation failed.");
-        console.error(error);
+        log.error(exportJsFileName + " generation failed.");
+        log.error(error);
     });
 
-    console.log(exportJsFileName + " generated.");
+    log.info(exportJsFileName + " generated.");
 
-    console.log("build finished.");
+    log.info("build finished.");
 };
 
 /*
@@ -87,11 +98,11 @@ const writeFile = (theme, file, content) => {
     fs.ensureDirSync(path.join(distDir, "lib", "themes", theme));
 
     fs.writeFileSync(path.join(distDir, "lib", "themes", theme, "theme" + file), content || "", (error) => {
-        console.error(theme + "/" + "theme" + file + " generation failed.");
-        console.error(error);
+        log.error(theme + "/" + "theme" + file + " generation failed.");
+        log.error(error);
     });
 
-    console.log(theme + "/" + "theme" + file + " generated.");
+    log.info(theme + "/" + "theme" + file + " generated.");
 };
 
 /*
@@ -100,14 +111,14 @@ const writeFile = (theme, file, content) => {
  * @param {theme} Theme name
  */
 const copySemanticUIJSFiles = (theme) => {
-    ["semantic.js", "semantic.min.js"].map((fileName) => {
+    [ "semantic.js", "semantic.min.js" ].map((fileName) => {
         try {
             fs.copySync(
                 path.join(semanticUICSSModuleDir, fileName),
                 path.join(distDir, "lib", "themes", theme, fileName));
-            console.log(theme + "/" + fileName + " file copied.");
+            log.info(theme + "/" + fileName + " file copied.");
         } catch (error) {
-            console.error(error);
+            log.error(error);
         }
     });
 };
@@ -121,10 +132,10 @@ const copySemanticUIJSFiles = (theme) => {
 const copyAssets = (theme, filePath) => {
     try {
         fs.copySync(path.join(filePath, "assets"), path.join(distDir, "lib", "themes", theme, "assets"));
-        console.log(theme + "/assets copied.");
+        log.info(theme + "/assets copied.");
         copySemanticUIJSFiles(theme);
     } catch (error) {
-        console.error(error);
+        log.error(error);
     }
 };
 
@@ -176,7 +187,7 @@ const createAssetManifest = async (theme, themePath) => {
     });
 
     fs.writeFileSync(targetManifestFile, JSON.stringify(manifest, null, 4), (error) => {
-        console.error("failed to create the manifest file at ", targetManifestFile, ". Trace - ", error);
+        log.error("failed to create the manifest file at ", targetManifestFile, ". Trace - ", error);
     });
 };
 
@@ -212,6 +223,7 @@ const generateThemes = () => {
 
                 if (!skipHashing) {
                     const hash = files[ key ] && crypto.createHash("sha1").update(files[ key ]).digest("hex");
+
                     ext = hash
                         ? `.${ hash.substr(0, 8) }${ key }`
                         : key;
@@ -225,21 +237,21 @@ const generateThemes = () => {
             if (!skipManifest) {
                 createAssetManifest(theme, filePath)
                     .then(() => {
-                        console.log("assets manifest generation for " + theme + " theme succeeded.");
+                        log.info("assets manifest generation for " + theme + " theme succeeded.");
                     })
                     .catch((error) => {
-                        console.error("assets manifest generation for " + theme + " theme failed with error - ", error);
+                        log.error("assets manifest generation for " + theme + " theme failed with error - ", error);
                     });
             }
         }, (error) => {
-            console.error(error);
+            log.error(error);
         });
     });
 
     Promise.all(fileWritePromises).then(() => {
         createVariablesLessJson();
     }).catch((error) => {
-        console.error(error);
+        log.error(error);
     });
 };
 
@@ -250,7 +262,7 @@ const titleCase = (string, spliter) => {
     const sentence = string.toLowerCase().split(spliter);
 
     for(var i = 0; i< sentence.length; i++){
-       sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1);
+        sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1);
     }
 
     return sentence.join(" ");
@@ -300,7 +312,7 @@ const createSampleTheme = () => {
                                 "********************************\n";
 
                             fs.writeFileSync(path.join(folderPath, file), content, (error) => {
-                                console.error(error);
+                                log.error(error);
                             });
                         }
                     });
@@ -308,14 +320,14 @@ const createSampleTheme = () => {
             }
         });
 
-        console.log("themes/sample/assets created.");
-        console.log("themes/sample .variables & .overrides files created.");
+        log.info("themes/sample/assets created.");
+        log.info("themes/sample .variables & .overrides files created.");
 
         /*
         * Copy index.less to sample theme
         */
         fs.copySync(path.join(srcDir, "templates", "index.less"), path.join(sampleThemePath, "index.less"));
-        console.log("themes/sample/index.less copied.");
+        log.info("themes/sample/index.less copied.");
     }
 
     /*
@@ -341,16 +353,17 @@ const createSemanticUICore = () => {
                 filter: (src) => {
                     // @return true if 'src' is a folder
                     if (fs.lstatSync(src).isDirectory()) {
-                       return true;
+                        return true;
                     }
 
                     // @return true if 'src' is a file & type .less
                     const result = /\.less$/.test(src);
+
                     return result;
-               }
+                }
             });
 
-        console.log("node_modules/semantic-ui-less/definitions .less files copied.");
+        log.info("node_modules/semantic-ui-less/definitions .less files copied.");
 
         /*
          * Remove empty definition folders from the copied
@@ -359,12 +372,13 @@ const createSemanticUICore = () => {
 
         folders.map((folder) => {
             const folderPath = path.join(semanticUICoreDefinitions, folder);
+
             if (fs.readdirSync(folderPath).length === 0) {
                 fs.removeSync(folderPath);
             }
         });
 
-        console.log("node_modules/semantic-ui-less/definitions folder cleansed.");
+        log.info("node_modules/semantic-ui-less/definitions folder cleansed.");
 
         /*
          * Copy default theme .variable & .override files from semantic ui less module to src/semantic-ui-core folder
@@ -372,25 +386,25 @@ const createSemanticUICore = () => {
         fs.copySync(path.join(semanticUILessModuleDir, "themes", DEFAULT_THEME_NAME),
             path.join(semanticUICorePath, DEFAULT_THEME_NAME));
 
-        console.log("node_modules/semantic-ui-less/themes/default copied.");
+        log.info("node_modules/semantic-ui-less/themes/default copied.");
 
         /*
          * Update copied definition .less files theme import logic support
          */
         replace({
-            regex: /@import \(multiple\) '\.\.\/\.\.\/theme\.config';/gi,
-            replacement: "@import (multiple) '../../theme.less';\n.loadVariables();",
             paths: [ semanticUICoreDefinitions ],
             recursive: true,
-            silent: true,
+            regex: /@import \(multiple\) '\.\.\/\.\.\/theme\.config';/gi,
+            replacement: "@import (multiple) '../../theme.less';\n.loadVariables();",
+            silent: true
         });
 
-        console.log("semantic-ui-core/definitions changes updated.");
+        log.info("semantic-ui-core/definitions changes updated.");
 
         createSampleTheme();
 
     } catch (error) {
-        console.error(error);
+        log.error(error);
     }
 };
 

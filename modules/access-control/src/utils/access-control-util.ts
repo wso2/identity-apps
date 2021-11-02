@@ -53,13 +53,14 @@ export class AccessControlUtils {
 
             if (feature && feature.enabled) {
                 let shouldShowRoute: boolean = false;
+
                 if (
                     AuthenticateUtils.hasScopes(feature?.scopes.read, allowedScopes) &&
                     (!checkForUIResourceScopes ||
                         !feature?.scopes?.feature ||
                         (feature?.scopes?.feature &&
                             AuthenticateUtils.hasScopes(feature?.scopes.feature, allowedScopes)) ||
-                        AuthenticateUtils.hasScopes([AccessControlConstants.FULL_UI_SCOPE], allowedScopes))
+                        AuthenticateUtils.hasScopes([ AccessControlConstants.FULL_UI_SCOPE ], allowedScopes))
                 ) {
                     shouldShowRoute = true;
                 }
