@@ -118,8 +118,7 @@ export class Config {
                     namespace,
                     window[ "AppUtils" ].getConfig().appBase,
                     Config.getI18nConfig() ?? {
-                        langAutoDetectEnabled: window["AppUtils"].getConfig().ui.i18nConfigs.langAutoDetectEnabled
-                            ?? I18nConstants.LANG_AUTO_DETECT_ENABLED,
+                        langAutoDetectEnabled: I18nConstants.LANG_AUTO_DETECT_ENABLED,
                         namespaceDirectories: I18nConstants.BUNDLE_NAMESPACE_DIRECTORIES,
                         overrideOptions: I18nConstants.INIT_OPTIONS_OVERRIDE,
                         resourcePath: "/resources/i18n",
@@ -147,7 +146,8 @@ export class Config {
     public static getI18nConfig(metaFile?: MetaI18N): I18nModuleOptionsInterface {
         return {
             initOptions: this.generateModuleInitOptions(metaFile),
-            langAutoDetectEnabled: I18nConstants.LANG_AUTO_DETECT_ENABLED,
+            langAutoDetectEnabled: window["AppUtils"].getConfig().ui.i18nConfigs.langAutoDetectEnabled
+                ?? I18nConstants.LANG_AUTO_DETECT_ENABLED,
             namespaceDirectories: I18nConstants.BUNDLE_NAMESPACE_DIRECTORIES,
             overrideOptions: I18nConstants.INIT_OPTIONS_OVERRIDE,
             resourcePath: "/resources/i18n",
