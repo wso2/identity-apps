@@ -349,12 +349,12 @@ export const updateOIDCData = (id: string, OIDC: Record<string, unknown>): Promi
  * Generic function to update the authentication protocol config of an application.
  *
  * @param {string} id - Application ID.
- * @param {Record<string, unknown>} config - Protocol config.
+ * @param {T} config - Protocol config.
  * @param {string} protocol - The protocol to be updated.
  * @return {Promise<T>} Promise of type T.
  * @throws {IdentityAppsApiException}
  */
-export const updateAuthProtocolConfig = <T>(id: string, config: Record<string, unknown>,
+export const updateAuthProtocolConfig = <T>(id: string, config: T,
     protocol: string): Promise<T> => {
 
     /**
