@@ -44,6 +44,7 @@ export const fetchHomeRealmIdentifiers = async (): Promise<string[]> => {
 
     try {
         const response: AxiosResponse = await httpClient(requestConfig);
+
         return Promise.resolve<string[]>(response.data);
     } catch (error) {
         return Promise.reject(error);

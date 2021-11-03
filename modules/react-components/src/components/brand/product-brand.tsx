@@ -19,7 +19,7 @@
 import { ProductReleaseTypes, ProductVersionConfigInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import classNames from "classnames";
-import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from "react";
+import React, { CSSProperties, FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from "react";
 import { Label, SemanticCOLORS } from "semantic-ui-react";
 import { Heading } from "../typography";
 
@@ -46,7 +46,7 @@ export interface ProductBrandPropsInterface extends TestableComponentInterface {
     /**
      * Custom styles object.
      */
-    style?: object;
+    style?: CSSProperties | undefined;
     /**
      * Product version.
      */
@@ -171,7 +171,7 @@ export const ProductBrand: FunctionComponent<PropsWithChildren<ProductBrandProps
                     { constructed }
                 </Label>
             </div>
-        )
+        );
     };
 
     return (

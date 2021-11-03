@@ -35,7 +35,6 @@ export const common: CommonNS = {
     assignees: "அளிக்கப்பட்டவர்கள்",
     authentication: "அங்கீகார",
     authenticator: "அங்கீகார",
-    // eslint-disable-next-line @typescript-eslint/camelcase
     authenticator_plural: "அங்கீகாரிகள்",
     back: "மீண்டும்",
     browser: "உலாவி",
@@ -43,7 +42,8 @@ export const common: CommonNS = {
     challengeQuestionNumber: "சவால் வினா {{number}}",
     change: "மாற்று",
     chunkLoadErrorMessage: {
-        description: "கோரப்பட்ட பயன்பாட்டிற்கு சேவை செய்யும் போது பிழை ஏற்பட்டது. பயன்பாட்டை மீண்டும் ஏற்ற முயற்சிக்கவும்.",
+        description: "கோரப்பட்ட பயன்பாட்டிற்கு சேவை செய்யும் போது பிழை ஏற்பட்டது. பயன்பாட்டை மீண்டும் " +
+            "ஏற்ற முயற்சிக்கவும்.",
         heading: "ஏதோ தவறு நடந்துவிட்டது",
         primaryActionText: "பயன்பாட்டை மீண்டும் ஏற்றவும்"
     },

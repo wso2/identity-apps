@@ -236,7 +236,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                 {
                                     githubRepoMetaInfo.languageLogo && (
                                         <Popup
-                                            trigger={
+                                            trigger={ (
                                                 <div className="language">
                                                     <GenericIcon
                                                         icon={ githubRepoMetaInfo.languageLogo }
@@ -249,7 +249,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                                         floated="left"
                                                     />
                                                 </div>
-                                            }
+                                            ) }
                                             content={ githubRepoMetaInfo.language }
                                             inverted
                                         />
@@ -308,7 +308,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                         {
                             githubRepoMetaInfo.languageLogo && (
                                 <Popup
-                                    trigger={
+                                    trigger={ (
                                         <div className="language">
                                             <GenericIcon
                                                 icon={ githubRepoMetaInfo.languageLogo }
@@ -321,7 +321,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                                 floated="left"
                                             />
                                         </div>
-                                    }
+                                    ) }
                                     content={ githubRepoMetaInfo.language }
                                     inverted
                                 />

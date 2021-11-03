@@ -56,10 +56,6 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-
-    const isGroupAndRoleSeparationEnabled: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.isGroupAndRoleSeparationEnabled);
-
     const [ isGroup, setIsGroup ] = useState<boolean>(false);
     const [ isAdminRole, setIsAdminRole ] = useState<boolean>(false);
 
@@ -128,7 +124,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <RoleGroupsList
                             isReadOnly={ !hasRequiredScopes(
-                                    featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes) }
+                                featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes) }
                             data-testid="role-mgt-edit-role-groups"
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }

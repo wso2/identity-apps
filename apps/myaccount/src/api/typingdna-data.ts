@@ -40,6 +40,7 @@ export const deleteTypingPatterns = (): Promise<any> => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response);
         })
         .catch((error) => {
@@ -55,6 +56,7 @@ export const isTypingDNAEnabled = (): Promise<boolean> => {
         method: HttpMethods.GET,
         url: store.getState().config.endpoints.typingDNAServer
     };
+
     return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {

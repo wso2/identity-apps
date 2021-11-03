@@ -45,7 +45,7 @@ const initialState: GlobalReducerStateInterface = {
  * @returns The new state
  */
 const GlobalReducer = (state: GlobalReducerStateInterface = initialState,
-                              action: GlobalActions): GlobalReducerStateInterface => {
+    action: GlobalActions): GlobalReducerStateInterface => {
 
     switch (action.type) {
         case GlobalActionTypes.SET_ACTIVE_VIEW:

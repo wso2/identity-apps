@@ -19,6 +19,34 @@
 
 // Base ESLint Config which can be extended to be used in the development environment.
 
+const LINE_PADDING_RULES = [
+    1,
+    // Add a new line after const, let, var declarations.
+    { blankLine: "always", next: "*", prev: [ "const", "let", "var" ] },
+    { blankLine: "any", next: [ "const", "let", "var" ], prev: [ "const", "let", "var" ] },
+    // Add a new line after directive declarations like `use strict` etc.
+    { blankLine: "always", next: "*", prev: "directive"  },
+    { blankLine: "any", next: "directive", prev: "directive" },
+    // Add a new line before return statements.
+    { blankLine: "always", next: "return", prev: "*" },
+    // Add a new line try blocks.
+    { blankLine: "always", next: "try", prev: "*" },
+    // Add a new line break statements.
+    { blankLine: "always", next: "break", prev: "*" },
+    // Add a new line continue statements.
+    { blankLine: "always", next: "continue", prev: "*" },
+    // Add a new line before exports.
+    { blankLine: "always", next: "export", prev: "*" },
+    { blankLine: "any", next: "export", prev: "export" },
+    // Add a new line before for loops.
+    { blankLine: "always", next: "for", prev: "*" },
+    // Add a new line before classes.
+    { blankLine: "always", next: "class", prev: "*" },
+    // Add a new line after import statements.
+    { blankLine: "always", next: "*", prev: "import" },
+    { blankLine: "any", next: "import", prev: "import" }
+];
+
 module.exports = {
     extends: [
         "eslint:recommended",
@@ -58,6 +86,18 @@ module.exports = {
             "ignoreDeclarationSort": true,
             "ignoreMemberSort": false
         }],
+        "react/jsx-first-prop-new-line": [ 1, "multiline" ],
+        "react/jsx-max-props-per-line": [
+            1,
+            { maximum: 1, when: "multiline" },
+        ],
+        "indent": [ 1, 4, {
+            SwitchCase: 1
+        } ],
+        "array-bracket-spacing": [ 1, "always" ],
+        "no-unreachable": "error",
+        "no-alert": 1,
+        "lines-between-class-members": [ 1, "always", { "exceptAfterSingleLine": true } ],
         "import/order": [
             "warn",
             {
@@ -67,6 +107,9 @@ module.exports = {
                     caseInsensitive: true
                 }
             }
+        ],
+        "padding-line-between-statements": [
+            ...LINE_PADDING_RULES
         ],
         "react/jsx-curly-spacing": [
             "warn",
@@ -81,6 +124,15 @@ module.exports = {
         "react-hooks/exhaustive-deps": ["off"],
         "react/no-children-prop": 0,
         "react/display-name": 0,
+        "react/jsx-wrap-multilines": [ "warn", {
+            arrow: "parens",
+            assignment: "parens",
+            condition: "parens",
+            declaration: "parens",
+            logical: "parens",
+            prop: "parens",
+            return: "parens"
+        } ],
         "react/prop-types": 1,
         "sort-keys": ["warn", "asc", {"caseSensitive": true, "natural": false, "minKeys": 2}],
         "object-curly-spacing": ["warn", "always"],
@@ -142,6 +194,10 @@ module.exports = {
                 // `no-undef` is discouraged in Typescript projects.
                 // https://github.com/typescript-eslint/typescript-eslint/issues/2477#issuecomment-686892459
                 "no-undef": 0,
+                "padding-line-between-statements": "off",
+                "@typescript-eslint/padding-line-between-statements": [
+                    ...LINE_PADDING_RULES
+                ],
                 "@typescript-eslint/no-explicit-any": 0,
                 "@typescript-eslint/explicit-function-return-type": 0,
                 "@typescript-eslint/no-inferrable-types": "off",

@@ -194,6 +194,7 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
             if (evalRoute.children) {
                 evaluateSidePanelItemExtension(evalRoute.children, route);
             }
+
             return true;
         });
     };
@@ -221,6 +222,7 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
             if (route.category) {
                 if (categorizedRoutes[route.category]) {
                     categorizedRoutes[route.category].push(route);
+
                     continue;
                 }
 

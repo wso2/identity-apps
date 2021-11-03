@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { AlertLevels, CertificateValidity, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
@@ -34,10 +35,9 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Icon, Popup, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 import { AddApplicationCertificateWizard } from "./add-certificate-wizard";
-import { getEmptyPlaceholderIllustrations, UIConstants } from "../../../../core";
+import { UIConstants, getEmptyPlaceholderIllustrations } from "../../../../core";
 import { updateApplicationDetails } from "../../../api";
 import { ApplicationInterface, CertificateTypeInterface } from "../../../models";
-import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { CertificateFormFieldModal } from "../../modals";
 
 /**
@@ -95,6 +95,7 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
     useEffect(() => {
         if (applicationCertificate) {
             const certificatesList: DisplayCertificate[] = [];
+
             if (CertificateManagementUtils.canSafelyParseCertificate(applicationCertificate)) {
                 certificatesList?.push(CertificateManagementUtils.displayCertificate(null, applicationCertificate));
             } else {
@@ -109,13 +110,13 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
             return;
         }
         setCertificateModal(true);
-    }, [certificateDisplay]);
+    }, [ certificateDisplay ]);
 
     useEffect(() => {
         if (!certificateModal) {
             setCertificateDisplay(null);
         }
-    }, [certificateModal]);
+    }, [ certificateModal ]);
 
     /**
      * Show the certificate details.
@@ -144,6 +145,7 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
                     }
                 }
             };
+
             await updateApplicationDetails({
                 id: application?.id,
                 ...(patchObject.general)
@@ -162,6 +164,7 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
                     level: AlertLevels.ERROR,
                     message: error.response.data.message
                 }));
+
                 return;
             }
             dispatch(addAlert({
@@ -229,11 +232,13 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
             case CertificateValidity.VALID: {
                 icon = "check circle";
                 iconColor = "green";
+
                 break;
             }
             case CertificateValidity.WILL_EXPIRE_SOON: {
                 icon = "exclamation circle";
                 iconColor = "yellow";
+
                 break;
             }
             default: {
@@ -285,11 +290,13 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
             <span className="with-muted-list-item-header">
                 Unable to visualize the certificate details&nbsp;
                 <Popup
-                    trigger={
+                    trigger={ (
                         <Icon
                             onClick={ () => handleViewCertificate(certificate) }
                             name={ "info circle" }
-                            color={ "grey" }/> }
+                            color={ "grey" }
+                        />
+                    ) }
                     content={ "Click for more info" }
                     inverted
                     position="top left"
@@ -331,9 +338,9 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
                                                         type: "button"
                                                     },
                                                     {
-                                                        hidden: certificate?.infoUnavailable,
-                                                        disabled: certificate?.infoUnavailable,
                                                         "data-testid": `${ testId }-edit-cert-${ index }-button`,
+                                                        disabled: certificate?.infoUnavailable,
+                                                        hidden: certificate?.infoUnavailable,
                                                         icon: "eye",
                                                         onClick: () => handleViewCertificate(certificate),
                                                         popupText: "View certificate",
@@ -357,11 +364,11 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
                                                     certificate?.infoUnavailable
                                                         ? createDummyValidityLabel(certificate)
                                                         : createValidityLabel(
-                                                        certificate.validFrom,
-                                                        certificate.validTill,
-                                                        CertificateManagementUtils.searchIssuerDNAlias(
-                                                            certificate?.issuerDN
-                                                        ))
+                                                            certificate.validFrom,
+                                                            certificate.validTill,
+                                                            CertificateManagementUtils.searchIssuerDNAlias(
+                                                                certificate?.issuerDN
+                                                            ))
 
                                                 }
                                                 itemDescription={

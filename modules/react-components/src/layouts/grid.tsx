@@ -20,7 +20,6 @@ import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from "react";
 import { Divider, Grid, Loader, Visibility } from "semantic-ui-react";
-import { ContentLoader } from "../components/loader";
 
 /**
  * Grid layout component Prop types.

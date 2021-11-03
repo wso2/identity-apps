@@ -37,7 +37,7 @@ const initialState: HelpPanelReducerStateInterface = {
  * @returns The new state
  */
 export const helpPanelReducer = (state: HelpPanelReducerStateInterface = initialState,
-                                   action: HelpPanelActions): HelpPanelReducerStateInterface => {
+    action: HelpPanelActions): HelpPanelReducerStateInterface => {
 
     switch (action.type) {
         case HelpPanelActionTypes.SET_HELP_PANEL_DOCS_CONTENT_URL:

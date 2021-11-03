@@ -21,7 +21,15 @@ import { ImageUtils, URLUtils } from "@wso2is/core/utils";
 import classNames from "classnames";
 import get from "lodash-es/get";
 import take from "lodash-es/take";
-import React, { ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
+import React, {
+    FunctionComponent,
+    ReactElement,
+    ReactNode,
+    SVGProps,
+    SyntheticEvent,
+    useEffect,
+    useState
+} from "react";
 import { Card, Grid } from "semantic-ui-react";
 import { UserAvatar } from "../avatar";
 import { LinkButton } from "../button";
@@ -111,7 +119,9 @@ export interface TemplateGridPropsInterface<T> extends TestableComponentInterfac
     /**
      * Template icons.
      */
-    templateIcons?: object;
+    templateIcons?: {
+        [ key: string ]: string | FunctionComponent<SVGProps<SVGSVGElement>>;
+    };
     /**
      * Tag size.
      */
@@ -241,9 +251,9 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
         className
     );
 
-    const [templateList, setTemplateList] = useState<T[]>([]);
-    const [secondaryTemplateList, setSecondaryTemplateList] = useState<T[]>([]);
-    const [isShowMoreClicked, setIsShowMoreClicked] = useState<boolean>(false);
+    const [ templateList, setTemplateList ] = useState<T[]>([]);
+    const [ secondaryTemplateList, setSecondaryTemplateList ] = useState<T[]>([]);
+    const [ isShowMoreClicked, setIsShowMoreClicked ] = useState<boolean>(false);
 
     useEffect(() => {
         if (paginate && !isShowMoreClicked) {
@@ -253,12 +263,13 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
         }
 
         setTemplateList(templates);
-    }, [templates]);
+    }, [ templates ]);
 
     useEffect(() => {
         if (secondaryTemplates) {
             if (paginate && !isShowMoreClicked) {
                 let balanceLimit = (paginationLimit - templates.length);
+
                 balanceLimit = (balanceLimit < 0) ? 0 : balanceLimit;
                 setSecondaryTemplateList(take(secondaryTemplates, balanceLimit));
 
@@ -266,7 +277,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
             }
             setSecondaryTemplateList(secondaryTemplates);
         }
-    }, [secondaryTemplates, templates]);
+    }, [ secondaryTemplates, templates ]);
 
 
     /**
@@ -278,6 +289,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
      * @return Predefined image if available. If not, return input parameter.
      */
     const resolveTemplateImage = (image: any) => {
+
         if (image) {
             if (typeof image !== "string") {
                 return image;
@@ -319,6 +331,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
         setTemplateList(take(templates, paginationLimit));
         if (secondaryTemplates) {
             let balanceLimit = (paginationLimit - templates.length);
+
             balanceLimit = (balanceLimit < 0) ? 0 : balanceLimit;
             setSecondaryTemplateList(take(secondaryTemplates, balanceLimit));
         }
@@ -327,25 +340,25 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
     const resolveCardListing = ((templateList: T[], onClick: any, useNameImage: boolean): ReactElement[] => {
         if (templateList.length > 0) {
             return templateList.map((template, index) => (
-                    <SelectionCard
-                        key={ index }
-                        inline
-                        id={ template.id }
-                        header={ template.name }
-                        image={
-                            useNameImage
-                                ?
-                                <UserAvatar name={ template.name } size="tiny"/>
-                                : resolveTemplateImage(template.image)
-                        }
-                        imageOptions={ templateIconOptions }
-                        onClick={ onClick }
-                        selected={ selectedTemplate?.id === template.id }
-                        data-testid={ `${ testId }-selection-card` }
-                    />
-                )
-            );
+                <SelectionCard
+                    key={ index }
+                    inline
+                    id={ template.id }
+                    header={ template.name }
+                    image={
+                        useNameImage
+                            ?
+                            <UserAvatar name={ template.name } size="tiny"/>
+                            : resolveTemplateImage(template.image)
+                    }
+                    imageOptions={ templateIconOptions }
+                    onClick={ onClick }
+                    selected={ selectedTemplate?.id === template.id }
+                    data-testid={ `${ testId }-selection-card` }
+                />
+            ));
         }
+
         return null;
     });
 
@@ -355,6 +368,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
     const paginationLimitExceed = ((): boolean => {
         let exceeded = false;
         let length = 0;
+
         if (secondaryTemplates && secondaryTemplates instanceof Array) {
             length += secondaryTemplates.length;
         }
@@ -424,64 +438,76 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
             }
             <Grid.Row>
                 <Grid.Column>
-                    { useSelectionCard
-                        ?
-                        (
-                            (
-                                (templateList && templateList instanceof Array && templateList.length > 0) ||
-                                (secondaryTemplateList && secondaryTemplateList instanceof Array
-                                    && secondaryTemplateList.length > 0)
+                    {
+                        useSelectionCard
+                            ? (
+                                (
+                                    (
+                                        templateList
+                                        && templateList instanceof Array
+                                        && templateList.length > 0
+                                    )
+                                    || (
+                                        secondaryTemplateList
+                                        && secondaryTemplateList instanceof Array
+                                        && secondaryTemplateList.length > 0
+                                    )
+                                )
+                                    ? (
+                                        <>
+                                            {
+                                                resolveCardListing(templateList, onTemplateSelect, false)
+                                            }
+                                            {
+                                                resolveCardListing(
+                                                    secondaryTemplateList,
+                                                    onSecondaryTemplateSelect,
+                                                    useNameInitialAsImage
+                                                )
+                                            }
+                                        </>
+                                    )
+                                    : emptyPlaceholder && emptyPlaceholder
                             )
-                                ?
-                                <>
-                                    {
-                                        resolveCardListing(templateList, onTemplateSelect, false)
-                                    }
-                                    {
-                                        resolveCardListing(
-                                            secondaryTemplateList,
-                                            onSecondaryTemplateSelect,
-                                            useNameInitialAsImage
-                                        )
-                                    }
-                                </>
-                                : emptyPlaceholder && emptyPlaceholder
-                        )
-                        : (
-                            (templateList && templateList instanceof Array && templateList.length > 0)
-                                ? <Card.Group>
-                                    {
-                                        templateList.map((template, index) => (
-                                            <TemplateCard
-                                                key={ index }
-                                                description={ template.description }
-                                                image={ resolveTemplateImage(template.image) }
-                                                imageOptions={ templateIconOptions }
-                                                tagsSectionTitle={ tagsSectionTitle }
-                                                tags={ get(template, tagsKey) }
-                                                tagsAs={ tagsAs }
-                                                showTags={ showTags }
-                                                showTagIcon={ showTagIcon }
-                                                name={ template.name }
-                                                id={ template.id }
-                                                onClick={
-                                                    (template.disabled || template.comingSoon)
-                                                        ? null
-                                                        : onTemplateSelect
-                                                }
-                                                overlayOpacity={ overlayOpacity }
-                                                imageSize={ templateIconSize }
-                                                renderDisabledItemsAsGrayscale={ renderDisabledItemsAsGrayscale }
-                                                tagSize={ tagSize }
-                                                data-testid={ template.id }
-                                                disabled={ template.disabled || template.comingSoon }
-                                                ribbon={ template.comingSoon ? comingSoonRibbonLabel : null }
-                                            />
-                                        ))
-                                    }
-                                </Card.Group>
-                                : emptyPlaceholder && emptyPlaceholder
-                        )
+                            : (
+                                (templateList && templateList instanceof Array && templateList.length > 0)
+                                    ? (
+                                        <Card.Group>
+                                            {
+                                                templateList.map((template, index) => (
+                                                    <TemplateCard
+                                                        key={ index }
+                                                        description={ template.description }
+                                                        image={ resolveTemplateImage(template.image) }
+                                                        imageOptions={ templateIconOptions }
+                                                        tagsSectionTitle={ tagsSectionTitle }
+                                                        tags={ get(template, tagsKey) }
+                                                        tagsAs={ tagsAs }
+                                                        showTags={ showTags }
+                                                        showTagIcon={ showTagIcon }
+                                                        name={ template.name }
+                                                        id={ template.id }
+                                                        onClick={
+                                                            (template.disabled || template.comingSoon)
+                                                                ? null
+                                                                : onTemplateSelect
+                                                        }
+                                                        overlayOpacity={ overlayOpacity }
+                                                        imageSize={ templateIconSize }
+                                                        renderDisabledItemsAsGrayscale={
+                                                            renderDisabledItemsAsGrayscale
+                                                        }
+                                                        tagSize={ tagSize }
+                                                        data-testid={ template.id }
+                                                        disabled={ template.disabled || template.comingSoon }
+                                                        ribbon={ template.comingSoon ? comingSoonRibbonLabel : null }
+                                                    />
+                                                ))
+                                            }
+                                        </Card.Group>
+                                    )
+                                    : emptyPlaceholder && emptyPlaceholder
+                            )
                     }
                 </Grid.Column>
             </Grid.Row>

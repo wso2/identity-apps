@@ -99,7 +99,7 @@ export interface ConsoleNS {
             sessionTimeoutModal: {
                 description: string;
                 heading: string;
-                content?: object;
+                content?: Record<string, unknown>;
                 primaryButton: string;
                 secondaryButton: string;
                 loginAgainButton: string;
@@ -2891,7 +2891,11 @@ export interface ConsoleNS {
                     addTemplateType: {
                         heading: string;
                         subHeading: string;
-                        steps: {};
+                        steps: {
+                            templateType: {
+                                heading: string;
+                            }
+                        };
                     };
                 };
             };

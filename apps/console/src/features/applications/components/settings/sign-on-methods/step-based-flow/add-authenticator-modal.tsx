@@ -163,7 +163,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
     const { t } = useTranslation();
 
-    const [ isModalOpen, setIsModalOpen ] = useState<boolean>(open);
+    const [ isModalOpen ] = useState<boolean>(open);
     const [
         selectedAuthenticators,
         setSelectedAuthenticators
@@ -554,7 +554,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                                 className={
                                                     `basic-card authenticator add-custom-authenticator-card ${
                                                         showLabels ? "with-labels" : ""
-                                                        }`
+                                                    }`
                                                 }
                                                 onClick={ handleNewAuthenticatorAddClick }
                                             >

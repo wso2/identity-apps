@@ -200,6 +200,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                     level: AlertLevels.ERROR,
                     message: error.response.data?.message
                 }));
+
                 return;
             }
             dispatch(addAlert({
@@ -235,6 +236,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         } else {
             //If no selected text, secret name injected at the location of the cursor.
             const cursor = doc.getCursor();
+
             doc.replaceRange(secretNameString, cursor);
         }
     };
@@ -251,9 +253,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     /**
      * This will be called when secret add wizard closed.
      * It will tell us to refresh the secret list or not.
-     * @param shouldRefresh {boolean}
      */
-    const whenAddNewSecretModalClosed = (shouldRefresh: boolean): void => {
+    const whenAddNewSecretModalClosed = (): void => {
         setShowAddSecretModal(false);
         refreshSecretList();
     };
@@ -339,6 +340,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         // If the user has read only access, show the script editor.
         if (readOnly) {
             setShowConditionalAuthContent(true);
+
             return;
         }
 
@@ -349,6 +351,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                 authenticationSequence?.steps?.length)) {
 
             setShowConditionalAuthContent(true);
+
             return;
         }
 
@@ -374,12 +377,14 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         if (!script && authenticationSequence?.steps?.length === 0) {
             setSourceCode(AdaptiveScriptUtils.getDefaultScript());
             setIsScriptFromTemplate(false);
+
             return;
         }
 
         if (!script && authenticationSequence?.steps?.length > 0) {
             setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSteps + 1));
             setIsScriptFromTemplate(false);
+
             return;
         }
 
@@ -399,6 +404,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             setIsScriptFromTemplate(true);
             setSourceCode(JSON.parse(script));
             setIsNewlyAddedScriptTemplate(false);
+
             return;
         }
 
@@ -411,6 +417,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             setInternalStepCount(authenticationSteps);
             setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSteps + 1));
             setIsScriptFromTemplate(false);
+
             return;
         }
 
@@ -424,16 +431,19 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             // Checks if the editor content is different to the externally provided script.
             if (AdaptiveScriptUtils.minifyScript(internalScript) !== AdaptiveScriptUtils.minifyScript(script)) {
                 setSourceCode(internalScript ?? script);
+
                 return;
             }
 
             setSourceCode(beautify.js(stripSlashes(script)));
             setIsScriptFromTemplate(false);
+
             return;
         }
 
         if (isDefaultScript) {
             resetAdaptiveScriptTemplateToDefaultHandler();
+
             return;
         }
 
@@ -483,6 +493,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         
         if (showConditionalAuthContent) {
             setShowScriptResetWarning(true);
+
             return;
         }
 
@@ -517,6 +528,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
 
         if (_modifiedScript !== _editorSourceCode) {
             const cur = editorInstance.doc.getCursor();
+
             setSourceCode(_modifiedScript.split(ApplicationManagementConstants.LINE_BREAK));
             editorInstance.doc.setCursor(cur);
         }
@@ -688,6 +700,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                         level: AlertLevels.ERROR,
                         message: error.response.data.message
                     }));
+
                     return;
                 }
                 dispatch(addAlert({
@@ -697,6 +710,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                 }));
             } finally {
                 const refreshSecretList = true;
+
                 whenSecretDeleted(deletingSecret, refreshSecretList);
                 setShowDeleteConfirmationModal(false);
                 setDeletingSecret(undefined);
@@ -715,7 +729,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                 button
                 upward={ false }
                 options={ filteredSecretList }
-                icon ={
+                icon ={ (
                     <Popup
                         trigger={ (
                             <div>
@@ -732,7 +746,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                 />
                             </div>
                         ) }
-                        content={
+                        content={ (
                             <Trans
                                 i18nKey={
                                     "console:develop.features.applications.edit." +
@@ -744,11 +758,11 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                 replace the API key in <Code>callChoreo()</Code> function
                                 in the conditional authentication scripts.
                             </Trans>
-                        }
+                        ) }
                         position="bottom center"
                         pinned={ true }
                     />
-                }
+                ) }
             >
                 <Dropdown.Menu>
                     {
@@ -766,7 +780,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                         setFilteredSecretList(secretList);
                                     } else {
                                         setFilteredSecretList(secretList.filter((secret: SecretModel) => secret.
-                                        secretName.toLowerCase().includes(data.currentTarget.value.toLowerCase())));
+                                            secretName.toLowerCase().includes(data.currentTarget.value.toLowerCase())));
                                     }
                                 } }
                                 onClick={ e => e.stopPropagation() }
@@ -797,7 +811,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                 transparent
                                                 floated="right"
                                                 size="micro"
-                                                icon={
+                                                icon={ (
                                                     <Tooltip
                                                         trigger={ (
                                                             <Icon name="trash alternate"/>
@@ -805,7 +819,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                         content={ t("common:delete") }
                                                         size="mini"
                                                     />
-                                                }
+                                                ) }
                                                 onClick={ () => {
                                                     handleSecretDelete(secret);
                                                 } }
@@ -818,7 +832,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                 linkType="primary"
                                                 floated="right"
                                                 size="micro"
-                                                icon={
+                                                icon={ (
                                                     <Tooltip
                                                         trigger={ (
                                                             <Icon name="plus"/>
@@ -828,7 +842,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                             "sections.scriptBased.secretsList.tooltips.plusIcon") }
                                                         size="mini"
                                                     />
-                                                }
+                                                ) }
                                                 onClick={ () => {
                                                     addSecretToScript(secret);
                                                 } }
@@ -890,6 +904,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         }
 
         const newPref: StorageIdentityAppsSettingsInterface = cloneDeep(userPreferences);
+
         set(newPref?.identityAppsSettings?.devPortal,
             ApplicationManagementConstants.CONDITIONAL_AUTH_TOUR_STATUS_STORAGE_KEY, status);
 
@@ -927,38 +942,38 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         }
 
         return (
-                <Menu.Item
-                    className="action p-3"
-                    href={ apiDocLink }
-                    target="_blank"
-                >
-                    <Tooltip
-                        compact
-                        trigger={ (
-                            <Button labelPosition="left">
-                                <GenericIcon
-                                    className="p-1 mr-1"
-                                    transparent
-                                    defaultIcon
-                                    size="micro"
-                                    icon={ getOperationIcons().openBookIcon }
-                                    data-testid={
-                                        `${ testId }-code-editor-open-documentation`
-                                    }
-                                />
-                                <p>
-                                    { t("console:develop.features.applications.edit.sections" +
+            <Menu.Item
+                className="action p-3"
+                href={ apiDocLink }
+                target="_blank"
+            >
+                <Tooltip
+                    compact
+                    trigger={ (
+                        <Button labelPosition="left">
+                            <GenericIcon
+                                className="p-1 mr-1"
+                                transparent
+                                defaultIcon
+                                size="micro"
+                                icon={ getOperationIcons().openBookIcon }
+                                data-testid={
+                                    `${ testId }-code-editor-open-documentation`
+                                }
+                            />
+                            <p>
+                                { t("console:develop.features.applications.edit.sections" +
                                             ".signOnMethod.sections.authenticationFlow.sections" +
                                             ".scriptBased.editor.apiDocumentation") }
-                                </p>
-                          </Button>
-                        ) }
-                        content={ t("console:develop.features.applications.edit.sections" +
+                            </p>
+                        </Button>
+                    ) }
+                    content={ t("console:develop.features.applications.edit.sections" +
                             ".signOnMethod.sections.authenticationFlow.sections" +
                             ".scriptBased.editor.goToApiDocumentation") }
-                        size="mini"
-                    />
-                </Menu.Item>
+                    size="mini"
+                />
+            </Menu.Item>
         );
     };
 
@@ -1269,7 +1284,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
 
                                     <div className="code-editor-wrapper">
                                         <CodeEditor
-                                            editorDidMount={ (editor,...args) => {
+                                            editorDidMount={ (editor) => {
                                                 setEditorInstance(editor);
                                             } }
                                             lint

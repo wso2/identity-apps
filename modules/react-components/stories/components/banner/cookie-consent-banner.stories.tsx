@@ -43,8 +43,9 @@ export const DefaultVariation = (): ReactElement => {
                     cookies are used to maintain an uninterrupted session whilst
                     providing smooth and personalized services. To learn more about how we
                     use cookies, refer our <a
-                    href="https://wso2.com/cookie-policy" target="_blank"
-                    rel="noopener noreferrer">Cookie Policy</a>.
+                        href="https://wso2.com/cookie-policy"
+                        target="_blank"
+                        rel="noopener noreferrer">Cookie Policy</a>.
                 </div>
             ) }
             confirmButtonText="Got it"
@@ -75,8 +76,9 @@ export const InvertedVariation = (): ReactElement => {
                     cookies are used to maintain an uninterrupted session whilst
                     providing smooth and personalized services. To learn more about how we
                     use cookies, refer our <a
-                    href="https://wso2.com/cookie-policy" target="_blank"
-                    rel="noopener noreferrer">Cookie Policy</a>.
+                        href="https://wso2.com/cookie-policy"
+                        target="_blank"
+                        rel="noopener noreferrer">Cookie Policy</a>.
                 </div>
             ) }
             confirmButtonText="Got it"

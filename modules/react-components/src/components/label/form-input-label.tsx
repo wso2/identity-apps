@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import { TestableComponentInterface } from "@wso2is/core/dist/src/models";
+import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 
 interface FormInputLabelProps extends TestableComponentInterface {
     htmlFor: string;

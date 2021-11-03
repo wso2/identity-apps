@@ -80,6 +80,7 @@ export class HelpPanelUtils {
         }
 
         const newPref: StorageIdentityAppsSettingsInterface = cloneDeep(userPreferences);
+
         newPref.identityAppsSettings.devPortal.helpPanel.isPinned = !isPinned;
 
         AppUtils.setUserPreferences(newPref);

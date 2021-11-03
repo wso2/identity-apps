@@ -50,6 +50,7 @@ interface SummaryAddDialectPropsInterface extends TestableComponentInterface {
  */
 const generateClaimLetter = (name: string): string => {
     const stringArray = name.replace("http://", "").split("/");
+
     return stringArray[ stringArray.length - 1 ][ 0 ].toLocaleUpperCase();
 };
 

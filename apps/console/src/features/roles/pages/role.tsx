@@ -82,12 +82,11 @@ const RolesPage = (): ReactElement => {
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ isListUpdated, setListUpdated ] = useState(false);
     // TODO: Check the usage and delete if not required.
-    const [ userStoreOptions, setUserStoresList ] = useState([]);
-    const [ userStore, setUserStore ] = useState(undefined);
+    const [ , setUserStoresList ] = useState([]);
+    const [ userStore ] = useState(undefined);
     const [ filterBy, setFilterBy ] = useState<string>("all");
     const [ searchQuery, setSearchQuery ] = useState<string>("");
-    // TODO: Check the usage and delete if not required.
-    const [ isEmptyResults, setIsEmptyResults ] = useState<boolean>(false);
+    const [ isEmptyResults ] = useState<boolean>(false);
     const [ isRoleListFetchRequestLoading, setRoleListFetchRequestLoading ] = useState<boolean>(false);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
@@ -137,6 +136,7 @@ const RolesPage = (): ReactElement => {
                                 return !role.displayName.includes(APPLICATION_DOMAIN);
                             }
                         });
+
                         response.data.Resources = updatedResources;
                         setInitialRoleList(response.data);
                         setRolesPage(0, listItemLimit, response.data);
@@ -169,19 +169,20 @@ const RolesPage = (): ReactElement => {
             text: "",
             value: ""
         };
+
         getUserStoreList()
             .then((response) => {
                 if (storeOptions === []) {
                     storeOptions.push(storeOption);
                 }
                 response.data.map((store, index) => {
-                        storeOption = {
-                            key: index,
-                            text: store.name,
-                            value: store.name
-                        };
-                        storeOptions.push(storeOption);
-                    }
+                    storeOption = {
+                        key: index,
+                        text: store.name,
+                        value: store.name
+                    };
+                    storeOptions.push(storeOption);
+                }
                 );
                 setUserStoresList(storeOptions);
             });
@@ -204,7 +205,7 @@ const RolesPage = (): ReactElement => {
     const searchRoleListHandler = (searchQuery: string) => {
         const searchData: SearchRoleInterface = {
             filter: searchQuery,
-            schemas: ["urn:ietf:params:scim:api:messages:2.0:SearchRequest"],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:SearchRequest" ],
             startIndex: 1
         };
 
@@ -217,6 +218,7 @@ const RolesPage = (): ReactElement => {
                     const results = response?.data?.Resources;
 
                     let updatedResults = [];
+
                     if (results) {
                         updatedResults = results;
                     }
@@ -230,7 +232,7 @@ const RolesPage = (): ReactElement => {
                     setInitialRoleList(updatedData);
                     setPaginatedRoles(updatedData);
                 }
-        });
+            });
     };
 
     /**
@@ -245,11 +247,13 @@ const RolesPage = (): ReactElement => {
             ...roleList.Resources,
             Resources: roleList?.Resources?.slice(offsetValue, itemLimit + offsetValue)
         };
+
         setPaginatedRoles(updatedData);
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
         const offsetValue = (data.activePage as number - 1) * listItemLimit;
+
         setListOffset(offsetValue);
         setRolesPage(offsetValue, listItemLimit, initialRolList);
     };
@@ -301,6 +305,7 @@ const RolesPage = (): ReactElement => {
     const handleUserFilter = (query: string): void => {
         if (query === null || query === "displayName sw ") {
             getRoles();
+
             return;
         }
 
@@ -339,62 +344,8 @@ const RolesPage = (): ReactElement => {
             description={ t("console:manage.pages.roles.subTitle") }
         >
             {
-                !isEmptyResults &&
-                <ListLayout
-                    advancedSearch={ (
-                        <AdvancedSearchWithBasicFilters
-                            data-testid="role-mgt-roles-list-advanced-search"
-                            onFilter={ handleUserFilter  }
-                            filterAttributeOptions={ [
-                                {
-                                    key: 0,
-                                    text: "Name",
-                                    value: "displayName"
-                                }
-                            ] }
-                            filterAttributePlaceholder={
-                                t("console:manage.features.roles.advancedSearch.form.inputs.filterAttribute." +
-                                    "placeholder")
-                            }
-                            filterConditionsPlaceholder={
-                                t("console:manage.features.roles.advancedSearch.form.inputs.filterCondition" +
-                                    ".placeholder")
-                            }
-                            filterValuePlaceholder={
-                                t("console:manage.features.roles.advancedSearch.form.inputs.filterValue" +
-                                    ".placeholder")
-                            }
-                            placeholder={ t("console:manage.features.roles.advancedSearch.placeholder") }
-                            defaultSearchAttribute="displayName"
-                            defaultSearchOperator="co"
-                            triggerClearQuery={ triggerClearQuery }
-                        />
-                    ) }
-                    currentListSize={ listItemLimit }
-                    listItemLimit={ listItemLimit }
-                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                    onPageChange={ handlePaginationChange }
-                    onSortStrategyChange={ handleListSortingStrategyOnChange }
-                    sortStrategy={ listSortingStrategy }
-                    rightActionPanel={
-                        (
-                            <Dropdown
-                                data-testid="role-mgt-roles-list-filters-dropdown"
-                                selection
-                                options={ filterOptions }
-                                placeholder= { t("console:manage.features.roles.list.buttons.filterDropdown") }
-                                onChange={ handleFilterChange }
-                            />
-                        )
-                    }
-                    showPagination={ paginatedRoles?.Resources?.length > 0 }
-                    showTopActionPanel={
-                        isRoleListFetchRequestLoading || !(!searchQuery && paginatedRoles?.Resources?.length <= 0)
-                    }
-                    totalPages={ Math.ceil(initialRolList?.Resources?.length / listItemLimit) }
-                    totalListSize={ initialRolList?.Resources?.length }
-                >
-                    <RoleList
+                !isEmptyResults && (
+                    <ListLayout
                         advancedSearch={ (
                             <AdvancedSearchWithBasicFilters
                                 data-testid="role-mgt-roles-list-advanced-search"
@@ -408,32 +359,87 @@ const RolesPage = (): ReactElement => {
                                 ] }
                                 filterAttributePlaceholder={
                                     t("console:manage.features.roles.advancedSearch.form.inputs.filterAttribute." +
-                                        "placeholder")
+                                    "placeholder")
                                 }
                                 filterConditionsPlaceholder={
                                     t("console:manage.features.roles.advancedSearch.form.inputs.filterCondition" +
-                                        ".placeholder")
+                                    ".placeholder")
                                 }
                                 filterValuePlaceholder={
                                     t("console:manage.features.roles.advancedSearch.form.inputs.filterValue" +
-                                        ".placeholder")
+                                    ".placeholder")
                                 }
                                 placeholder={ t("console:manage.features.roles.advancedSearch.placeholder") }
                                 defaultSearchAttribute="displayName"
-                                defaultSearchOperator="sw"
+                                defaultSearchOperator="co"
                                 triggerClearQuery={ triggerClearQuery }
                             />
                         ) }
-                        data-testid="role-mgt-roles-list"
-                        handleRoleDelete={ handleOnDelete }
-                        isGroup={ false }
-                        isLoading={ isRoleListFetchRequestLoading }
-                        onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
-                        onSearchQueryClear={ handleSearchQueryClear }
-                        roleList={ paginatedRoles }
-                        searchQuery={ searchQuery }
-                    />
-                </ListLayout>
+                        currentListSize={ listItemLimit }
+                        listItemLimit={ listItemLimit }
+                        onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                        onPageChange={ handlePaginationChange }
+                        onSortStrategyChange={ handleListSortingStrategyOnChange }
+                        sortStrategy={ listSortingStrategy }
+                        rightActionPanel={
+                            (
+                                <Dropdown
+                                    data-testid="role-mgt-roles-list-filters-dropdown"
+                                    selection
+                                    options={ filterOptions }
+                                    placeholder= { t("console:manage.features.roles.list.buttons.filterDropdown") }
+                                    onChange={ handleFilterChange }
+                                />
+                            )
+                        }
+                        showPagination={ paginatedRoles?.Resources?.length > 0 }
+                        showTopActionPanel={
+                            isRoleListFetchRequestLoading || !(!searchQuery && paginatedRoles?.Resources?.length <= 0)
+                        }
+                        totalPages={ Math.ceil(initialRolList?.Resources?.length / listItemLimit) }
+                        totalListSize={ initialRolList?.Resources?.length }
+                    >
+                        <RoleList
+                            advancedSearch={ (
+                                <AdvancedSearchWithBasicFilters
+                                    data-testid="role-mgt-roles-list-advanced-search"
+                                    onFilter={ handleUserFilter  }
+                                    filterAttributeOptions={ [
+                                        {
+                                            key: 0,
+                                            text: "Name",
+                                            value: "displayName"
+                                        }
+                                    ] }
+                                    filterAttributePlaceholder={
+                                        t("console:manage.features.roles.advancedSearch.form.inputs.filterAttribute." +
+                                        "placeholder")
+                                    }
+                                    filterConditionsPlaceholder={
+                                        t("console:manage.features.roles.advancedSearch.form.inputs.filterCondition" +
+                                        ".placeholder")
+                                    }
+                                    filterValuePlaceholder={
+                                        t("console:manage.features.roles.advancedSearch.form.inputs.filterValue" +
+                                        ".placeholder")
+                                    }
+                                    placeholder={ t("console:manage.features.roles.advancedSearch.placeholder") }
+                                    defaultSearchAttribute="displayName"
+                                    defaultSearchOperator="sw"
+                                    triggerClearQuery={ triggerClearQuery }
+                                />
+                            ) }
+                            data-testid="role-mgt-roles-list"
+                            handleRoleDelete={ handleOnDelete }
+                            isGroup={ false }
+                            isLoading={ isRoleListFetchRequestLoading }
+                            onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
+                            onSearchQueryClear={ handleSearchQueryClear }
+                            roleList={ paginatedRoles }
+                            searchQuery={ searchQuery }
+                        />
+                    </ListLayout>
+                )
             }
             {
                 showWizard && (

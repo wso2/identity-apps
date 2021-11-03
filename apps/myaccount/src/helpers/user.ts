@@ -34,6 +34,7 @@ export const resolveUserDisplayName = (state: AuthStateInterface): string => {
     } else if (state.profileInfo.name.givenName || state.profileInfo.name.familyName) {
         const givenName = isEmpty(state.profileInfo.name.givenName) ? "" : state.profileInfo.name.givenName + " ";
         const familyName = isEmpty(state.profileInfo.name.familyName) ? "" : state.profileInfo.name.familyName;
+
         return givenName + familyName;
     } else if (state.profileInfo.userName) {
         return getUserNameWithoutDomain(state.profileInfo.userName);
@@ -58,10 +59,12 @@ export const resolveUserProfileName = (state: AuthStateInterface, isProfileInfoL
     if (state.profileInfo.name.givenName || state.profileInfo.name.familyName) {
         const givenName = isEmpty(state.profileInfo.name.givenName) ? "" : state.profileInfo.name.givenName + " ";
         const familyName = isEmpty(state.profileInfo.name.familyName) ? "" : state.profileInfo.name.familyName;
+
         return givenName + familyName;
     } else if (!isProfileInfoLoading) {
         return resolveUserDisplayName(state);
     }
+
     return null;
 };
 
@@ -80,6 +83,7 @@ export const resolveUsername = (username: string, userStoreDomain: string): stri
     if (userStoreDomain === AppConstants.PRIMARY_USER_STORE_IDENTIFIER) {
         return username;
     }
+
     return `${userStoreDomain}/${username}`;
 };
 
@@ -117,5 +121,6 @@ export const resolveUserstore= (username: string): string => {
     // Userstore is index 0 and index 1 is username
     const USERSTORE = 0;
     const parts = username?.split("/");
+
     return parts[USERSTORE];
 };

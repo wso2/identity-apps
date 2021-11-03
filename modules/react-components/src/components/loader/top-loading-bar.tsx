@@ -59,6 +59,7 @@ export const TopLoadingBar: FunctionComponent<TopLoadingBarPropsInterface> = (
         }
         if (visibility) {
             loaderRef.continuousStart();
+
             return;
         }
         loaderRef.complete();

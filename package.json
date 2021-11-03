@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/webapps",
-    "version": "1.2.683",
+    "version": "1.2.704",
     "description": "WSO2 Identity Server Web Applications",
     "keywords": [
         "WSO2",
@@ -45,8 +45,9 @@
         "test:unit:theme": "npx lerna run test --stream --scope @wso2is/theme",
         "test:unit:validation": "npx lerna run test --stream --scope @wso2is/validation",
         "update-version": "node scripts/update-version.js",
-        "lint": "eslint -c .eslintrc.js --ext .js,.jsx,.ts,.tsx .",
-        "lint:ci": "eslint -c .eslintrc.js $(git diff --diff-filter=d --name-only | grep -E \"(.js$|.ts$|.jsx$|.tsx$)\")",
+        "lint": "npx lerna run lint --stream",
+        "lint:autofix": "npm run lint:autofix --stream",
+        "lint:ci": "npm run lint",
         "lint:staged": "eslint -c .eslintrc.js $(git diff --diff-filter=d --name-only | grep -E \"(.js$|.ts$|.jsx$|.tsx$)\")"
     },
     "author": "WSO2",
@@ -65,7 +66,7 @@
         "@types/react-notification-system": "^0.2.39",
         "@types/react-redux": "^7.1.1",
         "@types/react-router-dom": "^5.1.3",
-        "@types/ua-parser-js": "^0.7.33",
+        "@types/ua-parser-js": "0.7.36",
         "await-semaphore": "^0.1.3",
         "axios": "^0.21.1",
         "babel-jest": "^26.3.0",
@@ -101,7 +102,7 @@
         "redux": "^4.0.4",
         "redux-thunk": "^2.3.0",
         "semantic-ui-react": "^0.87.3",
-        "ua-parser-js": "^0.7.20"
+        "ua-parser-js": "0.7.28"
     },
     "devDependencies": {
         "@babel/cli": "^7.10.5",

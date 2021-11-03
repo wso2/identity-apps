@@ -21,7 +21,7 @@ import React, {
     FunctionComponent,
     PropsWithChildren,
     ReactElement,
-    ReactNode,
+    ReactNode
 } from "react";
 import { useAccess } from "react-access-control";
 

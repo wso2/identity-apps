@@ -82,8 +82,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     const [ usersList, setUsersList ] = useState<UserBasicInterface[]>([]);
     const [ initialUserList, setInitialUserList ] = useState<UserBasicInterface[]>([]);
     const [ selectedUsers, setSelectedUsers ] = useState<UserBasicInterface[]>([]);
-    const [ initialSelectedUsers, setInitialSelectedUsers ] = useState<UserBasicInterface[]>([]);
-    const [ listOffset, setListOffset ] = useState<number>(0);
+    const [ , setInitialSelectedUsers ] = useState<UserBasicInterface[]>([]);
+    const [ listOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
     const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
 
@@ -141,6 +141,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
             .then((response) => {
                 const responseUsers = response.Resources.filter((user
                 ) => user.userName.split("/")[0] !== CONSUMER_USERSTORE);
+
                 responseUsers.sort((userObject, comparedUserObject) =>
                     userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
                 );
@@ -149,6 +150,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
 
                 if (assignedUsers && assignedUsers.length !== 0) {
                     const selectedUserList: UserBasicInterface[] = [];
+
                     if (responseUsers && responseUsers instanceof Array ) {
                         responseUsers.slice().reverse().forEach(user => {
                             assignedUsers.forEach(assignedUser => {
@@ -169,6 +171,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
 
                 if (initialValues && initialValues instanceof Array) {
                     const selectedUserList: UserBasicInterface[] = [];
+
                     if (responseUsers && responseUsers instanceof Array ) {
                         responseUsers.forEach(user => {
                             initialValues.forEach(assignedUser => {
@@ -194,14 +197,14 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     useEffect(() => {
         setListItemLimit(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
         setUserListMetaContent(new Map<string, string>([
-            ["name", "name"],
-            ["emails", "emails"],
-            ["name", "name"],
-            ["userName", "userName"],
-            ["id", ""],
-            ["profileUrl", "profileUrl"],
-            ["meta.lastModified", "meta.lastModified"],
-            ["meta.created", ""]
+            [ "name", "name" ],
+            [ "emails", "emails" ],
+            [ "name", "name" ],
+            [ "userName", "userName" ],
+            [ "id", "" ],
+            [ "profileUrl", "profileUrl" ],
+            [ "meta.lastModified", "meta.lastModified" ],
+            [ "meta.created", "" ]
         ]));
     }, []);
 
@@ -227,6 +230,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     useEffect(() => {
         if (userListMetaContent) {
             const attributes = generateAttributesString(userListMetaContent.values());
+
             if (isGroup) {
                 getList(listItemLimit, listOffset, null, attributes, userStore);
             } else {
@@ -473,7 +477,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
 
     return (
         <>
-            { isEdit ?
+            { isEdit ? (
                 <Grid>
                     <Grid.Row>
                         <Grid.Column computer={ 8 }>
@@ -573,110 +577,112 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                     </Grid.Row>
                     { addNewUserModal() }
                 </Grid>
-                :
-                <Forms
-                    onSubmit={ () => {
-                        onSubmit(tempUserList);
-                    } }
-                    submitState={ triggerSubmit }
-                >
-                    <Grid>
-                        <Grid.Row columns={ 2 }>
-                            <TransferComponent
-                                data-testid={ `${ testId }-update-user-list-transfer` }
-                                searchPlaceholder={ t("console:manage.features.roles.addRoleWizard.users." +
+            )
+                : (
+                    <Forms
+                        onSubmit={ () => {
+                            onSubmit(tempUserList);
+                        } }
+                        submitState={ triggerSubmit }
+                    >
+                        <Grid>
+                            <Grid.Row columns={ 2 }>
+                                <TransferComponent
+                                    data-testid={ `${ testId }-update-user-list-transfer` }
+                                    searchPlaceholder={ t("console:manage.features.roles.addRoleWizard.users." +
                                     "assignUserModal.list.searchPlaceholder") }
-                                addItems={ addUser }
-                                removeItems={ removeUser }
-                                // TODO: Add two methods to handle the search of each list.
-                                handleUnelectedListSearch={ handleSearchFieldChange }
-                                handleSelectedListSearch={ handleSearchFieldChange }
-                            >
-                                <TransferList
-                                    isListEmpty={ !(usersList?.length > 0) }
-                                    listType="unselected"
-                                    listHeaders={ [
-                                        t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list." +
-                                            "listHeader")
-                                    ] }
-                                    handleHeaderCheckboxChange={ selectAllUnAssignedList }
-                                    isHeaderCheckboxChecked={ isSelectAllUnAssignedUsers }
-                                    data-testid={ `${ testId }-update-unselected-users-select-all-checkbox` }
-                                    emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
-                                        "emptyPlaceholders.roles.unselected", { type: "users" }) }
+                                    addItems={ addUser }
+                                    removeItems={ removeUser }
+                                    // TODO: Add two methods to handle the search of each list.
+                                    handleUnelectedListSearch={ handleSearchFieldChange }
+                                    handleSelectedListSearch={ handleSearchFieldChange }
                                 >
-                                    {
-                                        usersList?.map((user, index)=> {
-                                            return (
-                                                <TransferListItem
-                                                    handleItemChange={ () =>
-                                                        handleUnassignedItemCheckboxChange(user)
-                                                    }
-                                                    key={ index }
-                                                    listItem={ user.userName }
-                                                    listItemId={ user.id }
-                                                    listItemIndex={ index }
-                                                    isItemChecked={ checkedUnassignedListItems?.includes(user) }
-                                                    showSecondaryActions={ false }
-                                                    data-testid={ `${ testId }-update-unselected-users` }
-                                                />
-                                            );
-                                        })
-                                    }
-                                </TransferList>
-                                <TransferList
-                                    isListEmpty={ !(tempUserList?.length > 0) }
-                                    listType="selected"
-                                    listHeaders={ [
-                                        t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list." +
-                                            "listHeader")
-                                    ] }
-                                    handleHeaderCheckboxChange={ selectAllAssignedList }
-                                    isHeaderCheckboxChecked={ isSelectAllAssignedUsers }
-                                    data-testid={ `${ testId }-update-selected-users-select-all-checkbox` }
-                                    emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
+                                    <TransferList
+                                        isListEmpty={ !(usersList?.length > 0) }
+                                        listType="unselected"
+                                        listHeaders={ [
+                                            t("console:manage.features.roles.addRoleWizard.users.assignUserModal." +
+                                            "list.listHeader")
+                                        ] }
+                                        handleHeaderCheckboxChange={ selectAllUnAssignedList }
+                                        isHeaderCheckboxChecked={ isSelectAllUnAssignedUsers }
+                                        data-testid={ `${ testId }-update-unselected-users-select-all-checkbox` }
+                                        emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
                                         "emptyPlaceholders.roles.unselected", { type: "users" }) }
-                                >
-                                    {
-                                        tempUserList?.map((user, index)=> {
-                                            return (
-                                                <TransferListItem
-                                                    handleItemChange={ () =>
-                                                        handleAssignedItemCheckboxChange(user)
-                                                    }
-                                                    key={ index }
-                                                    listItem={ user.userName }
-                                                    listItemId={ user.id }
-                                                    listItemIndex={ index }
-                                                    isItemChecked={ checkedAssignedListItems?.includes(user) }
-                                                    showSecondaryActions={ false }
-                                                    data-testid={ `${ testId }-update-selected-users` }
-                                                />
-                                            );
-                                        })
-                                    }
-                                </TransferList>
-                            </TransferComponent>
-                        </Grid.Row>
-                        { isEdit &&
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                    <Button
-                                        data-testid={ `${ testId }-update-user-list-button` }
-                                        primary
-                                        type="submit"
-                                        size="small"
-                                        loading={ isSubmitting }
-                                        disabled={ isSubmitting }
-                                        className="form-button"
                                     >
-                                        { t("common.update") }
-                                    </Button>
-                                </Grid.Column>
+                                        {
+                                            usersList?.map((user, index)=> {
+                                                return (
+                                                    <TransferListItem
+                                                        handleItemChange={ () =>
+                                                            handleUnassignedItemCheckboxChange(user)
+                                                        }
+                                                        key={ index }
+                                                        listItem={ user.userName }
+                                                        listItemId={ user.id }
+                                                        listItemIndex={ index }
+                                                        isItemChecked={ checkedUnassignedListItems?.includes(user) }
+                                                        showSecondaryActions={ false }
+                                                        data-testid={ `${ testId }-update-unselected-users` }
+                                                    />
+                                                );
+                                            })
+                                        }
+                                    </TransferList>
+                                    <TransferList
+                                        isListEmpty={ !(tempUserList?.length > 0) }
+                                        listType="selected"
+                                        listHeaders={ [
+                                            t("console:manage.features.roles.addRoleWizard.users.assignUserModal." +
+                                            "list.listHeader")
+                                        ] }
+                                        handleHeaderCheckboxChange={ selectAllAssignedList }
+                                        isHeaderCheckboxChecked={ isSelectAllAssignedUsers }
+                                        data-testid={ `${ testId }-update-selected-users-select-all-checkbox` }
+                                        emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
+                                        "emptyPlaceholders.roles.unselected", { type: "users" }) }
+                                    >
+                                        {
+                                            tempUserList?.map((user, index)=> {
+                                                return (
+                                                    <TransferListItem
+                                                        handleItemChange={ () =>
+                                                            handleAssignedItemCheckboxChange(user)
+                                                        }
+                                                        key={ index }
+                                                        listItem={ user.userName }
+                                                        listItemId={ user.id }
+                                                        listItemIndex={ index }
+                                                        isItemChecked={ checkedAssignedListItems?.includes(user) }
+                                                        showSecondaryActions={ false }
+                                                        data-testid={ `${ testId }-update-selected-users` }
+                                                    />
+                                                );
+                                            })
+                                        }
+                                    </TransferList>
+                                </TransferComponent>
                             </Grid.Row>
-                        }
-                    </Grid>
-                </Forms>
+                            { isEdit && (
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                        <Button
+                                            data-testid={ `${ testId }-update-user-list-button` }
+                                            primary
+                                            type="submit"
+                                            size="small"
+                                            loading={ isSubmitting }
+                                            disabled={ isSubmitting }
+                                            className="form-button"
+                                        >
+                                            { t("common.update") }
+                                        </Button>
+                                    </Grid.Column>
+                                </Grid.Row> )
+                            }
+                        </Grid>
+                    </Forms>
+                )
             }
         </>
     );

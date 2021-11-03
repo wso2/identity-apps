@@ -205,12 +205,12 @@ export class ApplicationManagementConstants {
      * This issue is tracked via https://github.com/wso2/product-is/issues/12397.
      */
     public static readonly IS_REFRESH_TOKEN_GRANT_TYPE_ALLOWED = [
-            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.PASSWORD,
-            ApplicationManagementConstants.SAML2_BEARER,
-            ApplicationManagementConstants.IWA_NTLM,
-            ApplicationManagementConstants.JWT_BEARER,
-            ApplicationManagementConstants.UMA_TICKET
+        ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+        ApplicationManagementConstants.PASSWORD,
+        ApplicationManagementConstants.SAML2_BEARER,
+        ApplicationManagementConstants.IWA_NTLM,
+        ApplicationManagementConstants.JWT_BEARER,
+        ApplicationManagementConstants.UMA_TICKET
     ];
 
     /**
@@ -218,7 +218,7 @@ export class ApplicationManagementConstants {
      * @constant
      * @type {string[]}
      */
-    public static readonly TEMPLATE_WISE_ALLOWED_GRANT_TYPES: object = {
+    public static readonly TEMPLATE_WISE_ALLOWED_GRANT_TYPES: Record<string, string[]> = {
         [ "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
@@ -280,42 +280,61 @@ export class ApplicationManagementConstants {
     // API errors
     public static readonly AUTH_PROTOCOL_METADATA_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
         "code while retrieving the auth protocol metadata.";
+
     public static readonly AUTH_PROTOCOL_METADATA_FETCH_ERROR: string = "An error occurred while fetching the " +
         "metadata related to the required auth protocol.";
+
     public static readonly AUTH_PROTOCOL_CONFIG_UPDATE_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while updating the auth protocol config.";
+
     public static readonly AUTH_PROTOCOL_CONFIG_UPDATE_ERROR: string = "An error occurred while updating the auth" +
         "protocol config.";
+
     public static readonly ADAPTIVE_AUTH_TEMPLATES_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while fetching adaptive authentication templates.";
+
     public static readonly ADAPTIVE_AUTH_TEMPLATES_FETCH_ERROR: string = "An error occurred while fetching the " +
         "required adaptive authentication template.";
+
     public static readonly APP_PROTOCOL_DELETE_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while deleting the protocol config.";
+
     public static readonly APP_PROTOCOL_DELETE_ERROR: string = "An error occurred while deleting the" +
         "protocol config.";
+
     public static readonly APPLICATION_TEMPLATE_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while fetching application template.";
+
     public static readonly APPLICATION_TEMPLATE_FETCH_ERROR: string = "An error occurred while fetching the " +
         "required adaptive application template.";
+
     public static readonly APPLICATION_TEMPLATES_LIST_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an " +
         "invalid status code while fetching application templates list.";
+
     public static readonly APPLICATION_TEMPLATES_LIST_FETCH_ERROR: string = "An error occurred while fetching the " +
         "required adaptive application templates list.";
+
     public static readonly OIDC_CONFIGURATIONS_STATUS_CODE_ERROR: string = "Received an invalid status " +
         "code while retrieving the OIDC configurations of the IDP.";
+
     public static readonly SAML_CONFIGURATIONS_STATUS_CODE_ERROR: string = "Received an invalid status " +
         "code while retrieving the SAML configurations of the IDP.";
+
     public static readonly APPLICATION_OIDC_CONFIGURATIONS_FETCH_ERROR: string = "An error occurred while fetching " +
         "the OIDC configurations of the IDP.";
+
     public static readonly APPLICATION_SAML_CONFIGURATIONS_FETCH_ERROR: string = "An error occurred while fetching " +
         "the SAML configurations of the IDP.";
+
     public static readonly REQUEST_PATH_AUTHENTICATORS_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while retrieving the request path authenticators.";
+
     public static readonly REQUEST_PATH_AUTHENTICATORS_FETCH_ERROR: string = "An error occurred while fetching the " +
         "request path authenticators.";
+
     public static readonly IDENTIFIER_FIRST_AUTHENTICATOR_ID = IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER
         + "-" + "SWRlbnRpZmllckV4ZWN1dG9y";
+
     public static readonly SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID = "second-factor-authenticators";
     public static readonly EXTERNAL_AUTHENTICATORS_DROPPABLE_ID = "external-authenticators";
     public static readonly SOCIAL_LOGIN_HEADER: string = "Social Login";
@@ -385,6 +404,7 @@ export class ApplicationManagementConstants {
      * @type {{APP_NAME_MAX_LENGTH: number}}
      */
     public static readonly FORM_FIELD_CONSTRAINTS = {
+        APP_DESCRIPTION_PATTERN: new RegExp("^[a-zA-Z0-9.+=!$#()@&%*~_-]+(?: [a-zA-Z0-9.+=!$#()@&%*~_-]+)*$"),
         APP_NAME_MAX_LENGTH: 50,
         APP_NAME_PATTERN: new RegExp("^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$")
     };
@@ -416,6 +436,7 @@ export class ApplicationManagementConstants {
         "console:develop.features.applications.notifications.apiLimitReachedError.error.message",
         "cdaefcee-ecdb-47af-8538-174ec13292db"
     )
+
     /**
      * Error code for Issuer already exists.
      */

@@ -22,14 +22,14 @@
 
 import { CookieUtils, HousekeepingUtils } from "@wso2/identity-cypress-test-base/ui";
 import { Header } from "@wso2/identity-cypress-test-base/ui";
-import {
-    EmailTemplatesAddPage,
-    EmailTemplatesListPage,
-    EmailTemplateTypesListPage,
-    EmailTemplatesEditPage
-} from "./page-objects";
-import { EmailTemplatesAddPageConstants } from "./constants";
 import { v4 as uuidv4 } from "uuid";
+import { EmailTemplatesAddPageConstants } from "./constants";
+import {
+    EmailTemplateTypesListPage,
+    EmailTemplatesAddPage,
+    EmailTemplatesEditPage,
+    EmailTemplatesListPage
+} from "./page-objects";
 
 const USERNAME: string = Cypress.env("TENANT_USERNAME");
 const PASSWORD: string = Cypress.env("TENANT_PASSWORD");

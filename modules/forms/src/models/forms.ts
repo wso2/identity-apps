@@ -17,7 +17,7 @@
  */
 
 import * as React from "react";
-import { FlagProps, SemanticShorthandItem, SemanticSIZES, SemanticWIDTHS } from "semantic-ui-react";
+import { FlagProps, SemanticSIZES, SemanticShorthandItem, SemanticWIDTHS } from "semantic-ui-react";
 
 /**
  * Form Field Types

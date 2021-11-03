@@ -17,10 +17,10 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, ReactNode } from "react";
 import { Header } from "semantic-ui-react";
 import { GenericIcon, GenericIconSizes } from "../icon";
-import classNames from "classnames";
 
 /**
  * Proptypes for the placeholder component.

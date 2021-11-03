@@ -133,16 +133,17 @@ export interface ClaimMappingInterface {
     localClaim: AppClaimInterface;
 }
 
-interface SubjectInterface {
-    claim: AppClaimInterface[];
+export interface SubjectInterface {
+    claim: AppClaimInterface[] | string;
     includeUserDomain: boolean;
     includeTenantDomain: boolean;
     useMappedLocalSubject: boolean;
 }
 
-interface RoleInterface {
-    claim: AppClaimInterface[];
+export interface RoleInterface {
+    claim: AppClaimInterface[] | string;
     includeUserDomain: boolean;
+    mappings: AppClaimInterface[] | string[];
 }
 
 export interface RoleMappingInterface {

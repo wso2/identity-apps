@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
 
 /**
@@ -33,59 +33,69 @@ type SAMLWebApplicationCreateWizardHelpPropsInterface = TestableComponentInterfa
  * @param {SAMLWebApplicationCreateWizardHelpPropsInterface} props - Props injected into the component.
  * @return {React.ReactElement}
  */
-const SAMLWebApplicationFileBasedCreateWizardHelp: FunctionComponent<SAMLWebApplicationCreateWizardHelpPropsInterface> = (
-    props: SAMLWebApplicationCreateWizardHelpPropsInterface
-): ReactElement => {
+const SAMLWebApplicationFileBasedCreateWizardHelp: FunctionComponent<
+    SAMLWebApplicationCreateWizardHelpPropsInterface
+    > = (
+        props: SAMLWebApplicationCreateWizardHelpPropsInterface
+    ): ReactElement => {
 
-    const {
-        [ "data-testid" ]: testId
-    } = props;
+        const {
+            [ "data-testid" ]: testId
+        } = props;
 
-    const { t } = useTranslation();
+        const { t } = useTranslation();
 
-    return (
-        <div data-testid={ testId }>
-            <Heading as="h5">
-                { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+        return (
+            <div data-testid={ testId }>
+                <Heading as="h5">
+                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
                     ".heading.title") }
-            </Heading>
-            <p>
-                { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                </Heading>
+                <p>
+                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
                     ".heading.subTitle") }
-            </p>
-            <p>
-                { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                </p>
+                <p>
+                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
                     ".heading.example") }
-            </p>
-            <>
-                <Divider/>
-                <Heading as="h5">
-                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
-                        ".protocol.title") }
-                </Heading>
-                <p>
-                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
-                        ".protocol.subTitle") }
                 </p>
-            </>
+                <>
+                    <Divider/>
+                    <Heading as="h5">
+                        {
+                            t("console:develop.features.applications.wizards.minimalAppCreationWizard" +
+                                ".help.template.common.protocol.title")
+                        }
+                    </Heading>
+                    <p>
+                        {
+                            t("console:develop.features.applications.wizards.minimalAppCreationWizard" +
+                                ".help.template.common.protocol.subTitle")
+                        }
+                    </p>
+                </>
 
-            <Divider />
+                <Divider />
 
-            <>
-                <Heading as="h5">
-                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.samlWeb" +
-                        ".metaFile.title") }
-                </Heading>
-                <p>
-                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.samlWeb" +
-                        ".metaFile.subTitle") }
-                </p>
-            </>
+                <>
+                    <Heading as="h5">
+                        {
+                            t("console:develop.features.applications.wizards.minimalAppCreationWizard" +
+                                ".help.template.samlWeb.metaFile.title")
+                        }
+                    </Heading>
+                    <p>
+                        {
+                            t("console:develop.features.applications.wizards.minimalAppCreationWizard" +
+                                ".help.template.samlWeb.metaFile.subTitle")
+                        }
+                    </p>
+                </>
 
-            <Divider hidden/>
-        </div>
-    );
-};
+                <Divider hidden/>
+            </div>
+        );
+    };
 
 /**
  * Default props for the component

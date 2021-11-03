@@ -75,14 +75,23 @@ import {
 } from "../../../themes/default/assets/images/illustrations/governance-connectors/user-claim-update-illustration.svg";
 import { ServerConfigurationsConstants } from "../constants";
 
-export const getGovernanceConnectorIllustrations = () => {
+interface GetGovernanceConnectorIllustrationsInterface {
+    [key: string]: string;
+    default: string;
+}
+
+interface GetSettingsSectionIconsInterface {
+    [key: string]: string;
+}
+
+export const getGovernanceConnectorIllustrations = () : GetGovernanceConnectorIllustrationsInterface => {
 
     return {
         [ ServerConfigurationsConstants.PASSWORD_HISTORY_CONNECTOR_ID ]: PasswordHistoryConnectorIllustration,
         [ ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID ]: PasswordPatternConnectorIllustration,
         [ ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID ]: SelfRegConnectorIllustration,
         [ ServerConfigurationsConstants.LITE_USER_REGISTRATION_CONNECTOR_ID
-            ]: LiteUserRegistrationConnectorIllustration,
+        ]: LiteUserRegistrationConnectorIllustration,
         [ ServerConfigurationsConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID ]: AskPasswordConnectorIllustration,
         [ ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID ]: AccountLockConnectorIllustration,
         [ ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID ]: reCaptchaConnectorIllustration,
@@ -97,7 +106,7 @@ export const getGovernanceConnectorIllustrations = () => {
     };
 };
 
-export const getSettingsSectionIcons = () => {
+export const getSettingsSectionIcons = (): GetSettingsSectionIconsInterface => {
 
     return {
         accountLock: WarningWithNumberIcon,

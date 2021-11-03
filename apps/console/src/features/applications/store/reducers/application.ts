@@ -43,7 +43,7 @@ const initialState: ApplicationReducerStateInterface = {
  * @returns The new state
  */
 export const applicationReducer = (state: ApplicationReducerStateInterface = initialState,
-                                   action: ApplicationActions): ApplicationReducerStateInterface => {
+    action: ApplicationActions): ApplicationReducerStateInterface => {
 
     switch (action.type) {
         case ApplicationActionTypes.SET_AVAILABLE_INBOUND_AUTH_PROTOCOL_META:

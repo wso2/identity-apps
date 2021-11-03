@@ -24,8 +24,8 @@ export const common: CommonNS = {
     activate: "Activate",
     active: "Active",
     add: "Add",
-    addURL: "Add URL",
     addKey: "Add secret",
+    addURL: "Add URL",
     all: "All",
     applicationName: "Application name",
     applications: "Applications",
@@ -35,7 +35,6 @@ export const common: CommonNS = {
     assignees: "Assignees",
     authentication: "Authentication",
     authenticator: "Authenticator",
-    // eslint-disable-next-line @typescript-eslint/camelcase
     authenticator_plural: "Authenticators",
     back: "Back",
     browser: "Browser",

@@ -119,12 +119,12 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
         if (templateList?.length === 0) {
             return (
                 <EmptyPlaceholder
-                    action={
+                    action={ (
                         <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
                             <Icon name="add"/>
                             { t("console:manage.features.emailTemplates.placeholders.emptyList.action") }
                         </PrimaryButton>
-                    }
+                    ) }
                     title={ t("console:manage.features.emailTemplates.placeholders.emptyList.title") }
                     subtitle={ [
                         t("console:manage.features.emailTemplates.placeholders.emptyList.subtitles.0"),
@@ -171,7 +171,7 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                     return (
                         <div data-testid={ `${ testId }-item-heading` }>
                             <Flag
-                                className="email-template-flag "
+                                className="email-template-flag"
                                 name={ countryCode.toLowerCase() as FlagNameValues }
                                 data-testid={ `${ testId }-flag-image` }
                             />
@@ -274,7 +274,7 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                         type="warning"
                         open={ showTemplateDeleteConfirmation }
                         assertion={ currentDeletingTemplate.id }
-                        assertionHint={
+                        assertionHint={ (
                             <p>
                                 <Trans
                                     i18nKey={ "console:manage.features.emailTemplates.confirmations.deleteTemplate" +
@@ -284,7 +284,7 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                                     Please type <strong>{ currentDeletingTemplate.id }</strong> to confirm.
                                 </Trans>
                             </p>
-                        }
+                        ) }
                         assertionType="input"
                         primaryAction={ t("common:confirm") }
                         secondaryAction={ t("common:cancel") }

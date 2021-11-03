@@ -123,7 +123,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             advancedConfigurations: {
                 discoverableByEndUsers: values.discoverableByEndUsers
             },
-            description: values.description?.toString(),
+            description: values.description?.toString().trim(),
             id: appId,
             name: values.name?.toString(),
             ...!hiddenFields?.includes("imageUrl") && { imageUrl: values.imageUrl.toString() }
@@ -153,10 +153,34 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     };
 
     /**
-     * Application name validation.
+     * Application Name validation.
+     *
+     * @param {string} name - Application Name.
+     * @return {string | void}
      */
-    const appNameValidation= (name) => {
-        const isValid = name && !!name.match(ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_PATTERN);
+    const validateName = (name: string): string | void => {
+
+        const isValid: boolean = name && !!name.match(
+            ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_PATTERN
+        );
+
+        if (!isValid) {
+            return "Please enter a valid input.";
+        }
+    };
+
+    /**
+     * Application Description validation.
+     *
+     * @param {string} description - Application Description.
+     * @return {string | void}
+     */
+    const validateDescription = (description: string): string | void => {
+
+        const isValid: boolean = description && !!description.match(
+            ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_DESCRIPTION_PATTERN
+        );
+
         if (!isValid) {
             return "Please enter a valid input.";
         }
@@ -165,7 +189,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     return (
         <Form
             uncontrolledForm={ false }
-            onSubmit={ (values, form) => {
+            onSubmit={ (values) => {
                 updateConfigurations(values);
             } }
             initialValues={ {
@@ -191,7 +215,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     }
                     value={ name }
                     readOnly={ readOnly }
-                    validation ={ (value) => appNameValidation(value.toString().trim()) }
+                    validation ={ (value) => validateName(value.toString().trim()) }
                     maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
                     minLength={ 3 }
                     data-testid={ `${ testId }-application-name-input` }
@@ -212,6 +236,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 }
                 value={ description }
                 readOnly={ readOnly }
+                validation ={ (value) => validateDescription(value.toString().trim()) }
                 maxLength={ 300 }
                 minLength={ 3 }
                 data-testid={ `${ testId }-application-description-textarea` }
@@ -256,7 +281,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 readOnly={ readOnly }
                 data-testid={ `${ testId }-application-discoverable-checkbox` }
                 listen={ (value) => setDiscoverability(value) }
-                hint={
+                hint={ (
                     <Trans
                         i18nKey={
                             "console:develop.features.applications.forms.generalDetails.fields." +
@@ -269,7 +294,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             My Account
                         </strong>
                     </Trans>
-                }
+                ) }
                 width={ 16 }
             />
             <Field.Input

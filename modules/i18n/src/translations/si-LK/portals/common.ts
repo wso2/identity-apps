@@ -35,7 +35,6 @@ export const common: CommonNS = {
     assignees: "පැවරුම්කරුවන්",
     authentication: "සත්‍යාපනය",
     authenticator: "සත්‍යාපකය",
-    // eslint-disable-next-line @typescript-eslint/camelcase
     authenticator_plural: "සත්‍යාපක",
     back: "ආපසු",
     browser: "බ්\u200Dරව්සරය",

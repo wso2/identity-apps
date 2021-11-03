@@ -42,12 +42,12 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
     } = props;
 
     const QUERY_PARAMETER_SEPARATOR = "&";
-    const SPECIAL_CHARACTERS = [",", "&", "=", "?"];
+    const SPECIAL_CHARACTERS = [ ",", "&", "=", "?" ];
 
-    const [queryParamName, setQueryParamName] = useState<string>("");
-    const [queryParamValue, setQueryParamValue] = useState<string>("");
-    const [errorMessage, setErrorMessage] = useState<string>("");
-    const [queryParams, setQueryParams] = useState<QueryParameter[]>([]);
+    const [ queryParamName, setQueryParamName ] = useState<string>("");
+    const [ queryParamValue, setQueryParamValue ] = useState<string>("");
+    const [ errorMessage, setErrorMessage ] = useState<string>("");
+    const [ queryParams, setQueryParams ] = useState<QueryParameter[]>([]);
 
     /**
      * Build query parameter object from the given string form.
@@ -117,7 +117,7 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
     useEffect(() => {
         
         fireOnChangeEvent(queryParams, onChange);
-    }, [queryParams]);
+    }, [ queryParams ]);
 
     /**
      * Enter button option.
@@ -125,6 +125,7 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
      */
     const keyPressed = (e) => {
         const key = e.which || e.charCode || e.keyCode;
+
         if (key === 13) {
             handleQueryParameterAdd(e);
         }
@@ -138,6 +139,7 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
 
         setErrorMessage("");
         let isError = false;
+
         SPECIAL_CHARACTERS.map((c) => {
             if (queryParamValue.includes(c) || queryParamName.includes(c)) {
                 setErrorMessage("Cannot include \"" + c + "\" as a query parameter.");
@@ -149,17 +151,19 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
             return;
         }
 
-        const output: QueryParameter[] = [{
+        const output: QueryParameter[] = [ {
             name: queryParamName,
             value: queryParamValue
-        }];
+        } ];
 
         queryParams.forEach(function(queryParam) {
             const existing = output.filter((item) => {
                 return item.name == queryParam.name;
             });
+
             if (existing.length) {
                 const existingIndex = output.indexOf(existing[0]);
+
                 output[existingIndex].value = queryParam.value + " " + output[existingIndex].value;
             } else {
                 output.push(queryParam);
@@ -231,6 +235,7 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
             {
                 queryParams && queryParams?.map((eachQueryParam, index) => {
                     const queryParameter = eachQueryParam.name + "=" + eachQueryParam.value;
+
                     return (
                         <Label
                             key={ index }

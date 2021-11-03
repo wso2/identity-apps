@@ -31,6 +31,7 @@ export const filterList = <T extends unknown>(list: T[], query: string, sortBy: 
 
     const filteredList: T[] = list.filter((element: T) => {
         const key: string = element[filterBy]?.toLowerCase();
+
         if (key) {
             switch (filterMethod) {
                 case "eq":
@@ -45,6 +46,7 @@ export const filterList = <T extends unknown>(list: T[], query: string, sortBy: 
                     return false;
             }
         }
+
         return false;
     });
 

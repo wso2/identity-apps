@@ -39,7 +39,6 @@ const httpClient = oAuth.httpRequest.bind(oAuth);
  *
  * @return {{Promise<AxiosResponse<any>>} a promise containing the response
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export const getAssociations = (): Promise<any> => {
     const requestConfig = {
         headers: {
@@ -55,6 +54,7 @@ export const getAssociations = (): Promise<any> => {
             if (response.status !== 200) {
                 return Promise.reject("Failed to retrieve the linked accounts");
             }
+
             return Promise.resolve(response.data);
         })
         .catch((error) => {
@@ -67,8 +67,7 @@ export const getAssociations = (): Promise<any> => {
  *
  * @return {{Promise<AxiosResponse<any>>} a promise containing the response
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export const addAccountAssociation = (data: object): Promise<any> => {
+export const addAccountAssociation = (data: Record<string, unknown>): Promise<any> => {
     const requestConfig = {
         data,
         headers: {
@@ -93,7 +92,6 @@ export const addAccountAssociation = (data: object): Promise<any> => {
  *
  * @return {Promise<any>}
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export const removeLinkedAccount = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
@@ -123,7 +121,6 @@ export const removeLinkedAccount = (id: string): Promise<any> => {
  *
  * @return {Promise<any>}
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export const removeAllLinkedAccounts = (): Promise<any> => {
     const requestConfig = {
         headers: {
@@ -150,7 +147,6 @@ export const removeAllLinkedAccounts = (): Promise<any> => {
  * @param {LinkedAccountInterface} account - The target account.
  * @return {Promise<any>}
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export const switchAccount = (account: LinkedAccountInterface): Promise<any> => {
 
     return oAuth

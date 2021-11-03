@@ -109,6 +109,7 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                             submitState={ submit }
                             onSubmit={ (values: Map<string, FormValue>) => {
                                 const claimData = { ...claim };
+
                                 delete claimData.id;
                                 delete claimData.dialectURI;
 

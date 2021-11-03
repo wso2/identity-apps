@@ -144,6 +144,7 @@ export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
      */
     const addGroups = () => {
         const addedGroups = [ ...initialValues?.tempGroupList ];
+
         if (checkedUnassignedListItems?.length > 0) {
             checkedUnassignedListItems.map((group) => {
                 if (!(initialValues?.tempGroupList?.includes(group))) {
@@ -165,6 +166,7 @@ export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
      */
     const removeGroups = () => {
         const removedGroups = [ ...initialValues?.groupList ];
+
         if (checkedAssignedListItems?.length > 0) {
             checkedAssignedListItems.map((group) => {
                 if (!(initialValues?.groupList?.includes(group))) {
@@ -219,6 +221,7 @@ export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
      */
     const createGroupLabel = (groupName: string): any => {
         const group = groupName.split("/");
+
         if (group.length > 1) {
             return { labelColor: "teal", labelText: group[0].toString() };
         } else {
@@ -258,6 +261,7 @@ export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
                     {
                         initialValues?.groupList?.map((group, index)=> {
                             const groupName = group?.displayName?.split("/");
+
                             return (
                                 <TransferListItem
                                     handleItemChange={ () => handleUnassignedItemCheckboxChange(group) }
@@ -290,6 +294,7 @@ export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
                     {
                         initialValues?.tempGroupList?.map((group, index)=> {
                             const groupName = group?.displayName?.split("/");
+
                             return (
                                 <TransferListItem
                                     handleItemChange={ () => handleAssignedItemCheckboxChange(group) }

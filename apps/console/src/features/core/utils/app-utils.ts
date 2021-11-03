@@ -115,6 +115,7 @@ export class AppUtils {
         const hiddenRoutes = this.getHiddenRoutes();
 
         const newPref: StorageIdentityAppsSettingsInterface = cloneDeep(userPreferences);
+
         newPref.identityAppsSettings.devPortal.hiddenRoutes = [ ...hiddenRoutes, routeId ];
 
         this.setUserPreferences(newPref);

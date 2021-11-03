@@ -147,23 +147,23 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
 
     const authProtocolMeta = useSelector((state: AppState) => state.application.meta.protocolMeta);
 
-    const [wizardSteps, setWizardSteps] = useState<WizardStepInterface[]>(undefined);
-    const [wizardState, setWizardState] = useState<WizardStateInterface>(undefined);
-    const [partiallyCompletedStep, setPartiallyCompletedStep] = useState<number>(undefined);
-    const [currentWizardStep, setCurrentWizardStep] = useState<number>(currentStep);
-    const [templateSettings, setTemplateSettings] = useState<MainApplicationInterface>(undefined);
+    const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>(undefined);
+    const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
+    const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
+    const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
+    const [ templateSettings, setTemplateSettings ] = useState<MainApplicationInterface>(undefined);
 
     const dispatch = useDispatch();
 
-    const [submitGeneralSettings, setSubmitGeneralSettings] = useTrigger();
-    const [submitOAuth, setSubmitOauth] = useTrigger();
-    const [finishSubmit, setFinishSubmit] = useTrigger();
-    const [selectedTemplate, setSelectedTemplate] = useState<ApplicationTemplateListItemInterface>(template);
-    const [triggerProtocolSelectionSubmit, setTriggerProtocolSelectionSubmit] = useTrigger();
+    const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
+    const [ submitOAuth, setSubmitOauth ] = useTrigger();
+    const [ finishSubmit, setFinishSubmit ] = useTrigger();
+    const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateListItemInterface>(template);
+    const [ triggerProtocolSelectionSubmit, setTriggerProtocolSelectionSubmit ] = useTrigger();
     const [ selectedCustomInboundProtocol, setSelectedCustomInboundProtocol ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
-    const [selectedSAMLMetaFile, setSelectedSAMLMetaFile] = useState<boolean>(false);
+    const [ selectedSAMLMetaFile ] = useState<boolean>(false);
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
@@ -331,7 +331,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
 
         let customApplication: MainApplicationInterface = emptyApplication();
 
-        for (const [key, value] of Object.entries(values)) {
+        for (const [ key, value ] of Object.entries(values)) {
             customApplication = {
                 ...customApplication,
                 [ key ]: value
@@ -348,15 +348,19 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         switch (wizardSteps[currentWizardStep]?.name) {
             case WizardStepsFormTypes.PROTOCOL_SELECTION:
                 setTriggerProtocolSelectionSubmit();
+
                 break;
             case WizardStepsFormTypes.GENERAL_SETTINGS:
                 setSubmitGeneralSettings();
+
                 break;
             case WizardStepsFormTypes.PROTOCOL_SETTINGS:
                 setSubmitOauth();
+
                 break;
             case WizardStepsFormTypes.SUMMARY:
                 setFinishSubmit();
+
                 break;
             default:
                 break;
@@ -405,8 +409,10 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
             return;
         }
         let summary: any = {};
+
         if (addProtocol) {
             let configName = selectedTemplate.authenticationProtocol;
+
             if (configName === SupportedAuthProtocolTypes.WS_FEDERATION) {
                 configName = "passiveSts";
             } else if (configName === SupportedAuthProtocolTypes.WS_TRUST) {
@@ -425,7 +431,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
 
             return summary;
         } else {
-            for (const [key, value] of Object.entries(wizardState)) {
+            for (const [ key, value ] of Object.entries(wizardState)) {
                 if (key === WizardStepsFormTypes.PROTOCOL_SELECTION) {
                     continue;
                 }
@@ -637,6 +643,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         if (selectedTemplate) {
             if (selectedTemplate.id === CustomApplicationTemplate.id) {
                 const NEW_STEPS: WizardStepInterface[] = [ ...STEPS ];
+
                 setWizardSteps(NEW_STEPS.splice(1, 1));
             } else {
                 setWizardState(merge(wizardState,
@@ -656,7 +663,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 }
             }
         }
-    }, [selectedTemplate, selectedCustomInboundProtocol]);
+    }, [ selectedTemplate, selectedCustomInboundProtocol ]);
 
     /**
      *  If custom protocol is selected
@@ -697,18 +704,19 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                     });
                 });
         }
-    }, [selectedCustomInboundProtocol]);
+    }, [ selectedCustomInboundProtocol ]);
 
     /**
      * Set initial steps.
      */
     useEffect(() => {
         if (addProtocol) {
-            const NEW_STEPS: WizardStepInterface[] = [...STEPS];
+            const NEW_STEPS: WizardStepInterface[] = [ ...STEPS ];
+
             NEW_STEPS.splice(1, 1);
             setWizardSteps(NEW_STEPS);
         }
-    }, [addProtocol]);
+    }, [ addProtocol ]);
 
     /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`
@@ -722,7 +730,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         setCurrentWizardStep(currentWizardStep - 1);
 
         setPartiallyCompletedStep(undefined);
-    }, [partiallyCompletedStep]);
+    }, [ partiallyCompletedStep ]);
 
     const STEPS: WizardStepInterface[] = [
         {

@@ -17,14 +17,26 @@
  *
  */
 
-export const getSampleProfileInfo = () => {
+/**
+ * Sample Profile Information for the story.
+ */
+export const getSampleProfileInfo = (): {
+    emails: string[];
+    name: {
+        familyName: string;
+        givenName: string;
+    };
+    profileUrl: string;
+    userName: string;
+} => {
+
     return {
-        emails: [ "brion@wso2.com", "brionbmp@gmail.com", "mario@gmail.com" ],
+        emails: [ "johndoe@example.com", "johndoe@gmail.com", "john@gmail.com" ],
         name: {
-            familyName: "Silva",
-            givenName: "Brion"
+            familyName: "Doe",
+            givenName: "John"
         },
         profileUrl: "https://avatars3.githubusercontent.com/u/25959096?s=460&v=4",
-        userName: "brion"
-    }
+        userName: "john"
+    };
 };

@@ -19,7 +19,15 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { ImageUtils } from "@wso2is/core/utils";
 import classNames from "classnames";
-import React, { FunctionComponent, PropsWithChildren, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import React, {
+    CSSProperties,
+    FunctionComponent,
+    PropsWithChildren,
+    ReactElement,
+    SyntheticEvent,
+    useEffect,
+    useState
+} from "react";
 import { Image, ImageProps, Placeholder, SemanticSIZES } from "semantic-ui-react";
 import { ReactComponent as CameraIcon } from "../../assets/images/icons/camera-icon.svg";
 import { GenericIcon, GenericIconProps } from "../icon";
@@ -123,7 +131,7 @@ export interface AvatarPropsInterface extends TestableComponentInterface, Omit<I
     /**
      * Custom CSS styles.
      */
-    style?: object;
+    style?: CSSProperties | undefined;
     /**
      * Makes the avatar transparent.
      */
@@ -337,7 +345,7 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
                     { renderEditBubble() }
                 </div>
             </div>
-        )
+        );
     }
 
     if (image && isImageValidUrl) {
