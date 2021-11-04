@@ -24,6 +24,7 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.client.SelfUserRegistrationResource" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.bean.ResendCodeRequestDTO" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.bean.PropertyDTO" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.bean.UserDTO" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.net.URLDecoder" %>
@@ -130,7 +131,18 @@
         ResendCodeRequestDTO selfRegistrationRequest = new ResendCodeRequestDTO();
         UserDTO userDTO = AuthenticationEndpointUtil.getUser(resendUsername);
         selfRegistrationRequest.setUser(userDTO);
-
+    
+        PropertyDTO propertyDTO = new PropertyDTO();
+        propertyDTO.setKey("RecoveryScenario");
+        propertyDTO.setValue("SELF_SIGN_UP");
+        selfRegistrationRequest.getProperties().add(propertyDTO);
+    
+        // We have to send an empty property for the client to work properly.
+        PropertyDTO dummyPropertyDTO = new PropertyDTO();
+        dummyPropertyDTO.setKey("");
+        dummyPropertyDTO.setValue("");
+        selfRegistrationRequest.getProperties().add(dummyPropertyDTO);
+        
         String path = config.getServletContext().getInitParameter(Constants.ACCOUNT_RECOVERY_REST_ENDPOINT_URL);
         String url;
         if (StringUtils.isNotBlank(EndpointConfigManager.getServerOrigin())) {
