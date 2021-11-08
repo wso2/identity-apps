@@ -194,9 +194,9 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
     };
 
     /**
-     * Set the certificate type
+     * Set the certificate type.
      */
-    useEffect(()=> {
+    useEffect(() => {
         if (certificate?.type){
             setSelectedCertType(certificate?.type);
         }
