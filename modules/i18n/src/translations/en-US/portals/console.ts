@@ -7946,12 +7946,7 @@ export const console: ConsoleNS = {
                 },
                 profile: {
                     fields: {
-                        addresses_home: "Home Address",
-                        addresses_work: "Work Address",
                         emails: "Email",
-                        emails_home: "Home Email",
-                        emails_other: "Other Email",
-                        emails_work: "Work Email",
                         generic: {
                             default: "Add {{fieldName}}"
                         },
@@ -7959,10 +7954,6 @@ export const console: ConsoleNS = {
                         name_givenName: "First Name",
                         oneTimePassword: "One Time Password",
                         phoneNumbers: "Phone Number",
-                        phoneNumbers_home: "Home Phone Number",
-                        phoneNumbers_mobile: "Mobile Number",
-                        phoneNumbers_other: "Other Phone Number",
-                        phoneNumbers_work: "Work Phone Number",
                         photos: "Photos",
                         profileUrl: "URL",
                         userId: "User ID",

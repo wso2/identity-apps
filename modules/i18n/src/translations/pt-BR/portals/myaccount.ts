@@ -1027,22 +1027,13 @@ export const myAccount: MyAccountNS = {
         },
         profile: {
             fields: {
-                addressesHome: "Endereço residencial",
-                addressesWork: "Endereço de trabalho",
                 emails: "O email",
-                emailsHome: "E-mail residencial",
-                emailsOther: "Outro email",
-                emailsWork: "Email de trabalho",
                 generic: {
                     default: "Adicionar {{fieldName}}"
                 },
                 nameFamilyName: "Último nome",
                 nameGivenName: "Primeiro nome",
                 phoneNumbers: "Número de telefone",
-                phoneNumbersHome: "Número de telefone residencial",
-                phoneNumbersMobile: "Número de celular",
-                phoneNumbersOther: "Outro número de telefone",
-                phoneNumbersWork: "Número de telefone comercial",
                 profileImage: "Imagem de perfil",
                 profileUrl: "URL",
                 userName: "Nome de usuário"

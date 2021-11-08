@@ -614,19 +614,10 @@ export interface MyAccountNS {
                 };
                 emails: string;
                 profileUrl: string;
-                addressesWork: string;
-                addressesHome: string;
-                emailsHome: string;
-                emailsOther: string;
-                emailsWork: string;
                 nameFamilyName: string;
                 nameGivenName: string;
                 profileImage: string;
                 phoneNumbers: string;
-                phoneNumbersHome: string;
-                phoneNumbersMobile: string;
-                phoneNumbersWork: string;
-                phoneNumbersOther: string;
                 userName: string;
             };
             forms: {

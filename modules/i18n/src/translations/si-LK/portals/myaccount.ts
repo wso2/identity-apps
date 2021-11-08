@@ -1037,22 +1037,13 @@ export const myAccount: MyAccountNS = {
         },
         profile: {
             fields: {
-                addressesHome: "නිවසේ ලිපිනය",
-                addressesWork: "වැඩ ලිපිනය",
                 emails: "විද්යුත් තැපෑල",
-                emailsHome: "නිවසේ විද්‍යුත් තැපෑල",
-                emailsOther: "වෙනත් විද්‍යුත් තැපෑල",
-                emailsWork: "වැඩ ඊමේල්",
                 generic: {
                     default: "එකතු කරන්න {{fieldName}}"
                 },
                 nameFamilyName: "අවසන් නම",
                 nameGivenName: "මුල් නම",
                 phoneNumbers: "දුරකතන අංකය",
-                phoneNumbersHome: "නිවසේ දුරකථන අංකය",
-                phoneNumbersMobile: "ජංගම දූරකථන අංකය",
-                phoneNumbersOther: "වෙනත් දුරකථන අංකය",
-                phoneNumbersWork: "රැකියා දුරකථන අංකය",
                 profileImage: "පැතිකඩ රූපය",
                 profileUrl: "URL",
                 userName: "පරිශීලක නාමය"

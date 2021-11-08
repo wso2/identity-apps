@@ -1065,22 +1065,13 @@ export const myAccount: MyAccountNS = {
         },
         profile: {
             fields: {
-                addressesHome: "Adresse personnelle",
-                addressesWork: "Adresse professionnelle",
                 emails: "Email",
-                emailsHome: "E-mail personnel",
-                emailsOther: "Autre adresse e-mail",
-                emailsWork: "E-mail professionnel",
                 generic: {
                     default: "Ajouter l'attribut {{fieldName}}"
                 },
                 nameFamilyName: "Nom de famille",
                 nameGivenName: "Prénom",
                 phoneNumbers: "Numéros de téléphone",
-                phoneNumbersHome: "Numéro de téléphone personnel",
-                phoneNumbersMobile: "Numéro de téléphone portable",
-                phoneNumbersOther: "Autre numéro de téléphone",
-                phoneNumbersWork: "Numéro de téléphone au professionnel",
                 profileImage: "Image de profil",
                 profileUrl: "URL",
                 userName: "Nom d'utilisateur"

@@ -1042,22 +1042,13 @@ export const myAccount: MyAccountNS = {
         },
         profile: {
             fields: {
-                addressesHome: "Home address",
-                addressesWork: "Work address",
                 emails: "Email",
-                emailsHome: "Home email",
-                emailsOther: "Other email",
-                emailsWork: "Work email",
                 generic: {
                     default: "Add {{fieldName}}"
                 },
                 nameFamilyName: "Last name",
                 nameGivenName: "First name",
                 phoneNumbers: "Phone number",
-                phoneNumbersHome: "Home phone number",
-                phoneNumbersMobile: "Mobile number",
-                phoneNumbersOther: "Other phone number",
-                phoneNumbersWork: "Work phone number",
                 profileImage: "Profile Image",
                 profileUrl: "URL",
                 userName: "Username"
