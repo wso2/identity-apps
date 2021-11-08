@@ -26,7 +26,6 @@ import React, {
 } from "react";
 import { Card, CardGroupProps, Loader } from "semantic-ui-react";
 import { ResourceGridCard } from "./resource-grid-card";
-import { ContentLoader } from "../../loader";
 
 /**
  * Interface for the Resource Grid sub components.
@@ -69,50 +68,50 @@ export interface ResourceGridPropsInterface extends CardGroupProps, TestableComp
 export const ResourceGrid: FunctionComponent<
     PropsWithChildren<ResourceGridPropsInterface>> & ResourceGridSubComponentsInterface = (
         props: ResourceGridPropsInterface
-): ReactElement => {
+    ): ReactElement => {
 
-    const {
-        children,
-        className,
-        emptyPlaceholder,
-        isEmpty,
-        isLoading,
-        isPaginating,
-        testId,
-        wrapperClassName,
-        ...rest
-    } = props;
+        const {
+            children,
+            className,
+            emptyPlaceholder,
+            isEmpty,
+            isLoading,
+            isPaginating,
+            testId,
+            wrapperClassName,
+            ...rest
+        } = props;
 
-    const classes = classNames(
-        "resource-grid",
-        className
-    );
+        const classes = classNames(
+            "resource-grid",
+            className
+        );
 
-    const wrapperClasses = classNames(
-        "resource-grid-wrapper",
-        wrapperClassName
-    );
+        const wrapperClasses = classNames(
+            "resource-grid-wrapper",
+            wrapperClassName
+        );
 
-    return (
-        <div className={ wrapperClasses } data-testid={ testId }>
-            {
-                isEmpty
-                    ? emptyPlaceholder
-                    : (
-                        <Card.Group className={ classes } { ...rest }>
-                            {
-                                (isLoading && !isPaginating)
-                                    ? <Loader active inline="centered" />
-                                    : isPaginating
-                                        ? <Loader>Loading...</Loader>
-                                        : children
-                            }
-                        </Card.Group>
-                    )
-            }
-        </div>
-    );
-};
+        return (
+            <div className={ wrapperClasses } data-testid={ testId }>
+                {
+                    isEmpty
+                        ? emptyPlaceholder
+                        : (
+                            <Card.Group className={ classes } { ...rest }>
+                                {
+                                    (isLoading && !isPaginating)
+                                        ? <Loader active inline="centered" />
+                                        : isPaginating
+                                            ? <Loader>Loading...</Loader>
+                                            : children
+                                }
+                            </Card.Group>
+                        )
+                }
+            </div>
+        );
+    };
 
 /**
  * Default props for the component.

@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/webapps",
-    "version": "1.2.701",
+    "version": "1.2.706",
     "description": "WSO2 Identity Server Web Applications",
     "keywords": [
         "WSO2",
@@ -47,7 +47,7 @@
         "update-version": "node scripts/update-version.js",
         "lint": "npx lerna run lint --stream",
         "lint:autofix": "npm run lint:autofix --stream",
-        "lint:ci": "eslint -c .eslintrc.js $(git diff --diff-filter=d --name-only | grep -E \"(.js$|.ts$|.jsx$|.tsx$)\")",
+        "lint:ci": "npm run lint",
         "lint:staged": "eslint -c .eslintrc.js $(git diff --diff-filter=d --name-only | grep -E \"(.js$|.ts$|.jsx$|.tsx$)\")"
     },
     "author": "WSO2",

@@ -19,8 +19,6 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Divider, Header, Icon, MessageProps, Message as SemanticMessage } from "semantic-ui-react";
-import { MessageHeaderProps } from "semantic-ui-react/dist/commonjs/collections/Message/MessageHeader";
-import { SemanticShorthandContent, SemanticShorthandItem } from "semantic-ui-react/dist/commonjs/generic";
 
 /**
  * Proptypes for the message component.
@@ -74,6 +72,7 @@ export const Message: FunctionComponent<MessageComponentPropsInterface> = (
                     : null
             }
             content={ generateContent() }
+            data-testid={ testId }
         />
     );
 };

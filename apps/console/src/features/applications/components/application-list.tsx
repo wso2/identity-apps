@@ -32,7 +32,6 @@ import {
     ConfirmationModal,
     DataTable,
     EmptyPlaceholder,
-    GridLayout,
     LinkButton,
     PrimaryButton,
     TableActionsInterface,
@@ -355,8 +354,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     return app?.access === ApplicationAccessTypes.READ
                         || !hasRequiredScopes(featureConfig?.applications,
                             featureConfig?.applications?.scopes?.update, allowedScopes)
-                            ? "eye"
-                            : "pencil alternate";
+                        ? "eye"
+                        : "pencil alternate";
                 },
                 onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void =>
                     handleApplicationEdit(app.id, app.access),
@@ -364,8 +363,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     return app?.access === ApplicationAccessTypes.READ
                         || !hasRequiredScopes(featureConfig?.applications,
                             featureConfig?.applications?.scopes?.update, allowedScopes)
-                                ? t("common:view")
-                                : t("common:edit");
+                        ? t("common:view")
+                        : t("common:edit");
                 },
                 renderer: "semantic-icon"
             },
@@ -423,10 +422,11 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     className={ !isRenderedOnPortal ? "list-placeholder" : "" }
                     action={ onEmptyListPlaceholderActionClick && (
                         <Show when={ AccessControlConstants.APPLICATION_WRITE }>
-                            <PrimaryButton onClick={ () => {
-                                eventPublisher.publish(componentId + "-click-new-application-button");
-                                onEmptyListPlaceholderActionClick();
-                            } }>
+                            <PrimaryButton
+                                onClick={ () => {
+                                    eventPublisher.publish(componentId + "-click-new-application-button");
+                                    onEmptyListPlaceholderActionClick();
+                                } }>
                                 <Icon name="add"/>
                                 { t("console:develop.features.applications.placeholders.emptyList.action") }
                             </PrimaryButton>

@@ -160,7 +160,9 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      */
     const validateName = (name: string): string | void => {
 
-        const isValid: boolean = name && !!name.match(ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_PATTERN);
+        const isValid: boolean = name && !!name.match(
+            ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_PATTERN
+        );
 
         if (!isValid) {
             return "Please enter a valid input.";
@@ -175,7 +177,9 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      */
     const validateDescription = (description: string): string | void => {
 
-        const isValid: boolean = description && !!description.match(ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_DESCRIPTION_PATTERN);
+        const isValid: boolean = description && !!description.match(
+            ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_DESCRIPTION_PATTERN
+        );
 
         if (!isValid) {
             return "Please enter a valid input.";
@@ -185,7 +189,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     return (
         <Form
             uncontrolledForm={ false }
-            onSubmit={ (values, form) => {
+            onSubmit={ (values) => {
                 updateConfigurations(values);
             } }
             initialValues={ {
@@ -277,7 +281,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 readOnly={ readOnly }
                 data-testid={ `${ testId }-application-discoverable-checkbox` }
                 listen={ (value) => setDiscoverability(value) }
-                hint={
+                hint={ (
                     <Trans
                         i18nKey={
                             "console:develop.features.applications.forms.generalDetails.fields." +
@@ -290,7 +294,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             My Account
                         </strong>
                     </Trans>
-                }
+                ) }
                 width={ 16 }
             />
             <Field.Input

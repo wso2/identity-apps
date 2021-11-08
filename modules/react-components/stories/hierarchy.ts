@@ -18,5 +18,5 @@
  */
 
 export const StoryCategories = {
-    COMPONENTS: "Components API/Components",
+    COMPONENTS: "Components API/Components"
 };

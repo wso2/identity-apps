@@ -45,6 +45,7 @@ describe("Test if the Forms is working fine", () => {
 
         // check if the text box with the mentioned placeholder value is displayed
         const textBox = getByPlaceholderText(constants.TEXT_BOX_PLACEHOLDER);
+
         expect(textBox).toBeInTheDocument();
 
         // check if the submit button is displayed
@@ -55,6 +56,7 @@ describe("Test if the Forms is working fine", () => {
 
         // check if the value of the text box changes
         const NEW_VALUE = "new value";
+
         fireEvent.change(textBox, { target: { value: NEW_VALUE } });
         expect(getByDisplayValue(NEW_VALUE)).toBeInTheDocument();
 
@@ -174,11 +176,13 @@ describe("Test if the Forms is working fine", () => {
 
         // check if the password box with the mentioned value is displayed
         const passwordBox = getByDisplayValue(constants.PASSWORD_VALUE);
+
         expect(passwordBox).toBeInTheDocument();
 
         // check if the value of the password box changes
         constants.listen.mockReset();
         const NEW_VALUE = "new value";
+
         fireEvent.change(passwordBox, { target: { value: NEW_VALUE } });
         expect(await findByDisplayValue(NEW_VALUE)).toBeInTheDocument();
 
@@ -194,6 +198,7 @@ describe("Test if the Forms is working fine", () => {
 
         // check if show/hide is working fine
         let showButton = container.getElementsByClassName("eye link icon")[ 0 ];
+
         expect(passwordBox).toHaveAttribute("type", "password");
         expect(showButton).toBeInTheDocument();
 
@@ -205,6 +210,7 @@ describe("Test if the Forms is working fine", () => {
 
         // check if toggling works fine
         const hideButton = container.getElementsByClassName("eye slash link icon")[ 0 ];
+
         expect(passwordBox).toHaveAttribute("type", "text");
         expect(hideButton).toBeInTheDocument();
 
@@ -277,6 +283,7 @@ describe("Test if the Forms is working fine", () => {
         constants.listen.mockReset();
         fireEvent.click(getByDisplayValue(constants.CHECKBOX_CHILD_1_VALUE));
         const check = await findByText(constants.CHECKBOX_CHILD_1_LABEL);
+
         expect(check.parentElement).toHaveClass("checked");
 
         // check if the listen function was called
@@ -321,6 +328,7 @@ describe("Test if the Forms is working fine", () => {
                 type: "submit"
             }
         ]));
+
         constants.onSubmit.mockReset();
         fireEvent.click(getByText(constants.SUBMIT));
         expect(queryByText(constants.CHECKBOX_REQUIRED_MESSAGE)).not.toBeInTheDocument();
@@ -425,6 +433,7 @@ describe("Test if the Forms is working fine", () => {
         fireEvent.click(getByText(constants.DROPDOWN_CHILD_2_VALUE).parentElement);
         fireEvent.blur(getAllByText(constants.DROPDOWN_CHILD_2_VALUE)[ 1 ].parentElement);
         const dropdown = await findByRole("alert");
+
         expect(dropdown.firstChild.nodeValue).toBe(constants.DROPDOWN_CHILD_2_VALUE);
 
         // check if the listen function was called
@@ -610,6 +619,7 @@ describe("Test if the Forms is working fine", () => {
 
         // check if the text box with the mentioned placeholder value is displayed
         const textBox = getByPlaceholderText(constants.TEXT_BOX_PLACEHOLDER);
+
         expect(textBox).toBeInTheDocument();
 
         // check if the submit button is displayed
@@ -621,6 +631,7 @@ describe("Test if the Forms is working fine", () => {
         // check if the value of the text box changes
         constants.listen.mockReset();
         const NEW_VALUE = "new value";
+
         fireEvent.change(textBox, { target: { value: NEW_VALUE } });
         expect(await findByDisplayValue(NEW_VALUE)).toBeInTheDocument();
 

@@ -138,7 +138,7 @@ export const ResourceList: FunctionComponent<ResourceListPropsInterface> & Resou
                     ) }
                     data-testid={ `${ testId }-loading-placeholder` }
                 />
-            )
+            );
         }
 
         return placeholders;

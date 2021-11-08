@@ -152,8 +152,6 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
         enableQuerySearch,
         externalSearchQuery,
         fill,
-        hintActionKeys,
-        hintLabel,
         clearIcon,
         inputSize,
         onExternalSearchQueryClear,
@@ -230,13 +228,6 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
     }, className);
 
     /**
-     * Search field hint style classes.
-     */
-    const searchFieldHintClasses = classNames({
-        active: showSearchFieldHint
-    }, className);
-
-    /**
      * Handles the search input field `onChange` event.
      *
      * @param {React.ChangeEvent<HTMLInputElement>} e - Input change event.
@@ -279,14 +270,17 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
             } else {
                 let advancedSearch: boolean = false;
                 const terms: string[] = internalSearchQuery.split(" ");
+
                 if (terms.length > 2) {
                     const attributes = filterAttributeOptions.filter((attribute) => {
                         return attribute.value === terms[0];
                     });
+
                     if (attributes.length > 0) {
                         const conditions = filterConditionOptions.filter((condition) => {
                             return condition.value === terms[1];
                         });
+
                         if (conditions.length > 0) {
                             advancedSearch = true;
                         }
@@ -368,7 +362,8 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                                         <Button
                                             data-testid={ `${ testId }-options-button` }
                                             basic
-                                            compact className="input-add-on"
+                                            compact
+                                            className="input-add-on"
                                             onClick={ handleShowOptionsClick }
                                         >
                                             <Icon name="caret down"/>

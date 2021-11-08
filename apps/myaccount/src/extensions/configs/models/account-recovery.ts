@@ -16,5 +16,10 @@
  * under the License.
  */
 
-export * from "./common";
-export * from "./account-recovery";
+export interface AccountRecoveryConfig {
+    sections: {
+        accountRecovery: {
+            description: string;
+        }
+    }
+}

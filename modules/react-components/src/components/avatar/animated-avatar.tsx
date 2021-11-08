@@ -58,7 +58,8 @@ export const AnimatedAvatar: FunctionComponent<AnimatedAvatarPropsInterface> = (
             viewBox="0 0 1024 1024"
         >
             <g>
-                <path className={ `fill ${primary ? "primary" : "secondary"}` }
+                <path
+                    className={ `fill ${primary ? "primary" : "secondary"}` }
                     d={
                         "M0.08504+0L170.638+0C170.732+0+170.808+0.0760688+170.808+0.169904L170.808+170.723C170" +
                         ".808+170.817+170.732+170.893+170.638+170.893L0.08504+170.893C-0.00879569+170.893-0." +
@@ -486,7 +487,7 @@ export const AnimatedAvatar: FunctionComponent<AnimatedAvatarPropsInterface> = (
                 </Image>
             )
             : <AnimatedSVGBackground/>
-    )
+    );
 };
 
 AnimatedAvatar.defaultProps = {
