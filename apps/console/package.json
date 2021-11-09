@@ -84,7 +84,7 @@
     },
     "devDependencies": {
         "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
-        "@svgr/webpack": "^4.3.2",
+        "@svgr/webpack": "4.3.2",
         "@testing-library/dom": "^7.24.3",
         "@testing-library/jest-dom": "^5.11.9",
         "@testing-library/user-event": "^12.7.3",
