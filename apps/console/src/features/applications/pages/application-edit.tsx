@@ -171,13 +171,11 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
              * Consider this as a **failsafe workaround**. We shouldn't rely
              * on this. This may get removed in the future.
              */
-            const timer = setTimeout(() => {
-                ApplicationTemplateManagementUtils
-                    .getApplicationTemplates()
-                    .finally();
-            }, 10);
+            ApplicationTemplateManagementUtils
+                .getApplicationTemplates()
+                .finally();
 
-            return () => clearTimeout(timer);
+            return;
         }
 
         let template = applicationTemplates.find((template) => template.id === application.templateId);
