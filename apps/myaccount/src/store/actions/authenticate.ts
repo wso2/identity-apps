@@ -28,6 +28,7 @@ import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
 import { AuthAction, authenticateActionTypes } from "./types";
 import { getProfileInfo, getUserReadOnlyStatus, switchAccount } from "../../api";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
+import { commonConfig } from "../../extensions";
 import { SCIMConfigs } from "../../extensions/configs/scim";
 import { history } from "../../helpers";
 import {
@@ -105,7 +106,11 @@ export const getScimSchemas = (profileInfo: BasicProfileInterface = null,
             dispatch(setScimSchemas(response));
 
             if (profileInfo) {
-                dispatch(getProfileCompletion(profileInfo, response, isReadOnlyUser));
+                if (commonConfig.utils.getProfileCompletion) {
+                    dispatch(commonConfig.utils.getProfileCompletion(profileInfo, response, isReadOnlyUser));
+                } else {
+                    dispatch(getProfileCompletion(profileInfo, response, isReadOnlyUser));
+                }
             }
         })
         .catch(() => {
@@ -145,12 +150,21 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                         // If `updateProfileCompletion` flag is enabled, update the profile completion.
                         if (updateProfileCompletion && !isCompletionCalculated) {
                             try {
-                                getProfileCompletion(
-                                    infoResponse,
-                                    store.getState().authenticationInformation.profileSchemas,
-                                    response[SCIMConfigs.scim.enterpriseSchema]
-                                        ?.isReadOnlyUser
-                                );
+                                if (commonConfig.utils.getProfileCompletion) {
+                                    commonConfig.utils.getProfileCompletion(
+                                        infoResponse,
+                                        store.getState().authenticationInformation.profileSchemas,
+                                        response[SCIMConfigs.scim.enterpriseSchema]
+                                            ?.isReadOnlyUser
+                                    );
+                                } else {
+                                    getProfileCompletion(
+                                        infoResponse,
+                                        store.getState().authenticationInformation.profileSchemas,
+                                        response[SCIMConfigs.scim.enterpriseSchema]
+                                            ?.isReadOnlyUser
+                                    );
+                                }
                             } catch (e) {
                                 dispatch(
                                     addAlert({

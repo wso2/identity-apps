@@ -170,7 +170,7 @@ export const flattenProfileInfo = (profileInfo: any, parentAttributeName?: strin
  * @param {BasicProfileInterface} profileInfo ProfileInfo from the store
  * @returns {boolean} Boolean
  */
-const isProfileImageComplete = (name: string, profileInfo: BasicProfileInterface): boolean => {
+export const isProfileImageComplete = (name: string, profileInfo: BasicProfileInterface): boolean => {
     return !(isEmpty(profileInfo.profileUrl) && isEmpty(profileInfo.userImage));
 };
 

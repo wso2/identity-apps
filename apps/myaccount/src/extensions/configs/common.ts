@@ -7,6 +7,7 @@
  * You may not alter or remove any copyright or other notice from copies of this content."
  */
 
+import { BasicProfileInterface, ProfileCompletion, ProfileSchema } from "../../models";
 import { CommonConfig } from "./models";
 
 export const commonConfig: CommonConfig = {
@@ -47,6 +48,13 @@ export const commonConfig: CommonConfig = {
         },
         isConsoleNavigationAllowed(userstore: string): boolean {
             return true;
+        },
+        getProfileCompletion(
+            profileInfo?: BasicProfileInterface,
+            profileSchemas?: ProfileSchema[],
+            isReadOnlyUser?: boolean
+        ): undefined {
+            return undefined;
         }
     }
 };
