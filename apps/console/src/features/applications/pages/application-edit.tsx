@@ -56,6 +56,7 @@ import {
     SupportedAuthProtocolTypes,
     emptyApplication
 } from "../models";
+import { ApplicationTemplateManagementUtils } from "../utils";
 
 /**
  * Proptypes for the applications edit page component.
@@ -149,6 +150,30 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             || !(applicationTemplates
             && applicationTemplates instanceof Array
             && applicationTemplates.length > 0)) {
+
+            /**
+             * What's this?
+             *
+             * When navigating to an application using the direct url i.e.,
+             * /t/foo/develop/applications/:id#tab=1 this component will be
+             * mounted. But you see this {@link applicationTemplates}?; it is
+             * loaded elsewhere. For some reason, requesting the state from
+             * {@link useSelector} always returns {@code undefined} when
+             * directly navigating or refreshing the page. Therefore; it hangs
+             * without doing anything. It will show a overlay loader but
+             * that's it. Nothing happens afterwards.
+             *
+             * So, as a workaround; if for some reason, the {@link useSelector}
+             * return no data, we will manually emit the event
+             * {@link ApplicationActionTypes.SET_APPLICATION_TEMPLATES}. So, doing
+             * that ensures we load the application templates again.
+             *
+             * Consider this as a **failsafe workaround**. We shouldn't rely
+             * on this. This may get removed in the future.
+             */
+            ApplicationTemplateManagementUtils
+                .getApplicationTemplates()
+                .finally();
 
             return;
         }
