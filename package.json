@@ -90,6 +90,7 @@
         "react-app-polyfill": "^1.0.4",
         "react-dom": "^16.9.0",
         "react-final-form": "^6.5.3",
+        "react-gtm-module": "^2.0.11",
         "react-head": "^3.3.0",
         "react-helmet": "^5.2.1",
         "react-i18next": "^10.11.5",

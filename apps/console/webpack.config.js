@@ -494,9 +494,14 @@ module.exports = (env) => {
                         ? "<%=TENANT_AWARE_URL_PREFIX%>"
                         : "",
                     themeHash: themeHash,
-                    vwoScriptVariable: "<%= vwo_ac_id %>",
-                    // eslint-disable-next-line max-len
-                    vwoSystemVariable: "<% String vwo_ac_id = System.getenv().getOrDefault(\"vwo_account_id\", null); %>"
+                    // GoogleTag Manager Key
+                    gtmSystemVariable = "<% String gtm_ac_id = " +
+                        "System.getenv().getOrDefault(\"gtm_account_id\", null); %>",
+                    gtmScriptVariable: "<%= gtm_ac_id %>",
+                    // Google Optimize Key
+                    optimizeSystemVariable = "<% String optimize_ac_id = " +
+                        "System.getenv().getOrDefault(\"optmize_account_id\", null); %>",
+                    optimizeScriptVariable: "<%= optimze_ac_id %>",
                 })
                 : new HtmlWebpackPlugin({
                     filename: path.join(distFolder, "index.html"),
