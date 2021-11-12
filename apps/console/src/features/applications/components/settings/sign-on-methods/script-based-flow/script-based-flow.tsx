@@ -759,7 +759,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                 in the conditional authentication scripts.
                             </Trans>
                         ) }
-                        position="bottom center"
+                        position="bottom left"
                         pinned={ true }
                     />
                 ) }
@@ -803,6 +803,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                         <Header
                                             as={ "h6" }
                                             className={ "header-with-icon" }
+                                            style={ { margin: "0.25rem auto" } }
                                         >
                                             <GenericIcon
                                                 defaultIcon
@@ -811,6 +812,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                 transparent
                                                 floated="right"
                                                 size="micro"
+                                                style={ { paddingTop: 0 } }
                                                 icon={ (
                                                     <Tooltip
                                                         trigger={ (
@@ -832,6 +834,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                 linkType="primary"
                                                 floated="right"
                                                 size="micro"
+                                                style={ { paddingTop: 0 } }
                                                 icon={ (
                                                     <Tooltip
                                                         trigger={ (
