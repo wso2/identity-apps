@@ -7,7 +7,7 @@
  * You may not alter or remove any copyright or other notice from copies of this content."
  */
 
-import { BasicProfileInterface, ProfileSchema } from "../../../models";
+import { ProfileSchema } from "../../../models";
 
 export interface CommonConfig {
     advancedSearchWithBasicFilters: {
@@ -45,10 +45,6 @@ export interface CommonConfig {
         isManageConsentAllowedForUser: (userstore: string) => boolean;
         isShowAdditionalWidgetAllowed: (userstore: string) => boolean;
         isConsoleNavigationAllowed: (userstore: string) => boolean;
-        getProfileCompletion: (
-            profileInfo?: BasicProfileInterface,
-            profileSchemas?: ProfileSchema[],
-            isReadOnlyUser?: boolean
-        ) => undefined;
+        isSchemaNameSkippableforProfileCompletion: (schema: ProfileSchema) => boolean;
     }
 }

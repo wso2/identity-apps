@@ -106,11 +106,7 @@ export const getScimSchemas = (profileInfo: BasicProfileInterface = null,
             dispatch(setScimSchemas(response));
 
             if (profileInfo) {
-                if (commonConfig.utils.getProfileCompletion) {
-                    dispatch(commonConfig.utils.getProfileCompletion(profileInfo, response, isReadOnlyUser));
-                } else {
-                    dispatch(getProfileCompletion(profileInfo, response, isReadOnlyUser));
-                }
+                dispatch(getProfileCompletion(profileInfo, response, isReadOnlyUser));
             }
         })
         .catch(() => {
@@ -150,21 +146,12 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                         // If `updateProfileCompletion` flag is enabled, update the profile completion.
                         if (updateProfileCompletion && !isCompletionCalculated) {
                             try {
-                                if (commonConfig.utils.getProfileCompletion) {
-                                    commonConfig.utils.getProfileCompletion(
-                                        infoResponse,
-                                        store.getState().authenticationInformation.profileSchemas,
-                                        response[SCIMConfigs.scim.enterpriseSchema]
-                                            ?.isReadOnlyUser
-                                    );
-                                } else {
-                                    getProfileCompletion(
-                                        infoResponse,
-                                        store.getState().authenticationInformation.profileSchemas,
-                                        response[SCIMConfigs.scim.enterpriseSchema]
-                                            ?.isReadOnlyUser
-                                    );
-                                }
+                                getProfileCompletion(
+                                    infoResponse,
+                                    store.getState().authenticationInformation.profileSchemas,
+                                    response[SCIMConfigs.scim.enterpriseSchema]
+                                        ?.isReadOnlyUser
+                                );
                             } catch (e) {
                                 dispatch(
                                     addAlert({
