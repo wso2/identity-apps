@@ -94,6 +94,14 @@ module.exports = {
                 ],
                 "@typescript-eslint/no-explicit-any": 0,
                 "@typescript-eslint/no-inferrable-types": "off",
+                "@typescript-eslint/no-unused-vars": [
+                    "warn",
+                    {
+                        argsIgnorePattern: "^_",
+                        caughtErrorsIgnorePattern: "^_",
+                        varsIgnorePattern: "^_"
+                    }
+                ],
                 "@typescript-eslint/no-use-before-define": [
                     "warn",
                     {
@@ -128,14 +136,6 @@ module.exports = {
     plugins: [ "import" ],
     root: true,
     rules: {
-        "@typescript-eslint/no-unused-vars": [
-            "warn",
-            {
-                argsIgnorePattern: "^_",
-                caughtErrorsIgnorePattern: "^_",
-                varsIgnorePattern: "^_"
-            }
-        ],
         "array-bracket-spacing": [ 1, "always" ],
         "comma-dangle": [ "warn", "never" ],
         "eol-last": "error",
@@ -199,7 +199,6 @@ module.exports = {
             }
         ],
         "no-unreachable": "error",
-        "no-unused-vars": "off",
         "object-curly-spacing": [ "warn", "always" ],
         "padding-line-between-statements": [ ...LINE_PADDING_RULES ],
         quotes: [ "warn", "double" ],
