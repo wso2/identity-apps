@@ -31,8 +31,10 @@
     InitiateQuestionResponse initiateQuestionResponse = (InitiateQuestionResponse)
             session.getAttribute("initiateChallengeQuestionResponse");
     RetryError errorResponse = (RetryError) request.getAttribute("errorResponse");
-    boolean reCaptchaEnabled = CaptchaUtil.isReCaptchaEnabled() &&
-                        CaptchaUtil.isReCaptchaEnabledForFlow("Recovery.Question.Password.ReCaptcha.Enable",tenantDomain);
+    boolean reCaptchaEnabled = false;
+    if (request.getAttribute("reCaptcha") != null && "TRUE".equalsIgnoreCase((String) request.getAttribute("reCaptcha"))) {
+        reCaptchaEnabled = true;
+    }
 %>
 
 <!doctype html>

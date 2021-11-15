@@ -171,8 +171,10 @@
     }
 %>
 <%
-    boolean reCaptchaEnabled = CaptchaUtil.isReCaptchaEnabled() &&
-                        CaptchaUtil.isReCaptchaEnabledForFlow("SelfRegistration.ReCaptcha", tenantDomain);
+    boolean reCaptchaEnabled = false;
+    if (request.getAttribute("reCaptcha") != null && "TRUE".equalsIgnoreCase((String) request.getAttribute("reCaptcha"))) {
+        reCaptchaEnabled = true;
+    }
 %>
 
 <!doctype html>

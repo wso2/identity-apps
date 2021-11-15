@@ -33,8 +33,10 @@
     List<Question> challengeQuestions = initiateAllQuestionResponse.getQuestions();
 
     RetryError errorResponse = (RetryError) request.getAttribute("errorResponse");
-    boolean reCaptchaEnabled = CaptchaUtil.isReCaptchaEnabled() &&
-                     CaptchaUtil.isReCaptchaEnabledForFlow("Recovery.Question.Password.ReCaptcha.Enable", tenantDomain);
+    boolean reCaptchaEnabled = false;
+    if (request.getAttribute("reCaptcha") != null && "TRUE".equalsIgnoreCase((String) request.getAttribute("reCaptcha"))) {
+        reCaptchaEnabled = true;
+    }
 %>
 
 <html>

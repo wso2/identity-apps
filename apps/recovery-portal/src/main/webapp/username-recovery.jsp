@@ -118,8 +118,11 @@
 
     boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
 
-    boolean reCaptchaEnabled = CaptchaUtil.isReCaptchaEnabled() &&
-                        CaptchaUtil.isReCaptchaEnabledForFlow("Recovery.ReCaptcha.Username.Enable", tenantDomain);
+    boolean reCaptchaEnabled = false;
+    if (request.getAttribute("reCaptcha") != null &&
+            "TRUE".equalsIgnoreCase((String) request.getAttribute("reCaptcha"))) {
+        reCaptchaEnabled = true;
+    }
 %>
 
 <!doctype html>

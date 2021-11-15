@@ -31,8 +31,10 @@
 <jsp:directive.include file="includes/init-url.jsp"/>
 
 <%
-    boolean reCaptchaResendEnabled = CaptchaUtil.isReCaptchaEnabled() &&
-                    CaptchaUtil.isReCaptchaEnabledForFlow("SelfRegistration.ResendConfirmationReCaptcha", tenantDomain);
+    boolean reCaptchaResendEnabled = false;
+    if (request.getParameter("reCaptchaResend") != null && Boolean.parseBoolean(request.getParameter("reCaptchaResend"))) {
+        reCaptchaResendEnabled = true;
+    }
 %>
 
 <!doctype html>
