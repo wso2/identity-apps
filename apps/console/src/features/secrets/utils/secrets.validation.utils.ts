@@ -43,7 +43,7 @@ export const secretNameValidator = (
         return FieldConstants.INVALID_RESOURCE_ERROR;
     }
     if (listOfTakenSecretNamesForSecretType?.size &&
-        listOfTakenSecretNamesForSecretType.has(value)) {
+        listOfTakenSecretNamesForSecretType.has(value.toLowerCase())) {
         return "This Secret name is already added!";
     }
     return undefined;
