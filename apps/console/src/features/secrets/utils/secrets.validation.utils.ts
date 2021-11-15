@@ -42,10 +42,14 @@ export const secretNameValidator = (
     if (!FormValidation.isValidResourceKey(value)) {
         return FieldConstants.INVALID_RESOURCE_ERROR;
     }
-    if (listOfTakenSecretNamesForSecretType?.size &&
-        listOfTakenSecretNamesForSecretType.has(value.toLowerCase())) {
-        return "This Secret name is already added!";
+    if (listOfTakenSecretNamesForSecretType?.size) {
+        listOfTakenSecretNamesForSecretType.forEach(name => {
+            if (name.toLowerCase === value.toLowerCase) {
+                return "This Secret name is already added!";
+            }
+        });
     }
+
     return undefined;
 };
 
