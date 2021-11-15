@@ -398,7 +398,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
 
         let idpTemplateTypeToTrigger: string = null; // Which template wizard to trigger? i.e Google wizard etc.
         let authenticatorName: string = null; // Which flow triggered the flow? i.e Google, Facebook etc.
-        
+
         if (socialDisclaimerModalType === LoginFlowTypes.GOOGLE_LOGIN) {
             idpTemplateTypeToTrigger = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE;
             authenticatorName = IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME;
@@ -460,14 +460,14 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                         }
                         tOptions={ { authenticator: authenticatorName } }
                     >
-                        You do not have an active Identity Provider configured with <Code> { authenticatorName } 
-                        Authenticator</Code>. Click on the <strong>Configure</strong> button to register a new 
-                        <Code>{ authenticatorName } Identity Provider</Code> or navigate to the <a
+                        You do not have an active Social Connection configured with <Code> { authenticatorName }
+                        Authenticator</Code>. Click on the <strong>Configure</strong> button to register a new
+                        <Code>{ authenticatorName } Social Connection</Code> or navigate to the <a
                             onClick={ () => {
                                 history.push(AppConstants.getPaths().get("IDP"));
                             } }
                             className="external-link link pointing primary"
-                        >Identity Providers</a> section manually.
+                        >Connections</a> section manually.
                     </Trans>
                 </ConfirmationModal.Content>
             </ConfirmationModal>
@@ -551,7 +551,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                             }
                             tOptions={ { authenticator: authenticatorName } }
                         >
-                            You have multiple Identity Providers configured with <Code>{ authenticatorName } 
+                            You have multiple Social Connections configured with <Code>{ authenticatorName }
                             Authenticator</Code>. Select the desired one from the selection below to proceed.
                         </Trans>
                     </Text>

@@ -1083,29 +1083,31 @@ export const console: ConsoleNS = {
                                     flowBuilder: {
                                         addMissingSocialAuthenticatorModal: {
                                             content: {
-                                                body: "Vous n'avez pas de fournisseur d'identité configuré avec " +
+                                                body: "Vous n'avez pas de connexion sociale active configurée avec " +
                                                     "<1>{{authenticator}} Authenticator</1>. Cliquez sur " +
                                                     "<3>Configurer</3> bouton pour lancer le processus de " +
                                                     "configuration ou accéder à la section <5>{{authenticator}} " +
-                                                    "d'identité</5> manuellement.",
-                                                message: "Aucun fournisseur d'identité {{authenticator}} configuré"
+                                                    "Connexion Sociale</5> manuellement.",
+                                                message: "Aucun fournisseur Connexion sociale" +
+                                                    " {{authenticator}} configuré"
                                             },
                                             description: "",
-                                            heading: "Configurer le fournisseur d'identité {{authenticator}}",
+                                            heading: "Configurer le fournisseur Connexion sociale {{authenticator}}",
                                             primaryButton: "Configurer",
                                             secondaryButton: "Annuler"
                                         },
                                         duplicateSocialAuthenticatorSelectionModal: {
                                             content: {
-                                                body: "Vous avez plusieurs fournisseurs d'identité configurés " +
+                                                body: "Vous avez plusieurs fournisseurs Connexions sociales" +
+                                                    " configurés " +
                                                     "avec <1> {{authenticator}} Authenticator </1>. " +
                                                     "Sélectionnez celui de votre choix dans la sélection " +
                                                     "ci-dessous pour continuer.",
-                                                message: "Plusieurs fournisseurs d'identité trouvés avec " +
+                                                message: "Plusieurs fournisseurs Connexions sociales trouvés avec " +
                                                     "{{authenticator}} Authenticator."
                                             },
                                             description: "",
-                                            heading: "Sélectionnez le fournisseur d'identité {{authenticator}}",
+                                            heading: "Sélectionnez le fournisseur Connexion sociale {{authenticator}}",
                                             primaryButton: "Continuer",
                                             secondaryButton: "Annuler"
                                         },
