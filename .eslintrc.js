@@ -25,7 +25,7 @@ const LINE_PADDING_RULES = [
     { blankLine: "always", next: "*", prev: [ "const", "let", "var" ] },
     { blankLine: "any", next: [ "const", "let", "var" ], prev: [ "const", "let", "var" ] },
     // Add a new line after directive declarations like `use strict` etc.
-    { blankLine: "always", next: "*", prev: "directive"  },
+    { blankLine: "always", next: "*", prev: "directive" },
     { blankLine: "any", next: "directive", prev: "directive" },
     // Add a new line before return statements.
     { blankLine: "always", next: "return", prev: "*" },
@@ -48,6 +48,12 @@ const LINE_PADDING_RULES = [
 ];
 
 module.exports = {
+    env: {
+        browser: true,
+        es6: true,
+        jest: true,
+        node: true
+    },
     extends: [
         "eslint:recommended",
         "plugin:react/recommended",
@@ -59,83 +65,112 @@ module.exports = {
         // no-undef complains about globalThis @see {@link https://github.com/eslint/eslint/issues/11553}
         globalThis: false
     },
+    overrides: [
+        {
+            env: {
+                browser: true,
+                es6: true,
+                node: true
+            },
+            extends: [
+                "eslint:recommended",
+                "plugin:@typescript-eslint/eslint-recommended",
+                "plugin:@typescript-eslint/recommended"
+            ],
+            files: [ "**/*.tsx", "**/*.ts" ],
+            parser: "@typescript-eslint/parser",
+            parserOptions: {
+                ecmaVersion: 9,
+                sourceType: "module"
+            },
+            rules: {
+                "@typescript-eslint/ban-types": 1,
+                "@typescript-eslint/explicit-function-return-type": 0,
+                "@typescript-eslint/no-empty-function": [
+                    "error",
+                    {
+                        allow: [ "constructors" ]
+                    }
+                ],
+                "@typescript-eslint/no-explicit-any": 0,
+                "@typescript-eslint/no-inferrable-types": "off",
+                "@typescript-eslint/no-use-before-define": [
+                    "warn",
+                    {
+                        classes: false,
+                        functions: false,
+                        typedefs: false,
+                        variables: false
+                    }
+                ],
+                "@typescript-eslint/padding-line-between-statements": [ ...LINE_PADDING_RULES ],
+                "eol-last": "error",
+                // In development, error level is set to `warn`. This will be overridden
+                // by the production env linting config.
+                "no-debugger": 1,
+                // `no-undef` is discouraged in Typescript projects.
+                // https://github.com/typescript-eslint/typescript-eslint/issues/2477#issuecomment-686892459
+                "no-undef": 0,
+                "no-use-before-define": "off",
+                "padding-line-between-statements": "off"
+            },
+            settings: {
+                react: {
+                    version: "detect"
+                }
+            }
+        }
+    ],
     parserOptions: {
         ecmaVersion: 9,
         sourceType: "module"
     },
-    plugins: ["import"],
-    settings: {
-        react: {
-            version: "detect"
-        }
-    },
-    env: {
-        browser: true,
-        jest: true,
-        node: true,
-        es6: true
-    },
+    plugins: [ "import" ],
     root: true,
     rules: {
-        "eol-last": "error",
-        "quotes": ["warn", "double"],
-        "max-len": ["warn", { "code": 120 }],
-        "comma-dangle": ["warn", "never"],
-        "sort-imports": ["warn", {
-            "ignoreCase": false,
-            "ignoreDeclarationSort": true,
-            "ignoreMemberSort": false
-        }],
-        "react/jsx-first-prop-new-line": [ 1, "multiline" ],
-        "react/jsx-max-props-per-line": [
-            1,
-            { maximum: 1, when: "multiline" },
+        "@typescript-eslint/no-unused-vars": [
+            "warn",
+            {
+                argsIgnorePattern: "^_",
+                caughtErrorsIgnorePattern: "^_",
+                varsIgnorePattern: "^_"
+            }
         ],
-        "indent": [ 1, 4, {
-            SwitchCase: 1
-        } ],
         "array-bracket-spacing": [ 1, "always" ],
-        "no-unreachable": "error",
-        "no-alert": 1,
-        "lines-between-class-members": [ 1, "always", { "exceptAfterSingleLine": true } ],
+        "comma-dangle": [ "warn", "never" ],
+        "eol-last": "error",
         "import/order": [
             "warn",
             {
-                "groups": [ "builtin", "external", "index", "sibling", "parent", "internal" ],
-                "alphabetize": {
-                    order: 'asc',
-                    caseInsensitive: true
-                }
+                alphabetize: {
+                    caseInsensitive: true,
+                    order: "asc"
+                },
+                groups: [ "builtin", "external", "index", "sibling", "parent", "internal" ]
             }
         ],
-        "padding-line-between-statements": [
-            ...LINE_PADDING_RULES
+        indent: [
+            1,
+            4,
+            {
+                SwitchCase: 1
+            }
         ],
-        "react/jsx-curly-spacing": [
+        "jsx-quotes": [ "warn", "prefer-double" ],
+        "lines-between-class-members": [
+            1,
+            "always",
+            {
+                exceptAfterSingleLine: true
+            }
+        ],
+        "max-len": [
             "warn",
             {
-                when: "always",
-                children: { "when": "always" },
-                allowMultiline: true,
-                spacing: { objectLiterals: "always" }
+                code: 120
             }
         ],
-        "no-unused-vars": 1,
-        "react-hooks/exhaustive-deps": ["off"],
-        "react/no-children-prop": 0,
-        "react/display-name": 0,
-        "react/jsx-wrap-multilines": [ "warn", {
-            arrow: "parens",
-            assignment: "parens",
-            condition: "parens",
-            declaration: "parens",
-            logical: "parens",
-            prop: "parens",
-            return: "parens"
-        } ],
-        "react/prop-types": 1,
-        "sort-keys": ["warn", "asc", {"caseSensitive": true, "natural": false, "minKeys": 2}],
-        "object-curly-spacing": ["warn", "always"],
+        "no-alert": 1,
         "no-console": "warn",
         "no-duplicate-imports": "warn",
         "no-restricted-imports": [
@@ -163,60 +198,70 @@ module.exports = {
                 patterns: [ "@wso2is/**/dist/**", "lodash/**", "lodash/fp/**" ]
             }
         ],
-        "semi": 1,
-        "jsx-quotes": [ "warn", "prefer-double" ]
-    },
-    overrides: [
-        {
-            files: ["**/*.tsx", "**/*.ts"],
-            parser: "@typescript-eslint/parser",
-            extends: [
-                "eslint:recommended",
-                "plugin:@typescript-eslint/eslint-recommended",
-                "plugin:@typescript-eslint/recommended"
-            ],
-            parserOptions: {
-                ecmaVersion: 9,
-                sourceType: "module"
-            },
-            settings: {
-                react: {
-                    version: "detect"
-                }
-            },
-            env: {
-                browser: true,
-                node: true,
-                es6: true
-            },
-            rules: {
-                "eol-last": "error",
-                // `no-undef` is discouraged in Typescript projects.
-                // https://github.com/typescript-eslint/typescript-eslint/issues/2477#issuecomment-686892459
-                "no-undef": 0,
-                "padding-line-between-statements": "off",
-                "@typescript-eslint/padding-line-between-statements": [
-                    ...LINE_PADDING_RULES
-                ],
-                "@typescript-eslint/no-explicit-any": 0,
-                "@typescript-eslint/explicit-function-return-type": 0,
-                "@typescript-eslint/no-inferrable-types": "off",
-                "no-use-before-define": "off",
-                "@typescript-eslint/ban-types": 1,
-                "@typescript-eslint/no-empty-function": [ "error", { "allow": ["constructors"] } ],
-                "@typescript-eslint/no-use-before-define": [
-                    "warn",
-                    {
-                        functions: false,
-                        classes: false,
-                        variables: false,
-                        typedefs: false
-                    }
-                ],
-                // In development, error level is set to `warn`. This will be overridden
-                // by the production env linting config.
-                "no-debugger": 1
+        "no-unreachable": "error",
+        "no-unused-vars": "off",
+        "object-curly-spacing": [ "warn", "always" ],
+        "padding-line-between-statements": [ ...LINE_PADDING_RULES ],
+        quotes: [ "warn", "double" ],
+        "react-hooks/exhaustive-deps": [ "off" ],
+        "react/display-name": 0,
+        "react/jsx-curly-spacing": [
+            "warn",
+            {
+                allowMultiline: true,
+                children: {
+                    when: "always"
+                },
+                spacing: {
+                    objectLiterals: "always"
+                },
+                when: "always"
             }
+        ],
+        "react/jsx-first-prop-new-line": [ 1, "multiline" ],
+        "react/jsx-max-props-per-line": [
+            1,
+            {
+                maximum: 1,
+                when: "multiline"
+            }
+        ],
+        "react/jsx-wrap-multilines": [
+            "warn",
+            {
+                arrow: "parens",
+                assignment: "parens",
+                condition: "parens",
+                declaration: "parens",
+                logical: "parens",
+                prop: "parens",
+                return: "parens"
+            }
+        ],
+        "react/no-children-prop": 0,
+        "react/prop-types": 1,
+        semi: 1,
+        "sort-imports": [
+            "warn",
+            {
+                ignoreCase: false,
+                ignoreDeclarationSort: true,
+                ignoreMemberSort: false
+            }
+        ],
+        "sort-keys": [
+            "warn",
+            "asc",
+            {
+                caseSensitive: true,
+                minKeys: 2,
+                natural: false
+            }
+        ]
+    },
+    settings: {
+        react: {
+            version: "detect"
         }
-    ]
+    }
 };
