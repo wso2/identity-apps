@@ -1065,8 +1065,8 @@ export const console: ConsoleNS = {
                                                 body: "You do not have an active Social Connection configured with " +
                                                     "<1>{{authenticator}} Authenticator</1>. Click on the " +
                                                     "<3>Configure</3> button to register a new <5>{{authenticator}} " +
-                                                    "Social Connection</5> or navigate to the <7>Connections " +
-                                                    "</7> section manually.",
+                                                    "Social Connection</5> or navigate to the <7>Connections</7>" +
+                                                    " section manually.",
                                                 message: "No active {{authenticator}} Social Connection configured"
                                             },
                                             description: "",
