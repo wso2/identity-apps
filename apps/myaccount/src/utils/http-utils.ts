@@ -17,8 +17,9 @@
  *
  */
 
-import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
+import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { AuthenticateUtils } from "@wso2is/core/utils";
+import { AxiosError } from "axios";
 import { AppConstants } from "../constants";
 import { history } from "../helpers";
 import { store } from "../store";
@@ -53,7 +54,7 @@ export const onHttpRequestSuccess = (): void => {
  * @param error - Http error.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const onHttpRequestError = (error: any): null => {
+export const onHttpRequestError = (error: AxiosError): null => {
     // Terminate the session if the token endpoint returns a bad request(400)
     // The token binding feature will return a 400 status code when the session
     // times out.
@@ -65,6 +66,7 @@ export const onHttpRequestError = (error: any): null => {
     ) {
         if (error.response.status === 400) {
             history.push(AppConstants.getAppLogoutPath());
+
             return;
         }
     }
@@ -72,15 +74,19 @@ export const onHttpRequestError = (error: any): null => {
     // If the user doesn't have login permission, redirect to login error page.
     if (store.getState()?.auth?.scope && !AuthenticateUtils.hasLoginPermission(store.getState().auth.scope)) {
         history.push(AppConstants.getPaths().get("LOGIN_ERROR"));
+
         return;
     }
 
-    // Dispatch a `network_error_event` Event when the requests returns an un-authorized status code (401)
-    // or are timed out.
-    // or a forbidden status code (403). NOTE: Axios is unable to handle 401 errors.
-    // `!error.response` will usually catch the `401` error. Check the link in the doc comment.
+    // Try refreshing the token. If it fails reload the page.
+    // NOTE: Axios is unable to handle 401 errors. `!error.response` will usually catch
+    // the `401` error. Check the link in the doc comment.
     if (!error.response || error.response.status === 403 || error.response.status === 401) {
-        dispatchEvent(new Event(AppConstantsCore.NETWORK_ERROR_EVENT));
+        const auth = AsgardeoSPAClient.getInstance();
+
+        auth.refreshAccessToken().catch(() => {
+            location.reload();
+        });
     }
 };
 
