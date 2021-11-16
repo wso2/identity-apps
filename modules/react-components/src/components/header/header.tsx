@@ -368,6 +368,10 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
         return userDropdownLinks.map((category: HeaderLinkCategoryInterface, categoryIndex: number) => {
 
+            if (!(category.links && Array.isArray(category.links) && category.links.length > 0)) {
+                return null;
+            }
+
             return (
                 <>
                     { category?.categoryLabel && (
