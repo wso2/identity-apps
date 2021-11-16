@@ -431,7 +431,6 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                             <PrimaryButton
                                 onClick={ (): void => {
                                     eventPublisher.publish("connections-click-new-connection-button");
-
                                     history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));
                                 } }
                                 data-testid={ `${ testId }-add-button` }
@@ -552,7 +551,6 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                                 }
                                 onEmptyListPlaceholderActionClick={ () => {
                                     eventPublisher.publish("connections-click-new-connection-button");
-                                    
                                     history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));
                                 } }
                                 isFiltering={ showFilteredList }

@@ -617,7 +617,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         });
 
         eventPublisher.publish("application-sign-in-method-click-add-new-step");
-
         setAuthenticationSteps(steps);
         updateSteps(true);
     };

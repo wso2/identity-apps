@@ -423,10 +423,11 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     className={ !isRenderedOnPortal ? "list-placeholder" : "" }
                     action={ onEmptyListPlaceholderActionClick && (
                         <Show when={ AccessControlConstants.APPLICATION_WRITE }>
-                            <PrimaryButton onClick={ () => {
-                                eventPublisher.publish(componentId + "-click-new-application-button");
-                                onEmptyListPlaceholderActionClick();
-                            } }>
+                            <PrimaryButton
+                                onClick={ () => {
+                                    eventPublisher.publish(componentId + "-click-new-application-button");
+                                    onEmptyListPlaceholderActionClick();
+                                } }>
                                 <Icon name="add"/>
                                 { t("console:develop.features.applications.placeholders.emptyList.action") }
                             </PrimaryButton>

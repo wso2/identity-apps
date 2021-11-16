@@ -246,27 +246,24 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             setModeratedAuthenticationSequence(authenticationSequence);
         } else if (loginFlow === LoginFlowTypes.DEFAULT) {
             eventPublisher.publish("application-sign-in-method-click-add", {
-                "type": "default"
+                type: "default"
             });
-
             setModeratedAuthenticationSequence({
                 ...authenticationSequence,
                 ...cloneDeep(DefaultFlowConfigurationSequenceTemplate)
             });
         } else if (loginFlow === LoginFlowTypes.SECOND_FACTOR_TOTP) {
             eventPublisher.publish("application-sign-in-method-click-add", {
-                "type": "second-factor-totp"
+                type: "second-factor-totp"
             });
-
             setModeratedAuthenticationSequence({
                 ...authenticationSequence,
                 ...cloneDeep(SecondFactorTOTPSequenceTemplate)
             });
         } else if (loginFlow === LoginFlowTypes.GOOGLE_LOGIN) {
             eventPublisher.publish("application-sign-in-method-click-add", {
-                "type": "google-login"
+                type: "google-login"
             });
-
             setSocialDisclaimerModalType(LoginFlowTypes.GOOGLE_LOGIN);
             
             // If there are no IDP's with google authenticator, show missing authenticator modal.
@@ -295,7 +292,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
            }
         } else if (loginFlow === LoginFlowTypes.GITHUB_LOGIN) {
             eventPublisher.publish("application-sign-in-method-click-add", {
-                "type": "github-login"
+                type: "github-login"
             });
             
             setSocialDisclaimerModalType(LoginFlowTypes.GITHUB_LOGIN);
@@ -326,7 +323,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             }
         } else if (loginFlow === LoginFlowTypes.FACEBOOK_LOGIN) {
             eventPublisher.publish("application-sign-in-method-click-add", {
-                "type": "facebook-login"
+                type: "facebook-login"
             });
 
             setSocialDisclaimerModalType(LoginFlowTypes.FACEBOOK_LOGIN);

@@ -72,7 +72,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
-    const UUID: string = useSelector((state: AppState) => state.profile.profileInfo.id);
+    const uuid: string = useSelector((state: AppState) => state.profile.profileInfo.id);
 
     const [ baseRoutes, setBaseRoutes ] = useState<RouteInterface[]>(getBaseRoutes());
 
@@ -157,12 +157,11 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
      * Publish page visit when the UUID is set.
      */
     useEffect(() => {
-        if (!UUID) {
+        if (!uuid) {
             return;
         }
-
         eventPublisher.publish("page-visit-console-landing-page");
-    }, [ UUID ]);
+    }, [ uuid ]);
 
     /**
      * Handles session timeout abort.

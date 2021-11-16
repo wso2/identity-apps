@@ -440,7 +440,6 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     const handleOpenSelectionModal = () => {
         eventPublisher.publish("application-user-attribute-click-add");
-
         setShowSelectionModal(true);
     };
 
