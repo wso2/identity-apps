@@ -69,7 +69,7 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
 
     const dispatch = useDispatch();
 
-    const [roleList, setRoleList] = useState<RolesInterface[]>();
+    const [ roleList, setRoleList ] = useState<RolesInterface[]>();
 
     /**
      * Filter out Application related and Internal roles
@@ -93,6 +93,7 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
             .then((response) => {
                 if (response.status === 200) {
                     const allRole: RoleListInterface = response.data;
+
                     setRoleList(allRole.Resources);
                 }
             })
@@ -103,7 +104,7 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
                     message: t("console:manage.features.roles.notifications.fetchRoles.genericError.message")
                 }));
             });
-    }, [initialMappings]);
+    }, [ initialMappings ]);
 
     return (
         <>
@@ -153,6 +154,7 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
                                         localRole: mapping.key.includes("/") ? mapping.key : "Internal/" + mapping.key
                                     };
                                 });
+
                                 onSubmit(finalData);
                             } else {
                                 onSubmit([]);

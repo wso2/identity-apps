@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/i18n",
-    "version": "1.2.701",
+    "version": "1.2.710",
     "description": "This module contains the configs, helpers and translations required to make an identity app available in multiple languages.",
     "keywords": [
         "WSO2",
@@ -21,7 +21,7 @@
         "clean:bundle": "rimraf ./dist/bundle",
         "clean:translations": "rimraf ./dist/src/translations && rimraf ./dist/types/translations",
         "compile": "tsc -p tsconfig.json",
-        "lint": "npm run lint:all",
+        "lint": "npm run lint:all -- --max-warnings=0",
         "lint:all": "npm run lint:targeted -- .",
         "lint:autofix": "npm run lint:all -- --fix",
         "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to .",
@@ -35,7 +35,7 @@
     "license": "Apache-2.0",
     "dependencies": {
         "@types/jest": "^26.0.14",
-        "@wso2is/core": "^1.2.701",
+        "@wso2is/core": "^1.2.710",
         "babel-jest": "^26.3.0",
         "i18next": "^17.0.11",
         "i18next-browser-languagedetector": "^3.0.3",

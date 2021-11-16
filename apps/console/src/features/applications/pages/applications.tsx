@@ -186,7 +186,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * @param {DropdownProps} data - Dropdown data.
      */
     const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>,
-                                               data: DropdownProps): void => {
+        data: DropdownProps): void => {
         setListSortingStrategy(find(APPLICATIONS_LIST_SORTING_OPTIONS, (option) => {
             return data.value === option.value;
         }));
@@ -235,7 +235,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * @param {DropdownProps} data - Dropdown data.
      */
     const handleItemsPerPageDropdownChange = (event: MouseEvent<HTMLAnchorElement>,
-                                              data: DropdownProps): void => {
+        data: DropdownProps): void => {
         setListItemLimit(data.value as number);
     };
 
@@ -294,7 +294,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 )
             }
             title={ t("console:develop.pages.applications.title") }
-            description={ 
+            description={ (
                 <p>
                     { t("console:develop.pages.applications.subTitle") }
                     <DocumentationLink
@@ -302,63 +302,15 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     >
                         { t("common:learnMore") }
                     </DocumentationLink>
-                </p> 
-            }
+                </p>
+            ) }
             data-testid={ `${ testId }-page-layout` }
         >
-        { !isLoading? (
-            <>
-                { renderRemoteFetchStatus() }
-                <ListLayout
-                    advancedSearch={
-                        <AdvancedSearchWithBasicFilters
-                            onFilter={ handleApplicationFilter }
-                            filterAttributeOptions={ [
-                                {
-                                    key: 0,
-                                    text: t("common:name"),
-                                    value: "name"
-                                }
-                            ] }
-                            filterAttributePlaceholder={
-                                t("console:develop.features.applications.advancedSearch.form.inputs.filterAttribute" +
-                                    ".placeholder")
-                            }
-                            filterConditionsPlaceholder={
-                                t("console:develop.features.applications.advancedSearch.form.inputs.filterCondition" +
-                                    ".placeholder")
-                            }
-                            filterValuePlaceholder={
-                                t("console:develop.features.applications.advancedSearch.form.inputs.filterValue" +
-                                    ".placeholder")
-                            }
-                            placeholder={ t("console:develop.features.applications.advancedSearch.placeholder") }
-                            defaultSearchAttribute="name"
-                            defaultSearchOperator="co"
-                            triggerClearQuery={ triggerClearQuery }
-                            data-testid={ `${ testId }-list-advanced-search` }
-                        />
-                    }
-                    currentListSize={ appList.count }
-                    listItemLimit={ listItemLimit }
-                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                    onPageChange={ handlePaginationChange }
-                    onSortStrategyChange={ handleListSortingStrategyOnChange }
-                    showPagination={ true }
-                    showTopActionPanel={ 
-                        isApplicationListRequestLoading 
-                        || !(!searchQuery && appList?.totalResults <= 0) }
-                    sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
-                    sortStrategy={ listSortingStrategy }
-                    totalPages={ Math.ceil(appList.totalResults / listItemLimit) }
-                    totalListSize={ appList.totalResults }
-                    paginationOptions={ {
-                        disableNextButton: !isApplicationsNextPageAvailable
-                    } }
-                    data-testid={ `${ testId }-list-layout` }
-                >
-                    <ApplicationList
-                        advancedSearch={
+            { !isLoading? (
+                <>
+                    { renderRemoteFetchStatus() }
+                    <ListLayout
+                        advancedSearch={ (
                             <AdvancedSearchWithBasicFilters
                                 onFilter={ handleApplicationFilter }
                                 filterAttributeOptions={ [
@@ -369,16 +321,16 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     }
                                 ] }
                                 filterAttributePlaceholder={
-                                    t("console:develop.features.applications.advancedSearch." +
-                                        "form.inputs.filterAttribute.placeholder")
+                                    t("console:develop.features.applications.advancedSearch.form" +
+                                        ".inputs.filterAttribute.placeholder")
                                 }
                                 filterConditionsPlaceholder={
-                                    t("console:develop.features.applications.advancedSearch." +
-                                        "form.inputs.filterCondition.placeholder")
+                                    t("console:develop.features.applications.advancedSearch.form" +
+                                        ".inputs.filterCondition.placeholder")
                                 }
                                 filterValuePlaceholder={
-                                    t("console:develop.features.applications.advancedSearch." +
-                                        "form.inputs.filterValue.placeholder")
+                                    t("console:develop.features.applications.advancedSearch.form.inputs.filterValue" +
+                                    ".placeholder")
                                 }
                                 placeholder={ t("console:develop.features.applications.advancedSearch.placeholder") }
                                 defaultSearchAttribute="name"
@@ -386,45 +338,95 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                 triggerClearQuery={ triggerClearQuery }
                                 data-testid={ `${ testId }-list-advanced-search` }
                             />
-                        }
-                        featureConfig={ featureConfig }
-                        isLoading={ isApplicationListRequestLoading }
-                        list={ appList }
-                        onApplicationDelete={ handleApplicationDelete }
-                        onEmptyListPlaceholderActionClick={
-                            () => {
-                                history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
+                        ) }
+                        currentListSize={ appList.count }
+                        listItemLimit={ listItemLimit }
+                        onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                        onPageChange={ handlePaginationChange }
+                        onSortStrategyChange={ handleListSortingStrategyOnChange }
+                        showPagination={ true }
+                        showTopActionPanel={ 
+                            isApplicationListRequestLoading 
+                        || !(!searchQuery && appList?.totalResults <= 0) }
+                        sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
+                        sortStrategy={ listSortingStrategy }
+                        totalPages={ Math.ceil(appList.totalResults / listItemLimit) }
+                        totalListSize={ appList.totalResults }
+                        paginationOptions={ {
+                            disableNextButton: !isApplicationsNextPageAvailable
+                        } }
+                        data-testid={ `${ testId }-list-layout` }
+                    >
+                        <ApplicationList
+                            advancedSearch={ (
+                                <AdvancedSearchWithBasicFilters
+                                    onFilter={ handleApplicationFilter }
+                                    filterAttributeOptions={ [
+                                        {
+                                            key: 0,
+                                            text: t("common:name"),
+                                            value: "name"
+                                        }
+                                    ] }
+                                    filterAttributePlaceholder={
+                                        t("console:develop.features.applications.advancedSearch." +
+                                        "form.inputs.filterAttribute.placeholder")
+                                    }
+                                    filterConditionsPlaceholder={
+                                        t("console:develop.features.applications.advancedSearch." +
+                                        "form.inputs.filterCondition.placeholder")
+                                    }
+                                    filterValuePlaceholder={
+                                        t("console:develop.features.applications.advancedSearch." +
+                                        "form.inputs.filterValue.placeholder")
+                                    }
+                                    placeholder={
+                                        t("console:develop.features.applications.advancedSearch.placeholder")
+                                    }
+                                    defaultSearchAttribute="name"
+                                    defaultSearchOperator="co"
+                                    triggerClearQuery={ triggerClearQuery }
+                                    data-testid={ `${ testId }-list-advanced-search` }
+                                />
+                            ) }
+                            featureConfig={ featureConfig }
+                            isLoading={ isApplicationListRequestLoading }
+                            list={ appList }
+                            onApplicationDelete={ handleApplicationDelete }
+                            onEmptyListPlaceholderActionClick={
+                                () => {
+                                    history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
+                                }
                             }
-                        }
-                        onSearchQueryClear={ handleSearchQueryClear }
-                        searchQuery={ searchQuery }
-                        data-testid={ `${ testId }-list` }
-                        data-componentid="application"
-                    />
-                </ListLayout>
-                { showWizard && (
-                    <MinimalAppCreateWizard
-                        title={ CustomApplicationTemplate?.name }
-                        subTitle={ CustomApplicationTemplate?.description }
-                        closeWizard={ (): void => setShowWizard(false) }
-                        template={ CustomApplicationTemplate }
-                        showHelpPanel={ true }
-                        subTemplates={ CustomApplicationTemplate?.subTemplates }
-                        subTemplatesSectionTitle={ CustomApplicationTemplate?.subTemplatesSectionTitle }
-                        addProtocol={ false }
-                        templateLoadingStrategy={
-                            config.ui.applicationTemplateLoadingStrategy
+                            onSearchQueryClear={ handleSearchQueryClear }
+                            searchQuery={ searchQuery }
+                            data-testid={ `${ testId }-list` }
+                            data-componentid="application"
+                        />
+                    </ListLayout>
+                    { showWizard && (
+                        <MinimalAppCreateWizard
+                            title={ CustomApplicationTemplate?.name }
+                            subTitle={ CustomApplicationTemplate?.description }
+                            closeWizard={ (): void => setShowWizard(false) }
+                            template={ CustomApplicationTemplate }
+                            showHelpPanel={ true }
+                            subTemplates={ CustomApplicationTemplate?.subTemplates }
+                            subTemplatesSectionTitle={ CustomApplicationTemplate?.subTemplatesSectionTitle }
+                            addProtocol={ false }
+                            templateLoadingStrategy={
+                                config.ui.applicationTemplateLoadingStrategy
                             ?? ApplicationManagementConstants.DEFAULT_APP_TEMPLATE_LOADING_STRATEGY
-                        }
-                    />
-                ) }
-            </>
+                            }
+                        />
+                    ) }
+                </>
             ) : (
                 <GridLayout
                     isLoading={ isLoading }
                 />
             )
-        }
+            }
         </PageLayout>
     );
 };

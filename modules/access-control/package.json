@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/access-control",
-    "version": "1.2.701",
+    "version": "1.2.710",
     "description": "Access control module for WSO2 Identity Server front end applications",
     "main": "dist/src/index.js",
     "keywords": [
@@ -19,7 +19,7 @@
         "compile": "npx run-script-os",
         "compile:win32": "..\\..\\node_modules\\.bin\\tsc -p tsconfig.json",
         "compile:default": "../../node_modules/.bin/tsc -p tsconfig.json",
-        "lint": "npm run lint:all",
+        "lint": "npm run lint:all -- --max-warnings=0",
         "lint:all": "npm run lint:targeted -- .",
         "lint:autofix": "npm run lint:all -- --fix",
         "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to .",
@@ -31,7 +31,7 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/core": "^1.2.701",
+        "@wso2is/core": "^1.2.710",
         "jest": "^26.4.2",
         "react-access-control": "^1.0.1",
         "ts-jest": "^26.4.0"

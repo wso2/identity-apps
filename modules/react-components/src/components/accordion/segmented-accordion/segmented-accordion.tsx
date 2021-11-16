@@ -46,30 +46,30 @@ export interface SegmentedAccordionPropsInterface extends AccordionProps, Testab
 export const SegmentedAccordion: FunctionComponent<SegmentedAccordionPropsInterface>
     & SegmentedAccordionSubComponentsInterface = (
         props: SegmentedAccordionPropsInterface
-): ReactElement => {
+    ): ReactElement => {
 
-    const {
-        className,
-        children,
-        [ "data-testid" ]: testId,
-        ...rest
-    } = props;
+        const {
+            className,
+            children,
+            [ "data-testid" ]: testId,
+            ...rest
+        } = props;
 
-    const classes = classNames(
-        "segmented-accordion",
-        className
-    );
+        const classes = classNames(
+            "segmented-accordion",
+            className
+        );
 
-    return (
-        <Accordion
-            className={ classes }
-            data-testid={ testId }
-            { ...rest }
-        >
-            { children }
-        </Accordion>
-    );
-};
+        return (
+            <Accordion
+                className={ classes }
+                data-testid={ testId }
+                { ...rest }
+            >
+                { children }
+            </Accordion>
+        );
+    };
 
 /**
  * Default proptypes for the segmented accordion component.

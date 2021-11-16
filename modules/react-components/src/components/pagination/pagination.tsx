@@ -167,7 +167,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
         const options = [];
 
         for (let i = itemsPerPageDropdownLowerLimit; i <= itemsPerPageDropdownUpperLimit;
-             i += itemsPerPageDropdownMultiple) {
+            i += itemsPerPageDropdownMultiple) {
             options.push({
                 key: i,
                 text: i,

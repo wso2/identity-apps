@@ -27,22 +27,6 @@ export const myAccount: MyAccountNS = {
                 },
                 heading: "Code Recovery"
             },
-            preference: {
-                notifications: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Error getting the recovery preference"
-                    },
-                    genericError: {
-                        description: "Error occurred while getting the recovery preference",
-                        message: "Something went wrong"
-                    },
-                    success: {
-                        description: "Successfully retrieved the recovery preference",
-                        message: "Recovery preference retrieval successful"
-                    }
-                }
-            },
             emailRecovery: {
                 descriptions: {
                     add: "Add or update recovery email address",
@@ -78,6 +62,22 @@ export const myAccount: MyAccountNS = {
                             description: "The email address in the user profile has been updated successfully",
                             message: "Email Address Updated Successfully"
                         }
+                    }
+                }
+            },
+            preference: {
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error getting the recovery preference"
+                    },
+                    genericError: {
+                        description: "Error occurred while getting the recovery preference",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully retrieved the recovery preference",
+                        message: "Recovery preference retrieval successful"
                     }
                 }
             },
@@ -385,8 +385,8 @@ export const myAccount: MyAccountNS = {
                 "learn more about how we use cookies, refer our <1>Cookie Policy</1>."
         },
         federatedAssociations: {
-            deleteConfirmation: "This will remove the linked social account from your local account. Do you want to continue " +
-                "removing?",
+            deleteConfirmation: "This will remove the linked social account from your local account. " +
+                "Do you want to continue removing?",
             notifications: {
                 getFederatedAssociations: {
                     error: {
@@ -550,29 +550,62 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        loginVerifyData: {
+            description: "This data is used to further verify your identity during login",
+            heading: "Data used to verify your login",
+            modals: {
+                clearTypingPatternsModal: {
+                    heading: "Confirmation",
+                    message: "This action will clear your typing patterns that are saved in TypingDNA. " +
+                        "Do you wish to continue?"
+                }
+            },
+            notifications: {
+                clearTypingPatterns: {
+                    error: {
+                        description: "Typing patterns could not be cleared. Please contact your site admin",
+                        message: "Failed to clear typing patterns"
+                    },
+                    success: {
+                        description: "Your typing patterns in TypingDNA have been cleared successfully",
+                        message: "Typing patterns cleared successfully"
+                    }
+                }
+            },
+            typingdna: {
+                description: "Your typing patterns can be cleared from here",
+                heading: "TypingDNA Typing Patterns"
+            }
+        },
         mfa: {
             authenticatorApp: {
+                addHint:"Adds new QR code",
+                configuredDescription: "You can use TOTP codes from your configured " +
+                    "authenticator app for two-factor authentication. If you don't have " +
+                    "access to the application you can set up a new authenticator app from here.",
+                deleteHint: "Deletes QR code",
                 description: " Scan the QR code using an Authenticator App to use " +
                     "time-based , one-time passcodes (also known as TOTP) as a " +
                     "second factor when logging in to applications.",
-                configuredDescription: "You can use TOTP codes from your configured " +
-                "authenticator app for two-factor authentication. If you don't have " +
-                "access to the application you can set up a new authenticator app from here.",
                 heading: "Authenticator App",
                 hint: "Show the QR Code",
-                addHint:"Adds new QR code",
-                deleteHint: "Deletes QR code",
                 modals: {
-                    heading: "Setup an Authenticator App",
+                    delete : {
+                        heading: "Confirmation",
+                        message: "This action will remove the QR code added to your profile. Do you wish to continue ? "
+                    },
                     done: "Success! Now you can use your Authenticator App for two-factor authentication",
+                    heading: "Setup an Authenticator App",
                     scan: {
+                        additionNote: "QR code has been successfully added to your profile!",
                         authenticatorApps: "Authenticator Apps",
                         generate: "Generate a new code",
                         heading: "Scan the QR code below using an authenticator app",
-                        additionNote: "QR code has been successfully added to your profile!",
                         messageBody: "You can find a list of Authenticator Apps available here.",
                         messageHeading: "Don't have an Authenticator App installed?"
                     },
+                    toolTip: "Don't have an app? Download an authenticator application like " +
+                        "Google Authenticator from <3>App Store</3> or <3>Google Play</3>",
                     verify: {
                         error: "Verification failed. Please try again.",
                         heading: "Enter the generated code to verify",
@@ -581,15 +614,19 @@ export const myAccount: MyAccountNS = {
                         reScan: "Re-scan",
                         reScanQuestion: "Want to scan the QR code again?",
                         requiredError: "Enter the verification code"
-                    },
-                    delete : {
-                        heading: "Confirmation",
-                        message: "This action will remove the QR code added to your profile. Do you wish to continue ? "
-                    },
-                    toolTip: "Don't have an app? Download an authenticator application like " +
-                    "Google Authenticator from <3>App Store</3> or <3>Google Play</3>"
+                    }
                 },
                 notifications: {
+                    deleteError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Something went wrong"
+                        },
+                        genericError: {
+                            description: "Error occurred while deleting QR code",
+                            message: "Something went wrong"
+                        }
+                    },
                     initError: {
                         error: {
                             description: "{{error}}",
@@ -607,16 +644,6 @@ export const myAccount: MyAccountNS = {
                         },
                         genericError: {
                             description: "An error occurred while trying to get a new QR code",
-                            message: "Something went wrong"
-                        }
-                    },
-                    deleteError: {
-                        error: {
-                            description: "{{error}}",
-                            message: "Something went wrong"
-                        },
-                        genericError: {
-                            description: "Error occurred while deleting QR code",
                             message: "Something went wrong"
                         }
                     }
@@ -708,30 +735,33 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
-        "loginVerifyData": {
-            "heading": "Data used to verify your login",
-            "description": "This data is used to further verify your identity during login",
-            "typingdna": {
-                "heading": "TypingDNA Typing Patterns",
-                "description": "Your typing patterns can be cleared from here"
-            },
-            "modals": {
-                "clearTypingPatternsModal": {
-                    "heading": "Confirmation",
-                    "message": "This action will clear your typing patterns that are saved in TypingDNA. Do you wish to continue?"
-                }
-            },
-            "notifications": {
-                "clearTypingPatterns": {
-                    "success": {
-                        "description": "Your typing patterns in TypingDNA have been cleared successfully",
-                        "message": "Typing patterns cleared successfully"
+        mobileUpdateWizard: {
+            done: "Success! Your mobile number is successfully verified.",
+            notifications: {
+                resendError: {
+                    error: {
+                        description: "{{error}}",
+                        message: "Something went wrong"
                     },
-                    "error": {
-                        "description": "Typing patterns could not be cleared. Please contact your site admin",
-                        "message": "Failed to clear typing patterns"
+                    genericError: {
+                        description: "An error occurred while trying to get a new verification code",
+                        message: "Something went wrong"
                     }
+                },
+                resendSuccess: {
+                    message: "Resend code request is sent successfully"
                 }
+            },
+            submitMobile: {
+                heading: "Enter your new mobile number"
+            },
+            verifySmsOtp: {
+                error: "Verification failed. Please try again.",
+                generate: "Resend a new verification code",
+                heading: "Enter the verification code sent to your mobile number",
+                label: "Verification Code",
+                placeholder: "Enter your verification code",
+                requiredError: "Enter the verification code"
             }
         },
         overview: {
@@ -750,11 +780,6 @@ export const myAccount: MyAccountNS = {
                     description: "Settings and recommendations to help you keep your account secure",
                     header: "Account Security"
                 },
-                profileStatus: {
-                    completionPercentage: "Your profile completion is at {{percentage}}%",
-                    userSourceText: "(Signed up via {{source}})",
-                    header: "Your {{productName}} Profile"
-                },
                 accountStatus: {
                     complete: "Your profile is complete",
                     completedFields: "Completed fields",
@@ -770,6 +795,11 @@ export const myAccount: MyAccountNS = {
                     },
                     description: "Control the data you want to share with applications",
                     header: "Control Consents"
+                },
+                profileStatus: {
+                    completionPercentage: "Your profile completion is at {{percentage}}%",
+                    header: "Your {{productName}} Profile",
+                    userSourceText: "(Signed up via {{source}})"
                 }
             }
         },
@@ -1012,27 +1042,34 @@ export const myAccount: MyAccountNS = {
         },
         profile: {
             fields: {
-                addressesHome: "Home address",
-                addressesWork: "Work address",
                 emails: "Email",
-                emailsHome: "Home email",
-                emailsOther: "Other email",
-                emailsWork: "Work email",
                 generic: {
                     default: "Add {{fieldName}}"
                 },
                 nameFamilyName: "Last name",
                 nameGivenName: "First name",
                 phoneNumbers: "Phone number",
-                phoneNumbersHome: "Home phone number",
-                phoneNumbersMobile: "Mobile number",
-                phoneNumbersOther: "Other phone number",
-                phoneNumbersWork: "Work phone number",
                 profileImage: "Profile Image",
                 profileUrl: "URL",
                 userName: "Username"
             },
             forms: {
+                countryChangeForm: {
+                    inputs: {
+                        country: {
+                            placeholder: "Select your country"
+                        }
+                    }
+                },
+                dateChangeForm: {
+                    inputs: {
+                        date: {
+                            validations: {
+                                invalidFormat: "Please enter a valid {{fieldName}} in the format YYYY-MM-DD."
+                            }
+                        }
+                    }
+                },
                 emailChangeForm: {
                     inputs: {
                         email: {
@@ -1042,17 +1079,9 @@ export const myAccount: MyAccountNS = {
                             placeholder: "Enter your email address",
                             validations: {
                                 empty: "Email address is a required field",
-                                invalidFormat: "Please enter a valid email address. You can use alphanumeric characters,"
-                                + " unicode characters, underscores (_), dashes (-), periods (.), and an at sign (@)."
-                            }
-                        }
-                    }
-                },
-                dateChangeForm: {
-                    inputs: {
-                        date: {
-                            validations: {
-                                invalidFormat: "Please enter a valid {{fieldName}} in the format YYYY-MM-DD."
+                                invalidFormat: "Please enter a valid email address. You can use alphanumeric " +
+                                    "characters, unicode characters, underscores (_), dashes (-), periods (.), " +
+                                    "and an at sign (@)."
                             }
                         }
                     }
@@ -1110,13 +1139,6 @@ export const myAccount: MyAccountNS = {
                             validations: {
                                 empty: "Organization is a required field"
                             }
-                        }
-                    }
-                },
-                countryChangeForm: {
-                    inputs: {
-                        country: {
-                            placeholder: "Select your country"
                         }
                     }
                 }
@@ -1279,35 +1301,6 @@ export const myAccount: MyAccountNS = {
                     }
                 }
             }
-        },
-        mobileUpdateWizard: {
-            done: "Success! Your mobile number is successfully verified.",
-            submitMobile: {
-                heading: "Enter your new mobile number"
-            },
-            verifySmsOtp: {
-                generate: "Resend a new verification code",
-                heading: "Enter the verification code sent to your mobile number",
-                error: "Verification failed. Please try again.",
-                label: "Verification Code",
-                placeholder: "Enter your verification code",
-                requiredError: "Enter the verification code"
-            },
-            notifications: {
-                resendSuccess: {
-                    message: "Resend code request is sent successfully"
-                },
-                resendError: {
-                    error: {
-                        description: "{{error}}",
-                        message: "Something went wrong"
-                    },
-                    genericError: {
-                        description: "An error occurred while trying to get a new verification code",
-                        message: "Something went wrong"
-                    }
-                }
-            }
         }
     },
     modals: {
@@ -1384,12 +1377,12 @@ export const myAccount: MyAccountNS = {
             subTitle: "Edit or export your personal profile and manage linked accounts",
             title: "Personal Info"
         },
-        personalInfoWithoutLinkedAccounts: {
-            subTitle: "Edit or export your personal profile",
-            title: "Personal Info"
-        },
         personalInfoWithoutExportProfile: {
             subTitle: "View and manage your personal information",
+            title: "Personal Info"
+        },
+        personalInfoWithoutLinkedAccounts: {
+            subTitle: "Edit or export your personal profile",
             title: "Personal Info"
         },
         privacy: {
@@ -1463,15 +1456,6 @@ export const myAccount: MyAccountNS = {
             description: "Update your password regularly and make sure it's unique from other passwords you use.",
             heading: "Change Password"
         },
-        createPassword: {
-            actionTitles: {
-                create: "Create password"
-            },
-            description: "Create a password in {{productName}}. " +
-                "You can use this password to sign in to {{productName}} in addition " +
-                "to social login.",
-            heading: "Create Password"
-        },
         consentManagement: {
             actionTitles: {
                 empty: "You have not granted consent to any application"
@@ -1485,6 +1469,15 @@ export const myAccount: MyAccountNS = {
                     heading: "You have not granted consent to any application"
                 }
             }
+        },
+        createPassword: {
+            actionTitles: {
+                create: "Create password"
+            },
+            description: "Create a password in {{productName}}. " +
+                "You can use this password to sign in to {{productName}} in addition " +
+                "to social login.",
+            heading: "Create Password"
         },
         federatedAssociations: {
             description: "View your accounts from other identity providers that are linked with this account",

@@ -27,22 +27,6 @@ export const myAccount: MyAccountNS = {
                 },
                 heading: "Codes de récupération"
             },
-            preference: {
-                notifications: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Erreur lors de l'obtention de la préférence de récupération"
-                    },
-                    genericError: {
-                        description: "Une erreur s'est produite lors de l'obtention de la préférence de récupération",
-                        message: "Un problème est survenu"
-                    },
-                    success: {
-                        description: "Récupération réussie de la préférence de récupération",
-                        message: "Récupération des préférences de récupération réussie"
-                    }
-                }
-            },
             emailRecovery: {
                 descriptions: {
                     add: "Ajouter ou mettre à jour l'e-mail de récupération",
@@ -75,9 +59,26 @@ export const myAccount: MyAccountNS = {
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "L'adresse e-mail dans le profil de l'utilisateur a été mise à jour avec succès",
+                            description: "L'adresse e-mail dans le profil de l'utilisateur a été mise à jour " +
+                                "avec succès",
                             message: "Adresse e-mail mise à jour avec succès"
                         }
+                    }
+                }
+            },
+            preference: {
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Erreur lors de l'obtention de la préférence de récupération"
+                    },
+                    genericError: {
+                        description: "Une erreur s'est produite lors de l'obtention de la préférence de récupération",
+                        message: "Un problème est survenu"
+                    },
+                    success: {
+                        description: "Récupération réussie de la préférence de récupération",
+                        message: "Récupération des préférences de récupération réussie"
                     }
                 }
             },
@@ -268,7 +269,8 @@ export const myAccount: MyAccountNS = {
                             message: "Erreur lors de la modification du mot de passe"
                         },
                         invalidCurrentPassword: {
-                            description: "Le mot de passe actuel que vous avez saisi semble être invalide. Veuillez réessayer",
+                            description: "Le mot de passe actuel que vous avez saisi semble être invalide. " +
+                                "Veuillez réessayer",
                             message: "Erreur lors de la modification du mot de passe"
                         },
                         submitError: {
@@ -298,7 +300,8 @@ export const myAccount: MyAccountNS = {
                     revoke: {
                         actionTitle: "Révoquer",
                         header: "Révoquer le consentement",
-                        subheader: "Vous devrez à nouveau donner votre consentement pour accéder à nouveau à cette application."
+                        subheader: "Vous devrez à nouveau donner votre consentement pour accéder à nouveau à " +
+                            "cette application."
                     }
                 },
                 description: "Description",
@@ -314,8 +317,8 @@ export const myAccount: MyAccountNS = {
                 consentRevokeModal: {
                     heading: "Etes-vous sûr ?",
                     message:
-                        "Cette opération est irréversible. Cela révoquera définitivement le consentement pour tous les " +
-                        "attributs. Êtes-vous sûr de vouloir continuer ?",
+                        "Cette opération est irréversible. Cela révoquera définitivement le consentement pour " +
+                        "tous les attributs. Êtes-vous sûr de vouloir continuer ?",
                     warning: "Veuillez noter que vous serez redirigé vers la page de recueil de consentement"
                 }
             },
@@ -395,11 +398,13 @@ export const myAccount: MyAccountNS = {
                         message: "Quelque chose s'est mal passé"
                     },
                     genericError: {
-                        description: "Impossible de récupérer les services d'authentifications tiers ayant accès à votre compte",
+                        description: "Impossible de récupérer les services d'authentifications tiers ayant " +
+                            "accès à votre compte",
                         message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Les services d'auhtentifications tiers ayant accès à votre compte ont été récupérées avec succès",
+                        description: "Les services d'auhtentifications tiers ayant accès à votre compte ont été " +
+                            "récupérées avec succès",
                         message: "Services d'authentifications tiers récupérés avec succès"
                     }
                 },
@@ -409,11 +414,13 @@ export const myAccount: MyAccountNS = {
                         message: "Quelque chose s'est mal passé"
                     },
                     genericError: {
-                        description: "Impossible de supprimer tous les services d'authentifications tiers ayant accès à votre",
+                        description: "Impossible de supprimer tous les services d'authentifications tiers ayant " +
+                            "accès à votre",
                         message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Accès supprimé avec succès pour tous les services d'authentifications tiers ayant eu accès à votre compte.",
+                        description: "Accès supprimé avec succès pour tous les services d'authentifications tiers " +
+                            "ayant eu accès à votre compte.",
                         message: "Accès supprimés avec succès"
                     }
                 },
@@ -423,11 +430,13 @@ export const myAccount: MyAccountNS = {
                         message: "Quelque chose s'est mal passé"
                     },
                     genericError: {
-                        description: "L'accès a votre compte par le service d'authentification tiers n'a pu être supprimé",
+                        description: "L'accès a votre compte par le service d'authentification tiers n'a pu " +
+                            "être supprimé",
                         message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "L'accès à votre compte par le service d'authentification tiers a été supprimé avec succès",
+                        description: "L'accès à votre compte par le service d'authentification tiers a été supprimé " +
+                            "avec succès",
                         message: "Accès supprimé avec succès"
                     }
                 }
@@ -503,7 +512,8 @@ export const myAccount: MyAccountNS = {
                         message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Les informations requises sur le profil de l'utilisateur ont été récupérés avec succès",
+                        description: "Les informations requises sur le profil de l'utilisateur ont été récupérés " +
+                            "avec succès",
                         message: "Détails des comptes associés récupérés avec succès"
                     }
                 },
@@ -551,31 +561,68 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        loginVerifyData: {
+            description: "Ces données sont utilisées pour vérifier davantage votre identité lors de la connexion",
+            heading: "Données utilisées pour vérifier votre connexion",
+            modals: {
+                clearTypingPatternsModal: {
+                    heading: "Bestätigung",
+                    message: "Cette action effacera vos modèles de frappe enregistrés dans TypingDNA. " +
+                        "Souhaitez-vous continuer?"
+                }
+            },
+            notifications: {
+                clearTypingPatterns: {
+                    error: {
+                        description: "Les modèles de saisie n'ont pas pu être effacés. Veuillez contacter " +
+                            "l'administrateur de votre site",
+                        message: "Échec de la suppression des modèles de saisie"
+                    },
+                    success: {
+                        description: "Vos modèles de frappe dans TypingDNA ont été effacés avec succès",
+                        message: "Modèles de frappe supprimés avec succès"
+                    }
+                }
+            },
+            typingdna: {
+                description: "Vos modèles de frappe peuvent être effacés à partir d'ici",
+                heading: "TypingDNA modèles de frappe"
+            }
+        },
         mfa: {
             authenticatorApp: {
-                description: "Scannez le code QR à l'aide d'une application " +
-                    "d'authentification pour utiliser des codes d'accès " +
-                    "à usage unique basés sur le temps (également appelés TOTP) " +
-                    "comme deuxième facteur lors de la connexion aux applications.",
+                addHint: "Ajouter un nouveau code QR",
                 configuredDescription: "Vous pouvez utiliser les codes TOTP de votre " +
                     "application d'authentification configurée pour une authentification à " +
                     "deux facteurs. Si vous n'avez pas accès à l'application, vous pouvez configurer " +
                     "une nouvelle application d'authentification à partir d'ici",
-                heading: "Application d'authentification",
-                addHint: "Ajouter un nouveau code QR",
                 deleteHint: "Supprime le code QR",
+                description: "Scannez le code QR à l'aide d'une application " +
+                    "d'authentification pour utiliser des codes d'accès " +
+                    "à usage unique basés sur le temps (également appelés TOTP) " +
+                    "comme deuxième facteur lors de la connexion aux applications.",
+                heading: "Application d'authentification",
                 hint: "Afficher le code QR",
                 modals: {
+                    delete : {
+                        heading: "Confirmation",
+                        message: "Cette action supprimera le code QR ajouté à votre profil. " +
+                            "Souhaitez-vous continuer ? "
+                    },
+                    done: "Réussi ! Vous pouvez maintenant utiliser votre application d'authentification pour une " +
+                        "authentification en deux étapes",
                     heading: "Set Up An Authenticator App",
-                    done: "Réussi ! Vous pouvez maintenant utiliser votre application d'authentification pour une authentification en deux étapes",
                     scan: {
+                        additionNote: "Le code QR a été ajouté avec succès à votre profil",
                         authenticatorApps: "Applications d'authentification",
                         generate: "Générer un nouveau code",
-                        additionNote: "Le code QR a été ajouté avec succès à votre profil",
                         heading: "Scannez ce code QR à l'aide d'une application d'authentification",
-                        messageBody: "Vous pouvez utiliser une application d'authentification compatible dans cette liste :",
+                        messageBody: "Vous pouvez utiliser une application d'authentification compatible dans " +
+                            "cette liste :",
                         messageHeading: "Vous n'avez pas d'application d'authentification ?"
                     },
+                    toolTip: "Vous n'avez pas d'application? Téléchargez une application d'authentification " +
+                        "telle que Google Authenticator depuis <3> App Store </3> ou <3> Google Play </3>",
                     verify: {
                         error: "La vérification a échoué. Veuillez réessayer.",
                         heading: "Entrez le code de vérification fourni par l'application d'authentification",
@@ -584,16 +631,20 @@ export const myAccount: MyAccountNS = {
                         reScan: "Re-scanner",
                         reScanQuestion: "Voulez-vous scanner le code QR à nouveau ?",
                         requiredError: "Veuillez entrer votre code de vérification"
-                    },
-                    delete : {
-                        heading: "Confirmation",
-                        message: "Cette action supprimera le code QR ajouté à votre profil. " +
-                            "Souhaitez-vous continuer ? "
-                    },
-                    toolTip: "Vous n'avez pas d'application? Téléchargez une application d'authentification " +
-                    "telle que Google Authenticator depuis <3> App Store </3> ou <3> Google Play </3>"
+                    }
                 },
                 notifications: {
+                    deleteError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la suppression de la " +
+                                "configuration de l'authentificateur TOTP",
+                            message: "Quelque chose s'est mal passé"
+                        }
+                    },
                     initError: {
                         error: {
                             description: "{{error}}",
@@ -611,17 +662,6 @@ export const myAccount: MyAccountNS = {
                         },
                         genericError: {
                             description: "Une erreur s'est produite lors de la récupération d'un nouveau code QR",
-                            message: "Quelque chose s'est mal passé"
-                        }
-                    },
-                    deleteError: {
-                        error: {
-                            description: "{{error}}",
-                            message: "Quelque chose s'est mal passé"
-                        },
-                        genericError: {
-                            description: "Une erreur s'est produite lors de la suppression de la " +
-                                "configuration de l'authentificateur TOTP",
                             message: "Quelque chose s'est mal passé"
                         }
                     }
@@ -700,46 +740,51 @@ export const myAccount: MyAccountNS = {
                     updateMobile: {
                         error: {
                             description: "{{description}}",
-                            message: "Une erreur s'est produite lors de la mise à jour du numéro de téléphone de récupération"
+                            message: "Une erreur s'est produite lors de la mise à jour du numéro de téléphone " +
+                                "de récupération"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la mise à jour du numéro de téléphone de récupération",
+                            description: "Une erreur s'est produite lors de la mise à jour du numéro de téléphone " +
+                                "de récupération",
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "Le numéro de téléphone portable dans le profil de l'utilisateur est mis à jour avec succès",
+                            description: "Le numéro de téléphone portable dans le profil de l'utilisateur est mis " +
+                                "à jour avec succès",
                             message: "Numéro de récupération mis à jour avec succès"
                         }
                     }
                 }
             }
         },
-        "loginVerifyData": {
-            "heading": "Données utilisées pour vérifier votre connexion",
-            "description": "Ces données sont utilisées pour vérifier davantage votre identité lors de la connexion",
-            "typingdna": {
-                "heading": "TypingDNA modèles de frappe",
-                "description": "Vos modèles de frappe peuvent être effacés à partir d'ici"
-            },
-            "modals": {
-                "clearTypingPatternsModal": {
-                    "heading": "Bestätigung",
-                    "message": "Cette action effacera vos modèles de frappe enregistrés dans TypingDNA. "+
-                    "Souhaitez-vous continuer?"
-                }
-            },
-            "notifications": {
-                "clearTypingPatterns": {
-                    "success": {
-                        "description": "Vos modèles de frappe dans TypingDNA ont été effacés avec succès",
-                        "message": "Modèles de frappe supprimés avec succès"
+        mobileUpdateWizard: {
+            done: "Succès! Votre numéro de mobile a été vérifié avec succès.",
+            notifications: {
+                resendError: {
+                    error: {
+                        description: "{{error}}",
+                        message: "Un problème est survenu"
                     },
-                    "error": {
-                        "description": "Les modèles de saisie n'ont pas pu être effacés. Veuillez contacter "+
-                        "l'administrateur de votre site",
-                        "message": "Échec de la suppression des modèles de saisie"
+                    genericError: {
+                        description: "Une erreur s'est produite lors de la tentative d'obtention d'un nouveau " +
+                            "code de vérification",
+                        message: "Un problème est survenu"
                     }
+                },
+                resendSuccess: {
+                    message: "La demande de code de renvoi a été envoyée avec succès"
                 }
+            },
+            submitMobile: {
+                heading: "Entrez votre nouveau numéro de mobile"
+            },
+            verifySmsOtp: {
+                error: "Échec de la vérification. Veuillez réessayer.",
+                generate: "Renvoyer un nouveau code de vérification",
+                heading: "Entrez le code de vérification envoyé à votre numéro de mobile",
+                label: "Code de vérification",
+                placeholder: "Entrez votre code de vérification",
+                requiredError: "Entrer le code de vérification"
             }
         },
         overview: {
@@ -758,11 +803,6 @@ export const myAccount: MyAccountNS = {
                     description: "Paramètres et recommandations pour vous aider à sécuriser votre compte",
                     header: "Sécurité du compte"
                 },
-                profileStatus: {
-                    completionPercentage: "Votre profil est complété à {{percentage}}%",
-                    userSourceText: "(Connecté via {{source}})",
-                    header: "Votre profil {{productName}}"
-                },
                 accountStatus: {
                     complete: "Votre profil est complet",
                     completedFields: "Attributs complétés",
@@ -778,6 +818,11 @@ export const myAccount: MyAccountNS = {
                     },
                     description: "Contrôlez les données que vous souhaitez partager avec d'autres applications",
                     header: "Gestion du consentement"
+                },
+                profileStatus: {
+                    completionPercentage: "Votre profil est complété à {{percentage}}%",
+                    header: "Votre profil {{productName}}",
+                    userSourceText: "(Connecté via {{source}})"
                 }
             }
         },
@@ -1020,27 +1065,34 @@ export const myAccount: MyAccountNS = {
         },
         profile: {
             fields: {
-                addressesHome: "Adresse personnelle",
-                addressesWork: "Adresse professionnelle",
                 emails: "Email",
-                emailsHome: "E-mail personnel",
-                emailsOther: "Autre adresse e-mail",
-                emailsWork: "E-mail professionnel",
                 generic: {
                     default: "Ajouter l'attribut {{fieldName}}"
                 },
                 nameFamilyName: "Nom de famille",
                 nameGivenName: "Prénom",
                 phoneNumbers: "Numéros de téléphone",
-                phoneNumbersHome: "Numéro de téléphone personnel",
-                phoneNumbersMobile: "Numéro de téléphone portable",
-                phoneNumbersOther: "Autre numéro de téléphone",
-                phoneNumbersWork: "Numéro de téléphone au professionnel",
                 profileImage: "Image de profil",
                 profileUrl: "URL",
                 userName: "Nom d'utilisateur"
             },
             forms: {
+                countryChangeForm: {
+                    inputs: {
+                        country: {
+                            placeholder: "Sélectionnez votre pays"
+                        }
+                    }
+                },
+                dateChangeForm: {
+                    inputs: {
+                        date: {
+                            validations: {
+                                invalidFormat: "Veuillez saisir un test valide au format YYYY-MM-DD."
+                            }
+                        }
+                    }
+                },
                 emailChangeForm: {
                     inputs: {
                         email: {
@@ -1053,15 +1105,6 @@ export const myAccount: MyAccountNS = {
                                 invalidFormat: "Format de l'adresse e-mail saisie invalide. Vous pouvez utiliser des " +
                                     "caractères alphanumériques, caractères Unicode, des traits de soulignement (_), " +
                                     "des tirets (-), des points (.) Et un signe arobase (@)."
-                            }
-                        }
-                    }
-                },
-                dateChangeForm: {
-                    inputs: {
-                        date: {
-                            validations: {
-                                invalidFormat: "Veuillez saisir un test valide au format YYYY-MM-DD."
                             }
                         }
                     }
@@ -1083,7 +1126,8 @@ export const myAccount: MyAccountNS = {
                     inputs: {
                         mobile: {
                             label: "Numéro de téléphone portable",
-                            note: "NOTE: Le numéro de téléphone portable associé de votre profil utilisateur sera modifié",
+                            note: "NOTE: Le numéro de téléphone portable associé de votre profil utilisateur " +
+                                "sera modifié",
                             placeholder: "Veuillez saisir votre numéro de portable",
                             validations: {
                                 empty: "Le numéro de portable est un champ obligatoire",
@@ -1119,13 +1163,6 @@ export const myAccount: MyAccountNS = {
                             validations: {
                                 empty: "L'organisation est obligatoire"
                             }
-                        }
-                    }
-                },
-                countryChangeForm: {
-                    inputs: {
-                        country: {
-                            placeholder: "Sélectionnez votre pays"
                         }
                     }
                 }
@@ -1174,7 +1211,8 @@ export const myAccount: MyAccountNS = {
                 },
                 getUserReadOnlyStatus: {
                     genericError: {
-                        description: "Une erreur s'est produite lors de la récupération du statut lecture-seule de l'utilisateur",
+                        description: "Une erreur s'est produite lors de la récupération du statut lecture-seule " +
+                            "de l'utilisateur",
                         message: "Quelque chose s'est mal passé"
                     }
                 },
@@ -1204,14 +1242,17 @@ export const myAccount: MyAccountNS = {
                 downloadProfileInfo: {
                     error: {
                         description: "{{description}}",
-                        message: "Une erreur s'est produite lors du téléchargement des informations de votre profil utilisateur"
+                        message: "Une erreur s'est produite lors du téléchargement des informations de votre profil " +
+                            "utilisateur"
                     },
                     genericError: {
-                        description: "Une erreur s'est produite lors du téléchargement des informations de votre profil utilisateur",
+                        description: "Une erreur s'est produite lors du téléchargement des informations de votre " +
+                            "profil utilisateur",
                         message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Le téléchargement du fichier contenant les informations de votre profil utilisateur a commencé",
+                        description: "Le téléchargement du fichier contenant les informations de votre profil " +
+                            "utilisateur a commencé",
                         message: "Le téléchargement des détails de votre profil utilisateur a débuté"
                     }
                 }
@@ -1289,35 +1330,6 @@ export const myAccount: MyAccountNS = {
                     }
                 }
             }
-        },
-        mobileUpdateWizard: {
-            done: "Succès! Votre numéro de mobile a été vérifié avec succès.",
-            submitMobile: {
-                heading: "Entrez votre nouveau numéro de mobile"
-            },
-            verifySmsOtp: {
-                generate: "Renvoyer un nouveau code de vérification",
-                heading: "Entrez le code de vérification envoyé à votre numéro de mobile",
-                error: "Échec de la vérification. Veuillez réessayer.",
-                label: "Code de vérification",
-                placeholder: "Entrez votre code de vérification",
-                requiredError: "Entrer le code de vérification"
-            },
-            notifications: {
-                resendSuccess: {
-                    message: "La demande de code de renvoi a été envoyée avec succès"
-                },
-                resendError: {
-                    error: {
-                        description: "{{error}}",
-                        message: "Un problème est survenu"
-                    },
-                    genericError: {
-                        description: "Une erreur s'est produite lors de la tentative d'obtention d'un nouveau code de vérification",
-                        message: "Un problème est survenu"
-                    }
-                }
-            }
         }
     },
     modals: {
@@ -1326,8 +1338,8 @@ export const myAccount: MyAccountNS = {
                 gravatar: {
                     errors: {
                         noAssociation: {
-                            content: "Il semblerait que l'adresse e-mail sélectionnée ne soit pas enregistré sur Gravatar. " +
-                                "Veuillez créer un compte en vous rendant sur le site officiel de Gravatar " +
+                            content: "Il semblerait que l'adresse e-mail sélectionnée ne soit pas enregistré sur " +
+                                "Gravatar. Veuillez créer un compte en vous rendant sur le site officiel de Gravatar " +
                                 "ou utilisez une des images ci-dessous.",
                             header: "Aucune image n'a été trouvée sur Gravatar !"
                         }
@@ -1396,12 +1408,12 @@ export const myAccount: MyAccountNS = {
             subTitle: "Modifier ou exporter votre profil personnel et gérer vos comptes associés",
             title: "Données personnelles"
         },
-        personalInfoWithoutLinkedAccounts: {
-            subTitle: "Modifier ou exporter votre profil personnel",
-            title: "Données personnelles"
-        },
         personalInfoWithoutExportProfile: {
             subTitle: "Modifier votre profil personnel",
+            title: "Données personnelles"
+        },
+        personalInfoWithoutLinkedAccounts: {
+            subTitle: "Modifier ou exporter votre profil personnel",
             title: "Données personnelles"
         },
         privacy: {
@@ -1419,7 +1431,8 @@ export const myAccount: MyAccountNS = {
             action: "Revenir à la page d'accueil",
             subtitles: {
                 0: "La page que vous essayez de consulter n'existe pas.",
-                1: "Veuillez vérifier l'URL ou cliquez sur le bouton ci-dessous pour être redirigé vers la page d'accueil."
+                1: "Veuillez vérifier l'URL ou cliquez sur le bouton ci-dessous pour être redirigé vers la page " +
+                    "d'accueil."
             },
             title: "Page introuvable"
         },
@@ -1476,16 +1489,9 @@ export const myAccount: MyAccountNS = {
             actionTitles: {
                 change: "Changer mon mot de passe"
             },
-            description: "Assurez-vous de mettre à jour régulièrement votre mot de passe et de ne pas le réutiliser sur d'autres sites.",
+            description: "Assurez-vous de mettre à jour régulièrement votre mot de passe et de ne pas le réutiliser " +
+                "sur d'autres sites.",
             heading: "Changer de mot de passe"
-        },
-        createPassword: {
-            actionTitles: {
-                create: "Créer un mot de passe"
-            },
-            description: "Créez un mot de passe dans {{productName}}. Vous pouvez utiliser ce mot de passe pour vous " +
-                "connecter à {{productName}} en plus de la connexion sociale.\n",
-            heading: "Créer un mot de passe"
         },
         consentManagement: {
             actionTitles: {
@@ -1501,8 +1507,17 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        createPassword: {
+            actionTitles: {
+                create: "Créer un mot de passe"
+            },
+            description: "Créez un mot de passe dans {{productName}}. Vous pouvez utiliser ce mot de passe pour vous " +
+                "connecter à {{productName}} en plus de la connexion sociale.\n",
+            heading: "Créer un mot de passe"
+        },
         federatedAssociations: {
-            description: "Visualisez les comptes enregistrés auprès de services d'authentifications tiers liés à votre compte",
+            description: "Visualisez les comptes enregistrés auprès de services d'authentifications tiers liés à " +
+                "votre compte",
             heading: "Services d'authentification tiers"
         },
         linkedAccounts: {
@@ -1519,14 +1534,16 @@ export const myAccount: MyAccountNS = {
             heading: "Authentification à plusieurs étapes"
         },
         profile: {
-            description: "Gérez vos données personnelles telles que votre nom, votre adresse e-mail, votre numéro de téléphone portable, etc.",
+            description: "Gérez vos données personnelles telles que votre nom, votre adresse e-mail, votre numéro " +
+                "de téléphone portable, etc.",
             heading: "Profil"
         },
         profileExport: {
             actionTitles: {
                 export: "Téléchargez le profil"
             },
-            description: "Téléchargez toutes les données de votre profil utilisateur : données personnelles, questions de sécurité et consentements",
+            description: "Téléchargez toutes les données de votre profil utilisateur : données personnelles, " +
+                "questions de sécurité et consentements",
             heading: "Télécharger mon profil"
         },
         userSessions: {

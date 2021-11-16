@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/webapps",
-    "version": "1.2.701",
+    "version": "1.2.710",
     "description": "WSO2 Identity Server Web Applications",
     "keywords": [
         "WSO2",
@@ -47,14 +47,14 @@
         "update-version": "node scripts/update-version.js",
         "lint": "npx lerna run lint --stream",
         "lint:autofix": "npm run lint:autofix --stream",
-        "lint:ci": "eslint -c .eslintrc.js $(git diff --diff-filter=d --name-only | grep -E \"(.js$|.ts$|.jsx$|.tsx$)\")",
+        "lint:ci": "npm run lint",
         "lint:staged": "eslint -c .eslintrc.js $(git diff --diff-filter=d --name-only | grep -E \"(.js$|.ts$|.jsx$|.tsx$)\")"
     },
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
         "@asgardeo/auth-react": "^0.2.9",
-        "@svgr/webpack": "^4.3.2",
+        "@svgr/webpack": "4.3.2",
         "@testing-library/user-event": "^12.7.3",
         "@types/crypto-js": "^3.1.43",
         "@types/history": "^4.7.3",
@@ -130,7 +130,7 @@
         "autoprefixer": "^9.8.6",
         "babel-loader": "^8.1.0",
         "babel-plugin-rename-jsx-attribute": "^0.2.4",
-        "brotli-webpack-plugin": "^1.1.0",
+        "brotli-webpack-plugin": "1.1.0",
         "child_process": "^1.0.2",
         "compression-webpack-plugin": "^7.1.2",
         "copy-webpack-plugin": "^7.0.0",

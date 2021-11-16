@@ -19,6 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { ReactElement, SyntheticEvent } from "react";
 import { Dropdown, Flag, FlagNameValues } from "semantic-ui-react";
+import { SupportedLanguagesInterface } from "./language-switcher";
 
 /**
  * Proptypes for the language switcher dropdown component.
@@ -27,9 +28,9 @@ export interface LanguageSwitcherDropdownProps extends TestableComponentInterfac
     /**
      * Language chanege callback.
      * @param {React.SyntheticEvent} event - Click event.
-     * @param {object} data - Data.
+     * @param {DropdownItemProps} data - Data.
      */
-    changeLanguage: (event: SyntheticEvent, data: object) => void;
+    changeLanguage: (event: SyntheticEvent, data: Record<string, unknown>) => void;
     /**
      * Additional CSS classes.
      */
@@ -53,7 +54,7 @@ export interface LanguageSwitcherDropdownProps extends TestableComponentInterfac
     /**
      * Set of supported languages.
      */
-    supportedLanguages: object;
+    supportedLanguages: SupportedLanguagesInterface;
 }
 
 /**
@@ -73,14 +74,17 @@ export const LanguageSwitcherDropdown: React.FunctionComponent<LanguageSwitcherD
         language,
         changeLanguage,
         upward,
-        showCaret,
         supportedLanguages,
         [ "data-testid" ]: testId
     } = props;
 
     const LanguageSwitcherTrigger = () => (
         <span className="dropdown-trigger link" data-testid={ `${ testId }-trigger` }>
-            { supportedLanguages[language]?.name }
+            {
+                // False alarm. `name` is declared in `SupportedLanguagesInterface`.
+                /* eslint-disable-next-line react/prop-types */
+                supportedLanguages[language]?.name
+            }
         </span>
     );
 
@@ -104,7 +108,7 @@ export const LanguageSwitcherDropdown: React.FunctionComponent<LanguageSwitcherD
                             data-testid={ `${ testId }-language` }
                         >
                             <Flag name={ lang?.flag as FlagNameValues } />
-                             { lang?.name }
+                            { lang?.name }
                         </Dropdown.Item>
                     ))
                 }

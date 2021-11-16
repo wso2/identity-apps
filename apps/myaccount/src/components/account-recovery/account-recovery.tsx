@@ -26,6 +26,7 @@ import { List, Placeholder } from "semantic-ui-react";
 import { EmailRecovery, SecurityQuestionsComponent } from "./options";
 import { getPreference } from "../../api";
 import { AppConstants } from "../../constants";
+import { accountRecoveryConfig } from "../../extensions/configs/account-recovery";
 import {
     AlertInterface,
     AlertLevels,
@@ -161,7 +162,11 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
             {
                 <SettingsSection
                     data-testid={ `${testId}-settings-section` }
-                    description={ t("myAccount:sections.accountRecovery.description") }
+                    description={
+                        accountRecoveryConfig.sections.accountRecovery.description == undefined 
+                        ? t("myAccount:sections.accountRecovery.description") 
+                        : accountRecoveryConfig.sections.accountRecovery.description
+                    }
                     header={ t("myAccount:sections.accountRecovery.heading") }
                     placeholder={
                         !isAccountRecoveryDetailsLoading &&

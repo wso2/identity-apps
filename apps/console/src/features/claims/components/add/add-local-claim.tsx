@@ -148,8 +148,9 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                     if (!skipSCIM) {
                         attributeConfig.localAttributes.isSCIMCustomDialectAvailable().then((claimId: string) => {
                             addExternalClaim(claimId, {
-                                claimURI: `${attributeConfig.localAttributes.customDialectURI}:
-                                    ${customMappings.get("scim")}`,
+                                claimURI: `${
+                                    attributeConfig.localAttributes.customDialectURI
+                                }:${ customMappings.get("scim") }`,
                                 mappedLocalClaimURI: data.claimURI
                             }).then(() => {
                                 fetchUpdatedSchemaList();

@@ -143,131 +143,98 @@ export interface HelpPanelTabInterface {
  */
 export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelComponentPropsInterface>
     & RefAttributes<HelpPanelRefType>> & any = forwardRef<HelpPanelRefType, HelpPanelComponentPropsInterface>(
-    (props: HelpPanelPropsInterface, ref): ReactElement => {
+        (props: HelpPanelPropsInterface, ref): ReactElement => {
 
-        const {
-            actions,
-            bordered,
-            children,
-            className,
-            onSidebarToggle,
-            tabs,
-            raised,
-            showLabelsOnSidebarMini,
-            showTooltipsOnActionBar,
-            showTooltipsOnSidebarMini,
-            sidebarMiniEnabled,
-            sidebarToggleTooltip,
-            visible,
-            tabsActiveIndex,
-            onSidebarMiniItemClick,
-            [ "data-testid" ]: testId,
-            ...rest
-        } = props;
+            const {
+                actions,
+                bordered,
+                children,
+                className,
+                onSidebarToggle,
+                tabs,
+                raised,
+                showLabelsOnSidebarMini,
+                showTooltipsOnSidebarMini,
+                sidebarMiniEnabled,
+                sidebarToggleTooltip,
+                visible,
+                tabsActiveIndex,
+                onSidebarMiniItemClick,
+                [ "data-testid" ]: testId,
+                ...rest
+            } = props;
 
-        const [ activeIndex, setActiveIndex ] = useState<number>(tabsActiveIndex);
-        const [ tabPanes, setTabPanes ] = useState<{
+            const [ activeIndex, setActiveIndex ] = useState<number>(tabsActiveIndex);
+            const [ tabPanes, setTabPanes ] = useState<{
             icon?: GenericIconProps;
             pane?: SemanticShorthandItem<TabPaneProps>;
             menuItem?: any;
             render?: () => ReactNode;
-        }[]>([]);
+                }[]>([]);
 
-        const classes = classNames(
-            "help-panel",
-            {
-                [ typeof bordered === "boolean" ? "bordered-default" : `bordered-${ bordered }` ]: bordered,
-                mini: sidebarMiniEnabled && !visible,
-                raised
-            },
-            className
-        );
+            const classes = classNames(
+                "help-panel",
+                {
+                    [ typeof bordered === "boolean" ? "bordered-default" : `bordered-${ bordered }` ]: bordered,
+                    mini: sidebarMiniEnabled && !visible,
+                    raised
+                },
+                className
+            );
 
-        /**
+            /**
          * Called on tab active index change.
          */
-        useEffect(() => {
-            if (!tabsActiveIndex || tabsActiveIndex === activeIndex) {
-                return;
-            }
+            useEffect(() => {
+                if (!tabsActiveIndex || tabsActiveIndex === activeIndex) {
+                    return;
+                }
 
-            setActiveIndex(tabsActiveIndex);
-        }, [ tabsActiveIndex ]);
+                setActiveIndex(tabsActiveIndex);
+            }, [ tabsActiveIndex ]);
 
-        /**
+            /**
          * Called on tabs array change.
          */
-        useEffect(() => {
-            if (!tabs) {
-                return;
-            }
-
-            setTabPanes(tabs.map((tab) => {
-                return {
-                    icon: tab.icon,
-                    menuItem: tab.heading,
-                    render: () => (
-                        <ResourceTab.Pane attached={ false }>
-                            { tab.content }
-                        </ResourceTab.Pane>
-                    )
+            useEffect(() => {
+                if (!tabs) {
+                    return;
                 }
-            }));
-        }, [ tabs ]);
 
-        return (
-            <Sidebar
-                animation="overlay"
-                className={ classes }
-                visible={ sidebarMiniEnabled || visible }
-                data-testid={ testId }
-                { ...rest }
-            >
-                <div className="help-panel-content-container" ref={ ref }>
-                    {
-                        sidebarMiniEnabled && !visible && (
-                            <div className="sidebar-mini-menu">
-                                {
-                                    tabPanes && tabPanes instanceof Array && tabPanes.length > 1 && (
-                                        <Menu.Item
-                                            as="a"
-                                            onClick={ onSidebarToggle }
-                                            data-testid={ `${ testId }-visibility-toggle` }
-                                        >
-                                            <Tooltip
-                                                compact
-                                                trigger={ (
-                                                    <div>
-                                                        <GenericIcon
-                                                            link
-                                                            hoverable
-                                                            defaultIcon
-                                                            transparent
-                                                            icon={ CaretLeftIcon }
-                                                            size="default"
-                                                            hoverType="circular"
-                                                            data-testid={ `${ testId }-visibility-toggle-icon` }
-                                                        />
-                                                    </div>
-                                                ) }
-                                                content={ sidebarToggleTooltip }
-                                                size="mini"
-                                            />
-                                        </Menu.Item>
-                                    )
-                                }
-                                {
-                                    tabPanes && tabPanes instanceof Array && tabPanes.length > 0 && (
-                                        tabPanes.map((pane, index) => (
+                setTabPanes(tabs.map((tab) => {
+                    return {
+                        icon: tab.icon,
+                        menuItem: tab.heading,
+                        render: () => (
+                            <ResourceTab.Pane attached={ false }>
+                                { tab.content }
+                            </ResourceTab.Pane>
+                        )
+                    };
+                }));
+            }, [ tabs ]);
+
+            return (
+                <Sidebar
+                    animation="overlay"
+                    className={ classes }
+                    visible={ sidebarMiniEnabled || visible }
+                    data-testid={ testId }
+                    { ...rest }
+                >
+                    <div className="help-panel-content-container" ref={ ref }>
+                        {
+                            sidebarMiniEnabled && !visible && (
+                                <div className="sidebar-mini-menu">
+                                    {
+                                        tabPanes && tabPanes instanceof Array && tabPanes.length > 1 && (
                                             <Menu.Item
                                                 as="a"
-                                                key={ index }
-                                                onClick={ () => onSidebarMiniItemClick(pane.menuItem) }
-                                                data-testid={ `${ testId }-sidebar-mini-item-${ index }` }
+                                                onClick={ onSidebarToggle }
+                                                data-testid={ `${ testId }-visibility-toggle` }
                                             >
                                                 <Tooltip
                                                     compact
-                                                    disabled={ showLabelsOnSidebarMini || !showTooltipsOnSidebarMini }
                                                     trigger={ (
                                                         <div>
                                                             <GenericIcon
@@ -275,77 +242,111 @@ export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelCompo
                                                                 hoverable
                                                                 defaultIcon
                                                                 transparent
+                                                                icon={ CaretLeftIcon }
                                                                 size="default"
                                                                 hoverType="circular"
-                                                                data-testid={
-                                                                    `${ testId }-sidebar-mini-item-${ index }-icon`
-                                                                }
-                                                                { ...pane.icon }
+                                                                data-testid={ `${ testId }-visibility-toggle-icon` }
                                                             />
                                                         </div>
                                                     ) }
-                                                    content={ pane.menuItem }
+                                                    content={ sidebarToggleTooltip }
                                                     size="mini"
                                                 />
-                                                { showLabelsOnSidebarMini && pane.menuItem }
                                             </Menu.Item>
-                                        ))
-                                    )
-                                }
-                            </div>
-                        )
-                    }
-                    {
-                        visible && (
-                            <>
-                                {
-                                    actions && actions instanceof Array && actions.length > 0 && (
-                                        <HelpPanel.ActionBar data-testid={ `${ testId }-action-bar` }>
-                                            {
-                                                actions.map((action, index) => (
+                                        )
+                                    }
+                                    {
+                                        tabPanes && tabPanes instanceof Array && tabPanes.length > 0 && (
+                                            tabPanes.map((pane, index) => (
+                                                <Menu.Item
+                                                    as="a"
+                                                    key={ index }
+                                                    onClick={ () => onSidebarMiniItemClick(pane.menuItem) }
+                                                    data-testid={ `${ testId }-sidebar-mini-item-${ index }` }
+                                                >
                                                     <Tooltip
                                                         compact
-                                                        key={ index }
-                                                        // TODO: Enable after fixing the flickering issue.
-                                                        disabled={ true }
+                                                        disabled={
+                                                            showLabelsOnSidebarMini || !showTooltipsOnSidebarMini
+                                                        }
                                                         trigger={ (
                                                             <div>
                                                                 <GenericIcon
                                                                     link
-                                                                    inline
                                                                     hoverable
-                                                                    transparent
                                                                     defaultIcon
+                                                                    transparent
                                                                     size="default"
+                                                                    hoverType="circular"
                                                                     data-testid={
-                                                                        `${ testId }-action-bar-action-${ index }`
+                                                                        `${ testId }-sidebar-mini-item-${ index }-icon`
                                                                     }
-                                                                    { ...action }
+                                                                    { ...pane.icon }
                                                                 />
                                                             </div>
                                                         ) }
-                                                        content={ action.tooltip }
+                                                        content={ pane.menuItem }
                                                         size="mini"
                                                     />
-                                                ))
-                                            }
-                                        </HelpPanel.ActionBar>
-                                    )
-                                }
-                                <ResourceTab
-                                    className="help-panel-tabs"
-                                    panes={ tabPanes }
-                                    defaultActiveIndex={ tabsActiveIndex }
-                                    data-testid={ `${ testId }-tabs` }
-                                />
-                                { children }
-                            </>
-                        )
-                    }
-                </div>
-            </Sidebar>
-        );
-    });
+                                                    { showLabelsOnSidebarMini && pane.menuItem }
+                                                </Menu.Item>
+                                            ))
+                                        )
+                                    }
+                                </div>
+                            )
+                        }
+                        {
+                            visible && (
+                                <>
+                                    {
+                                        actions && actions instanceof Array && actions.length > 0 && (
+                                            <HelpPanel.ActionBar data-testid={ `${ testId }-action-bar` }>
+                                                {
+                                                    actions.map((action, index) => (
+                                                        <Tooltip
+                                                            compact
+                                                            key={ index }
+                                                            // TODO: Enable after fixing the flickering issue.
+                                                            disabled={ true }
+                                                            trigger={ (
+                                                                <div>
+                                                                    <GenericIcon
+                                                                        link
+                                                                        inline
+                                                                        hoverable
+                                                                        transparent
+                                                                        defaultIcon
+                                                                        size="default"
+                                                                        data-testid={
+                                                                            `${ testId }-action-bar-action-${ index }`
+                                                                        }
+                                                                        { ...action }
+                                                                    />
+                                                                </div>
+                                                            ) }
+                                                            content={ action.tooltip }
+                                                            size="mini"
+                                                        />
+                                                    ))
+                                                }
+                                            </HelpPanel.ActionBar>
+                                        )
+                                    }
+                                    <ResourceTab
+                                        className="help-panel-tabs"
+                                        panes={ tabPanes }
+                                        defaultActiveIndex={ tabsActiveIndex }
+                                        data-testid={ `${ testId }-tabs` }
+                                    />
+                                    { children }
+                                </>
+                            )
+                        }
+                    </div>
+                </Sidebar>
+            );
+        });
 
 /**
  * Default props for the help panel component.

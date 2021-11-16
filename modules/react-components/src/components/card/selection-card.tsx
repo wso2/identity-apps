@@ -18,9 +18,8 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Card, CardProps, Dimmer } from "semantic-ui-react";
+import React, { CSSProperties, FunctionComponent, ReactElement, useState } from "react";
+import { Card, CardProps } from "semantic-ui-react";
 import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
 import { Tooltip } from "../typography";
 
@@ -145,8 +144,6 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
         ...rest
     } = props;
 
-    const { t } = useTranslation();
-
     const classes = classNames(
         "selection-card",
         {
@@ -170,7 +167,7 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
     /**
      * Inline styles for image container.
      */
-    const imageContainerStyles = (): object => {
+    const imageContainerStyles = (): CSSProperties | undefined => {
 
         return {
             opacity: disabled ? overlayOpacity : 1
@@ -274,10 +271,10 @@ SelectionCard.defaultProps = {
     imageSize: "tiny",
     inline: false,
     onClick: () => null,
+    renderDisabledItemsAsGrayscale: true,
     selectionType: "underlined",
     showText: true,
     showTooltips: false,
     size: "default",
-    textAlign: "center",
-    renderDisabledItemsAsGrayscale: true
+    textAlign: "center"
 };

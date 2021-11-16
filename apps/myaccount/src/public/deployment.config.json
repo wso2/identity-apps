@@ -78,7 +78,8 @@
             }
         },
         "i18nConfigs": {
-            "showLanguageSwitcher": true
+            "showLanguageSwitcher": true,
+            "langAutoDetectEnabled": false
         },
         "isCookieConsentBannerEnabled": true,
         "isHeaderAvatarLabelAllowed": true,

@@ -272,10 +272,10 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
      * @return {React.ReactElement}
      */
     const renderTemplateGrid = (templates: ApplicationTemplateInterface[],
-                                additionalProps: object,
-                                placeholder?: ReactElement,
-                                templatesOverrides?: ApplicationTemplateInterface[],
-                                isSearchView?: boolean): ReactElement => {
+        additionalProps: Record<string, unknown>,
+        placeholder?: ReactElement,
+        templatesOverrides?: ApplicationTemplateInterface[],
+        isSearchView?: boolean): ReactElement => {
 
         // Don't show the grid if there are no templates unless the view requested is search.
         if (!isSearchView && isEmpty(templatesOverrides) && isEmpty(templates)) {
@@ -329,37 +329,37 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                 <>
                     {
                         categorizedTemplates.map((category: ApplicationTemplateCategoryInterface, index: number) => (
-                                <div key={ index } className="templates quick-start-templates">
-                                    {
-                                        renderTemplateGrid(
-                                            category.templates,
-                                            {
-                                                "data-testid": `${ category.id }-template-grid`,
-                                                heading: category.displayName,
-                                                showTagIcon: category.viewConfigs?.tags?.showTagIcon,
-                                                showTags:  category.viewConfigs?.tags?.showTags,
-                                                subHeading: category.description,
-                                                tagSize: category.viewConfigs?.tags?.tagSize,
-                                                tagsAs: category.viewConfigs?.tags?.as,
-                                                tagsKey: category.viewConfigs?.tags?.tagsKey,
-                                                tagsSectionTitle: category.viewConfigs?.tags?.sectionTitle
-                                            },
-                                            <EmptyPlaceholder
-                                                image={ getEmptyPlaceholderIllustrations().newList }
-                                                imageSize="tiny"
-                                                title={ t("console:develop.features.templates.emptyPlaceholder." +
+                            <div key={ index } className="templates quick-start-templates">
+                                {
+                                    renderTemplateGrid(
+                                        category.templates,
+                                        {
+                                            "data-testid": `${ category.id }-template-grid`,
+                                            heading: category.displayName,
+                                            showTagIcon: category.viewConfigs?.tags?.showTagIcon,
+                                            showTags:  category.viewConfigs?.tags?.showTags,
+                                            subHeading: category.description,
+                                            tagSize: category.viewConfigs?.tags?.tagSize,
+                                            tagsAs: category.viewConfigs?.tags?.as,
+                                            tagsKey: category.viewConfigs?.tags?.tagsKey,
+                                            tagsSectionTitle: category.viewConfigs?.tags?.sectionTitle
+                                        },
+                                        <EmptyPlaceholder
+                                            image={ getEmptyPlaceholderIllustrations().newList }
+                                            imageSize="tiny"
+                                            title={ t("console:develop.features.templates.emptyPlaceholder." +
                                                     "title") }
-                                                subtitle={ [t("console:develop.features.templates." +
-                                                    "emptyPlaceholder.subtitles")] }
-                                                data-testid={
-                                                    `${ testId }-quick-start-template-grid-empty-placeholder`
-                                                }
-                                            />
-                                        )
-                                    }
-                                    <Divider hidden />
-                                </div>
-                            ))
+                                            subtitle={ [ t("console:develop.features.templates." +
+                                                    "emptyPlaceholder.subtitles") ] }
+                                            data-testid={
+                                                `${ testId }-quick-start-template-grid-empty-placeholder`
+                                            }
+                                        />
+                                    )
+                                }
+                                <Divider hidden />
+                            </div>
+                        ))
                     }
                 </>
             );
@@ -381,9 +381,9 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                                             image={ getEmptyPlaceholderIllustrations().emptySearch }
                                             imageSize="tiny"
                                             title="No results found"
-                                            subtitle={ ["We weren't able to find the type you" +
+                                            subtitle={ [ "We weren't able to find the type you" +
                                             " were looking for.", "Please try a different term or use one of" +
-                                            " the following application types to create a new application."] }
+                                            " the following application types to create a new application." ] }
                                             data-testid={ `${ testId }-quick-start-template-grid-empty-
                                                     placeholder` }
                                         />

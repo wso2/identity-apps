@@ -21,6 +21,8 @@ import { Heading, Tooltip } from "@wso2is/react-components";
 import sortBy from "lodash-es/sortBy";
 import React, {
     FunctionComponent,
+    MutableRefObject,
+    PropsWithChildren,
     ReactElement,
     ReactNode,
     SyntheticEvent,
@@ -80,7 +82,8 @@ interface ScriptTemplatesSidePanelInterface extends TestableComponentInterface {
  */
 export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePanelInterface> =
     forwardRef<ScriptTemplatesSidePanelRefType, ScriptTemplatesSidePanelInterface>((
-        props, ref
+        props: PropsWithChildren<ScriptTemplatesSidePanelInterface>,
+        ref: MutableRefObject<ScriptTemplatesSidePanelRefType>
     ): ReactElement => {
 
         const {
@@ -112,6 +115,7 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
 
             if (newIndexes.includes(index)) {
                 const removingIndex = newIndexes.indexOf(index);
+
                 newIndexes.splice(removingIndex, 1);
             } else {
                 newIndexes.push(index);

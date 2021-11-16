@@ -20,10 +20,11 @@ import { getAllLocalClaims } from "@wso2is/core/api";
 import { AlertLevels, Claim, ClaimsGetParams, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import { Code } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Grid, Header } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import { sortList } from "../../../../core";
 import { getAnExternalClaim, updateAnExternalClaim } from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";
@@ -305,7 +306,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                             </Grid.Column>
                         )
                     }
-                    <Grid.Column width={ 8 } className="select-attribute">
+                    <Grid.Column width={ 8 }>
                         <Field
                             type="dropdown"
                             name="localClaim"
@@ -322,16 +323,14 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                                     return {
                                         key: index,
                                         text: (
-                                            <Header as="h6">
-                                                <Header.Content>
-                                                    { claim?.displayName }
-                                                    <Header.Subheader>
-                                                        <code className="inline-code compact transparent">
-                                                            { claim.claimURI }
-                                                        </code>
-                                                    </Header.Subheader>
-                                                </Header.Content>
-                                            </Header>),
+                                            <div className="multiline">
+                                            { claim?.displayName }
+                                            <Code className="description" 
+                                                compact 
+                                                withBackground={ false }>
+                                                { claim.claimURI }
+                                            </Code>
+                                        </div>),
                                         value: claim?.claimURI
                                     };
                                 })

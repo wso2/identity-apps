@@ -20,11 +20,11 @@ import { getAllLocalClaims } from "@wso2is/core/api";
 import { AlertLevels, Claim, ClaimsGetParams, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
-import { ContentLoader, Hint, Link, PrimaryButton } from "@wso2is/react-components";
+import { Code, ContentLoader, Hint, Link, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { DropdownItemProps, DropdownOnSearchChangeData, Grid, Header, Label, Message } from "semantic-ui-react";
+import { DropdownItemProps, DropdownOnSearchChangeData, Grid, Label, Message } from "semantic-ui-react";
 import { attributeConfig } from "../../../../extensions";
 import { AppConstants, history } from "../../../core";
 import { addExternalClaim, getServerSupportedClaimsForSchema } from "../../api";
@@ -440,7 +440,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                 }
 
                             </Grid.Column>
-                            <Grid.Column width={ 8 } className="select-attribute">
+                            <Grid.Column width={ 8 }>
                                 <Field
                                     loading={ isLocalClaimsLoading }
                                     type="dropdown"
@@ -467,16 +467,16 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                             return {
                                                 key: index,
                                                 text: (
-                                                    <Header as="h6">
-                                                        <Header.Content>
-                                                            { claim?.displayName }
-                                                            <Header.Subheader>
-                                                                <code className="inline-code compact transparent">
-                                                                    { claim.claimURI }
-                                                                </code>
-                                                            </Header.Subheader>
-                                                        </Header.Content>
-                                                    </Header>) ,
+                                                    <div 
+                                                        className="multiline">
+                                                        { claim?.displayName }
+                                                        <Code 
+                                                            className="description" 
+                                                            compact 
+                                                            withBackground={ false }>
+                                                            { claim.claimURI }
+                                                        </Code>
+                                                    </div> ),
                                                 value: claim.claimURI
                                             };
                                         })

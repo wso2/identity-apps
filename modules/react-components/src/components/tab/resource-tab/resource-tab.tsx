@@ -56,7 +56,6 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
 
     const {
         className,
-        defaultActiveTab,
         onInitialize,
         panes,
         defaultActiveIndex,

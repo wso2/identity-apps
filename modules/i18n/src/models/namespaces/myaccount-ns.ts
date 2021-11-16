@@ -614,19 +614,10 @@ export interface MyAccountNS {
                 };
                 emails: string;
                 profileUrl: string;
-                addressesWork: string;
-                addressesHome: string;
-                emailsHome: string;
-                emailsOther: string;
-                emailsWork: string;
                 nameFamilyName: string;
                 nameGivenName: string;
                 profileImage: string;
                 phoneNumbers: string;
-                phoneNumbersHome: string;
-                phoneNumbersMobile: string;
-                phoneNumbersWork: string;
-                phoneNumbersOther: string;
                 userName: string;
             };
             forms: {
@@ -796,7 +787,7 @@ export interface MyAccountNS {
         sessionTimeoutModal: {
             description: string;
             heading: string;
-            content?: object;
+            content?: Record<string, unknown>;
             primaryButton: string;
             secondaryButton: string;
             loginAgainButton: string;

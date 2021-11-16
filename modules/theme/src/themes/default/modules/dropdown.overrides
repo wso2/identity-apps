@@ -45,3 +45,27 @@
         }
     }
 }
+
+/*-------------------------------
+        Multiline Select
+--------------------------------*/
+.ui.dropdown {
+    .text {
+        .multiline {
+            .description {
+                display: none;
+            }
+        }
+    }
+    .menu {
+        .text {
+            &.multiline {
+                .description {
+                    display: block;
+                    margin-top: 5px;
+                    font-size: 0.93rem;
+                }
+            }
+        }
+    }
+}

@@ -84,6 +84,7 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
 
     const resolveDataTestID = (): string => {
         let listItemValue: string = "";
+
         if (typeof listItem === "string") {
             listItemValue = listItem;
         } else {
@@ -123,8 +124,8 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
                 )
             }
             {
-                showListSubItem ?
-                    (
+                showListSubItem
+                    ? (
                         <Table.Cell id={ listItemId }>
                             {
                                 typeof listItem === "string"
@@ -133,13 +134,16 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
                             }
                             <div className={ "transfer-list-sub-content" }>{ listSubItem }</div>
                         </Table.Cell>
-                    ) : (<Table.Cell id={ listItemId }>
-                        {
-                            typeof listItem === "string"
-                                ? <div>{ listItem }</div>
-                                : listItem.listItemElement
-                        }
-                    </Table.Cell>)
+                    )
+                    : (
+                        <Table.Cell id={ listItemId }>
+                            {
+                                typeof listItem === "string"
+                                    ? <div>{ listItem }</div>
+                                    : listItem.listItemElement
+                            }
+                        </Table.Cell>
+                    )
             }
             {
                 showSecondaryActions && (
@@ -148,7 +152,7 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
                             inverted
                             basic
                             content="View permissions"
-                            trigger={
+                            trigger={ (
                                 <Icon
                                     data-testid={
                                         `${ testId }-${ resolveDataTestID() }-icon` }
@@ -156,7 +160,7 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
                                     name="key"
                                     onClick={ handleOpenPermissionModal }
                                 />
-                            }
+                            ) }
                         />
                     </Table.Cell>
                 )

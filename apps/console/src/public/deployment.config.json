@@ -389,7 +389,8 @@
         },
         "hiddenAuthenticators": [],
         "i18nConfigs": {
-            "showLanguageSwitcher": false
+            "showLanguageSwitcher": false,
+            "langAutoDetectEnabled":false
         },
         "isCookieConsentBannerEnabled": false,
         "isGroupAndRoleSeparationEnabled": true,

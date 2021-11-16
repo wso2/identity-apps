@@ -18,7 +18,7 @@
 
 import { DisplayCertificate, DistinguishedName, TestableComponentInterface } from "@wso2is/core/models";
 import moment from "moment";
-import React, { FunctionComponent, ReactElement, Fragment } from "react";
+import React, { Fragment, FunctionComponent, ReactElement } from "react";
 import { Divider, Grid, Icon, Popup, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 
 /**
@@ -64,7 +64,6 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
     const {
         version,
         issuerDN,
-        subjectDN,
         validFrom,
         validTill
     } = props.certificate;
@@ -85,16 +84,16 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
             if (Math.abs(moment.duration(currentDate.diff(expiryDate)).months()) > 1) {
                 icon = "check circle";
                 iconColor = "green";
-                popupText = "Certificate is valid."
+                popupText = "Certificate is valid.";
             } else {
                 icon = "exclamation circle";
                 iconColor = "yellow";
-                popupText = "Certificate is soon to be expired."
+                popupText = "Certificate is soon to be expired.";
             }
         } else {
             icon = "times circle";
             iconColor = "red";
-            popupText = "Certificate is expired."
+            popupText = "Certificate is expired.";
         }
 
         return (
@@ -125,12 +124,12 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
         if (isValid) {
             icon = "check circle";
             iconColor = "green";
-            popupText = "Certificate is valid."
+            popupText = "Certificate is valid.";
         } else {
             if (Math.abs(moment.duration(currentDate.diff(expiryDate)).months()) > 1) {
                 icon = "times circle";
                 iconColor = "red";
-                popupText = "Certificate is still not valid."
+                popupText = "Certificate is still not valid.";
             } else {
                 icon = "exclamation circle";
                 iconColor = "yellow";
@@ -264,7 +263,7 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
                 <span>{ labels.version }</span> { version + " " }
             </p>
         </Segment>
-    )
+    );
 };
 
 /**

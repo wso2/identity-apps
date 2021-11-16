@@ -134,7 +134,8 @@ export const console: ConsoleNS = {
             },
             sessionTimeoutModal: {
                 description: "Lorsque vous cliquez sur <1>Retour</1>, nous essaierons de récupérer la session " +
-                    "si elle existe. Si vous n'avez pas de session active, vous serez redirigé vers la page de connexion.",
+                    "si elle existe. Si vous n'avez pas de session active, vous serez redirigé vers la page " +
+                    "de connexion.",
                 heading: "Il semble que vous ayez été inactif pendant longtemps.",
                 loginAgainButton: "Connectez-vous à nouveau",
                 primaryButton: "Retourner",
@@ -571,6 +572,14 @@ export const console: ConsoleNS = {
                         header: "Êtes-vous sûr?",
                         subHeader: "Cette action est irréversible."
                     },
+                    certificateDelete: {
+                        assertionHint: "Veuillez confirmer votre action.",
+                        content: "N/A",
+                        header: "Es-tu sûr?",
+                        message: "Cette action est irréversible et supprimera définitivement le certificat.",
+                        primaryAction: "Effacer",
+                        secondaryAction: "Annuler"
+                    },
                     changeProtocol: {
                         assertionHint: "Veuillez taper <1>{{ name }}</1> pour confirmer.",
                         content: "Cette action est irréversible et supprimera définitivement " +
@@ -620,15 +629,16 @@ export const console: ConsoleNS = {
                     },
                     deleteOutboundProvisioningIDP: {
                         assertionHint: "Veuillez taper <1>{{ name }}</1> pour confirmer.",
-                        content: "Si vous supprimez cet IDP de provisionnement sortant, vous ne pourrez pas le récupérer. " +
-                            "Veuillez procéder avec prudence.",
+                        content: "Si vous supprimez cet IDP de provisionnement sortant, vous ne pourrez pas " +
+                            "le récupérer. Veuillez procéder avec prudence.",
                         header: "Etes-vous sûr ?",
                         message: "Cette action est irréversible et supprimera définitivement l'IDP."
                     },
                     deleteProtocol: {
                         assertionHint: "Veuillez taper <1>{{ name }}</1> pour confirmer.",
                         content: "Si vous supprimez ce protocole, vous ne pourrez pas le récupérer. Toutes les " +
-                            "applications qui en dépendent risquent également de ne plus fonctionner. Veuillez procéder avec prudence.",
+                            "applications qui en dépendent risquent également de ne plus fonctionner. " +
+                            "Veuillez procéder avec prudence.",
                         header: "Etes-vous sûr ?",
                         message: "Cette action est irréversible et supprimera définitivement le protocole."
                     },
@@ -646,6 +656,22 @@ export const console: ConsoleNS = {
                         header: "Etes-vous sûr ?",
                         message: "Veuillez vérifier vos valeurs."
                     },
+                    reactivateOIDC: {
+                        assertionHint: "Veuillez saisir <1> {{id}} </1> pour réactiver l'application.",
+                        content: "Si vous réactivez l'application, un nouveau secret client sera " +
+                            "généré. Veuillez mettre à jour le secret du client d'application " +
+                            "sur votre application cliente.",
+                        header: "Êtes-vous sûr?",
+                        message: ""
+                    },
+                    reactivateSPA: {
+                        assertionHint: "Veuillez saisir <1> {{id}} </1> pour réactiver l'application.",
+                        content: "Si vous réactivez l'application, les flux d'authentification pour " +
+                            "cette application commenceront à fonctionner. Veuillez procéder " +
+                            "avec prudence.",
+                        header: "Êtes-vous sûr?",
+                        message: "Cette action peut être annulée en révoquant l'ID client ultérieurement."
+                    },
                     regenerateSecret: {
                         assertionHint: "Veuillez saisir <1> {{id}} </1> pour régénérer le secret client.",
                         content: "Si vous régénérez le secret client, les flux d'authentification " +
@@ -655,22 +681,6 @@ export const console: ConsoleNS = {
                         header: "Êtes-vous sûr?",
                         message: "Cette action est irréversible et modifie définitivement " +
                                  "le secret client. Veuillez procéder avec prudence."
-                    },
-                    reactivateSPA: {
-                        assertionHint: "Veuillez saisir <1> {{id}} </1> pour réactiver l'application.",
-                        content: "Si vous réactivez l'application, les flux d'authentification pour " +
-                                 "cette application commenceront à fonctionner. Veuillez procéder " +
-                                 "avec prudence.",
-                        header: "Êtes-vous sûr?",
-                        message: "Cette action peut être annulée en révoquant l'ID client ultérieurement."
-                    },
-                    reactivateOIDC: {
-                        assertionHint: "Veuillez saisir <1> {{id}} </1> pour réactiver l'application.",
-                        content: "Si vous réactivez l'application, un nouveau secret client sera " +
-                                 "généré. Veuillez mettre à jour le secret du client d'application " +
-                                 "sur votre application cliente.",
-                        header: "Êtes-vous sûr?",
-                        message: ""
                     },
                     removeApplicationUserAttribute: {
                         content : "Si vous supprimez cela, l'attribut d'objet sera défini sur " +
@@ -690,14 +700,6 @@ export const console: ConsoleNS = {
                         message: "Si vous révoquez cette application, les flux d'authentification " +
                                  "pour cette application cesseront de fonctionner. Veuillez " +
                                  "procéder avec prudence."
-                    },
-                    certificateDelete: {
-                        assertionHint: "Veuillez confirmer votre action.",
-                        content: "N/A",
-                        header: "Es-tu sûr?",
-                        message: "Cette action est irréversible et supprimera définitivement le certificat.",
-                        primaryAction: "Effacer",
-                        secondaryAction: "Annuler"
                     }
                 },
                 dangerZoneGroup: {
@@ -736,11 +738,11 @@ export const console: ConsoleNS = {
                                 },
                                 subHeading: "Ajouter un nouveau protocole à l'application {{appName}}"
                             },
-                            tabName: "Protocole",
                             protocolLanding: {
                                 heading: "Quel protocole utilisez-vous?",
                                 subHeading: "Sélectionnez le protocole de connexion de votre application."
-                            }
+                            },
+                            tabName: "Protocole"
                         },
                         advanced: {
                             tabName: "Avancé"
@@ -758,7 +760,8 @@ export const console: ConsoleNS = {
                                         applicationRole: {
                                             label: "Rôle applicatif",
                                             validations: {
-                                                duplicate: "Ce rôle est déjà associé. Veuillez sélectionner un autre rôle",
+                                                duplicate: "Ce rôle est déjà associé. Veuillez sélectionner " +
+                                                    "un autre rôle",
                                                 empty: "Veuillez entrer un attribut à associer"
                                             }
                                         },
@@ -793,7 +796,6 @@ export const console: ConsoleNS = {
                                     subHeading: "Sélectionnez les attributs utilisateur à inclure dans la " +
                                         "réponse d'authentification."
                                 },
-                                heading: "Sélection des attributs utilisateur",
                                 attributeComponentHint: "Gérez les attributs utilisateur que vous souhaitez partager" +
                                     " avec cette application.",
                                 attributeComponentHintAlt: "Gérez les attributs utilisateur que vous souhaitez" +
@@ -801,6 +803,7 @@ export const console: ConsoleNS = {
                                     "mappages en accédant à <1>Attributs</1>",
                                 description: "Ajoutez les attributs utilisateur autorisés à être partagés avec cette " +
                                     "application.",
+                                heading: "Sélection des attributs utilisateur",
                                 mandatoryAttributeHint: "Marquez les attributs utilisateur qui doivent " +
                                     "obligatoirement être partagés avec l'application. Lors de la connexion, " +
                                     "{{productName}} invite l'utilisateur à saisir ces valeurs d'attribut, si elles " +
@@ -851,6 +854,9 @@ export const console: ConsoleNS = {
                             },
                             tabName: "Attributs Utilisateur"
                         },
+                        general: {
+                            tabName: "Général"
+                        },
                         info: {
                             oidcHeading: "Points de terminaison du serveur",
                             oidcSubHeading: "Les points de terminaison de serveur suivants vous seront utiles pour " +
@@ -861,14 +867,11 @@ export const console: ConsoleNS = {
                                 "configurer l'authentification pour votre application à l'aide de SAML 2.0.",
                             tabName: "Info"
                         },
-                        general: {
-                            tabName: "Général"
-                        },
                         provisioning: {
                             inbound: {
                                 heading: "Provisionnement entrant",
-                                subHeading: "Provisionner des utilisateurs ou des groupes vers un annuaire de WSO2 Identity Server’ via une " +
-                                    "application."
+                                subHeading: "Provisionner des utilisateurs ou des groupes vers un annuaire de " +
+                                    "WSO2 Identity Server’ via une application."
                             },
                             outbound: {
                                 actions: {
@@ -883,11 +886,12 @@ export const console: ConsoleNS = {
                                     steps: {
                                         details: "Détails de l'IDP"
                                     },
-                                    subHeading: "Sélectionnez l'IDP pour approvisionner les utilisateurs qui s'auto-enregistrent dans votre application."
+                                    subHeading: "Sélectionnez l'IDP pour approvisionner les utilisateurs qui " +
+                                        "s'auto-enregistrent dans votre application."
                                 },
                                 heading: "Provisionnement sortant",
-                                subHeading: "Configurer un fournisseur d'identité pour l'aprovisionnement sortant des " +
-                                    "utilisateurs de cette application."
+                                subHeading: "Configurer un fournisseur d'identité pour l'aprovisionnement " +
+                                    "sortant des utilisateurs de cette application."
                             },
                             tabName: "Provisionnement"
                         },
@@ -957,6 +961,9 @@ export const console: ConsoleNS = {
                                                     heading: "Modèles"
                                                 }
                                             },
+                                            heading: "Configuration basée sur des scripts",
+                                            hint: "Définissez le flux d'authentification via un script adaptatif. " +
+                                                "Vous pouvez sélectionner l'un des modèles du panneau pour commencer.",
                                             secretsList: {
                                                 create: "Créer un nouveau secret",
                                                 emptyPlaceholder: "Aucun secret disponible",
@@ -968,10 +975,7 @@ export const console: ConsoleNS = {
                                                         "conditionnelle.",
                                                     plusIcon: "Ajouter au script"
                                                 }
-                                            },
-                                            heading: "Configuration basée sur des scripts",
-                                            hint: "Définissez le flux d'authentification via un script adaptatif. Vous pouvez " +
-                                                "sélectionner l'un des modèles du panneau pour commencer."
+                                            }
                                         },
                                         stepBased: {
                                             actions: {
@@ -982,10 +986,13 @@ export const console: ConsoleNS = {
                                             },
                                             addAuthenticatorModal: {
                                                 content: {
+                                                    addNewAuthenticatorCard: {
+                                                        title: "Configurer un nouveau fournisseur d'identité"
+                                                    },
                                                     authenticatorGroups: {
                                                         basic: {
-                                                            description: "Ensemble d'authentificateurs de base pris en " +
-                                                                "charge par {{productName}}.",
+                                                            description: "Ensemble d'authentificateurs de base " +
+                                                                "pris en charge par {{productName}}.",
                                                             heading: "De base"
                                                         },
                                                         enterprise: {
@@ -1003,9 +1010,6 @@ export const console: ConsoleNS = {
                                                                 "existantes d'un fournisseur de réseau social.",
                                                             heading: "Connexion sociale"
                                                         }
-                                                    },
-                                                    addNewAuthenticatorCard: {
-                                                        title: "Configurer un nouveau fournisseur d'identité"
                                                     },
                                                     goBackButton: "Revenir à la Sélection",
                                                     search: {
@@ -1039,12 +1043,13 @@ export const console: ConsoleNS = {
                                                 }
                                             },
                                             heading: "Configuration par étapes",
-                                            hint: "Créez des étapes d'authentification en faisant glisser les authentificateurs " +
-                                                "locaux/fédérés vers les étapes correspondantes.",
+                                            hint: "Créez des étapes d'authentification en faisant glisser les " +
+                                                "authentificateurs locaux/fédérés vers les étapes correspondantes.",
                                             secondFactorDisabled: "Les authentificateurs de second facteur ne " +
                                                 "peuvent être utilisés que si <1>Nom d’utilisateur et mot de passe" +
                                                 "</1> ou tout autre gestionnaire tel que <3>Identifiant d’abord " +
-                                                "</3>qui peut gérer ces facteurs est présent dans une étape précédente.",
+                                                "</3>qui peut gérer ces facteurs est présent dans une étape " +
+                                                "précédente.",
                                             secondFactorDisabledInFirstStep: "Les authentificateurs de deuxième " +
                                                 "facteur ne peuvent pas être utilisés dans la première étape."
                                         }
@@ -1212,16 +1217,16 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     subjectIncludeUserDomain: {
-                                        hint: "Cette option ajoutera le domaine de l'annuaire dans lequel l'utilisateur réside " +
-                                            "dans l'identifiant du sujet",
+                                        hint: "Cette option ajoutera le domaine de l'annuaire dans lequel " +
+                                            "l'utilisateur réside dans l'identifiant du sujet",
                                         label: "Inclure le domaine de l'utilisateur",
                                         validations: {
                                             empty: "Ceci est un champ obligatoire."
                                         }
                                     },
                                     subjectUseMappedLocalSubject: {
-                                        hint: "Cette option utilisera l'identifiant local associé comme sujet pour revendiquer " +
-                                            "l'identité",
+                                        hint: "Cette option utilisera l'identifiant local associé comme sujet " +
+                                            "pour revendiquer l'identité",
                                         label: "Utiliser un sujet local associé",
                                         validations: {
                                             empty: "Ceci est un champ obligatoire."
@@ -1235,16 +1240,16 @@ export const console: ConsoleNS = {
                     advancedConfig: {
                         fields: {
                             enableAuthorization: {
-                                hint: "Décide si les politiques d'autorisation doivent être engagées pendant les flux " +
-                                    "d'authentification.",
+                                hint: "Décide si les politiques d'autorisation doivent être engagées " +
+                                    "pendant les flux d'authentification.",
                                 label: "Activer les autorisations",
                                 validations: {
                                     empty: "Ceci est un champ obligatoire."
                                 }
                             },
                             returnAuthenticatedIdpList: {
-                                hint: " La liste des fournisseurs d'identité authentifiés sera renvoyée dans la réponse " +
-                                    "d'authentification.",
+                                hint: "La liste des fournisseurs d'identité authentifiés sera renvoyée dans " +
+                                    "la réponse d'authentification.",
                                 label: "Retourne la liste des IDP authentifiés",
                                 validations: {
                                     empty: "Ceci est un champ obligatoire."
@@ -1280,9 +1285,9 @@ export const console: ConsoleNS = {
                             certificate: {
                                 fields: {
                                     jwksValue: {
+                                        description: "L'URL utilisée pour obtenir une clé publique JWKS.",
                                         label: "URL",
                                         placeholder: "https://myapp.io/jwks",
-                                        description: "L'URL utilisée pour obtenir une clé publique JWKS.",
                                         validations: {
                                             empty: "Ceci est un champ obligatoire.",
                                             invalid: "Ceci n'est pas une URL valide"
@@ -1292,13 +1297,14 @@ export const console: ConsoleNS = {
                                         actions: {
                                             view: "Voir les informations sur le certificat"
                                         },
+                                        description: "La valeur texte du certificat au format PEM.",
                                         hint: "Le certificat ( au format PEM ) de l'application.",
                                         label: "Certificat",
                                         placeholder: "Certificat au format PEM.",
-                                        description: "La valeur texte du certificat au format PEM.",
                                         validations: {
                                             empty: "Ceci est un champ obligatoire.",
-                                            invalid: "Entrez un certificat valide au format PEM"                                        }
+                                            invalid: "Entrez un certificat valide au format PEM"
+                                        }
                                     },
                                     type: {
                                         children: {
@@ -1339,8 +1345,8 @@ export const console: ConsoleNS = {
                                 }
                             },
                             description: {
-                                label: "Description",
                                 description: "Une description textuelle de l'application.",
+                                label: "Description",
                                 placeholder: "Saisissez une description pour l'application"
                             },
                             discoverable: {
@@ -1349,9 +1355,9 @@ export const console: ConsoleNS = {
                                 label: "Application découvrable"
                             },
                             imageUrl: {
-                                label: "Logo",
                                 description: "Une URL d'image pour l'application. Si cela n'est pas fourni, nous " +
                                     "afficherons une vignette générée à la place. Taille recommandée: 200x200 pixels",
+                                label: "Logo",
                                 placeholder: "https://myapp-resources.io/my_app_image.png",
                                 validations: {
                                     invalid: "Ceci n'est pas une URL d'image valide"
@@ -1402,8 +1408,8 @@ export const console: ConsoleNS = {
                             "du protocole <3>{{protocol}}</3> pour implémenter la connexion dans vos applications.",
                         fields: {
                             allowedOrigins: {
-                                hint: "Les origines autorisées sont des URL qui seront autorisées à effectuer des requêtes " +
-                                    "depuis des origines tierces vers les APIs de {{productName}} ",
+                                hint: "Les origines autorisées sont des URL qui seront autorisées à effectuer " +
+                                    "des requêtes depuis des origines tierces vers les APIs de {{productName}} ",
                                 label: "Origines autorisées",
                                 placeholder: "https://myapp.io",
                                 validations: {
@@ -1417,6 +1423,8 @@ export const console: ConsoleNS = {
                                     "doit spécifier l'URL de redirection dans la demande d'autorisation ou de " +
                                     "déconnexion et {{productName}} la validera par rapport aux URL de redirection " +
                                     "entrées ici.",
+                                info: "Vous n’avez pas d’application? Essayez un exemple d'application " +
+                                    "en utilisant {{callBackURLFromTemplate}} comme URL autorisée.",
                                 label: "URI autorisés",
                                 placeholder: "https://myapp.io/login",
                                 validations: {
@@ -1425,16 +1433,14 @@ export const console: ConsoleNS = {
                                     required: "Ce champ est obligatoire pour une application fonctionnelle. " +
                                         "Toutefois, si vous prévoyez d'essayer l'exemple d'application, " +
                                         "ce champ peut être ignoré."
-                                },
-                                info: "Vous n’avez pas d’application? Essayez un exemple d'application " +
-                                "en utilisant {{callBackURLFromTemplate}} comme URL autorisée."
+                                }
                             },
                             clientID: {
                                 label: "Identifiant du client"
                             },
                             clientSecret: {
-                                hashedDisclaimer: "Le secret du client est haché. Si vous avez besoin de le récupérer, " +
-                                    "veuillez régénérer à nouveau le secret.",
+                                hashedDisclaimer: "Le secret du client est haché. Si vous avez besoin de le " +
+                                    "récupérer, veuillez régénérer à nouveau le secret.",
                                 hideSecret: "Cacher le secret",
                                 label: "Secret du client",
                                 message: "{{productName}} n'émet pas de <1>client_secret</1>" +
@@ -1448,14 +1454,14 @@ export const console: ConsoleNS = {
                             },
                             grant: {
                                 children: {
+                                    client_credential: {
+                                        hint: "La portée openid n'est pas autorisée avec ce type de subvention.",
+                                        label: "(portée openid non autorisée)"
+                                    },
                                     implicit: {
                                         hint: "L'utilisation de l'octroi implicite avec des applications publiques " +
                                             "n'est pas recommandée.",
                                         label: "{{grantType}} (non recommandé)"
-                                    },
-                                    client_credential: {
-                                        hint: "La portée openid n'est pas autorisée avec ce type de subvention.",
-                                        label: "(portée openid non autorisée)"
                                     },
                                     password: {
                                         hint: "L'utilisation de l'octroi de mot de passe avec des applications " +
@@ -1486,17 +1492,30 @@ export const console: ConsoleNS = {
                             }
                         },
                         messages: {
+                            customInvalidMessage: "Veuillez saisir un URI valide. Les formats valides incluent " +
+                                "HTTP, HTTPS ou le schéma d'URI à usage privé.",
                             revokeDisclaimer: {
                                 content: "La demande a été révoquée. Réactivez l'application pour permettre " +
                                     "aux utilisateurs de se connecter.",
                                 heading: "La demande est révoquée"
-                            },
-                            customInvalidMessage: "Veuillez saisir un URI valide. Les formats valides incluent " +
-                                "HTTP, HTTPS ou le schéma d'URI à usage privé."
+                            }
                         },
                         sections: {
                             accessToken: {
                                 fields: {
+                                    applicationTokenExpiry: {
+                                        hint: "Précisez la période de validité du " +
+                                            "<1>jeton d'accès à l'application</1> en secondes.",
+                                        label: "Délai d'expiration du jeton d'accès à l'application",
+                                        placeholder: "Saisissez l'heure d'expiration du jeton d'accès à l'application",
+                                        validations: {
+                                            empty: "Veuillez remplir le délai d'expiration du jeton d'accès " +
+                                                "à l'application",
+                                            invalid: "Le délai d'expiration du jeton d'accès à l'application " +
+                                                "doit être en secondes. Les décimales et les nombres " +
+                                                "négatifs ne sont pas autorisés."
+                                        }
+                                    },
                                     bindingType: {
                                         children: {
                                             ssoBinding: {
@@ -1529,19 +1548,6 @@ export const console: ConsoleNS = {
                                                 +"en secondes."
                                         }
                                     },
-                                    applicationTokenExpiry: {
-                                        hint: "Précisez la période de validité du " +
-                                            "<1>jeton d'accès à l'application</1> en secondes.",
-                                        label: "Délai d'expiration du jeton d'accès à l'application",
-                                        placeholder: "Saisissez l'heure d'expiration du jeton d'accès à l'application",
-                                        validations: {
-                                            empty: "Veuillez remplir le délai d'expiration du jeton d'accès " +
-                                                "à l'application",
-                                            invalid: "Le délai d'expiration du jeton d'accès à l'application " +
-                                                "doit être en secondes. Les décimales et les nombres " +
-                                                "négatifs ne sont pas autorisés."
-                                        }
-                                    },
                                     revokeToken: {
                                         hint: "Autoriser la révocation des jetons de cette application lorsqu'une " +
                                             "session IDP liée se termine par une déconnexion utilisateur.",
@@ -1565,6 +1571,10 @@ export const console: ConsoleNS = {
                                 hint: " Configurez l'émetteur du jeton d'accès, l'heure d'expiration du jeton " +
                                     "d'accès de l'utilisateur, l'heure d'expiration du jeton d'accès de "+
                                     "l'application, etc."
+                            },
+                            certificates: {
+                                disabledPopup: "Ce certificat est utilisé pour chiffrer le <1>id_token</1>." +
+                                    " Tout d'abord, vous devez désactiver le cryptage <3>id_token</3> pour continuer."
                             },
                             idToken: {
                                 fields: {
@@ -1697,7 +1707,6 @@ export const console: ConsoleNS = {
                                 heading: "jeton de rafraîchissement"
                             },
                             requestObjectSignature: {
-                                heading: "Objet de requête HTTP",
                                 description: "{{productName}} prend en charge la réception des paramètres de " +
                                     "demande d'authentification OIDC des clients dans un objet de demande. " +
                                     "Activez la validation de signature pour n'accepter que les objets " +
@@ -1706,7 +1715,8 @@ export const console: ConsoleNS = {
                                     signatureValidation: {
                                         label: "Activer la validation de la signature"
                                     }
-                                }
+                                },
+                                heading: "Objet de requête HTTP"
                             },
                             scopeValidators: {
                                 fields: {
@@ -1718,10 +1728,6 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "Validateurs de scope"
-                            },
-                            certificates: {
-                                disabledPopup: "Ce certificat est utilisé pour chiffrer le <1>id_token</1>." +
-                                    " Tout d'abord, vous devez désactiver le cryptage <3>id_token</3> pour continuer."
                             }
                         }
                     },
@@ -1734,6 +1740,9 @@ export const console: ConsoleNS = {
                                 hint: "Elle précise les URL des consommateurs vers lesquels le navigateur " +
                                     "doit être redirigé une fois l'authentification réussie. Il s'agit de l'URL " +
                                     "du service consommateur d'assertions (ACS) de l'application.",
+                                info: "Vous n’avez pas d’application? Essayez un exemple d'application en utilisant" +
+                                    " {{assertionURLFromTemplate}} comme URL de réponse d'assertion. (Vous pouvez" +
+                                    " télécharger et exécuter un exemple ultérieurement.)",
                                 label: "URL du réponse d'assertions",
                                 placeholder: "https://myapp.io/login",
                                 validations: {
@@ -1742,10 +1751,7 @@ export const console: ConsoleNS = {
                                     required: "Ce champ est obligatoire pour une application fonctionnelle." +
                                         " Toutefois, si vous prévoyez d'essayer l'exemple d'application, ce champ" +
                                         " peut être ignoré."
-                                },
-                                info: "Vous n’avez pas d’application? Essayez un exemple d'application en utilisant" +
-                                    " {{assertionURLFromTemplate}} comme URL de réponse d'assertion. (Vous pouvez" +
-                                    " télécharger et exécuter un exemple ultérieurement.)"
+                                }
                             },
                             defaultAssertionURL: {
                                 hint: "Comme il peut y avoir plusieurs URLs de consommateur d'assertions, " +
@@ -1757,11 +1763,11 @@ export const console: ConsoleNS = {
                                 }
                             },
                             idpEntityIdAlias: {
-                                hint: "Cette valeur peut remplacer l'identifiant de l'entité du fournisseur d'identité qui est " +
-                                    "spécifié dans la configuration d'authentification entrante SAML SSO du fournisseur " +
-                                    "d'identité résident. L'identifiant de l'entité du fournisseur d'identité " +
-                                    "est utilisé comme émetteur de la réponse SAML qui est générée. Il doit s'agir " +
-                                    "d'un URI/URL valide.",
+                                hint: "Cette valeur peut remplacer l'identifiant de l'entité du fournisseur " +
+                                    "d'identité qui est spécifié dans la configuration d'authentification entrante " +
+                                    "SAML SSO du fournisseur d'identité résident. L'identifiant de l'entité du " +
+                                    "fournisseur d'identité est utilisé comme émetteur de la réponse SAML qui " +
+                                    "est générée. Il doit s'agir d'un URI/URL valide.",
                                 label: "Alias IDP entityId",
                                 placeholder: "Saisir alias",
                                 validations: {
@@ -1770,6 +1776,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             issuer: {
+                                errorMessage: "L'émetteur existe déjà.",
                                 hint: "Ceci précise l'émetteur. C'est l'élément 'saml:Issuer' qui contient " +
                                     "l'identifiant unique de la demande. C'est également la valeur de l'émetteur" +
                                     "spécifiée dans la demande d'authentification SAML émise par l'application.",
@@ -1777,18 +1784,17 @@ export const console: ConsoleNS = {
                                 placeholder: "sample-app.com",
                                 validations: {
                                     empty: "Veuillez indiquer l'émetteur"
-                                },
-                                errorMessage: "L'émetteur existe déjà."
+                                }
                             },
                             metaURL: {
+                                errorMessage: "L'URL des métadonnées n'est pas valide",
                                 hint: "URL du fichier de métadonnées",
                                 label: "URL des métadonnées",
                                 placeholder: "Saisir l'URL du fichier de métadonnées",
                                 validations: {
                                     empty: "Veuillez indiquer l'URL du fichier de métadonnées",
                                     invalid: "Ceci n'est pas une URL valide"
-                                },
-                                errorMessage: "L'URL des métadonnées n'est pas valide"
+                                }
                             },
                             mode: {
                                 children: {
@@ -1830,8 +1836,8 @@ export const console: ConsoleNS = {
                                     },
                                     nameIdFormat: {
                                         hint: "Elle définit le format des identifiants pris en charge par le " +
-                                            "fournisseur d'identité. Les identifiants sont utilisés pour fournir des informations" +
-                                            "concernant un utilisateur.",
+                                            "fournisseur d'identité. Les identifiants sont utilisés pour fournir " +
+                                            "des informations concernant un utilisateur.",
                                         label: "Format des identifiants",
                                         placeholder: "Saisir le format d'identifiant",
                                         validations: {
@@ -1853,19 +1859,21 @@ export const console: ConsoleNS = {
                                 fields: {
                                     enable: {
                                         hint: "WSO2 Identity Server prend en charge un profil d'attribut de base " +
-                                            "dans lequel le fournisseur d'identité peut inclure les attributs de l'utilisateur" +
-                                            "dans les assertions SAML en tant que déclaration d'attributs.",
+                                            "dans lequel le fournisseur d'identité peut inclure les attributs " +
+                                            "de l'utilisateur dans les assertions SAML en tant que déclaration " +
+                                            "d'attributs.",
                                         label: "Activer"
                                     },
                                     includeAttributesInResponse: {
-                                        hint: "Une fois que vous avez coché la case 'Toujours inclure les attributs dans la réponse' " +
-                                            ", le fournisseur d'identité incluera toujours les valeurs des attributs " +
-                                            "relatifs aux claims sélectionnées dans la déclaration d'attributs SAML.",
+                                        hint: "Une fois que vous avez coché la case 'Toujours inclure les " +
+                                            "attributs dans la réponse' , le fournisseur d'identité incluera " +
+                                            "toujours les valeurs des attributs relatifs aux claims sélectionnées " +
+                                            "dans la déclaration d'attributs SAML.",
                                         label: "Toujours inclure les attributs dans la réponse"
                                     },
                                     serviceIndex: {
-                                        hint: "Il s'agit d'un champ optionnel, s'il n'est pas fourni, une valeur sera " +
-                                            "générée automatiquement.",
+                                        hint: "Il s'agit d'un champ optionnel, s'il n'est pas fourni, une " +
+                                            "valeur sera générée automatiquement.",
                                         label: "Indice de l'attribut consommant le service",
                                         placeholder: "Saisir l'indice de l'attribut consommant le service",
                                         validations: {
@@ -1875,16 +1883,20 @@ export const console: ConsoleNS = {
                                 },
                                 heading: "Profil des attributs"
                             },
+                            certificates: {
+                                disabledPopup: "Assurez-vous que la validation de la signature de la " +
+                                    "demande et le chiffrement des assertions sont désactivés pour continuer."
+                            },
                             encryption: {
                                 fields: {
                                     assertionEncryption: {
+                                        hint: "Sélectionnez pour chiffrer les assertions SAML2 renvoyées après " +
+                                            "l'authentification. Pour utiliser le cryptage, configurez le " +
+                                            "certificat de votre application dans la section Certificat ci-dessous.",
                                         label: "Activer",
                                         validations: {
                                             empty: "Ce champ est obligatoire."
-                                        },
-                                        hint: "Sélectionnez pour chiffrer les assertions SAML2 renvoyées après " +
-                                            "l'authentification. Pour utiliser le cryptage, configurez le " +
-                                            "certificat de votre application dans la section Certificat ci-dessous."
+                                        }
 
                                     },
                                     assertionEncryptionAlgorithm: {
@@ -1905,8 +1917,8 @@ export const console: ConsoleNS = {
                             idpInitiatedSLO: {
                                 fields: {
                                     enable: {
-                                        hint: "Lorsque cette option est activée, le fournisseur de services n'est pas tenu d'envoyer " +
-                                            "la requête SAML.",
+                                        hint: "Lorsque cette option est activée, le fournisseur de services " +
+                                            "n'est pas tenu d'envoyer la requête SAML.",
                                         label: "Activer",
                                         validations: {
                                             empty: "Ce champ est obligatoire."
@@ -1936,7 +1948,8 @@ export const console: ConsoleNS = {
                             requestValidation: {
                                 fields: {
                                     signatureValidation: {
-                                        hint: "Cela précise si le fournisseur d'identité doit valider la signature de la  " +
+                                        hint: "Cela précise si le fournisseur d'identité doit valider " +
+                                            "la signature de la  " +
                                             "demande d'authentification SAML2 et de la demande de " +
                                             "déconnexion SAML2 qui sont envoyées par l'application.",
                                         label: "Activer la validation de la signature de la requête",
@@ -1945,8 +1958,8 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     signatureValidationCertAlias: {
-                                        hint: "Si un certificat applicatif est fourni, il sera utilisé et le certificat " +
-                                            "sélectionné ci-dessus sera ignoré.",
+                                        hint: "Si un certificat applicatif est fourni, il sera utilisé et " +
+                                            "le certificat sélectionné ci-dessus sera ignoré.",
                                         label: "Alias du certificat de validation de la requête",
                                         validations: {
                                             empty: "Ceci est un champ obligatoire."
@@ -1964,7 +1977,8 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     responseSigning: {
-                                        hint: "Signez les réponses SAML2 renvoyées après le processus d'authentification.",
+                                        hint: "Signez les réponses SAML2 renvoyées après le processus " +
+                                            "d'authentification.",
                                         label: "Signer les réponses SAML"
                                     },
                                     signingAlgorithm: {
@@ -2031,10 +2045,6 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "Profil de connexion unique"
-                            },
-                            certificates: {
-                                disabledPopup: "Assurez-vous que la validation de la signature de la " +
-                                    "demande et le chiffrement des assertions sont désactivés pour continuer."
                             }
                         }
                     },
@@ -2083,7 +2093,8 @@ export const console: ConsoleNS = {
                     outboundProvisioning: {
                         fields: {
                             blocking: {
-                                hint: "Bloquer le flux d'authentification jusqu'à ce que le provisionnement soit terminé.",
+                                hint: "Bloquer le flux d'authentification jusqu'à ce que le provisionnement " +
+                                    "soit terminé.",
                                 label: "Blocage"
                             },
                             connector: {
@@ -2101,7 +2112,8 @@ export const console: ConsoleNS = {
                                 }
                             },
                             jit: {
-                                hint: "Approvisionnement des utilisateurs de l'annuaire par un approvisionnement juste à temps.",
+                                hint: "Approvisionnement des utilisateurs de l'annuaire par un " +
+                                    "approvisionnement juste à temps.",
                                 label: "JIT vers l'extérieur"
                             },
                             rules: {
@@ -2118,7 +2130,8 @@ export const console: ConsoleNS = {
                                 label: "Mode Proxy"
                             },
                             userstoreDomain: {
-                                hint: "Sélectionnez un nom de domaine utilisateur pour fournir des utilisateurs et des groupes.",
+                                hint: "Sélectionnez un nom de domaine utilisateur pour fournir des " +
+                                    "utilisateurs et des groupes.",
                                 label: "Approvisionnement du domaine utilisateur"
                             }
                         }
@@ -2169,13 +2182,13 @@ export const console: ConsoleNS = {
                                     downloadSample: {
                                         btn: "Télécharger l'exemple",
                                         subTitle: "Cet exemple d'application montre l'utilisation du SDK " +
-                                            "WSO2 Identity Server SDK et comment vous pouvez intégrer n'importe quelle  " +
-                                            "application avec lui.",
+                                            "WSO2 Identity Server SDK et comment vous pouvez intégrer " +
+                                            "n'importe quelle application avec lui.",
                                         title: "Essayer l'exemple"
                                     },
                                     goBack: "Revenir en arrière",
-                                    subTitle: "Commencez rapidement le prototypage en téléchargeant notre application " +
-                                        "d'exemple préconfigurée.",
+                                    subTitle: "Commencez rapidement le prototypage en téléchargeant notre " +
+                                        "application d'exemple préconfigurée.",
                                     title: "Exemple d'application"
                                 },
                                 technology: {
@@ -2234,8 +2247,9 @@ export const console: ConsoleNS = {
                                 },
                                 trySample: {
                                     btn: "Explorez les examples",
-                                    subTitle: "Vous pouvez essayer les examples qui démontreront le flux d'authentification. " +
-                                        "Cliquez sur le bouton ci-dessous pour télécharger et déployer l'exemple d'application.",
+                                    subTitle: "Vous pouvez essayer les examples qui démontreront le flux " +
+                                        "d'authentification. Cliquez sur le bouton ci-dessous pour télécharger " +
+                                        "et déployer l'exemple d'application.",
                                     title: "Essayer avec un exemple"
                                 },
                                 useSDK: {
@@ -2243,8 +2257,8 @@ export const console: ConsoleNS = {
                                         withSDK: "Utiliser le SDK",
                                         withoutSDK: "Manuellement"
                                     },
-                                    subTitle: "Installez et utilisez nos SDK pour intégrer l'authentification à votre " +
-                                        "application avec un nombre minimum de lignes de code.",
+                                    subTitle: "Installez et utilisez nos SDK pour intégrer l'authentification " +
+                                        "à votre application avec un nombre minimum de lignes de code.",
                                     title: "Intégrez votre propre application"
                                 }
                             },
@@ -2255,8 +2269,8 @@ export const console: ConsoleNS = {
                 list: {
                     actions: {
                         add: "Nouvelle Application",
-                        predefined: "Utiliser prédéfini",
-                        custom: "Personnalisé"
+                        custom: "Personnalisé",
+                        predefined: "Utiliser prédéfini"
                     },
                     columns: {
                         actions: "Actions",
@@ -2297,6 +2311,11 @@ export const console: ConsoleNS = {
                             message: "Erreur de suppression"
                         }
                     },
+                    conditionalScriptLoopingError: {
+                        description: "Les constructions en boucle telles que <1>for</1>, <3>while</3> et " +
+                            "<5>forEach</5> ne sont pas autorisées dans le script d'authentification conditionnelle.",
+                        message: "Échec de la mise à jour du script"
+                    },
                     deleteApplication: {
                         error: {
                             description: "{{description}}",
@@ -2310,6 +2329,15 @@ export const console: ConsoleNS = {
                             description: "Suppression avec succès de l'application.",
                             message: "Application supprimée"
                         }
+                    },
+                    deleteCertificateGenericError: {
+                        description: "Quelque chose s'est mal passé. Nous n'avons pas pu supprimer le" +
+                            " certificat d'application.",
+                        message: "Échec de la mise à jour de l'application"
+                    },
+                    deleteCertificateSuccess: {
+                        description: "Suppression réussie du certificat d'application.",
+                        message: "Certificat supprimé"
                     },
                     deleteOptionErrorDueToSecondFactorsOnRight: {
                         error: {
@@ -2332,7 +2360,8 @@ export const console: ConsoleNS = {
                             message: "Erreur de suppression"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la suppression des configurations de protocole entrant.",
+                            description: "Une erreur s'est produite lors de la suppression des configurations " +
+                                "de protocole entrant.",
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {
@@ -2342,7 +2371,8 @@ export const console: ConsoleNS = {
                     },
                     duplicateAuthenticationStep: {
                         genericError: {
-                            description: "Le même authentificateur n'est pas autorisé plus d'une fois en une seule étape.",
+                            description: "Le même authentificateur n'est pas autorisé plus d'une fois en une " +
+                                "seule étape.",
                             message: "Non autorisé"
                         }
                     },
@@ -2401,7 +2431,8 @@ export const console: ConsoleNS = {
                             message: "Erreur de récupération"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la récupération des protocoles entrants personnalisés.",
+                            description: "Une erreur s'est produite lors de la récupération des protocoles " +
+                                "entrants personnalisés.",
                             message: "Erreur de récupération"
                         },
                         success: {
@@ -2415,7 +2446,8 @@ export const console: ConsoleNS = {
                             message: "Erreur de récupération"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la récupération des protocoles entrants disponibles.",
+                            description: "Une erreur s'est produite lors de la récupération des protocoles " +
+                                "entrants disponibles.",
                             message: "Erreur de récupération"
                         },
                         success: {
@@ -2451,7 +2483,8 @@ export const console: ConsoleNS = {
                             message: "Erreur de récupération"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la récupération des métadonnées du protocole.",
+                            description: "Une erreur s'est produite lors de la récupération des " +
+                                "métadonnées du protocole.",
                             message: "Erreur de récupération"
                         },
                         success: {
@@ -2465,7 +2498,8 @@ export const console: ConsoleNS = {
                             message: "Erreur de récupération"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la récupération des configurations IDP pour l'application SAML.",
+                            description: "Une erreur s'est produite lors de la récupération des " +
+                                "configurations IDP pour l'application SAML.",
                             message: "Erreur de récupération"
                         },
                         success: {
@@ -2479,7 +2513,8 @@ export const console: ConsoleNS = {
                             message: "Erreur de récupération"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la récupération des données du modèle d'application",
+                            description: "Une erreur s'est produite lors de la récupération des données " +
+                                "du modèle d'application",
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {
@@ -2584,7 +2619,8 @@ export const console: ConsoleNS = {
                             message: "Erreur de mise à jour"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la mise à jour du flux d'authentification de l'application",
+                            description: "Une erreur s'est produite lors de la mise à jour du flux " +
+                                "d'authentification de l'application",
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {
@@ -2612,7 +2648,8 @@ export const console: ConsoleNS = {
                             message: "Erreur de mise à jour"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la mise à jour des configurations des protocoles entrants.",
+                            description: "Une erreur s'est produite lors de la mise à jour des " +
+                                "configurations des protocoles entrants.",
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {
@@ -2653,20 +2690,6 @@ export const console: ConsoleNS = {
                             description: "Ajout réussi de nouvelles configurations de protocole.",
                             message: "Mise à jour réussie"
                         }
-                    },
-                    conditionalScriptLoopingError: {
-                        description: "Les constructions en boucle telles que <1>for</1>, <3>while</3> et " +
-                            "<5>forEach</5> ne sont pas autorisées dans le script d'authentification conditionnelle.",
-                        message: "Échec de la mise à jour du script"
-                    },
-                    deleteCertificateSuccess: {
-                        description: "Suppression réussie du certificat d'application.",
-                        message: "Certificat supprimé"
-                    },
-                    deleteCertificateGenericError: {
-                        description: "Quelque chose s'est mal passé. Nous n'avons pas pu supprimer le" +
-                            " certificat d'application.",
-                        message: "Échec de la mise à jour de l'application"
                     }
                 },
                 placeholders: {
@@ -2739,10 +2762,20 @@ export const console: ConsoleNS = {
                     },
                     quickSetup: {
                         heading: "Configuration rapide",
-                        subHeading: "Ensemble prédéfini de modèles d'application pour accélérer la création de votre application."
+                        subHeading: "Ensemble prédéfini de modèles d'application pour accélérer la création " +
+                            "de votre application."
                     }
                 },
                 wizards: {
+                    applicationCertificateWizard: {
+                        emptyPlaceHolder: {
+                            description1: "Cette application n'a pas de certificat ajouté.",
+                            description2: "Ajoutez un certificat pour le voir ici",
+                            title: "Pas de certificat"
+                        },
+                        heading: "Ajouter un nouveau certificat",
+                        subHeading: "Ajouter un nouveau certificat à l'application"
+                    },
                     minimalAppCreationWizard: {
                         help: {
                             heading: "Aide",
@@ -2795,14 +2828,23 @@ export const console: ConsoleNS = {
                                 }
                             }
                         }
-                    },
-                    applicationCertificateWizard: {
-                        heading: "Ajouter un nouveau certificat",
-                        subHeading: "Ajouter un nouveau certificat à l'application",
-                        emptyPlaceHolder: {
-                            title: "Pas de certificat",
-                            description1: "Cette application n'a pas de certificat ajouté.",
-                            description2: "Ajoutez un certificat pour le voir ici"
+                    }
+                }
+            },
+            authenticationProvider: {
+                templates: {
+                    enterprise: {
+                        addWizard: {
+                            subtitle: "Configurez un nouveau fournisseur d'identité pour vous connecter avec des " +
+                                "protocoles d'authentification standard.",
+                            title: "Fournisseurs d'identité basés sur des normes"
+                        },
+                        validation: {
+                            invalidName: "{{idpName}} n'est pas un nom valide. " +
+                                "Il ne doit pas contenir d'autres caractères alphanumériques, " +
+                                "à l'exception des points (.), des tirets (-), " +
+                                "des traits de soulignement (_) et des espaces.",
+                            name: "Merci d'entrer un nom valide"
                         }
                     }
                 }
@@ -2826,7 +2868,8 @@ export const console: ConsoleNS = {
                 notifications: {
                     pin: {
                         success: {
-                            description: "Le panneau d'aide apparaîtra toujours {{state}} sauf si vous le modifiez explicitement.",
+                            description: "Le panneau d'aide apparaîtra toujours {{state}} sauf si vous le " +
+                                "modifiez explicitement.",
                             message: "Panneau d'aide {{state}}"
                         }
                     }
@@ -2859,8 +2902,9 @@ export const console: ConsoleNS = {
                 confirmations: {
                     deleteAuthenticator: {
                         assertionHint: "Veuillez taper <1>{{ name }}</1> pour confirmer.",
-                        content: "Si vous supprimez cet authentificateur, vous ne pourrez pas le récupérer. Toutes les applications" +
-                            "qui en dépendent risquent également de ne plus fonctionner. Veuillez procéder avec prudence.",
+                        content: "Si vous supprimez cet authentificateur, vous ne pourrez pas le récupérer. " +
+                            "Toutes les applications qui en dépendent risquent également de ne plus fonctionner. " +
+                            "Veuillez procéder avec prudence.",
                         header: "Etes-vous sûr ?",
                         message: "Cette action est irréversible et supprimera définitivement l'authentificateur."
                     },
@@ -2977,10 +3021,10 @@ export const console: ConsoleNS = {
                     },
                     common: {
                         customProperties: "Propriétés personnalisées",
+                        internetResolvableErrorMessage: "L'URL doit pouvoir être résolue par Internet.",
                         invalidQueryParamErrorMessage: "Ce ne sont pas des paramètres de requête valables",
                         invalidURLErrorMessage: "Ceci n'est pas une URL valide",
-                        requiredErrorMessage: "Ceci est requis",
-                        internetResolvableErrorMessage: "L'URL doit pouvoir être résolue par Internet."
+                        requiredErrorMessage: "Ceci est requis"
                     },
                     generalDetails: {
                         description: {
@@ -3188,7 +3232,8 @@ export const console: ConsoleNS = {
                     },
                     deleteDefaultConnector: {
                         error: {
-                            description: "Le connecteur d'approvisionnement sortant par défaut ne peut pas être supprimé.",
+                            description: "Le connecteur d'approvisionnement sortant par défaut ne peut pas " +
+                                "être supprimé.",
                             message: "Erreur de suppression du connecteur sortant"
                         },
                         genericError: null,
@@ -3224,7 +3269,8 @@ export const console: ConsoleNS = {
                     },
                     disableOutboundProvisioningConnector: {
                         error: {
-                            description: "ous ne pouvez pas désactiver le connecteur d'approvisionnement sortant par défaut.",
+                            description: "ous ne pouvez pas désactiver le connecteur d'approvisionnement " +
+                                "sortant par défaut.",
                             message: "Erreur de validation des données"
                         },
                         genericError: {
@@ -3284,7 +3330,8 @@ export const console: ConsoleNS = {
                             message: "Erreur de récupération"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la récupération des métadonnées d'authentification.",
+                            description: "Une erreur s'est produite lors de la récupération des métadonnées " +
+                                "d'authentification.",
                             message: "Erreur de récupération"
                         },
                         success: {
@@ -3312,7 +3359,8 @@ export const console: ConsoleNS = {
                             message: "Erreur de récupération"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la récupération des données du fournisseur d'identité",
+                            description: "Une erreur s'est produite lors de la récupération des données du " +
+                                "fournisseur d'identité",
                             message: "Erreur de récupération"
                         },
                         success: {
@@ -3326,7 +3374,8 @@ export const console: ConsoleNS = {
                             message: "Erreur de récupération"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la récupération des fournisseurs d'identité",
+                            description: "Une erreur s'est produite lors de la récupération des fournisseurs " +
+                                "d'identité",
                             message: "Erreur de récupération"
                         },
                         success: {
@@ -3354,7 +3403,8 @@ export const console: ConsoleNS = {
                             message: "Erreur de récupération"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de l'extraction de la liste des modèles de fournisseurs d'identités",
+                            description: "Une erreur s'est produite lors de l'extraction de la liste des modèles " +
+                                "de fournisseurs d'identités",
                             message: "Erreur de récupération"
                         },
                         success: {
@@ -3368,7 +3418,8 @@ export const console: ConsoleNS = {
                             message: "Erreur de récupération"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la récupération des détails du connecteur d'approvisionnement sortant.",
+                            description: "Une erreur s'est produite lors de la récupération des détails du " +
+                                "connecteur d'approvisionnement sortant.",
                             message: "Erreur de récupération"
                         },
                         success: {
@@ -3382,7 +3433,8 @@ export const console: ConsoleNS = {
                             message: "Erreur de récupération"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la récupération des métadonnées du connecteur d'approvisionnement sortant.",
+                            description: "Une erreur s'est produite lors de la récupération des métadonnées " +
+                                "du connecteur d'approvisionnement sortant.",
                             message: "Erreur de récupération"
                         },
                         success: {
@@ -3396,7 +3448,8 @@ export const console: ConsoleNS = {
                             message: "Erreur de récupération"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la récupération de la liste des connecteurs d'approvisionnement sortant.",
+                            description: "Une erreur s'est produite lors de la récupération de la liste " +
+                                "des connecteurs d'approvisionnement sortant.",
                             message: "Erreur de récupération"
                         },
                         success: {
@@ -3438,7 +3491,8 @@ export const console: ConsoleNS = {
                             message: "Erreur de mise à jour"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la mise à jour des configurations des claims.",
+                            description: "Une erreur s'est produite lors de la mise à jour des configurations " +
+                                "des claims.",
                             message: "Erreur de mise à jour"
                         },
                         success: {
@@ -3452,7 +3506,8 @@ export const console: ConsoleNS = {
                             message: "Erreur de mise à jour"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la mise à jour de l'authentificateur fédéré.",
+                            description: "Une erreur s'est produite lors de la mise à jour de " +
+                                "l'authentificateur fédéré.",
                             message: "Erreur de mise à jour"
                         },
                         success: {
@@ -3466,7 +3521,8 @@ export const console: ConsoleNS = {
                             message: "Erreur de mise à jour"
                         },
                         genericError: {
-                            description: "sUne erreur s'est produite lors de la mise à jour des authentificateurs fédérés.",
+                            description: "sUne erreur s'est produite lors de la mise à jour des " +
+                                "authentificateurs fédérés.",
                             message: "Erreur de mise à jour"
                         },
                         success: {
@@ -3494,7 +3550,8 @@ export const console: ConsoleNS = {
                             message: "Erreur de mise à jour"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la mise à jour du certificat du fournisseur d'identité.",
+                            description: "Une erreur s'est produite lors de la mise à jour du certificat " +
+                                "du fournisseur d'identité.",
                             message: "Erreur de mise à jour"
                         },
                         success: {
@@ -3508,11 +3565,13 @@ export const console: ConsoleNS = {
                             message: "Erreur de mise à jour"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la mise à jour des configurations des rôles pour le provisionnement sortant.",
+                            description: "Une erreur s'est produite lors de la mise à jour des " +
+                                "configurations des rôles pour le provisionnement sortant.",
                             message: "Erreur de mise à jour"
                         },
                         success: {
-                            description: "Mise à jour réussie des configurations des rôles pour le provisionnement sortant.",
+                            description: "Mise à jour réussie des configurations des rôles pour le " +
+                                "provisionnement sortant.",
                             message: "Mise à jour réussie"
                         }
                     },
@@ -3522,7 +3581,8 @@ export const console: ConsoleNS = {
                             message: ""
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la mise à jour des configurations de provisionnement JIT.",
+                            description: "Une erreur s'est produite lors de la mise à jour des " +
+                                "configurations de provisionnement JIT.",
                             message: "Erreur de mise à jour"
                         },
                         success: {
@@ -3536,7 +3596,8 @@ export const console: ConsoleNS = {
                             message: "Erreur de mise à jour"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la mise à jour du connecteur d'approvisionnement sortant.",
+                            description: "Une erreur s'est produite lors de la mise à jour du" +
+                                " connecteur d'approvisionnement sortant.",
                             message: "Erreur de mise à jour"
                         },
                         success: {
@@ -3550,7 +3611,8 @@ export const console: ConsoleNS = {
                             message: "Erreur de mise à jour"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la mise à jour des connecteurs d'approvisionnement sortant.",
+                            description: "Une erreur s'est produite lors de la mise à jour des " +
+                                "connecteurs d'approvisionnement sortant.",
                             message: "Erreur de mise à jour"
                         },
                         success: {
@@ -3611,7 +3673,8 @@ export const console: ConsoleNS = {
                     },
                     quickSetup: {
                         heading: "Installation rapide",
-                        subHeading: "Ensemble prédéfini de modèles pour accélérer la création de votre fournisseur d'identité."
+                        subHeading: "Ensemble prédéfini de modèles pour accélérer la création de " +
+                            "votre fournisseur d'identité."
                     }
                 },
                 wizards: {
@@ -3623,7 +3686,8 @@ export const console: ConsoleNS = {
                             },
                             authenticatorSelection: {
                                 manualSetup: {
-                                    subTitle: "Ajouter un nouvel authentificateur avec des configurations personnalisées.",
+                                    subTitle: "Ajouter un nouvel authentificateur avec des configurations " +
+                                        "personnalisées.",
                                     title: "Configuration manuelle"
                                 },
                                 quickSetup: {
@@ -3682,14 +3746,16 @@ export const console: ConsoleNS = {
             overview: {
                 banner: {
                     heading: "WSO2 Identity Server pour les développeurs",
-                    subHeading: "Utiliser les SDK et autres outils de développement pour construire une expérience personnalisée",
+                    subHeading: "Utiliser les SDK et autres outils de développement pour construire " +
+                        "une expérience personnalisée",
                     welcome: "Bienvenue, {{username}}"
                 },
                 quickLinks: {
                     cards: {
                         applications: {
                             heading: "Applications",
-                            subHeading: "Créer des applications à l'aide de modèles prédéfinis et gérer leurs configurations."
+                            subHeading: "Créer des applications à l'aide de modèles prédéfinis et " +
+                                "gérer leurs configurations."
                         },
                         idps: {
                             heading: "Fournisseurs d'identité",
@@ -3698,7 +3764,8 @@ export const console: ConsoleNS = {
                         },
                         remoteFetch: {
                             heading: "Récupérer à distance",
-                            subHeading: "Configurer un référentiel distant pour qu'il fonctionne de manière transparente avec WSO2 Identity Server."
+                            subHeading: "Configurer un référentiel distant pour qu'il fonctionne de " +
+                                "manière transparente avec WSO2 Identity Server."
                         }
                     }
                 }
@@ -3709,13 +3776,48 @@ export const console: ConsoleNS = {
                         description: "Le secret a été créé avec succès.",
                         message: "Création réussie."
                     },
-                    updatedSecret: {
-                        description: "Le secret a été mis à jour avec succès.",
-                        message: "Mise à jour réussie."
-                    },
                     deleteSecret: {
                         description: "Le secret a été supprimé avec succès.",
                         message: "Suppression réussie."
+                    },
+                    updatedSecret: {
+                        description: "Le secret a été mis à jour avec succès.",
+                        message: "Mise à jour réussie."
+                    }
+                },
+                banners: {
+                    adaptiveAuthSecretType: {
+                        content: "Ces secrets peuvent être utilisés dans le script d'authentification adaptative " +
+                            "d'une application enregistrée lors de l'accès à des API externes.",
+                        title: "Secrets d'authentification adaptative"
+                    },
+                    secretIsHidden: {
+                        content: "Une fois créé, vous ne pourrez plus voir la valeur secrète. Vous ne pourrez " +
+                            "supprimer que le secret.",
+                        title: "Pourquoi ne puis-je pas voir le secret ?"
+                    }
+                },
+                emptyPlaceholders: {
+                    buttons: {
+                        addSecret: {
+                            ariaLabel: "Ajoutez un nouveau secret.",
+                            label: "Nouveau secret"
+                        },
+                        backToSecrets: {
+                            ariaLabel: "Accédez à la liste des secrets.",
+                            label: "Ramène-moi à Secrets"
+                        }
+                    },
+                    emptyListOfSecrets: {
+                        messages: [
+                            "Il n'y a pas de secrets disponibles pour le moment."
+                        ]
+                    },
+                    resourceNotFound: {
+                        messages: [
+                            "Oups! nous n'avons pas pu trouver le secret demandé !",
+                            "Peut-être avez-vous atterri sur une URL invalide..."
+                        ]
                     }
                 },
                 errors: {
@@ -3724,11 +3826,50 @@ export const console: ConsoleNS = {
                         message: "Quelque chose ne tourne pas rond."
                     }
                 },
+                forms: {
+                    actions: {
+                        submitButton: {
+                            ariaLabel: "Mettre à jour pour enregistrer le formulaire",
+                            label: "Mettre à jour"
+                        }
+                    },
+                    editSecret: {
+                        page: {
+                            description: "Modifier le secret"
+                        },
+                        secretDescriptionField: {
+                            ariaLabel: "Description secrète",
+                            hint: "Donnez une description de ce secret (c'est-à-dire, quand utiliser ce secret).",
+                            label: "Description secrète",
+                            placeholder: "Entrez une description secrète"
+                        },
+                        secretValueField: {
+                            ariaLabel: "Entrez une valeur secrète",
+                            cancelButton: "Annuler",
+                            editButton: "Modifier la valeur secrète",
+                            hint: "Vous pouvez saisir une valeur comprise entre {{minLength}} et {{maxLength}}.",
+                            label: "Valeur secrète",
+                            placeholder: "Entrez une valeur secrète",
+                            updateButton: "Mettre à jour la valeur secrète"
+                        }
+                    }
+                },
+                modals: {
+                    deleteSecret: {
+                        assertionHint: "Oui je comprends. Je veux le supprimer.",
+                        content: "Cette action est irréversible et supprimera définitivement le secret.",
+                        primaryActionButtonText: "Confirmer",
+                        secondaryActionButtonText: "Annuler",
+                        title: "Es-tu sûr?",
+                        warningMessage: "Si vous supprimez ce secret, les scripts d'authentification conditionnelle " +
+                            "en fonction de cette valeur cesseront de fonctionner. Veuillez procéder avec prudence."
+                    }
+                },
                 page: {
                     description: "Créer et gérer des secrets pour l'authentification conditionnelle",
                     primaryActionButtonText: "Nouveau secret",
-                    title: "Secrets",
-                    subFeatureBackButton: "Retourner à Secrets"
+                    subFeatureBackButton: "Retourner à Secrets",
+                    title: "Secrets"
                 },
                 routes: {
                     category: "secrets",
@@ -3737,121 +3878,47 @@ export const console: ConsoleNS = {
                         "Modifier le secret"
                     ]
                 },
-                modals: {
-                    deleteSecret: {
-                        assertionHint: "Oui je comprends. Je veux le supprimer.",
-                        primaryActionButtonText: "Confirmer",
-                        secondaryActionButtonText: "Annuler",
-                        title: "Es-tu sûr?",
-                        content: "Cette action est irréversible et supprimera définitivement le secret.",
-                        warningMessage: "Si vous supprimez ce secret, les scripts d'authentification conditionnelle " +
-                            "en fonction de cette valeur cesseront de fonctionner. Veuillez procéder avec prudence."
-                    }
-                },
                 wizards: {
+                    actions: {
+                        cancelButton: {
+                            ariaLabel: "Annuler et fermer le modal",
+                            label: "Annuler"
+                        },
+                        createButton: {
+                            ariaLabel: "Créer et soumettre",
+                            label: "Créer"
+                        }
+                    },
                     addSecret: {
-                        heading: "Créer un secret",
-                        subheading: "Créer un nouveau secret pour les scripts d'authentification adaptative",
                         form: {
-                            secretTypeField: {
-                                ariaLabel: "Sélectionnez le type de secret",
-                                hint: "Sélectionnez un type de secret auquel appartient ce secret.",
-                                label: "Sélectionnez le type de secret"
+                            secretDescriptionField: {
+                                ariaLabel: "Description secrète",
+                                hint: "Donnez une description de ce secret (c'est-à-dire, quand utiliser ce secret).",
+                                label: "Description secrète",
+                                placeholder: "Entrez une description secrète"
                             },
                             secretNameField: {
                                 ariaLabel: "Nom secret pour le type de secret",
                                 hint: "Donnez un nom significatif à ce secret. Notez qu'une fois que vous avez créé " +
                                     "ce secret avec le nom ci-dessus, vous ne pouvez plus le modifier par la suite.",
-                                placeholder: "Entrez un nom secret",
-                                label: "Nom secret"
+                                label: "Nom secret",
+                                placeholder: "Entrez un nom secret"
+                            },
+                            secretTypeField: {
+                                ariaLabel: "Sélectionnez le type de secret",
+                                hint: "Sélectionnez un type de secret auquel appartient ce secret.",
+                                label: "Sélectionnez le type de secret"
                             },
                             secretValueField: {
                                 ariaLabel: "Entrez une valeur secrète",
                                 hint: "C'est la valeur du secret. Vous pouvez saisir une valeur comprise entre " +
                                     "{{minLength}} et {{maxLength}}.",
-                                placeholder: "Entrez une valeur secrète",
-                                label: "Valeur secrète"
-                            },
-                            secretDescriptionField: {
-                                ariaLabel: "Description secrète",
-                                hint: "Donnez une description de ce secret (c'est-à-dire, quand utiliser ce secret).",
-                                placeholder: "Entrez une description secrète",
-                                label: "Description secrète"
+                                label: "Valeur secrète",
+                                placeholder: "Entrez une valeur secrète"
                             }
-                        }
-                    },
-                    actions: {
-                        createButton: {
-                            label: "Créer",
-                            ariaLabel: "Créer et soumettre"
                         },
-                        cancelButton: {
-                            label: "Annuler",
-                            ariaLabel: "Annuler et fermer le modal"
-                        }
-                    }
-                },
-                banners: {
-                    secretIsHidden: {
-                        title: "Pourquoi ne puis-je pas voir le secret ?",
-                        content: "Une fois créé, vous ne pourrez plus voir la valeur secrète. Vous ne pourrez " +
-                            "supprimer que le secret."
-                    },
-                    adaptiveAuthSecretType: {
-                        title: "Secrets d'authentification adaptative",
-                        content: "Ces secrets peuvent être utilisés dans le script d'authentification adaptative " +
-                            "d'une application enregistrée lors de l'accès à des API externes."
-                    }
-                },
-                forms: {
-                    editSecret: {
-                        page: {
-                            description: "Modifier le secret"
-                        },
-                        secretValueField: {
-                            ariaLabel: "Entrez une valeur secrète",
-                            label: "Valeur secrète",
-                            hint: "Vous pouvez saisir une valeur comprise entre {{minLength}} et {{maxLength}}.",
-                            placeholder: "Entrez une valeur secrète",
-                            editButton: "Modifier la valeur secrète",
-                            cancelButton: "Annuler",
-                            updateButton: "Mettre à jour la valeur secrète"
-                        },
-                        secretDescriptionField: {
-                            ariaLabel: "Description secrète",
-                            hint: "Donnez une description de ce secret (c'est-à-dire, quand utiliser ce secret).",
-                            placeholder: "Entrez une description secrète",
-                            label: "Description secrète"
-                        }
-                    },
-                    actions: {
-                        submitButton: {
-                            label: "Mettre à jour",
-                            ariaLabel: "Mettre à jour pour enregistrer le formulaire"
-                        }
-                    }
-                },
-                emptyPlaceholders: {
-                    resourceNotFound: {
-                        messages: [
-                            "Oups! nous n'avons pas pu trouver le secret demandé !",
-                            "Peut-être avez-vous atterri sur une URL invalide..."
-                        ]
-                    },
-                    emptyListOfSecrets: {
-                        messages: [
-                            "Il n'y a pas de secrets disponibles pour le moment."
-                        ]
-                    },
-                    buttons: {
-                        backToSecrets: {
-                            label: "Ramène-moi à Secrets",
-                            ariaLabel: "Accédez à la liste des secrets."
-                        },
-                        addSecret: {
-                            label: "Nouveau secret",
-                            ariaLabel: "Ajoutez un nouveau secret."
-                        }
+                        heading: "Créer un secret",
+                        subheading: "Créer un nouveau secret pour les scripts d'authentification adaptative"
                     }
                 }
             },
@@ -3880,24 +3947,6 @@ export const console: ConsoleNS = {
                     action: null,
                     subtitles: "Veuillez ajouter des modèles à afficher ici.",
                     title: "Pas de modèles à afficher."
-                }
-            },
-            authenticationProvider: {
-                templates: {
-                    enterprise: {
-                        addWizard: {
-                            title: "Fournisseurs d'identité basés sur des normes",
-                            subtitle: "Configurez un nouveau fournisseur d'identité pour vous connecter avec des " +
-                                "protocoles d'authentification standard."
-                        },
-                        validation: {
-                            name: "Merci d'entrer un nom valide",
-                            invalidName: "{{idpName}} n'est pas un nom valide. " +
-                                "Il ne doit pas contenir d'autres caractères alphanumériques, " +
-                                "à l'exception des points (.), des tirets (-), " +
-                                "des traits de soulignement (_) et des espaces."
-                        }
-                    }
                 }
             }
         },
@@ -3976,7 +4025,8 @@ export const console: ConsoleNS = {
                 title: "Sélectionnez le fournisseur d'identité"
             },
             overview: {
-                subTitle: "Configurer et gérer les applications, les fournisseurs d'identité, les utilisateurs et les rôles, les dialectes d'attributs, " +
+                subTitle: "Configurer et gérer les applications, les fournisseurs d'identité, les utilisateurs " +
+                    "et les rôles, les dialectes d'attributs, " +
                     "etc.",
                 title: "Bienvenue, {{firstName}}"
             }
@@ -4011,20 +4061,6 @@ export const console: ConsoleNS = {
     },
     manage: {
         features: {
-            businessGroups: {
-                fields: {
-                    groupName: {
-                        label: "Nome de {{type}}",
-                        placeholder: "Saisir un nom de {{type}}",
-                        validations: {
-                            duplicate: "Un {{type}} avec ce nom existe déjà.",
-                            empty: "Le nom de {{type}} est obligatoire",
-                            invalid: "Un nom {{type}} ne peut contenir que des caractères alphanumériques, - et _. "+
-                                "Et doit avoir une longueur comprise entre 3 et 30 caractères."
-                        }
-                    }
-                }
-            },
             approvals: {
                 list: {
                     columns: {
@@ -4034,8 +4070,9 @@ export const console: ConsoleNS = {
                 },
                 modals: {
                     taskDetails: {
-                        header: "Tâche d'approbation",
-                        description: "Vous avez une demande d'approbation d'une action opérationnelle d'un utilisateur."
+                        description: "Vous avez une demande d'approbation d'une action opérationnelle " +
+                            "d'un utilisateur.",
+                        header: "Tâche d'approbation"
                     }
                 },
                 notifications: {
@@ -4083,15 +4120,6 @@ export const console: ConsoleNS = {
                     }
                 },
                 placeholders: {
-                    emptyApprovalList: {
-                        action: "",
-                        subtitles: {
-                            0: "Il n'y a actuellement aucune approbation à examiner.",
-                            1: "Veuillez vérifier si vous avez ajouté un flux de travail pour",
-                            2: "contrôler les tâches dans le système."
-                        },
-                        title: "Aucune approbation"
-                    },
                     emptyApprovalFilter: {
                         action: "Voir tout",
                         subtitles: {
@@ -4101,6 +4129,15 @@ export const console: ConsoleNS = {
                         },
                         title: "Aucune {{status}} approbation"
                     },
+                    emptyApprovalList: {
+                        action: "",
+                        subtitles: {
+                            0: "Il n'y a actuellement aucune approbation à examiner.",
+                            1: "Veuillez vérifier si vous avez ajouté un flux de travail pour",
+                            2: "contrôler les tâches dans le système."
+                        },
+                        title: "Aucune approbation"
+                    },
                     emptySearchResults: {
                         action: "Voir tout",
                         subtitles: {
@@ -4109,6 +4146,20 @@ export const console: ConsoleNS = {
                             2: "le système."
                         },
                         title: "Aucun résultat trouvé"
+                    }
+                }
+            },
+            businessGroups: {
+                fields: {
+                    groupName: {
+                        label: "Nome de {{type}}",
+                        placeholder: "Saisir un nom de {{type}}",
+                        validations: {
+                            duplicate: "Un {{type}} avec ce nom existe déjà.",
+                            empty: "Le nom de {{type}} est obligatoire",
+                            invalid: "Un nom {{type}} ne peut contenir que des caractères alphanumériques, - et _. "+
+                                "Et doit avoir une longueur comprise entre 3 et 30 caractères."
+                        }
                     }
                 }
             },
@@ -4319,17 +4370,18 @@ export const console: ConsoleNS = {
                     },
                     confirmations: {
                         action: "Confirmer",
-                        content: "Si vous supprimez ce mappage d'attributs, tous les attributs {{type}} associés seront "
-                            + "également supprimés, veuillez procéder avec prudence.",
+                        content: "Si vous supprimez ce mappage d'attributs, tous les attributs {{type}} " +
+                            "associés seront également supprimés, veuillez procéder avec prudence.",
                         header: "Êtes-vous sûr ?",
                         hint: "Veuillez saisir <1>{{ name }}</1> pour confirmer.",
-                        message: "Cette action est irréversible et supprimera définitivement le mappage d'attributs sélectionné."
+                        message: "Cette action est irréversible et supprimera définitivement le mappage " +
+                            "d'attributs sélectionné."
                     },
                     dangerZone: {
                         actionTitle: "Supprimer le mappage d'attributs {{type}}",
                         header: "Supprimer le mappage d'attributs {{type}}",
-                        subheader: "Une fois que vous supprimez ce mappage d'attribut {{type}}, il n'y a plus de retour en arrière." +
-                            "Soyez certain."
+                        subheader: "Une fois que vous supprimez ce mappage d'attribut {{type}}, il n'y a plus " +
+                            "de retour en arrière. Soyez certain."
                     },
                     forms: {
                         dialectURI: {
@@ -4340,10 +4392,10 @@ export const console: ConsoleNS = {
                         fields: {
                             attributeName: {
                                 validation: {
+                                    alreadyExists: "Un attribut existe déjà avec le nom d'attribut donné.",
                                     invalid: "Le nom d'attribut ne peut contenir que des caractères "
                                         +"alphanumériques et _. Et doit avoir une longueur comprise "
-                                        +"entre 3 et 30 caractères.",
-                                    alreadyExists: "Un attribut existe déjà avec le nom d'attribut donné."
+                                        +"entre 3 et 30 caractères."
                                 }
                             }
                         },
@@ -4356,8 +4408,8 @@ export const console: ConsoleNS = {
                                 message: "Quelque chose s'est mal passé"
                             },
                             genericError: {
-                                description: "Le mappage d'attributs a été ajouté avec succès, mais ce n'est pas le cas pour "
-                                    + "tous les attributs {{type}}",
+                                description: "Le mappage d'attributs a été ajouté avec succès, mais ce n'est pas " +
+                                    "le cas pour tous les attributs {{type}}",
                                 message: "Des attributs externes n'ont pas pu être ajoutés"
                             },
                             success: {
@@ -4420,8 +4472,9 @@ export const console: ConsoleNS = {
                             updateExternalAttributes: "Mettre à jour le mappage d'attributs {{type}}"
                         },
                         list: {
-                            description: "Affichez et gérez la façon dont les attributs utilisateur d'{{productName}} " +
-                                "sont mappés et transformés lors de l'interaction avec les API ou vos applications.",
+                            description: "Affichez et gérez la façon dont les attributs utilisateur " +
+                                "d'{{productName}} sont mappés et transformés lors de l'interaction avec les " +
+                                "API ou vos applications.",
                             primaryAction: "Nouveau mappage d'attributse",
                             title: "Les attributs",
                             view: "Voir les claims locaux"
@@ -4508,6 +4561,7 @@ export const console: ConsoleNS = {
                                     "un tiret (-) et un trait de soulignement (_)."
                             }
                         },
+                        emptyMessage: "Tous les attributs SCIM sont mappés sur des revendications locales.",
                         localAttribute: {
                             label: "Attribut URI à mapper",
                             placeholder: "Sélectionnez un attribut",
@@ -4515,8 +4569,7 @@ export const console: ConsoleNS = {
                         },
                         submit: "Ajouter un mappage d'attributs",
                         warningMessage: "Aucun attribut local n'est disponible pour le mappage. " +
-                            "Ajouter de nouveaux attributs locaux à partir d'ici",
-                        emptyMessage: "Tous les attributs SCIM sont mappés sur des revendications locales."
+                            "Ajouter de nouveaux attributs locaux à partir d'ici"
                     },
                     notifications: {
                         addExternalAttribute: {
@@ -4620,7 +4673,8 @@ export const console: ConsoleNS = {
                                 local: "Nouvel attribut local"
                             },
                             subtitle: "Il n'y a actuellement aucun résultat disponible."
-                                + "Vous pouvez ajouter un nouvel élément facilement en suivant les étapes de l'assistant de création.",
+                                + "Vous pouvez ajouter un nouvel élément facilement en suivant les étapes " +
+                                "de l'assistant de création.",
                             title: {
                                 dialect: "Ajouter un dialecte {{type}}",
                                 external: "Ajouter un attribut {{type}}",
@@ -4666,17 +4720,20 @@ export const console: ConsoleNS = {
                         attributeURI: "URI d'attribut"
                     },
                     confirmation: {
-                        content: "Si vous supprimez cet attribut local, les données utilisateur appartenant à cet attribut "
+                        content: "Si vous supprimez cet attribut local, les données utilisateur appartenant à " +
+                            "cet attribut "
                             + "seront également supprimés. Veuillez procéder avec prudence.",
                         header: "Êtes-vous sûr ?",
                         hint: "Veuillez confirmer votre action.",
-                        message: "Cette action est irréversible et supprimera définitivement l'attribut local sélectionné.",
+                        message: "Cette action est irréversible et supprimera définitivement l'attribut local " +
+                            "sélectionné.",
                         primaryAction: "Confirmer"
                     },
                     dangerZone: {
                         actionTitle: "Supprimer l'attribut local",
                         header: "Supprimer l'attribut local",
-                        subheader: "Une fois que vous avez supprimé un attribut local, il est impossible de revenir en arrière. "
+                        subheader: "Une fois que vous avez supprimé un attribut local, il est impossible " +
+                            "de revenir en arrière. "
                             + "Soyez certains de vous."
                     },
                     forms: {
@@ -4703,6 +4760,12 @@ export const console: ConsoleNS = {
                         },
                         displayOrderHint: "Ceci détermine la position à laquelle cet attribut est affiché "
                             + "dans le profil de l'utilisateur et la page d'enregistrement de l'utilisateur",
+                        infoMessages: {
+                            configApplicabilityInfo: "Veuillez noter que les configurations d'attributs suivantes " +
+                                "n'affecteront que les profils d'utilisateurs des clients.",
+                            disabledConfigInfo: "Veuillez noter que la section ci-dessous est désactivée car aucun" +
+                                " mappage de revendication externe n'a été trouvé pour cet attribut de revendication."
+                        },
                         name: {
                             label: "Nom",
                             placeholder: "Saisir un nom pour l'attribut",
@@ -4726,24 +4789,21 @@ export const console: ConsoleNS = {
                             label: "Expression régulière",
                             placeholder: "Entrez une expression régulière"
                         },
-                        regExHint: "Cette expression régulière est utilisée pour valider le format que cet attribut peut prendre",
+                        regExHint: "Cette expression régulière est utilisée pour valider le format que cet " +
+                            "attribut peut prendre",
                         required: {
                             label: "Rendre cet attribut obligatoire lors de l'inscription de l'utilisateur"
                         },
                         requiredHint: "S'il est sélectionné, l'utilisateur doit spécifier une valeur pour " +
                         "cet attribut sur le profil.",
                         supportedByDefault: {
-                            label: "Afficher cet attribut sur le profil de l'utilisateur et la page d'enregistrement de l'utilisateur"
-                        },
-                        infoMessages: {
-                            disabledConfigInfo: "Veuillez noter que la section ci-dessous est désactivée car aucun" +
-                                " mappage de revendication externe n'a été trouvé pour cet attribut de revendication.",
-                            configApplicabilityInfo: "Veuillez noter que les configurations d'attributs suivantes " +
-                                "n'affecteront que les profils d'utilisateurs des clients."
+                            label: "Afficher cet attribut sur le profil de l'utilisateur et la page " +
+                                "d'enregistrement de l'utilisateur"
                         }
                     },
                     mappedAttributes: {
-                        hint: "Saisissez l'attribut de chaque magasin d'utilisateurs que vous voulez associer à cet attribut."
+                        hint: "Saisissez l'attribut de chaque magasin d'utilisateurs que vous voulez associer " +
+                            "à cet attribut."
                     },
                     notifications: {
                         addLocalClaim: {
@@ -4840,7 +4900,8 @@ export const console: ConsoleNS = {
                             readOnly: "Cet attribut est en lecture seule",
                             regEx: "Expression régulière",
                             required: "Cet attribut est requis lors de l'inscription de l'utilisateur",
-                            supportedByDefault: "Cet attribut est affiché sur le profil de l'utilisateur et sur la page d'enregistrement de l'utilisateur",
+                            supportedByDefault: "Cet attribut est affiché sur le profil de l'utilisateur et sur " +
+                                "la page d'enregistrement de l'utilisateur",
                             userstore: "Annuaire"
                         }
                     }
@@ -4858,7 +4919,7 @@ export const console: ConsoleNS = {
                                 label: "Corps",
                                 validations: {
                                     empty: "Le corps de l'e-mail ne peut pas être vide."
-    }
+                                }
                             },
                             locale: {
                                 label: "Langue",
@@ -4869,7 +4930,7 @@ export const console: ConsoleNS = {
                             },
                             signatureEditor: {
                                 label: "Signature du courrier",
-                                 validations: {
+                                validations: {
                                     empty: "La signature électronique ne peut pas être vide."
                                 }
                             },
@@ -5037,7 +5098,8 @@ export const console: ConsoleNS = {
                         content: "En supprimant ce modèle d'e-mail, tous les processus associés ne disposeront " +
                             "plus de modèle valide pour fonctionner. Veuillez procéder avec prudence.",
                         header: "Êtes-vous sûr ?",
-                        message: "Cette action est irréversible et supprimera définitivement le modèle d'e-mail sélectionné."
+                        message: "Cette action est irréversible et supprimera définitivement le modèle " +
+                            "d'e-mail sélectionné."
                     }
                 },
                 editor: {
@@ -5182,7 +5244,8 @@ export const console: ConsoleNS = {
                             message: "Erreur de récupération"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la récupération des catégories de connecteurs.",
+                            description: "Une erreur s'est produite lors de la récupération des catégories " +
+                                "de connecteurs.",
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {
@@ -5235,12 +5298,13 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                     roles: {
-                         addRolesModal: {
-                             heading: "Mettre à jour les rôles de groupe",
-                             subHeading: "Ajoutez de nouveaux rôles ou supprimez les rôles existants attribués au groupe."
-                         },
-                         subHeading: "Ajoutez ou supprimez les rôles auxquels ce groupe est affecté et " +
+                    roles: {
+                        addRolesModal: {
+                            heading: "Mettre à jour les rôles de groupe",
+                            subHeading: "Ajoutez de nouveaux rôles ou supprimez les rôles existants attribués " +
+                                "au groupe."
+                        },
+                        subHeading: "Ajoutez ou supprimez les rôles auxquels ce groupe est affecté et " +
                              "notez que cela affectera l'exécution de certaines tâches."
                     }
                 },
@@ -5337,7 +5401,8 @@ export const console: ConsoleNS = {
                 notifications: {
                     pin: {
                         success: {
-                            description: "Le panneau d'aide apparaîtra toujours {{state}} sauf si vous le modifiez explicitement.",
+                            description: "Le panneau d'aide apparaîtra toujours {{state}} sauf si vous le " +
+                                "modifiez explicitement.",
                             message: "Panneau d'aide {{state}}"
                         }
                     }
@@ -5881,8 +5946,9 @@ export const console: ConsoleNS = {
                                 validations: {
                                     duplicate: "Un {{type}} avec ce nom existe déjà.",
                                     empty: "Le nom de {{type}} est obligatoire",
-                                    invalid: "Un nom {{type}} ne peut contenir que des caractères alphanumériques, - et _. "+
-                                        "Et doit avoir une longueur comprise entre 3 et 30 caractères."
+                                    invalid: "Un nom {{type}} ne peut contenir que des caractères " +
+                                        "alphanumériques, - et _. Et doit avoir une longueur comprise entre 3 " +
+                                        "et 30 caractères."
                                 }
                             }
                         }
@@ -5916,7 +5982,8 @@ export const console: ConsoleNS = {
                                 listHeader: "Nom",
                                 searchPlaceholder: "Rechercher des utilisateurs"
                             },
-                            subHeading: "Ajouter de nouveaux utilisateurs ou supprimer les utilisateurs existants affectés a {{type}}."
+                            subHeading: "Ajouter de nouveaux utilisateurs ou supprimer les utilisateurs " +
+                                "existants affectés a {{type}}."
                         }
                     },
                     wizardSteps: {
@@ -5951,16 +6018,19 @@ export const console: ConsoleNS = {
                         },
                         confirmation: {
                             assertionHint: "Veuillez confirmer votre action.",
-                            content: "Si vous supprimez ce {{type}}, les permissions qui lui sont attachées seront supprimées et " +
-                                "les utilisateurs qui y sont rattachés ne pourront plus effectuer les actions prévues qui étaient " +
-                                "précédemment autorisées. Veuillez procéder avec prudence.",
+                            content: "Si vous supprimez ce {{type}}, les permissions qui lui sont attachées " +
+                                "seront supprimées et les utilisateurs qui y sont rattachés ne pourront plus " +
+                                "effectuer les actions prévues qui étaient précédemment autorisées. " +
+                                "Veuillez procéder avec prudence.",
                             header: "Êtes-vous sûr ?",
-                            message: "Cette action est irréversible et supprimera définitivement le {{type}} sélectionné"
+                            message: "Cette action est irréversible et supprimera définitivement le {{type}} " +
+                                "sélectionné"
                         },
                         dangerZone: {
                             actionTitle: "Supprimer {{type}}",
                             header: "Supprimer {{type}}",
-                            subheader: "Une fois que vous avez supprimé le {{type}}, il n'y a plus de retour en arrière. Veuillez en être certain."
+                            subheader: "Une fois que vous avez supprimé le {{type}}, il n'y a plus de retour " +
+                                "en arrière. Veuillez en être certain."
                         },
                         fields: {
                             roleName: {
@@ -5974,7 +6044,8 @@ export const console: ConsoleNS = {
                     groups: {
                         addGroupsModal: {
                             heading: "Mettre à jour les groupes de rôles",
-                            subHeading: "Ajoutez de nouveaux groupes ou supprimez les groupes existants affectés au rôle."
+                            subHeading: "Ajoutez de nouveaux groupes ou supprimez les groupes existants " +
+                                "affectés au rôle."
                         },
                         emptyPlaceholder: {
                             action: "Attribuer un groupe",
@@ -6016,11 +6087,13 @@ export const console: ConsoleNS = {
                     confirmations: {
                         deleteItem: {
                             assertionHint: "Veuillez confirmer votre action.",
-                            content: "Si vous supprimez ce {{type}}, les permissions qui y sont attachées seront supprimées et " +
-                                "les utilisateurs qui y sont rattachés ne pourront plus effectuer les actions prévues qui étaient " +
-                                "précédemment autorisées. Veuillez procéder avec prudence.",
+                            content: "Si vous supprimez ce {{type}}, les permissions qui y sont attachées seront " +
+                                "supprimées et les utilisateurs qui y sont rattachés ne pourront plus effectuer " +
+                                "les actions prévues qui étaient précédemment autorisées. Veuillez procéder " +
+                                "avec prudence.",
                             header: "Êtes-vous sûr ?",
-                            message: "Cette action est irréversible et supprimera définitivement le {{type}} sélectionné"
+                            message: "Cette action est irréversible et supprimera définitivement le {{type}} " +
+                                "sélectionné"
                         }
                     },
                     emptyPlaceholders: {
@@ -6159,7 +6232,8 @@ export const console: ConsoleNS = {
                                 message: "Erreur de récupération"
                             },
                             genericError: {
-                                description: "Une erreur s'est produite lors de la récupération des configuration du domaine d'identité.",
+                                description: "Une erreur s'est produite lors de la récupération des configuration du " +
+                                    "domaine d'identité.",
                                 message: "Quelque chose s'est mal passé"
                             },
                             success: {
@@ -6173,7 +6247,8 @@ export const console: ConsoleNS = {
                                 message: "Erreur de mise à jour"
                             },
                             genericError: {
-                                description: "Une erreur s'est produite lors de la mise à jour des configuration du domaine d'identité.",
+                                description: "Une erreur s'est produite lors de la mise à jour des configuration du " +
+                                    "domaine d'identité.",
                                 message: "Erreur de mise à jour"
                             },
                             success: {
@@ -6264,8 +6339,9 @@ export const console: ConsoleNS = {
                 disableUser: {
                     confirmationModal: {
                         assertionHint: "Veuillez confirmer votre action.",
-                        content: "Si vous désactivez cet utilisateur, l'utilisateur ne pourra pas se connecter à" +
-                            " Mon compte ou à toute autre application à laquelle l'utilisateur était abonné auparavant.",
+                        content: "Si vous désactivez cet utilisateur, l'utilisateur ne pourra pas se connecter à " +
+                            "Mon compte ou à toute autre application à laquelle l'utilisateur était abonné " +
+                            "auparavant.",
                         header: "Êtes-vous sûr?",
                         message: "Assurez-vous que l'utilisateur n'a plus besoin d'accéder au système."
                     }
@@ -6293,11 +6369,11 @@ export const console: ConsoleNS = {
                         },
                         passwordResetZone: {
                             actionTitle: "Réinitialiser le mot de passe",
+                            buttonHint: "Ce compte utilisateur doit être déverrouillé pour réinitialiser le mot de " +
+                                "passe.",
                             header: "Réinitialiser le mot de passe",
                             subheader: "Une fois le mot de passe modifié, l'utilisateur ne pourra plus se connecter " +
-                                "à aucune application en utilisant le mot de passe actuel.",
-                            buttonHint: "Ce compte utilisateur doit être déverrouillé pour réinitialiser le mot de " +
-                                "passe."
+                                "à aucune application en utilisant le mot de passe actuel."
                         }
                     }
                 },
@@ -6365,7 +6441,8 @@ export const console: ConsoleNS = {
                                 validations: {
                                     empty: "Le nom d'utilisateur est obligatoire",
                                     invalid: "Ce nom d'utilisateur n'est pas disponible.",
-                                    invalidCharacters: "Le nom d'utilisateur semble contenir des caractères non valides.",
+                                    invalidCharacters: "Le nom d'utilisateur semble contenir des caractères " +
+                                        "non valides.",
                                     regExViolation: "Votre email doit contenir de 3 à 50 caractères. Vous pouvez " +
                                         "utiliser des caractères alphanumériques, caractères Unicode, " +
                                         "des traits de soulignement (_), des tirets (-), des signes plus (+), " +
@@ -6405,8 +6482,8 @@ export const console: ConsoleNS = {
                 modals: {
                     addUserWarnModal: {
                         heading: "Attention",
-                        message: "Veuillez noter qu'aucun rôle ne sera attribué au nouvel utilisateur. Si vous souhaitez " +
-                            "lui en attribuer, veuillez cliquer sur le bouton ci-dessous."
+                        message: "Veuillez noter qu'aucun rôle ne sera attribué au nouvel utilisateur. Si " +
+                            "vous souhaitez lui en attribuer, veuillez cliquer sur le bouton ci-dessous."
                     },
                     addUserWizard: {
                         buttons: {
@@ -6428,7 +6505,8 @@ export const console: ConsoleNS = {
                             passwordOption: {
                                 label: "Initialisation du mot de passe",
                                 message: {
-                                    0: "Une invitation sera envoyé à l'adresse {{email}} avec un lien d'initialisation.",
+                                    0: "Une invitation sera envoyé à l'adresse {{email}} avec un lien " +
+                                        "d'initialisation.",
                                     1: "Vous avez initialisé le mot de passe."
                                 }
                             },
@@ -6439,16 +6517,18 @@ export const console: ConsoleNS = {
                     changePasswordModal: {
                         button: "réinitialiser le mot de passe",
                         header: "Réinitialiser le mot de passe de l'utilisateur",
-                        message: "ATTENTION: veuillez noter qu'après avoir modifié le mot de passe, l'utilisateur ne " +
-                            "pourra plus se connecter à aucune application en utilisant le mot de passe actuel.",
                         hint: {
-                            forceReset: "ATTENTION: Veuillez noter qu'après avoir invité l'utilisateur à réinitialiser " +
-                                "le mot de passe, l'utilisateur ne pourra plus se connecter à aucune application en " +
-                                "utilisant le mot de passe actuel. Le lien de réinitialisation du mot de passe sera " +
+                            forceReset: "ATTENTION: Veuillez noter qu'après avoir invité l'utilisateur à " +
+                                "réinitialiser le mot de passe, l'utilisateur ne pourra plus se connecter à " +
+                                "aucune application en utilisant le mot de passe actuel. Le lien de " +
+                                "éinitialisation du mot de passe sera " +
                                 "valide pendant {{codeValidityPeriod}} minutes.",
-                            setPassword: "ATTENTION: veuillez noter qu'après avoir modifié le mot de passe, l'utilisateur ne " +
+                            setPassword: "ATTENTION: veuillez noter qu'après avoir modifié le mot de passe, " +
+                                "l'utilisateur ne " +
                                 "pourra plus se connecter à aucune application en utilisant le mot de passe actuel."
                         },
+                        message: "ATTENTION: veuillez noter qu'après avoir modifié le mot de passe, l'utilisateur ne " +
+                            "pourra plus se connecter à aucune application en utilisant le mot de passe actuel.",
                         passwordOptions: {
                             forceReset: "Inviter l'utilisateur à réinitialiser le mot de passe",
                             setPassword: "Définir un nouveau mot de passe pour l'utilisateur"
@@ -6457,13 +6537,7 @@ export const console: ConsoleNS = {
                 },
                 profile: {
                     fields: {
-                        userId: "Identifiant d'utilisateur",
-                        addresses_home: "Adresse personnelle",
-                        addresses_work: "Adresse professionnelle",
                         emails: "Email",
-                        emails_home: "E-mail personnel",
-                        emails_other: "Autre adresse e-mail",
-                        emails_work: "E-mail professionnel",
                         generic: {
                             default: "Ajouter l'attribut {{fieldName}}"
                         },
@@ -6471,12 +6545,9 @@ export const console: ConsoleNS = {
                         name_givenName: "Prénom",
                         oneTimePassword: "Mot de passe à usage unique",
                         phoneNumbers: "Numéros de téléphone",
-                        phoneNumbers_home: "Numéro de téléphone personnel",
-                        phoneNumbers_mobile: "Numéro de téléphone portable",
-                        phoneNumbers_other: "Autre numéro de téléphone",
-                        phoneNumbers_work: "Numéro de téléphone au professionnel",
                         photos: "Photos",
                         profileUrl: "URL",
+                        userId: "Identifiant d'utilisateur",
                         userName: "Nom d'utilisateur"
                     },
                     forms: {
@@ -6663,7 +6734,8 @@ export const console: ConsoleNS = {
                                 message: "Une erreur s'est produite lors de la mise à jour des informations du profil"
                             },
                             genericError: {
-                                description: "Une erreur s'est produite lors de la mise à jour des informations du profil",
+                                description: "Une erreur s'est produite lors de la mise à jour des informations " +
+                                    "du profil",
                                 message: "Quelque chose s'est mal passé"
                             },
                             success: {
@@ -6719,7 +6791,8 @@ export const console: ConsoleNS = {
                             addUserGroups: {
                                 error: {
                                     description: "{{description}}",
-                                    message: "Une erreur s'est produite lors de la mise à jour des groupes de l'utilisateur"
+                                    message: "Une erreur s'est produite lors de la mise à jour des groupes " +
+                                        "de l'utilisateur"
                                 },
                                 genericError: {
                                     description: "Une erreur s'est produite lors de la mise à jour des groupes de " +
@@ -6749,7 +6822,8 @@ export const console: ConsoleNS = {
                             removeUserGroups: {
                                 error: {
                                     description: "{{description}}",
-                                    message: "Une erreur s'est produite lors de la mise à jour des groupes de l'utilisateur"
+                                    message: "Une erreur s'est produite lors de la mise à jour des groupes " +
+                                        "de l'utilisateur"
                                 },
                                 genericError: {
                                     description: "Une erreur s'est produite lors de la mise à jour des groupes de " +
@@ -6764,7 +6838,8 @@ export const console: ConsoleNS = {
                             updateUserGroups: {
                                 error: {
                                     description: "{{description}}",
-                                    message: "Une erreur s'est produite lors de la mise à jour des groupes de l'utilisateur"
+                                    message: "Une erreur s'est produite lors de la mise à jour des groupes " +
+                                        "de l'utilisateur"
                                 },
                                 genericError: {
                                     description: "Une erreur s'est produite lors de la mise à jour des groupes de " +
@@ -6819,7 +6894,8 @@ export const console: ConsoleNS = {
                             addUserRoles: {
                                 error: {
                                     description: "{{description}}",
-                                    message: "Une erreur s'est produite lors de la mise à jour des rôles de l'utilisateur"
+                                    message: "Une erreur s'est produite lors de la mise à jour des rôles " +
+                                        "de l'utilisateur"
                                 },
                                 genericError: {
                                     description: "Une erreur s'est produite lors de la mise à jour des rôles de " +
@@ -6837,7 +6913,8 @@ export const console: ConsoleNS = {
                                     message: "Une erreur s'est produite lors de la récupération de la liste des rôles"
                                 },
                                 genericError: {
-                                    description: "Une erreur s'est produite lors de la récupération de la liste des rôles",
+                                    description: "Une erreur s'est produite lors de la récupération de la liste " +
+                                        "des rôles",
                                     message: "Quelque chose s'est mal passé"
                                 },
                                 success: {
@@ -6848,7 +6925,8 @@ export const console: ConsoleNS = {
                             removeUserRoles: {
                                 error: {
                                     description: "{{description}}",
-                                    message: "Une erreur s'est produite lors de la mise à jour des rôles de l'utilisateur"
+                                    message: "Une erreur s'est produite lors de la mise à jour des rôles de " +
+                                        "l'utilisateur"
                                 },
                                 genericError: {
                                     description: "Une erreur s'est produite lors de la mise à jour des rôles " +
@@ -6863,7 +6941,8 @@ export const console: ConsoleNS = {
                             updateUserRoles: {
                                 error: {
                                     description: "{{description}}",
-                                    message: "Une erreur s'est produite lors de la mise à jour des rôles de l'utilisateur"
+                                    message: "Une erreur s'est produite lors de la mise à jour des rôles de " +
+                                        "l'utilisateur"
                                 },
                                 genericError: {
                                     description: "Une erreur s'est produite lors de la mise à jour des rôles " +
@@ -6885,40 +6964,6 @@ export const console: ConsoleNS = {
                 }
             },
             users: {
-                consumerUsers: {
-                    fields: {
-                        username: {
-                            label: "Nom d'utilisateur",
-                            placeholder: "Veuillez saisir un nom d'utilisateur",
-                            validations: {
-                                empty: "Le nom d'utilisateur est obligatoire",
-                                invalid: "Ce nom d'utilisateur n'est pas disponible.",
-                                invalidCharacters: "Le nom d'utilisateur semble contenir des caractères non valides.",
-                                regExViolation: "Votre email doit contenir de 3 à 50 caractères. Vous pouvez " +
-                                    "utiliser des caractères alphanumériques, caractères Unicode, " +
-                                    "des traits de soulignement (_), des tirets (-), des signes plus (+), " +
-                                    "des points (.), et un signe arobase (@)."
-                            }
-                        }
-                    }
-                },
-                guestUsers: {
-                    fields: {
-                        username: {
-                            label: "Nom d'utilisateur",
-                            placeholder: "Veuillez saisir un nom d'utilisateur",
-                            validations: {
-                                empty: "Le nom d'utilisateur est obligatoire",
-                                invalid: "Ce nom d'utilisateur n'est pas disponible.",
-                                invalidCharacters: "Le nom d'utilisateur semble contenir des caractères non valides.",
-                                regExViolation: "Votre email doit contenir de 3 à 50 caractères. Vous pouvez " +
-                                    "utiliser des caractères alphanumériques, caractères Unicode, " +
-                                    "des traits de soulignement (_), des tirets (-), des points (.), " +
-                                    "et un signe arobase (@)."
-                            }
-                        }
-                    }
-                },
                 advancedSearch: {
                     form: {
                         dropdown: {
@@ -6970,6 +7015,23 @@ export const console: ConsoleNS = {
                         message: "Cette action est irréversible et mettra fin définitivement à la session."
                     }
                 },
+                consumerUsers: {
+                    fields: {
+                        username: {
+                            label: "Nom d'utilisateur",
+                            placeholder: "Veuillez saisir un nom d'utilisateur",
+                            validations: {
+                                empty: "Le nom d'utilisateur est obligatoire",
+                                invalid: "Ce nom d'utilisateur n'est pas disponible.",
+                                invalidCharacters: "Le nom d'utilisateur semble contenir des caractères non valides.",
+                                regExViolation: "Votre email doit contenir de 3 à 50 caractères. Vous pouvez " +
+                                    "utiliser des caractères alphanumériques, caractères Unicode, " +
+                                    "des traits de soulignement (_), des tirets (-), des signes plus (+), " +
+                                    "des points (.), et un signe arobase (@)."
+                            }
+                        }
+                    }
+                },
                 editUser: {
                     tab: {
                         menuItems: {
@@ -6980,13 +7042,29 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
-
                 forms: {
                     validation: {
-                        formatError: "Le format du {{field}} saisi est incorrect.",
                         dateFormatError: "Le format du {{field}} saisi est incorrect. Le format valide est YYYY-MM-DD.",
+                        formatError: "Le format du {{field}} saisi est incorrect.",
                         mobileFormatError: "Le format du {{field}} saisi est incorrect. Le format valide est [+]"+
                             "[indicatif du pays][indicatif régional][numéro de téléphone local]."
+                    }
+                },
+                guestUsers: {
+                    fields: {
+                        username: {
+                            label: "Nom d'utilisateur",
+                            placeholder: "Veuillez saisir un nom d'utilisateur",
+                            validations: {
+                                empty: "Le nom d'utilisateur est obligatoire",
+                                invalid: "Ce nom d'utilisateur n'est pas disponible.",
+                                invalidCharacters: "Le nom d'utilisateur semble contenir des caractères non valides.",
+                                regExViolation: "Votre email doit contenir de 3 à 50 caractères. Vous pouvez " +
+                                    "utiliser des caractères alphanumériques, caractères Unicode, " +
+                                    "des traits de soulignement (_), des tirets (-), des points (.), " +
+                                    "et un signe arobase (@)."
+                            }
+                        }
                     }
                 },
                 list: {
@@ -7064,6 +7142,7 @@ export const console: ConsoleNS = {
                                 terminateSession: "Terminer la session"
                             },
                             labels: {
+                                activeApplication: "Applications actives",
                                 browser: "Navigateur",
                                 deviceModel: "Modèle d'appareil",
                                 ip: "Adresse IP",
@@ -7071,8 +7150,7 @@ export const console: ConsoleNS = {
                                 loggedInAs: "Connecté sous <1>{{ app }}</1> en tant que <3>{{ user }}</3>",
                                 loginTime: "Heure de connexion",
                                 os: "Système opérateur",
-                                recentActivity: "Activité récente",
-                                activeApplication: "Applications actives"
+                                recentActivity: "Activité récente"
                             }
                         }
                     },
@@ -7216,7 +7294,8 @@ export const console: ConsoleNS = {
                     disable: {
                         actionTitle: "Activer Userstore",
                         header: "Activer Userstore",
-                        subheader: "La désactivation d'un magasin d'utilisateurs peut vous faire perdre l'accès aux utilisateurs du magasin d'utilisateurs." +
+                        subheader: "La désactivation d'un magasin d'utilisateurs peut vous faire perdre l'accès " +
+                            "aux utilisateurs du magasin d'utilisateurs." +
                             "Procéder avec prudence."
                     }
                 },
@@ -7264,7 +7343,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     delay: {
-                    description: "La mise à jour de la liste des annuaires peut prendre un peu de temps. "
+                        description: "La mise à jour de la liste des annuaires peut prendre un peu de temps. "
                             + "Veuillez rafraîchir dans quelques instants pour afficher la liste des annuaires mis à " +
                         "jour.",
                         message: "Mise à jour différée de la liste des annuaires"

@@ -18,6 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { ReactElement, SyntheticEvent } from "react";
+import { FlagNameValues } from "semantic-ui-react";
 import { LanguageSwitcherDropdown } from "./language-switcher-dropdown";
 
 /**
@@ -48,11 +49,36 @@ export interface LanguageSwitcherProps extends TestableComponentInterface {
     /**
      * Set of supported languages.
      */
-    supportedLanguages: object;
+    supportedLanguages: SupportedLanguagesInterface;
     /**
      * Should dropdown open upwards.
      */
     upward?: boolean;
+}
+
+/**
+ * Interface for the Supported Languages.
+ */
+export interface SupportedLanguagesInterface {
+
+    [ key: string ]: {
+        /**
+         * Country Code.
+         */
+        code: string
+        /**
+         * Country Flag.
+         */
+        flag?: FlagNameValues;
+        /**
+         * Country Name.
+         */
+        name: string;
+        /**
+         * Dynamic values.
+         */
+        [ key: string ]: any;
+    }
 }
 
 /**

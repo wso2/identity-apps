@@ -96,30 +96,32 @@ export const MessageWithIcon: FunctionComponent<MessageWithIconProps> = (props: 
         switch (type) {
             case "info":
                 return (
-                    <Message className={ classes }
-                             info
-                             visible={ visible }
-                             header={
-                                 header
-                                     ? (
-                                         <Header as="h4">
-                                             <Header.Content>
-                                                 <Icon name="info circle"/>
-                                                 { (header) }
-                                             </Header.Content>
-                                         </Header>
-                                     ) : undefined
-                             }
-                             content={
-                                 header
-                                     ? generateContent()
-                                     : (
-                                         <div>
-                                             <Icon name="info circle"/>
-                                             { content }
-                                         </div>
-                                     )
-                             }
+                    <Message
+                        className={ classes }
+                        info
+                        visible={ visible }
+                        header={
+                            header
+                                ? (
+                                    <Header as="h4">
+                                        <Header.Content>
+                                            <Icon name="info circle"/>
+                                            { (header) }
+                                        </Header.Content>
+                                    </Header>
+                                ) : undefined
+                        }
+                        content={
+                            header
+                                ? generateContent()
+                                : (
+                                    <div>
+                                        <Icon name="info circle"/>
+                                        { content }
+                                    </div>
+                                )
+                        }
+                        data-testid={ testId }
                     />
                 );
             case "error":
@@ -148,6 +150,7 @@ export const MessageWithIcon: FunctionComponent<MessageWithIconProps> = (props: 
                                     </div>
                                 )
                         }
+                        data-testid={ testId }
                     />
                 );
             case "success":
@@ -176,6 +179,7 @@ export const MessageWithIcon: FunctionComponent<MessageWithIconProps> = (props: 
                                     </div>
                                 )
                         }
+                        data-testid={ testId }
                     />
                 );
             case "warning":
@@ -204,6 +208,7 @@ export const MessageWithIcon: FunctionComponent<MessageWithIconProps> = (props: 
                                     </div>
                                 )
                         }
+                        data-testid={ testId }
                     />
                 );
             default:
@@ -212,6 +217,7 @@ export const MessageWithIcon: FunctionComponent<MessageWithIconProps> = (props: 
                         visible={ visible }
                         content={ generateContent() }
                         header={ header }
+                        data-testid={ testId }
                     />
                 );
         }

@@ -98,7 +98,6 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     const {
         authenticators,
         authenticationSteps,
-        className,
         currentStep,
         defaultName,
         heading,
@@ -112,7 +111,6 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
 
     const [ selectedAuthenticators, setSelectedAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
 
-    const classes = classNames("authenticators", className);
     const authenticatorCardClasses = classNames("authenticator", {
         "with-labels": showLabels
     });
@@ -184,7 +182,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                                     }
                                                 >
                                                     The second-factor authenticators can only be used if <Code
-                                                    withBackground>Username & Password</Code>, <Code withBackground>
+                                                        withBackground>Username & Password</Code>, <Code withBackground>
                                                     Social Login</Code> or any other handlers such as 
                                                     <Code withBackground>Identifier First</Code> that can handle these 
                                                     factors are present in a previous step.
