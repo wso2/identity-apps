@@ -68,19 +68,19 @@ export class EventPublisher {
      * Function to publish event logs.
      * 
      * @param {string} eventId - Publishing event identifier.
-     * @param { {[key: string]: string | Record<string, unknown>} } [_customProperties] 
+     * @param { {[key: string]: string | Record<string, unknown>} } [customProperties] 
      *      - Any custom properties to be published (optional).
     */
-    public publish(eventId: string, _customProperties?: { [key: string]: string | Record<string, unknown> }): void {
+    public publish(eventId: string, customProperties?: { [key: string]: string | Record<string, unknown> }): void {
 
-        if (_customProperties) {
+        if (customProperties) {
             /**
              * If you want to do any event logging, do it here.
              * custom properties are passed here.
             */
 
             analyticsConfig.EventPublisherExtension.publish && 
-                analyticsConfig.EventPublisherExtension.publish(eventId, _customProperties);
+                analyticsConfig.EventPublisherExtension.publish(eventId, customProperties);
 
             return;
         }

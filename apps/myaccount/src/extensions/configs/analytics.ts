@@ -20,8 +20,9 @@ import { AnalyticsConfig } from "./models/analytics";
   
 export const analyticsConfig: AnalyticsConfig = {
     EventPublisherExtension: {
-        compute: (computation) => null,
+        compute: (_computation: () => void) => null,
         init: () => null,
-        publish: (eventId, _customProperties?) => null
+        publish: (_eventId: string, _customProperties?: { [key: string]: string | Record<string, unknown> | 
+                number }) => null
     }
 };
