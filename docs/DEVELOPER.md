@@ -356,6 +356,16 @@ When adding new assets, always check the existing once in the theme and only pro
 
 When adding images, always try to add SVGs which are optimized for web.
 
+##### Prepend unused arguments with `_`
+
+There might be times when you have to leave an argument unused in a function, especially when writing extension configs. This will prompt the linter to throw a warning.
+To avoid this, always prepend the unused argument with `_`.
+```TypeScript
+const printAge(_name: string, age: number){
+    console.log(age);
+}
+```
+
 ## Ensuring a good user experience
 We follow certain development practices to ensure the applications provide a good user experience. Please make sure you adhere to the following guidelines.
 

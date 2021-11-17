@@ -29,7 +29,6 @@ const TerserPlugin = require("terser-webpack-plugin");
 const webpack = require("webpack");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const deploymentConfig = require("./src/public/deployment.config.json");
-const { env } = require("process");
 
 // Flag to enable source maps in production.
 const isSourceMapsEnabledInProduction = false;
