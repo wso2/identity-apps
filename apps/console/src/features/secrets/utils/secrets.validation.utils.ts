@@ -41,7 +41,7 @@ export const secretNameValidator = (
         } characters!`;
     }
     if (!FormValidation.isValidResourceKey(value)) {
-        return FieldConstants.INVALID_RESOURCE_ERROR;
+        return FieldConstants.INVALID_SECRET_NAME_ERROR;
     }
 
     let isNameAlreadyExists = false;

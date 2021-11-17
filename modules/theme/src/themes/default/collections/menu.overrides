@@ -642,7 +642,7 @@
             }
             &.custom-dropdown {
                 max-height: 200px;
-                max-width: 50px;
+                max-width: 156px;
 
                 .item {
                     height: 43px;
