@@ -28,6 +28,7 @@ import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
 import { AuthAction, authenticateActionTypes } from "./types";
 import { getProfileInfo, getUserReadOnlyStatus, switchAccount } from "../../api";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
+import { commonConfig } from "../../extensions";
 import { SCIMConfigs } from "../../extensions/configs/scim";
 import { history } from "../../helpers";
 import {

@@ -3805,6 +3805,7 @@ export const console: ConsoleNS = {
                                 placeholder: "රහස් විස්තරයක් ඇතුළත් කරන්න"
                             },
                             secretNameField: {
+                                alreadyPresentError: "මෙම රහස් නම දැනටමත් එකතු කර ඇත!",
                                 ariaLabel: "රහස් වර්ගය සඳහා රහස් නම",
                                 hint: "මෙම රහස සඳහා අර්ථවත් නමක් දෙන්න. ඉහත නම සමඟ ඔබ මෙම රහස නිර්මාණය කළ " +
                                     "පසු ඔබට එය වෙනස් කළ නොහැකි බව සලකන්න.",

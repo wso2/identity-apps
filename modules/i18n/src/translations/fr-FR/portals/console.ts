@@ -3898,6 +3898,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Entrez une description secrète"
                             },
                             secretNameField: {
+                                alreadyPresentError: "Ce nom secret est déjà ajouté",
                                 ariaLabel: "Nom secret pour le type de secret",
                                 hint: "Donnez un nom significatif à ce secret. Notez qu'une fois que vous avez créé " +
                                     "ce secret avec le nom ci-dessus, vous ne pouvez plus le modifier par la suite.",
