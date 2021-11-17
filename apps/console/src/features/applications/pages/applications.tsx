@@ -283,7 +283,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                             loading={ isApplicationListRequestLoading }
                             onClick={ (): void => {
                                 eventPublisher.publish("application-click-new-application-button");
-
                                 history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
                             } }
                             data-testid={ `${ testId }-list-layout-add-button` }

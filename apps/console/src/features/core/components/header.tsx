@@ -184,7 +184,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             name: t("console:common.header.appSwitch.console.name"),
                             onClick: () => {
                                 eventPublisher.publish("console-click-visit-console");
-
                                 window.open(consoleAppURL, "_self");
                             }
                         },
@@ -196,7 +195,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             name: t("console:common.header.appSwitch.myAccount.name"),
                             onClick: () => {
                                 eventPublisher.publish("console-click-visit-my-account");
-
                                 window.open(accountAppURL, "_blank", "noopener");
                             }
                         }
@@ -362,7 +360,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                 name: t("common:logout"),
                                 onClick: () => {
                                     eventPublisher.publish("console-click-logout");
-
                                     history.push(window[ "AppUtils" ].getConfig().routes.logout);
                                 }
                             }

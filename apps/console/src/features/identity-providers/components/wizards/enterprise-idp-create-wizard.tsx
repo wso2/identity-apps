@@ -328,9 +328,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         createIdentityProvider(identityProvider)
             .then((response) => {
                 eventPublisher.publish("connections-finish-adding-connection", {
-                    "type": componentId + "-" + kebabCase(selectedProtocol)
+                    type: componentId + "-" + kebabCase(selectedProtocol)
                 });
-
                 dispatch(addAlert({
                     description: t("console:develop.features.authenticationProvider.notifications." +
                         "addIDP.success.description"),

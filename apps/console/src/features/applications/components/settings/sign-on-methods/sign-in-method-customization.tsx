@@ -368,7 +368,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             });
 
             eventPublisher.publish("application-sign-in-method-click-update-button", {
-                "type": eventPublisherProperties
+                type: eventPublisherProperties
             });
         });
 

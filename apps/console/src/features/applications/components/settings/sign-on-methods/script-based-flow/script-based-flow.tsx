@@ -472,9 +472,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      */
     const handleTemplateSelection = (template: AdaptiveAuthTemplateInterface) => {
         eventPublisher.publish("application-sign-in-method-conditional-authentication-template", {
-            "type": kebabCase(template["name"])
+            type: kebabCase(template["name"])
         });
-
         setIsNewlyAddedScriptTemplate(true);
         onTemplateSelect(template);
     };
@@ -498,7 +497,6 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         }
 
         eventPublisher.publish("application-sign-in-method-enable-conditional-authentication");
-
         setShowConditionalAuthContent(true);
     };
 

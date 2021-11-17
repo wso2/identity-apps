@@ -56,7 +56,7 @@ export const App = (): ReactElement => {
     const loginInit: boolean = useSelector((state: AppState) => state.authenticationInformation.loginInit);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
-    const UUID: string = useSelector((state: AppState) => state.authenticationInformation.profileInfo.id);
+    const uuid: string = useSelector((state: AppState) => state.authenticationInformation.profileInfo.id);
 
     const [ appRoutes, setAppRoutes ] = useState<RouteInterface[]>(getAppRoutes());
 
@@ -127,12 +127,11 @@ export const App = (): ReactElement => {
     * Publish page visit when the UUID is set.
     */
     useEffect(() => {
-        if (!UUID) {
+        if (!uuid) {
             return;
         }
-
         eventPublisher.publish("page-visit-myaccount-landing-page");
-    }, [ UUID ]);
+    }, [ uuid ]);
 
     /**
      * Handles session timeout abort.

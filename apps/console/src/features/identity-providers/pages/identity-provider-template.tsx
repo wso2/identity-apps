@@ -247,9 +247,8 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
 
         if (selectedTemplate) {
             setSelectedTemplate(selectedTemplate);
-
             eventPublisher.publish("connections-select-template", {
-                "type": selectedTemplate.templateId
+                type: selectedTemplate.templateId
             });
         }
 

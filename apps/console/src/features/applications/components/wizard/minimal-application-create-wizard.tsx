@@ -289,11 +289,11 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 eventPublisher.compute(() => {
                     if (selectedTemplate.id === CustomApplicationTemplate.id) {
                         eventPublisher.publish("application-register-new-application", {
-                            "type": application.templateId
+                            type: application.templateId
                         });
                     } else {
                         eventPublisher.publish("application-register-new-application", {
-                            "type": selectedTemplate.templateId
+                            type: selectedTemplate.templateId
                         });
                     }
                 });

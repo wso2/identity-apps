@@ -405,9 +405,8 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                                 loading={ isSubmitting }
                                 onClick={ () => {
                                     eventPublisher.publish("manage-attribute-mappings-add-new-attribute", {
-                                        "type": kebabCase(attributeType)
+                                        type: kebabCase(attributeType)
                                     });
-
                                     setTriggerAddExternalClaim();
                                 } }
                                 data-testid={ `${ testId }-add-external-claim-modal-save-button` }

@@ -223,9 +223,8 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
         }
 
         eventPublisher.publish("application-click-create-new", {
-            "type": selected.templateId
+            type: selected.templateId
         });
-
         setSelectedTemplate(selected);
         setShowWizard(true);
     };
