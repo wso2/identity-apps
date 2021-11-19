@@ -328,7 +328,7 @@ module.exports = (env) => {
             },
             splitChunks: {
                 chunks: "all",
-                maxSize: 50000
+                maxSize: 100000
             },
             // Tells webpack to determine used exports for each module.
             usedExports: true
