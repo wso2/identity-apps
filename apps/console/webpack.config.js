@@ -164,7 +164,7 @@ module.exports = (env) => {
         entry: {
             app: "./src/app.tsx",
             init: [ "@babel/polyfill", "./src/init/init.ts" ],
-            main: "./src/index.tsx",
+            main: "./src/index.tsx"
         },
         infrastructureLogging: {
             // Log level is set to `none` by default to get rid of un-necessary logs from persistent cache etc.
