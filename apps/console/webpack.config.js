@@ -162,7 +162,6 @@ module.exports = (env) => {
                 : false
             : isDevelopment && "eval-cheap-module-source-map",
         entry: {
-            app: "./src/app.tsx",
             init: [ "@babel/polyfill", "./src/init/init.ts" ],
             main: "./src/index.tsx"
         },
@@ -328,8 +327,8 @@ module.exports = (env) => {
             },
             splitChunks: {
                 chunks: "all",
-                maxSize: 100000,
-                minSize: 50000
+                maxSize: 1000000,
+                minSize: 500000
             },
             // Tells webpack to determine used exports for each module.
             usedExports: true
