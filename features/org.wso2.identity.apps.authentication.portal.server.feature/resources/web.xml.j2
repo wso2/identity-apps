@@ -137,8 +137,8 @@
     {% if authenticationendpoint.context_params is defined %}
     {% for key, value in authenticationendpoint.context_params.items() %}
     <context-param>
-        <param-name>{{key}}</param-name>
-        <param-value>"{{value}}"</param-value>
+        <param-name>{{ key }}</param-name>
+        <param-value>{{ value }}</param-value>
     </context-param>
     {% endfor %}
     {% endif %}
