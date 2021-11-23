@@ -85,6 +85,10 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     const [ showMapAttributes, setShowMapAttributes ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ validateMapping, setValidateMapping ] = useState<boolean>(false);
+    const [ scimMapping, setScimMapping ] = useState<boolean>(false);
+    const [ oidcMapping, setOidcMapping ] = useState<boolean>(false);
+    const [ createdClaim, setCreatedClaim ] = useState<string>(null);
+
     const hiddenUserStores: string[] = useSelector((state: AppState) => state.config.ui.hiddenUserStores);
 
     const [ firstStep, setFirstStep ] = useTrigger();
@@ -112,6 +116,25 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
         }
 
     }, [ hiddenUserStores ]);
+
+    /**
+     * Navigate to the claim edit page after adding a claim.
+     */
+    useEffect(() => {
+        if (!oidcMapping || !scimMapping || !createdClaim) {
+            return;
+        }
+
+        history.push({
+            pathname: AppConstants.getPaths().get("LOCAL_CLAIMS_EDIT")
+                .replace(":id", createdClaim),
+            search: ClaimManagementConstants.NEW_LOCAL_CLAIM_URL_SEARCH_PARAM
+        });
+
+        setIsSubmitting(false);
+        onClose();
+        update();
+    }, [ oidcMapping, scimMapping, createdClaim ]);
 
     /**
      * Submit handler that sends the API request to add the local claim
@@ -143,28 +166,32 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                     }
                 ));
 
-                if ( attributeConfig.localAttributes.mapClaimToCustomDialect && customMappings) {
+                if (attributeConfig.localAttributes.mapClaimToCustomDialect && customMappings) {
 
                     if (!skipSCIM) {
                         attributeConfig.localAttributes.isSCIMCustomDialectAvailable().then((claimId: string) => {
                             addExternalClaim(claimId, {
-                                claimURI: `${
-                                    attributeConfig.localAttributes.customDialectURI
+                                claimURI: `${ attributeConfig.localAttributes.customDialectURI
                                 }:${ customMappings.get("scim") }`,
                                 mappedLocalClaimURI: data.claimURI
                             }).then(() => {
                                 fetchUpdatedSchemaList();
-                            });
+                            }).finally(() => setScimMapping(true));
                         });
+                    } else {
+                        setScimMapping(true);
                     }
 
-                    attributeConfig.localAttributes.getDialect(ClaimManagementConstants.OIDC_MAPPING[0]).then(
+                    attributeConfig.localAttributes.getDialect(ClaimManagementConstants.OIDC_MAPPING[ 0 ]).then(
                         response => {
                             addExternalClaim(response.id, {
-                                claimURI: `${customMappings.get("oidc")}`,
+                                claimURI: `${ customMappings.get("oidc") }`,
                                 mappedLocalClaimURI: data.claimURI
-                            });
+                            }).finally(() => setOidcMapping(true));
                         });
+                } else {
+                    setOidcMapping(true);
+                    setScimMapping(true);
                 }
 
                 // The created resource's id is sent as a location header.
@@ -173,24 +200,19 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                     const location = response.headers.location;
                     const createdClaim = location.substring(location.lastIndexOf("/") + 1);
 
-                    // Closes the modal.
-                    onClose();
-
-                    history.push({
-                        pathname: AppConstants.getPaths().get("LOCAL_CLAIMS_EDIT")
-                            .replace(":id", createdClaim),
-                        search: ClaimManagementConstants.NEW_LOCAL_CLAIM_URL_SEARCH_PARAM
-                    });
+                    setCreatedClaim(createdClaim);
 
                     return;
+                } else {
+                    // Fallback to listing, if the location header is not present.
+                    // `onClose()` closes the modal and `update()` re-fetches the list.
+                    // Check `LocalClaimsPage` component for the respective callback actions.
+                    onClose();
+                    update();
+                    setIsSubmitting(false);
                 }
-
-                // Fallback to listing, if the location header is not present.
-                // `onClose()` closes the modal and `update()` re-fetches the list.
-                // Check `LocalClaimsPage` component for the respective callback actions.
-                onClose();
-                update();
             }).catch((error) => {
+                setIsSubmitting(false);
                 setAlert(
                     {
                         description: error?.description
@@ -202,8 +224,6 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                                 "genericError.message")
                     }
                 );
-            }).finally(() => {
-                setIsSubmitting(false);
             });
     };
 
