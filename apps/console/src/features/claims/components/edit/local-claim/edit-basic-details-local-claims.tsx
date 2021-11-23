@@ -114,9 +114,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     }, [ claim ]);
 
     useEffect(() => {
-        const dialectID = [];
+        const dialectID = getDialectID();
 
-        getDialectID(dialectID);
         if(claim) {
             const externalClaimRequest = [];
 
@@ -124,20 +123,13 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 externalClaimRequest.push(getExternalClaims(dialectId));
             });
 
-            let tempMappings = [];
-
             Axios.all(externalClaimRequest).then(response => {
-                for (let i = 0; i < response.length; i++) {
-                    tempMappings = response[i];
+                const claims = [].concat(...response);
 
-                    for (let j = 0; j < tempMappings.length; j++) {
-                        if (tempMappings[j].mappedLocalClaimURI === claim.claimURI) {
-                            setHasMapping(true);
-
-                            break;
-                        }
-                    }
+                if (claims.find((externalClaim) => externalClaim.mappedLocalClaimURI === claim.claimURI)) {
+                    setHasMapping(true);
                 }
+
             }).catch((error) => {
                 dispatch(
                     addAlert({
@@ -150,11 +142,15 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         }
     }, [ claim ]);
 
-    const getDialectID = (dialectID: string[]) => {
+    const getDialectID = (): string[]  => {
+        const dialectID: string[] = [];
+
         dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE"));
         dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE_USER"));
         dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_ENT_USER"));
         dialectID.push(SCIMConfigs.scimDialectID.customEnterpriseSchema);
+
+        return dialectID;
     };
 
     // Temporary fix to check system claims and make them readonly
@@ -376,7 +372,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         hint={ t("console:manage.features.claims.local.forms.descriptionHint") }
                         readOnly={ isReadOnly }
                     />
-                    
+
                     { attributeConfig.localAttributes.createWizard.showRegularExpression && !hideSpecialClaims
                         && (
                             <Field.Input
@@ -439,7 +435,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         //Hides on user_id, username and groups claims
                         claim && claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI
                             && claim.claimURI !== ClaimManagementConstants.USER_NAME_CLAIM_URI
-                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI 
+                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI
                             && !hideSpecialClaims && mappingChecked &&
                         (
                             <Field.Checkbox
@@ -454,17 +450,17 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 data-testid={ `${testId}-form-supported-by-default-input` }
                                 readOnly={ isReadOnly }
                                 disabled={ !hasMapping }
-                                { 
+                                {
                                     ...( shouldShowOnProfile
                                         ? { checked: true }
-                                        : { defaultValue : claim?.supportedByDefault } 
-                                    ) 
-                                }   
+                                        : { defaultValue : claim?.supportedByDefault }
+                                    )
+                                }
                             />
                         )
                     }
                     {
-                        attributeConfig.editAttributes.showDisplayOrderInput && isShowDisplayOrder 
+                        attributeConfig.editAttributes.showDisplayOrderInput && isShowDisplayOrder
                         && !hideSpecialClaims
                         && (
                             <Field.Input
@@ -490,7 +486,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     }
                     {
                         claim && attributeConfig.editAttributes.showRequiredCheckBox
-                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI 
+                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI
                             && !hideSpecialClaims && mappingChecked && (
                             <Field.Checkbox
                                 ariaLabel="required"
@@ -518,7 +514,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         //Hides on user_id, username and groups claims
                         claim && claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI
                             && claim.claimURI !== ClaimManagementConstants.USER_NAME_CLAIM_URI
-                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI 
+                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI
                             && !hideSpecialClaims && mappingChecked &&
                         (
                             <Field.Checkbox
