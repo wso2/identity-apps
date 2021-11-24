@@ -48,17 +48,6 @@
 
     ReCaptchaApi reCaptchaApi = new ReCaptchaApi();
 
-    if (StringUtils.isNotEmpty(tenantDomain)) {
-        try {
-            IdentityTenantUtil.getTenantId(tenantDomain);
-        } catch (IdentityRuntimeException e) {
-            request.setAttribute("error", true);
-            request.setAttribute("errorMsg", e.getMessage());
-            request.getRequestDispatcher("username-recovery-tenant-request.jsp").forward(request, response);
-            return;
-        }
-    }
-
     try {
         ReCaptchaProperties reCaptchaProperties = reCaptchaApi.getReCaptcha(tenantDomain, true, "ReCaptcha",
                 "username-recovery");
