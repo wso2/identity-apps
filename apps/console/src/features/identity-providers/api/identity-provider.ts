@@ -512,7 +512,7 @@ export const updateJITProvisioningConfigs = (
     return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to update identity provider: " + idpId));
+                return Promise.reject(new Error("Failed to update jit configuration: " + idpId));
             }
             return Promise.resolve(response.data as IdentityProviderInterface);
         }).catch((error: AxiosError) => {
@@ -522,8 +522,43 @@ export const updateJITProvisioningConfigs = (
                 error.code,
                 error.request,
                 error.response,
-                error.config);
+                error.config
+            );
         });
+};
+
+
+export const getJITProvisioningConfigs = (
+    idpId: string
+): Promise<IdentityProviderInterface> => {
+
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.identityProviders + "/" + idpId + "/provisioning/jit"
+    };
+
+    return httpClient(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to get jit configuration: " + idpId));
+            }
+            return Promise.resolve(response.data as IdentityProviderInterface);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                IdentityProviderManagementConstants.IDENTITY_PROVIDER_JIT_PROVISIONING_UPDATE_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config
+            );
+        });
+
 };
 
 /**
