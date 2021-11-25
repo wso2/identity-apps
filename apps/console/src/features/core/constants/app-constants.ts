@@ -308,7 +308,8 @@ export class AppConstants {
                 AppConstants.getAdminViewBasePath() }/connector/:categoryId/:connectorId`)
             .set("SECRETS", `${ AppConstants.getDeveloperViewBasePath() }/secrets`)
             .set("SECRET_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/secrets/:type/:name`)
-            .set("ATTRIBUTE_MAPPINGS", `${ AppConstants.getAdminViewBasePath() }/attribute-mappings/:type`);
+            .set("ATTRIBUTE_MAPPINGS", `${ AppConstants.getAdminViewBasePath() }/attribute-mappings/:type`)
+            .set("CREATE_TENANT", `${ AppConstants.getMainViewBasePath() }/create-tenant`);
             
     }
 

@@ -37,6 +37,7 @@ export interface ExtensionsConfigInterface {
  * Interface for routes extensions.
  */
 export interface ExtensionRoutesInterface {
+    auth?: RouteInterface[];
     default?: RouteInterface[];
     develop?: RouteInterface[];
     fullscreen?: RouteInterface[];
