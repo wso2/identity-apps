@@ -92,7 +92,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             let logoutUrl;
             let logoutRedirectUrl;
             // Update the app base name with the newly resolved tenant.
-            window[ "AppUtils" ].updateTenantQualifiedBaseName(response.tenantDomain);
 
             dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
             dispatch(
@@ -168,6 +167,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     const subParts = idToken.sub.split("@");
                     const tenantDomain = subParts[ subParts.length - 1 ];
                     const username = idToken.sub;
+
+                    window[ "AppUtils" ].updateTenantQualifiedBaseName(response.tenantDomain ?? tenantDomain);
 
                     dispatch(
                         setSignIn<AuthenticatedUserInfo>({
