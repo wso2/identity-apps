@@ -38,6 +38,7 @@ import {
     SessionManagementProvider,
     SessionTimeoutModalTypes
 } from "@wso2is/react-components";
+import has from "lodash-es/has";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
@@ -78,7 +79,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const { trySignInSilently } = useAuthContext();
+    const { trySignInSilently, getDecodedIDToken } = useAuthContext();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
 
@@ -146,9 +147,23 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
             return;
         }
 
-        history.push({
-            pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
-            search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
+        /**
+         * Checks if the portal access is denied due to no tenant association.
+         */
+        getDecodedIDToken().then((idToken) => {
+            
+            if(has(idToken, "associated_tenants")) {
+                // If there is a tenant assocation, the user is likely unauthorized by other criteria.
+                history.push({
+                    pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
+                    search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
+                });
+            } else {
+                // If there is no tenant assocation, the user should be redirected to tenant creation.
+                history.push({
+                    pathname: AppConstants.getPaths().get("CREATE_TENANT")
+                });
+            }
         });
     }, [ config, loginInit ]);
 
