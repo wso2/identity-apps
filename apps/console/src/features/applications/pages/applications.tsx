@@ -135,7 +135,11 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * Called on every `listOffset` & `listItemLimit` change.
      */
     useEffect(() => {
-        getAppLists(listItemLimit, listOffset, null);
+        if(searchQuery) {
+            getAppLists(listItemLimit, listOffset, searchQuery);
+        } else {
+            getAppLists(listItemLimit, listOffset, null);
+        }       
     }, [ listOffset, listItemLimit ]);
 
     /**
