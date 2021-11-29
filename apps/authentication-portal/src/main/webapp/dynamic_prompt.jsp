@@ -69,7 +69,7 @@
 
     <script type="text/javascript">
         var data = JSON.parse("<%=Encode.forJavaScript(contextProperties)%>");
-        var prompt_id = "<%=promptId%>";
+        var prompt_id = "<%=Encode.forJavaScript(promptId)%>";
     </script>
 </head>
 <body class="login-portal layout authentication-portal-layout">
