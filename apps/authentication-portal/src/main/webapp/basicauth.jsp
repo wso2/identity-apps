@@ -187,7 +187,7 @@
         String path = config.getServletContext().getInitParameter(Constants.ACCOUNT_RECOVERY_REST_ENDPOINT_URL);
         String url;
         if (StringUtils.isNotBlank(EndpointConfigManager.getServerOrigin())) {
-            url = EndpointConfigManager.getServerOrigin() + proxyContextPath + path;
+            url = IdentityManagementEndpointUtil.getBasePath(tenantDomain, proxyContextPath + path, false);
         } else {
             url = IdentityUtil.getServerURL(path, true, false);
         }
