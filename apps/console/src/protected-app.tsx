@@ -36,6 +36,7 @@ import {
     isLanguageSupported
 } from "@wso2is/i18n";
 import axios from "axios";
+import has from "lodash-es/has";
 import React, { FunctionComponent, ReactElement, lazy, useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -226,16 +227,33 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             CommonAppConstants.CONSOLE_APP
         );
 
-        const location =
-            !AuthenticationCallbackUrl || AuthenticationCallbackUrl === AppConstants.getAppLoginPath()
-                ? AppConstants.getAppHomePath()
-                : AuthenticationCallbackUrl;
+        /**
+         * Prevent redirect to landing page when there is no tenant association.
+         */
+        getDecodedIDToken().then((idToken) => {
 
-        history.push(location);
+            if(has(idToken, "associated_tenants")) {
+                // If there is a tenant assocation, the user should be redirected to console landing page.
+                const location =
+                    !AuthenticationCallbackUrl || AuthenticationCallbackUrl === AppConstants.getAppLoginPath()
+                        ? AppConstants.getAppHomePath()
+                        : AuthenticationCallbackUrl;
+
+                history.push(location);
+            } else {
+                // If there is no tenant assocation, the user should be redirected to tenant creation.
+                history.push({
+                    pathname: AppConstants.getPaths().get("CREATE_TENANT")
+                });
+            }
+        }).catch((error) => {
+            throw error;
+        });
     };
 
     useEffect(() => {
         const error = new URLSearchParams(location.search).get("error_description");
+
         if (error === AppConstants.USER_DENIED_CONSENT_SERVER_ERROR) {
             history.push({
                 pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
