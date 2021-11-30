@@ -565,4 +565,5 @@
 <form action="<%=loginFormActionURL%>" method="post" id="restartFlowForm">
     <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
     <input type="hidden" name="restart_flow" value='true'/>
+    <input id="tocommonauth" name="tocommonauth" type="hidden" value="true">
 </form>
