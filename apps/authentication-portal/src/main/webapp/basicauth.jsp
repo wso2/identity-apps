@@ -111,10 +111,12 @@
     });
 
     function showResendReCaptcha() {
-        <% if (reCaptchaResendEnabled) { %>
-            window.location.href="resend-confirmation-captcha.jsp?<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>";
-        <% } else { %>
-            window.location.href="login.do?resend_username=<%=Encode.forHtml(request.getParameter("failedUsername"))%>&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>";
+        <% if (StringUtils.isNotBlank(request.getParameter("failedUsername"))){ %>
+            <% if (reCaptchaResendEnabled) { %>
+                window.location.href="resend-confirmation-captcha.jsp?<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>";
+            <% } else { %>
+                window.location.href="login.do?resend_username=<%=Encode.forHtml(URLEncoder.encode(request.getParameter("failedUsername"), UTF_8))%>&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>";
+            <% } %>
         <% } %>
     }
 </script>
