@@ -66,11 +66,16 @@
             <div class="ui segment">
                 <div class="ui visible negative message">
                     <%
-                        if (errorCode != null && errorMsg != null) {
+                        String i18nErrorMapping = AuthenticationEndpointUtil.getErrorCodeToi18nMapping(
+                            errorCode, errorMsgContext);
+                        // Check the error is not null and whether there is a corresponding value in the resource bundle.
+                        if (errorCode != null && errorMsg != null &&
+                            !("incorrect.error.mapping").equals(i18nErrorMapping)) {
                     %>
-                        <%=AuthenticationEndpointUtil.i18nBase64(resourceBundle, errorMsgContext)%><%=Encode.forHtml(errorMsgApp)%>
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, i18nErrorMapping)%>
+                        <%=Encode.forHtml(errorMsgApp)%>
                     <% } else { %>
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle,"oauth.processing.error.msg")%></td>
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle,"oauth.processing.error.msg")%>
                     <% } %>
                 </div>
             </div>
