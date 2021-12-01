@@ -84,7 +84,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
     const featureStatusLabelClasses = classNames(
         "feature-status-label",
         {
-            [ kebabCase(route.featureStatus) ]: route.featureStatus
+            [ kebabCase(route.featureStatus?.toLocaleLowerCase()) ]: route.featureStatus
         }
     );
 
@@ -166,7 +166,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
                                     size="mini"
                                     data-testid={ `${ testId }-version` }
                                 >
-                                    { route.featureStatus.toUpperCase() }
+                                    { translationHook(route.featureStatusLabel) }
                                 </Label>
                             ) }
                         </span>
