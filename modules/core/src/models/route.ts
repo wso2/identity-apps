@@ -87,7 +87,11 @@ export interface StaticRouteInterface {
     /**
      * Status of the feature.
      */
-    featureStatus?: "new" | "alpha" | "beta" | string;
+    featureStatus?: "new" | "alpha" | "beta" | "coming_soon" | string;
+    /**
+     * Should the side panel item be clickable.
+     */
+    isFeatureEnabled?: boolean;
 }
 
 /**
