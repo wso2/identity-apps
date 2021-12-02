@@ -26,6 +26,7 @@ export const commonConfig: CommonConfig = {
     },
     blockLoopBackCalls: false,
     checkForUIResourceScopes: false,
+    enableOrganizationAssociations: false,
     header: {
         getHeaderExtensions: (): HeaderExtension[] => [],
         getHeaderSubPanelExtensions: (): HeaderSubPanelItemInterface[] => [],

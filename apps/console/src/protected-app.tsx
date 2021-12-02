@@ -40,6 +40,7 @@ import has from "lodash-es/has";
 import React, { FunctionComponent, ReactElement, lazy, useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { commonConfig } from "./extensions";
 import { AuthenticateUtils, getProfileInformation } from "./features/authentication";
 import { Config, HttpUtils, PreLoader, store } from "./features/core";
 import { AppConstants, CommonConstants } from "./features/core/constants";
@@ -227,28 +228,37 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             CommonAppConstants.CONSOLE_APP
         );
 
-        /**
-         * Prevent redirect to landing page when there is no tenant association.
-         */
-        getDecodedIDToken().then((idToken) => {
-
-            if(has(idToken, "associated_tenants")) {
-                // If there is a tenant assocation, the user should be redirected to console landing page.
-                const location =
-                    !AuthenticationCallbackUrl || AuthenticationCallbackUrl === AppConstants.getAppLoginPath()
-                        ? AppConstants.getAppHomePath()
-                        : AuthenticationCallbackUrl;
-
-                history.push(location);
-            } else {
-                // If there is no tenant assocation, the user should be redirected to tenant creation.
-                history.push({
-                    pathname: AppConstants.getPaths().get("CREATE_TENANT")
-                });
-            }
-        }).catch((error) => {
-            throw error;
-        });
+        if(commonConfig?.enableOrganizationAssociations) {
+            /**
+             * Prevent redirect to landing page when there is no association.
+             */
+            getDecodedIDToken().then((idToken) => {
+    
+                if(has(idToken, "associated_tenants")) {
+                    // If there is an assocation, the user should be redirected to console landing page.
+                    const location =
+                        !AuthenticationCallbackUrl || AuthenticationCallbackUrl === AppConstants.getAppLoginPath()
+                            ? AppConstants.getAppHomePath()
+                            : AuthenticationCallbackUrl;
+    
+                    history.push(location);
+                } else {
+                    // If there is no assocation, the user should be redirected to creation flow.
+                    history.push({
+                        pathname: AppConstants.getPaths().get("CREATE_TENANT")
+                    });
+                }
+            }).catch((error) => {
+                throw error;
+            });
+        } else {
+            const location =
+                        !AuthenticationCallbackUrl || AuthenticationCallbackUrl === AppConstants.getAppLoginPath()
+                            ? AppConstants.getAppHomePath()
+                            : AuthenticationCallbackUrl;
+    
+            history.push(location);
+        }
     };
 
     useEffect(() => {

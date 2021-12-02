@@ -45,6 +45,7 @@ import { Helmet } from "react-helmet";
 import { Trans } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
+import { commonConfig } from "./extensions";
 import { EventPublisher, PreLoader } from "./features/core";
 import { ProtectedRoute } from "./features/core/components";
 import { Config, DocumentationLinks, getBaseRoutes } from "./features/core/configs";
@@ -147,24 +148,31 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
             return;
         }
 
-        /**
-         * Checks if the portal access is denied due to no tenant association.
-         */
-        getDecodedIDToken().then((idToken) => {
-            
-            if(has(idToken, "associated_tenants")) {
-                // If there is a tenant assocation, the user is likely unauthorized by other criteria.
-                history.push({
-                    pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
-                    search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
-                });
-            } else {
-                // If there is no tenant assocation, the user should be redirected to tenant creation.
-                history.push({
-                    pathname: AppConstants.getPaths().get("CREATE_TENANT")
-                });
-            }
-        });
+        if (commonConfig?.enableOrganizationAssociations) {
+            /**
+             * Checks if the portal access is denied due to no association.
+             */
+            getDecodedIDToken().then((idToken) => {
+
+                if(has(idToken, "associated_tenants")) {
+                    // If there is an assocation, the user is likely unauthorized by other criteria.
+                    history.push({
+                        pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
+                        search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
+                    });
+                } else {
+                    // If there is no assocation, the user should be redirected to creation flow.
+                    history.push({
+                        pathname: AppConstants.getPaths().get("CREATE_TENANT")
+                    });
+                }
+            });
+        } else {
+            history.push({
+                pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
+                search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
+            });
+        }
     }, [ config, loginInit ]);
 
     /**
