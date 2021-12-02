@@ -438,7 +438,7 @@
         }
 
         .side-panel-item {
-            border-radius: @defaultBorderRadius;
+            border-radius: @defaultBorderRadius !important;
             padding: @sidePanelItemPadding;
 
             .route-name {
@@ -447,10 +447,17 @@
                 padding: 10px 5px;
 
                 .feature-status-label {
-                    padding: 3px 6px;
-                    margin-left: 6px;
-                    font-size: 0.6em;
-                    font-weight: 600;
+                    font-size: .8em;
+                    padding: 4px;
+                    font-weight: 500;
+                    top: 7px;
+                    margin-left: 7px;
+                    position: absolute;
+                    border: 1px solid @defaultBorderColor;
+
+                    &.coming-soon {
+                        filter: grayscale(100%);
+                    }
                 }
             }
 
