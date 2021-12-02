@@ -19,16 +19,10 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, Heading, InfoCard, Text } from "@wso2is/react-components";
 import classNames from "classnames";
-import React, {
-    Fragment,
-    FunctionComponent,
-    ReactElement,
-    useEffect,
-    useState
-} from "react";
+import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Label, Popup } from "semantic-ui-react";
-import { applicationConfig } from "../../../../../../extensions/configs";
+import { applicationConfig } from "../../../../../../extensions";
 import {
     AuthenticatorCategories,
     AuthenticatorMeta,
@@ -136,8 +130,16 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                 return false;
             }
 
-            return SignInMethodUtils.isSecondFactorAdditionValid(authenticator.defaultAuthenticator.authenticatorId,
-                currentStep, authenticationSteps);
+            return SignInMethodUtils.isSecondFactorAdditionValid(
+                authenticator.defaultAuthenticator.authenticatorId,
+                currentStep,
+                authenticationSteps
+            ) && !SignInMethodUtils.isMFAConflictingWithProxyModeConfig({
+                authenticators: authenticators,
+                steps: authenticationSteps,
+                addingStep: currentStep,
+                authenticatorId: authenticator.defaultAuthenticator.authenticatorId
+            });
         }
 
         return true;
@@ -153,6 +155,22 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     const resolvePopupContent = (authenticator: GenericAuthenticatorInterface): ReactElement => {
 
         if (authenticator.category === AuthenticatorCategories.SECOND_FACTOR) {
+
+            if (SignInMethodUtils.isMFAConflictingWithProxyModeConfig({
+                authenticators: authenticators,
+                steps: authenticationSteps,
+                addingStep: currentStep,
+                authenticatorId: authenticator.defaultAuthenticator.authenticatorId
+            })) {
+                return (
+                    <Text>
+                        To configure the second factor authenticators such as <Code>TOTP</Code>
+                        and <Code>Email OTP</Code>, users must have a local account.
+                        Previous authentication handler has proxy mode is enabled.
+                    </Text>
+                );
+            }
+
             return (
                 <>
                     {

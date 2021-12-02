@@ -22,14 +22,7 @@ import { ConfirmationModal, GenericIcon } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import orderBy from "lodash-es/orderBy";
 import union from "lodash-es/union";
-import React, {
-    Fragment,
-    FunctionComponent,
-    ReactElement,
-    useEffect,
-    useRef,
-    useState
-} from "react";
+import React, { Fragment, FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { AddAuthenticatorModal } from "./add-authenticator-modal";

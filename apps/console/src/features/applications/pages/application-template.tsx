@@ -296,7 +296,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                 templates={
                     templateToShow
                 }
-                templateIcons={ { ...getApplicationTemplateIllustrations(), ...getTechnologyLogos() } }
+                templateIcons={ { ...getApplicationTemplateIllustrations(), ...getTechnologyLogos() } as any }
                 templateIconOptions={ {
                     fill: "primary"
                 } }
