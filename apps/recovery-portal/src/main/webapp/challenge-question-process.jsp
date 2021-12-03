@@ -75,11 +75,13 @@
                 request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                         "No.security.questions.found.to.recover.password.contact.system.administrator"));
                 request.setAttribute("errorCode", "18017");
+                request.setAttribute("username", userName);
                 request.getRequestDispatcher("error.jsp").forward(request, response);
                 return;
             }
             IdentityManagementEndpointUtil.addReCaptchaHeaders(request, e.getResponseHeaders());
             IdentityManagementEndpointUtil.addErrorInformation(request, e);
+            request.setAttribute("username", userName);
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
@@ -140,6 +142,7 @@
                 request.setAttribute("errorCode", retryError.getCode());
             }
 
+            request.setAttribute("username", userName);
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
@@ -197,6 +200,7 @@
                 request.setAttribute("errorCode", retryError.getCode());
             }
 
+            request.setAttribute("username", userName);
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }

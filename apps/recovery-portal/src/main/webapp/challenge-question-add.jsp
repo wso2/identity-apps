@@ -33,8 +33,9 @@
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
 
     Map<String, List<ChallengeQuestionDTO>> challengeQuestionSets = new HashMap<String, List<ChallengeQuestionDTO>>();
+    String username = session.getAttribute("username");
 
-    if (session.getAttribute("username") != null) {
+    if (username != null) {
         UserIdentityManagementAdminServiceClient userIdentityManagementAdminServiceClient = new
                 UserIdentityManagementAdminServiceClient();
         ChallengeQuestionDTO[] challengeQuestionDTOs =
@@ -54,6 +55,7 @@
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                 "Registered.user.not.found.in.session"));
+        request.setAttribute("username", username);
         request.getRequestDispatcher("error.jsp").forward(request, response);
     }
 %>
