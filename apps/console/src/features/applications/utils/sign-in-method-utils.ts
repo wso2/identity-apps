@@ -43,7 +43,7 @@ export class SignInMethodUtils {
      * @return {AuthenticationStepInterface[][]}
      */
     public static getLeftAndRightSideSteps = (stepIndex: number,
-                                              steps: AuthenticationStepInterface[]
+        steps: AuthenticationStepInterface[]
     ): AuthenticationStepInterface[][] => {
 
         const leftSideSteps: AuthenticationStepInterface[] = (stepIndex !== 0)
@@ -73,6 +73,7 @@ export class SignInMethodUtils {
             for (const option of step.options) {
                 if (factors.includes(option.authenticator)) {
                     isFound = true;
+
                     break;
                 }
             }
@@ -94,7 +95,7 @@ export class SignInMethodUtils {
      * @return {number}
      */
     public static getImmediateStepHavingSpecificFactors = (factors: string[],
-                                                           steps: AuthenticationStepInterface[]): number => {
+        steps: AuthenticationStepInterface[]): number => {
 
         let isFound: boolean = false;
         let foundInStep: number = -1;
@@ -104,6 +105,7 @@ export class SignInMethodUtils {
                 if (factors.includes(option.authenticator)) {
                     isFound = true;
                     foundInStep = index;
+
                     break;
                 }
             }
@@ -149,7 +151,7 @@ export class SignInMethodUtils {
      * @return {boolean}
      */
     public static isSecondFactorAdditionValid(authenticatorId: string, addingStep: number,
-                                              steps: AuthenticationStepInterface[]): boolean {
+        steps: AuthenticationStepInterface[]): boolean {
 
         const [ leftSideSteps ]: AuthenticationStepInterface[][] = this.getLeftAndRightSideSteps(addingStep, steps);
 

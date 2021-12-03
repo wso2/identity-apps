@@ -18,7 +18,7 @@
 
 import { SVGRLoadedInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { PropsWithChildren, ReactElement, useEffect, useState } from "react";
+import React, { CSSProperties, PropsWithChildren, ReactElement, useEffect, useState } from "react";
 import { SemanticVERTICALALIGNMENTS } from "semantic-ui-react";
 
 /**
@@ -119,7 +119,7 @@ export interface GenericIconProps extends TestableComponentInterface {
     /**
      * Custom style object.
      */
-    style?: object;
+    style?: CSSProperties | undefined;
     /**
      * Should the icon be squared.
      * @deprecated use `shape` instead.

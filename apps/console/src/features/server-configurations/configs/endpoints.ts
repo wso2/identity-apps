@@ -29,39 +29,39 @@ export const getServerConfigurationsResourceEndpoints = (
     serverHost: string
 ): ServerConfigurationsResourceEndpointsInterface => {
 
-  return {
-      accountDisabling: `${ serverHost }/api/server/v1/identity-governance/${
-          ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
-          }/connectors/${ServerConfigurationsConstants.ACCOUNT_DISABLING_CONNECTOR_ID}`,
-      accountLocking: `${ serverHost }/api/server/v1/identity-governance/${
-          ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
-          }/connectors/${ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID}`,
-      accountRecovery: `${ serverHost }/api/server/v1/identity-governance/${
-          ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID
-          }/connectors/${ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID}`,
-      captchaForSSOLogin: `${ serverHost }/api/server/v1/identity-governance/${
-          ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
-          }/connectors/${ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID}`,
-      governanceConnectorCategories: `${ serverHost }/api/server/v1/identity-governance`,
-      loginPolicies: `${ serverHost }/api/server/v1/identity-governance/${
-          ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
-          }`,
-      multiFactorAuthenticators: `${ serverHost }/api/server/v1/identity-governance/${
-          ServerConfigurationsConstants.MFA_CONNECTOR_CATEGORY_ID
-          }`,
-      passwordHistory: `${ serverHost }/api/server/v1/identity-governance/${
-          ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
-          }/connectors/${ServerConfigurationsConstants.PASSWORD_HISTORY_CONNECTOR_ID}`,
-      passwordPolicies: `${ serverHost }/api/server/v1/identity-governance/${
-          ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
-          }`,
-      passwordPolicy: `${ serverHost }/api/server/v1/identity-governance/${
-          ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
-          }/connectors/${ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID}`,
-      selfSignUp: `${ serverHost }/api/server/v1/identity-governance/${
-          ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID
-          }/connectors/${ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID}`,
-      serverConfigurations: `${ serverHost }/api/server/v1/configs`,
-      serverSupportedSchemas: `${ serverHost }/api/server/v1/configs/schemas`
-  };
+    return {
+        accountDisabling: `${ serverHost }/api/server/v1/identity-governance/${
+            ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
+        }/connectors/${ServerConfigurationsConstants.ACCOUNT_DISABLING_CONNECTOR_ID}`,
+        accountLocking: `${ serverHost }/api/server/v1/identity-governance/${
+            ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
+        }/connectors/${ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID}`,
+        accountRecovery: `${ serverHost }/api/server/v1/identity-governance/${
+            ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID
+        }/connectors/${ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID}`,
+        captchaForSSOLogin: `${ serverHost }/api/server/v1/identity-governance/${
+            ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
+        }/connectors/${ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID}`,
+        governanceConnectorCategories: `${ serverHost }/api/server/v1/identity-governance`,
+        loginPolicies: `${ serverHost }/api/server/v1/identity-governance/${
+            ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
+        }`,
+        multiFactorAuthenticators: `${ serverHost }/api/server/v1/identity-governance/${
+            ServerConfigurationsConstants.MFA_CONNECTOR_CATEGORY_ID
+        }`,
+        passwordHistory: `${ serverHost }/api/server/v1/identity-governance/${
+            ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
+        }/connectors/${ServerConfigurationsConstants.PASSWORD_HISTORY_CONNECTOR_ID}`,
+        passwordPolicies: `${ serverHost }/api/server/v1/identity-governance/${
+            ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
+        }`,
+        passwordPolicy: `${ serverHost }/api/server/v1/identity-governance/${
+            ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
+        }/connectors/${ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID}`,
+        selfSignUp: `${ serverHost }/api/server/v1/identity-governance/${
+            ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID
+        }/connectors/${ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID}`,
+        serverConfigurations: `${ serverHost }/api/server/v1/configs`,
+        serverSupportedSchemas: `${ serverHost }/api/server/v1/configs/schemas`
+    };
 };

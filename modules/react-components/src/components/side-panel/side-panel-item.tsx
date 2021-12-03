@@ -20,7 +20,7 @@ import { ChildRouteInterface, RouteInterface, TestableComponentInterface } from 
 import classNames from "classnames";
 import kebabCase from "lodash-es/kebabCase";
 import React, { ReactElement } from "react";
-import { Label, Menu, SemanticCOLORS } from "semantic-ui-react";
+import { Label, Menu } from "semantic-ui-react";
 import { CommonSidePanelPropsInterface } from "./side-panel";
 import { SidePanelItemGroup } from "./side-panel-item-group";
 import { GenericIcon, GenericIconSizes } from "../icon";
@@ -80,6 +80,13 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
             "ellipsis": showEllipsis
         }
     );
+    
+    const featureStatusLabelClasses = classNames(
+        "feature-status-label",
+        {
+            [ kebabCase(route.featureStatus?.toLocaleLowerCase()) ]: route.featureStatus
+        }
+    );
 
     /**
      * Validates if any of the child routes is supposed to be shown
@@ -108,7 +115,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
      * @return {boolean} Should the child item section be opened or not.
      */
     const validateOpenState = (isOpen: boolean, selectedRoute: RouteInterface | ChildRouteInterface,
-                               children: ChildRouteInterface[]): boolean => {
+        children: ChildRouteInterface[]): boolean => {
         if (isOpen) {
             return true;
         }
@@ -130,30 +137,14 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
         return recurse(children);
     };
 
-    /**
-     * Resolves the label color to display the status of the feature .
-     *
-     * @return {SemanticCOLORS} Resolved color.
-     */
-    const resolveFeatureStatusLabelColor = (): SemanticCOLORS => {
-        if (route.featureStatus === "new") {
-            return "red";
-        } else if (route.featureStatus === "beta") {
-            return "teal";
-        } else if (route.featureStatus === "alpha") {
-            return "orange";
-        }
-
-        return "blue";
-    };
-
     return (
         <>
             {
-                route &&
+                route && (
                     <Menu.Item
                         name={ route.name }
                         className={ classes }
+                        disabled={ route.isFeatureEnabled === false }
                         active={ selected && (selected.path === route.path) }
                         onClick={ (): void => onSidePanelItemClick(route) }
                         data-testid={ `${ testId }-${ kebabCase(route.id) }` }
@@ -171,12 +162,11 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
                             { translationHook ? translationHook(route.name) : route.name }
                             { route.featureStatus && (
                                 <Label
-                                    color={ resolveFeatureStatusLabelColor() }
-                                    className="feature-status-label"
+                                    className={ featureStatusLabelClasses }
                                     size="mini"
                                     data-testid={ `${ testId }-version` }
                                 >
-                                    { route.featureStatus.toUpperCase() }
+                                    { translationHook(route.featureStatusLabel) }
                                 </Label>
                             ) }
                         </span>
@@ -197,6 +187,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
                                 : null
                         }
                     </Menu.Item>
+                )
             }
             {
                 (route.children && route.children.length && route.children.length > 0)

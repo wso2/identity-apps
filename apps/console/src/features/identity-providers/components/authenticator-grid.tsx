@@ -356,7 +356,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                     editButtonLabel={ t("common:setup") }
                                     onEdit={ (e: MouseEvent<HTMLButtonElement>) => {
                                         eventPublisher.compute(() => {
-                                            eventPublisher.publish("connections-click-template-setup", { "type":
+                                            eventPublisher.publish("connections-click-template-setup", { type:
                                                 isIdP 
                                                     ? AuthenticatorMeta.getAuthenticatorTemplateName(
                                                         (authenticator as IdentityProviderInterface)
@@ -371,7 +371,6 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                                         : ""
                                             });
                                         });
-
                                         handleGridItemOnClick(e, authenticator);
                                     } }
                                     onDelete={ hasRequiredScopes(featureConfig?.identityProviders,

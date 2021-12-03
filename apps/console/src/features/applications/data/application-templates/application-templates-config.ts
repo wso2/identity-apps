@@ -44,7 +44,7 @@ export interface ApplicationTemplatesConfigInterface {
     templates: TemplateConfigInterface<ApplicationTemplateInterface>[];
 }
 
-export interface TemplateConfigInterface<T = {}> {
+export interface TemplateConfigInterface<T = Record<string, unknown>> {
     content?: TemplateContentInterface;
     enabled: boolean;
     id: string;

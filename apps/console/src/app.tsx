@@ -41,7 +41,7 @@ import {
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { Trans, useTranslation } from "react-i18next";
+import { Trans } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { EventPublisher, PreLoader } from "./features/core";
@@ -72,15 +72,13 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
-    const UUID: string = useSelector((state: AppState) => state.profile.profileInfo.id);
+    const uuid: string = useSelector((state: AppState) => state.profile.profileInfo.id);
 
     const [ baseRoutes, setBaseRoutes ] = useState<RouteInterface[]>(getBaseRoutes());
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const { trySignInSilently } = useAuthContext();
-
-    const { t } = useTranslation();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
 
@@ -130,6 +128,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                     ...tenantAppSettings,
                     [ userName ]: emptyIdentityAppsSettings()
                 };
+
                 LocalStorageUtils.setValueInLocalStorage(tenant, JSON.stringify(newUserSettings));
             }
         }
@@ -157,12 +156,11 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
      * Publish page visit when the UUID is set.
      */
     useEffect(() => {
-        if (!UUID) {
+        if (!uuid) {
             return;
         }
-
         eventPublisher.publish("page-visit-console-landing-page");
-    }, [ UUID ]);
+    }, [ uuid ]);
 
     /**
      * Handles session timeout abort.
@@ -186,6 +184,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     const sessionStorageDisabled = () => {
         try {
             const storage = sessionStorage;
+
             if (!storage && location.pathname !== AppConstants.getPaths().get("STORING_DATA_DISABLED")) {
                 history.push(AppConstants.getPaths().get("STORING_DATA_DISABLED"));
             }
@@ -295,57 +294,57 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                     </Helmet>
                                                     <NetworkErrorModal
                                                         heading={
-                                                            <Trans
+                                                            (<Trans
                                                                 i18nKey={ "common:networkErrorMessage.heading" }
                                                             >
                                                                 Something went wrong
-                                                            </Trans>
+                                                            </Trans>)
                                                         }
                                                         description={
-                                                            <Trans
+                                                            (<Trans
                                                                 i18nKey={ "common:networkErrorMessage.description" }
                                                             >
                                                                 Please try reloading the app.
-                                                            </Trans>
+                                                            </Trans>)
                                                         }
                                                         primaryActionText={
-                                                            <Trans
+                                                            (<Trans
                                                                 i18nKey={
                                                                     "common:networkErrorMessage.primaryActionText"
                                                                 }
                                                             >
                                                                 Reload the App
-                                                            </Trans>
+                                                            </Trans>)
                                                         }
                                                     />
                                                     <ChunkErrorModal
                                                         heading={
-                                                            <Trans
+                                                            (<Trans
                                                                 i18nKey={
                                                                     "common:chunkLoadErrorMessage.heading"
                                                                 }
                                                             >
                                                                 Something went wrong
-                                                            </Trans>
+                                                            </Trans>)
                                                         }
                                                         description={
-                                                            <Trans
+                                                            (<Trans
                                                                 i18nKey={
                                                                     "common:chunkLoadErrorMessage.description"
                                                                 }
                                                             >
                                                                 An error occurred when serving the requested
                                                                 application. Please try reloading the app.
-                                                            </Trans>
+                                                            </Trans>)
                                                         }
                                                         primaryActionText={
-                                                            <Trans
+                                                            (<Trans
                                                                 i18nKey={
                                                                     "common:chunkLoadErrorMessage.primaryActionText"
                                                                 }
                                                             >
                                                                 Reload the App
-                                                            </Trans>
+                                                            </Trans>)
                                                         }
                                                     />
                                                     <Switch>
@@ -371,9 +370,9 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                                             <Route
                                                                                 path={ route.path }
                                                                                 render={ (props) =>
-                                                                                (<route.component
-                                                                                    { ...props }
-                                                                                />)
+                                                                                    (<route.component
+                                                                                        { ...props }
+                                                                                    />)
                                                                                 }
                                                                                 key={ index }
                                                                                 exact={ route.exact }

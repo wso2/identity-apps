@@ -311,9 +311,10 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
     useEffect(() => {
 
         if (gravatarURLs && imageUrl) {
-            for (const [ key, value ] of gravatarURLs) {
+            for (const [ , value ] of gravatarURLs) {
                 if (imageUrl.localeCompare(value) == 0) {
                     setIsGravatarUrl(true);
+
                     break;
                 }
             }
@@ -360,12 +361,12 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                     size="x100"
                     showText={ showOptionTitle }
                     header={ key }
-                    image={
+                    image={ (
                         <UserAvatar
                             size="little"
                             image={ value }
                         />
-                    }
+                    ) }
                     selected={ outputURL === value }
                     onClick={ handleGravatarOptionChange }
                 />
@@ -443,7 +444,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
      * @param {string} value - Input value.
      */
     const handleHostedURLFieldOnChange = (e: ChangeEvent<HTMLInputElement>,
-                                                { value }: { value: string }): void => {
+        { value }: { value: string }): void => {
 
         setHostedURL(value);
         setOutputURL(value);
@@ -609,12 +610,12 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                                                     size="x100"
                                                     showText={ showOptionTitle }
                                                     header={ translations.systemGenAvatars.types.initials }
-                                                    image={
+                                                    image={ (
                                                         <UserAvatar
                                                             size="little"
                                                             name={ name }
                                                         />
-                                                    }
+                                                    ) }
                                                     selected={ outputURL === SystemGeneratedAvatars.get("Initials") }
                                                     onClick={ handleSystemGeneratedAvatarChange }
                                                 />
@@ -634,7 +635,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                                                     <Checkbox
                                                         radio
                                                         value={ AvatarTypes.GRAVATAR }
-                                                        label={
+                                                        label={ (
                                                             <label>
                                                                 <>
                                                                     <span>{ translations.gravatar.heading }</span>
@@ -654,7 +655,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                                                                     />
                                                                 </>
                                                             </label>
-                                                        }
+                                                        ) }
                                                         checked={ selectedAvatarType === AvatarTypes.GRAVATAR }
                                                         onChange={ handleSelectedAvatarTypeChange }
                                                     />

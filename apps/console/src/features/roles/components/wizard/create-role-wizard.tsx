@@ -123,6 +123,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                 .then((response) => {
                     const groups = response.data.Resources.filter(
                         (group) => group.displayName.split("/").length === 1);
+
                     setGroupList(groups);
                 });
         }
@@ -229,7 +230,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                 }));
             }
         }).finally(() => {
-                setIsSubmitting(false);
+            setIsSubmitting(false);
         });
     };
 
@@ -294,7 +295,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
     };
 
     // Create role wizard steps
-    const WIZARD_STEPS = [{
+    const WIZARD_STEPS = [ {
         content: (
             <RoleBasics
                 data-testid="add-role-form"
@@ -357,7 +358,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
         ),
         icon: getRolesWizardStepIcons().summary,
         title: t("console:manage.features.roles.addRoleWizard.wizardSteps.3")
-    }];
+    } ];
 
     /**
      * Function to change the current wizard step to next.
@@ -366,18 +367,22 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
         switch(currentStep) {
             case 0:
                 setSubmitGeneralSettings();
+
                 break;
             case 1:
                 setSubmitPermissionList();
+
                 break;
             case 2:
                 handleGroupUserSubmit({
                     [ WizardStepsFormTypes.USER_LIST ]: tempUsersList,
                     [ WizardStepsFormTypes?.GROUP_LIST ]: tempGroupList
                 });
+
                 break;
             case 3:
                 setFinishSubmit();
+
                 break;
 
         }
@@ -456,15 +461,15 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                                 </PrimaryButton>
                             ) }
                             { currentStep === 0 && (
-                                    <Button
-                                        basic
-                                        color="orange"
-                                        floated="right"
-                                        onClick={ handleFinishFlow }
-                                        data-testid={ `${ testId }-initial-finish-button` }
-                                    >
-                                        { t("console:manage.features.roles.addRoleWizard.buttons.finish") }
-                                    </Button>
+                                <Button
+                                    basic
+                                    color="orange"
+                                    floated="right"
+                                    onClick={ handleFinishFlow }
+                                    data-testid={ `${ testId }-initial-finish-button` }
+                                >
+                                    { t("console:manage.features.roles.addRoleWizard.buttons.finish") }
+                                </Button>
                             ) }
                             { currentStep === WIZARD_STEPS.length - 1 && (
                                 <PrimaryButton

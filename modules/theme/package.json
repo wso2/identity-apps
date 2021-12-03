@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/theme",
-    "version": "1.2.693",
+    "version": "1.2.730",
     "description": "Theme for web components of WSO2 Identity Server Webapps.",
     "keywords": [
         "WSO2",
@@ -16,7 +16,7 @@
         "build:dev": "npm run build -- --skipHashing",
         "clean": "rimraf ./dist && rimraf ./src/themes/sample",
         "compile": "node scripts/build.js",
-        "lint": "npm run lint:all",
+        "lint": "npm run lint:all -- --max-warnings=0",
         "lint:all": "npm run lint:targeted -- .",
         "lint:autofix": "npm run lint:all -- --fix",
         "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to .",

@@ -29,7 +29,6 @@ const TerserPlugin = require("terser-webpack-plugin");
 const webpack = require("webpack");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const deploymentConfig = require("./src/public/deployment.config.json");
-const { env } = require("process");
 
 // Flag to enable source maps in production.
 const isSourceMapsEnabledInProduction = false;
@@ -59,6 +58,7 @@ let themeHash;
 const files = fs.readdirSync(THEME_DIR);
 
 const file = files ? files.filter(file => file.endsWith(".min.css"))[ 0 ] : null;
+
 themeHash = file ? file.split(".")[ 1 ] : null;
 
 const I18N_DIR = path.join(__dirname, "src", "extensions", "i18n", "tmp");
@@ -175,11 +175,11 @@ module.exports = (env) => {
             rules: [
                 {
                     test: /\.css$/,
-                    use: ["style-loader", "css-loader"]
+                    use: [ "style-loader", "css-loader" ]
                 },
                 {
                     test: /\.md$/,
-                    use: ["raw-loader"]
+                    use: [ "raw-loader" ]
                 },
                 {
                     exclude: /node_modules/,
@@ -223,11 +223,11 @@ module.exports = (env) => {
                 {
                     test: /\.worker\.(ts|js)$/,
                     use: {
-                        loader: 'worker-loader',
+                        loader: "worker-loader",
                         options: {
                             inline: true
                         }
-                    },
+                    }
                 },
                 {
                     exclude: {
@@ -269,7 +269,7 @@ module.exports = (env) => {
                                 // This produces warnings and slowness in dev server.
                                 compact: isProduction,
                                 plugins: [
-                                  isDevelopment && require.resolve("react-refresh/babel")
+                                    isDevelopment && require.resolve("react-refresh/babel")
                                 ].filter(Boolean)
                             }
                         }
@@ -278,7 +278,7 @@ module.exports = (env) => {
                 {
                     enforce: "pre",
                     test: /\.js$/,
-                    use: ["source-map-loader"]
+                    use: [ "source-map-loader" ]
                 }
             ],
             // Makes missing exports an error instead of warning.
@@ -326,7 +326,9 @@ module.exports = (env) => {
                 name: "single"
             },
             splitChunks: {
-                chunks: "all"
+                chunks: "all",
+                maxSize: 1000000,
+                minSize: 500000
             },
             // Tells webpack to determine used exports for each module.
             usedExports: true
@@ -411,7 +413,7 @@ module.exports = (env) => {
                                 // service is enabled.
                                 // TODO: Remove this `identity-providers` folder once the usages are refactored.
                                 "**/assets/images/!(branding|identity-providers|flags.png)/**"
-                            ],
+                            ]
                         },
                         to: "libs"
                     },
@@ -554,7 +556,7 @@ module.exports = (env) => {
                 // https://github.com/facebook/react/issues/13991#issuecomment-435587809
                 react: path.resolve("../../node_modules/react")
             },
-            extensions: [".tsx", ".ts", ".js", ".json"],
+            extensions: [ ".tsx", ".ts", ".js", ".json" ],
             // In webpack 5 automatic node.js polyfills are removed.
             // Node.js Polyfills should not be used in front end code.
             // https://github.com/webpack/webpack/issues/11282

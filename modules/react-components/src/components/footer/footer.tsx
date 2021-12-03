@@ -20,8 +20,8 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Link } from "react-router-dom";
-import { Container, Menu, Responsive } from "semantic-ui-react";
-import { LanguageSwitcher } from "../language-switcher";
+import { Container, Menu } from "semantic-ui-react";
+import { LanguageSwitcher, SupportedLanguagesInterface } from "../language-switcher";
 
 /**
  * Footer component prop types.
@@ -67,7 +67,7 @@ export interface FooterPropsInterface extends TestableComponentInterface {
     /**
      * Set of supported languages.
      */
-    supportedLanguages?: object;
+    supportedLanguages?: SupportedLanguagesInterface;
 }
 
 /**

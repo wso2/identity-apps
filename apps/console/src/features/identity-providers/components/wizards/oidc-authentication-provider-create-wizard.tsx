@@ -116,7 +116,7 @@ export const OidcAuthenticationProviderCreateWizard:
         createIdentityProvider(identityProvider)
             .then((response) => {
                 eventPublisher.publish("connections-finish-adding-connection", {
-                    "type": componentId
+                    type: componentId
                 });
 
                 dispatch(addAlert({

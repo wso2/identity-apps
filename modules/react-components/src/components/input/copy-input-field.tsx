@@ -99,6 +99,7 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
          * directly get the current value from props itself.
          */
         const _selection = inputRef.current?.props[ "value" ] ?? "";
+
         await CommonUtils.copyTextToClipboard(_selection);
         setCopied(true);
     };
@@ -110,7 +111,7 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
             value={ value }
             labelPosition="right"
             readOnly
-            action={
+            action={ (
                 <Popup
                     trigger={
                         (
@@ -132,7 +133,7 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
                     content={ copied ? "Copied!" : "Copy to clipboard" }
                     inverted
                 />
-            }
+            ) }
             fluid
             className={ classes }
             type={

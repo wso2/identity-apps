@@ -18,10 +18,10 @@
 
 import React from "react";
 import { Form } from "semantic-ui-react";
+import constants from "./constants";
 import { Field, Forms } from "../../src";
 import { GroupFields } from "../components";
 import { FormField, Type, Validation } from "../models";
-import constants from "./constants";
 
 export interface FormTestFields {
     isRequired: boolean;
@@ -58,7 +58,7 @@ const getForm = (testFields: FormTestFields[], isGroup?: boolean): JSX.Element =
             required: true,
             requiredErrorMessage: constants.CHECKBOX_REQUIRED_MESSAGE,
             type: "checkbox" as const,
-            value: constants.CHECKBOX_VALUE,
+            value: constants.CHECKBOX_VALUE
         },
         custom: {
             element: constants.CUSTOM_ELEMENT,
@@ -91,6 +91,7 @@ const getForm = (testFields: FormTestFields[], isGroup?: boolean): JSX.Element =
             type: "dropdown" as const, value: constants.DROPDOWN_VALUE
         },
         password: {
+            generatePassword: constants.GENERATE_PASSWORD,
             hidePassword: constants.HIDE_PASSWORD,
             label: constants.PASSWORD_LABEL,
             listen: (value) => { constants.listen(value); },
@@ -99,7 +100,6 @@ const getForm = (testFields: FormTestFields[], isGroup?: boolean): JSX.Element =
             required: true,
             requiredErrorMessage: constants.PASSWORD_REQUIRED_MESSAGE,
             showPassword: constants.SHOW_PASSWORD,
-            generatePassword: constants.GENERATE_PASSWORD,
             type: "password" as const,
             validation: (value: string, validation: Validation) => {
                 if (value !== constants.PASSWORD_VALID_MESSAGE) {
@@ -136,7 +136,7 @@ const getForm = (testFields: FormTestFields[], isGroup?: boolean): JSX.Element =
         },
         submit: {
             type: "submit" as const,
-            value: constants.SUBMIT,
+            value: constants.SUBMIT
         },
         text: {
             label: constants.TEXT_BOX_LABEL,
@@ -160,8 +160,10 @@ const getForm = (testFields: FormTestFields[], isGroup?: boolean): JSX.Element =
     };
 
     const formFields: FormField[] = [];
+
     testFields.forEach((testField) => {
         const tempFormField = form[testField.type];
+
         if (tempFormField.required) {
             testField.isRequired ? tempFormField.required = true : tempFormField.required = false;
         }

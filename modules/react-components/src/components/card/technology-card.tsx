@@ -18,11 +18,11 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import kebabCase from "lodash-es/kebabCase";
+import React, { CSSProperties, FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, CardProps, Dimmer } from "semantic-ui-react";
 import { GenericIcon } from "../icon";
-import kebabCase from "lodash-es/kebabCase";
 
 /**
  * Proptypes for the selection card component.
@@ -75,7 +75,6 @@ export const TechnologyCard: FunctionComponent<TechnologyCardPropsInterface> = (
 
     const {
         className,
-        description,
         disabled,
         displayName,
         image,
@@ -83,8 +82,7 @@ export const TechnologyCard: FunctionComponent<TechnologyCardPropsInterface> = (
         onClick,
         overlayOpacity,
         raised,
-        [ "data-testid" ]: testId,
-        ...rest
+        [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
@@ -102,7 +100,7 @@ export const TechnologyCard: FunctionComponent<TechnologyCardPropsInterface> = (
     /**
      * Inline styles for image container.
      */
-    const imageContainerStyles = (): object => {
+    const imageContainerStyles = (): CSSProperties | undefined => {
 
         return {
             opacity: disabled ? overlayOpacity : 1
@@ -152,5 +150,5 @@ export const TechnologyCard: FunctionComponent<TechnologyCardPropsInterface> = (
  * Default props for the technology card component.
  */
 TechnologyCard.defaultProps = {
-    "data-testid": "technology-card",
+    "data-testid": "technology-card"
 };

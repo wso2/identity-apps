@@ -110,9 +110,9 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
                         addAlert({
                             description: isGroup
                                 ? t("console:manage.features.groups.notifications.createPermission.error.description",
-                                { description: error.response.data.detail })
+                                    { description: error.response.data.detail })
                                 : t("console:manage.features.roles.notifications.createPermission.error.description",
-                                { description: error.response.data.detail }),
+                                    { description: error.response.data.detail }),
                             level: AlertLevels.ERROR,
                             message: isGroup
                                 ? t("console:manage.features.groups.notifications.createPermission.error.message")

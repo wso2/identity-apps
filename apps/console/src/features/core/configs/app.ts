@@ -18,7 +18,7 @@
 
 import { DocumentationConstants } from "@wso2is/core/constants";
 import { DocumentationProviders, DocumentationStructureFileTypes } from "@wso2is/core/models";
-import { generateBackendPaths, I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N } from "@wso2is/i18n";
+import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
 import { getApplicationsResourceEndpoints } from "../../applications";
 import { getCertificatesResourceEndpoints } from "../../certificates";
 import { getClaimResourceEndpoints } from "../../claims";
@@ -28,13 +28,13 @@ import { getIDPResourceEndpoints } from "../../identity-providers";
 import { getScopesResourceEndpoints } from "../../oidc-scopes";
 import { getRemoteFetchConfigResourceEndpoints } from "../../remote-repository-configuration";
 import { getRolesResourceEndpoints } from "../../roles";
+import { getSecretsManagementEndpoints } from "../../secrets/configs/endpoints";
 import { getServerConfigurationsResourceEndpoints } from "../../server-configurations";
 import { getUsersResourceEndpoints } from "../../users";
 import { getUserstoreResourceEndpoints } from "../../userstores";
 import { getApprovalsResourceEndpoints } from "../../workflow-approvals";
 import { I18nConstants } from "../constants";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
-import { getSecretsManagementEndpoints } from "../../secrets/configs/endpoints";
 
 /**
  * Class to handle application config operations.
@@ -59,12 +59,12 @@ export class Config {
         return {
             accountApp: window["AppUtils"].getConfig().accountApp,
             adminApp: window["AppUtils"].getConfig().adminApp,
+            allowMultipleAppProtocols: window["AppUtils"].getConfig().allowMultipleAppProtocols,
             appBaseName: window["AppUtils"].getConfig().appBaseWithTenant,
             appBaseNameWithoutTenant: window["AppUtils"].getConfig().appBase,
             appHomePath: window["AppUtils"].getConfig().routes.home,
             appLoginPath: window["AppUtils"].getConfig().routes.login,
             appLogoutPath: window["AppUtils"].getConfig().routes.logout,
-            allowMultipleAppProtocols: window["AppUtils"].getConfig().allowMultipleAppProtocols,
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
             clientOrigin: window["AppUtils"].getConfig().clientOrigin,
@@ -98,7 +98,7 @@ export class Config {
         };
     }
 
-     /**
+    /**
      * I18n init options.
      *
      * @remarks
@@ -146,7 +146,8 @@ export class Config {
     public static getI18nConfig(metaFile?: MetaI18N): I18nModuleOptionsInterface {
         return {
             initOptions: this.generateModuleInitOptions(metaFile),
-            langAutoDetectEnabled: I18nConstants.LANG_AUTO_DETECT_ENABLED,
+            langAutoDetectEnabled: window["AppUtils"].getConfig().ui.i18nConfigs.langAutoDetectEnabled
+                ?? I18nConstants.LANG_AUTO_DETECT_ENABLED,
             namespaceDirectories: I18nConstants.BUNDLE_NAMESPACE_DIRECTORIES,
             overrideOptions: I18nConstants.INIT_OPTIONS_OVERRIDE,
             resourcePath: "/resources/i18n",
@@ -195,18 +196,18 @@ export class Config {
                 .replace("${copyright}", "\u00A9")
                 .replace("${year}", new Date().getFullYear()),
             appName: window["AppUtils"].getConfig().ui.appName,
-            applicationTemplateLoadingStrategy: window["AppUtils"].getConfig().ui.applicationTemplateLoadingStrategy,
-            identityProviderTemplateLoadingStrategy:
-                window["AppUtils"].getConfig().ui.identityProviderTemplateLoadingStrategy,
             appTitle: window["AppUtils"].getConfig().ui.appTitle,
+            applicationTemplateLoadingStrategy: window["AppUtils"].getConfig().ui.applicationTemplateLoadingStrategy,
             features: window["AppUtils"].getConfig().ui.features,
             gravatarConfig: window["AppUtils"].getConfig().ui.gravatarConfig,
             hiddenAuthenticators: window["AppUtils"].getConfig().ui.hiddenAuthenticators,
             hiddenUserStores: window["AppUtils"].getConfig().ui.hiddenUserStores,
             i18nConfigs: window["AppUtils"].getConfig().ui.i18nConfigs,
+            identityProviderTemplateLoadingStrategy:
+                window["AppUtils"].getConfig().ui.identityProviderTemplateLoadingStrategy,
             identityProviderTemplates: window["AppUtils"].getConfig().ui.identityProviderTemplates,
-            isCookieConsentBannerEnabled: window["AppUtils"].getConfig().ui.isCookieConsentBannerEnabled,
             isClientSecretHashEnabled: window["AppUtils"].getConfig().ui.isClientSecretHashEnabled,
+            isCookieConsentBannerEnabled: window["AppUtils"].getConfig().ui.isCookieConsentBannerEnabled,
             isDefaultDialectEditingEnabled: window["AppUtils"].getConfig().ui.isDefaultDialectEditingEnabled,
             isDialectAddingEnabled: window["AppUtils"].getConfig().ui.isDialectAddingEnabled,
             isGroupAndRoleSeparationEnabled: window["AppUtils"].getConfig().ui.isGroupAndRoleSeparationEnabled,
@@ -220,9 +221,9 @@ export class Config {
             productName: window["AppUtils"].getConfig().ui.productName,
             productVersionConfig: window["AppUtils"].getConfig().ui.productVersionConfig,
             selfAppIdentifier: window["AppUtils"].getConfig().ui.selfAppIdentifier,
+            showAppSwitchButton: window["AppUtils"].getConfig().ui.showAppSwitchButton,
             systemAppsIdentifiers: window["AppUtils"].getConfig().ui.systemAppsIdentifiers,
-            theme: window["AppUtils"].getConfig().ui.theme,
-            showAppSwitchButton: window["AppUtils"].getConfig().ui.showAppSwitchButton
+            theme: window["AppUtils"].getConfig().ui.theme
         };
     }
 }

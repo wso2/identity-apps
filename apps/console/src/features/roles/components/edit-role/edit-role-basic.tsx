@@ -26,10 +26,10 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment } from "@wso2is/react-components";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button, Divider, Form, Grid, InputOnChangeData, Label } from "semantic-ui-react";
-import { AppConstants, SharedUserStoreUtils, history, SharedUserStoreConstants } from "../../../core";
+import { Button, Divider, Form, Grid, InputOnChangeData } from "semantic-ui-react";
+import { AppConstants, SharedUserStoreConstants, SharedUserStoreUtils, history } from "../../../core";
 import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "../../../userstores";
 import { deleteRoleById, searchRoleList, updateRoleDetails } from "../../api";
 import { PatchRoleDataInterface, SearchRoleInterface } from "../../models";
@@ -84,7 +84,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     const [ userStoreRegEx, setUserStoreRegEx ] = useState<string>("");
     const [ isRoleNamePatternValid, setIsRoleNamePatternValid ] = useState<boolean>(true);
     const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
-    const [ userStore, setUserStore ] = useState<string>(SharedUserStoreConstants.PRIMARY_USER_STORE);
+    const [ userStore ] = useState<string>(SharedUserStoreConstants.PRIMARY_USER_STORE);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     useEffect(() => {
@@ -129,6 +129,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
      */
     const validateRoleNamePattern = async (): Promise<string> => {
         let userStoreRegEx = "";
+
         if (userStore !== SharedUserStoreConstants.PRIMARY_USER_STORE) {
             await SharedUserStoreUtils.getUserStoreRegEx(userStore,
                 SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
@@ -206,12 +207,12 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
         const newRoleName: string = values?.get("roleName")?.toString();
 
         const roleData: PatchRoleDataInterface = {
-            Operations: [{
+            Operations: [ {
                 "op": "replace",
                 "path": "displayName",
                 "value": labelText ? labelText + "/" + newRoleName : newRoleName
-            }],
-            schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+            } ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
         setIsSubmitting(true);
@@ -285,6 +286,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                         validation={ async (value: string, validation: Validation) => {
                                             if (value) {
                                                 let isRoleNameValid = true;
+
                                                 await validateRoleNamePattern().then(regex => {
                                                     isRoleNameValid = SharedUserStoreUtils
                                                         .validateInputAgainstRegEx(value, regex);
@@ -295,7 +297,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                                     validation.errorMessages.push(t("console:manage.features." +
                                                         "roles.addRoleWizard.forms.roleBasicDetails.roleName." +
                                                         "validations.invalid",
-                                                        { type: "role" }));
+                                                    { type: "role" }));
                                                 }
 
                                                 const searchData: SearchRoleInterface = {
@@ -312,8 +314,9 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                                             validation.isValid = false;
                                                             validation.errorMessages.push(
                                                                 t("console:manage.features.roles.addRoleWizard." +
-                                                                    "forms.roleBasicDetails.roleName.validations.duplicate",
-                                                                    { type: "Role" }));
+                                                                    "forms.roleBasicDetails.roleName.validations." +
+                                                                    "duplicate",
+                                                                { type: "Role" }));
                                                         }
                                                     }
 
@@ -375,23 +378,23 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                             actionTitle={
                                 isGroup
                                     ? t("console:manage.features.roles.edit.basics.dangerZone.actionTitle",
-                                    { type: "Group" })
+                                        { type: "Group" })
                                     : t("console:manage.features.roles.edit.basics.dangerZone.actionTitle",
-                                    { type: "Role" })
+                                        { type: "Role" })
                             }
                             header={
                                 isGroup
                                     ? t("console:manage.features.roles.edit.basics.dangerZone.header",
-                                    { type: "group" })
+                                        { type: "group" })
                                     : t("console:manage.features.roles.edit.basics.dangerZone.header",
-                                    { type: "role" })
+                                        { type: "role" })
                             }
                             subheader={
                                 isGroup
                                     ? t("console:manage.features.roles.edit.basics.dangerZone.subheader",
-                                    { type: "group" })
+                                        { type: "group" })
                                     : t("console:manage.features.roles.edit.basics.dangerZone.subheader",
-                                    { type: "role" })
+                                        { type: "role" })
                             }
                             onActionClick={ () => setShowDeleteConfirmationModal(!showRoleDeleteConfirmation) }
                             data-testid={
@@ -404,7 +407,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                 )
             }
             {
-                showRoleDeleteConfirmation &&
+                showRoleDeleteConfirmation && (
                     <ConfirmationModal
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="warning"
@@ -434,6 +437,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                 { type: isGroup ? "group." : "role." }) }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
+                )
             }
         </>
     );

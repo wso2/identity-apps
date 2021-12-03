@@ -268,6 +268,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         if (hasStepsWithOptions) {
             onAuthenticationSequenceChange(false, authenticationSteps);
+
             return;
         }
         onAuthenticationSequenceChange(true, authenticationSteps);
@@ -461,7 +462,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                     // Else check if there are first factors on the left.
                     const containProperHandlersOnLeft: boolean = onlySecondFactorsRequiringHandlersOnRight
                         ? SignInMethodUtils.hasSpecificFactorsInSteps([ ...ApplicationManagementConstants.TOTP_HANDLERS,
-                                ...ApplicationManagementConstants.EMAIL_OTP_HANDLERS ], leftSideSteps)
+                            ...ApplicationManagementConstants.EMAIL_OTP_HANDLERS ], leftSideSteps)
                         : SignInMethodUtils.hasSpecificFactorsInSteps(
                             ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, leftSideSteps);
 
@@ -617,7 +618,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         });
 
         eventPublisher.publish("application-sign-in-method-click-add-new-step");
-
         setAuthenticationSteps(steps);
         updateSteps(true);
     };
@@ -684,8 +684,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
      * @return {GenericAuthenticatorInterface[]}
      */
     const moderateAuthenticators = (authenticators: GenericAuthenticatorInterface[],
-                                    category: string,
-                                    categoryDisplayName: string) => {
+        category: string,
+        categoryDisplayName: string) => {
 
         if (isEmpty(authenticators)) {
             return [];
@@ -719,6 +719,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         if (groupedIDPTemplates !== undefined) {
             persistCategorizedTemplates(groupedIDPTemplates);
+
             return;
         }
 

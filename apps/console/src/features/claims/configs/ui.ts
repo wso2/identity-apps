@@ -18,14 +18,18 @@
 
 import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
 
-export const getAddDialectWizardStepIcons = () => {
+export const getAddDialectWizardStepIcons = (): {
+    general: React.FunctionComponent<React.SVGProps<SVGSVGElement>>
+} => {
 
     return {
         general: DocumentIcon
     };
 };
 
-export const getAddLocalClaimWizardStepIcons = () => {
+export const getAddLocalClaimWizardStepIcons = (): {
+    general: React.FunctionComponent<React.SVGProps<SVGSVGElement>>
+} => {
 
     return {
         general: DocumentIcon

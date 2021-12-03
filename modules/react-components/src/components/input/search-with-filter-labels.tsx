@@ -170,7 +170,7 @@ export const SearchWithFilterLabels: FunctionComponent<PropsWithChildren<SearchW
                     </Label.Group>
                 )
             }
-            </div>
+        </div>
     );
 };
 

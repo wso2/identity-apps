@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com).
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -30,6 +30,7 @@ import { analyticsConfig } from "../../../extensions/configs/analytics";
  * ```
 */
 export class EventPublisher {
+
     private static publisherInstance: EventPublisher;
 
     /**
@@ -44,7 +45,8 @@ export class EventPublisher {
      * @returns {EventPublisher}
     */
     public static getInstance(): EventPublisher {
-        if(!this.publisherInstance) {
+
+        if (!this.publisherInstance) {
             this.publisherInstance = new EventPublisher();
         }
 
@@ -57,6 +59,7 @@ export class EventPublisher {
      * @param {any} computation - Computation to perform.
     */
     public compute = (computation: () => void): void => {
+
         analyticsConfig.EventPublisherExtension.compute &&
             analyticsConfig.EventPublisherExtension.compute(computation);
     }
@@ -65,11 +68,13 @@ export class EventPublisher {
      * Function to publish event logs.
      * 
      * @param {string} eventId - Publishing event identifier.
-     * @param { {[key: string]: string | Record<string, unknown>} } [customProperties] 
+     * @param { {[key: string]: string | Record<string, unknown>} | number } [customProperties]
      *      - Any custom properties to be published (optional).
     */
-    public publish(eventId: string, customProperties?: { [key: string]: string | Record<string, unknown> }): void {
-        if(customProperties) {
+    public publish(eventId: string, customProperties?: { [key: string]: string | Record<string, unknown> |
+            number }): void {
+
+        if (customProperties) {
             /**
              * If you want to do any event logging, do it here.
              * custom properties are passed here.
@@ -94,12 +99,11 @@ export class EventPublisher {
      * Function to initialize event publisher.
     */
     public init(): void {
+
         /**
          * If you want to do any event publisher initialization logic, 
          * you can do it here.
         */
-
         analyticsConfig.EventPublisherExtension.init && analyticsConfig.EventPublisherExtension.init();
     }
-
 }

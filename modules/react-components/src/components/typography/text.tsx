@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { ReactElement } from "react";
+import React, { CSSProperties, ReactElement } from "react";
 
 /**
  * Text component prop types.
@@ -55,7 +55,7 @@ export interface TextPropsInterface extends TestableComponentInterface {
     /**
      * Custom styles object.
      */
-    styles?: object;
+    styles?: CSSProperties | undefined;
     /**
      * De-emphasises the heading.
      */
@@ -126,7 +126,7 @@ export const Text: React.FunctionComponent<TextPropsInterface> = (
         , className
     );
 
-    const resolveInlineStyles = (overrides?: object): object => {
+    const resolveInlineStyles = (overrides?: CSSProperties | undefined): CSSProperties | undefined => {
         let modified = {};
 
         if (weight) {

@@ -126,7 +126,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
         createIdentityProvider(identityProvider)
             .then((response) => {
                 eventPublisher.publish("connections-finish-adding-connection", {
-                    "type": componentId
+                    type: componentId
                 });
 
                 dispatch(addAlert({

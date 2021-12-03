@@ -99,7 +99,7 @@ export interface ConsoleNS {
             sessionTimeoutModal: {
                 description: string;
                 heading: string;
-                content?: object;
+                content?: Record<string, unknown>;
                 primaryButton: string;
                 secondaryButton: string;
                 loginAgainButton: string;
@@ -2891,7 +2891,11 @@ export interface ConsoleNS {
                     addTemplateType: {
                         heading: string;
                         subHeading: string;
-                        steps: {};
+                        steps: {
+                            templateType: {
+                                heading: string;
+                            }
+                        };
                     };
                 };
             };
@@ -3632,18 +3636,9 @@ export interface ConsoleNS {
                         userId: string;
                         emails: string;
                         profileUrl: string;
-                        addresses_work: string;
-                        addresses_home: string;
-                        emails_home: string;
-                        emails_other: string;
-                        emails_work: string;
                         name_familyName: string;
                         name_givenName: string;
                         phoneNumbers: string;
-                        phoneNumbers_home: string;
-                        phoneNumbers_mobile: string;
-                        phoneNumbers_work: string;
-                        phoneNumbers_other: string;
                         photos: string;
                         oneTimePassword: string;
                         userName: string;

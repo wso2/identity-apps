@@ -232,6 +232,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
         // If `getThemeFromEnvironment` is false or `matchMedia` is not supported, fallback to dark theme.
         if (!getThemeFromEnvironment || !window.matchMedia) {
             setDarkMode(true);
+
             return;
         }
 
@@ -242,6 +243,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
         const callback = (e: MediaQueryListEvent): void => {
             if (e.matches) {
                 setDarkMode(true);
+
                 return;
             }
 
@@ -285,7 +287,13 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
      * @param {string} language - Selected language.
      * @return {object} Resolved mode.
      */
-    const resolveMode = (language: string): object => {
+    const resolveMode = (language: string): {
+        json: boolean;
+        name: "javascript" | string;
+        statementIndent: number;
+        typescript: boolean;
+    } => {
+
         if (!language) {
             throw new Error("Please define a language.");
         }

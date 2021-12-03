@@ -185,7 +185,7 @@ export class Config {
                     )
             },
             load: "currentOnly", // lookup only current lang key(en-US). Prevents 404 from `en`.
-            ns: [I18nConstants.COMMON_NAMESPACE, I18nConstants.PORTAL_NAMESPACE]
+            ns: [ I18nConstants.COMMON_NAMESPACE, I18nConstants.PORTAL_NAMESPACE ]
         };
     }
 
@@ -199,7 +199,8 @@ export class Config {
     public static getI18nConfig(metaFile?: MetaI18N): I18nModuleOptionsInterface {
         return {
             initOptions: this.generateModuleInitOptions(metaFile),
-            langAutoDetectEnabled: I18nConstants.LANG_AUTO_DETECT_ENABLED,
+            langAutoDetectEnabled: window["AppUtils"].getConfig().ui.i18nConfigs.langAutoDetectEnabled
+                ?? I18nConstants.LANG_AUTO_DETECT_ENABLED,
             namespaceDirectories: I18nConstants.BUNDLE_NAMESPACE_DIRECTORIES,
             overrideOptions: I18nConstants.INIT_OPTIONS_OVERRIDE,
             resourcePath: "/resources/i18n",

@@ -29,7 +29,7 @@ const constants = {
     CHECKBOX_LABEL: "Checkbox label",
     CHECKBOX_NAME: "checkbox",
     CHECKBOX_REQUIRED_MESSAGE: "checkbox required",
-    CHECKBOX_VALUE: ["value2"],
+    CHECKBOX_VALUE: [ "value2" ],
     CUSTOM_DATA_ID: "custom",
     CUSTOM_ELEMENT: <div data-test-id="custom" />,
     DROPDOWN_CHILD_1_KEY: 1,

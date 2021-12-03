@@ -18,8 +18,8 @@
 
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
-import { store } from "../store";
 import { SCIMConfigs } from "../extensions/configs/scim";
+import { store } from "../store";
 
 /**
  * Get an axios instance.
@@ -55,6 +55,7 @@ export const getTotpQrCode = (): Promise<any> => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. Server returned ${response.status}.`);
             }
+
             return Promise.resolve(response);
         })
         .catch((error) => {
@@ -85,6 +86,7 @@ export const validateTOTPCode = (code: string): Promise<any> => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response);
         })
         .catch((error) => {
@@ -142,6 +144,7 @@ export const initTOTPCode = (): Promise<any> => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response);
         })
         .catch((error) => {
@@ -167,6 +170,7 @@ export const deleteTOTP = (): Promise<any> => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response);
         })
         .catch((error) => {
@@ -192,6 +196,7 @@ export const getTOTPSecret = (): Promise<any> => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response);
         })
         .catch((error) => {

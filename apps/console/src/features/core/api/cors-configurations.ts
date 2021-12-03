@@ -50,6 +50,7 @@ export const getCORSOrigins = (): Promise<any> => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to fetch the CORS origins"));
             }
+
             return Promise.resolve(response.data as CORSOriginsListInterface[]);
         }).catch((error) => {
             return Promise.reject(error);

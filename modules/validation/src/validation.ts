@@ -35,6 +35,7 @@ export const email: ValidationFunction = (value: string): boolean => {
     ) {
         return false;
     }
+
     return true;
 };
 
@@ -51,6 +52,7 @@ export const mobileNumber: ValidationFunction = (value: string): boolean => {
     ) {
         return false;
     }
+
     return true;
 };
 
@@ -67,6 +69,7 @@ export const url: ValidationFunction = (value: string): boolean => {
     ) {
         return false;
     }
+
     return true;
 };
 
@@ -84,6 +87,7 @@ export const imageUrl = async (value: string): Promise<boolean> => {
     } else {
         try {
             const response = await Axios.get(value);
+
             return Promise.resolve(response.headers["content-type"].includes("image"));
         } catch (error) {
             return Promise.resolve(false);
@@ -104,6 +108,7 @@ export const identifier: ValidationFunction = (value: string): boolean => {
     ) {
         return false;
     }
+
     return true;
 };
 
@@ -120,6 +125,7 @@ export const resourceName: ValidationFunction = (value: string): boolean => {
     ) {
         return false;
     }
+
     return true;
 };
 
@@ -200,6 +206,7 @@ export const isValidResourceName = (value: string): boolean => {
         const result: ValidationResult = Joi.string()
             .regex(new RegExp("^[a-zA-Z][a-zA-Z0-9-_. ]+$"))
             .validate(value);
+
         return !result.error;
     } catch (error) {
         return false;
@@ -224,6 +231,7 @@ export const isValidClientId = (value: string): boolean => {
         const result: ValidationResult = Joi.string()
             .regex(new RegExp("^[^\\s]*$"))
             .validate(value);
+
         return !result.error;
     } catch (e) {
         return false;
@@ -242,6 +250,7 @@ export const isValidDescription = (value: string): boolean => {
         const result: ValidationResult = Joi.string()
             .min(3).max(1024)
             .validate(value);
+
         return !result.error;
     } catch (e) {
         return false;
@@ -276,6 +285,7 @@ export const isValidResourceKey = (value: string): boolean => {
         const result: ValidationResult = Joi.string()
             .regex(new RegExp("^[a-zA-Z][a-zA-Z0-9-_]+$"))
             .validate(value);
+
         return !result.error;
     } catch (error) {
         return false;

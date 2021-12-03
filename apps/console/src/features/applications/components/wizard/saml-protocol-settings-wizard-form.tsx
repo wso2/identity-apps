@@ -23,7 +23,7 @@ import { ContentLoader, Hint, LinkButton, URLInput } from "@wso2is/react-compone
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Grid, Icon, Label, Message } from "semantic-ui-react";
+import { Grid, Icon, Message } from "semantic-ui-react";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.
@@ -91,6 +91,7 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
             const tempAssertionConsumerUrls = templateValues?.inboundProtocolConfiguration?.saml?.manualConfiguration
                 .assertionConsumerUrls;
             const tempIssuer = templateValues?.inboundProtocolConfiguration?.saml?.manualConfiguration.issuer;
+
             if (!isEmpty(tempAssertionConsumerUrls)) {
                 setAssertionConsumerUrls(tempAssertionConsumerUrls.toString());
             } else {
@@ -109,7 +110,7 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
             setIssuer(initialValues?.inboundProtocolConfiguration?.saml?.manualConfiguration
                 .issuer?.toString());
         }
-    }, [initialValues]);
+    }, [ initialValues ]);
 
     /**
      * Sets the mandatory status of the ACS URL component by reading
@@ -326,23 +327,23 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                                                         at a later step.)
                                                     </Trans>
                                                 }
-                                                    {
-                                                        (assertionConsumerUrls === undefined ||
+                                                {
+                                                    (assertionConsumerUrls === undefined ||
                                                             assertionConsumerUrls === "") && (
-                                                            <LinkButton
-                                                                className={ "m-1 p-1 with-no-border orange" }
-                                                                onClick={ (e) => {
-                                                                    e.preventDefault();
-                                                                    setAssertionConsumerUrls(
-                                                                        assertionConsumerURLFromTemplate);
-                                                                    setIssuer(issuerFromTemplate);
-                                                                } }
-                                                                data-testid={ `${ testId }-add-now-button` }
-                                                            >
-                                                                <span style={ { fontWeight: "bold" } }>Add Now</span>
-                                                            </LinkButton>
-                                                        )
-                                                    }
+                                                        <LinkButton
+                                                            className={ "m-1 p-1 with-no-border orange" }
+                                                            onClick={ (e) => {
+                                                                e.preventDefault();
+                                                                setAssertionConsumerUrls(
+                                                                    assertionConsumerURLFromTemplate);
+                                                                setIssuer(issuerFromTemplate);
+                                                            } }
+                                                            data-testid={ `${ testId }-add-now-button` }
+                                                        >
+                                                            <span style={ { fontWeight: "bold" } }>Add Now</span>
+                                                        </LinkButton>
+                                                    )
+                                                }
                                                 </Message.Content>
                                             </Message>
                                         )

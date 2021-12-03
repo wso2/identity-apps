@@ -163,7 +163,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
     const { t } = useTranslation();
 
-    const [ isModalOpen, setIsModalOpen ] = useState<boolean>(open);
+    const [ isModalOpen ] = useState<boolean>(open);
     const [
         selectedAuthenticators,
         setSelectedAuthenticators
@@ -255,13 +255,12 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     const handleModalSubmit = (): void => {
 
         eventPublisher.compute(() => {
-            selectedAuthenticators.forEach(element => {
+            selectedAuthenticators?.forEach(element => {
                 eventPublisher.publish("application-sign-in-method-add-new-authenticator", {
-                    "type": kebabCase(element["defaultAuthenticator"]["name"])
+                    type: kebabCase(element["defaultAuthenticator"]["name"])
                 });
             });
         });
-
         onModalSubmit(selectedAuthenticators, authenticatorAddStep);
     };
 
@@ -554,7 +553,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                                 className={
                                                     `basic-card authenticator add-custom-authenticator-card ${
                                                         showLabels ? "with-labels" : ""
-                                                        }`
+                                                    }`
                                                 }
                                                 onClick={ handleNewAuthenticatorAddClick }
                                             >

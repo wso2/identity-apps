@@ -66,6 +66,10 @@ export interface InfoCardPropsInterface extends CardProps, TestableComponentInte
      */
     githubRepoMetaInfo?: GithubHubRepoMetaInfoInterface;
     /**
+     * Disable hovering effect.
+     */
+    noHover?: boolean;
+    /**
      * If the card is selected.
      */
     selected?: boolean;
@@ -132,6 +136,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
         image,
         imageOptions,
         imageSize,
+        noHover,
         onClick,
         selected,
         subHeader,
@@ -148,7 +153,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
             disabled,
             fluid,
             inline,
-            [ "no-hover" ]: action || disabled,
+            [ "no-hover" ]: noHover || action || disabled,
             selected,
             ["with-image"]: image
         },
@@ -236,7 +241,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                 {
                                     githubRepoMetaInfo.languageLogo && (
                                         <Popup
-                                            trigger={
+                                            trigger={ (
                                                 <div className="language">
                                                     <GenericIcon
                                                         icon={ githubRepoMetaInfo.languageLogo }
@@ -249,7 +254,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                                         floated="left"
                                                     />
                                                 </div>
-                                            }
+                                            ) }
                                             content={ githubRepoMetaInfo.language }
                                             inverted
                                         />
@@ -308,7 +313,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                         {
                             githubRepoMetaInfo.languageLogo && (
                                 <Popup
-                                    trigger={
+                                    trigger={ (
                                         <div className="language">
                                             <GenericIcon
                                                 icon={ githubRepoMetaInfo.languageLogo }
@@ -321,7 +326,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                                 floated="left"
                                             />
                                         </div>
-                                    }
+                                    ) }
                                     content={ githubRepoMetaInfo.language }
                                     inverted
                                 />

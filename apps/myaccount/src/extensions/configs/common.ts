@@ -7,6 +7,7 @@
  * You may not alter or remove any copyright or other notice from copies of this content."
  */
 
+import { ProfileSchema } from "../../models";
 import { CommonConfig } from "./models";
 
 export const commonConfig: CommonConfig = {
@@ -47,6 +48,9 @@ export const commonConfig: CommonConfig = {
         },
         isConsoleNavigationAllowed(userstore: string): boolean {
             return true;
+        },
+        isSchemaNameSkippableforProfileCompletion(schema: ProfileSchema): boolean {
+            return schema.displayName === "Role" || schema.displayName === "Local Credential Exists" ;
         }
     }
 };

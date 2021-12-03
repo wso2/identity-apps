@@ -17,6 +17,7 @@
  */
 
 import { FieldConstants } from "@wso2is/form";
+import { I18n } from "@wso2is/i18n";
 import { FormValidation } from "@wso2is/validation";
 
 export const SECRET_NAME_LENGTH = { max: 64, min: 3 };
@@ -40,13 +41,23 @@ export const secretNameValidator = (
         } characters!`;
     }
     if (!FormValidation.isValidResourceKey(value)) {
-        return FieldConstants.INVALID_RESOURCE_ERROR;
+        return FieldConstants.INVALID_SECRET_NAME_ERROR;
     }
-    if (listOfTakenSecretNamesForSecretType?.size &&
-        listOfTakenSecretNamesForSecretType.has(value)) {
-        return "This Secret name is already added!";
+
+    let isNameAlreadyExists = false;
+
+    if (listOfTakenSecretNamesForSecretType?.size) {
+        listOfTakenSecretNamesForSecretType.forEach(name => {
+            if (name.toLowerCase() === value.toLowerCase()) {
+                isNameAlreadyExists = true;
+            }
+        });
     }
-    return undefined;
+
+    return isNameAlreadyExists ?  
+        I18n.instance.t(
+            "console:develop.features.secrets.wizards.addSecret.form.secretNameField.alreadyPresentError"
+        ) : undefined;
 };
 
 export const secretValueValidator = (value: string): ValidationResult => {

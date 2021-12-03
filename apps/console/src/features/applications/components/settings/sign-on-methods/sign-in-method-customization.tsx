@@ -252,6 +252,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             .catch((error) => {
 
                 const DISALLOWED_PROGRAMMING_CONSTRUCTS = "APP-60001";
+
                 if (error.response && error.response.data?.code === DISALLOWED_PROGRAMMING_CONSTRUCTS) {
                     dispatch(addAlert({
                         description: (
@@ -271,6 +272,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                         message: t("console:develop.features.applications.notifications" +
                             ".conditionalScriptLoopingError.message")
                     }));
+
                     return;
                 }
 
@@ -308,7 +310,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                     dispatch(addAlert({
                         description: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
                             "requestPathAuthenticators.notifications.getRequestPathAuthenticators.error.description",
-                            { description: error.response.data.description }),
+                        { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
                         message: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
                             "requestPathAuthenticators.notifications.getRequestPathAuthenticators.error.message")
@@ -366,7 +368,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             });
 
             eventPublisher.publish("application-sign-in-method-click-update-button", {
-                "type": eventPublisherProperties
+                type: eventPublisherProperties
             });
         });
 

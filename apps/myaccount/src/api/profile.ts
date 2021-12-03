@@ -56,6 +56,7 @@ export const getUserInfo = (): Promise<any> => {
                 return Promise.reject(new Error(`Failed get user info from:
                 ${store.getState().config.endpoints.user}`));
             }
+
             return Promise.resolve(response);
         })
         .catch((error) => {
@@ -86,6 +87,7 @@ export const getUserReadOnlyStatus = (): Promise<ReadOnlyUserStatus> => {
                 ${store.getState().config.endpoints.user}`)
                 );
             }
+
             return Promise.resolve(response?.data);
         })
         .catch((error) => {
@@ -102,6 +104,7 @@ export const getGravatarImage = (email: string): Promise<string> => {
         return Promise.reject("Email is null");
     } else {
         const url: string = CommonUtils.getGravatar(email);
+
         return new Promise((resolve, reject) => {
             axios
                 .get(url)
@@ -182,8 +185,7 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
  * @param {object} info.
  * @return {Promise<any>} a promise containing the response.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export const updateProfileInfo = (info: object): Promise<any> => {
+export const updateProfileInfo = (info: Record<string, unknown>): Promise<any> => {
     const requestConfig = {
         data: info,
         headers: {
@@ -201,6 +203,7 @@ export const updateProfileInfo = (info: object): Promise<any> => {
                     new Error(`Failed update user profile info with: ${store.getState().config.endpoints.me}`)
                 );
             }
+
             return Promise.resolve(response);
         })
         .catch((error) => {

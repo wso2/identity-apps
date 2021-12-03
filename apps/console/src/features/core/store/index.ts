@@ -16,10 +16,13 @@
  * under the License.
  */
 
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { AnyAction, Store, StoreEnhancer, applyMiddleware, createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
 import thunk from "redux-thunk";
 import { reducers } from "./combine-reducers";
+
+type ComponentInterface = IdentifiableComponentInterface;
 
 /**
  * The type of state held by this store.
@@ -37,7 +40,8 @@ export type AppActions = AnyAction;
  *
  * @return {Store<any, AnyAction> & Store<S & {}, A> & {dispatch: any}} Redux Store
  */
-const configureStore = (): Store<any, AnyAction> & Store<AppState & {}, AppActions> & { dispatch: any } => {
+const configureStore = (): Store<any, AnyAction> & Store<AppState & ComponentInterface, AppActions> &
+    { dispatch: any } => {
 
     const middleware = [
         thunk

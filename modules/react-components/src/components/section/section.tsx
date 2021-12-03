@@ -219,43 +219,45 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                         </Grid.Column>
                         {
                             icon || iconMini ? (
-                                    <Grid.Column width={ 6 } className="no-padding">
-                                        <Responsive as={ Fragment } { ...Responsive.onlyComputer }>
-                                            {
-                                                icon ? (
-                                                        <GenericIcon
-                                                            icon={ icon }
-                                                            transparent
-                                                            size={ iconSize }
-                                                            floated={ iconFloated }
-                                                            defaultIcon={ iconStyle === "default" }
-                                                            twoTone={ iconStyle === "twoTone" }
-                                                            colored={ iconStyle === "colored" }
-                                                            data-testid={ `${ testId }-icon` }
-                                                        />
-                                                    )
-                                                    : null
-                                            }
-                                        </Responsive>
-                                        <Responsive as={ Fragment } maxWidth={ Responsive.onlyTablet.maxWidth }>
-                                            {
-                                                iconMini ? (
-                                                        <GenericIcon
-                                                            icon={ iconMini }
-                                                            transparent
-                                                            size={ iconSize }
-                                                            floated={ iconFloated }
-                                                            defaultIcon={ iconStyle === "default" }
-                                                            twoTone={ iconStyle === "twoTone" }
-                                                            colored={ iconStyle === "colored" }
-                                                            data-testid={ `${ testId }-icon-mini` }
-                                                        />
-                                                    )
-                                                    : null
-                                            }
-                                        </Responsive>
-                                    </Grid.Column>
-                                )
+                                <Grid.Column width={ 6 } className="no-padding">
+                                    <Responsive as={ Fragment } { ...Responsive.onlyComputer }>
+                                        {
+                                            icon
+                                                ? (
+                                                    <GenericIcon
+                                                        icon={ icon }
+                                                        transparent
+                                                        size={ iconSize }
+                                                        floated={ iconFloated }
+                                                        defaultIcon={ iconStyle === "default" }
+                                                        twoTone={ iconStyle === "twoTone" }
+                                                        colored={ iconStyle === "colored" }
+                                                        data-testid={ `${ testId }-icon` }
+                                                    />
+                                                )
+                                                : null
+                                        }
+                                    </Responsive>
+                                    <Responsive as={ Fragment } maxWidth={ Responsive.onlyTablet.maxWidth }>
+                                        {
+                                            iconMini
+                                                ? (
+                                                    <GenericIcon
+                                                        icon={ iconMini }
+                                                        transparent
+                                                        size={ iconSize }
+                                                        floated={ iconFloated }
+                                                        defaultIcon={ iconStyle === "default" }
+                                                        twoTone={ iconStyle === "twoTone" }
+                                                        colored={ iconStyle === "colored" }
+                                                        data-testid={ `${ testId }-icon-mini` }
+                                                    />
+                                                )
+                                                : null
+                                        }
+                                    </Responsive>
+                                </Grid.Column>
+                            )
                                 : null
                         }
                     </Grid.Row>
@@ -263,7 +265,7 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                         <Grid.Column className="no-padding" width={ 16 }>
                             {
                                 topActionBar
-                                ? (
+                                    ? (
                                         <Menu
                                             className="top-action-panel no-margin-bottom"
                                             data-testid={ `${ testId }-top-action-panel` }
@@ -273,7 +275,7 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                                             </Menu.Menu>
                                         </Menu>
                                     )
-                                : null
+                                    : null
                             }
                             { children }
                         </Grid.Column>
@@ -281,7 +283,8 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                 </Grid>
             </Card.Content>
             {
-                (primaryAction || secondaryAction || placeholder) && showActionBar ? (
+                (primaryAction || secondaryAction || placeholder) && showActionBar
+                    ? (
                         <Card.Content className="extra-content" extra>
                             <List selection={ !secondaryAction } verticalAlign="middle">
                                 <List.Item
@@ -308,26 +311,26 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                                                     {
                                                         primaryAction
                                                             ? constructAction(
-                                                            primaryAction,
-                                                            primaryActionIcon,
-                                                            primaryActionDisabled,
-                                                            (primaryAction && secondaryAction)
-                                                                ? onPrimaryActionClick
-                                                                : null,
-                                                            "primary"
+                                                                primaryAction,
+                                                                primaryActionIcon,
+                                                                primaryActionDisabled,
+                                                                (primaryAction && secondaryAction)
+                                                                    ? onPrimaryActionClick
+                                                                    : null,
+                                                                "primary"
                                                             )
                                                             : null
                                                     }
                                                     {
                                                         secondaryAction
                                                             ? constructAction(
-                                                            secondaryAction,
-                                                            secondaryActionIcon,
-                                                            secondaryActionDisabled,
-                                                            (primaryAction && secondaryAction)
-                                                                ? onSecondaryActionClick
-                                                                : null,
-                                                            "secondary"
+                                                                secondaryAction,
+                                                                secondaryActionIcon,
+                                                                secondaryActionDisabled,
+                                                                (primaryAction && secondaryAction)
+                                                                    ? onSecondaryActionClick
+                                                                    : null,
+                                                                "secondary"
                                                             )
                                                             : null
                                                     }

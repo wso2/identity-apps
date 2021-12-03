@@ -67,7 +67,7 @@ export const ViewLocaleTemplate: FunctionComponent<ViewLocaleTemplatePropsInterf
             .catch(() => {
                 // Handle the error.
             });
-    },[templateData !== undefined]);
+    },[ templateData !== undefined ]);
 
     const WIZARD_STEPS = [ {
         content: templateData?.body

@@ -35,9 +35,9 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
     I18nModuleOptionsInterface,
     UIConfigInterface> = {
 
-    deployment: null,
-    endpoints: null,
-    features: null,
-    i18n: null,
-    ui: null
-};
+        deployment: null,
+        endpoints: null,
+        features: null,
+        i18n: null,
+        ui: null
+    };

@@ -27,7 +27,7 @@ import {
     EmphasizedSegment
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import { AppState, FeatureConfigInterface, UIConfigInterface } from "../../../core";
@@ -130,13 +130,16 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isDeletionInProgress, setIsDeletionInProgress ] = useState<boolean>(false);
 
     /**
      * Deletes an application.
      */
     const handleApplicationDelete = (): void => {
+        setIsDeletionInProgress(true);
         deleteApplication(appId)
             .then(() => {
+                setIsDeletionInProgress(false);
                 dispatch(addAlert({
                     description: t("console:develop.features.applications.notifications.deleteApplication.success" +
                         ".description"),
@@ -148,6 +151,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                 onDelete();
             })
             .catch((error) => {
+                setIsDeletionInProgress(false);
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -300,6 +304,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                         onPrimaryActionClick={ (): void => handleApplicationDelete() }
                         data-testid={ `${ testId }-application-delete-confirmation-modal` }
                         closeOnDimmerClick={ false }
+                        primaryActionLoading={ isDeletionInProgress }
                     >
                         <ConfirmationModal.Header
                             data-testid={ `${ testId }-application-delete-confirmation-modal-header` }
@@ -321,10 +326,12 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                     </ConfirmationModal>
                 </>
             ) :
+            (
                 <EmphasizedSegment padded="very">
                     <ContentLoader inline="centered" active/>
                 </EmphasizedSegment>
-        );
+            )
+    );
 };
 
 /**

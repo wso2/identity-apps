@@ -168,6 +168,7 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
                     />
                 );
             }
+
             return (
                 <InboundSAMLForm
                     onUpdate={ onUpdate }
