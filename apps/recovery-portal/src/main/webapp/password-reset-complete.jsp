@@ -91,20 +91,12 @@
             String userStoreDomain = user.getRealm();
 
             if (isAutoLoginEnable) {
-                String queryParams = callback.substring(callback.indexOf("?") + 1);
-                String[] parameterList = queryParams.split("&");
-                Map<String, String> queryMap = new HashMap<>();
-                for (String param : parameterList) {
-                    if (param.contains("=")) {
-                        String key = param.substring(0, param.indexOf("="));
-                        String value = param.substring(param.indexOf("=") + 1);
-                        queryMap.put(key, value);
-                    }
-                }
+                Map<String, String> queryMap = extractQueryParamsFromURL(callback);
+
                 sessionDataKey = queryMap.get("sessionDataKey");
                 String referer = request.getHeader("referer");
                 String refererParams = referer.substring(referer.indexOf("?") + 1);
-                parameterList = refererParams.split("&");
+                String[] parameterList = refererParams.split("&");
                 for (String param : parameterList) {
                     if (param.contains("=")) {
                         String key = param.substring(0, param.indexOf("="));
