@@ -35,8 +35,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
-    String templateId = request.getParameter("templateId");
-    String promptId = request.getParameter("promptId");
+    String templateId = Encode.forHtmlAttribute(request.getParameter("templateId"));
+    String promptId = Encode.forHtmlAttribute(request.getParameter("promptId"));
 
     String authAPIURL = application.getInitParameter(Constants.AUTHENTICATION_REST_ENDPOINT_URL);
     if (StringUtils.isBlank(authAPIURL)) {
@@ -45,7 +45,7 @@
     if (!authAPIURL.endsWith("/")) {
         authAPIURL += "/";
     }
-    authAPIURL += "context/" + request.getParameter("promptId");
+    authAPIURL += "context/" + promptId;
     String contextProperties = AuthContextAPIClient.getContextProperties(authAPIURL);
 
 
@@ -69,7 +69,7 @@
 
     <script type="text/javascript">
         var data = JSON.parse("<%=Encode.forJavaScript(contextProperties)%>");
-        var prompt_id = "<%=Encode.forJavaScript(promptId)%>";
+        var prompt_id = "<%=promptId%>";
     </script>
 </head>
 <body class="login-portal layout authentication-portal-layout">
