@@ -92,7 +92,6 @@
 
             if (isAutoLoginEnable) {
                 Map<String, String> queryMap = extractQueryParamsFromURL(callback);
-
                 sessionDataKey = queryMap.get("sessionDataKey");
                 String referer = request.getHeader("referer");
                 String refererParams = referer.substring(referer.indexOf("?") + 1);
