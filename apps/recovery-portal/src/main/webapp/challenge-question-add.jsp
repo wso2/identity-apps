@@ -18,6 +18,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.serviceclient.UserIdentityManagementAdminServiceClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.stub.dto.ChallengeQuestionDTO" %>
@@ -35,7 +36,7 @@
     Map<String, List<ChallengeQuestionDTO>> challengeQuestionSets = new HashMap<String, List<ChallengeQuestionDTO>>();
     String username = session.getAttribute("username");
 
-    if (username != null) {
+    if (!StringUtils.isBlank(username)) {
         UserIdentityManagementAdminServiceClient userIdentityManagementAdminServiceClient = new
                 UserIdentityManagementAdminServiceClient();
         ChallengeQuestionDTO[] challengeQuestionDTOs =
