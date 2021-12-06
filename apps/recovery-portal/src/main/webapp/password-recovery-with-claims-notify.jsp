@@ -32,6 +32,7 @@
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain);
     }
+    String username = IdentityManagementEndpointUtil.getStringValue(request.getParameter("username"));
 %>
 
 <!doctype html>
@@ -92,6 +93,7 @@
                     } catch (URISyntaxException e) {
                         request.setAttribute("error", true);
                         request.setAttribute("errorMsg", "Invalid callback URL found in the request.");
+                        request.setAttribute("username", username);
                         request.getRequestDispatcher("error.jsp").forward(request, response);
                         return;
                     }

@@ -39,6 +39,7 @@
 
 <%
     ReCaptchaApi reCaptchaApi = new ReCaptchaApi();
+    String username = request.getParameter("username");
 
     if (StringUtils.isNotEmpty(tenantDomain)) {
         try {
@@ -65,6 +66,9 @@
     } catch (ApiException e) {
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", e.getMessage());
+        if (!StringUtils.isBlank(username)) {
+            request.setAttribute("username", username);
+        }
         request.getRequestDispatcher("error.jsp").forward(request, response);
         return;
     }
@@ -82,6 +86,9 @@
     } catch (ApiException e) {
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", e.getMessage());
+        if (!StringUtils.isBlank(username)) {
+            request.setAttribute("username", username);
+        }
         request.getRequestDispatcher("error.jsp").forward(request, response);
         return;
     }
@@ -90,6 +97,9 @@
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                 "No.recovery.supported.claims.found"));
+        if (!StringUtils.isBlank(username)) {
+            request.setAttribute("username", username);
+        }
         request.getRequestDispatcher("error.jsp").forward(request, response);
         return;
     }

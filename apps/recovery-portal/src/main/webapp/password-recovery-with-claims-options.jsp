@@ -62,6 +62,7 @@
         claims = usernameRecoveryApi.getClaimsForUsernameRecovery(tenantDomain, true);
     } catch (ApiException e) {
         IdentityManagementEndpointUtil.addErrorInformation(request, e);
+        request.setAttribute("username", username);
         request.getRequestDispatcher("error.jsp").forward(request, response);
         return;
     }
@@ -96,6 +97,7 @@
                 initiatePasswordRecovery(recoveryInitRequest, tenantDomain, requestHeaders);
         if (accountRecoveryTypes == null) {
             request.setAttribute("callback", callback);
+            request.setAttribute("username", username);
             request.getRequestDispatcher("password-recovery-with-claims-notify.jsp").forward(request,
                         response);
             return;
@@ -127,6 +129,7 @@
                             request.setAttribute("error", true);
                             request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                     "Cannot.obtain.username.from.server.response"));
+                            request.setAttribute("username", username);
                             request.getRequestDispatcher("error.jsp").forward(request, response);
                             return;
                         }
@@ -151,6 +154,7 @@
             return;
         }
         IdentityManagementEndpointUtil.addErrorInformation(request, e);
+        request.setAttribute("username", username);
         request.getRequestDispatcher("error.jsp").forward(request, response);
         return;
     }
@@ -159,6 +163,7 @@
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                 "No.recovery.options.found"));
+        request.setAttribute("username", username);
         request.getRequestDispatcher("error.jsp").forward(request, response);
         return;
     }
