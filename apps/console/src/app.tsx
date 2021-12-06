@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { useAuthContext } from "@asgardeo/auth-react";
+import { DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { AccessControlProvider } from "@wso2is/access-control";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
 import { RouteInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
@@ -152,7 +152,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
             /**
              * Checks if the portal access is denied due to no association.
              */
-            getDecodedIDToken().then((idToken) => {
+            getDecodedIDToken().then((idToken: DecodedIDTokenPayload) => {
 
                 if(has(idToken, "associated_tenants")) {
                     // If there is an assocation, the user is likely unauthorized by other criteria.
@@ -166,6 +166,10 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                         pathname: AppConstants.getPaths().get("CREATE_TENANT")
                     });
                 }
+            }).catch(() => {
+                // No need to show UI errors here.
+                // Add debug logs here one a logger is added.
+                // Tracked here https://github.com/wso2/product-is/issues/11650.
             });
         } else {
             history.push({

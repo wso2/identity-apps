@@ -19,6 +19,7 @@
 import {
     AuthenticatedUserInfo,
     BasicUserInfo,
+    DecodedIDTokenPayload,
     Hooks,
     OIDCEndpoints,
     SecureApp,
@@ -232,7 +233,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             /**
              * Prevent redirect to landing page when there is no association.
              */
-            getDecodedIDToken().then((idToken) => {
+            getDecodedIDToken().then((idToken: DecodedIDTokenPayload) => {
     
                 if(has(idToken, "associated_tenants")) {
                     // If there is an assocation, the user should be redirected to console landing page.
@@ -248,8 +249,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         pathname: AppConstants.getPaths().get("CREATE_TENANT")
                     });
                 }
-            }).catch((error) => {
-                throw error;
+            }).catch(() => {
+                // No need to show UI errors here.
+                // Add debug logs here one a logger is added.
+                // Tracked here https://github.com/wso2/product-is/issues/11650.
             });
         } else {
             const location =
