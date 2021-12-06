@@ -233,27 +233,28 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             /**
              * Prevent redirect to landing page when there is no association.
              */
-            getDecodedIDToken().then((idToken: DecodedIDTokenPayload) => {
-    
-                if(has(idToken, "associated_tenants")) {
-                    // If there is an assocation, the user should be redirected to console landing page.
-                    const location =
-                        !AuthenticationCallbackUrl || AuthenticationCallbackUrl === AppConstants.getAppLoginPath()
-                            ? AppConstants.getAppHomePath()
-                            : AuthenticationCallbackUrl;
-    
-                    history.push(location);
-                } else {
-                    // If there is no assocation, the user should be redirected to creation flow.
-                    history.push({
-                        pathname: AppConstants.getPaths().get("CREATE_TENANT")
-                    });
-                }
-            }).catch(() => {
-                // No need to show UI errors here.
-                // Add debug logs here one a logger is added.
-                // Tracked here https://github.com/wso2/product-is/issues/11650.
-            });
+            getDecodedIDToken()
+                .then((idToken: DecodedIDTokenPayload) => {
+        
+                    if(has(idToken, "associated_tenants")) {
+                        // If there is an assocation, the user should be redirected to console landing page.
+                        const location =
+                            !AuthenticationCallbackUrl || AuthenticationCallbackUrl === AppConstants.getAppLoginPath()
+                                ? AppConstants.getAppHomePath()
+                                : AuthenticationCallbackUrl;
+        
+                        history.push(location);
+                    } else {
+                        // If there is no assocation, the user should be redirected to creation flow.
+                        history.push({
+                            pathname: AppConstants.getPaths().get("CREATE_TENANT")
+                        });
+                    }
+                }).catch(() => {
+                    // No need to show UI errors here.
+                    // Add debug logs here one a logger is added.
+                    // Tracked here https://github.com/wso2/product-is/issues/11650.
+                });
         } else {
             const location =
                         !AuthenticationCallbackUrl || AuthenticationCallbackUrl === AppConstants.getAppLoginPath()

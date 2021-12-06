@@ -152,25 +152,26 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
             /**
              * Checks if the portal access is denied due to no association.
              */
-            getDecodedIDToken().then((idToken: DecodedIDTokenPayload) => {
+            getDecodedIDToken()
+                .then((idToken: DecodedIDTokenPayload) => {
 
-                if(has(idToken, "associated_tenants")) {
-                    // If there is an assocation, the user is likely unauthorized by other criteria.
-                    history.push({
-                        pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
-                        search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
-                    });
-                } else {
-                    // If there is no assocation, the user should be redirected to creation flow.
-                    history.push({
-                        pathname: AppConstants.getPaths().get("CREATE_TENANT")
-                    });
-                }
-            }).catch(() => {
-                // No need to show UI errors here.
-                // Add debug logs here one a logger is added.
-                // Tracked here https://github.com/wso2/product-is/issues/11650.
-            });
+                    if(has(idToken, "associated_tenants")) {
+                        // If there is an assocation, the user is likely unauthorized by other criteria.
+                        history.push({
+                            pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
+                            search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
+                        });
+                    } else {
+                        // If there is no assocation, the user should be redirected to creation flow.
+                        history.push({
+                            pathname: AppConstants.getPaths().get("CREATE_TENANT")
+                        });
+                    }
+                }).catch(() => {
+                    // No need to show UI errors here.
+                    // Add debug logs here one a logger is added.
+                    // Tracked here https://github.com/wso2/product-is/issues/11650.
+                });
         } else {
             history.push({
                 pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
