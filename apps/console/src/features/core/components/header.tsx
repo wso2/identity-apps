@@ -225,7 +225,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         const moderatedItemsToRender: ReactElement[] = [];
         const itemExtensions: HeaderSubPanelItemInterface[] = commonConfig?.header?.getHeaderSubPanelExtensions();
         const defaultItems: HeaderSubPanelItemInterface[] = [
-            {
+            isDevelopAllowed && {
                 component: () => (
                     <Menu.Item
                         name={ config.deployment.developerApp.displayName }
@@ -242,7 +242,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 floated: "left",
                 order: 1
             },
-            {
+            isManageAllowed && {
                 component: () => (
                     <Menu.Item
                         name={ config.deployment.adminApp.displayName }
@@ -380,7 +380,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             { ...rest }
         >
             {
-                isDevelopAllowed && isManageAllowed && (
+                (isDevelopAllowed || isManageAllowed) && (
                     <div className="secondary-panel" data-testid={ `${ testId }-secondary-panel` }>
                         <Container fluid={ fluid }>
                             { renderSubHeaderPanelItems("left") }
