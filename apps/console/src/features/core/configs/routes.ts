@@ -632,7 +632,13 @@ export const getErrorLayoutRoutes = (): RouteInterface[] => {
  */
 export const getAuthLayoutRoutes = (): RouteInterface[] => {
 
-    return [
+    const routes: RouteInterface[] = values(
+        merge(
+            keyBy(EXTENSION_ROUTES().auth, "id")
+        )
+    );
+
+    routes.push(
         {
             component: lazy(() => import("../../authentication/pages/sign-out")),
             icon: null,
@@ -642,7 +648,9 @@ export const getAuthLayoutRoutes = (): RouteInterface[] => {
             protected: false,
             showOnSidePanel: false
         }
-    ];
+    );
+
+    return routes;
 };
 
 /**

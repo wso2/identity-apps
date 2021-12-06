@@ -19,6 +19,7 @@
 import {
     AuthenticatedUserInfo,
     BasicUserInfo,
+    DecodedIDTokenPayload,
     Hooks,
     OIDCEndpoints,
     SecureApp,
@@ -36,9 +37,11 @@ import {
     isLanguageSupported
 } from "@wso2is/i18n";
 import axios from "axios";
+import has from "lodash-es/has";
 import React, { FunctionComponent, ReactElement, lazy, useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { commonConfig } from "./extensions";
 import { AuthenticateUtils, getProfileInformation } from "./features/authentication";
 import { Config, HttpUtils, PreLoader, store } from "./features/core";
 import { AppConstants, CommonConstants } from "./features/core/constants";
@@ -226,16 +229,46 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             CommonAppConstants.CONSOLE_APP
         );
 
-        const location =
-            !AuthenticationCallbackUrl || AuthenticationCallbackUrl === AppConstants.getAppLoginPath()
-                ? AppConstants.getAppHomePath()
-                : AuthenticationCallbackUrl;
-
-        history.push(location);
+        if(commonConfig?.enableOrganizationAssociations) {
+            /**
+             * Prevent redirect to landing page when there is no association.
+             */
+            getDecodedIDToken()
+                .then((idToken: DecodedIDTokenPayload) => {
+        
+                    if(has(idToken, "associated_tenants")) {
+                        // If there is an assocation, the user should be redirected to console landing page.
+                        const location =
+                            !AuthenticationCallbackUrl || AuthenticationCallbackUrl === AppConstants.getAppLoginPath()
+                                ? AppConstants.getAppHomePath()
+                                : AuthenticationCallbackUrl;
+        
+                        history.push(location);
+                    } else {
+                        // If there is no assocation, the user should be redirected to creation flow.
+                        history.push({
+                            pathname: AppConstants.getPaths().get("CREATE_TENANT")
+                        });
+                    }
+                })
+                .catch(() => {
+                    // No need to show UI errors here.
+                    // Add debug logs here one a logger is added.
+                    // Tracked here https://github.com/wso2/product-is/issues/11650.
+                });
+        } else {
+            const location =
+                        !AuthenticationCallbackUrl || AuthenticationCallbackUrl === AppConstants.getAppLoginPath()
+                            ? AppConstants.getAppHomePath()
+                            : AuthenticationCallbackUrl;
+    
+            history.push(location);
+        }
     };
 
     useEffect(() => {
         const error = new URLSearchParams(location.search).get("error_description");
+
         if (error === AppConstants.USER_DENIED_CONSENT_SERVER_ERROR) {
             history.push({
                 pathname: AppConstants.getPaths().get("UNAUTHORIZED"),

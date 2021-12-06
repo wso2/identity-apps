@@ -25,6 +25,7 @@ export interface CommonConfig {
     };
     blockLoopBackCalls: boolean;
     checkForUIResourceScopes: boolean;
+    enableOrganizationAssociations: boolean;
     header: {
         /**
          * Get the extensions for the header.
