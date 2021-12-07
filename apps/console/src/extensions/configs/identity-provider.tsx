@@ -33,10 +33,10 @@ export const identityProviderConfig: IdentityProviderConfig = {
             show: true
         },
         userstoreDomainField: {
-            show: false,
+            show: true,
         },
         provisioningSchemeField: {
-            show: false
+            show: true
         }
     },
     generalDetailsForm: {
