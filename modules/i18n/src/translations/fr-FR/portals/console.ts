@@ -1045,18 +1045,18 @@ export const console: ConsoleNS = {
                                             heading: "Configuration par étapes",
                                             hint: "Créez des étapes d'authentification en faisant glisser les " +
                                                 "authentificateurs locaux/fédérés vers les étapes correspondantes.",
+                                            secondFactorDisabledDueToProxyMode: "Pour configurer les authentificateurs" +
+                                                " de second facteur tels que <1>TOTP</1> et <3>Email OTP</3>," +
+                                                " les utilisateurs doivent disposer d'un compte local. Mais le" +
+                                                " gestionnaire d'authentification précédent" +
+                                                " a activé le <5>Mode Proxy</5>.",
                                             secondFactorDisabled: "Les authentificateurs de second facteur ne " +
                                                 "peuvent être utilisés que si <1>Nom d’utilisateur et mot de passe" +
                                                 "</1> ou tout autre gestionnaire tel que <3>Identifiant d’abord " +
                                                 "</3>qui peut gérer ces facteurs est présent dans une étape " +
                                                 "précédente.",
                                             secondFactorDisabledInFirstStep: "Les authentificateurs de deuxième " +
-                                                "facteur ne peuvent pas être utilisés dans la première étape.",
-                                            secondFactorDisabledDueToProxyMode: "Pour configurer les authentificateurs" +
-                                                " de second facteur tels que <1>TOTP</1> et <3>Email OTP</3>," +
-                                                " les utilisateurs doivent disposer d'un compte local. Mais le" +
-                                                " gestionnaire d'authentification précédent" +
-                                                " a activé le <5>Mode Proxy</5>."
+                                                "facteur ne peuvent pas être utilisés dans la première étape."
                                         }
                                     }
                                 },
@@ -3056,9 +3056,6 @@ export const console: ConsoleNS = {
                     },
                     jitProvisioning: {
                         enableJITProvisioning: {
-                            hint: "Spécifiez si les utilisateurs fédérés à partir de ce" +
-                                " fournisseur d'identité doivent être mandatés.",
-                            label: "Activer le mode proxy",
                             disabledMessageHeader: "Conflit de mode proxy",
                             disabledMessageContent: {
                                 1: "Vous ne pouvez pas modifier les paramètres du mode proxy car plusieurs" +
@@ -3067,7 +3064,10 @@ export const console: ConsoleNS = {
                                 2: "Vous n'êtes pas autorisé à modifier les paramètres du mode proxy car" +
                                     " une application dépend de cette connexion. Pour résoudre ce conflit," +
                                     " vous devez supprimer cette connexion de la ressource répertoriée."
-                            }
+                            },
+                            hint: "Spécifiez si les utilisateurs fédérés à partir de ce" +
+                                " fournisseur d'identité doivent être mandatés.",
+                            label: "Activer le mode proxy"
                         },
                         provisioningScheme: {
                             children: {

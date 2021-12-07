@@ -1029,17 +1029,17 @@ export const console: ConsoleNS = {
                                             heading: "Step-based configuration",
                                             hint: "Create a user login flow by dragging authenticators on to the " +
                                                 "relevant steps.",
+                                            secondFactorDisabledDueToProxyMode: "To configure the second factor" +
+                                                " authenticators such as <1>TOTP</1> and <3>Email OTP</3>," +
+                                                " users must have a local account. Previous authentication" +
+                                                " handler has <5>Proxy Mode</5> enabled.",
                                             secondFactorDisabled: "Les authentificateurs de deuxième facteur ne " +
                                                 "peuvent être utilisés que si <1>Nom d'utilisateur et mot de " +
                                                 "passe</1>, <3>Connexion sociale</3> ou tout autre gestionnaire " +
                                                 "tel que <5>Identifier First</5> qui peut gérer ces facteurs sont " +
                                                 "présents dans une étape précédente.",
                                             secondFactorDisabledInFirstStep: "Second factor authenticators can " +
-                                                "not be used in the first step.",
-                                            secondFactorDisabledDueToProxyMode: "To configure the second factor" +
-                                                " authenticators such as <1>TOTP</1> and <3>Email OTP</3>," +
-                                                " users must have a local account. Previous authentication" +
-                                                " handler has <5>Proxy Mode</5> enabled."
+                                                "not be used in the first step."
                                         }
                                     }
                                 },
@@ -4356,8 +4356,6 @@ export const console: ConsoleNS = {
                     },
                     jitProvisioning: {
                         enableJITProvisioning: {
-                            hint: "Specify if users federated from this identity provider need to be proxied.",
-                            label: "Enable Proxy Mode",
                             disabledMessageHeader: "Proxy Mode Conflict",
                             disabledMessageContent: {
                                 1: "You cannot modify Proxy Mode settings since multiple applications depend" +
@@ -4366,7 +4364,9 @@ export const console: ConsoleNS = {
                                 2: "You are not allowed to modify Proxy Mode settings as an application" +
                                     " depends on this connection. To resolve this conflict, you need to remove" +
                                     " this connection from the listed resource."
-                            }
+                            },
+                            hint: "Specify if users federated from this identity provider need to be proxied.",
+                            label: "Enable Proxy Mode"
                         },
                         provisioningScheme: {
                             children: {
