@@ -128,6 +128,7 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
             ? (
                 <EmphasizedSegment padded="very">
                     <JITProvisioningConfigurationsForm
+                        idpId={ idpId }
                         initialValues={ jitProvisioningConfigurations }
                         onSubmit={ handleJITProvisioningConfigFormSubmit }
                         useStoreList={ userStore }

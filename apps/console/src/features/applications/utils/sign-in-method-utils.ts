@@ -175,6 +175,8 @@ export class SignInMethodUtils {
     }
 
     /**
+     * Context
+     * -------
      * When a application developer / someone with privileges adds federated IdP as a
      * step through the sign-in configurations to a targeted application and disable
      * JIT provisioning (in other words, enable proxy mode config
@@ -196,18 +198,20 @@ export class SignInMethodUtils {
         if (addingStep === 0) return false;
 
         /**
+         * More Context
+         * ------------
          * Authentication steps are isolated. However, according to our requirement
          * the user should not be able to plug in MFA in any step if one or more
          * proxy mode identity providers were configured.
          *
-         * Elaboration:
          * If you check the interface, you'd see that you can only configure one
          * idp of the same category in a targeted step. But you can configure the
          * same idp in a different step. So, our validation MUST ensure that
          * cases like these also be handled properly. Also, a MFA instance can be
          * absolute first option in a authentication step (except 1 step).
          *
-         * Clarification:
+         * Clarification
+         * -------------
          * For some reason {@code addingStep} starts from index 0 and {@code steps}
          * ids start from index 1. So, if you want to get the options in the previous
          * step in {@link steps} you just do {@code steps[addingStep]} and if you
@@ -219,7 +223,7 @@ export class SignInMethodUtils {
         /**
          * This returns the last authentication option of a given
          * step. It only searches for SOCIAL and ENTERPRISE connections.
-         * If none found after the filter it will return undefined.
+         * If none found after the filter operation, it will return undefined.
          *
          * @param authStep {AuthenticationStepInterface} target step.
          */
@@ -231,7 +235,7 @@ export class SignInMethodUtils {
                 const filteredOptions =  authStep?.options
                     .map(({ idp }) => idp)
                     .map((idpName) => authenticators.find(({ name }) => name === idpName))
-                    .filter(Boolean)
+                    .filter(Boolean) // Filter the {@code undefined|null} ones
                     .filter(({ category }) => (
                         category === AuthenticatorCategories.SOCIAL.toString() ||
                         category === AuthenticatorCategories.ENTERPRISE.toString()
@@ -272,4 +276,3 @@ type ProxyModeConflictTestArgs = {
     addingStep: number;
     steps: AuthenticationStepInterface[];
 };
-

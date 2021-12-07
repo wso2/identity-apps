@@ -17,24 +17,35 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
-import { Hint } from "@wso2is/react-components";
+import { ContentLoader, Heading, Hint, Link, Text } from "@wso2is/react-components";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Grid } from "semantic-ui-react";
-import { SimpleUserStoreListItemInterface } from "../../../applications";
+import { Button, Grid, Message } from "semantic-ui-react";
 import {
+    ApplicationBasicInterface,
+    getApplicationDetails,
+    SimpleUserStoreListItemInterface
+} from "../../../applications";
+import {
+    ConnectedAppInterface,
+    ConnectedAppsInterface,
     IdentityProviderInterface,
     JITProvisioningResponseInterface,
     SupportedJITProvisioningSchemes
 } from "../../models";
 import { identityProviderConfig } from "../../../../extensions";
+import { getIDPConnectedApps } from "../../api";
+import { useDispatch } from "react-redux";
+import { addAlert } from "@wso2is/core/store";
+import { AppConstants, history } from "../../../core";
 
 /**
  *  Just-in time provisioning configurations for the IdP.
  */
 interface JITProvisioningConfigurationFormPropsInterface extends TestableComponentInterface {
+    idpId: string;
     onSubmit: (values: IdentityProviderInterface) => void;
     initialValues: JITProvisioningResponseInterface;
     useStoreList: SimpleUserStoreListItemInterface[];
@@ -62,6 +73,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
 ): ReactElement => {
 
     const {
+        idpId,
         initialValues,
         onSubmit,
         useStoreList,
@@ -70,8 +82,15 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         [ "data-testid" ]: testId
     } = props;
 
-    const [isJITProvisioningEnabled, setIsJITProvisioningEnabled] = useState<boolean>(false);
+    const [ isJITProvisioningEnabled, setIsJITProvisioningEnabled ] = useState<boolean>(false);
+    const [
+        cannotModifyProxyModeDueToConnectApps,
+        setCannotModifyProxyModeDueToConnectApps
+    ] = useState<boolean>(true);
+    const [ connectedApps, setConnectedApps ] = useState<{ name: string; id: string; }[]>([]);
+    const [ fetchingConnectedApps, setFetchingConnectedApps ] = useState<boolean>(true);
 
+    const dispatch = useDispatch();
     const { t } = useTranslation();
 
     /**
@@ -83,7 +102,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
     const updateConfiguration = (values: any): any => {
         return {
             ...initialValues,
-            isEnabled: values.get(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY)
+            isEnabled: !values.get(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY)
                 .includes(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY),
             scheme: values.get(JITProvisioningConstants.PROVISIONING_SCHEME_TYPE_KEY),
             userstore: values.get(JITProvisioningConstants.PROVISIONING_USER_STORE_DOMAIN_KEY)
@@ -115,6 +134,48 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         }
     }, [ initialValues ]);
 
+
+    useEffect(() => {
+
+        setFetchingConnectedApps(true);
+
+        getIDPConnectedApps(idpId)
+            .then(async (response: ConnectedAppsInterface) => {
+                if (response.count === 0) {
+                    setCannotModifyProxyModeDueToConnectApps(false);
+                    setFetchingConnectedApps(false);
+                    return;
+                }
+                setCannotModifyProxyModeDueToConnectApps(true);
+                const appRequests: Promise<any>[] = response.connectedApps.map((app: ConnectedAppInterface) => {
+                    return getApplicationDetails(app.appId);
+                });
+                const results: ApplicationBasicInterface[] = await Promise.all(
+                    appRequests.map(response => response.catch(error => {
+                        dispatch(addAlert({
+                            description: error?.description
+                                || "Error occurred while trying to retrieve connected applications.",
+                            level: AlertLevels.ERROR,
+                            message: error?.message || "Error Occurred."
+                        }));
+                    }))
+                );
+                setConnectedApps(results.map(({ name, id }) => ({ name, id })));
+            })
+            .catch((error) => {
+                dispatch(addAlert({
+                    description: error?.description
+                        || "Error occurred while trying to retrieve connected applications.",
+                    level: AlertLevels.ERROR,
+                    message: error?.message || "Error Occurred."
+                }));
+            })
+            .finally(() => {
+                setFetchingConnectedApps(false);
+            });
+
+    }, []);
+
     const supportedProvisioningSchemes = [ {
         label: t("console:develop.features.authenticationProvider" +
             ".forms.jitProvisioning.provisioningScheme.children.0"),
@@ -133,6 +194,55 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         value: SupportedJITProvisioningSchemes.PROVISION_SILENTLY
     } ];
 
+    const ProxyModeConflictMessage = (
+        <Message
+            header={
+                fetchingConnectedApps
+                    ? undefined
+                    : <Heading as="h6">
+                        <strong>
+                            { t("console:develop.features.authenticationProvider.forms.jitProvisioning." +
+                                "enableJITProvisioning.disabledMessageHeader") }
+                        </strong>
+                    </Heading>
+            }
+            info
+            content={
+                <div className="mt-2">
+                    <Text>
+                        { fetchingConnectedApps
+                            ? "Validating conflicts with applications."
+                            : connectedApps?.length > 2
+                                ? t("console:develop.features.idp.forms.jitProvisioning." +
+                                    "enableJITProvisioning.disabledMessageContent.1")
+                                : t("console:develop.features.idp.forms.jitProvisioning." +
+                                    "enableJITProvisioning.disabledMessageContent.2")
+                        }
+                    </Text>
+                    { fetchingConnectedApps
+                        ? <ContentLoader/>
+                        : (
+                            <ol style={ { marginBottom: 0 } }>
+                                { connectedApps?.map(({ name, id }, index) => (
+                                    <li>
+                                        <Link key={ index } onClick={ () => {
+                                            history.push({
+                                                pathname: AppConstants.getPaths()
+                                                    .get("APPLICATION_EDIT")
+                                                    .replace(":id", id),
+                                                search: `#tab=4`
+                                            });
+                                        } }>{ name }</Link>
+                                    </li>
+                                )) }
+                            </ol>
+                        )
+                    }
+                </div>
+            }
+        />
+    );
+
     return (
         <Forms onSubmit={ (values) => onSubmit(updateConfiguration(values)) }>
             <Grid>
@@ -142,19 +252,21 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                     <Field
+                                        loading={ fetchingConnectedApps }
                                         name={ JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY }
                                         label=""
                                         required={ false }
                                         requiredErrorMessage=""
                                         value={
-                                            initialValues?.isEnabled
+                                            !initialValues?.isEnabled
                                                 ? [ JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY ]
                                                 : []
                                         }
+                                        disabled={ cannotModifyProxyModeDueToConnectApps }
                                         type="checkbox"
                                         listen={ (values) => {
                                             setIsJITProvisioningEnabled(
-                                                values
+                                                !values
                                                     .get(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY)
                                                     .includes(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY)
                                             );
@@ -171,6 +283,10 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                         { t("console:develop.features.authenticationProvider.forms.jitProvisioning." +
                                             "enableJITProvisioning.hint") }
                                     </Hint>
+                                    { cannotModifyProxyModeDueToConnectApps
+                                        ? ProxyModeConflictMessage
+                                        : <Fragment/>
+                                    }
                                 </Grid.Column>
                             </Grid.Row>
                         )
