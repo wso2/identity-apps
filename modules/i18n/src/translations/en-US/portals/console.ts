@@ -1035,7 +1035,11 @@ export const console: ConsoleNS = {
                                                 "tel que <5>Identifier First</5> qui peut gérer ces facteurs sont " +
                                                 "présents dans une étape précédente.",
                                             secondFactorDisabledInFirstStep: "Second factor authenticators can " +
-                                                "not be used in the first step."
+                                                "not be used in the first step.",
+                                            secondFactorDisabledDueToProxyMode: "To configure the second factor" +
+                                                " authenticators such as <1>TOTP</1> and <3>Email OTP</3>," +
+                                                " users must have a local account. Previous authentication" +
+                                                " handler has <5>Proxy Mode</5> enabled."
                                         }
                                     }
                                 },
@@ -3287,9 +3291,12 @@ export const console: ConsoleNS = {
                     },
                     jitProvisioning: {
                         enableJITProvisioning: {
-                            hint: "Specifies if users federated from this identity provider " +
-                                "needs to be provisioned locally.",
-                            label: "Enable Just-in-time Provisioning"
+                            hint: "Specify if users federated from this identity provider need to be proxied.",
+                            label: "Enable Proxy Mode",
+                            disabledMessageHeader: "Proxy Mode Conflict",
+                            disabledMessageContent: "You are not allowed to modify <1>Proxy Mode</1> settings since" +
+                                " there's {{termA}} for this connection. To resolve this conflict you need to remove" +
+                                " this connection from the listed {{termB}}."
                         },
                         provisioningScheme: {
                             children: {
@@ -4349,9 +4356,17 @@ export const console: ConsoleNS = {
                     },
                     jitProvisioning: {
                         enableJITProvisioning: {
-                            hint: "Specifies if users federated from this identity provider " +
-                                "needs to be provisioned locally.",
-                            label: "Enable Just-in-time Provisioning"
+                            hint: "Specify if users federated from this identity provider need to be proxied.",
+                            label: "Enable Proxy Mode",
+                            disabledMessageHeader: "Proxy Mode Conflict",
+                            disabledMessageContent: {
+                                1: "You cannot modify Proxy Mode settings since multiple applications depend" +
+                                    " on this connection. To resolve this conflict, you need to remove this" +
+                                    " connection from the listed resources.",
+                                2: "You are not allowed to modify Proxy Mode settings as an application" +
+                                    " depends on this connection. To resolve this conflict, you need to remove" +
+                                    " this connection from the listed resource."
+                            }
                         },
                         provisioningScheme: {
                             children: {

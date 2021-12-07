@@ -625,6 +625,7 @@ export interface ConsoleNS {
                                             secondFactorDisabledInFirstStep: string;
                                             secondFactorDisabled: string;
                                             authenticatorDisabled: string;
+                                            secondFactorDisabledDueToProxyMode: string;
                                         };
                                     };
                                 };
