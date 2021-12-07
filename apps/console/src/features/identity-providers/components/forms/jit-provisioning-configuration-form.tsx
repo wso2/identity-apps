@@ -224,8 +224,8 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                         : (
                             <ol style={ { marginBottom: 0 } }>
                                 { connectedApps?.map(({ name, id }, index) => (
-                                    <li>
-                                        <Link key={ index } onClick={ () => {
+                                    <li key={ index }>
+                                        <Link onClick={ () => {
                                             history.push({
                                                 pathname: AppConstants.getPaths()
                                                     .get("APPLICATION_EDIT")
