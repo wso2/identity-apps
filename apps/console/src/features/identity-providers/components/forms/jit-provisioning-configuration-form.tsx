@@ -199,23 +199,23 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
             header={
                 fetchingConnectedApps
                     ? undefined
-                    : <Heading as="h6">
+                    : <Heading as="h5" className="mt-1">
                         <strong>
                             { t("console:develop.features.authenticationProvider.forms.jitProvisioning." +
                                 "enableJITProvisioning.disabledMessageHeader") }
                         </strong>
                     </Heading>
             }
-            info
+            warning={ true }
             content={
                 <div className="mt-2">
                     <Text>
                         { fetchingConnectedApps
-                            ? "Validating conflicts with applications."
-                            : connectedApps?.length > 2
-                                ? t("console:develop.features.idp.forms.jitProvisioning." +
+                            ? "Checking for conflicts with configured applications."
+                            : connectedApps?.length > 1
+                                ? t("console:develop.features.authenticationProvider.forms.jitProvisioning." +
                                     "enableJITProvisioning.disabledMessageContent.1")
-                                : t("console:develop.features.idp.forms.jitProvisioning." +
+                                : t("console:develop.features.authenticationProvider.forms.jitProvisioning." +
                                     "enableJITProvisioning.disabledMessageContent.2")
                         }
                     </Text>
@@ -225,7 +225,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                             <ol style={ { marginBottom: 0 } }>
                                 { connectedApps?.map(({ name, id }, index) => (
                                     <li key={ index }>
-                                        <Link onClick={ () => {
+                                        <Link icon="linkify" onClick={ () => {
                                             history.push({
                                                 pathname: AppConstants.getPaths()
                                                     .get("APPLICATION_EDIT")

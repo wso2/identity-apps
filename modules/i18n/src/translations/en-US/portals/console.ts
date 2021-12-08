@@ -3291,10 +3291,15 @@ export const console: ConsoleNS = {
                     },
                     jitProvisioning: {
                         enableJITProvisioning: {
-                            disabledMessageContent: "You are not allowed to modify <1>Proxy Mode</1> settings since" +
-                                " there's {{termA}} for this connection. To resolve this conflict you need to remove" +
-                                " this connection from the listed {{termB}}.",
-                            disabledMessageHeader: "Proxy Mode Conflict",
+                            disabledMessageContent: {
+                                1: "You cannot modify Proxy Mode settings since multiple applications depend" +
+                                    " on this connection. To resolve this conflict, you need to remove this" +
+                                    " connection from the listed resources.",
+                                2: "You are not allowed to modify Proxy Mode settings as an application" +
+                                    " depends on this connection. To resolve this conflict, you need to remove" +
+                                    " this connection from the listed resource."
+                            },
+                            disabledMessageHeader: "Setting Conflict",
                             hint: "Specify if users federated from this identity provider need to be proxied.",
                             label: "Enable Proxy Mode"
                         },
@@ -4364,7 +4369,7 @@ export const console: ConsoleNS = {
                                     " depends on this connection. To resolve this conflict, you need to remove" +
                                     " this connection from the listed resource."
                             },
-                            disabledMessageHeader: "Proxy Mode Conflict",
+                            disabledMessageHeader: "Setting Conflict",
                             hint: "Specify if users federated from this identity provider need to be proxied.",
                             label: "Enable Proxy Mode"
                         },

@@ -25,6 +25,7 @@ import {
 } from "../../identity-providers";
 import { ApplicationManagementConstants } from "../constants";
 import { AuthenticationStepInterface } from "../models";
+import flatten from "lodash-es/flatten";
 
 /**
  * Utility class for Sign In Method.
@@ -220,51 +221,26 @@ export class SignInMethodUtils {
          * at this time.
          */
 
-        /**
-         * This returns the last authentication option of a given
-         * step. It only searches for SOCIAL and ENTERPRISE connections.
-         * If none found after the filter operation, it will return undefined.
-         *
-         * @param authStep {AuthenticationStepInterface} target step.
-         */
-        const getLastOptionOf = (
-            authStep: AuthenticationStepInterface
-        ): GenericAuthenticatorInterface & { provisioning: ProvisioningInterface } | undefined => {
+        const allOptions = flatten(steps.map(({ options }) => options));
 
-            try {
-                const filteredOptions =  authStep?.options
-                    .map(({ idp }) => idp)
-                    .map((idpName) => authenticators.find(({ name }) => name === idpName))
-                    .filter(Boolean) // Filter the {@code undefined|null} ones
-                    .filter(({ category }) => (
-                        category === AuthenticatorCategories.SOCIAL.toString() ||
-                        category === AuthenticatorCategories.ENTERPRISE.toString()
-                    ));
-
-                if (filteredOptions?.length) {
-                    return filteredOptions[filteredOptions.length - 1] as GenericAuthenticatorInterface & {
-                        provisioning: ProvisioningInterface
-                    };
-                }
-            } catch (error) {
-                return undefined;
-            }
-
-            return undefined;
-        };
-
-        const currentStep = steps.find(({id}) => id === addingStep + 1);
-        const previousStep = steps.find(({id}) => id === addingStep);
-
-        const lastOption = getLastOptionOf(currentStep);
-        const lastStepLastOption = getLastOptionOf(previousStep);
-
-        // Checks whether the IdP left side of this has proxy mode enabled.
-        if (lastOption !== undefined && !lastOption.provisioning?.jit?.isEnabled) return true;
-        // Checks above step last option has proxy mode enabled.
-        if (lastStepLastOption !== undefined && !lastStepLastOption.provisioning?.jit?.isEnabled) return true;
-
-        return false;
+        try {
+            /**
+             * Checks whether all auth steps has at least 1 or more proxied
+             * handlers. If yes then there's a conflict.
+             */
+            return [ ...(new Set(allOptions.map(({ idp }) => idp))) ]
+                .map((idpName) => authenticators.find(({ name }) => name === idpName))
+                .filter(Boolean) // Filter the {@code undefined|null} ones
+                .filter(({ category }) => (
+                    category === AuthenticatorCategories.SOCIAL.toString() ||
+                    category === AuthenticatorCategories.ENTERPRISE.toString()
+                ))
+                .filter((auth: GenericAuthenticatorInterface & { provisioning: ProvisioningInterface }) => {
+                    return !auth?.provisioning?.jit?.isEnabled
+                })?.length > 0;
+        } catch (e) {
+            return false;
+        }
 
     }
 

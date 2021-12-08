@@ -3065,7 +3065,7 @@ export const console: ConsoleNS = {
                                     " une application dépend de cette connexion. Pour résoudre ce conflit," +
                                     " vous devez supprimer cette connexion de la ressource répertoriée."
                             },
-                            disabledMessageHeader: "Conflit de mode proxy",
+                            disabledMessageHeader: "Conflit de réglage",
                             hint: "Spécifiez si les utilisateurs fédérés à partir de ce" +
                                 " fournisseur d'identité doivent être mandatés.",
                             label: "Activer le mode proxy"

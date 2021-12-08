@@ -27,7 +27,8 @@ import {
     AuthenticatorCategories,
     AuthenticatorMeta,
     FederatedAuthenticatorInterface,
-    GenericAuthenticatorInterface
+    GenericAuthenticatorInterface,
+    ProvisioningInterface
 } from "../../../../../identity-providers";
 import { AuthenticationStepInterface } from "../../../../models";
 import { SignInMethodUtils } from "../../../../utils";
@@ -251,6 +252,30 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             onAuthenticatorSelect(filtered);
             setSelectedAuthenticators(filtered);
 
+            return;
+        }
+
+        /**
+         * If selected authenticator falls into MFA category, then
+         * re validate the selected authenticators list to make sure left side
+         * has no proxy mode conflicts.
+         */
+        if (selectedAuthenticator.category === AuthenticatorCategories.SECOND_FACTOR) {
+            const conflictingHandlers = new Set<string>(
+                selectedAuthenticators
+                    .filter(({ category }) => (
+                        category === AuthenticatorCategories.SOCIAL.toString() ||
+                        category === AuthenticatorCategories.ENTERPRISE.toString()
+                    ))
+                    .filter((auth: GenericAuthenticatorInterface & { provisioning: ProvisioningInterface }) => {
+                        return !auth?.provisioning?.jit?.isEnabled
+                    })
+                    .map(({ name }) => name)
+                    .filter(Boolean)
+            );
+            const cleanedFilters = selectedAuthenticators.filter(({ name }) => !conflictingHandlers.has(name));
+            onAuthenticatorSelect([ ...cleanedFilters, selectedAuthenticator ]);
+            setSelectedAuthenticators([ ...cleanedFilters, selectedAuthenticator ]);
             return;
         }
 
