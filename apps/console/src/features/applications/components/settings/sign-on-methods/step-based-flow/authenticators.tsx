@@ -170,10 +170,10 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                             "signOnMethod.sections.authenticationFlow.sections.stepBased." +
                             "secondFactorDisabledDueToProxyMode" }
                         >
-                            To configure the second-factor authenticators such as <Code
-                            withBackground>TOTP</Code> and <Code withBackground>Email OTP</Code>,
-                            users must have a local account. But the previous authentication handler
-                            has <strong>Proxy Mode</strong> enabled.
+                            To configure the second-factor authenticators such
+                            as <Code withBackground>TOTP</Code> and <Code withBackground>Email OTP</Code>, users
+                            must have a local account. Current authentication sequence,
+                            has <strong>Proxy Mode</strong> enabled handlers.
                         </Trans>
                     </Text>
                 );

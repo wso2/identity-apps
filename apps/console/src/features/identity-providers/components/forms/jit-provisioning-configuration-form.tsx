@@ -22,7 +22,7 @@ import { Field, Forms } from "@wso2is/forms";
 import { ContentLoader, Heading, Hint, Link, Text } from "@wso2is/react-components";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Grid, Message } from "semantic-ui-react";
+import { Button, Grid, Icon, Message } from "semantic-ui-react";
 import {
     ApplicationBasicInterface,
     getApplicationDetails,
@@ -196,20 +196,26 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
 
     const ProxyModeConflictMessage = (
         <Message
-            header={
-                fetchingConnectedApps
-                    ? undefined
-                    : <Heading as="h5" className="mt-1">
-                        <strong>
-                            { t("console:develop.features.authenticationProvider.forms.jitProvisioning." +
-                                "enableJITProvisioning.disabledMessageHeader") }
-                        </strong>
-                    </Heading>
-            }
-            warning={ true }
+            warning
+            className="warning visible"
             content={
-                <div className="mt-2">
-                    <Text>
+                <div className="mt-2 mb-2">
+                    { !fetchingConnectedApps
+                        ? (
+                            <div style={ { display: "inline-flex", alignItems: "baseline" } }>
+                                <Icon name="exclamation triangle" size="large"/>
+                                <Heading as="h6">
+                                    <strong>
+                                        { t("console:develop.features.authenticationProvider" +
+                                            ".forms.jitProvisioning." +
+                                            "enableJITProvisioning.disabledMessageHeader") }
+                                    </strong>
+                                </Heading>
+                            </div>
+                        )
+                        : null
+                    }
+                    <Text className="mt-3">
                         { fetchingConnectedApps
                             ? "Checking for conflicts with configured applications."
                             : connectedApps?.length > 1
@@ -279,10 +285,17 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                         data-testid={ `${ testId }-is-enable` }
                                         readOnly={ isReadOnly }
                                     />
-                                    <Hint>
-                                        { t("console:develop.features.authenticationProvider.forms.jitProvisioning." +
-                                            "enableJITProvisioning.hint") }
-                                    </Hint>
+                                    { !cannotModifyProxyModeDueToConnectApps
+                                        ? (
+                                            <Hint>
+                                                { t("console:develop.features.authenticationProvider" +
+                                                    ".forms.jitProvisioning." +
+                                                    "enableJITProvisioning.hint")
+                                                }
+                                            </Hint>
+                                        )
+                                        : <Fragment/>
+                                    }
                                     { cannotModifyProxyModeDueToConnectApps
                                         ? ProxyModeConflictMessage
                                         : <Fragment/>
@@ -376,6 +389,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
             </Grid>
         </Forms>
     );
+
 };
 
 /**
