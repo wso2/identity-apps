@@ -45,10 +45,11 @@ export const onHttpRequestSuccess = (): void => {
 const endUserSessionWithoutLoops = (): void => {
     if (!sessionStorage.getItem(AppConstants.AUTH_ERROR_TIME)) {
         sessionStorage.setItem(AppConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
+        history.push(AppConstants.getAppLogoutPath());
     } else {
         const currentTime = new Date().getTime();
         const errorTime = parseInt(sessionStorage.getItem(AppConstants.AUTH_ERROR_TIME), 10);
-        if (currentTime - errorTime >= 10000) {
+        if (currentTime - errorTime >= 5000) {
             sessionStorage.setItem(AppConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
             history.push(AppConstants.getAppLogoutPath());
         } else {
