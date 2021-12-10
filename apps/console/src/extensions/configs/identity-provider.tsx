@@ -28,6 +28,17 @@ export const identityProviderConfig: IdentityProviderConfig = {
         showJitProvisioning: true,
         showOutboundProvisioning: true
     },
+    jitProvisioningSettings: {
+        enableJitProvisioningField: {
+            show: true
+        },
+        userstoreDomainField: {
+            show: true,
+        },
+        provisioningSchemeField: {
+            show: true
+        }
+    },
     generalDetailsForm: {
         showCertificate: true
     },

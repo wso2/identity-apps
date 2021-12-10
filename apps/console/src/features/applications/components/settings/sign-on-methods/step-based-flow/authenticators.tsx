@@ -19,21 +19,16 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, Heading, InfoCard, Text } from "@wso2is/react-components";
 import classNames from "classnames";
-import React, {
-    Fragment,
-    FunctionComponent,
-    ReactElement,
-    useEffect,
-    useState
-} from "react";
+import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Label, Popup } from "semantic-ui-react";
-import { applicationConfig } from "../../../../../../extensions/configs";
+import { applicationConfig } from "../../../../../../extensions";
 import {
     AuthenticatorCategories,
     AuthenticatorMeta,
     FederatedAuthenticatorInterface,
-    GenericAuthenticatorInterface
+    GenericAuthenticatorInterface,
+    ProvisioningInterface
 } from "../../../../../identity-providers";
 import { AuthenticationStepInterface } from "../../../../models";
 import { SignInMethodUtils } from "../../../../utils";
@@ -136,8 +131,16 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                 return false;
             }
 
-            return SignInMethodUtils.isSecondFactorAdditionValid(authenticator.defaultAuthenticator.authenticatorId,
-                currentStep, authenticationSteps);
+            return SignInMethodUtils.isSecondFactorAdditionValid(
+                authenticator.defaultAuthenticator.authenticatorId,
+                currentStep,
+                authenticationSteps
+            ) && !SignInMethodUtils.isMFAConflictingWithProxyModeConfig({
+                authenticators: authenticators,
+                steps: authenticationSteps,
+                addingStep: currentStep,
+                authenticatorId: authenticator.defaultAuthenticator.authenticatorId
+            });
         }
 
         return true;
@@ -153,6 +156,29 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     const resolvePopupContent = (authenticator: GenericAuthenticatorInterface): ReactElement => {
 
         if (authenticator.category === AuthenticatorCategories.SECOND_FACTOR) {
+
+            if (SignInMethodUtils.isMFAConflictingWithProxyModeConfig({
+                authenticators: authenticators,
+                steps: authenticationSteps,
+                addingStep: currentStep,
+                authenticatorId: authenticator.defaultAuthenticator.authenticatorId
+            })) {
+                return (
+                    <Text>
+                        <Trans
+                            i18nKey={ "console:develop.features.applications.edit.sections." +
+                            "signOnMethod.sections.authenticationFlow.sections.stepBased." +
+                            "secondFactorDisabledDueToProxyMode" }
+                        >
+                            To configure the second-factor authenticators such
+                            as <Code withBackground>TOTP</Code> and <Code withBackground>Email OTP</Code>, users
+                            must have a local account. Current authentication sequence,
+                            has <strong>Proxy Mode</strong> enabled handlers.
+                        </Trans>
+                    </Text>
+                );
+            }
+
             return (
                 <>
                     {
@@ -225,6 +251,31 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
 
             onAuthenticatorSelect(filtered);
             setSelectedAuthenticators(filtered);
+
+            return;
+        }
+
+        /**
+         * If selected authenticator falls into MFA category, then
+         * re validate the selected authenticators list to make sure left side
+         * has no proxy mode conflicts.
+         */
+        if (selectedAuthenticator.category === AuthenticatorCategories.SECOND_FACTOR) {
+            const conflictingHandlers = new Set<string>(
+                selectedAuthenticators
+                    .filter(({ category }) => (
+                        category === AuthenticatorCategories.SOCIAL.toString() ||
+                        category === AuthenticatorCategories.ENTERPRISE.toString()
+                    ))
+                    .filter((auth: GenericAuthenticatorInterface & { provisioning: ProvisioningInterface }) => {
+                        return !auth?.provisioning?.jit?.isEnabled
+                    })
+                    .map(({ name }) => name)
+                    .filter(Boolean)
+            );
+            const cleanedFilters = selectedAuthenticators.filter(({ name }) => !conflictingHandlers.has(name));
+            onAuthenticatorSelect([ ...cleanedFilters, selectedAuthenticator ]);
+            setSelectedAuthenticators([ ...cleanedFilters, selectedAuthenticator ]);
 
             return;
         }

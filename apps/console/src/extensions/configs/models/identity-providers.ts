@@ -41,6 +41,17 @@ export interface IdentityProviderConfig {
          */
         attributesSettings: boolean;
     };
+    jitProvisioningSettings: {
+        enableJitProvisioningField: {
+            show: boolean;
+        },
+        userstoreDomainField: {
+            show: boolean;
+        },
+        provisioningSchemeField: {
+            show: boolean;
+        }
+    },
     generalDetailsForm: {
         showCertificate: boolean;
     };

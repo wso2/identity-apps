@@ -39,6 +39,7 @@ import {
     IdentityProviderListResponseInterface,
     LocalAuthenticatorInterface,
     MultiFactorAuthenticatorInterface,
+    ProvisioningInterface,
     StrictIdentityProviderInterface
 } from "../models";
 import { setAvailableAuthenticatorsMeta } from "../store/actions";
@@ -125,8 +126,8 @@ export class IdentityProviderManagementUtils {
             let offset: number = 0;
 
             const getIdPs = ():Promise<IdentityProviderListResponseInterface> => {
-
-                return getIdentityProviderList(limit, offset, "isEnabled eq \"true\"", "federatedAuthenticators")
+                const attrs = "federatedAuthenticators,provisioning";
+                return getIdentityProviderList(limit, offset, "isEnabled eq \"true\"", attrs)
                     .then((response) => {
                         if (!isEmpty(idp)) {
                             idp = {
@@ -249,8 +250,9 @@ export class IdentityProviderManagementUtils {
                                 ? authenticator.image
                                 : AuthenticatorMeta.getAuthenticatorIcon(authenticator.id),
                             isEnabled: authenticator.isEnabled,
-                            name: authenticator.name
-                        });
+                            name: authenticator.name,
+                            provisioning: authenticator[ "provisioning" ] as ProvisioningInterface
+                        } as any);
                     });
 
                 }

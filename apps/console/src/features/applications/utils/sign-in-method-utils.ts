@@ -17,9 +17,15 @@
  *
  */
 
-import { IdentityProviderManagementConstants } from "../../identity-providers";
+import {
+    AuthenticatorCategories,
+    GenericAuthenticatorInterface,
+    IdentityProviderManagementConstants,
+    ProvisioningInterface
+} from "../../identity-providers";
 import { ApplicationManagementConstants } from "../constants";
 import { AuthenticationStepInterface } from "../models";
+import flatten from "lodash-es/flatten";
 
 /**
  * Utility class for Sign In Method.
@@ -168,4 +174,81 @@ export class SignInMethodUtils {
         return this.hasSpecificFactorsInSteps(ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
             leftSideSteps);
     }
+
+    /**
+     * Context
+     * -------
+     * When a application developer / someone with privileges adds federated IdP as a
+     * step through the sign-in configurations to a targeted application and disable
+     * JIT provisioning (in other words, enable proxy mode config
+     * ~ {@code !idpModel.provisioning.jit.isEnable === proxyMode}).
+     *
+     * Then, if they try to add a second factor authentication next system should not allow this
+     * operation because with the proxy mode enabled; users aren't provisioned locally.
+     * Therefore, making the second factor auth obsolete.
+     */
+    public static isMFAConflictingWithProxyModeConfig(
+        { addingStep, authenticators, steps }: ProxyModeConflictTestArgs
+    ): boolean {
+
+        /**
+         * In authentication step 0 users aren't allowed to add
+         * MFA whatsoever. So, this invariant skips this validation
+         * if this is the step 0. 0 maps to id:1 in {@code steps}.
+         */
+        if (addingStep === 0) return false;
+
+        /**
+         * More Context
+         * ------------
+         * Authentication steps are isolated. However, according to our requirement
+         * the user should not be able to plug in MFA in any step if one or more
+         * proxy mode identity providers were configured.
+         *
+         * If you check the interface, you'd see that you can only configure one
+         * idp of the same category in a targeted step. But you can configure the
+         * same idp in a different step. So, our validation MUST ensure that
+         * cases like these also be handled properly. Also, a MFA instance can be
+         * absolute first option in a authentication step (except 1 step).
+         *
+         * Clarification
+         * -------------
+         * For some reason {@code addingStep} starts from index 0 and {@code steps}
+         * ids start from index 1. So, if you want to get the options in the previous
+         * step in {@link steps} you just do {@code steps[addingStep]} and if you
+         * want to get the options in current step you do {@code steps[addingStep + 1]}.
+         * Yes. It's confusing at first but changing indexes aren't feasible
+         * at this time.
+         */
+
+        const allOptions = flatten(steps.map(({ options }) => options));
+
+        try {
+            /**
+             * Checks whether all auth steps has at least 1 or more proxied
+             * handlers. If yes then there's a conflict.
+             */
+            return [ ...(new Set(allOptions.map(({ idp }) => idp))) ]
+                .map((idpName) => authenticators.find(({ name }) => name === idpName))
+                .filter(Boolean) // Filter the {@code undefined|null} ones
+                .filter(({ category }) => (
+                    category === AuthenticatorCategories.SOCIAL.toString() ||
+                    category === AuthenticatorCategories.ENTERPRISE.toString()
+                ))
+                .filter((auth: GenericAuthenticatorInterface & { provisioning: ProvisioningInterface }) => {
+                    return !auth?.provisioning?.jit?.isEnabled
+                })?.length > 0;
+        } catch (e) {
+            return false;
+        }
+
+    }
+
 }
+
+type ProxyModeConflictTestArgs = {
+    authenticators: GenericAuthenticatorInterface[];
+    authenticatorId: string;
+    addingStep: number;
+    steps: AuthenticationStepInterface[];
+};

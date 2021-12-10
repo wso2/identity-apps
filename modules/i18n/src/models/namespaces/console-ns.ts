@@ -622,8 +622,9 @@ export interface ConsoleNS {
                                                     subjectIdentifierFrom: FormAttributes;
                                                 };
                                             };
-                                            secondFactorDisabledInFirstStep: string;
                                             secondFactorDisabled: string;
+                                            secondFactorDisabledDueToProxyMode: string;
+                                            secondFactorDisabledInFirstStep: string;
                                             authenticatorDisabled: string;
                                         };
                                     };

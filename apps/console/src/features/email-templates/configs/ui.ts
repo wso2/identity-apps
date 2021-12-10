@@ -22,7 +22,7 @@ export const getAddEmailTemplateTypeWizardStepIcons = (): {
     general: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;  
  } => {
     return {
-        general: DocumentIcon
+        general: DocumentIcon as any
     };
     
 };
@@ -31,6 +31,6 @@ export const getViewLocaleTemplateWizardStepIcons = (): {
     general: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;  
  } => {
     return {
-        general: DocumentIcon
+        general: DocumentIcon as any
     };
 };

@@ -240,7 +240,7 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                         ...getApplicationTemplateIllustrations(),
                         ...getTechnologyLogos(),
                         ...getInboundProtocolLogos()
-                    } }
+                    } as any }
                     templateIconOptions={ {
                         fill: "primary"
                     } }
@@ -284,7 +284,7 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                     type="application"
                     templates={ availableDefaultTemplates }
                     secondaryTemplates={ availableCustomInboundTemplates }
-                    templateIcons={ getInboundProtocolLogos() }
+                    templateIcons={ getInboundProtocolLogos() as any }
                     templateIconOptions={ {
                         fill: "primary"
                     } }

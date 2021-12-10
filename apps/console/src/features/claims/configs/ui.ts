@@ -23,7 +23,7 @@ export const getAddDialectWizardStepIcons = (): {
 } => {
 
     return {
-        general: DocumentIcon
+        general: DocumentIcon as any
     };
 };
 
@@ -32,6 +32,6 @@ export const getAddLocalClaimWizardStepIcons = (): {
 } => {
 
     return {
-        general: DocumentIcon
+        general: DocumentIcon as any
     };
 };

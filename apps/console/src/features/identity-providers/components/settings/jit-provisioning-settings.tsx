@@ -126,8 +126,9 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
     return (
         !isLoading
             ? (
-                <EmphasizedSegment>
+                <EmphasizedSegment padded="very">
                     <JITProvisioningConfigurationsForm
+                        idpId={ idpId }
                         initialValues={ jitProvisioningConfigurations }
                         onSubmit={ handleJITProvisioningConfigFormSubmit }
                         useStoreList={ userStore }
