@@ -32,9 +32,11 @@
     String statusMessage = request.getParameter("statusMsg");
     String sp = request.getParameter("sp");
     String applicationAccessURLWithoutEncoding = null;
-    if (stat == null || statusMessage == null) {
-        stat = AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.error");
-        statusMessage =  AuthenticationEndpointUtil.i18n(resourceBundle,
+    // Check the error is null or whether there is a corresponding value in the resource bundle.
+    if (stat == null || statusMessage == null || 
+        statusMessage.equals(AuthenticationEndpointUtil.i18n(resourceBundle, statusMessage))) {
+            stat = AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.error");
+            statusMessage =  AuthenticationEndpointUtil.i18n(resourceBundle,
                 "something.went.wrong.during.authentication");
     } else {
         stat = AuthenticationEndpointUtil.customi18n(resourceBundle, stat);
