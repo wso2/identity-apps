@@ -144,6 +144,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                 if (response.count === 0) {
                     setCannotModifyProxyModeDueToConnectApps(false);
                     setFetchingConnectedApps(false);
+
                     return;
                 }
                 setCannotModifyProxyModeDueToConnectApps(true);

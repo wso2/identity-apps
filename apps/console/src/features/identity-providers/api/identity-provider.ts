@@ -570,7 +570,6 @@ export const updateJITProvisioningConfigs = (
         });
 };
 
-
 export const getJITProvisioningConfigs = (
     idpId: string
 ): Promise<IdentityProviderInterface> => {

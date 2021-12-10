@@ -276,6 +276,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             const cleanedFilters = selectedAuthenticators.filter(({ name }) => !conflictingHandlers.has(name));
             onAuthenticatorSelect([ ...cleanedFilters, selectedAuthenticator ]);
             setSelectedAuthenticators([ ...cleanedFilters, selectedAuthenticator ]);
+
             return;
         }
 
