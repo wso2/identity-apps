@@ -158,6 +158,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const [ isEditorFullScreen, setIsEditorFullScreen ] = useState<boolean>(false);
     const [ showAddSecretModal, setShowAddSecretModal ] = useState<boolean>(false);
     const [ editorInstance, setEditorInstance ] = useState<codemirror.Editor>(undefined);
+    const [ isSecretsDropdownOpen, setIsSecretsDropdownOpen ] = useState<boolean>(false);
 
     /**
      * List of secrets for the selected {@code secretType}. It can hold secrets of
@@ -677,7 +678,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const onSecretDeleteClick = async (): Promise<void> => {
         if (deletingSecret) {
             try {
-                deleteSecret({
+                await deleteSecret({
                     params: {
                         secretName: deletingSecret.secretName,
                         secretType: deletingSecret.type
@@ -727,8 +728,11 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                 button
                 upward={ false }
                 options={ filteredSecretList }
+                onOpen={ () => setIsSecretsDropdownOpen(true) }
+                onClose={ () => setIsSecretsDropdownOpen(false) }
                 icon ={ (
                     <Popup
+                        disabled={ isSecretsDropdownOpen }
                         trigger={ (
                             <div>
                                 <GenericIcon
@@ -1201,7 +1205,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                     <Menu attached="top" className="action-panel" secondary>
                                         <Menu.Menu position="right">
                                             { resolveApiDocumentationLink() }
-                                            <Menu.Item className="action">
+                                            <Menu.Item 
+                                            className={ `action ${isSecretsDropdownOpen ? "selected-secret" : "" }` }>
                                                 <div>
                                                     { renderSecretListDropdown() }
                                                 </div>
