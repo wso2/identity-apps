@@ -42,6 +42,8 @@ class Worker {
  * See also {@link https://github.com/i18next/react-i18next/issues/876}
  */
 jest.mock("react-i18next", () => ({
+    // this mock makes sure any components using the translate hook can use it without a warning being shown
+    Trans: ({ children }) => children,
     useTranslation: () => ({
         t: key => key
     })
