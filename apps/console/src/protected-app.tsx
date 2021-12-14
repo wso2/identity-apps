@@ -83,6 +83,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             let logoutUrl;
             let logoutRedirectUrl;
 
+            // Update the app base name with the newly resolved tenant.
+            window[ "AppUtils" ].updateTenantQualifiedBaseName(response.tenantDomain);
+
             // When the tenant domain changes, we have to reset the auth callback in session storage.
             // If not, it will hang and the app will be unresponsive with in the tab.
             // We can skip clearing the callback for super tenant since we do not put it in the path.
@@ -144,9 +147,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 .then((idToken) => {
                     const subParts = idToken.sub.split("@");
                     const tenantDomain = subParts[ subParts.length - 1 ];
-
-                    // Update the app base name with the newly resolved tenant.
-                    window[ "AppUtils" ].updateTenantQualifiedBaseName(response.tenantDomain ?? tenantDomain);
 
                     dispatch(
                         setSignIn<AuthenticatedUserInfo & TenantListInterface>({
