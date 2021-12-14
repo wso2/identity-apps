@@ -326,14 +326,14 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                             (<Trans
                                                                 i18nKey={ "common:networkErrorMessage.heading" }
                                                             >
-                                                                Something went wrong
+                                                                Your session has expired
                                                             </Trans>)
                                                         }
                                                         description={
                                                             (<Trans
                                                                 i18nKey={ "common:networkErrorMessage.description" }
                                                             >
-                                                                Please try reloading the app.
+                                                                Please try signing in again.
                                                             </Trans>)
                                                         }
                                                         primaryActionText={
@@ -342,7 +342,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                                     "common:networkErrorMessage.primaryActionText"
                                                                 }
                                                             >
-                                                                Reload the App
+                                                                Sign In
                                                             </Trans>)
                                                         }
                                                     />
