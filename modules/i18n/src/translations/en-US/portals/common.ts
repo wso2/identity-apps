@@ -108,9 +108,9 @@ export const common: CommonNS = {
     myAccount: "My Account",
     name: "Name",
     networkErrorMessage: {
-        description: "Please try reloading the app.",
-        heading: "Something went wrong",
-        primaryActionText: "Reload the App"
+        description: "Please try signing in again.",
+        heading: "Your session has expired",
+        primaryActionText: "Sign In"
     },
     next: "Next",
     okay: "Okay",

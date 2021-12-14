@@ -108,9 +108,9 @@ export const common: CommonNS = {
     myAccount: "Minha conta",
     name: "Nome",
     networkErrorMessage: {
-        description: "Tente recarregar o aplicativo.",
-        heading: "Quelque chose s'est mal passé",
-        primaryActionText: "Recarregue o aplicativo"
+        description: "Please try signing in again.",
+        heading: "Your session has expired",
+        primaryActionText: "Sign In"
     },
     next: "Próximo",
     okay: "OK",
