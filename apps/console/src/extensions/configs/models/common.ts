@@ -18,6 +18,7 @@
 
 import { HeaderExtension, HeaderLinkCategoryInterface } from "@wso2is/react-components";
 import { HeaderSubPanelItemInterface } from "../../../features/core/components";
+import { ConfigInterface } from "../../../features/core/models";
 
 export interface CommonConfig {
     advancedSearchWithBasicFilters: {
@@ -48,6 +49,7 @@ export interface CommonConfig {
          */
         renderAppSwitcherAsDropdown: boolean;
     };
+    initConfig: (config: ConfigInterface) => void
     leftNavigation: {
         /**
          * Should the side panel be categorized for different views.
