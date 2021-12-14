@@ -204,7 +204,7 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
                             </Menu.Item>
                         </>
                     }
-                    <Menu.Item compact position="right">
+                    <Menu.Item position="right">
                         <Popup
                             content={ remoteConfigDetails?.repositoryManagerAttributes?.uri }
                             header={ t("console:manage.features.remoteFetch.components.status.linkPopup.header") }
