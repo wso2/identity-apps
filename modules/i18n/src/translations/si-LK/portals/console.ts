@@ -6416,10 +6416,12 @@ export const console: ConsoleNS = {
                 },
                 profile: {
                     fields: {
+                        createdDate: "සාදන ලද දිනය",
                         emails: "විද්යුත් තැපෑල",
                         generic: {
                             default: "{{FieldName} එකතු කරන්න"
                         },
+                        modifiedDate: "වෙනස් කළ දිනය",
                         name_familyName: "අවසන් නම",
                         name_givenName: "මුල් නම",
                         oneTimePassword: "එක් වරක් මුරපදය",

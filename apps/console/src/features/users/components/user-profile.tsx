@@ -39,6 +39,7 @@ import {
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
+import moment from "moment";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -145,13 +146,16 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const [ countryList, setCountryList ] = useState<DropdownItemProps[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
+    const createdDate = user?.meta?.created;
+    const modifiedDate = user?.meta?.lastModified;
+
     useEffect(() => {
 
         if (connectorProperties && Array.isArray(connectorProperties) && connectorProperties?.length > 0) {
 
             let configurationStatuses = { ...configSettings } ;
 
-             for (const property of connectorProperties) {
+            for (const property of connectorProperties) {
                 if (property.name === ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE) {
                     configurationStatuses = {
                         ...configurationStatuses,
@@ -973,6 +977,48 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         </Grid.Row>
                                     )
                                 }
+                                {
+                                    createdDate && (
+                                        <Grid.Row columns={ 1 }>
+                                            <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
+                                                <Form.Field>
+                                                    <label>
+                                                        { t("console:manage.features.user.profile.fields."+
+                                                            "createdDate") }
+                                                    </label>
+                                                    <Input
+                                                        name="createdDate"
+                                                        type="text"
+                                                        value={ createdDate ? 
+                                                            moment(createdDate).format("YYYY-MM-DD") : "" }
+                                                        readOnly={ true }
+                                                    />
+                                                </Form.Field>
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    )
+                                }
+                                {
+                                    modifiedDate && (
+                                        <Grid.Row columns={ 1 }>
+                                            <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
+                                                <Form.Field>
+                                                    <label>
+                                                        { t("console:manage.features.user.profile.fields."+
+                                                                "modifiedDate") }
+                                                    </label>
+                                                    <Input
+                                                        name="modifiedDate"
+                                                        type="text"
+                                                        value={ modifiedDate ? 
+                                                            moment(modifiedDate).format("YYYY-MM-DD") : "" }
+                                                        readOnly={ true }
+                                                    />
+                                                </Form.Field>
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    )
+                                }
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                         {
@@ -1025,7 +1071,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             data-testid={ `${ testId }-confirmation-modal-message` }
                             attached
                             negative
-                         >
+                        >
                             { commonConfig.userEditSection.isGuestUser
                                 ? t("extensions:manage.guest.deleteUser.confirmationModal.message")
                                 : t("console:manage.features.user.deleteUser.confirmationModal.message")
