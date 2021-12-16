@@ -109,11 +109,15 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
      */
     const updateConfiguration = (values: any): any => {
         return {
-            ...initialValues,
-            isEnabled: values.get(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY)
-                .includes(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY),
-            scheme: values.get(JITProvisioningConstants.PROVISIONING_SCHEME_TYPE_KEY),
-            userstore: values.get(JITProvisioningConstants.PROVISIONING_USER_STORE_DOMAIN_KEY)
+            isEnabled: values.get(
+                JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY
+            ).includes(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY) ?? initialValues?.isEnabled,
+            scheme: values.get(
+                JITProvisioningConstants.PROVISIONING_SCHEME_TYPE_KEY
+            ) ?? initialValues?.scheme,
+            userstore: values.get(
+                JITProvisioningConstants.PROVISIONING_USER_STORE_DOMAIN_KEY
+            ) ?? initialValues.userstore
         } as JITProvisioningResponseInterface;
     };
 
