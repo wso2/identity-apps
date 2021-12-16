@@ -320,7 +320,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                     const value = tempForm.get(inputField.name);
                     (
                         !((value instanceof Array && value.length > 0)
-                            || (!(value instanceof Array) && !!value.trim()))
+                            || (!(value instanceof Array) && value.trim && !!value.trim()))
                         || isReset
                     )
                         && (!isRadioField(inputField) && inputField.required)

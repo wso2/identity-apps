@@ -367,7 +367,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             if (schema.extended) {
                                 opValue = {
                                     [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
-                                        [schemaNames[0]]: values.get(schemaNames[0])
+                                        [schemaNames[0]]: schema.type.toUpperCase() === "BOOLEAN" ?
+                                            !!values.get(schema.name)?.includes(schema.name) :
+                                            values.get(schemaNames[0])
                                     }
                                 };
                             } else {
@@ -388,7 +390,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         [schemaNames[0]]: [
                                             {
                                                 type: schemaNames[1],
-                                                value: values.get(schema.name)
+                                                value: schema.type.toUpperCase() === "BOOLEAN" ?
+                                                    !!values.get(schema.name)?.includes(schema.name) :
+                                                    values.get(schema.name)
                                             }
                                         ]
                                     };
@@ -720,6 +724,55 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         });
     };
 
+    const resolveFormField = (schema: ProfileSchemaInterface, fieldName: string, key: number): ReactElement => {
+        if (schema.type.toUpperCase() === "BOOLEAN") {
+            return (
+                <Field
+                    data-testid={`${ testId }-profile-form-${ schema.name }-input`}
+                    name={schema.name}
+                    required={schema.required}
+                    requiredErrorMessage={fieldName + " " + "is required"}
+                    type="checkbox"
+                    value={profileInfo.get(schema.name) ? [schema.name] : []}
+                    children={[
+                        {
+                            label: fieldName,
+                            value: schema.name
+                        }
+                    ]}
+                    readOnly={isReadOnly || schema.mutability === ProfileConstants.READONLY_SCHEMA}
+                    key={key}
+                />
+            );
+        } else {
+            return (
+                <Field
+                    data-testid={`${ testId }-profile-form-${ schema.name }-input`}
+                    name={schema.name}
+                    label={schema.name === "profileUrl" ? "Profile Image URL" : fieldName}
+                    required={schema.required}
+                    requiredErrorMessage={fieldName + " " + "is required"}
+                    placeholder={"Enter your" + " " + fieldName}
+                    type="text"
+                    value={profileInfo.get(schema.name)}
+                    key={key}
+                    disabled={schema.name === "userName"}
+                    readOnly={isReadOnly || schema.mutability === ProfileConstants.READONLY_SCHEMA}
+                    validation={(value: string, validation: Validation) => {
+                        if (!RegExp(schema.regEx).test(value)) {
+                            validation.isValid = false;
+                            validation.errorMessages
+                                .push(t("console:manage.features.users.forms.validation.formatError", {
+                                    field: fieldName
+                                }));
+                        }
+                    }}
+                    maxLength={30}
+                />
+            );
+        }
+    };
+
     /**
      * This function generates the user profile details form based on the input Profile Schema
      *
@@ -757,29 +810,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 />
                             </Form.Field>
                         ) : (
-                            <Field
-                                data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
-                                name={ schema.name }
-                                label={ schema.name === "profileUrl" ? "Profile Image URL" : fieldName }
-                                required={ schema.required }
-                                requiredErrorMessage={ fieldName + " " + "is required" }
-                                placeholder={ "Enter your" + " " + fieldName }
-                                type="text"
-                                value={ profileInfo.get(schema.name) }
-                                key={ key }
-                                disabled={ schema.name === "userName" }
-                                readOnly={ isReadOnly }
-                                validation={ (value: string, validation: Validation) => {
-                                    if (!RegExp(schema.regEx).test(value)) {
-                                        validation.isValid = false;
-                                        validation.errorMessages
-                                            .push(t("adminPortal:components.users.forms.validation.formatError", {
-                                                field: fieldName
-                                            }));
-                                    }
-                                } }
-                                maxLength={ 30 }
-                            />
+                            resolveFormField(schema, fieldName, key)
                         )
                     }
                 </Grid.Column>
