@@ -388,6 +388,11 @@
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon.identity.governance</groupId>
+                <artifactId>org.wso2.carbon.identity.captcha</artifactId>
+                <version>${identity.governance.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.governance</groupId>
                 <artifactId>org.wso2.carbon.identity.recovery</artifactId>
                 <version>${identity.governance.version}</version>
             </dependency>
@@ -661,7 +666,7 @@
         <carbon.identity.framework.imp.pkg.version.range>[5.0.0, 6.0.0)</carbon.identity.framework.imp.pkg.version.range>
         <carbon.identity.oauth.version>6.7.35</carbon.identity.oauth.version>
         <carbon.identity.oauth.imp.pkg.version.range>[6.1.0, 7.0.0)</carbon.identity.oauth.imp.pkg.version.range>
-        <identity.governance.version>1.4.97</identity.governance.version>
+        <identity.governance.version>1.5.48</identity.governance.version>
         <totp.authenticator.version>3.0.18</totp.authenticator.version>
 
         <commons-io.wso2.version>2.7.0.wso2v1</commons-io.wso2.version>
