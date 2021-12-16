@@ -332,6 +332,8 @@ export class ApplicationManagementConstants {
     public static readonly REQUEST_PATH_AUTHENTICATORS_FETCH_ERROR: string = "An error occurred while fetching the " +
         "request path authenticators.";
 
+    public static readonly UNABLE_FETCH_APPLICATIONS: string = "An error occurred while fetching applications.";
+
     public static readonly IDENTIFIER_FIRST_AUTHENTICATOR_ID = IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER
         + "-" + "SWRlbnRpZmllckV4ZWN1dG9y";
 

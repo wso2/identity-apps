@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Code, Heading, InfoCard, Text } from "@wso2is/react-components";
+import { Code, Heading, InfoCard, Link, Text } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -32,6 +32,7 @@ import {
 } from "../../../../../identity-providers";
 import { AuthenticationStepInterface } from "../../../../models";
 import { SignInMethodUtils } from "../../../../utils";
+import { AppConstants, history } from "../../../../../core";
 
 /**
  * Proptypes for the authenticators component.
@@ -131,16 +132,18 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                 return false;
             }
 
-            return SignInMethodUtils.isSecondFactorAdditionValid(
-                authenticator.defaultAuthenticator.authenticatorId,
-                currentStep,
-                authenticationSteps
-            ) && !SignInMethodUtils.isMFAConflictingWithProxyModeConfig({
+            const { conflicting } = SignInMethodUtils.isMFAConflictingWithProxyModeConfig({
                 authenticators: authenticators,
                 steps: authenticationSteps,
                 addingStep: currentStep,
                 authenticatorId: authenticator.defaultAuthenticator.authenticatorId
             });
+
+            return SignInMethodUtils.isSecondFactorAdditionValid(
+                authenticator.defaultAuthenticator.authenticatorId,
+                currentStep,
+                authenticationSteps
+            ) && !conflicting;
         }
 
         return true;
@@ -157,24 +160,44 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
 
         if (authenticator.category === AuthenticatorCategories.SECOND_FACTOR) {
 
-            if (SignInMethodUtils.isMFAConflictingWithProxyModeConfig({
+            const {
+                conflicting: proxyModeConflict,
+                idpList
+            } = SignInMethodUtils.isMFAConflictingWithProxyModeConfig({
                 authenticators: authenticators,
                 steps: authenticationSteps,
                 addingStep: currentStep,
                 authenticatorId: authenticator.defaultAuthenticator.authenticatorId
-            })) {
+            });
+
+            if (proxyModeConflict) {
                 return (
                     <Text>
                         <Trans
                             i18nKey={ "console:develop.features.applications.edit.sections." +
                             "signOnMethod.sections.authenticationFlow.sections.stepBased." +
                             "secondFactorDisabledDueToProxyMode" }
+                            values={ {
+                                auth: authenticator.displayName
+                            } }
                         >
-                            To configure the second-factor authenticators such
-                            as <Code withBackground>TOTP</Code> and <Code withBackground>Email OTP</Code>, users
-                            must have a local account. Current authentication sequence,
-                            has <strong>Proxy Mode</strong> enabled handlers.
+                            To configure <Code withBackground>{ authenticator.displayName }</Code>,
+                            you should enable the Just-in-Time provisioning setting from the following
+                            Identity Providers.
                         </Trans>
+                        <ol className="mt-3 mb-0">
+                            { idpList?.map(({ name, id }, index) => (
+                                <li key={ index }>
+                                    <Link icon="linkify" onClick={ () => {
+                                        history.push({
+                                            pathname: AppConstants.getPaths()
+                                                .get("IDP_EDIT")
+                                                .replace(":id", id)
+                                        });
+                                    } }>{ name }</Link>
+                                </li>
+                            )) }
+                        </ol>
                     </Text>
                 );
             }

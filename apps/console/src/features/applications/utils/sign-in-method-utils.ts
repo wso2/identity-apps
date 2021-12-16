@@ -180,23 +180,25 @@ export class SignInMethodUtils {
      * -------
      * When a application developer / someone with privileges adds federated IdP as a
      * step through the sign-in configurations to a targeted application and disable
-     * JIT provisioning (in other words, enable proxy mode config
-     * ~ {@code !idpModel.provisioning.jit.isEnable === proxyMode}).
+     * JIT provisioning.
      *
      * Then, if they try to add a second factor authentication next system should not allow this
      * operation because with the proxy mode enabled; users aren't provisioned locally.
      * Therefore, making the second factor auth obsolete.
+     *
+     * ProxyMode === JIT Disabled ~ vice versa
+     * {@code isProxyMode = !idpModel.provisioning.jit.isEnable}
      */
     public static isMFAConflictingWithProxyModeConfig(
         { addingStep, authenticators, steps }: ProxyModeConflictTestArgs
-    ): boolean {
+    ): { conflicting: boolean; idpList: { id: string; name: string }[] } {
 
         /**
          * In authentication step 0 users aren't allowed to add
          * MFA whatsoever. So, this invariant skips this validation
          * if this is the step 0. 0 maps to id:1 in {@code steps}.
          */
-        if (addingStep === 0) return false;
+        if (addingStep === 0) return { idpList: [], conflicting: false };
 
         /**
          * More Context
@@ -217,29 +219,37 @@ export class SignInMethodUtils {
          * ids start from index 1. So, if you want to get the options in the previous
          * step in {@link steps} you just do {@code steps[addingStep]} and if you
          * want to get the options in current step you do {@code steps[addingStep + 1]}.
-         * Yes. It's confusing at first but changing indexes aren't feasible
-         * at this time.
          */
 
         const allOptions = flatten(steps.map(({ options }) => options));
 
         try {
+
             /**
              * Checks whether all auth steps has at least 1 or more proxied
              * handlers. If yes then there's a conflict.
              */
-            return [ ...(new Set(allOptions.map(({ idp }) => idp))) ]
-                .map((idpName) => authenticators.find(({ name }) => name === idpName))
-                .filter(Boolean) // Filter the {@code undefined|null} ones
+            const result = [ ...(new Set(allOptions.map(({ idp }) => idp))) ] // Extract all the IdP names in every option.
+                .map((idpName) => authenticators.find(({ name }) => name === idpName)) // Find the authenticator model.
+                .filter(Boolean) // Remove all the {@code undefined|null} ones please.
                 .filter(({ category }) => (
                     category === AuthenticatorCategories.SOCIAL.toString() ||
                     category === AuthenticatorCategories.ENTERPRISE.toString()
-                ))
+                )) // Give me only ENTERPRISE and SOCIAL IdPs.
                 .filter((auth: GenericAuthenticatorInterface & { provisioning: ProvisioningInterface }) => {
                     return !auth?.provisioning?.jit?.isEnabled
-                })?.length > 0;
+                }); // If there's one or more proxy mode enabled IdPs means we have a conflict.
+
+            return {
+                conflicting: result?.length > 0,
+                idpList: result.map(({ name, id }) => ({ name, id }))
+            };
+
         } catch (e) {
-            return false;
+            return {
+                conflicting: false,
+                idpList: []
+            };
         }
 
     }

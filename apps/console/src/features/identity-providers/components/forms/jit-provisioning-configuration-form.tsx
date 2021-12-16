@@ -17,19 +17,22 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, HttpCodes, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
-import { ContentLoader, Heading, Hint, Link, Text } from "@wso2is/react-components";
+import {
+    ContentLoader,
+    DocumentationLink,
+    Heading,
+    Hint,
+    Link,
+    Text,
+    useDocumentation
+} from "@wso2is/react-components";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, Message } from "semantic-ui-react";
+import { ApplicationInterface, getApplicationsByIds, SimpleUserStoreListItemInterface } from "../../../applications";
 import {
-    ApplicationBasicInterface,
-    getApplicationDetails,
-    SimpleUserStoreListItemInterface
-} from "../../../applications";
-import {
-    ConnectedAppInterface,
     ConnectedAppsInterface,
     IdentityProviderInterface,
     JITProvisioningResponseInterface,
@@ -40,6 +43,10 @@ import { getIDPConnectedApps } from "../../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
 import { AppConstants, history } from "../../../core";
+import { AxiosError, AxiosResponse } from "axios";
+import flatten from "lodash-es/flatten";
+import intersection from "lodash-es/intersection";
+import { IdentityProviderManagementConstants } from "../../constants";
 
 /**
  *  Just-in time provisioning configurations for the IdP.
@@ -82,16 +89,17 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         [ "data-testid" ]: testId
     } = props;
 
+    const dispatch = useDispatch();
+    const { t } = useTranslation();
+    const { getLink } = useDocumentation();
+
     const [ isJITProvisioningEnabled, setIsJITProvisioningEnabled ] = useState<boolean>(false);
     const [
         cannotModifyProxyModeDueToConnectApps,
         setCannotModifyProxyModeDueToConnectApps
-    ] = useState<boolean>(true);
-    const [ connectedApps, setConnectedApps ] = useState<{ name: string; id: string; }[]>([]);
-    const [ fetchingConnectedApps, setFetchingConnectedApps ] = useState<boolean>(true);
-
-    const dispatch = useDispatch();
-    const { t } = useTranslation();
+    ] = useState<boolean>(false);
+    const [ fetchingConnectedApps, setFetchingConnectedApps ] = useState<boolean>(false);
+    const [ conflictingApps, setConflictingApps ] = useState<ApplicationInterface[]>([]);
 
     /**
      * Prepare form values for submitting.
@@ -102,7 +110,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
     const updateConfiguration = (values: any): any => {
         return {
             ...initialValues,
-            isEnabled: !values.get(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY)
+            isEnabled: values.get(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY)
                 .includes(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY),
             scheme: values.get(JITProvisioningConstants.PROVISIONING_SCHEME_TYPE_KEY),
             userstore: values.get(JITProvisioningConstants.PROVISIONING_USER_STORE_DOMAIN_KEY)
@@ -111,7 +119,6 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
 
     /**
      * Create user store options.
-     *
      */
     const getUserStoreOption = () => {
         const allowedOptions = [];
@@ -131,51 +138,102 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
     useEffect(() => {
         if (initialValues?.isEnabled) {
             setIsJITProvisioningEnabled(initialValues?.isEnabled);
+            setFetchingConnectedApps(true);
+            setCannotModifyProxyModeDueToConnectApps(true);
+            validateJITConfigurationState().finally(() => {
+                setFetchingConnectedApps(false);
+            });
         }
     }, [ initialValues ]);
 
+    /**
+     * Context
+     * -------
+     * Used to check this IdP's {@code idpId} connected applications and
+     * check which applications has configured TOTP or Email OTP in their
+     * authentication steps.
+     */
+    const validateJITConfigurationState = async (): Promise<void> => {
 
-    useEffect(() => {
+        try {
 
-        setFetchingConnectedApps(true);
+            const { count, connectedApps }: ConnectedAppsInterface = await getIDPConnectedApps(idpId);
 
-        getIDPConnectedApps(idpId)
-            .then(async (response: ConnectedAppsInterface) => {
-                if (response.count === 0) {
-                    setCannotModifyProxyModeDueToConnectApps(false);
-                    setFetchingConnectedApps(false);
+            if (count === 0) {
+                setCannotModifyProxyModeDueToConnectApps(false);
 
-                    return;
-                }
-                setCannotModifyProxyModeDueToConnectApps(true);
-                const appRequests: Promise<any>[] = response.connectedApps.map((app: ConnectedAppInterface) => {
-                    return getApplicationDetails(app.appId);
-                });
-                const results: ApplicationBasicInterface[] = await Promise.all(
-                    appRequests.map(response => response.catch(error => {
+                return;
+            }
+
+            // Gets all the applications concurrently.
+            const responses: AxiosResponse<ApplicationInterface>[] = await getApplicationsByIds(
+                new Set(connectedApps.map((app) => app.appId))
+            );
+            const applicationsMap: Map<string, ApplicationInterface> = new Map();
+
+            for (const res of responses) {
+                const { status, data: app } = res;
+                if (HttpCodes.OK !== status) {
+                    const error = (res as unknown) as AxiosError;
+                    if (error?.response && error.response?.data && error.response.data?.description) {
                         dispatch(addAlert({
-                            description: error?.description
-                                || "Error occurred while trying to retrieve connected applications.",
+                            description: error.response.data.description || "Unable to get application details.",
                             level: AlertLevels.ERROR,
                             message: error?.message || "Error Occurred."
                         }));
-                    }))
-                );
-                setConnectedApps(results.map(({ name, id }) => ({ name, id })));
-            })
-            .catch((error) => {
-                dispatch(addAlert({
-                    description: error?.description
-                        || "Error occurred while trying to retrieve connected applications.",
-                    level: AlertLevels.ERROR,
-                    message: error?.message || "Error Occurred."
-                }));
-            })
-            .finally(() => {
-                setFetchingConnectedApps(false);
-            });
+                    }
 
-    }, []);
+                    continue;
+                }
+                applicationsMap.set(app.id, app);
+            }
+
+            // What's happening here?
+            //
+            // #1 - Extracting all the options associated to its authentication steps and flat it out. n^2
+            // #2 - Extracting the authenticator types. n^2
+            // #3 - Checking if sequence has restricted set of MFA configured. n^2
+            // #4 - Finding conflicting apps. n
+            // #5 - Finding the original modal of each app. 1
+            //
+            // takes n^2
+
+            const mfaAuthenticators = [
+                IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
+                IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR
+            ];
+
+            const apps = [ ...applicationsMap.values() ]
+                .map(({ id, authenticationSequence: seq }) => ({
+                    id, options: flatten(seq.steps.map(({ options }) => options))
+                })) // #1
+                .map(({ id, options }) => ({
+                    id, authenticators: options.map(({ authenticator: a }) => a)
+                })) // #2
+                .map(({ id, authenticators }) => ({
+                    id, hasMFAConfigured: intersection(authenticators, mfaAuthenticators)?.length > 0
+                })) // #3
+                .filter(({ id, hasMFAConfigured }) => hasMFAConfigured) // #4
+                .map(({ id }) => applicationsMap.get(id)); // #5
+
+            if (apps?.length) {
+                setCannotModifyProxyModeDueToConnectApps(true);
+                setConflictingApps(apps);
+
+                return;
+            }
+
+            setCannotModifyProxyModeDueToConnectApps(false);
+
+        } catch (error) {
+            dispatch(addAlert({
+                description: error?.description || "Unable to validate provisioning configs at this time.",
+                level: AlertLevels.ERROR,
+                message: error?.message || "Error Occurred."
+            }));
+        }
+
+    };
 
     const supportedProvisioningSchemes = [ {
         label: t("console:develop.features.authenticationProvider" +
@@ -205,11 +263,11 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                         ? (
                             <div style={ { display: "inline-flex", alignItems: "baseline" } }>
                                 <Icon name="exclamation triangle" size="large"/>
-                                <Heading as="h6">
+                                <Heading as="h4" className="ml-2">
                                     <strong>
                                         { t("console:develop.features.authenticationProvider" +
-                                            ".forms.jitProvisioning." +
-                                            "enableJITProvisioning.disabledMessageHeader") }
+                                            ".forms.jitProvisioning.enableJITProvisioning" +
+                                            ".disabledMessageHeader") }
                                     </strong>
                                 </Heading>
                             </div>
@@ -219,30 +277,34 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                     <Text className="mt-3">
                         { fetchingConnectedApps
                             ? "Checking for conflicts with configured applications."
-                            : connectedApps?.length > 1
-                                ? t("console:develop.features.authenticationProvider.forms.jitProvisioning." +
-                                    "enableJITProvisioning.disabledMessageContent.1")
-                                : t("console:develop.features.authenticationProvider.forms.jitProvisioning." +
-                                    "enableJITProvisioning.disabledMessageContent.2")
+                            : t("console:develop.features.authenticationProvider.forms.jitProvisioning." +
+                                "enableJITProvisioning.disabledMessageContent")
                         }
                     </Text>
                     { fetchingConnectedApps
                         ? <ContentLoader/>
                         : (
-                            <ol style={ { marginBottom: 0 } }>
-                                { connectedApps?.map(({ name, id }, index) => (
-                                    <li key={ index }>
-                                        <Link icon="linkify" onClick={ () => {
-                                            history.push({
-                                                pathname: AppConstants.getPaths()
-                                                    .get("APPLICATION_EDIT")
-                                                    .replace(":id", id),
-                                                search: `#tab=4`
-                                            });
-                                        } }>{ name }</Link>
-                                    </li>
-                                )) }
-                            </ol>
+                            <>
+                                <ol style={ { marginBottom: 0 } }>
+                                    { conflictingApps?.map(({ name, id }, index) => (
+                                        <li key={ index }>
+                                            <Link icon="linkify" onClick={ () => {
+                                                history.push({
+                                                    pathname: AppConstants.getPaths()
+                                                        .get("APPLICATION_EDIT")
+                                                        .replace(":id", id),
+                                                    search: `#tab=4`
+                                                });
+                                            } }>{ name }</Link>
+                                        </li>
+                                    )) }
+                                </ol>
+                                <Text className="mt-3 mb-0">
+                                    To resolve this you can learn more from <DocumentationLink link={
+                                    getLink("develop.connections.edit.advancedSettings.jit")
+                                }>docs</DocumentationLink>.
+                                </Text>
+                            </>
                         )
                     }
                 </div>
@@ -257,7 +319,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                     identityProviderConfig?.jitProvisioningSettings?.enableJitProvisioningField?.show
                         ? (
                             <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
                                     <Field
                                         loading={ fetchingConnectedApps }
                                         name={ JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY }
@@ -265,7 +327,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                         required={ false }
                                         requiredErrorMessage=""
                                         value={
-                                            !initialValues?.isEnabled
+                                            initialValues?.isEnabled
                                                 ? [ JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY ]
                                                 : []
                                         }
@@ -273,7 +335,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                         type="checkbox"
                                         listen={ (values) => {
                                             setIsJITProvisioningEnabled(
-                                                !values
+                                                values
                                                     .get(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY)
                                                     .includes(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY)
                                             );
@@ -310,7 +372,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                     identityProviderConfig?.jitProvisioningSettings?.userstoreDomainField?.show
                         ? (
                             <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
                                     <Field
                                         name={ JITProvisioningConstants.PROVISIONING_USER_STORE_DOMAIN_KEY }
                                         label={
@@ -342,7 +404,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                     identityProviderConfig?.jitProvisioningSettings?.provisioningSchemeField?.show
                         ? (
                             <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
                                     <Fragment>
                                         <Field
                                             required={ false }
@@ -372,7 +434,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                         : <Fragment/>
                 }
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
                         <Show when={ AccessControlConstants.IDP_EDIT }>
                             <Button
                                 primary type="submit"
