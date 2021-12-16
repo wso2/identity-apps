@@ -16,4 +16,10 @@
  * under the License.
  */
 
-export type DocumentationLinksExtensionInterface = Record<string, unknown>;
+export type DocumentationLinksExtensionInterface = Record<string, unknown> & {
+    edit: {
+        advancedSettings: {
+            jit: string;
+        }
+    }
+};
