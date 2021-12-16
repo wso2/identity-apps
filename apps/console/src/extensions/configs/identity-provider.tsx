@@ -29,6 +29,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
         showOutboundProvisioning: true
     },
     jitProvisioningSettings: {
+        menuItemName: "Just-in-Time Provisioning",
         enableJitProvisioningField: {
             show: true
         },
