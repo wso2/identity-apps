@@ -2115,6 +2115,7 @@ code {
 /*-------------------------------
           Pre-Loader
 --------------------------------*/
+
 .pre-loader-wrapper {
     background-color: @preLoaderWrapperBackgroundColor;
     min-height: 100vh;
@@ -2124,6 +2125,19 @@ code {
     flex-direction: column;
     flex: 1;
     background-image: @preLoaderWrapperBackgroundImage;
+}
+
+/*-------------------------------
+         Image Previews
+--------------------------------*/
+
+.image-preview {
+    border: @imagePreviewBorder;
+    height: @imagePreviewHeight;
+    display: flex;
+    align-items: center;
+    border-radius: @imagePreviewBorderRadius;
+    justify-content: center;
 }
 
 .loadUIOverrides();
