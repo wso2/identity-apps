@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Tab, TabProps } from "semantic-ui-react";
+import { MenuProps, Tab, TabProps } from "semantic-ui-react";
 import { ResourceTabPane } from "./resource-tab-pane";
 
 /**
@@ -41,6 +41,18 @@ export interface ResourceTabPropsInterface extends TabProps, TestableComponentIn
      * Callback to set the panes list length.
      */
     onInitialize?: ({ panesLength:number }) => void;
+    /**
+     * Is the tab menu and content attached?
+     */
+    attached?: MenuProps[ "attached" ];
+    /**
+     * Is the tab menu has pointed items.
+     */
+    pointing?: MenuProps[ "pointing" ];
+    /**
+     * Is the tab menu in secondary variation.
+     */
+    secondary?: MenuProps[ "secondary" ];
 }
 
 /**
@@ -55,16 +67,22 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
 ): ReactElement => {
 
     const {
+        attached,
         className,
         onInitialize,
         panes,
         defaultActiveIndex,
+        pointing,
+        secondary,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
 
     const classes = classNames(
-        "tabs resource-tabs"
+        "tabs resource-tabs",
+        {
+            "attached": attached
+        }
         , className
     );
 
@@ -95,7 +113,11 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
         <Tab
             onTabChange={ handleTabChange }
             className={ classes }
-            menu={ { pointing: true, secondary: true } }
+            menu={ {
+                attached,
+                pointing,
+                secondary
+            } }
             panes={ panes }
             activeIndex={ activeIndex }
             data-testid={ testId }
@@ -108,7 +130,10 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
  * Default props for the resource tab component.
  */
 ResourceTab.defaultProps = {
-    "data-testid": "resource-tabs"
+    attached: false,
+    "data-testid": "resource-tabs",
+    pointing: true,
+    secondary: true
 };
 
 ResourceTab.Pane = ResourceTabPane;
