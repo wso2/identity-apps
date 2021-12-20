@@ -895,17 +895,19 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                         <div className="timeline-button add">
                             <Popup
                                 trigger={ (
-                                    <GenericIcon
-                                        link
-                                        transparent
-                                        size="mini"
-                                        fill="primary"
-                                        icon={ getSignInFlowIcons().addButton }
-                                        onClick={ handleAuthenticationStepAdd }
-                                        data-tourid="add-new-step-button"
-                                    />
+                                    <div>
+                                        <GenericIcon
+                                            link
+                                            transparent
+                                            size="mini"
+                                            fill="primary"
+                                            icon={ getSignInFlowIcons().addButton }
+                                            onClick={ handleAuthenticationStepAdd }
+                                            data-tourid="add-new-step-button"
+                                        />
+                                    </div>
                                 ) }
-                                position="top left"
+                                position="left center"
                                 content={ "Add a new authentication step" }
                             />
                         </div>
