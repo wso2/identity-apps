@@ -1350,6 +1350,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             name: {
+                                hint: "යෙදුමේ නම",
                                 label: "නම",
                                 placeholder: "මගේ යෙදුම",
                                 validations: {

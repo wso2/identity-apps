@@ -219,6 +219,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
                     minLength={ 3 }
                     data-testid={ `${ testId }-application-name-input` }
+                    hint={ t("console:develop.features.applications.forms.generalDetails.fields.name." +
+                    "hint") }
                     width={ 16 }
                 />
             ) }

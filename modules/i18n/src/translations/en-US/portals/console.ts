@@ -1344,6 +1344,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             name: {
+                                hint: "The name of the application",
                                 label: "Name",
                                 placeholder: "My App",
                                 validations: {
