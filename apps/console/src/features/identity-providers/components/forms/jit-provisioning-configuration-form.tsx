@@ -26,11 +26,11 @@ import flatten from "lodash-es/flatten";
 import intersection from "lodash-es/intersection";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Grid, Icon, Message } from "semantic-ui-react";
 import { identityProviderConfig } from "../../../../extensions";
-import { ApplicationInterface, getApplicationsByIds, SimpleUserStoreListItemInterface } from "../../../applications";
-import { AppConstants, history } from "../../../core";
+import { ApplicationInterface, SimpleUserStoreListItemInterface, getApplicationsByIds } from "../../../applications";
+import { AppConstants, AppState, ConfigReducerStateInterface, history } from "../../../core";
 import { getIDPConnectedApps } from "../../api";
 import { IdentityProviderManagementConstants } from "../../constants";
 import {
@@ -84,6 +84,8 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
+
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const [ isJITProvisioningEnabled, setIsJITProvisioningEnabled ] = useState<boolean>(false);
     const [
@@ -270,9 +272,9 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         const { name, id } = conflictingApps[ FIRST_ENTRY ];
 
         return (
-            <>
+            <div>
                 <Text>
-                    You cannot disable the Just-in-Time User Provisioning setting because the
+                    Make sure you know what you&apos;re doing. Because the
                     following application <Link
                         icon="linkify"
                         onClick={ () => {
@@ -282,13 +284,16 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                     .replace(":id", id),
                                 search: "#tab=4"
                             });
-                        } }>{ name }</Link> requires it to be enabled. Its authentication
-                    sequence has Multi-Factor Authentications. MFA such as <Code>TOTP</Code> and
-                    <Code>Email OTP</Code> <strong>expects a provisioned user account in
-                    Asgardeo</strong> to work correctly.
+                        } }>{ name }</Link> requires Just-in-Time User Provisioning setting
+                    to be enabled.
                 </Text>
-                { documentationLinkForJIT() }
-            </>
+                <Text>
+                    Its authentication sequence has Multi-Factor Authentications (MFA) configured. MFA such
+                    as <Code>TOTP</Code> and <Code>Email OTP</Code> <strong>expects a provisioned
+                    user account in Asgardeo</strong> to work correctly.
+                    { documentationLinkForJIT() }
+                </Text>
+            </div>
         );
     };
 
@@ -296,8 +301,9 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         return (
             <>
                 <Text>
-                    You cannot disable the Just-in-Time User Provisioning setting because
-                    the following applications require it to be enabled.
+                    Make sure you know what you&apos;re doing. Because
+                    the following applications require Just-in-Time User Provisioning setting
+                    to be enabled.
                     <ol className="mb-3">
                         { conflictingApps?.map(({ name, id }, index) => (
                             <li key={ index }>
@@ -315,9 +321,9 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                         )) }
                     </ol>
                     The above-listed applications&apos; authentication sequences have Multi-Factor
-                    Authentications (MFA). MFA such as <Code>TOTP</Code> and
-                    <Code>Email OTP</Code> <strong>expects a provisioned user account in
-                    Asgardeo</strong> to work correctly.
+                    Authentications (MFA) configured. MFA such
+                    as <Code>TOTP</Code> and <Code>Email OTP</Code> <strong>expects a provisioned
+                    user account in Asgardeo</strong> to work correctly.
                 </Text>
                 { documentationLinkForJIT() }
             </>
@@ -336,7 +342,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                 (
                     <Fragment>
                         <Icon name="exclamation triangle" className="mr-2"/>
-                        You cannot disable this setting
+                        Warning
                     </Fragment>
                 )
             }
@@ -388,10 +394,8 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                         readOnly={ isReadOnly }
                                     />
                                     <Hint>
-                                        { t("console:develop.features.authenticationProvider" +
-                                            ".forms.jitProvisioning." +
-                                            "enableJITProvisioning.hint")
-                                        }
+                                        Specify if users federated from this Identity Provider needs to be
+                                        locally provisioned in { config.ui.productName }.
                                     </Hint>
                                     { cannotModifyProxyModeDueToConnectApps
                                         ? ProxyModeConflictMessage
