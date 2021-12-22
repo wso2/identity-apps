@@ -50,10 +50,6 @@ const httpClient = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance())
     .bind(AsgardeoSPAClient.getInstance());
 
-const httpClientAll = AsgardeoSPAClient.getInstance()
-    .httpRequestAll.bind(AsgardeoSPAClient.getInstance())
-    .bind(AsgardeoSPAClient.getInstance())
-
 /**
  * Gets the basic information about the application.
  *
@@ -195,16 +191,16 @@ export const getApplicationsByIds = async (
         requests.push({
             headers: {
                 "Accept": "application/json",
-                "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
                 "Content-Type": "application/json"
             },
             method: HttpMethods.GET,
             url: store.getState().config.endpoints.applications + "/" + id
-        })
+        });
     }
 
     try {
-        const responses = await httpClientAll(requests);
+        const responses = await httpClient(requests);
+
         return Promise.resolve<AxiosResponse<ApplicationInterface>[]>(responses);
     } catch (error: AxiosError | any) {
         return Promise.reject(
@@ -216,10 +212,10 @@ export const getApplicationsByIds = async (
                 error?.response,
                 error?.config
             )
-        )
+        );
     }
 
-}
+};
 
 /**
  * Gets the available inbound protocols.
