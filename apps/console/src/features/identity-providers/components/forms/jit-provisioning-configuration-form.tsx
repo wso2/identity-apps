@@ -274,8 +274,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         return (
             <div>
                 <Text>
-                    Make sure you know what you&apos;re doing. Because the
-                    following application <Link
+                    Make sure you know what you&apos;re doing as the <Link
                         icon="linkify"
                         onClick={ () => {
                             history.push({
@@ -284,13 +283,14 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                     .replace(":id", id),
                                 search: "#tab=4"
                             });
-                        } }>{ name }</Link> requires Just-in-Time User Provisioning setting
-                    to be enabled.
+                        } }>{ name }</Link> application requires Just-in-Time User
+                    Provisioning to be enabled.
                 </Text>
                 <Text>
-                    Its authentication sequence has Multi-Factor Authentications (MFA) configured. MFA such
-                    as <Code>TOTP</Code> and <Code>Email OTP</Code> <strong>expects a provisioned
-                    user account in Asgardeo</strong> to work correctly.
+                    The authentication sequence of the application contains Multi-Factor
+                    Authentication (MFA) steps configured. MFA mechanisms such
+                    as <Code>TOTP</Code> and <Code>Email OTP</Code> require a <strong>provisioned user account
+                    in { config.ui.productName }</strong> for proper functionality.
                     { documentationLinkForJIT() }
                 </Text>
             </div>
@@ -301,9 +301,8 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         return (
             <>
                 <Text>
-                    Make sure you know what you&apos;re doing. Because
-                    the following applications require Just-in-Time User Provisioning setting
-                    to be enabled.
+                    Make sure you know what you&apos;re doing as the following applications
+                    require Just-in-Time User Provisioning to be enabled.
                     <ol className="mb-3">
                         { conflictingApps?.map(({ name, id }, index) => (
                             <li key={ index }>
@@ -320,10 +319,10 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                             </li>
                         )) }
                     </ol>
-                    The above-listed applications&apos; authentication sequences have Multi-Factor
-                    Authentications (MFA) configured. MFA such
-                    as <Code>TOTP</Code> and <Code>Email OTP</Code> <strong>expects a provisioned
-                    user account in Asgardeo</strong> to work correctly.
+                    The authentication sequence of the applications contains Multi-Factor
+                    Authentication (MFA) steps configured. MFA mechanisms such
+                    as <Code>TOTP</Code> and <Code>Email OTP</Code> require a <strong>provisioned user
+                    account in { config.ui.productName }</strong> for proper functionality.
                 </Text>
                 { documentationLinkForJIT() }
             </>
