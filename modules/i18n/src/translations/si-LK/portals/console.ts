@@ -1086,8 +1086,9 @@ export const console: ConsoleNS = {
                                         },
                                         duplicateSocialAuthenticatorSelectionModal: {
                                             content: {
-                                                body: "<1>{{authenticator}} Authenticator</1> සමඟ වින්‍යාස කර ඇති " +
-                                                    "සමාජ සම්බන්ධතා සැපයුම්කරුවන් ඔබට ඇත. ඉදිරියට යාමට තේරීම් වළල්ලෙන් " +
+                                                body: "<1>{{authenticator}} Authenticator</1> සමඟ " +
+                                                    "වින්‍යාස කර ඇති සමාජ සම්බන්ධතා සැපයුම්කරුවන් ඔබට" +
+                                                    " ඇත. ඉදිරියට යාමට තේරීම් වළල්ලෙන් " +
                                                     "අපේක්ෂිත එකක් තෝරන්න.",
                                                 message: "{{authenticator}} Authenticator නමින් සමාජ සම්බන්ධතා " +
                                                     "සපයන්නන් කිහිපයක් හමු විය."
