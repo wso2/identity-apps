@@ -25,6 +25,7 @@ import union from "lodash-es/union";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Popup } from "semantic-ui-react";
 import { AddAuthenticatorModal } from "./add-authenticator-modal";
 import { AuthenticationStep } from "./authentication-step";
 import { AppState, ConfigReducerStateInterface, EventPublisher } from "../../../../../core";
@@ -892,14 +893,22 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 {
                     !readOnly && (
                         <div className="timeline-button add">
-                            <GenericIcon
-                                link
-                                transparent
-                                size="mini"
-                                fill="primary"
-                                icon={ getSignInFlowIcons().addButton }
-                                onClick={ handleAuthenticationStepAdd }
-                                data-tourid="add-new-step-button"
+                            <Popup
+                                trigger={ (
+                                    <div>
+                                        <GenericIcon
+                                            link
+                                            transparent
+                                            size="mini"
+                                            fill="primary"
+                                            icon={ getSignInFlowIcons().addButton }
+                                            onClick={ handleAuthenticationStepAdd }
+                                            data-tourid="add-new-step-button"
+                                        />
+                                    </div>
+                                ) }
+                                position="left center"
+                                content={ "Add a new authentication step" }
                             />
                         </div>
                     )
