@@ -1062,28 +1062,31 @@ export const console: ConsoleNS = {
                                     flowBuilder: {
                                         addMissingSocialAuthenticatorModal: {
                                             content: {
-                                                body: "You do not have an active Identity Provider configured with " +
+                                                body: "You do not have an active Social " +
+                                                    "Connection configured with " +
                                                     "<1>{{authenticator}} Authenticator</1>. Click on the " +
-                                                    "<3>Configure</3> button to register a new <5>{{authenticator}} " +
-                                                    "Identity Provider</5> or navigate to the <7>Identity " +
-                                                    "Providers</7> section manually.",
-                                                message: "No active {{authenticator}} Identity Provider configured"
+                                                    "<3>Configure</3> button to register" +
+                                                    " a new <5>{{authenticator}} " +
+                                                    "Social Connection</5> or navigate to the <7>Connections</7>" +
+                                                    " section manually.",
+                                                message: "No active {{authenticator}} Social " +
+                                                    "Connection configured"
                                             },
                                             description: "",
-                                            heading: "Configure {{authenticator}} Identity Provider",
+                                            heading: "Configure {{authenticator}} Social Connection",
                                             primaryButton: "Configure",
                                             secondaryButton: "Cancel"
                                         },
                                         duplicateSocialAuthenticatorSelectionModal: {
                                             content: {
-                                                body: "You have multiple Identity Providers configured with <1>" +
+                                                body: "You have multiple Social Connections configured with <1>" +
                                                     "{{authenticator}} Authenticator</1>. Select the desired one " +
                                                     "from the selection below to proceed.",
-                                                message: "Multiple Identity Providers found with {{authenticator}} " +
+                                                message: "Multiple Social Connections found with {{authenticator}} " +
                                                     "Authenticator."
                                             },
                                             description: "",
-                                            heading: "Select {{authenticator}} Identity Provider",
+                                            heading: "Select {{authenticator}} Social Connection",
                                             primaryButton: "Continue",
                                             secondaryButton: "Cancel"
                                         },

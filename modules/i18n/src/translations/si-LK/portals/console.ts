@@ -1071,28 +1071,30 @@ export const console: ConsoleNS = {
                                     flowBuilder: {
                                         addMissingSocialAuthenticatorModal: {
                                             content: {
-                                                body: "ඔබට අනන්‍යතා සැපයුම්කරුවෙකු <1>{{authenticator}} " +
+                                                body: "ඔබ සමාජ සම්බන්ධතා සැපයුම්කරු <1>{{authenticator}} " +
                                                     "සත්‍යාපකය</ 1> සමඟ වින්‍යාස කර නොමැත. වින්‍යාස කිරීමේ " +
                                                     "ක්‍රියාවලිය ආරම්භ කිරීමට <3>වින්‍යාස කරන්න</3> බොත්තම ක්ලික් " +
-                                                    "කරන්න හෝ <5>{{authenticator}} අනන්‍යතා " +
+                                                    "කරන්න හෝ <5>{{authenticator}} සමාජ සම්බන්ධතා " +
                                                     "සැපයුම්කරුවන්</5> කොටස අතින්.",
-                                                message: "{{authenticator}} හැඳුනුම්පත් සපයන්නෙකු වින්‍යාස කර නොමැත"
+                                                message: "{{authenticator}} සමාජ සම්බන්ධතා" +
+                                                    " සපයන්නෙකු වින්‍යාස කර නොමැත"
                                             },
                                             description: "",
-                                            heading: "{{authenticator}} හැඳුනුම් සැපයුම්කරු වින්‍යාස කරන්න",
+                                            heading: "{{authenticator}} සමාජ සම්බන්ධතා සැපයුම්කරු වින්‍යාස කරන්න",
                                             primaryButton: "වින්‍යාස කරන්න",
                                             secondaryButton: "අවලංගු කරන්න"
                                         },
                                         duplicateSocialAuthenticatorSelectionModal: {
                                             content: {
-                                                body: "<1>{{authenticator}} Authenticator</1> සමඟ වින්‍යාස කර ඇති " +
-                                                    "අනන්‍යතා සැපයුම්කරුවන් ඔබට ඇත. ඉදිරියට යාමට තේරීම් වළල්ලෙන් " +
+                                                body: "<1>{{authenticator}} Authenticator</1> සමඟ " +
+                                                    "වින්‍යාස කර ඇති සමාජ සම්බන්ධතා සැපයුම්කරුවන් ඔබට" +
+                                                    " ඇත. ඉදිරියට යාමට තේරීම් වළල්ලෙන් " +
                                                     "අපේක්ෂිත එකක් තෝරන්න.",
-                                                message: "{{authenticator}} Authenticator සමඟ බහු අනන්‍යතා " +
-                                                    "සපයන්නන් හමු විය."
+                                                message: "{{authenticator}} Authenticator නමින් සමාජ සම්බන්ධතා " +
+                                                    "සපයන්නන් කිහිපයක් හමු විය."
                                             },
                                             description: "",
-                                            heading: "{{authenticator}} හැඳුනුම් සැපයුම්කරු තෝරන්න",
+                                            heading: "{{authenticator}} සමාජ සම්බන්ධතා සැපයුම්කරු තෝරන්න",
                                             primaryButton: "දිගටම කරගෙන යන්න",
                                             secondaryButton: "අවලංගු කරන්න"
                                         },
