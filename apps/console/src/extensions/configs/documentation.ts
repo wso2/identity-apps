@@ -19,9 +19,13 @@
 import { DocumentationLinksExtensionInterface } from "./models";
 
 export const DocumentationLinksExtension: DocumentationLinksExtensionInterface = {
-    edit: {
-        advancedSettings: {
-            jit: "#"
+    develop: {
+        connections: {
+            edit: {
+                advancedSettings: {
+                    jit: "#"
+                }
+            }
         }
     }
 };

@@ -190,15 +190,16 @@ export class SignInMethodUtils {
      * {@code isProxyMode = !idpModel.provisioning.jit.isEnable}
      */
     public static isMFAConflictingWithProxyModeConfig(
-        { addingStep, authenticators, steps }: ProxyModeConflictTestArgs
-    ): { conflicting: boolean; idpList: { id: string; name: string }[] } {
+        { addingStep, authenticators, steps, subjectStepId }: ProxyModeConflictTestArgs
+    ): ProxyModeConflictTestReturn {
 
         /**
          * In authentication step 0 users aren't allowed to add
          * MFA whatsoever. So, this invariant skips this validation
          * if this is the step 0. 0 maps to id:1 in {@code steps}.
          */
-        if (addingStep === 0) return { idpList: [], conflicting: false };
+        if (addingStep === 0)
+            return { idpList: [], conflicting: false };
 
         /**
          * More Context
@@ -221,7 +222,13 @@ export class SignInMethodUtils {
          * want to get the options in current step you do {@code steps[addingStep + 1]}.
          */
 
-        const allOptions = flatten(steps.map(({ options }) => options));
+        const allOptions = flatten(
+            steps
+                .filter(({ id }) => id === subjectStepId)
+                .map(({ options }) => options)
+        );
+
+        const limit = ApplicationManagementConstants.MAXIMUM_NUMBER_OF_LIST_ITEMS_TO_SHOW_INSIDE_POPUP;
 
         try {
 
@@ -236,13 +243,14 @@ export class SignInMethodUtils {
                     category === AuthenticatorCategories.SOCIAL.toString() ||
                     category === AuthenticatorCategories.ENTERPRISE.toString()
                 )) // Give me only ENTERPRISE and SOCIAL IdPs.
-                .filter((auth: GenericAuthenticatorInterface & { provisioning: ProvisioningInterface }) => {
+                .filter((auth: GenericAuthenticatorWithProvisioningConfigs) => {
                     return !auth?.provisioning?.jit?.isEnabled
-                }); // If there's one or more proxy mode enabled IdPs means we have a conflict.
+                }) as GenericAuthenticatorWithProvisioningConfigs[];
 
             return {
+                // If there's one or more proxy mode enabled IdPs means we have a conflict.
                 conflicting: result?.length > 0,
-                idpList: result.map(({ name, id }) => ({ name, id }))
+                idpList: result.slice(0, limit)
             };
 
         } catch (e) {
@@ -256,9 +264,20 @@ export class SignInMethodUtils {
 
 }
 
-type ProxyModeConflictTestArgs = {
+export type ProxyModeConflictTestArgs = {
     authenticators: GenericAuthenticatorInterface[];
     authenticatorId: string;
     addingStep: number;
     steps: AuthenticationStepInterface[];
+    subjectStepId: number;
+    attributeStepId: number;
+};
+
+export type GenericAuthenticatorWithProvisioningConfigs = GenericAuthenticatorInterface & {
+    provisioning: ProvisioningInterface
+};
+
+export type ProxyModeConflictTestReturn = {
+    conflicting: boolean;
+    idpList: GenericAuthenticatorWithProvisioningConfigs[];
 };

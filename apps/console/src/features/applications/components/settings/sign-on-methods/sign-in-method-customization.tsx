@@ -77,6 +77,7 @@ interface SignInMethodCustomizationPropsInterface extends SBACInterface<FeatureC
      * Make the form read only.
      */
     readOnly?: boolean;
+    refreshAuthenticators: () => void;
 }
 
 /**
@@ -100,6 +101,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         onReset,
         onUpdate,
         readOnly,
+        refreshAuthenticators,
         [ "data-testid" ]: testId
     } = props;
 
@@ -491,6 +493,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             </div>
             <Divider hidden />
             <StepBasedFlow
+                refreshAuthenticators={ refreshAuthenticators }
                 authenticators={ authenticators }
                 authenticationSequence={ sequence }
                 isLoading={ isLoading }

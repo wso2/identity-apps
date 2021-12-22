@@ -156,6 +156,10 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         setModeratedAuthenticationSequence(authenticationSequence);
     }, [ authenticationSequence ]);
 
+    const refreshAuthenticators = () => {
+        fetchAndCategorizeAuthenticators();
+    };
+
     /**
      * Fetches the list of Authenticators and categorize them.
      *
@@ -666,6 +670,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                         ) : (
                             <>
                                 <SignInMethodCustomization
+                                    refreshAuthenticators={ refreshAuthenticators }
                                     appId={ appId }
                                     authenticators={ authenticators }
                                     authenticationSequence={ moderatedAuthenticationSequence }

@@ -29,6 +29,7 @@ export class ApplicationManagementConstants {
 
     public static readonly EMPTY_STRING = "";
     public static readonly LINE_BREAK = "\n";
+    public static readonly MAXIMUM_NUMBER_OF_LIST_ITEMS_TO_SHOW_INSIDE_POPUP = 3;
 
     /**
      * Private constructor to avoid object instantiation from outside

@@ -19,15 +19,7 @@
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { AlertLevels, HttpCodes, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
-import {
-    ContentLoader,
-    DocumentationLink,
-    Heading,
-    Hint,
-    Link,
-    Text,
-    useDocumentation
-} from "@wso2is/react-components";
+import { Code, ContentLoader, DocumentationLink, Hint, Link, Text, useDocumentation } from "@wso2is/react-components";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, Message } from "semantic-ui-react";
@@ -169,10 +161,13 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                 return;
             }
 
+            const limit = IdentityProviderManagementConstants.MAXIMUM_NUMBER_OF_LIST_ITEMS_TO_SHOW_INSIDE_CALLOUTS;
+
             // Gets all the applications concurrently.
             const responses: AxiosResponse<ApplicationInterface>[] = await getApplicationsByIds(
-                new Set(connectedApps.map((app) => app.appId))
+                new Set(connectedApps.slice(0, limit).map((app) => app.appId))
             );
+
             const applicationsMap: Map<string, ApplicationInterface> = new Map();
 
             for (const res of responses) {
@@ -257,60 +252,89 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         value: SupportedJITProvisioningSchemes.PROVISION_SILENTLY
     } ];
 
+    const documentationLinkForJIT = () => {
+        return (
+            <Text className="mt-3 mb-0">
+                You can learn more about this from our <DocumentationLink
+                link={ getLink("develop.connections.edit.advancedSettings.jit") }>
+                docs</DocumentationLink>.
+            </Text>
+        );
+    };
+
+    const whenTheresOnly1AppConflict = () => {
+        const FIRST_ENTRY = 0;
+        const { name, id } = conflictingApps[ FIRST_ENTRY ];
+        return (
+            <>
+                <Text>
+                    You cannot disable the Just-in-Time User Provisioning setting because the
+                    following application <Link icon="linkify" onClick={ () => {
+                    history.push({
+                        pathname: AppConstants.getPaths()
+                            .get("APPLICATION_EDIT")
+                            .replace(":id", id),
+                        search: `#tab=4`
+                    });
+                } }>{ name }</Link> requires it to be enabled. Its authentication
+                    sequence has Multi-Factor Authentications. MFA such as <Code>TOTP</Code> and
+                    <Code>Email OTP</Code> <strong>expects a provisioned user account in
+                    Asgardeo</strong> to work correctly.
+                </Text>
+                { documentationLinkForJIT() }
+            </>
+        );
+    };
+
+    const whenTheresMultipleAppConflicts = () => {
+        return (
+            <>
+                <Text>
+                    You cannot disable the Just-in-Time User Provisioning setting because
+                    the following applications require it to be enabled.
+                    <ol className="mb-3">
+                        { conflictingApps?.map(({ name, id }, index) => (
+                            <li key={ index }>
+                                <Link icon="linkify" onClick={ () => {
+                                    history.push({
+                                        pathname: AppConstants.getPaths()
+                                            .get("APPLICATION_EDIT")
+                                            .replace(":id", id),
+                                        search: `#tab=4`
+                                    });
+                                } }>{ name }</Link>
+                            </li>
+                        )) }
+                    </ol>
+                    The above-listed applications' authentication sequences have Multi-Factor
+                    Authentications (MFA). MFA such as <Code>TOTP</Code> and
+                    <Code>Email OTP</Code> <strong>expects a provisioned user account in
+                    Asgardeo</strong> to work correctly.
+                </Text>
+                { documentationLinkForJIT() }
+            </>
+        );
+    };
+
     const ProxyModeConflictMessage = (
         <Message
+            data-componentid="proxy-mode-conflict-warning-message"
+            data-testid="proxy-mode-conflict-warning-message"
             warning
+            // Semantic hides warning messages inside <form> by default
+            // Overriding the behaviour here to make sure it renders properly.
             className="warning visible"
+            header={
+                <Fragment>
+                    <Icon name="exclamation triangle" className="mr-2"/>
+                    You cannot disable this setting
+                </Fragment>
+            }
             content={
-                <div className="mt-2 mb-2">
-                    { !fetchingConnectedApps
-                        ? (
-                            <div style={ { display: "inline-flex", alignItems: "baseline" } }>
-                                <Icon name="exclamation triangle" size="large"/>
-                                <Heading as="h4" className="ml-2">
-                                    <strong>
-                                        { t("console:develop.features.authenticationProvider" +
-                                            ".forms.jitProvisioning.enableJITProvisioning" +
-                                            ".disabledMessageHeader") }
-                                    </strong>
-                                </Heading>
-                            </div>
-                        )
-                        : null
-                    }
-                    <Text className="mt-3">
-                        { fetchingConnectedApps
-                            ? "Checking for conflicts with configured applications."
-                            : t("console:develop.features.authenticationProvider.forms.jitProvisioning." +
-                                "enableJITProvisioning.disabledMessageContent")
-                        }
-                    </Text>
-                    { fetchingConnectedApps
-                        ? <ContentLoader/>
-                        : (
-                            <>
-                                <ol style={ { marginBottom: 0 } }>
-                                    { conflictingApps?.map(({ name, id }, index) => (
-                                        <li key={ index }>
-                                            <Link icon="linkify" onClick={ () => {
-                                                history.push({
-                                                    pathname: AppConstants.getPaths()
-                                                        .get("APPLICATION_EDIT")
-                                                        .replace(":id", id),
-                                                    search: `#tab=4`
-                                                });
-                                            } }>{ name }</Link>
-                                        </li>
-                                    )) }
-                                </ol>
-                                <Text className="mt-3 mb-0">
-                                    To resolve this you can learn more from <DocumentationLink link={
-                                    getLink("develop.connections.edit.advancedSettings.jit")
-                                }>docs</DocumentationLink>.
-                                </Text>
-                            </>
-                        )
-                    }
+                <div className="mt-3 mb-2">
+                    { fetchingConnectedApps && <ContentLoader/> }
+                    { conflictingApps?.length === 1 ? whenTheresOnly1AppConflict() : null }
+                    { conflictingApps?.length > 1 ? whenTheresMultipleAppConflicts() : null }
                 </div>
             }
         />

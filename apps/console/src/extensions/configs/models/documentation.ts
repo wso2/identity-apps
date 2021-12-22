@@ -17,9 +17,13 @@
  */
 
 export type DocumentationLinksExtensionInterface = Record<string, unknown> & {
-    edit: {
-        advancedSettings: {
-            jit: string;
+    develop: {
+        connections: {
+            edit: {
+                advancedSettings: {
+                    jit: string;
+                }
+            }
         }
     }
 };

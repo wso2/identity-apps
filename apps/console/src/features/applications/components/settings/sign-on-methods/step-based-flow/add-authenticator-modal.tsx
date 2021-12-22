@@ -121,6 +121,9 @@ interface AddAuthenticatorModalPropsInterface extends TestableComponentInterface
      * Show/Hide authenticator labels in UI.
      */
     showLabels?: boolean;
+    subjectStepId: number;
+    attributeStepId: number;
+    refreshAuthenticators: () => void;
 }
 
 /**
@@ -157,6 +160,9 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
         showStepSelector,
         stepCount,
         showLabels,
+        subjectStepId,
+        attributeStepId,
+        refreshAuthenticators,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -493,6 +499,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                         ? (
                             <Card.Group itemsPerRow={ CARDS_PER_ROW }>
                                 <Authenticators
+                                    refreshAuthenticators={ refreshAuthenticators }
                                     authenticators={ filteredAuthenticators }
                                     authenticationSteps={ authenticationSteps }
                                     onAuthenticatorSelect={ (authenticators) => {
@@ -502,6 +509,8 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                     showLabels={ showLabels }
                                     data-testid={ `${ testId }-authenticators` }
                                     currentStep={ currentStep }
+                                    subjectStepId={ subjectStepId }
+                                    attributeStepId={ attributeStepId }
                                 />
                                 {
                                     allowSocialLoginAddition && (
