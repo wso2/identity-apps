@@ -17,12 +17,15 @@
  */
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { Code, ContentLoader, Heading, InfoCard, Link, Text } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { Accordion, AccordionTitleProps, Checkbox, Icon, Label, Popup } from "semantic-ui-react";
 import { applicationConfig } from "../../../../../../extensions";
+import { AppConstants, history } from "../../../../../core";
 import {
     AuthenticatorCategories,
     AuthenticatorMeta,
@@ -33,9 +36,6 @@ import {
 } from "../../../../../identity-providers";
 import { AuthenticationStepInterface } from "../../../../models";
 import { GenericAuthenticatorWithProvisioningConfigs, SignInMethodUtils } from "../../../../utils";
-import { AppConstants, history } from "../../../../../core";
-import { useDispatch } from "react-redux";
-import { addAlert } from "@wso2is/core/store";
 
 /**
  * Proptypes for the authenticators component.
@@ -108,7 +108,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         showLabels,
         subjectStepId,
         attributeStepId,
-        refreshAuthenticators,
+        // refreshAuthenticators,
         [ "data-testid" ]: testId
     } = props;
 
@@ -141,8 +141,11 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         accordionTitleProps: AccordionTitleProps
     ): void => {
         e.preventDefault();
+
         if (!accordionTitleProps) return;
+
         const showing = accordionActiveIndex === 0;
+
         if (showing) {
             setAccordionActiveIndex(COLLAPSE_ACCORDION);
         } else {
@@ -182,11 +185,11 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
 
         if (authenticator.category === AuthenticatorCategories.SECOND_FACTOR) {
             const { conflicting } = SignInMethodUtils.isMFAConflictingWithProxyModeConfig({
+                addingStep: currentStep,
+                attributeStepId,
+                authenticatorId: authenticator.defaultAuthenticator.authenticatorId,
                 authenticators: authenticators,
                 steps: authenticationSteps,
-                addingStep: currentStep,
-                authenticatorId: authenticator.defaultAuthenticator.authenticatorId,
-                attributeStepId,
                 subjectStepId
             });
 
@@ -198,7 +201,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     };
 
     const onEnableJITConfigurationClick = (
-        { provisioning: { jit }, id, name }: GenericAuthenticatorWithProvisioningConfigs,
+        { provisioning: { jit }, id, name }: GenericAuthenticatorWithProvisioningConfigs
     ): void => {
 
         setIsUpdatingJITConfigs(true);
@@ -252,7 +255,8 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                 />
             );
         }
-        return <Fragment/>
+
+        return <Fragment/>;
     };
 
     /**
@@ -279,11 +283,11 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         if (authenticator.category === AuthenticatorCategories.SECOND_FACTOR) {
 
             const result = SignInMethodUtils.isMFAConflictingWithProxyModeConfig({
+                addingStep: currentStep,
+                attributeStepId,
+                authenticatorId: authenticator.defaultAuthenticator.authenticatorId,
                 authenticators: authenticators,
                 steps: authenticationSteps,
-                addingStep: currentStep,
-                authenticatorId: authenticator.defaultAuthenticator.authenticatorId,
-                attributeStepId,
                 subjectStepId
             });
 
@@ -292,6 +296,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             if (proxyModeConflict) {
                 if (idpList?.length === 1) {
                     const FIRST_ENTRY = 0;
+
                     return (
                         <div>
                             { WarningLabel }
@@ -299,19 +304,20 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                 To configure <Code withBackground>{ authenticator.displayName }</Code>, you
                                 should enable the Just-in-Time (JIT) User Provisioning for
                                 the <span style={ INLINE_FLEX_STYLED }>
-                                <Link icon="linkify"
-                                      onClick={ () => {
-                                          history.push({
-                                              pathname: AppConstants.getPaths()
-                                                  .get("IDP_EDIT")
-                                                  .replace(":id", idpList[ FIRST_ENTRY ].id)
-                                          });
-                                      } }>{ idpList[ FIRST_ENTRY ].name }</Link>
-                                <Checkbox
-                                    toggle
-                                    className="m-0 p-0 pl-2 mr-3"
-                                    onClick={ () => onEnableJITConfigurationClick(idpList[ FIRST_ENTRY ]) }/>
-                            </span> Identity Provider.
+                                    <Link
+                                        icon="linkify"
+                                        onClick={ () => {
+                                            history.push({
+                                                pathname: AppConstants.getPaths()
+                                                    .get("IDP_EDIT")
+                                                    .replace(":id", idpList[ FIRST_ENTRY ].id)
+                                            });
+                                        } }>{ idpList[ FIRST_ENTRY ].name }</Link>
+                                    <Checkbox
+                                        toggle
+                                        className="m-0 p-0 pl-2 mr-3"
+                                        onClick={ () => onEnableJITConfigurationClick(idpList[ FIRST_ENTRY ]) }/>
+                                </span> Identity Provider.
                             </Text>
                             <Accordion>
                                 <Accordion.Title
@@ -322,10 +328,11 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                     <Text>
                                         The above mentioned IdP is configured in the subject attribute step and have
                                         disabled JIT user provisioning. <Code withBackground>{
-                                        authenticator.displayName
-                                    }</Code> requires a user's reference to function as expected. Alternatively,
-                                        you can use our <strong>conditional authentication script</strong> to write
-                                        conditional logic and skip executing 2FA with this IdP.
+                                            authenticator.displayName
+                                        }</Code> requires a user&apos;s reference to function as expected.
+                                        Alternatively, you can use our <strong>conditional authentication
+                                        script</strong> to write conditional logic and skip executing 2FA
+                                        with this IdP.
                                     </Text>
                                 </Accordion.Content>
                             </Accordion>
@@ -345,21 +352,24 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                             <ol className="mt-3 mb-3">
                                 { idpList?.map((idp, index) => {
                                     const { name, id } = idp;
+
                                     return (
                                         <li key={ index } className="mb-1">
-                                <span style={ INLINE_FLEX_STYLED }>
-                                    <Link icon="linkify" onClick={ () => {
-                                        history.push({
-                                            pathname: AppConstants.getPaths()
-                                                .get("IDP_EDIT")
-                                                .replace(":id", id)
-                                        });
-                                    } }>{ name }</Link>
-                                    <Checkbox
-                                        toggle
-                                        className="m-0 p-0 pl-2 mr-3"
-                                        onClick={ () => onEnableJITConfigurationClick(idp) }/>
-                                </span>
+                                            <span style={ INLINE_FLEX_STYLED }>
+                                                <Link
+                                                    icon="linkify"
+                                                    onClick={ () => {
+                                                        history.push({
+                                                            pathname: AppConstants.getPaths()
+                                                                .get("IDP_EDIT")
+                                                                .replace(":id", id)
+                                                        });
+                                                    } }>{ name }</Link>
+                                                <Checkbox
+                                                    toggle
+                                                    className="m-0 p-0 pl-2 mr-3"
+                                                    onClick={ () => onEnableJITConfigurationClick(idp) }/>
+                                            </span>
                                         </li>
                                     );
                                 }) }
@@ -373,10 +383,11 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                     <Text>
                                         The above-listed IdPs are configured in the subject attribute step and have
                                         disabled JIT user provisioning. <Code withBackground>{
-                                        authenticator.displayName
-                                    }</Code> requires a user's reference to function as expected. Alternatively,
-                                        you can use our <strong>conditional authentication script</strong> to write
-                                        conditional logic and skip executing 2FA with this IdP.
+                                            authenticator.displayName
+                                        }</Code> requires a user&apos;s reference to function as expected.
+                                        Alternatively, you can use our <strong>conditional authentication
+                                        script</strong> to write conditional logic and skip executing 2FA
+                                        with this IdP.
                                     </Text>
                                 </Accordion.Content>
                             </Accordion>
@@ -422,7 +433,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                                     }
                                                 >
                                                     The second-factor authenticators can only be used if <Code
-                                                    withBackground>Username & Password</Code>, <Code withBackground>
+                                                        withBackground>Username & Password</Code>, <Code withBackground>
                                                     Social Login</Code> or any other handlers such as
                                                     <Code withBackground>Identifier First</Code> that can handle these
                                                     factors are present in a previous step.
@@ -486,12 +497,13 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                         category === AuthenticatorCategories.ENTERPRISE.toString()
                     ))
                     .filter((auth: GenericAuthenticatorInterface & { provisioning: ProvisioningInterface }) => {
-                        return !auth?.provisioning?.jit?.isEnabled
+                        return !auth?.provisioning?.jit?.isEnabled;
                     })
                     .map(({ name }) => name)
                     .filter(Boolean)
             );
             const cleanedFilters = selectedAuthenticators.filter(({ name }) => !conflictingHandlers.has(name));
+
             onAuthenticatorSelect([ ...cleanedFilters, selectedAuthenticator ]);
             setSelectedAuthenticators([ ...cleanedFilters, selectedAuthenticator ]);
 
@@ -580,8 +592,8 @@ Authenticators.defaultProps = {
 };
 
 const INLINE_FLEX_STYLED = {
-    display: "inline-flex",
-    alignItems: "center"
+    alignItems: "center",
+    display: "inline-flex"
 };
 const COLLAPSE_ACCORDION = -1;
 const SHOW_ACCORDION = 0;
