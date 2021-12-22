@@ -1062,12 +1062,15 @@ export const console: ConsoleNS = {
                                     flowBuilder: {
                                         addMissingSocialAuthenticatorModal: {
                                             content: {
-                                                body: "You do not have an active Social Connection configured with " +
+                                                body: "You do not have an active Social " +
+                                                    "Connection configured with " +
                                                     "<1>{{authenticator}} Authenticator</1>. Click on the " +
-                                                    "<3>Configure</3> button to register a new <5>{{authenticator}} " +
+                                                    "<3>Configure</3> button to register" +
+                                                    " a new <5>{{authenticator}} " +
                                                     "Social Connection</5> or navigate to the <7>Connections</7>" +
                                                     " section manually.",
-                                                message: "No active {{authenticator}} Social Connection configured"
+                                                message: "No active {{authenticator}} Social " +
+                                                    "Connection configured"
                                             },
                                             description: "",
                                             heading: "Configure {{authenticator}} Social Connection",
