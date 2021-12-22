@@ -18,27 +18,27 @@
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { AlertLevels, HttpCodes, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { Field, Forms } from "@wso2is/forms";
 import { Code, ContentLoader, DocumentationLink, Hint, Link, Text, useDocumentation } from "@wso2is/react-components";
+import { AxiosError, AxiosResponse } from "axios";
+import flatten from "lodash-es/flatten";
+import intersection from "lodash-es/intersection";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { Button, Grid, Icon, Message } from "semantic-ui-react";
+import { identityProviderConfig } from "../../../../extensions";
 import { ApplicationInterface, getApplicationsByIds, SimpleUserStoreListItemInterface } from "../../../applications";
+import { AppConstants, history } from "../../../core";
+import { getIDPConnectedApps } from "../../api";
+import { IdentityProviderManagementConstants } from "../../constants";
 import {
     ConnectedAppsInterface,
     IdentityProviderInterface,
     JITProvisioningResponseInterface,
     SupportedJITProvisioningSchemes
 } from "../../models";
-import { identityProviderConfig } from "../../../../extensions";
-import { getIDPConnectedApps } from "../../api";
-import { useDispatch } from "react-redux";
-import { addAlert } from "@wso2is/core/store";
-import { AppConstants, history } from "../../../core";
-import { AxiosError, AxiosResponse } from "axios";
-import flatten from "lodash-es/flatten";
-import intersection from "lodash-es/intersection";
-import { IdentityProviderManagementConstants } from "../../constants";
 
 /**
  *  Just-in time provisioning configurations for the IdP.
@@ -118,6 +118,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
      */
     const getUserStoreOption = () => {
         const allowedOptions = [];
+
         if (useStoreList) {
             useStoreList?.map((userStore) => {
                 allowedOptions.push({
@@ -172,8 +173,10 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
 
             for (const res of responses) {
                 const { status, data: app } = res;
+
                 if (HttpCodes.OK !== status) {
                     const error = (res as unknown) as AxiosError;
+
                     if (error?.response && error.response?.data && error.response.data?.description) {
                         dispatch(addAlert({
                             description: error.response.data.description || "Unable to get application details.",
@@ -207,12 +210,12 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                     id, options: flatten(seq.steps.map(({ options }) => options))
                 })) // #1
                 .map(({ id, options }) => ({
-                    id, authenticators: options.map(({ authenticator: a }) => a)
+                    authenticators: options.map(({ authenticator: a }) => a), id
                 })) // #2
                 .map(({ id, authenticators }) => ({
-                    id, hasMFAConfigured: intersection(authenticators, mfaAuthenticators)?.length > 0
+                    hasMFAConfigured: intersection(authenticators, mfaAuthenticators)?.length > 0, id
                 })) // #3
-                .filter(({ id, hasMFAConfigured }) => hasMFAConfigured) // #4
+                .filter(({ hasMFAConfigured }) => hasMFAConfigured) // #4
                 .map(({ id }) => applicationsMap.get(id)); // #5
 
             if (apps?.length) {
@@ -256,7 +259,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         return (
             <Text className="mt-3 mb-0">
                 You can learn more about this from our <DocumentationLink
-                link={ getLink("develop.connections.edit.advancedSettings.jit") }>
+                    link={ getLink("develop.connections.edit.advancedSettings.jit") }>
                 docs</DocumentationLink>.
             </Text>
         );
@@ -265,18 +268,21 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
     const whenTheresOnly1AppConflict = () => {
         const FIRST_ENTRY = 0;
         const { name, id } = conflictingApps[ FIRST_ENTRY ];
+
         return (
             <>
                 <Text>
                     You cannot disable the Just-in-Time User Provisioning setting because the
-                    following application <Link icon="linkify" onClick={ () => {
-                    history.push({
-                        pathname: AppConstants.getPaths()
-                            .get("APPLICATION_EDIT")
-                            .replace(":id", id),
-                        search: `#tab=4`
-                    });
-                } }>{ name }</Link> requires it to be enabled. Its authentication
+                    following application <Link
+                        icon="linkify"
+                        onClick={ () => {
+                            history.push({
+                                pathname: AppConstants.getPaths()
+                                    .get("APPLICATION_EDIT")
+                                    .replace(":id", id),
+                                search: "#tab=4"
+                            });
+                        } }>{ name }</Link> requires it to be enabled. Its authentication
                     sequence has Multi-Factor Authentications. MFA such as <Code>TOTP</Code> and
                     <Code>Email OTP</Code> <strong>expects a provisioned user account in
                     Asgardeo</strong> to work correctly.
@@ -295,18 +301,20 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                     <ol className="mb-3">
                         { conflictingApps?.map(({ name, id }, index) => (
                             <li key={ index }>
-                                <Link icon="linkify" onClick={ () => {
-                                    history.push({
-                                        pathname: AppConstants.getPaths()
-                                            .get("APPLICATION_EDIT")
-                                            .replace(":id", id),
-                                        search: `#tab=4`
-                                    });
-                                } }>{ name }</Link>
+                                <Link
+                                    icon="linkify"
+                                    onClick={ () => {
+                                        history.push({
+                                            pathname: AppConstants.getPaths()
+                                                .get("APPLICATION_EDIT")
+                                                .replace(":id", id),
+                                            search: "#tab=4"
+                                        });
+                                    } }>{ name }</Link>
                             </li>
                         )) }
                     </ol>
-                    The above-listed applications' authentication sequences have Multi-Factor
+                    The above-listed applications&apos; authentication sequences have Multi-Factor
                     Authentications (MFA). MFA such as <Code>TOTP</Code> and
                     <Code>Email OTP</Code> <strong>expects a provisioned user account in
                     Asgardeo</strong> to work correctly.
@@ -325,17 +333,21 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
             // Overriding the behaviour here to make sure it renders properly.
             className="warning visible"
             header={
-                <Fragment>
-                    <Icon name="exclamation triangle" className="mr-2"/>
-                    You cannot disable this setting
-                </Fragment>
+                (
+                    <Fragment>
+                        <Icon name="exclamation triangle" className="mr-2"/>
+                        You cannot disable this setting
+                    </Fragment>
+                )
             }
             content={
-                <div className="mt-3 mb-2">
-                    { fetchingConnectedApps && <ContentLoader/> }
-                    { conflictingApps?.length === 1 ? whenTheresOnly1AppConflict() : null }
-                    { conflictingApps?.length > 1 ? whenTheresMultipleAppConflicts() : null }
-                </div>
+                (
+                    <div className="mt-3 mb-2">
+                        { fetchingConnectedApps && <ContentLoader/> }
+                        { conflictingApps?.length === 1 ? whenTheresOnly1AppConflict() : null }
+                        { conflictingApps?.length > 1 ? whenTheresMultipleAppConflicts() : null }
+                    </div>
+                )
             }
         />
     );
@@ -359,7 +371,6 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                                 ? [ JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY ]
                                                 : []
                                         }
-                                        disabled={ cannotModifyProxyModeDueToConnectApps }
                                         type="checkbox"
                                         listen={ (values) => {
                                             setIsJITProvisioningEnabled(
@@ -376,17 +387,12 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                         data-testid={ `${ testId }-is-enable` }
                                         readOnly={ isReadOnly }
                                     />
-                                    { !cannotModifyProxyModeDueToConnectApps
-                                        ? (
-                                            <Hint>
-                                                { t("console:develop.features.authenticationProvider" +
-                                                    ".forms.jitProvisioning." +
-                                                    "enableJITProvisioning.hint")
-                                                }
-                                            </Hint>
-                                        )
-                                        : <Fragment/>
-                                    }
+                                    <Hint>
+                                        { t("console:develop.features.authenticationProvider" +
+                                            ".forms.jitProvisioning." +
+                                            "enableJITProvisioning.hint")
+                                        }
+                                    </Hint>
                                     { cannotModifyProxyModeDueToConnectApps
                                         ? ProxyModeConflictMessage
                                         : <Fragment/>
@@ -465,7 +471,8 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
                         <Show when={ AccessControlConstants.IDP_EDIT }>
                             <Button
-                                primary type="submit"
+                                primary
+                                type="submit"
                                 size="small"
                                 className="form-button"
                                 loading={ isSubmitting }

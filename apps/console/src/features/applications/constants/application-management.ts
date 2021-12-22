@@ -18,8 +18,7 @@
 
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { DocumentationConstants } from "./documentation-constants";
-import { IdentityProviderManagementConstants } from "../../identity-providers/constants";
-import { SupportedAuthenticators } from "../../identity-providers/models";
+import { IdentityProviderManagementConstants, SupportedAuthenticators } from "../../identity-providers";
 import { ApplicationTemplateCategories, ApplicationTemplateLoadingStrategies } from "../models";
 
 /**
