@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent } from "react";
-import { Grid } from "semantic-ui-react";
+import { Grid, Popup } from "semantic-ui-react";
 import { RecentApplicationCard } from "./recent-application-card";
 import { Application } from "../../models";
 
@@ -55,12 +55,22 @@ export const RecentApplications: FunctionComponent<RecentApplicationsProps> = (
                     (recentApps && recentApps.length && recentApps.length > 0)
                         ? recentApps.map((app) => (
                             <Grid.Column computer={ 5 } tablet={ 16 } mobile={ 16 } key={ app.id }>
-                                <RecentApplicationCard
-                                    data-testid={ `${testId}-recent-application-card` }
-                                    app={ app }
-                                    showFavouriteIcon={ showFavourites }
-                                    onAppNavigate={ onAppNavigate }
-                                />
+                                <Popup
+                                    trigger={ (
+                                        <div>
+
+                                            <RecentApplicationCard
+                                                data-testid={ `${testId}-recent-application-card` }
+                                                app={ app }
+                                                showFavouriteIcon={ showFavourites }
+                                                onAppNavigate={ onAppNavigate }
+                                            />
+
+                                        </div>
+                                    ) }
+                                    position="top center"
+                                    content={ app.name }
+                                /> 
                             </Grid.Column>
                         ))
                         : null
