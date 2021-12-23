@@ -25,7 +25,8 @@ import React, {
     PropsWithChildren,
     ReactElement,
     useEffect,
-    useRef
+    useRef,
+    useState
 } from "react";
 import { createPortal } from "react-dom";
 
@@ -78,6 +79,8 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
     } = props;
 
     const contentRef: MutableRefObject<HTMLIFrameElement> = useRef<HTMLIFrameElement>(null);
+    
+    const [ isParentStylesheetsCloningCompleted, setIsParentStylesheetsCloningCompleted ] = useState<boolean>(false);
 
     const iFrameWindow: WindowProxy = contentRef?.current?.contentWindow;
     const iFrameBodyNode: HTMLElement = iFrameWindow?.document?.body;
@@ -129,6 +132,8 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
                 // If external stylesheets are not provided, mark as ready.
                 if (!stylesheets) {
                     isReady(true);
+                } else {
+                    setIsParentStylesheetsCloningCompleted(true);
                 }
             });
     }, [ iFrameBodyNode, cloneParentStyleSheets ]);
@@ -142,9 +147,16 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
         if (!iFrameWindow) {
             return;
         }
+        
+        // Check if the parent stylesheet cloning is completed.
+        if (!isParentStylesheetsCloningCompleted) {
+            isReady(false);
 
-        if (!(Array.isArray(stylesheets) && stylesheets.length > 0)) {
+            return;
+        }
 
+        // Return if stylesheets are undefined or not an array.
+        if (!stylesheets || !Array.isArray(stylesheets)) {
             isReady(true);
 
             return;
@@ -164,7 +176,7 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
             .finally(() => {
                 isReady(true);
             });
-    }, [ stylesheets ]);
+    }, [ stylesheets, isParentStylesheetsCloningCompleted ]);
 
     /**
      * Injects the passed in stylesheet to the Head element of the document passed in as an argument.
