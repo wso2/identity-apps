@@ -77,7 +77,7 @@ interface SignInMethodCustomizationPropsInterface extends SBACInterface<FeatureC
      * Make the form read only.
      */
     readOnly?: boolean;
-    refreshAuthenticators: () => void;
+    refreshAuthenticators: () => Promise<void>;
 }
 
 /**
@@ -218,7 +218,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
      */
     const handleSequenceUpdate = (sequence: AuthenticationSequenceInterface, forceReset?: boolean): void => {
 
-        let requestBody = {};
+        let requestBody;
 
         if (forceReset) {
             requestBody = {

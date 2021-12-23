@@ -93,7 +93,7 @@ interface AuthenticationFlowPropsInterface extends TestableComponentInterface {
      * Callback to update the button disable state change.
      */
     onAuthenticationSequenceChange: (isDisabled: boolean, updatedSteps: AuthenticationStepInterface[]) => void;
-    refreshAuthenticators: () => void;
+    refreshAuthenticators: () => Promise<void>;
 }
 
 /**

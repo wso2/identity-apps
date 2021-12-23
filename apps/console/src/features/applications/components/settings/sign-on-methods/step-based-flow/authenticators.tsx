@@ -18,6 +18,7 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { LocalStorageUtils } from "@wso2is/core/utils";
 import { Code, ContentLoader, Heading, InfoCard, Link, Text } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
@@ -34,6 +35,7 @@ import {
     ProvisioningInterface,
     updateJITProvisioningConfigs
 } from "../../../../../identity-providers";
+import { ApplicationManagementConstants } from "../../../../constants";
 import { AuthenticationStepInterface } from "../../../../models";
 import { GenericAuthenticatorWithProvisioningConfigs, SignInMethodUtils } from "../../../../utils";
 
@@ -83,7 +85,7 @@ interface AuthenticatorsPropsInterface extends TestableComponentInterface {
      */
     showLabels?: boolean;
     attributeStepId: number;
-    refreshAuthenticators: () => void;
+    refreshAuthenticators: () => Promise<void>;
     subjectStepId: number;
 }
 
@@ -153,6 +155,55 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         }
     };
 
+    /**
+     * Why this instead of lifting state up? Earlier we had a
+     * {@link useState} hook in this component that
+     * tracks these updated IDs. But the problem is whenever
+     * we unmount this component the entire tracked state
+     * gets destroyed.
+     *
+     * If we lift the state up to three parents
+     * we could maintain the state but it's unnecessary given
+     * the sensitivity of the data.
+     *
+     * @param {string} id IDP ID
+     */
+    const addUpdatedIdPIdToLocalStorage = (id: string): void => {
+
+        // Get current value. If not exists then parse a empty array.
+        const arrayOfIds = JSON.parse(
+            LocalStorageUtils.getValueFromLocalStorage(
+                ApplicationManagementConstants.AUTHENTICATORS_LOCAL_STORAGE_KEY
+            ) ?? ApplicationManagementConstants.EMPTY_JSON_ARRAY
+        );
+
+        if (arrayOfIds) {
+            const newValue = new Set([ ...arrayOfIds, id ]);
+
+            LocalStorageUtils.setValueInLocalStorage(
+                ApplicationManagementConstants.AUTHENTICATORS_LOCAL_STORAGE_KEY,
+                JSON.stringify([ ...newValue ])
+            );
+        }
+
+    };
+
+    /**
+     * Getter of {@link addUpdatedIdPIdToLocalStorage}.
+     */
+    const getUpdatedIdPIdsFromLocalStorage = (): Set<string> => {
+
+        // Get current value. If not exists then parse a empty array.
+        const arrayOfIds = JSON.parse(
+            LocalStorageUtils.getValueFromLocalStorage(
+                ApplicationManagementConstants.AUTHENTICATORS_LOCAL_STORAGE_KEY
+            ) ?? ApplicationManagementConstants.EMPTY_JSON_ARRAY
+        );
+
+        return new Set<string>(arrayOfIds);
+
+    };
+
     const isFactorEnabled = (authenticator: GenericAuthenticatorInterface): boolean => {
 
         if (authenticator.category === AuthenticatorCategories.SECOND_FACTOR) {
@@ -184,7 +235,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     const isPopUpDisabled = (authenticator: GenericAuthenticatorInterface): boolean => {
 
         if (authenticator.category === AuthenticatorCategories.SECOND_FACTOR) {
-            const { conflicting } = SignInMethodUtils.isMFAConflictingWithProxyModeConfig({
+            const { conflicting, idpList } = SignInMethodUtils.isMFAConflictingWithProxyModeConfig({
                 addingStep: currentStep,
                 attributeStepId,
                 authenticatorId: authenticator.defaultAuthenticator.authenticatorId,
@@ -193,7 +244,13 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                 subjectStepId
             });
 
-            return !conflicting;
+            const leftToUpdate = idpList.filter(
+                ({ id }) => !getUpdatedIdPIdsFromLocalStorage().has(id)
+            );
+
+            if (leftToUpdate.length > 0) {
+                return !conflicting;
+            }
         }
 
         return true;
@@ -209,6 +266,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
 
         updateJITProvisioningConfigs(id, { ...jit, isEnabled: true })
             .then(() => {
+                addUpdatedIdPIdToLocalStorage(id);
                 dispatch(addAlert({
                     description: t(
                         "console:develop.features.authenticationProvider." +
@@ -220,7 +278,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                         "notifications.updateJITProvisioning.success.message"
                     )
                 }));
-                // refreshAuthenticators();
+                // refreshAuthenticators && refreshAuthenticators();
             })
             .catch(() => {
                 dispatch(addAlert({
@@ -291,7 +349,11 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                 subjectStepId
             });
 
-            const { conflicting: proxyModeConflict, idpList } = result;
+            const { conflicting: proxyModeConflict } = result;
+            let { idpList } = result;
+
+            idpList = idpList.filter(({ id }) =>
+                !getUpdatedIdPIdsFromLocalStorage().has(id));
 
             if (proxyModeConflict) {
                 if (idpList?.length === 1) {

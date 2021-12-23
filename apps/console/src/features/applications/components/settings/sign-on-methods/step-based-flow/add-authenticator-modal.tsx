@@ -56,8 +56,7 @@ import {
     SemanticWIDTHS
 } from "semantic-ui-react";
 import { Authenticators } from "./authenticators";
-import { getEmptyPlaceholderIllustrations } from "../../../../../core/configs";
-import { EventPublisher } from "../../../../../core/utils";
+import { EventPublisher, getEmptyPlaceholderIllustrations } from "../../../../../core";
 import {
     AuthenticatorMeta,
     GenericAuthenticatorInterface,
@@ -123,7 +122,7 @@ interface AddAuthenticatorModalPropsInterface extends TestableComponentInterface
     showLabels?: boolean;
     subjectStepId: number;
     attributeStepId: number;
-    refreshAuthenticators: () => void;
+    refreshAuthenticators: () => Promise<void>;
 }
 
 /**

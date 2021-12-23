@@ -17,6 +17,7 @@
  *
  */
 
+import flatten from "lodash-es/flatten";
 import {
     AuthenticatorCategories,
     GenericAuthenticatorInterface,
@@ -25,7 +26,6 @@ import {
 } from "../../identity-providers";
 import { ApplicationManagementConstants } from "../constants";
 import { AuthenticationStepInterface } from "../models";
-import flatten from "lodash-es/flatten";
 
 /**
  * Utility class for Sign In Method.
@@ -36,7 +36,7 @@ export class SignInMethodUtils {
      * Private constructor to avoid object instantiation from outside
      * the class.
      *
-     * @hideconstructor
+     * @hideConstructor
      */
     private constructor() { }
 
@@ -199,7 +199,7 @@ export class SignInMethodUtils {
          * if this is the step 0. 0 maps to id:1 in {@code steps}.
          */
         if (addingStep === 0)
-            return { idpList: [], conflicting: false };
+            return { conflicting: false, idpList: [] };
 
         /**
          * More Context
@@ -236,7 +236,7 @@ export class SignInMethodUtils {
              * Checks whether all auth steps has at least 1 or more proxied
              * handlers. If yes then there's a conflict.
              */
-            const result = [ ...(new Set(allOptions.map(({ idp }) => idp))) ] // Extract all the IdP names in every option.
+            const result = [ ...(new Set(allOptions.map(({ idp }) => idp))) ] // Extract all the IdP names.
                 .map((idpName) => authenticators.find(({ name }) => name === idpName)) // Find the authenticator model.
                 .filter(Boolean) // Remove all the {@code undefined|null} ones please.
                 .filter(({ category }) => (
@@ -244,7 +244,7 @@ export class SignInMethodUtils {
                     category === AuthenticatorCategories.ENTERPRISE.toString()
                 )) // Give me only ENTERPRISE and SOCIAL IdPs.
                 .filter((auth: GenericAuthenticatorWithProvisioningConfigs) => {
-                    return !auth?.provisioning?.jit?.isEnabled
+                    return !auth?.provisioning?.jit?.isEnabled;
                 }) as GenericAuthenticatorWithProvisioningConfigs[];
 
             return {
