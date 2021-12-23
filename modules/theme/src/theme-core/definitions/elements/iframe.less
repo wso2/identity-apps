@@ -1,4 +1,4 @@
-/**
+/*!
  * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
@@ -14,14 +14,33 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
  */
 
-export * from "./attribute";
-export * from "./documentation";
-export * from "./endpoints";
-export * from "./identity-providers";
-export * from "./application";
-export * from "./group";
-export * from "./common";
-export * from "./userstores";
-export * from "./user";
+@type    : "element";
+@element : "iframe";
+
+@import (multiple) '../../theme.less';
+
+.loadVariables();
+
+/*-------------------------------
+        Iframe Element
+--------------------------------*/
+
+.ui.iframe {
+    border: none;
+
+    &.responsive {
+        display: flex;
+        height: 100%;
+
+        > iframe {
+            border: none;
+            width: 100%;
+            flex: 1 1 0;
+        }
+    }
+}
+
+.loadUIOverrides();

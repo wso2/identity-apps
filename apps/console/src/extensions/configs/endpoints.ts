@@ -16,12 +16,15 @@
  * under the License.
  */
 
-export * from "./attribute";
-export * from "./documentation";
-export * from "./endpoints";
-export * from "./identity-providers";
-export * from "./application";
-export * from "./group";
-export * from "./common";
-export * from "./userstores";
-export * from "./user";
+import { ExtendedFeatureResourceEndpointsInterface } from "./models";
+
+/**
+ * Get the resource endpoints for the extended features.
+ *
+ * @param {string} serverHost - Server Host.
+ * @return {ExtendedFeatureResourceEndpointsInterface}
+ */
+export const getExtendedFeatureResourceEndpoints = (serverHost: string): ExtendedFeatureResourceEndpointsInterface => {
+    
+    return {};
+};

@@ -14,14 +14,7 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
  */
 
-export * from "./attribute";
-export * from "./documentation";
-export * from "./endpoints";
-export * from "./identity-providers";
-export * from "./application";
-export * from "./group";
-export * from "./common";
-export * from "./userstores";
-export * from "./user";
+export * from "./iframe";

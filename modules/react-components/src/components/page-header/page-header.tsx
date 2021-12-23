@@ -275,10 +275,10 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                             ? (
                                 <Grid>
                                     <Grid.Row>
-                                        <Grid.Column computer={ headingColumnWidth }>
+                                        <Grid.Column computer={ headingColumnWidth } className="heading-wrapper">
                                             { headingContent }
                                         </Grid.Column>
-                                        <Grid.Column computer={ actionColumnWidth }>
+                                        <Grid.Column computer={ actionColumnWidth } className="action-wrapper">
                                             { action && <div className="floated right action">{ action }</div> }
                                         </Grid.Column>
                                     </Grid.Row>

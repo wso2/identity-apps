@@ -26,6 +26,7 @@ export * from "./brand";
 export * from "./button";
 export * from "./card";
 export * from "./code-editor";
+export * from "./containers";
 export * from "./danger-zone";
 export * from "./documentation";
 export * from "./dropdown";

@@ -6,6 +6,7 @@
             "@wso2is/core/api": ["node_modules/@wso2is/core/dist/src/api"],
             "@wso2is/core/configs": ["node_modules/@wso2is/core/dist/src/configs"],
             "@wso2is/core/constants": ["node_modules/@wso2is/core/dist/src/constants"],
+            "@wso2is/core/errors": ["node_modules/@wso2is/core/dist/src/errors"],
             "@wso2is/core/exceptions": ["node_modules/@wso2is/core/dist/src/exceptions"],
             "@wso2is/core/helpers": ["node_modules/@wso2is/core/dist/src/helpers"],
             "@wso2is/core/hooks": ["node_modules/@wso2is/core/dist/src/hooks"],
