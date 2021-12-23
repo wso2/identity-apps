@@ -44,6 +44,10 @@ export interface IframeProps extends IframeHTMLAttributes<HTMLIFrameElement>, Id
      * Should the iframe behave responsively?
      */
     responsive?: boolean;
+    /**
+     * External style sheets to be injected in to the iframe.
+     */
+    stylesheets?: string[];
 }
 
 /**
@@ -62,6 +66,7 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
         className,
         cloneParentStyleSheets,
         responsive,
+        stylesheets,
         ["data-componentid"]: componentId,
         ...rest
     } = props;
@@ -110,13 +115,38 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
     }, [ iFrameBodyNode, cloneParentStyleSheets ]);
 
     /**
+     * Injects externally provided stylesheets to the iframe.
+     */
+    useEffect(() => {
+        
+        if (!(Array.isArray(stylesheets) && stylesheets.length > 0)) {
+            return;
+        }
+
+        // Check if iframe node is loaded before proceeding.
+        if (!iFrameWindow) {
+            return;
+        }
+
+        for (const styleSheet of stylesheets) {
+            injectStyleSheetToDOM({
+                href: styleSheet
+            }, iFrameWindow.document)
+                .catch(() => {
+                    // Add debug logs here one a logger is added.
+                    // Tracked here https://github.com/wso2/product-is/issues/11650.
+                });
+        }
+    }, [ stylesheets ]);
+
+    /**
      * Injects the passed in stylesheet to the Head element of the document passed in as an argument.
      *
-     * @param {StyleSheet} styleSheet - Stylesheet object.
+     * @param {Partial<StyleSheet>} styleSheet - Stylesheet object.
      * @param {Document} document - Document.
      * @return {Promise<HTMLLinkElement>}
      */
-    const injectStyleSheetToDOM = (styleSheet: StyleSheet, document: Document): Promise<HTMLLinkElement> => {
+    const injectStyleSheetToDOM = (styleSheet: Partial<StyleSheet>, document: Document): Promise<HTMLLinkElement> => {
 
         return new Promise(function (resolve, reject) {
             const link: HTMLLinkElement = document.createElement("link");
