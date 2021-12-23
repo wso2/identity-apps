@@ -20,7 +20,8 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, {
     FunctionComponent,
-    IframeHTMLAttributes, MutableRefObject,
+    IframeHTMLAttributes,
+    MutableRefObject,
     PropsWithChildren,
     ReactElement,
     useEffect,
