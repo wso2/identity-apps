@@ -48,6 +48,10 @@ export interface IframeProps extends IframeHTMLAttributes<HTMLIFrameElement>, Id
      * External style sheets to be injected in to the iframe.
      */
     stylesheets?: string[];
+    /**
+     * Is the iframe ready.
+     */
+    isReady?: (status: boolean) => void;
 }
 
 /**
@@ -65,6 +69,7 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
         children,
         className,
         cloneParentStyleSheets,
+        isReady,
         responsive,
         stylesheets,
         ["data-componentid"]: componentId,
@@ -96,6 +101,9 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
         }
 
         if (!cloneParentStyleSheets) {
+
+            isReady(true);
+
             return;
         }
 
@@ -104,39 +112,57 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
         if (!parentNodeStyleSheets || !parentNodeStyleSheets.length || parentNodeStyleSheets.length <= 0) {
             return;
         }
+        
+        const styleSheetPromises: Promise<HTMLLinkElement>[] = [];
 
         for (const styleSheet of parentNodeStyleSheets) {
-            injectStyleSheetToDOM(styleSheet, iFrameWindow.document)
-                .catch(() => {
-                    // Add debug logs here one a logger is added.
-                    // Tracked here https://github.com/wso2/product-is/issues/11650.
-                });
+            styleSheetPromises.push(injectStyleSheetToDOM(styleSheet, iFrameWindow.document));
         }
+
+        Promise.all([ ...styleSheetPromises ])
+            .catch(() => {
+                // Add debug logs here one a logger is added.
+                // Tracked here https://github.com/wso2/product-is/issues/11650.
+            })
+            .finally(() => {
+                // If external stylesheets are not provided, mark as ready.
+                if (!stylesheets) {
+                    isReady(true);
+                }
+            });
     }, [ iFrameBodyNode, cloneParentStyleSheets ]);
 
     /**
      * Injects externally provided stylesheets to the iframe.
      */
     useEffect(() => {
-        
-        if (!(Array.isArray(stylesheets) && stylesheets.length > 0)) {
-            return;
-        }
 
         // Check if iframe node is loaded before proceeding.
         if (!iFrameWindow) {
             return;
         }
 
-        for (const styleSheet of stylesheets) {
-            injectStyleSheetToDOM({
-                href: styleSheet
-            }, iFrameWindow.document)
-                .catch(() => {
-                    // Add debug logs here one a logger is added.
-                    // Tracked here https://github.com/wso2/product-is/issues/11650.
-                });
+        if (!(Array.isArray(stylesheets) && stylesheets.length > 0)) {
+
+            isReady(true);
+
+            return;
         }
+
+        const styleSheetPromises: Promise<HTMLLinkElement>[] = [];
+
+        for (const styleSheet of stylesheets) {
+            styleSheetPromises.push(injectStyleSheetToDOM({ href: styleSheet }, iFrameWindow.document));
+        }
+
+        Promise.all([ ...styleSheetPromises ])
+            .catch(() => {
+                // Add debug logs here one a logger is added.
+                // Tracked here https://github.com/wso2/product-is/issues/11650.
+            })
+            .finally(() => {
+                isReady(true);
+            });
     }, [ stylesheets ]);
 
     /**
