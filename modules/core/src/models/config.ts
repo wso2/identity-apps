@@ -121,9 +121,14 @@ export interface CommonDeploymentConfigInterface<T = {}, S = {}> {
     tenant: string;
     /**
      * Tenant path.
-     * ex: `/t/`
+     * ex: `/t/wso2.com`
      */
     tenantPath: string;
+    /**
+     * Tenant prefix.
+     * ex: `t`
+     */
+    tenantPrefix: string;
 }
 
 /**
