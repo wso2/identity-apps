@@ -139,11 +139,15 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
 
     let isContainsOTPAuthenticator = false;
 
-    step.options.map(option => [
-        IdentityProviderManagementConstants.TOTP_AUTHENTICATOR, 
-        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR, 
-        IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR ]
-        .includes(option.authenticator) && (isContainsOTPAuthenticator = true));
+    step.options.map(option => {
+        if([ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR, 
+            IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR, 
+            IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR ]
+            .includes(option.authenticator)) {
+            isContainsOTPAuthenticator = true;
+        }
+    }
+    );
 
     /**
      * Resolves the authenticator step option.
