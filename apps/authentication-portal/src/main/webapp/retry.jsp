@@ -38,7 +38,9 @@
         statusMessage =  AuthenticationEndpointUtil.i18n(resourceBundle,
                 "something.went.wrong.during.authentication");
     } else {
-        if (!(statusMessage.equals(AuthenticationEndpointUtil.i18n(resourceBundle, statusMessage)))) {
+        String i18nErrorMapping = AuthenticationEndpointUtil.getErrorCodeToi18nMapping(
+            stat, statusMessage);
+        if (!("incorrect.error.mapping").equals(i18nErrorMapping)) {
             stat = AuthenticationEndpointUtil.customi18n(resourceBundle, stat);
             statusMessage = AuthenticationEndpointUtil.customi18n(resourceBundle, statusMessage);                  
         } else {
