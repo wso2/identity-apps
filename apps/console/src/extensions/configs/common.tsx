@@ -33,7 +33,6 @@ export const commonConfig: CommonConfig = {
         getUserDropdownLinkExtensions: (): HeaderLinkCategoryInterface[] => [],
         renderAppSwitcherAsDropdown: false
     },
-    initConfig: (config) => null,
     leftNavigation: {
         isLeftNavigationCategorized: {
             develop: true,
