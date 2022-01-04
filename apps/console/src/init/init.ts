@@ -21,7 +21,6 @@ import { AppUtils } from "./app-utils";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 import TimerWorker from "@wso2is/core/src/workers/timer.worker";
-import { commonConfig } from "../extensions/configs";
 
 
 if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
@@ -34,7 +33,6 @@ if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
     });
 
     window["AppUtils"] = AppUtils;
-    commonConfig.initConfig(window["AppUtils"]?.getConfig());
 }
 
 function handleTimeOut(_idleSecondsCounter: number, _sessionAgeCounter: number,
