@@ -45,7 +45,7 @@ export const commonConfig: CommonConfig = {
     },
     hotjarTracking : {
         tagAttributes : () : void => {
-        return;
+            return;
         }
      }
 };
