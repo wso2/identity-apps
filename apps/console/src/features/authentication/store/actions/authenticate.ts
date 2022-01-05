@@ -36,6 +36,7 @@ import isEmpty from "lodash-es/isEmpty";
 import { Dispatch } from "redux";
 import { Config } from "../../../core/configs";
 import { store } from "../../../core/store";
+import { commonConfig } from "../../../../extensions";
 
 /**
  *  Gets profile information by making an API call
@@ -66,6 +67,8 @@ export const getProfileInformation = (
             }
 
             dispatch(setProfileInfo<ProfileInfoInterface>(infoResponse));
+
+            commonConfig.hotjarTracking.tagAttributes();
 
             // If the schemas in the redux store is empty, fetch the SCIM schemas from the API.
             if (isEmpty(store.getState().profile.profileSchemas)) {
