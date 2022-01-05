@@ -61,6 +61,12 @@ export interface CommonConfig {
         isGuestUser: boolean;
         showEmail: boolean;
     };
+    hotjarTracking : {
+        /*
+         * Tag hotjar attributes. 
+        */
+        tagAttributes : () => void;
+    }
 }
 
 /**
