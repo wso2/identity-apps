@@ -18,6 +18,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.InitiateAllQuestionResponse" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Question" %>
@@ -64,8 +65,9 @@
     <![endif]-->
     <%
         if (reCaptchaEnabled) {
+            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
-    <script src='<%=(request.getAttribute("reCaptchaAPI"))%>'></script>
+    <script src='<%=(reCaptchaAPI)%>'></script>
     <%
         }
     %>
@@ -122,10 +124,11 @@
                         %>
                         <%
                             if (reCaptchaEnabled) {
+                                String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
                         %>
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
                             <div class="g-recaptcha"
-                                 data-sitekey="<%=Encode.forHtmlContent((String)request.getAttribute("reCaptchaKey"))%>">
+                                 data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>">
                             </div>
                         </div>
                         <%
