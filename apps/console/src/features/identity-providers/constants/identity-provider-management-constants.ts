@@ -25,6 +25,8 @@ import { IdentityProviderTemplateLoadingStrategies } from "../models";
  */
 export class IdentityProviderManagementConstants {
 
+    public static readonly MAXIMUM_NUMBER_OF_LIST_ITEMS_TO_SHOW_INSIDE_CALLOUTS = 3;
+
     /**
      * Identifier for the local IDP.
      * @constant

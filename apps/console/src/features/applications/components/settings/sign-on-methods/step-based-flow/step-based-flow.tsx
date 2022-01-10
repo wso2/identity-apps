@@ -94,6 +94,7 @@ interface AuthenticationFlowPropsInterface extends TestableComponentInterface {
      * Callback to update the button disable state change.
      */
     onAuthenticationSequenceChange: (isDisabled: boolean, updatedSteps: AuthenticationStepInterface[]) => void;
+    refreshAuthenticators: () => Promise<void>;
 }
 
 /**
@@ -116,6 +117,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         triggerUpdate,
         updateSteps,
         onAuthenticationSequenceChange,
+        refreshAuthenticators,
         [ "data-testid" ]: testId
     } = props;
 
@@ -802,6 +804,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         return (
             <AddAuthenticatorModal
+                refreshAuthenticators={ refreshAuthenticators }
                 authenticationSteps={ authenticationSteps }
                 allowSocialLoginAddition={ true }
                 currentStep={ authenticatorAddStep }
@@ -837,6 +840,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 onAddNewClick={ handleAddNewAuthenticatorClick }
                 onIDPCreateWizardTrigger={ onIDPCreateWizardTrigger }
                 categorizedIDPTemplates={ categorizedTemplates }
+                subjectStepId={ subjectStepId }
+                attributeStepId={ attributeStepId }
             />
         );
     };
