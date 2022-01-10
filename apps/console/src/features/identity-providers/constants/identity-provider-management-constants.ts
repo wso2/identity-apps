@@ -275,6 +275,7 @@ export class IdentityProviderManagementConstants {
     public static readonly FIDO_AUTHENTICATOR: string = "FIDOAuthenticator";
     public static readonly BASIC_AUTHENTICATOR = "BasicAuthenticator";
     public static readonly IDENTIFIER_FIRST_AUTHENTICATOR = "IdentifierExecutor";
+    public static readonly SMS_OTP_AUTHENTICATOR = "sms-otp";
 
     // Known Enterprise authenticator IDs
     public static readonly OIDC_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I";
