@@ -125,6 +125,36 @@ export class SignInMethodUtils {
     };
 
     /**
+      * Checks if immediate step is having at least one of the passed factors.
+      *
+      * @param {string[]} factors - Set of factors to check.
+      * @param {[]} steps - Authentication steps.
+      *
+      * @return {boolean}
+      */
+      public static checkImmediateStepHavingSpecificFactors = (factors: string[],
+          steps: AuthenticationStepInterface[]): boolean => {
+
+          let isFound: boolean = false;
+
+          for (const [ , step ] of steps.entries()) {
+              for (const option of step.options) {
+                  if (factors.includes(option.authenticator)) {
+                      isFound = true;
+
+                      break;
+                  }
+              }
+
+              if (isFound) {
+                  break;
+              }
+          }
+
+          return isFound;
+      };
+
+    /**
      * Counts the occurrence of a specific factors in the passed in steps.
      *
      * @param {string[]} factors - Set of factors to check.
