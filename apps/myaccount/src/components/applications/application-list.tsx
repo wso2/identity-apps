@@ -131,7 +131,14 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
 
                                         ) }
                                         position="top center"
-                                        content={ app.name }
+                                        content={ (
+                                            <div className="row">
+                                                <div className="column">{ app.name?.length > 55 ? 
+                                                app.name?.substring(0, 56) + " ..." : app.name }</div>
+                                                <div className="column hint-description">{ app.description?.length > 55 ? 
+                                                app.description?.substring(0, 56) + " ..." : app.description }</div>
+                                            </div>
+                                        ) }
                                     />
                                 </Grid.Column>
                             </Fragment>

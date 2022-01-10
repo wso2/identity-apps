@@ -90,3 +90,8 @@
         }
     }
 }
+
+.hint-description {
+    color: @applicationListItemDescColor;
+    margin-top: "0.2rem"
+}
