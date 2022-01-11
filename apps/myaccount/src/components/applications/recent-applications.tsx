@@ -17,6 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { Text } from "@wso2is/react-components";
 import React, { FunctionComponent } from "react";
 import { Grid, Popup } from "semantic-ui-react";
 import { RecentApplicationCard } from "./recent-application-card";
@@ -69,7 +70,26 @@ export const RecentApplications: FunctionComponent<RecentApplicationsProps> = (
                                         </div>
                                     ) }
                                     position="top center"
-                                    content={ app.name }
+                                    content={ (
+                                        <Grid.Row>
+                                            <Grid.Column>
+                                                <Text>
+                                                    { 
+                                                        app.name?.length > 55 
+                                                        ? app.name?.substring(0, 56) + " ..." 
+                                                        : app.name 
+                                                    }
+                                                </Text>
+                                            </Grid.Column>
+                                            <Grid.Column>
+                                                <Text className="hint-description">
+                                                    { 
+                                                        app.description
+                                                    }
+                                                </Text>
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    ) }
                                 /> 
                             </Grid.Column>
                         ))
