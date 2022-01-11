@@ -135,13 +135,21 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
                                         content={ (
                                             <Grid.Row>
                                                 <Grid.Column>
-                                                    <Text>{ app.name?.length > 55 ? 
-                                                        app.name?.substring(0, 56) + " ..." : app.name }
+                                                    <Text>
+                                                        { 
+                                                            app.name?.length > 55 
+                                                            ? app.name?.substring(0, 56) + " ..." 
+                                                            : app.name 
+                                                        }
                                                     </Text>
                                                 </Grid.Column>
                                                 <Grid.Column>
-                                                    <Text className="hint-description">{ app.description?.length > 55 ? 
-                                                        app.description?.substring(0, 56) + " ..." : app.description }
+                                                    <Text className="hint-description">
+                                                        { 
+                                                            app.description?.length > 55 
+                                                            ? app.description?.substring(0, 56) + " ..." 
+                                                            : app.description 
+                                                        }
                                                     </Text>
                                                 </Grid.Column>
                                             </Grid.Row>
