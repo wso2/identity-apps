@@ -84,9 +84,7 @@ export const RecentApplications: FunctionComponent<RecentApplicationsProps> = (
                                             <Grid.Column>
                                                 <Text className="hint-description">
                                                     { 
-                                                        app.description?.length > 55 
-                                                        ? app.description?.substring(0, 56) + " ..." 
-                                                        : app.description 
+                                                        app.description
                                                     }
                                                 </Text>
                                             </Grid.Column>
