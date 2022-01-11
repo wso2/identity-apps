@@ -6555,10 +6555,12 @@ export const console: ConsoleNS = {
                 },
                 profile: {
                     fields: {
+                        createdDate: "Date de création",
                         emails: "Email",
                         generic: {
                             default: "Ajouter l'attribut {{fieldName}}"
                         },
+                        modifiedDate: "Date modifiée",
                         name_familyName: "Nom de famille",
                         name_givenName: "Prénom",
                         oneTimePassword: "Mot de passe à usage unique",

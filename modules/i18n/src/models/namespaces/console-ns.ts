@@ -3631,11 +3631,13 @@ export interface ConsoleNS {
                 };
                 profile: {
                     fields: {
+                        createdDate: string;
                         generic: {
                             default: string;
                         };
                         userId: string;
                         emails: string;
+                        modifiedDate: string;
                         profileUrl: string;
                         name_familyName: string;
                         name_givenName: string;

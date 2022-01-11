@@ -7964,10 +7964,12 @@ export const console: ConsoleNS = {
                 },
                 profile: {
                     fields: {
+                        createdDate: "Created Date",
                         emails: "Email",
                         generic: {
                             default: "Add {{fieldName}}"
                         },
+                        modifiedDate: "Modified Date",
                         name_familyName: "Last Name",
                         name_givenName: "First Name",
                         oneTimePassword: "One Time Password",
