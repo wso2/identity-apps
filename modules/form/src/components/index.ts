@@ -19,6 +19,7 @@
 export * from "./adapters";
 export * from "./field";
 export * from "./field-button";
+export * from "./field-color-picker";
 export * from "./field-checkbox";
 export * from "./field-checkbox-legacy";
 export * from "./field-input";
