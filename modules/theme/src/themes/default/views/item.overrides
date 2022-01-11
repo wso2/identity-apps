@@ -92,6 +92,6 @@
 }
 
 .hint-description {
-    color: @applicationListItemDescColor;
-    margin-top: "0.2rem"
+    color: @applicationListItemDescColor !important;
+    margin-top: -0.5rem 0 !important;
 }

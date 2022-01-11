@@ -17,6 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { Text } from "@wso2is/react-components";
 import React, { Fragment, FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Popup } from "semantic-ui-react";
@@ -132,12 +133,18 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
                                         ) }
                                         position="top center"
                                         content={ (
-                                            <div className="row">
-                                                <div className="column">{ app.name?.length > 55 ? 
-                                                app.name?.substring(0, 56) + " ..." : app.name }</div>
-                                                <div className="column hint-description">{ app.description?.length > 55 ? 
-                                                app.description?.substring(0, 56) + " ..." : app.description }</div>
-                                            </div>
+                                            <Grid.Row>
+                                                <Grid.Column>
+                                                    <Text>{ app.name?.length > 55 ? 
+                                                        app.name?.substring(0, 56) + " ..." : app.name }
+                                                    </Text>
+                                                </Grid.Column>
+                                                <Grid.Column>
+                                                    <Text className="hint-description">{ app.description?.length > 55 ? 
+                                                        app.description?.substring(0, 56) + " ..." : app.description }
+                                                    </Text>
+                                                </Grid.Column>
+                                            </Grid.Row>
                                         ) }
                                     />
                                 </Grid.Column>
