@@ -137,6 +137,18 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
 
     const classes = classNames("authentication-step-container timeline-body", className);
 
+    let isContainsOTPAuthenticator = false;
+
+    step.options.map(option => {
+        if([ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR, 
+            IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR, 
+            IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR ]
+            .includes(option.authenticator)) {
+            isContainsOTPAuthenticator = true;
+        }
+    }
+    );
+
     /**
      * Resolves the authenticator step option.
      *
@@ -258,7 +270,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
             );
         }
     };
-
+    
     return (
         <div className="timeline-item">
             <div className="timeline-badge">
@@ -355,7 +367,8 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                 {
                     (!readOnly
                         && showStepMeta
-                        && (step.options && step.options instanceof Array && step.options.length > 0)) && (
+                        && (step.options && step.options instanceof Array && step.options.length > 0))
+                        && !isContainsOTPAuthenticator && (
                         <div className="checkboxes-extension">
                             <Checkbox
                                 label={ t(

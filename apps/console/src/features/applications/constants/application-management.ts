@@ -18,8 +18,7 @@
 
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { DocumentationConstants } from "./documentation-constants";
-import { IdentityProviderManagementConstants } from "../../identity-providers/constants";
-import { SupportedAuthenticators } from "../../identity-providers/models";
+import { IdentityProviderManagementConstants, SupportedAuthenticators } from "../../identity-providers";
 import { ApplicationTemplateCategories, ApplicationTemplateLoadingStrategies } from "../models";
 
 /**
@@ -29,6 +28,9 @@ export class ApplicationManagementConstants {
 
     public static readonly EMPTY_STRING = "";
     public static readonly LINE_BREAK = "\n";
+    public static readonly MAXIMUM_NUMBER_OF_LIST_ITEMS_TO_SHOW_INSIDE_POPUP = 3;
+    public static readonly AUTHENTICATORS_LOCAL_STORAGE_KEY = btoa("Authenticators");
+    public static readonly EMPTY_JSON_ARRAY = "[]";
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -331,6 +333,8 @@ export class ApplicationManagementConstants {
 
     public static readonly REQUEST_PATH_AUTHENTICATORS_FETCH_ERROR: string = "An error occurred while fetching the " +
         "request path authenticators.";
+
+    public static readonly UNABLE_FETCH_APPLICATIONS: string = "An error occurred while fetching applications.";
 
     public static readonly IDENTIFIER_FIRST_AUTHENTICATOR_ID = IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER
         + "-" + "SWRlbnRpZmllckV4ZWN1dG9y";

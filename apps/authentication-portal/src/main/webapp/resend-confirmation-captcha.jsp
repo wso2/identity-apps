@@ -25,6 +25,7 @@
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Arrays" %>
+<%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 
 <%@ include file="includes/localize.jsp" %>
 <jsp:directive.include file="includes/init-url.jsp"/>
@@ -52,8 +53,9 @@
 
     <%
         if (reCaptchaResendEnabled) {
+            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
-        <script src='<%=(Encode.forJavaScriptSource(request.getParameter("reCaptchaAPI")))%>'></script>
+        <script src='<%=(Encode.forJavaScriptSource(reCaptchaAPI))%>'></script>
     <%
         }
     %>
@@ -86,10 +88,13 @@
                     <div class="ui divider hidden"></div>
         
                     <div class="resend-captcha-container ui hidden" id="resend-captcha-container">
+                        <%
+                             String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+                        %>
                         <div class="field">
                             <div class="text-center>">
                                 <div class="g-recaptcha inline"
-                                    data-sitekey="<%=Encode.forHtmlContent(request.getParameter("reCaptchaKey"))%>"
+                                    data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
                                     data-testid="login-page-g-recaptcha-resend"
                                 >
                                 </div>

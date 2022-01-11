@@ -42,6 +42,7 @@ export interface IdentityProviderConfig {
         attributesSettings: boolean;
     };
     jitProvisioningSettings: {
+        menuItemName: string;
         enableJitProvisioningField: {
             show: boolean;
         },

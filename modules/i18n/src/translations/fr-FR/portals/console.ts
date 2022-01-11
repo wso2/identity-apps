@@ -1050,12 +1050,10 @@ export const console: ConsoleNS = {
                                                 "</1> ou tout autre gestionnaire tel que <3>Identifiant d’abord " +
                                                 "</3>qui peut gérer ces facteurs est présent dans une étape " +
                                                 "précédente.",
-                                            secondFactorDisabledDueToProxyMode: "Pour configurer les" +
-                                                " authentificateurs de second facteur tels que" +
-                                                " <1>TOTP</1> et <3>Email OTP</3>, les utilisateurs" +
-                                                " doivent disposer d'un compte local. Séquence" +
-                                                " d'authentification actuelle, a des gestionnaires activés" +
-                                                " pour le <5>Mode Proxy</5>.",
+                                            secondFactorDisabledDueToProxyMode: "Pour configurer" +
+                                                " <1>{{auth}}</1>, vous devez activer le paramètre" +
+                                                " d'approvisionnement juste-à-temps à partir des" +
+                                                " fournisseurs d'identité suivants.",
                                             secondFactorDisabledInFirstStep: "Les authentificateurs de deuxième " +
                                                 "facteur ne peuvent pas être utilisés dans la première étape."
                                         }
@@ -3066,20 +3064,13 @@ export const console: ConsoleNS = {
                     },
                     jitProvisioning: {
                         enableJITProvisioning: {
-                            disabledMessageContent: {
-                                1: "Vous ne pouvez pas modifier les paramètres du mode proxy" +
-                                    " car plusieurs applications dépendent de cette connexion." +
-                                    " Pour résoudre ce conflit, vous devez supprimer cette" +
-                                    " connexion des ressources répertoriées.",
-                                2: "Vous ne pouvez pas modifier les paramètres du mode proxy" +
-                                    " car une application dépend de cette connexion. Pour" +
-                                    " résoudre ce conflit, vous devez supprimer cette connexion" +
-                                    " de la ressource répertoriée."
-                            },
-                            disabledMessageHeader: "Conflit de réglage",
+                            disabledMessageContent: "Vous ne pouvez pas désactiver le" +
+                                " paramètre de provisionnement d'utilisateurs juste-à-temps" +
+                                " car les applications suivantes nécessitent son activation.",
+                            disabledMessageHeader: "Opération non autorisée",
                             hint: "Spécifiez si les utilisateurs fédérés à partir de ce" +
                                 " fournisseur d'identité doivent être mandatés.",
-                            label: "Activer le mode proxy"
+                            label: "Provisionnement d'utilisateurs juste à temps"
                         },
                         provisioningScheme: {
                             children: {

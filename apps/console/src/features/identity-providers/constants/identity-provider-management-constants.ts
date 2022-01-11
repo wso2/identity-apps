@@ -25,6 +25,8 @@ import { IdentityProviderTemplateLoadingStrategies } from "../models";
  */
 export class IdentityProviderManagementConstants {
 
+    public static readonly MAXIMUM_NUMBER_OF_LIST_ITEMS_TO_SHOW_INSIDE_CALLOUTS = 3;
+
     /**
      * Identifier for the local IDP.
      * @constant
@@ -273,6 +275,7 @@ export class IdentityProviderManagementConstants {
     public static readonly FIDO_AUTHENTICATOR: string = "FIDOAuthenticator";
     public static readonly BASIC_AUTHENTICATOR = "BasicAuthenticator";
     public static readonly IDENTIFIER_FIRST_AUTHENTICATOR = "IdentifierExecutor";
+    public static readonly SMS_OTP_AUTHENTICATOR = "sms-otp";
 
     // Known Enterprise authenticator IDs
     public static readonly OIDC_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I";
