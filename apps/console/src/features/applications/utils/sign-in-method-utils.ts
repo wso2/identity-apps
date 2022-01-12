@@ -60,7 +60,11 @@ export class SignInMethodUtils {
             ? steps.slice(stepIndex + 1)
             : [];
 
-        return [ leftSideSteps, rightSideSteps ];
+        const nextStep: AuthenticationStepInterface[] = ((stepIndex + 1) in steps)
+            ? steps.slice(stepIndex + 1, stepIndex + 2)
+            : [];
+
+        return [ leftSideSteps, rightSideSteps, nextStep ];
     };
 
     /**
