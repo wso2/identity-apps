@@ -108,14 +108,14 @@ for (const value of Object.values(translations)) {
 
             resourcePaths = {
                 ...resourcePaths,
-                [ nsObjKey ]: path.join(value.meta.code, objKey, fileName)
+                [ nsObjKey ]: path.join(value.meta.code, objKey, fileName).split(path.sep).join(path.posix.sep)
             };
         }
 
         // Add extensions.json file to the path
         resourcePaths = {
             ...resourcePaths,
-            extensions: path.join(value.meta.code, objKey, EXTENSIONS_FILENAME)
+            extensions: path.join(value.meta.code, objKey, EXTENSIONS_FILENAME).split(path.sep).join(path.posix.sep)
         };
     }
 
