@@ -556,25 +556,31 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         const [
             leftSideSteps,
-            rightSideSteps
+            rightSideSteps,
+            nextStep
         ]: AuthenticationStepInterface[][] = SignInMethodUtils.getLeftAndRightSideSteps(stepIndex, steps);
 
         const containSecondFactorOnRight: boolean = SignInMethodUtils.hasSpecificFactorsInSteps(
             ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS, rightSideSteps);
-        const noOfSecondFactorsOnRight: number = SignInMethodUtils.countSpecificFactorInSteps(
-            ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS, rightSideSteps);
         const noOfTOTPOnRight: number = SignInMethodUtils.countSpecificFactorInSteps(
             [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR ], rightSideSteps);
-        const onlyTOTPOnRight: boolean = noOfSecondFactorsOnRight === noOfTOTPOnRight;
+        const noOfFactorsOnRight: number = SignInMethodUtils.countSpecificFactorInSteps(
+            ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS, rightSideSteps)
+            + SignInMethodUtils.countSpecificFactorInSteps(
+                ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, rightSideSteps);
+        const onlyTOTPOnRight: boolean = noOfFactorsOnRight === noOfTOTPOnRight;
 
         // If there are second factors in the right side from the step that is to be deleted,
-        // Check if there are first factors on the left. If not, do not delete the step.
+        // Check if there are first factors on the left or if there is an immediate first factor on right.
+        // If not, do not delete the step.
         if (containSecondFactorOnRight) {
             const containProperHandlersOnLeft: boolean = onlyTOTPOnRight
                 ? SignInMethodUtils.hasSpecificFactorsInSteps(
                     ApplicationManagementConstants.TOTP_HANDLERS,leftSideSteps)
-                : SignInMethodUtils.hasSpecificFactorsInSteps(
-                    ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, leftSideSteps);
+                : (SignInMethodUtils.hasSpecificFactorsInSteps(
+                    ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, leftSideSteps)
+                    || SignInMethodUtils.checkImmediateStepHavingSpecificFactors(
+                        ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, nextStep));
 
             if (!containProperHandlersOnLeft) {
                 dispatch(
