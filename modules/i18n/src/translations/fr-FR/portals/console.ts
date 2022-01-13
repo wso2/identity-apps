@@ -1351,7 +1351,6 @@ export const console: ConsoleNS = {
                                 }
                             },
                             description: {
-                                description: "Une description textuelle de l'application.",
                                 label: "Description",
                                 placeholder: "Saisissez une description pour l'application"
                             },
@@ -1370,7 +1369,6 @@ export const console: ConsoleNS = {
                                 }
                             },
                             name: {
-                                hint: "Le nom de l'application",
                                 label: "Nom",
                                 placeholder: "Mon appli",
                                 validations: {
