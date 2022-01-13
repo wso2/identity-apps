@@ -1358,7 +1358,6 @@ export const console: ConsoleNS = {
                                 }
                             },
                             description: {
-                                description: "Une description textuelle de l'application.",
                                 label: "Description",
                                 placeholder: "Saisissez une description pour l'application"
                             },

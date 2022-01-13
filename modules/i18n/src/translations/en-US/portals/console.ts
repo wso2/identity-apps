@@ -1327,7 +1327,6 @@ export const console: ConsoleNS = {
                                 }
                             },
                             description: {
-                                description: "A text description of the application.",
                                 label: "Description",
                                 placeholder: "Enter a description for the application"
                             },

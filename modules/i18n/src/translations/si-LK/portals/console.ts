@@ -1331,7 +1331,6 @@ export const console: ConsoleNS = {
                                 }
                             },
                             description: {
-                                description: "මෘදුකාංග යෙදුමේ පෙළ විස්තරයක්.",
                                 label: "විස්තර",
                                 placeholder: "යෙදුම සඳහා විස්තරයක් ඇතුළත් කරන්න"
                             },
