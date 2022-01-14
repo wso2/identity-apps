@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { MenuProps, Tab, TabProps } from "semantic-ui-react";
 import { ResourceTabPane } from "./resource-tab-pane";
 
@@ -74,6 +74,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
         defaultActiveIndex,
         pointing,
         secondary,
+        onTabChange,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -105,13 +106,16 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
     /**
      * Handles the tab change.
      */
-    const handleTabChange = (e, { activeIndex }) => {
+    const handleTabChange = (e, activeIndex) => {
         setActiveIndex(activeIndex);
     };
 
     return (
         <Tab
-            onTabChange={ handleTabChange }
+            onTabChange={ (e: MouseEvent<HTMLDivElement>, data: TabProps ) => {
+                handleTabChange(e, data.activeIndex);
+                onTabChange && typeof onTabChange === "function" && onTabChange(e, data);
+            } }
             className={ classes }
             menu={ {
                 attached,
