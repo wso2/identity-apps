@@ -324,7 +324,9 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                             (window?.themeHash && window?.publicPath)
                                                                 ? (
                                                                     <link
-                                                                        href={ `${window?.publicPath}/libs/themes/asgardio/theme.${window?.themeHash}.min.css` }
+                                                                        href={
+                                                                            `${window?.publicPath}/libs/themes/asgardio/theme.${window?.themeHash}.min.css`
+                                                                        }
                                                                         rel="stylesheet"
                                                                         type="text/css"
                                                                     />
