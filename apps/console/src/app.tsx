@@ -320,12 +320,16 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                 <>
                                                     <Helmet>
                                                         <title>{ appTitle }</title>
-                                                        { window?.themeHash && window?.publicPath 
-                                                            ?   (<link
-                                                                href={ `${window?.publicPath}/libs/themes/asgardio/theme.${window?.themeHash}.min.css` } 
-                                                                rel="stylesheet"
-                                                                type="text/css"/>) 
-                                                            :   null
+                                                        {
+                                                            (window?.themeHash && window?.publicPath)
+                                                                ? (
+                                                                    <link
+                                                                        href={ `${window?.publicPath}/libs/themes/asgardio/theme.${window?.themeHash}.min.css` }
+                                                                        rel="stylesheet"
+                                                                        type="text/css"
+                                                                    />
+                                                                ) 
+                                                                : null
                                                         }
                                                     </Helmet>
                                                     <NetworkErrorModal
