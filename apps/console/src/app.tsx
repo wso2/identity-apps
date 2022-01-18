@@ -61,6 +61,13 @@ import {
 } from "./features/core/models";
 import { AppState } from "./features/core/store";
 
+declare global {
+    interface Window {
+        themeHash: any;
+        publicPath: any;
+    }
+}
+
 /**
  * Main App component.
  *
@@ -320,6 +327,12 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                 <>
                                                     <Helmet>
                                                         <title>{ appTitle }</title>
+                                                        { window?.themeHash && window?.publicPath ?
+                                                            (<link
+                                                                href={ `${window?.publicPath}/libs/themes/asgardio/theme.${window?.themeHash}.min.css` } 
+                                                                rel="stylesheet"
+                                                                type="text/css"/>) : null
+                                                        }
                                                     </Helmet>
                                                     <NetworkErrorModal
                                                         heading={
