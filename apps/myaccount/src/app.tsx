@@ -255,6 +255,13 @@ export const App = (): ReactElement => {
                                         <>
                                             <Helmet>
                                                 <title>{ appTitle }</title>
+                                                { window?.themeHash && window?.publicPath 
+                                                    ?   (<link
+                                                        href={ `${window?.publicPath}/libs/themes/asgardio/theme.${window?.themeHash}.min.css` } 
+                                                        rel="stylesheet"
+                                                        type="text/css"/>) 
+                                                    :   null
+                                                }
                                             </Helmet>
                                             <NetworkErrorModal
                                                 heading={

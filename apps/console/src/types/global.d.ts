@@ -20,3 +20,12 @@ declare const contextPathGlobal: string;
 declare const serverOriginGlobal: string;
 declare const superTenantGlobal: string;
 declare const tenantPrefixGlobal: string;
+
+declare global {
+    interface Window {
+        themeHash: any;
+        publicPath: any;
+    }
+}
+
+export {};
