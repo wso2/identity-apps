@@ -21,4 +21,4 @@
 npm i
 
 # Update package version to parent pom version
-npm run update-version -- jenkins=true build=${BUILD_DISPLAY_NAME} pom=${POM_VERSION/-SNAPSHOT/}
+npm run update-version -- jenkins=true build="${BUILD_DISPLAY_NAME}" pom="${POM_VERSION/-SNAPSHOT/}"
