@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 #
 # Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 #
@@ -15,8 +17,6 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-
-#!/usr/bin/env bash
 
 npm i
 
