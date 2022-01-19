@@ -19,6 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
+import "./preloader.css";
 
 /**
  * Pre loader component props interface.
