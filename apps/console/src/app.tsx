@@ -75,6 +75,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
     const uuid: string = useSelector((state: AppState) => state.profile.profileInfo.id);
+    const theme: string = useSelector((state: AppState) => state?.config?.ui?.theme?.name);
 
     const [ baseRoutes, setBaseRoutes ] = useState<RouteInterface[]>(getBaseRoutes());
 
@@ -320,6 +321,19 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                 <>
                                                     <Helmet>
                                                         <title>{ appTitle }</title>
+                                                        {
+                                                            (window?.themeHash && window?.publicPath && theme)
+                                                                ? (
+                                                                    <link
+                                                                        href={
+                                                                            `${window?.publicPath}/libs/themes/${theme}/theme.${window?.themeHash}.min.css`
+                                                                        }
+                                                                        rel="stylesheet"
+                                                                        type="text/css"
+                                                                    />
+                                                                ) 
+                                                                : null
+                                                        }
                                                     </Helmet>
                                                     <NetworkErrorModal
                                                         heading={
