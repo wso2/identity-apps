@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import "./pre-loader.css";
@@ -24,7 +24,7 @@ import "./pre-loader.css";
 /**
  * Pre loader component props interface.
  */
-type PreLoaderPropsInterface = TestableComponentInterface;
+type PreLoaderPropsInterface = IdentifiableComponentInterface;
 
 /**
  * Pre-Loader for the application.
@@ -38,7 +38,7 @@ export const PreLoader: FunctionComponent<PreLoaderPropsInterface> = (
 ): ReactElement => {
 
     const {
-        ["data-testid"]: testId
+        ["data-componentid"]: testId
     } = props;
 
     return(
@@ -52,5 +52,5 @@ export const PreLoader: FunctionComponent<PreLoaderPropsInterface> = (
  * Default props for the component.
  */
 PreLoader.defaultProps = {
-    "data-testid": "pre-loader"
+    "data-componentid": "pre-loader"
 };
