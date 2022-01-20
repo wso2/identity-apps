@@ -82,6 +82,8 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
     const contentRef: MutableRefObject<HTMLIFrameElement> = useRef<HTMLIFrameElement>(null);
     
     const [ isParentStylesheetsCloningCompleted, setIsParentStylesheetsCloningCompleted ] = useState<boolean>(false);
+    const [ clonedStyleSheets, setClonedStyleSheets ] = useState<string[]>([]);
+    const [ clonedParentStyleSheets, setClonedParentStyleSheets ] = useState<string[]>([]);
 
     const iFrameWindow: WindowProxy = contentRef?.current?.contentWindow;
     const iFrameBodyNode: HTMLElement = iFrameWindow?.document?.body;
@@ -119,16 +121,27 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
         }
         
         const styleSheetPromises: Promise<HTMLLinkElement>[] = [];
+        const _clonedParentStyleSheets: string[] = [];
 
         for (const styleSheet of parentNodeStyleSheets) {
             if (isEmpty(styleSheet.href)) {
                 continue;
             }
 
+            // Avoid cloning already cloned stylesheets.
+            if (clonedParentStyleSheets.includes(styleSheet.href)) {
+                return;
+            } else {
+                _clonedParentStyleSheets.push(styleSheet.href);
+            }
+
             styleSheetPromises.push(injectStyleSheetToDOM(styleSheet, iFrameWindow.document));
         }
 
         Promise.all([ ...styleSheetPromises ])
+            .then(() => {
+                setClonedParentStyleSheets(_clonedParentStyleSheets);
+            })
             .catch(() => {
                 // Add debug logs here one a logger is added.
                 // Tracked here https://github.com/wso2/product-is/issues/11650.
@@ -168,16 +181,27 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
         }
 
         const styleSheetPromises: Promise<HTMLLinkElement>[] = [];
+        const _clonedStyleSheets: string[] = [];
 
         for (const styleSheet of stylesheets) {
             if (isEmpty(styleSheet)) {
                 continue;
             }
 
+            // Avoid cloning already cloned stylesheets.
+            if (clonedStyleSheets.includes(styleSheet)) {
+                return;
+            } else {
+                _clonedStyleSheets.push(styleSheet);
+            }
+
             styleSheetPromises.push(injectStyleSheetToDOM({ href: styleSheet }, iFrameWindow.document));
         }
 
         Promise.all([ ...styleSheetPromises ])
+            .then(() => {
+                setClonedStyleSheets(_clonedStyleSheets);
+            })
             .catch(() => {
                 // Add debug logs here one a logger is added.
                 // Tracked here https://github.com/wso2/product-is/issues/11650.
