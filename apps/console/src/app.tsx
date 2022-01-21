@@ -326,7 +326,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                                 ? (
                                                                     <link
                                                                         href={
-                                                                            `${window?.publicPath}/libs/themes/${theme}/theme.${window?.themeHash}.min.css`
+                                                                            `${window?.origin}${window?.publicPath}/libs/themes/${theme}/theme.${window?.themeHash}.min.css`
                                                                         }
                                                                         rel="stylesheet"
                                                                         type="text/css"
