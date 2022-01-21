@@ -448,6 +448,7 @@ export const ColorPickerAdapter = (props: ColorPickerAdapterPropsInterface): Rea
         parentFormProps,
         render,
         width,
+        readOnly,
         /* eslint-enable @typescript-eslint/no-unused-vars */
         ...filteredRest
     } = rest;
@@ -462,7 +463,7 @@ export const ColorPickerAdapter = (props: ColorPickerAdapterPropsInterface): Rea
                 <Form.Field>
                     <label>{ childFieldProps.label !== "" ? childFieldProps.label : null }</label>
                     <Input
-                        className="color-picker-input"
+                        className={ `color-picker-input ${ readOnly ? "readonly" : "" }` }
                         aria-label={ childFieldProps.ariaLabel }
                         key={ childFieldProps.testId }
                         required={ childFieldProps.required }
@@ -501,6 +502,7 @@ export const ColorPickerAdapter = (props: ColorPickerAdapterPropsInterface): Rea
                     </Input>
                 </Form.Field>
             ) }
+            disabled={ readOnly }
             content={ (
                 <ColorPicker
                     show
