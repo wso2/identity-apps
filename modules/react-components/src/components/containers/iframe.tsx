@@ -52,6 +52,10 @@ export interface IframeProps extends IframeHTMLAttributes<HTMLIFrameElement>, Id
      */
     styles?: string;
     /**
+     * Whether to add the style node to the begining of the `head` element or to the end of the `head` element.
+     */
+    styleNodeInjectionStrategy?: "append" | "prepend";
+    /**
      * External style sheets to be injected in to the iframe.
      */
     stylesheets?: string[];
@@ -79,6 +83,7 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
         isReady,
         responsive,
         styles,
+        styleNodeInjectionStrategy,
         stylesheets,
         ["data-componentid"]: componentId,
         ...rest
@@ -236,7 +241,12 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
         const styleNode: HTMLStyleElement = iFrameWindow.document.createElement("style");
 
         styleNode.innerHTML = styles;
-        iFrameWindow.document.head.prepend(styleNode);
+        
+        if (styleNodeInjectionStrategy === "append") {
+            iFrameWindow.document.head.appendChild(styleNode);
+        } else {
+            iFrameWindow.document.head.prepend(styleNode);
+        }
     }, [ styles, iFrameWindow ]);
 
     /**
@@ -297,5 +307,6 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
  */
 Iframe.defaultProps = {
     "data-componentid": "iframe",
-    responsive: true
+    responsive: true,
+    styleNodeInjectionStrategy: "append"
 };
