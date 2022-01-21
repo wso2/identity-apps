@@ -63,6 +63,10 @@ export interface IframeProps extends IframeHTMLAttributes<HTMLIFrameElement>, Id
      * Is the iframe ready.
      */
     isReady?: (status: boolean) => void;
+    /**
+     * The zoom percentage. By default will be 100%.
+     */
+    zoom?: number;
 }
 
 /**
@@ -86,6 +90,7 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
         styleNodeInjectionStrategy,
         stylesheets,
         ["data-componentid"]: componentId,
+        zoom,
         ...rest
     } = props;
 
@@ -231,6 +236,8 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
             return;
         }
 
+        // Remove the existing style nodes before adding the new styles to avoid adding the same
+        // styles on `style` prop changes.
         const styleNodesCollection: HTMLCollectionOf<HTMLStyleElement> = iFrameWindow.document
             .getElementsByTagName("style");
         
@@ -248,6 +255,20 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
             iFrameWindow.document.head.prepend(styleNode);
         }
     }, [ styles, iFrameWindow ]);
+
+    /**
+     * Add styling to the iframe body.
+     */
+    useEffect(() => {
+
+        // Check if main body node is loaded before proceeding.
+        if (!iFrameBodyNode || !zoom) {
+            return;
+        }
+
+        // CSSStyleDeclaration doesn't have the `zoom` property.
+        (iFrameBodyNode.style as CSSStyleDeclaration & { zoom: string }).zoom = `${ zoom }%`;
+    }, [ iFrameBodyNode, zoom ]);
 
     /**
      * Injects the passed in stylesheet to the Head element of the document passed in as an argument.
