@@ -70,3 +70,8 @@ export interface CommonConfig {
  * @enum {string}
  */
 export enum AppViewExtensionTypes { }
+
+/**
+ * Interface for the extended feature configs.
+ */
+export type ExtendedFeatureConfigInterface = FeatureConfigInterface;
