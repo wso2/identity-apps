@@ -69,6 +69,7 @@ interface FormFieldModel {
     displayErrorOn?: "blur" | "submit";
     hidden?: boolean;
     "data-testid"?: string;
+    "data-componentid"?: string;
     enableReinitialize?: boolean;
 }
 

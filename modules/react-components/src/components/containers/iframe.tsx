@@ -18,6 +18,7 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
+import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
     IframeHTMLAttributes,
@@ -120,6 +121,10 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
         const styleSheetPromises: Promise<HTMLLinkElement>[] = [];
 
         for (const styleSheet of parentNodeStyleSheets) {
+            if (isEmpty(styleSheet.href)) {
+                continue;
+            }
+
             styleSheetPromises.push(injectStyleSheetToDOM(styleSheet, iFrameWindow.document));
         }
 
@@ -165,6 +170,10 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
         const styleSheetPromises: Promise<HTMLLinkElement>[] = [];
 
         for (const styleSheet of stylesheets) {
+            if (isEmpty(styleSheet)) {
+                continue;
+            }
+
             styleSheetPromises.push(injectStyleSheetToDOM({ href: styleSheet }, iFrameWindow.document));
         }
 

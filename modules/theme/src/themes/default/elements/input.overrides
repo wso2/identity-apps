@@ -29,29 +29,6 @@
 }
 
 /*******************************
-      Input Color Picker
-*******************************/
-
-.ui.input.labeled.react-color {
-    > .ui.label {
-        border: @border;
-    }
-
-    > .ui.react-color-popover {
-        position: absolute;
-        z-index: 2;
-
-        > .ui.react-color-cover {
-            bottom: 0;
-            left: 0;
-            position: fixed;
-            right: 0;
-            top: 0;
-        }
-    }
-}
-
-/*******************************
     Claim Search Variation
 *******************************/
 .ui.icon.input {
