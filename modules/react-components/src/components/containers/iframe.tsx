@@ -48,6 +48,10 @@ export interface IframeProps extends IframeHTMLAttributes<HTMLIFrameElement>, Id
      */
     responsive?: boolean;
     /**
+     * Styles to be injected in to a style tag.
+     */
+    styles?: string;
+    /**
      * External style sheets to be injected in to the iframe.
      */
     stylesheets?: string[];
@@ -74,6 +78,7 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
         cloneParentStyleSheets,
         isReady,
         responsive,
+        styles,
         stylesheets,
         ["data-componentid"]: componentId,
         ...rest
@@ -210,6 +215,29 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
                 isReady(true);
             });
     }, [ stylesheets, isParentStylesheetsCloningCompleted ]);
+
+    /**
+     * 
+     */
+    useEffect(() => {
+
+        // Check if iframe node is loaded before proceeding.
+        if (!iFrameWindow) {
+            return;
+        }
+
+        const styleNodesCollection: HTMLCollectionOf<HTMLStyleElement> = iFrameWindow.document
+            .getElementsByTagName("style");
+        
+        for (const node of styleNodesCollection) {
+            node.remove();
+        }
+
+        const styleNode: HTMLStyleElement = iFrameWindow.document.createElement("style");
+
+        styleNode.innerHTML = styles;
+        iFrameWindow.document.head.prepend(styleNode);
+    }, [ styles, iFrameWindow ]);
 
     /**
      * Injects the passed in stylesheet to the Head element of the document passed in as an argument.
