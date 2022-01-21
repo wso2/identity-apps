@@ -18,6 +18,7 @@
 
 import { HeaderExtension, HeaderLinkCategoryInterface } from "@wso2is/react-components";
 import { HeaderSubPanelItemInterface } from "../../../features/core/components";
+import { FeatureConfigInterface } from "../../../features/core/models";
 
 export interface CommonConfig {
     advancedSearchWithBasicFilters: {
