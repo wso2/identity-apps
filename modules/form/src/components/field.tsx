@@ -24,6 +24,7 @@ import { FieldButton } from "./field-button";
 import { FieldCheckbox } from "./field-checkbox";
 import { FieldCheckboxLegacy } from "./field-checkbox-legacy";
 import { FieldDropdown } from "./field-dropdown";
+import { FieldDurationInput } from "./field-duration-input";
 import { FieldInput } from "./field-input";
 import { FieldQueryParams } from "./field-query-params";
 import { FieldTextarea } from "./field-textarea";
@@ -51,6 +52,7 @@ type FieldType = FC<FormFieldPropsInterface> & {
     Checkbox: typeof FieldCheckbox;
     Dropdown: typeof FieldDropdown;
     QueryParams: typeof FieldQueryParams;
+    DurationInput: typeof FieldDurationInput;
 }
 
 /**
@@ -97,3 +99,4 @@ Field.CheckboxLegacy = FieldCheckboxLegacy;
 Field.Checkbox = FieldCheckbox;
 Field.Dropdown = FieldDropdown;
 Field.QueryParams = FieldQueryParams;
+Field.DurationInput = FieldDurationInput;

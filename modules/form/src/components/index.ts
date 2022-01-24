@@ -25,6 +25,7 @@ export * from "./field-input";
 export * from "./field-textarea";
 export * from "./field-dropdown";
 export * from "./field-query-params";
+export * from "./field-duration-input";
 export * from "./form";
 export * from "./wizard";
 export * from "./wizard2";

@@ -18,10 +18,11 @@
 
 import { Button, CopyInputField, DangerButton, LinkButton, Password, PrimaryButton } from "@wso2is/react-components";
 import omit from "lodash-es/omit";
-import React, { ClipboardEvent, KeyboardEvent, ReactElement } from "react";
+import React, { ClipboardEvent, FC, KeyboardEvent, ReactElement } from "react";
 import { Checkbox, Form, Input, Select } from "semantic-ui-react";
 import { QueryParameters } from "../addons";
-import { FieldButtonTypes, CheckboxAdapterPropsInterface } from "../models";
+import { DURATION_MAPPINGS, DurationInput, UnitOfTime } from "../addons/duration-input";
+import { CheckboxAdapterPropsInterface, FieldButtonTypes } from "../models";
 
 /**
  * The enter key.
@@ -412,4 +413,41 @@ export const QueryParamsAdapter = ({ input, childFieldProps }): ReactElement => 
         />
     );
 
+};
+
+export const DurationInputDropdownAdapter: FC<any> = (props): ReactElement => {
+
+    const { childFieldProps, input, meta } = props;
+
+    console.log("TAG: Props received:", props);
+
+    return (
+        <DurationInput
+            label={ childFieldProps.label }
+            disabled={ childFieldProps.disabled }
+            required={ childFieldProps.required }
+            control={ Input }
+            defaultValues={ childFieldProps.defaultValues }
+            options={ childFieldProps.options }
+            onValuesChange={ (duration: number, unit: UnitOfTime) => {
+                if (childFieldProps.listen && typeof childFieldProps.listen === "function") {
+                    childFieldProps.listen({ duration, unit } as {
+                        duration: number;
+                        unit: UnitOfTime;
+                    });
+                }
+                /**
+                 * This only changes the "input" value. Since the dropdown
+                 * is nested as a action we don't have to wrap it in another
+                 * adapter. Doing it may confuse others.
+                 */
+                input.onChange(Number(duration));
+            } }
+            error={
+                (meta.error && meta.touched)
+                    ? meta.error
+                    : null
+            }
+        />
+    );
 };
