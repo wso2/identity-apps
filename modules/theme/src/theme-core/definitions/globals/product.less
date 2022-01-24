@@ -2170,6 +2170,13 @@ code {
             border-radius: @defaultBorderRadius;
         }
     }
+
+    &.readonly {
+        .color-swatch {
+            background: @readOnlyFormFieldBgColor;
+            cursor: default;
+        }
+    }
 }
 
 .loadUIOverrides();

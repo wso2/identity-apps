@@ -83,6 +83,27 @@ export const AccessControlContext: FunctionComponent<PropsWithChildren<AccessCon
                 [ AccessControlConstants.ATTRIBUTE_DELETE ] : hasRequiredScopes(featureConfig.attributeDialects,
                     featureConfig.attributeDialects.scopes.delete, allowedScopes),
 
+                [ AccessControlConstants.BRANDING ] : hasRequiredScopes(
+                    featureConfig.branding,
+                    featureConfig.branding.scopes.feature,
+                    allowedScopes),
+                [ AccessControlConstants.BRANDING_READ ] : hasRequiredScopes(
+                    featureConfig.attributeDialects,
+                    featureConfig.branding.scopes.read,
+                    allowedScopes),
+                [ AccessControlConstants.BRANDING_WRITE ] : hasRequiredScopes(
+                    featureConfig.attributeDialects,
+                    featureConfig.branding.scopes.create,
+                    allowedScopes),
+                [ AccessControlConstants.BRANDING_EDIT ] : hasRequiredScopes(
+                    featureConfig.attributeDialects,
+                    featureConfig.branding.scopes.update,
+                    allowedScopes),
+                [ AccessControlConstants.BRANDING_DELETE ] : hasRequiredScopes(
+                    featureConfig.attributeDialects,
+                    featureConfig.branding.scopes.delete,
+                    allowedScopes),
+
                 [ AccessControlConstants.GROUP ] : hasRequiredScopes(featureConfig.groups,
                     featureConfig.groups.scopes.feature, allowedScopes),
                 [ AccessControlConstants.GROUP_READ ] : hasRequiredScopes(featureConfig.groups,
