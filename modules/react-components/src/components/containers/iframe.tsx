@@ -56,6 +56,10 @@ export interface IframeProps extends IframeHTMLAttributes<HTMLIFrameElement>, Id
      */
     styleNodeInjectionStrategy?: "append" | "prepend";
     /**
+     * Should the style node be injected after the parent stylesheets have been cloned.
+     */
+    injectStyleNodeAfterParentStyles?: boolean;
+    /**
      * External style sheets to be injected in to the iframe.
      */
     stylesheets?: string[];
@@ -84,6 +88,7 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
         children,
         className,
         cloneParentStyleSheets,
+        injectStyleNodeAfterParentStyles,
         isReady,
         responsive,
         styles,
@@ -235,6 +240,13 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
         if (!iFrameWindow) {
             return;
         }
+debugger
+        // Check if the parent stylesheet cloning is completed.
+        if (styles && !isParentStylesheetsCloningCompleted) {
+            isReady(false);
+
+            return;
+        }
 
         // Remove the existing style nodes before adding the new styles to avoid adding the same
         // styles on `style` prop changes.
@@ -249,12 +261,17 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
 
         styleNode.innerHTML = styles;
         
-        if (styleNodeInjectionStrategy === "append") {
+        // If the `injectStyleNodeAfterParentStyles` flag is set, change the inject strategy to append.
+        if (injectStyleNodeAfterParentStyles) {
+            iFrameWindow.document.head.appendChild(styleNode);
+        } else if (styleNodeInjectionStrategy === "append") {
             iFrameWindow.document.head.appendChild(styleNode);
         } else {
             iFrameWindow.document.head.prepend(styleNode);
         }
-    }, [ styles, iFrameWindow ]);
+
+        isReady(true);
+    }, [ styles, iFrameWindow, isParentStylesheetsCloningCompleted, injectStyleNodeAfterParentStyles ]);
 
     /**
      * Add styling to the iframe body.
