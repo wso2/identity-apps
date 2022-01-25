@@ -240,7 +240,7 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
         if (!iFrameWindow) {
             return;
         }
-debugger
+
         // Check if the parent stylesheet cloning is completed.
         if (styles && !isParentStylesheetsCloningCompleted) {
             isReady(false);
