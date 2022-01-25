@@ -183,6 +183,31 @@ export class AccessControlConstants {
     public static readonly ATTRIBUTE_DELETE: string = "attribute:delete";
 
     /**
+     * Branding feature permission
+     */
+    public static readonly BRANDING: string = "branding";
+
+    /**
+     * Branding read permission
+     */
+    public static readonly BRANDING_READ: string = "branding:read";
+
+    /**
+     * Branding write permission
+     */
+    public static readonly BRANDING_WRITE: string = "branding:write";
+
+    /**
+     * Branding edit permission
+     */
+    public static readonly BRANDING_EDIT: string = "branding:edit";
+
+    /**
+     * Branding delete permission
+     */
+    public static readonly BRANDING_DELETE: string = "branding:delete";
+
+    /**
      * Scope feature permission
      */
     public static readonly SCOPE: string = "scope";
