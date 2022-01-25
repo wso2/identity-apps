@@ -73,7 +73,7 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
     **My Account**
 
     ```
-    regexp=(https://localhost:9443/myaccount/login|https://localhost:9443/myaccount/logout|https://localhost:9000/myaccount/login|https://localhost:9000/myaccount/logout)
+    regexp=(https://localhost:9443/myaccount/login|https://localhost:9443/myaccount/logout|https://localhost:9000/myaccount/login|https://localhost:9000/myaccount/logout|https://localhost:9000/myaccount)
     ```
 
     **Console**
