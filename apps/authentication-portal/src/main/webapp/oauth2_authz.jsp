@@ -75,6 +75,21 @@
                 <jsp:include page="includes/product-title.jsp"/>
             <% } %>
 
+            <%
+                if (!(displayScopes && StringUtils.isNotBlank(scopeString))) {
+            %>
+                <form action="<%=oauth2AuthorizeURL%>" method="post" id="profile2" name="oauth2_authz">
+                    <input type="hidden" name="<%=Constants.SESSION_DATA_KEY_CONSENT%>"
+                    value="<%=Encode.forHtmlAttribute(request.getParameter(Constants.SESSION_DATA_KEY_CONSENT))%>"/>
+                    <input type="hidden" name="consent" id="consent" value="approve"/>
+                </form>
+                <script>
+                    document.getElementById("profile2").submit();
+                </script>
+            <%
+                }
+            %>
+
             <div class="ui segment">
                 <form class="ui large form" action="<%=oauth2AuthorizeURL%>" method="post" id="profile"
                       name="oauth2_authz">
