@@ -76,7 +76,7 @@
             <% } %>
 
             <%
-                if (!(displayScopes && StringUtils.isNotBlank(scopeString))) {
+                if (!displayScopes || StringUtils.isBlank(scopeString)) {
             %>
                 <form action="<%=oauth2AuthorizeURL%>" method="post" id="profile2" name="oauth2_authz">
                     <input type="hidden" name="<%=Constants.SESSION_DATA_KEY_CONSENT%>"
