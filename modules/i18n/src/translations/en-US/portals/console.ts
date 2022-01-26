@@ -1034,10 +1034,9 @@ export const console: ConsoleNS = {
                                                 "passe</1>, <3>Connexion sociale</3> ou tout autre gestionnaire " +
                                                 "tel que <5>Identifier First</5> qui peut gérer ces facteurs sont " +
                                                 "présents dans une étape précédente.",
-                                            secondFactorDisabledDueToProxyMode: "To configure the second-factor" +
-                                                " authenticators such as <1>TOTP</1> and <3>Email OTP</3>," +
-                                                " users must have a local account. Current authentication" +
-                                                " sequence, has <5>Proxy Mode</5> enabled handlers.",
+                                            secondFactorDisabledDueToProxyMode: "To configure <1>{{auth}}</1>," +
+                                                " you should enable the Just-in-Time provisioning" +
+                                                " setting from the following Identity Providers.",
                                             secondFactorDisabledInFirstStep: "Second factor authenticators can " +
                                                 "not be used in the first step."
                                         }
@@ -1062,28 +1061,31 @@ export const console: ConsoleNS = {
                                     flowBuilder: {
                                         addMissingSocialAuthenticatorModal: {
                                             content: {
-                                                body: "You do not have an active Identity Provider configured with " +
+                                                body: "You do not have an active Social " +
+                                                    "Connection configured with " +
                                                     "<1>{{authenticator}} Authenticator</1>. Click on the " +
-                                                    "<3>Configure</3> button to register a new <5>{{authenticator}} " +
-                                                    "Identity Provider</5> or navigate to the <7>Identity " +
-                                                    "Providers</7> section manually.",
-                                                message: "No active {{authenticator}} Identity Provider configured"
+                                                    "<3>Configure</3> button to register" +
+                                                    " a new <5>{{authenticator}} " +
+                                                    "Social Connection</5> or navigate to the <7>Connections</7>" +
+                                                    " section manually.",
+                                                message: "No active {{authenticator}} Social " +
+                                                    "Connection configured"
                                             },
                                             description: "",
-                                            heading: "Configure {{authenticator}} Identity Provider",
+                                            heading: "Configure {{authenticator}} Social Connection",
                                             primaryButton: "Configure",
                                             secondaryButton: "Cancel"
                                         },
                                         duplicateSocialAuthenticatorSelectionModal: {
                                             content: {
-                                                body: "You have multiple Identity Providers configured with <1>" +
+                                                body: "You have multiple Social Connections configured with <1>" +
                                                     "{{authenticator}} Authenticator</1>. Select the desired one " +
                                                     "from the selection below to proceed.",
-                                                message: "Multiple Identity Providers found with {{authenticator}} " +
+                                                message: "Multiple Social Connections found with {{authenticator}} " +
                                                     "Authenticator."
                                             },
                                             description: "",
-                                            heading: "Select {{authenticator}} Identity Provider",
+                                            heading: "Select {{authenticator}} Social Connection",
                                             primaryButton: "Continue",
                                             secondaryButton: "Cancel"
                                         },
@@ -1325,7 +1327,6 @@ export const console: ConsoleNS = {
                                 }
                             },
                             description: {
-                                description: "A text description of the application.",
                                 label: "Description",
                                 placeholder: "Enter a description for the application"
                             },
@@ -3291,17 +3292,12 @@ export const console: ConsoleNS = {
                     },
                     jitProvisioning: {
                         enableJITProvisioning: {
-                            disabledMessageContent: {
-                                1: "You cannot modify Proxy Mode settings since multiple applications" +
-                                    " depend on this connection. To resolve this conflict, you need to" +
-                                    " remove this connection from the listed resources.",
-                                2: "You cannot modify Proxy Mode settings as an application depends" +
-                                    " on this connection. To resolve this conflict, you" +
-                                    " need to remove this connection from the listed resource."
-                            },
-                            disabledMessageHeader: "Setting Conflict",
+                            disabledMessageContent: "You cannot disable the Just-in-Time User" +
+                                " Provisioning setting because the following applications" +
+                                " require it to be enabled.",
+                            disabledMessageHeader: "Operation Not Allowed",
                             hint: "Specify if users federated from this identity provider need to be proxied.",
-                            label: "Enable Proxy Mode"
+                            label: "Just-in-Time User Provisioning"
                         },
                         provisioningScheme: {
                             children: {
@@ -4369,9 +4365,9 @@ export const console: ConsoleNS = {
                                     " depends on this connection. To resolve this conflict, you need to remove" +
                                     " this connection from the listed resource."
                             },
-                            disabledMessageHeader: "Setting Conflict",
+                            disabledMessageHeader: "Operation Not Allowed",
                             hint: "Specify if users federated from this identity provider need to be proxied.",
-                            label: "Enable Proxy Mode"
+                            label: "Just-in-Time User Provisioning"
                         },
                         provisioningScheme: {
                             children: {
@@ -7967,10 +7963,12 @@ export const console: ConsoleNS = {
                 },
                 profile: {
                     fields: {
+                        createdDate: "Created Date",
                         emails: "Email",
                         generic: {
                             default: "Add {{fieldName}}"
                         },
+                        modifiedDate: "Modified Date",
                         name_familyName: "Last Name",
                         name_givenName: "First Name",
                         oneTimePassword: "One Time Password",

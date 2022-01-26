@@ -1039,12 +1039,9 @@ export const console: ConsoleNS = {
                                                 "<1>පරිශීලක නාමය සහ මුරපදය</1>, <3>සමාජ පිවිසුම</3> හෝ මෙම " +
                                                 "සාධක හැසිරවිය හැකි <5>හැඳුනුම්පත පළමුව</5> වැනි වෙනත් ඕනෑම " +
                                                 "හසුරුවන්නන් නම් පමණි. පෙර පියවරක පවතී.",
-                                            secondFactorDisabledDueToProxyMode: "<0>TOTP</0> සහ" +
-                                                " <2>ඊමේල් OTP</2>" +
-                                                " වැනි දෙවන-සාධක සත්‍යාපන යන්ත්‍ර වින්‍යාස කිරීමට," +
-                                                " පරිශීලකයින්ට ප්‍රාදේශීය" +
-                                                " ගිණුමක් තිබිය යුතුය. වත්මන් සත්‍යාපන අනුපිළිවෙලෙහි," +
-                                                " <4>ප්‍රොක්සි මාදිලිය</4> සක්‍රීය හසුරුවන්න ඇත.",
+                                            secondFactorDisabledDueToProxyMode: "<0>{{auth}}</0> වින්‍යාස" +
+                                                " කිරීම සඳහා, ඔබ පහත අනන්‍යතා සපයන්නන්" +
+                                                " වෙතින් යස්ට්-ඉන්-ටයිම් ප්‍රතිපාදන සැකසීම සක්‍රීය කළ යුතුය.",
                                             secondFactorDisabledInFirstStep: "පළමු පියවරේදී" +
                                                 " දෙවන සාධක සත්‍යාපක " +
                                                 "භාවිතා කළ නොහැක."
@@ -1071,28 +1068,30 @@ export const console: ConsoleNS = {
                                     flowBuilder: {
                                         addMissingSocialAuthenticatorModal: {
                                             content: {
-                                                body: "ඔබට අනන්‍යතා සැපයුම්කරුවෙකු <1>{{authenticator}} " +
+                                                body: "ඔබ සමාජ සම්බන්ධතා සැපයුම්කරු <1>{{authenticator}} " +
                                                     "සත්‍යාපකය</ 1> සමඟ වින්‍යාස කර නොමැත. වින්‍යාස කිරීමේ " +
                                                     "ක්‍රියාවලිය ආරම්භ කිරීමට <3>වින්‍යාස කරන්න</3> බොත්තම ක්ලික් " +
-                                                    "කරන්න හෝ <5>{{authenticator}} අනන්‍යතා " +
+                                                    "කරන්න හෝ <5>{{authenticator}} සමාජ සම්බන්ධතා " +
                                                     "සැපයුම්කරුවන්</5> කොටස අතින්.",
-                                                message: "{{authenticator}} හැඳුනුම්පත් සපයන්නෙකු වින්‍යාස කර නොමැත"
+                                                message: "{{authenticator}} සමාජ සම්බන්ධතා" +
+                                                    " සපයන්නෙකු වින්‍යාස කර නොමැත"
                                             },
                                             description: "",
-                                            heading: "{{authenticator}} හැඳුනුම් සැපයුම්කරු වින්‍යාස කරන්න",
+                                            heading: "{{authenticator}} සමාජ සම්බන්ධතා සැපයුම්කරු වින්‍යාස කරන්න",
                                             primaryButton: "වින්‍යාස කරන්න",
                                             secondaryButton: "අවලංගු කරන්න"
                                         },
                                         duplicateSocialAuthenticatorSelectionModal: {
                                             content: {
-                                                body: "<1>{{authenticator}} Authenticator</1> සමඟ වින්‍යාස කර ඇති " +
-                                                    "අනන්‍යතා සැපයුම්කරුවන් ඔබට ඇත. ඉදිරියට යාමට තේරීම් වළල්ලෙන් " +
+                                                body: "<1>{{authenticator}} Authenticator</1> සමඟ " +
+                                                    "වින්‍යාස කර ඇති සමාජ සම්බන්ධතා සැපයුම්කරුවන් ඔබට" +
+                                                    " ඇත. ඉදිරියට යාමට තේරීම් වළල්ලෙන් " +
                                                     "අපේක්ෂිත එකක් තෝරන්න.",
-                                                message: "{{authenticator}} Authenticator සමඟ බහු අනන්‍යතා " +
-                                                    "සපයන්නන් හමු විය."
+                                                message: "{{authenticator}} Authenticator නමින් සමාජ සම්බන්ධතා " +
+                                                    "සපයන්නන් කිහිපයක් හමු විය."
                                             },
                                             description: "",
-                                            heading: "{{authenticator}} හැඳුනුම් සැපයුම්කරු තෝරන්න",
+                                            heading: "{{authenticator}} සමාජ සම්බන්ධතා සැපයුම්කරු තෝරන්න",
                                             primaryButton: "දිගටම කරගෙන යන්න",
                                             secondaryButton: "අවලංගු කරන්න"
                                         },
@@ -1332,7 +1331,6 @@ export const console: ConsoleNS = {
                                 }
                             },
                             description: {
-                                description: "මෘදුකාංග යෙදුමේ පෙළ විස්තරයක්.",
                                 label: "විස්තර",
                                 placeholder: "යෙදුම සඳහා විස්තරයක් ඇතුළත් කරන්න"
                             },
@@ -2985,18 +2983,13 @@ export const console: ConsoleNS = {
                     },
                     jitProvisioning: {
                         enableJITProvisioning: {
-                            disabledMessageContent: {
-                                1: "බහු යෙදුම් මෙම සම්බන්ධතාවය මත රඳා පවතින බැවින් ඔබට ප්‍රොක්සි" +
-                                    " මාදිලියේ සිටුවම් වෙනස් කළ නොහැක. මෙම ගැටුම විසඳීමට," +
-                                    " ඔබ ලැයිස්තුගත සම්පත් වලින් මෙම සම්බන්ධතාවය ඉවත් කළ යුතුය.",
-                                2: "යෙදුමක් මෙම සම්බන්ධතාවය මත රඳා පවතින බැවින් ඔබට ප්‍රොක්සි" +
-                                    " මාදිලියේ සිටුවම් වෙනස් කළ නොහැක. මෙම ගැටුම විසඳීමට, ඔබ" +
-                                    " ලැයිස්තුගත සම්පතෙන් මෙම සම්බන්ධතාවය ඉවත් කළ යුතුය."
-                            },
-                            disabledMessageHeader: "ගැටුම සැකසීම",
+                            disabledMessageContent: "පහත යෙදුම් වලට එය සක්‍රීය කිරීමට අවශ්‍ය" +
+                                " නිසා ඔබට Just-in-Time User Provisioning" +
+                                " සැකසීම අක්‍රිය කළ නොහැක.",
+                            disabledMessageHeader: "මෙහෙයුම අවසර නැත",
                             hint: "මෙම අනන්‍යතා සපයන්නා වෙතින් ෆෙඩරේෂන් කරන ලද" +
                                 " පරිශීලකයන් ප්‍රොක්සි කළ යුතුද යන්න සඳහන් කරන්න.",
-                            label: "ප්‍රොක්සි මාදිලිය සක්‍රීය කරන්න"
+                            label: "නියමිත වේලාවට පරිශීලක ප්‍රතිපාදන"
                         },
                         provisioningScheme: {
                             children: {
@@ -6416,10 +6409,12 @@ export const console: ConsoleNS = {
                 },
                 profile: {
                     fields: {
+                        createdDate: "සාදන ලද දිනය",
                         emails: "විද්යුත් තැපෑල",
                         generic: {
                             default: "{{FieldName} එකතු කරන්න"
                         },
+                        modifiedDate: "වෙනස් කළ දිනය",
                         name_familyName: "අවසන් නම",
                         name_givenName: "මුල් නම",
                         oneTimePassword: "එක් වරක් මුරපදය",

@@ -697,3 +697,19 @@
         }
     }
 }
+
+/*-------------------------------
+      Basic Segment Group
+--------------------------------*/
+
+.ui.segments {
+    &.basic {
+        border: none;
+        box-shadow: none;
+        
+        > .ui.segment {
+            padding: 0;
+            border: none;
+        }
+    }
+}

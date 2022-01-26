@@ -91,4 +91,12 @@ export class I18nConstants {
      * @default
      */
     public static readonly XHR_BACKEND_PLUGIN_ENABLED: boolean = true;
+
+    /**
+     * Default fallback language.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly DEFAULT_FALLBACK_LANGUAGE: string = I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE;
 }

@@ -310,7 +310,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
 
         identityProviderConfig.editIdentityProvider.showJitProvisioning &&
             panes.push({
-                menuItem: "Just-in-Time Provisioning",
+                menuItem: identityProviderConfig.jitProvisioningSettings?.menuItemName,
                 render: JITProvisioningSettingsTabPane
             });
 

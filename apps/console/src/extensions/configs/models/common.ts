@@ -18,7 +18,7 @@
 
 import { HeaderExtension, HeaderLinkCategoryInterface } from "@wso2is/react-components";
 import { HeaderSubPanelItemInterface } from "../../../features/core/components";
-import { ConfigInterface } from "../../../features/core/models";
+import { FeatureConfigInterface } from "../../../features/core/models";
 
 export interface CommonConfig {
     advancedSearchWithBasicFilters: {
@@ -49,7 +49,6 @@ export interface CommonConfig {
          */
         renderAppSwitcherAsDropdown: boolean;
     };
-    initConfig: (config: ConfigInterface) => void
     leftNavigation: {
         /**
          * Should the side panel be categorized for different views.
@@ -63,6 +62,12 @@ export interface CommonConfig {
         isGuestUser: boolean;
         showEmail: boolean;
     };
+    hotjarTracking : {
+        /*
+         * Tag hotjar attributes. 
+        */
+        tagAttributes : () => void;
+    }
 }
 
 /**
@@ -72,3 +77,8 @@ export interface CommonConfig {
  * @enum {string}
  */
 export enum AppViewExtensionTypes { }
+
+/**
+ * Interface for the extended feature configs.
+ */
+export type ExtendedFeatureConfigInterface = FeatureConfigInterface;

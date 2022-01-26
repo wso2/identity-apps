@@ -25,7 +25,7 @@ import {
     SecureApp,
     useAuthContext
 } from "@asgardeo/auth-react";
-import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
+import { AppConstants as CommonAppConstants, CommonConstants as CommonConstantsCore } from "@wso2is/core/constants";
 import { IdentifiableComponentInterface, TenantListInterface } from "@wso2is/core/models";
 import { setSignIn, setSupportedI18nLanguages } from "@wso2is/core/store";
 import { AuthenticateUtils as CommonAuthenticateUtils, ContextUtils, StringUtils } from "@wso2is/core/utils";
@@ -82,6 +82,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         on(Hooks.SignIn, (response: BasicUserInfo) => {
             let logoutUrl;
             let logoutRedirectUrl;
+
+            const event = new Event(CommonConstantsCore.AUTHENTICATION_SUCCESSFUL_EVENT);
+
+            dispatchEvent(event);
 
             // Update the app base name with the newly resolved tenant.
             window[ "AppUtils" ].updateTenantQualifiedBaseName(response.tenantDomain);
@@ -235,14 +239,14 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
              */
             getDecodedIDToken()
                 .then((idToken: DecodedIDTokenPayload) => {
-        
+
                     if(has(idToken, "associated_tenants")) {
                         // If there is an assocation, the user should be redirected to console landing page.
                         const location =
                             !AuthenticationCallbackUrl || AuthenticationCallbackUrl === AppConstants.getAppLoginPath()
                                 ? AppConstants.getAppHomePath()
                                 : AuthenticationCallbackUrl;
-        
+
                         history.push(location);
                     } else {
                         // If there is no assocation, the user should be redirected to creation flow.
@@ -261,7 +265,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         !AuthenticationCallbackUrl || AuthenticationCallbackUrl === AppConstants.getAppLoginPath()
                             ? AppConstants.getAppHomePath()
                             : AuthenticationCallbackUrl;
-    
+
             history.push(location);
         }
     };

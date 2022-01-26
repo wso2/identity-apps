@@ -35,7 +35,6 @@ if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
     });
 
     window["AppUtils"] = AppUtils;
-    commonConfig.initConfig(window["AppUtils"]?.getConfig());
 }
 
 function handleTimeOut(_idleSecondsCounter: number, _sessionAgeCounter: number,

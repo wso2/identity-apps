@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/webapps",
-    "version": "1.2.738",
+    "version": "1.2.777",
     "description": "WSO2 Identity Server Web Applications",
     "keywords": [
         "WSO2",
@@ -53,7 +53,7 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@asgardeo/auth-react": "^0.2.9",
+        "@asgardeo/auth-react": "^0.2.14",
         "@svgr/webpack": "4.3.2",
         "@testing-library/user-event": "^12.7.3",
         "@types/crypto-js": "^3.1.43",

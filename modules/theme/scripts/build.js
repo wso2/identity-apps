@@ -57,15 +57,20 @@ const skipSample = process.argv.indexOf("--skipSample") > -1;     // CLI arg to 
 const skipManifest = process.argv.indexOf("--skipManifest") > -1; // CLI arg to skip the asset manifest generation.
 const skipHashing = process.argv.indexOf("--skipHashing") > -1;   // CLI arg to skip the hashing the css artifacts.
 
-/*
- * Generate Default Site Variables JSON files
+/**
+ * Generate Default Site Variables JSON files.
+ *
+ * @param theme - Theme to generate variables.
+ * @return {Promise<void>}
  */
-const createVariablesLessJson = async () => {
+const createVariablesLessJson = async (theme) => {
     const exportJsFileName = "theme-variables.json";
     const exportMergeLessFileName = "theme-variables.less";
+    
+    const themeDistDir = path.join(distDir, "lib", "themes", theme);
 
-    const exportMergeLessFile = path.join(distDir, exportMergeLessFileName);
-    const exportJsFile = path.join(distDir, exportJsFileName);
+    const exportMergeLessFile = path.join(themeDistDir, exportMergeLessFileName);
+    const exportJsFile = path.join(themeDistDir, exportJsFileName);
 
     const semanticUISiteVariablesFile =
         path.join(semanticUICorePath, DEFAULT_THEME_NAME, "globals", "site.variables");
@@ -75,14 +80,25 @@ const createVariablesLessJson = async () => {
 
     await mergeFiles(inputPathList, exportMergeLessFile);
 
-    const variablesJson =  lessToJson(exportMergeLessFile);
+    // If the requested theme is a sub theme, merge the sub theme's `site.variables` too.
+    if (theme !== DEFAULT_THEME_NAME) {
+        const subThemeSiteVariablesFile = path.join(themesDir, theme, "globals", "site.variables");
+        const exportMergeLessTempFile = path.join(themeDistDir, "temp-" + exportMergeLessFileName);
+
+        await mergeFiles([ exportMergeLessFile, subThemeSiteVariablesFile ], exportMergeLessTempFile);
+
+        fs.removeSync(exportMergeLessFile);
+        fs.renameSync(exportMergeLessTempFile, exportMergeLessFile);
+    }
+
+    const variablesJson = lessToJson(exportMergeLessFile);
 
     fs.writeFileSync(exportJsFile, JSON.stringify(variablesJson, null, 4), (error) => {
         log.error(exportJsFileName + " generation failed.");
         log.error(error);
     });
 
-    log.info(exportJsFileName + " generated.");
+    log.info(exportJsFileName + " for " + theme + " theme generated.");
 
     log.info("build finished.");
 };
@@ -248,11 +264,23 @@ const generateThemes = () => {
         });
     });
 
-    Promise.all(fileWritePromises).then(() => {
-        createVariablesLessJson();
-    }).catch((error) => {
-        log.error(error);
-    });
+    Promise.all(fileWritePromises)
+        .then(() => {
+            // Generate Variables files for all the themes.
+            themes.map((theme) => {
+                if (!fs.lstatSync(path.join(themesDir, theme)).isDirectory()) {
+                    return;
+                }
+
+                createVariablesLessJson(theme)
+                    .catch((error) => {
+                        log.error(error);
+                    });
+            });
+        })
+        .catch((error) => {
+            log.error(error);
+        });
 };
 
 /*

@@ -48,8 +48,7 @@ import { useDispatch } from "react-redux";
 import { Checkbox, Dropdown, Header, Icon, Input, Menu, Popup, Sidebar } from "semantic-ui-react";
 import { stripSlashes } from "slashes";
 import { ScriptTemplatesSidePanel } from "./script-templates-side-panel";
-import { getOperationIcons } from "../../../../../core/configs";
-import { AppUtils, EventPublisher } from "../../../../../core/utils";
+import { AppUtils, EventPublisher, getOperationIcons } from "../../../../../core";
 import { deleteSecret, getSecretList } from "../../../../../secrets/api/secret";
 import AddSecretWizard from "../../../../../secrets/components/add-secret-wizard";
 import { ADAPTIVE_SCRIPT_SECRETS } from "../../../../../secrets/constants/secrets.common";
@@ -158,6 +157,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const [ isEditorFullScreen, setIsEditorFullScreen ] = useState<boolean>(false);
     const [ showAddSecretModal, setShowAddSecretModal ] = useState<boolean>(false);
     const [ editorInstance, setEditorInstance ] = useState<codemirror.Editor>(undefined);
+    const [ isSecretsDropdownOpen, setIsSecretsDropdownOpen ] = useState<boolean>(false);
 
     /**
      * List of secrets for the selected {@code secretType}. It can hold secrets of
@@ -677,7 +677,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const onSecretDeleteClick = async (): Promise<void> => {
         if (deletingSecret) {
             try {
-                deleteSecret({
+                await deleteSecret({
                     params: {
                         secretName: deletingSecret.secretName,
                         secretType: deletingSecret.type
@@ -727,8 +727,11 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                 button
                 upward={ false }
                 options={ filteredSecretList }
+                onOpen={ () => setIsSecretsDropdownOpen(true) }
+                onClose={ () => setIsSecretsDropdownOpen(false) }
                 icon ={ (
                     <Popup
+                        disabled={ isSecretsDropdownOpen }
                         trigger={ (
                             <div>
                                 <GenericIcon
@@ -1201,7 +1204,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                     <Menu attached="top" className="action-panel" secondary>
                                         <Menu.Menu position="right">
                                             { resolveApiDocumentationLink() }
-                                            <Menu.Item className="action">
+                                            <Menu.Item 
+                                            className={ `action ${isSecretsDropdownOpen ? "selected-secret" : "" }` }>
                                                 <div>
                                                     { renderSecretListDropdown() }
                                                 </div>

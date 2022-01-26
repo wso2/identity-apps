@@ -17,6 +17,7 @@
  */
 
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { LocalStorageUtils } from "@wso2is/core/utils";
 import { Code, ConfirmationModal, ContentLoader, EmphasizedSegment, LabeledCard, Text } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
@@ -32,13 +33,14 @@ import GoogleLoginSequenceTemplate from "./templates/google-login-sequence.json"
 import SecondFactorTOTPSequenceTemplate from "./templates/second-factor-totp-sequence.json";
 import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "../../../../core";
 import {
+    AuthenticatorCreateWizardFactory,
     AuthenticatorMeta,
     GenericAuthenticatorInterface,
+    IdentityProviderManagementConstants,
     IdentityProviderManagementUtils,
     IdentityProviderTemplateInterface
 } from "../../../../identity-providers";
-import { AuthenticatorCreateWizardFactory } from "../../../../identity-providers/components";
-import { IdentityProviderManagementConstants } from "../../../../identity-providers/constants";
+import { ApplicationManagementConstants } from "../../../constants";
 import { ApplicationInterface, AuthenticationSequenceInterface, LoginFlowTypes } from "../../../models";
 import { AdaptiveScriptUtils } from "../../../utils";
 
@@ -136,8 +138,15 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
      * Loads federated authenticators and local authenticators on component load.
      */
     useEffect(() => {
-        
-        fetchAndCategorizeAuthenticators();
+
+        fetchAndCategorizeAuthenticators().finally();
+
+        // Reset the IDs in local storage on mount.
+        LocalStorageUtils.setValueInLocalStorage(
+            ApplicationManagementConstants.AUTHENTICATORS_LOCAL_STORAGE_KEY,
+            JSON.stringify([])
+        );
+
     }, []);
 
     /**
@@ -156,6 +165,10 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         setModeratedAuthenticationSequence(authenticationSequence);
     }, [ authenticationSequence ]);
 
+    const refreshAuthenticators = (): Promise<void> => {
+        return fetchAndCategorizeAuthenticators();
+    };
+
     /**
      * Fetches the list of Authenticators and categorize them.
      *
@@ -166,11 +179,11 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                                            google: GenericAuthenticatorInterface[],
                                                            github: GenericAuthenticatorInterface[],
                                                            facebook: GenericAuthenticatorInterface[]
-    ) => void): void => {
+    ) => void): Promise<void> => {
 
         setIsAuthenticatorsFetchRequestLoading(true);
 
-        IdentityProviderManagementUtils.getAllAuthenticators()
+        return IdentityProviderManagementUtils.getAllAuthenticators()
             .then((response: GenericAuthenticatorInterface[][]) => {
 
                 const google: GenericAuthenticatorInterface[] = [];
@@ -179,7 +192,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
 
                 response[ 1 ].filter((authenticator: GenericAuthenticatorInterface) => {
                     if (authenticator.defaultAuthenticator.authenticatorId
-                        ===  IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID) {
+                        === IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID) {
 
                         google.push(authenticator);
                     } else if (authenticator.defaultAuthenticator.authenticatorId
@@ -398,7 +411,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
 
         let idpTemplateTypeToTrigger: string = null; // Which template wizard to trigger? i.e Google wizard etc.
         let authenticatorName: string = null; // Which flow triggered the flow? i.e Google, Facebook etc.
-        
+
         if (socialDisclaimerModalType === LoginFlowTypes.GOOGLE_LOGIN) {
             idpTemplateTypeToTrigger = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE;
             authenticatorName = IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME;
@@ -460,14 +473,14 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                         }
                         tOptions={ { authenticator: authenticatorName } }
                     >
-                        You do not have an active Identity Provider configured with <Code> { authenticatorName } 
-                        Authenticator</Code>. Click on the <strong>Configure</strong> button to register a new 
-                        <Code>{ authenticatorName } Identity Provider</Code> or navigate to the <a
+                        You do not have an active Social Connection configured with <Code> { authenticatorName }
+                        Authenticator</Code>. Click on the <strong>Configure</strong> button to register a new
+                        <Code>{ authenticatorName } Social Connection</Code> or navigate to the <a
                             onClick={ () => {
                                 history.push(AppConstants.getPaths().get("IDP"));
                             } }
                             className="external-link link pointing primary"
-                        >Identity Providers</a> section manually.
+                        >Connections</a> section manually.
                     </Trans>
                 </ConfirmationModal.Content>
             </ConfirmationModal>
@@ -551,7 +564,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                             }
                             tOptions={ { authenticator: authenticatorName } }
                         >
-                            You have multiple Identity Providers configured with <Code>{ authenticatorName } 
+                            You have multiple Social Connections configured with <Code>{ authenticatorName }
                             Authenticator</Code>. Select the desired one from the selection below to proceed.
                         </Trans>
                     </Text>
@@ -635,7 +648,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                         if (idpCreateWizardTriggerOrigin === "INTERNAL") {
                             handleLoginFlowSelect(socialDisclaimerModalType, google, github, facebook);
                         }
-                    });
+                    }).finally();
                 } }
                 onWizardClose={ () => {
                     // Housekeeping...Reset IDP wizard related states.
@@ -666,6 +679,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                         ) : (
                             <>
                                 <SignInMethodCustomization
+                                    refreshAuthenticators={ refreshAuthenticators }
                                     appId={ appId }
                                     authenticators={ authenticators }
                                     authenticationSequence={ moderatedAuthenticationSequence }

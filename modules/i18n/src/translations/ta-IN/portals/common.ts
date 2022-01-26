@@ -109,9 +109,9 @@ export const common: CommonNS = {
     myAccount: "என் கணக்கு",
     name: "பெயர்",
     networkErrorMessage: {
-        description: "பயன்பாட்டை மீண்டும் ஏற்ற முயற்சிக்கவும்.",
-        heading: "ஏதோ தவறு நடந்துவிட்டது",
-        primaryActionText: "பயன்பாட்டை மீண்டும் ஏற்றவும்"
+        description: "மீண்டும் உள்நுழைய முயற்சிக்கவும்.",
+        heading: "உங்கள் அமர்வு காலாவதியாகி விட்டது",
+        primaryActionText: "உள்நுழையவும்"
     },
     next: "அடுத்தது",
     okay: "சரி",

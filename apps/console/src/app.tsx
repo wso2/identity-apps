@@ -75,6 +75,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
     const uuid: string = useSelector((state: AppState) => state.profile.profileInfo.id);
+    const theme: string = useSelector((state: AppState) => state?.config?.ui?.theme?.name);
 
     const [ baseRoutes, setBaseRoutes ] = useState<RouteInterface[]>(getBaseRoutes());
 
@@ -320,20 +321,33 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                 <>
                                                     <Helmet>
                                                         <title>{ appTitle }</title>
+                                                        {
+                                                            (window?.themeHash && window?.publicPath && theme)
+                                                                ? (
+                                                                    <link
+                                                                        href={
+                                                                            `${window?.origin}${window?.publicPath}/libs/themes/${theme}/theme.${window?.themeHash}.min.css`
+                                                                        }
+                                                                        rel="stylesheet"
+                                                                        type="text/css"
+                                                                    />
+                                                                ) 
+                                                                : null
+                                                        }
                                                     </Helmet>
                                                     <NetworkErrorModal
                                                         heading={
                                                             (<Trans
                                                                 i18nKey={ "common:networkErrorMessage.heading" }
                                                             >
-                                                                Something went wrong
+                                                                Your session has expired
                                                             </Trans>)
                                                         }
                                                         description={
                                                             (<Trans
                                                                 i18nKey={ "common:networkErrorMessage.description" }
                                                             >
-                                                                Please try reloading the app.
+                                                                Please try signing in again.
                                                             </Trans>)
                                                         }
                                                         primaryActionText={
@@ -342,7 +356,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                                     "common:networkErrorMessage.primaryActionText"
                                                                 }
                                                             >
-                                                                Reload the App
+                                                                Sign In
                                                             </Trans>)
                                                         }
                                                     />

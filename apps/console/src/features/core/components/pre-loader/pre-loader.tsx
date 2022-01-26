@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,14 +16,15 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
+import "./pre-loader.css";
 
 /**
  * Pre loader component props interface.
  */
-type PreLoaderPropsInterface = TestableComponentInterface;
+type PreLoaderPropsInterface = IdentifiableComponentInterface;
 
 /**
  * Pre-Loader for the application.
@@ -37,7 +38,7 @@ export const PreLoader: FunctionComponent<PreLoaderPropsInterface> = (
 ): ReactElement => {
 
     const {
-        ["data-testid"]: testId
+        ["data-componentid"]: testId
     } = props;
 
     return(
@@ -51,5 +52,5 @@ export const PreLoader: FunctionComponent<PreLoaderPropsInterface> = (
  * Default props for the component.
  */
 PreLoader.defaultProps = {
-    "data-testid": "pre-loader"
+    "data-componentid": "pre-loader"
 };

@@ -1050,12 +1050,10 @@ export const console: ConsoleNS = {
                                                 "</1> ou tout autre gestionnaire tel que <3>Identifiant d’abord " +
                                                 "</3>qui peut gérer ces facteurs est présent dans une étape " +
                                                 "précédente.",
-                                            secondFactorDisabledDueToProxyMode: "Pour configurer les" +
-                                                " authentificateurs de second facteur tels que" +
-                                                " <1>TOTP</1> et <3>Email OTP</3>, les utilisateurs" +
-                                                " doivent disposer d'un compte local. Séquence" +
-                                                " d'authentification actuelle, a des gestionnaires activés" +
-                                                " pour le <5>Mode Proxy</5>.",
+                                            secondFactorDisabledDueToProxyMode: "Pour configurer" +
+                                                " <1>{{auth}}</1>, vous devez activer le paramètre" +
+                                                " d'approvisionnement juste-à-temps à partir des" +
+                                                " fournisseurs d'identité suivants.",
                                             secondFactorDisabledInFirstStep: "Les authentificateurs de deuxième " +
                                                 "facteur ne peuvent pas être utilisés dans la première étape."
                                         }
@@ -1083,29 +1081,38 @@ export const console: ConsoleNS = {
                                     flowBuilder: {
                                         addMissingSocialAuthenticatorModal: {
                                             content: {
-                                                body: "Vous n'avez pas de fournisseur d'identité configuré avec " +
+                                                body: "Vous n'avez pas de connexion sociale" +
+                                                    " active configurée avec " +
                                                     "<1>{{authenticator}} Authenticator</1>. Cliquez sur " +
-                                                    "<3>Configurer</3> bouton pour lancer le processus de " +
-                                                    "configuration ou accéder à la section <5>{{authenticator}} " +
-                                                    "d'identité</5> manuellement.",
-                                                message: "Aucun fournisseur d'identité {{authenticator}} configuré"
+                                                    "<3>Configurer</3> bouton pour lancer le" +
+                                                    " processus de " +
+                                                    "configuration ou accéder à la" +
+                                                    " section <5>{{authenticator}} " +
+                                                    "Connexion Sociale</5> manuellement.",
+                                                message: "Aucun fournisseur Connexion sociale" +
+                                                    " {{authenticator}} configuré"
                                             },
                                             description: "",
-                                            heading: "Configurer le fournisseur d'identité {{authenticator}}",
+                                            heading: "Configurer le fournisseur Connexion " +
+                                                "sociale {{authenticator}}",
                                             primaryButton: "Configurer",
                                             secondaryButton: "Annuler"
                                         },
                                         duplicateSocialAuthenticatorSelectionModal: {
                                             content: {
-                                                body: "Vous avez plusieurs fournisseurs d'identité configurés " +
+                                                body: "Vous avez plusieurs fournisseurs " +
+                                                    "Connexions sociales" +
+                                                    " configurés " +
                                                     "avec <1> {{authenticator}} Authenticator </1>. " +
                                                     "Sélectionnez celui de votre choix dans la sélection " +
                                                     "ci-dessous pour continuer.",
-                                                message: "Plusieurs fournisseurs d'identité trouvés avec " +
+                                                message: "Plusieurs fournisseurs Connexions" +
+                                                    " sociales trouvés avec " +
                                                     "{{authenticator}} Authenticator."
                                             },
                                             description: "",
-                                            heading: "Sélectionnez le fournisseur d'identité {{authenticator}}",
+                                            heading: "Sélectionnez le fournisseur Connexion" +
+                                                " sociale {{authenticator}}",
                                             primaryButton: "Continuer",
                                             secondaryButton: "Annuler"
                                         },
@@ -1351,7 +1358,6 @@ export const console: ConsoleNS = {
                                 }
                             },
                             description: {
-                                description: "Une description textuelle de l'application.",
                                 label: "Description",
                                 placeholder: "Saisissez une description pour l'application"
                             },
@@ -3057,20 +3063,13 @@ export const console: ConsoleNS = {
                     },
                     jitProvisioning: {
                         enableJITProvisioning: {
-                            disabledMessageContent: {
-                                1: "Vous ne pouvez pas modifier les paramètres du mode proxy" +
-                                    " car plusieurs applications dépendent de cette connexion." +
-                                    " Pour résoudre ce conflit, vous devez supprimer cette" +
-                                    " connexion des ressources répertoriées.",
-                                2: "Vous ne pouvez pas modifier les paramètres du mode proxy" +
-                                    " car une application dépend de cette connexion. Pour" +
-                                    " résoudre ce conflit, vous devez supprimer cette connexion" +
-                                    " de la ressource répertoriée."
-                            },
-                            disabledMessageHeader: "Conflit de réglage",
+                            disabledMessageContent: "Vous ne pouvez pas désactiver le" +
+                                " paramètre de provisionnement d'utilisateurs juste-à-temps" +
+                                " car les applications suivantes nécessitent son activation.",
+                            disabledMessageHeader: "Opération non autorisée",
                             hint: "Spécifiez si les utilisateurs fédérés à partir de ce" +
                                 " fournisseur d'identité doivent être mandatés.",
-                            label: "Activer le mode proxy"
+                            label: "Provisionnement d'utilisateurs juste à temps"
                         },
                         provisioningScheme: {
                             children: {
@@ -6555,10 +6554,12 @@ export const console: ConsoleNS = {
                 },
                 profile: {
                     fields: {
+                        createdDate: "Date de création",
                         emails: "Email",
                         generic: {
                             default: "Ajouter l'attribut {{fieldName}}"
                         },
+                        modifiedDate: "Date modifiée",
                         name_familyName: "Nom de famille",
                         name_givenName: "Prénom",
                         oneTimePassword: "Mot de passe à usage unique",
