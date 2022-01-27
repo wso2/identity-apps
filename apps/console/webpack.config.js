@@ -463,9 +463,9 @@ module.exports = (env) => {
                     filename: path.join(distFolder, "index.jsp"),
                     hash: true,
                     // eslint-disable-next-line max-len
-                    hotjarSystemVariable: "<% String hotjar_track_code = System.getenv().getOrDefault(\"hotjar_tracking_code\", null); %>",
+                    hotjarSystemVariable: "<% String hotjar_track_code_system_var = System.getenv().getOrDefault(\"hotjar_tracking_code\", null); %>",
+                    hotjarSystemVariableNullCheck: "<% String hotjar_track_code = StringUtils.isNotBlank(hotjar_track_code_system_var) ? hotjar_track_code_system_var : null; %>",
                     hotjarTrackingCode: "<%= hotjar_track_code %>",
-                    hotjarTrackingCodeNullCheck: "StringUtils.isNotBlank(hotjar_track_code)",
                     importStringUtils: "<%@ page import=\"org.apache.commons.lang.StringUtils\" %>",
                     importSuperTenantConstant: !isDeployedOnExternalServer
                         ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
