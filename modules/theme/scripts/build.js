@@ -64,6 +64,7 @@ const skipHashing = process.argv.indexOf("--skipHashing") > -1;   // CLI arg to 
  * @return {Promise<void>}
  */
 const createVariablesLessJson = async (theme) => {
+
     const exportJsFileName = "theme-variables.json";
     const exportMergeLessFileName = "theme-variables.less";
     
@@ -72,23 +73,49 @@ const createVariablesLessJson = async (theme) => {
     const exportMergeLessFile = path.join(themeDistDir, exportMergeLessFileName);
     const exportJsFile = path.join(themeDistDir, exportJsFileName);
 
-    const semanticUISiteVariablesFile =
-        path.join(semanticUICorePath, DEFAULT_THEME_NAME, "globals", "site.variables");
+    /**
+     * Merges the LESS variable files.
+     * `mergeFiles` has a limitation when merging more than 2 files at once. Hence, temp files should be maintained.
+     *
+     * @param files - Files to be merge.
+     * @return {Promise<void>}
+     */
+    const mergeVariableFiles = async (files) => {
+
+        const exportMergeLessTempFileWithSiteVariables = path.join(themeDistDir, exportMergeLessFileName + "-temp-001");
+        const exportMergeLessTempFileWithLoginVariables = path.join(themeDistDir,
+            exportMergeLessFileName + "-temp-002");
+
+        await mergeFiles([ files[0], files[1] ], exportMergeLessTempFileWithSiteVariables);
+        await mergeFiles([ exportMergeLessTempFileWithSiteVariables, files[2] ],
+            exportMergeLessTempFileWithLoginVariables);
+
+        fs.removeSync(exportMergeLessFile);
+        fs.removeSync(exportMergeLessTempFileWithSiteVariables);
+        fs.renameSync(exportMergeLessTempFileWithLoginVariables, exportMergeLessFile);
+    };
+
+    const semanticUISiteVariablesFile = path.join(semanticUICorePath, DEFAULT_THEME_NAME, "globals", "site.variables");
     const themeCoreSiteVariablesFile = path.join(themesDir, DEFAULT_THEME_NAME, "globals", "site.variables");
+    const themeCoreLoginPortalVariablesFile = path.join(themesDir, DEFAULT_THEME_NAME, "apps",
+        "login-portal.variables");
 
-    const inputPathList = [ semanticUISiteVariablesFile, themeCoreSiteVariablesFile ];
-
-    await mergeFiles(inputPathList, exportMergeLessFile);
+    await mergeVariableFiles([
+        semanticUISiteVariablesFile,
+        themeCoreSiteVariablesFile,
+        themeCoreLoginPortalVariablesFile
+    ]);
 
     // If the requested theme is a sub theme, merge the sub theme's `site.variables` too.
     if (theme !== DEFAULT_THEME_NAME) {
         const subThemeSiteVariablesFile = path.join(themesDir, theme, "globals", "site.variables");
-        const exportMergeLessTempFile = path.join(themeDistDir, "temp-" + exportMergeLessFileName);
+        const subThemeLoginPortalVariablesFile = path.join(themesDir, theme, "apps", "login-portal.variables");
 
-        await mergeFiles([ exportMergeLessFile, subThemeSiteVariablesFile ], exportMergeLessTempFile);
-
-        fs.removeSync(exportMergeLessFile);
-        fs.renameSync(exportMergeLessTempFile, exportMergeLessFile);
+        await mergeVariableFiles([
+            exportMergeLessFile,
+            subThemeSiteVariablesFile,
+            subThemeLoginPortalVariablesFile
+        ]);
     }
 
     const variablesJson = lessToJson(exportMergeLessFile);
