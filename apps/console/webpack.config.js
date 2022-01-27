@@ -465,6 +465,8 @@ module.exports = (env) => {
                     // eslint-disable-next-line max-len
                     hotjarSystemVariable: "<% String hotjar_track_code = System.getenv().getOrDefault(\"hotjar_tracking_code\", null); %>",
                     hotjarTrackingCode: "<%= hotjar_track_code %>",
+                    hotjarTrackingCodeNullCheck: "StringUtils.isNotBlank(hotjar_track_code)",
+                    importStringUtils: "<%@ page import=\"org.apache.commons.lang.StringUtils\" %>",
                     importSuperTenantConstant: !isDeployedOnExternalServer
                         ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
                         "MultitenantConstants.SUPER_TENANT_DOMAIN_NAME\"%>"
