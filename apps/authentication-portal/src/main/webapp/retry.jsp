@@ -95,7 +95,7 @@
                         <div class="header"><%=Encode.forHtmlContent(stat)%></div>
                         <p><%=Encode.forHtmlContent(statusMessage)%></p>
                         <% if (StringUtils.isNotBlank(applicationAccessURLWithoutEncoding)) { %>
-                        <i class="caret left icon orange"></i><a href="<%= IdentityManagementEndpointUtil.getURLEncodedCallback(applicationAccessURLWithoutEncoding)%>">Back to sign in</a>
+                        <i class="caret left icon primary"></i><a href="<%= IdentityManagementEndpointUtil.getURLEncodedCallback(applicationAccessURLWithoutEncoding)%>">Back to sign in</a>
                         <% } %>
                     </div>
                 </div>
