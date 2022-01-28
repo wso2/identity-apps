@@ -49,8 +49,7 @@
     <% } %>
 
     <main class="center-segment">
-        <div class="ui container medium center aligned middle">
-
+        <div class="ui container center aligned medium middle">
             <!-- product-title -->
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -61,16 +60,24 @@
                 <jsp:include page="includes/product-title.jsp"/>
             <% } %>
 
-            <div class="ui segment center aligned">
+            <div class="ui segment left aligned">
+                <div class="loader-bar"></div>
+
                 <h3 class="ui header">
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "verification")%>
                 </h3>
-
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "touch.your.u2f.device")%>
-
                 <div class="ui divider hidden"></div>
+                <div class="ui two column left aligned stackable grid">
+                    <div class="middle aligned row">
+                        <div class="six wide column">
+                            <img class="img-responsive" src="images/U2F.png" />
+                        </div>
+                        <div class="ten wide column">
+                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "touch.your.u2f.device")%>
+                        </div>
+                </div>
 
-                <div> <img class="img-responsive" src="images/U2F.png"> </div>
+
 
                 <form method="POST" action="<%=commonauthURL%>" id="form" onsubmit="return false;">
                     <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
