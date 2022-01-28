@@ -32,7 +32,7 @@
         <script>
             var userAccessedPath = window.location.href;
             var applicationDomain = window.location.origin;
-            var userTenant = userAccessedPath.split("/t/")[1];
+            var userTenant = userAccessedPath.split("/t/")[1] ?  userAccessedPath.split("/t/")[1].split("/")[0] : null;
 
             var serverOrigin = "<%=serverUrl%>";
 
@@ -55,7 +55,7 @@
                 scope: ["openid SYSTEM"],
                 storage: "webWorker",
                 endpoints: {
-                    authorizationEndpoint: getApiPath(userTenant ? "/t/a/oauth2/authorize?ut="+userTenant : "/t/a/oauth2/authorize"),
+                    authorizationEndpoint: getApiPath(userTenant ? "/t/a/oauth2/authorize?ut="+userTenant.replace(/\/+$/, '') : "/t/a/oauth2/authorize"),
                     clockTolerance: 300,
                     jwksEndpointURL: undefined,
                     logoutEndpointURL: getApiPath("/t/a/oidc/logout"),
