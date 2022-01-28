@@ -23,65 +23,65 @@
     String serverUrl = getServerURL("", true, true);
 %>
 
-<!doctype html>
+<!DOCTYPE HTML>
 <html>
-<head>
-    <script src="https://unpkg.com/@asgardeo/auth-spa@latest/dist/asgardeo-spa.production.min.js"></script>
-</head>
-<body>
-<script>
-    var userAccessedPath = window.location.href;
-    var applicationDomain = window.location.origin;
-    var userTenant = userAccessedPath.split("/t/")[1];
+    <head>
+        <script src="https://unpkg.com/@asgardeo/auth-spa@latest/dist/asgardeo-spa.production.min.js"></script>
+    </head>
+    <body>
+        <script>
+            var userAccessedPath = window.location.href;
+            var applicationDomain = window.location.origin;
+            var userTenant = userAccessedPath.split("/t/")[1];
 
-    var serverOrigin = "<%=serverUrl%>";
+            var serverOrigin = "<%=serverUrl%>";
 
-    function getApiPath(path) {
-        if(path) {
-            return serverOrigin + path;
-        }
+            function getApiPath(path) {
+                if(path) {
+                    return serverOrigin + path;
+                }
 
-        return serverOrigin;
-    }
+                return serverOrigin;
+            }
 
-    var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
+            var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
 
-    var authConfig = {
-        signInRedirectURL: applicationDomain.replace(/\/+$/, ''),
-        signOutRedirectURL: applicationDomain.replace(/\/+$/, ''),
-        clientID: "MY_ACCOUNT",
-        serverOrigin: getApiPath(),
-        responseMode: "form_post",
-        scope: ["openid SYSTEM"],
-        storage: "webWorker",
-        endpoints: {
-            authorizationEndpoint: getApiPath(userTenant ? "/t/a/oauth2/authorize?ut="+userTenant : "/t/a/oauth2/authorize"),
-            clockTolerance: 300,
-            jwksEndpointURL: undefined,
-            logoutEndpointURL: getApiPath("/t/a/oidc/logout"),
-            oidcSessionIFrameEndpointURL: getApiPath("/t/a/oidc/checksession"),
-            serverOrigin: getApiPath(),
-            tokenEndpointURL: undefined,
-            tokenRevocationEndpointURL: undefined,
-            wellKnownEndpointURL: undefined,
-        },
-        enablePKCE: true,
-        overrideWellEndpointConfig: true
-    }
+            var authConfig = {
+                signInRedirectURL: applicationDomain.replace(/\/+$/, ''),
+                signOutRedirectURL: applicationDomain.replace(/\/+$/, ''),
+                clientID: "MY_ACCOUNT",
+                serverOrigin: getApiPath(),
+                responseMode: "form_post",
+                scope: ["openid SYSTEM"],
+                storage: "webWorker",
+                endpoints: {
+                    authorizationEndpoint: getApiPath(userTenant ? "/t/a/oauth2/authorize?ut="+userTenant : "/t/a/oauth2/authorize"),
+                    clockTolerance: 300,
+                    jwksEndpointURL: undefined,
+                    logoutEndpointURL: getApiPath("/t/a/oidc/logout"),
+                    oidcSessionIFrameEndpointURL: getApiPath("/t/a/oidc/checksession"),
+                    serverOrigin: getApiPath(),
+                    tokenEndpointURL: undefined,
+                    tokenRevocationEndpointURL: undefined,
+                    wellKnownEndpointURL: undefined,
+                },
+                enablePKCE: true,
+                overrideWellEndpointConfig: true
+            }
 
-    auth.initialize(authConfig);
+            auth.initialize(authConfig);
 
-    auth.trySignInSilently().then(res => {
-        if(res === false) {
-            auth.signIn();
-        } 
-        else {
-            sessionStorage.setItem("auth_callback_url_console", userAccessedPath.split(window.origin)[1])
-            sessionStorage.setItem("userAccessedPath", userAccessedPath.split(window.origin)[1])
-            
-            window.location = '/authenticate';
-        }
-    });
-</script>
-</body>
+            auth.trySignInSilently().then(res => {
+                if(res === false) {
+                    auth.signIn();
+                } 
+                else {
+                    sessionStorage.setItem("auth_callback_url_console", userAccessedPath.split(window.origin)[1])
+                    sessionStorage.setItem("userAccessedPath", userAccessedPath.split(window.origin)[1])
+                    
+                    window.location = '/authenticate';
+                }
+            });
+        </script>
+    </body>
 </html>
