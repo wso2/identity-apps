@@ -74,6 +74,10 @@
                     background: @loginPortalLoginCardBackground;
                     padding: @loginPortalLoginCardPadding;
                     border-radius: @loginPortalLoginCardBorderRadius;
+                    
+                    > .ui.header {
+                        color: @loginPortalLoginCardFontColor;
+                    }
 
                     .segment-form {
                         text-align: left;
@@ -108,6 +112,10 @@
 
                         .align-right {
                             text-align: right;
+                        }
+
+                        .ui.checkbox label, .ui.checkbox+label {
+                            color: @loginPortalLoginCardFontColor;
                         }
                     }
                 }
