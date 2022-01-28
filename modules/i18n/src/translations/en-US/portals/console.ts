@@ -2505,6 +2505,12 @@ export const console: ConsoleNS = {
                             message: "Retrieval successful"
                         }
                     },
+                    firstFactorAuthenticatorToSecondStep: {
+                        genericError: {
+                            description: "This authenticator can only be added to the first step.",
+                            message: "Cannot add to this step"
+                        }
+                    },
                     getInboundProtocolConfig: {
                         error: {
                             description: "{{description}}",

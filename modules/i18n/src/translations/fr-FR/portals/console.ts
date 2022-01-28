@@ -2548,6 +2548,12 @@ export const console: ConsoleNS = {
                             message: "Récupération réussie"
                         }
                     },
+                    firstFactorAuthenticatorToSecondStep: {
+                        genericError: {
+                            description: "Cet authentificateur ne peut être ajouté qu'à la première étape.",
+                            message: "Impossible d'ajouter à cette étape"
+                        }
+                    },
                     getInboundProtocolConfig: {
                         error: {
                             description: "{{description}}",

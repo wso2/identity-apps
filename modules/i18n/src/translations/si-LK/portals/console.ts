@@ -2481,6 +2481,12 @@ export const console: ConsoleNS = {
                             message: "නැවත ලබා ගැනීම සාර්ථකයි"
                         }
                     },
+                    firstFactorAuthenticatorToSecondStep: {
+                        genericError: {
+                            description: "මෙම සත්‍යාපකය එක් කළ හැක්කේ පළමු පියවරට පමණි.",
+                            message: "මෙම පියවරට එකතු කළ නොහැක"
+                        }
+                    },
                     getInboundProtocolConfig: {
                         error: {
                             description: "{{description}}",
