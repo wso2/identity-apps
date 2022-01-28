@@ -27,8 +27,8 @@ import {
 export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {
         showEnableAuthorization: true,
-        showSaaS: true,
-        showReturnAuthenticatedIdPs: true
+        showReturnAuthenticatedIdPs: true,
+        showSaaS: true
     },
     attributeSettings: {
         advancedAttributeSettings: {
@@ -37,8 +37,8 @@ export const applicationConfig: ApplicationConfig = {
             showIncludeUserstoreDomainSubject: true,
             showRoleAttribute: true,
             showRoleMapping: true,
-            showUseMappedLocalSubject: true,
-            showSubjectAttribute: false
+            showSubjectAttribute: false,
+            showUseMappedLocalSubject: true
         },
         attributeSelection: {
             getClaims: (claims: ExtendedClaimInterface[]): ExtendedClaimInterface[] => {
@@ -64,26 +64,29 @@ export const applicationConfig: ApplicationConfig = {
         showProvisioningSettings: true
     },
     inboundOIDCForm: {
+        disabledGrantTypes: [],
         shouldValidateCertificate: true,
+        showBackChannelLogout: true,
+        showCertificates: true,
         showClientSecretMessage: true,
         showFrontChannelLogout: true,
-        showNativeClientSecretMessage: true,
-        showScopeValidators: true,
         showIdTokenEncryption: true,
-        showBackChannelLogout: true,
+        showNativeClientSecretMessage: true,
         showRequestObjectSignatureValidation: true,
-        showCertificates: true,
         showReturnAuthenticatedIdPList: true,
-        disabledGrantTypes: []
+        showScopeValidators: true
     },
     inboundSAMLForm: {
+        artifactBindingAllowed: true,
         showApplicationQualifier: true,
         showAttributeConsumingServiceIndex: true,
-        showQueryRequestProfile: true,
-        artifactBindingAllowed:true
+        showQueryRequestProfile: true
     },
     signInMethod: {
         authenticatorSelection: {
+            customAuthenticatorAdditionValidation: (): boolean => {
+                return true;
+            },
             messages: {
                 secondFactorDisabled: null,
                 secondFactorDisabledInFirstStep: null
