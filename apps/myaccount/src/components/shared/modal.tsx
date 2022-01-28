@@ -17,7 +17,8 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import React, { MouseEvent } from "react";
+import { PrimaryButton } from "@wso2is/react-components";
+import React, { MouseEvent, ReactElement } from "react";
 import { Button, Icon, Modal, ModalProps } from "semantic-ui-react";
 
 /**
@@ -32,7 +33,7 @@ interface ModalComponentProps extends ModalProps, TestableComponentInterface {
     onSecondaryActionClick?: (e: MouseEvent<HTMLElement>) => void;
 }
 
-export const ModalComponent = (props: ModalComponentProps) => {
+export const ModalComponent = (props: ModalComponentProps): ReactElement => {
 
     const {
         children,
@@ -127,12 +128,12 @@ export const ModalComponent = (props: ModalComponentProps) => {
             );
         } else {
             return (
-                    <Icon
-                        className="modal-icon"
-                        name="info circle"
-                        size="huge"
-                        color="blue"
-                    />
+                <Icon
+                    className="modal-icon"
+                    name="info circle"
+                    size="huge"
+                    color="blue"
+                />
             );
         }
     };
@@ -162,12 +163,11 @@ export const ModalComponent = (props: ModalComponentProps) => {
                 >
                     { secondaryAction }
                 </Button>
-                <Button
-                    className={ `${ type }-modal-primary-button` }
+                <PrimaryButton
                     onClick={ () => onPrimaryActionClick() }
                 >
                     { primaryAction }
-                </Button>
+                </PrimaryButton>
             </Modal.Actions>
         </Modal>
     );
