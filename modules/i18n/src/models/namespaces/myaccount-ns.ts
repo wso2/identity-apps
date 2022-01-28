@@ -319,6 +319,12 @@ export interface MyAccountNS {
                         description: string;
                         heading: string;
                     };
+                    deleteConfirmation: {
+                        description: string;
+                        heading: string;
+                        content: string;
+                        assertionHint: string;
+                    }
                 };
                 notifications: {
                     removeDevice: Notification;
