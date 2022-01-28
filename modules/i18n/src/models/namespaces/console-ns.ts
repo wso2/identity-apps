@@ -668,6 +668,10 @@ export interface ConsoleNS {
                                             totp: {
                                                 description: string;
                                                 heading: string;
+                                            },
+                                            usernameless: {
+                                                description: string;
+                                                heading: string;
                                             }
                                         }
                                     }

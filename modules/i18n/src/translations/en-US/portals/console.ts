@@ -1112,6 +1112,11 @@ export const console: ConsoleNS = {
                                                 description: "Enable additional authentication layer with Time " +
                                                     "based OTP.",
                                                 heading: "Add TOTP as a second factor"
+                                            },
+                                            usernameless: {
+                                                description: "Enable users to log in using a FIDO2 security key " +
+                                                    "or biometrics without entering their username or password.",
+                                                heading: "Add usernameless login"
                                             }
                                         }
                                     }

@@ -1140,6 +1140,13 @@ export const console: ConsoleNS = {
                                                 description: "Activez une couche d'authentification supplémentaire " +
                                                     "avec OTP basé sur le temps.",
                                                 heading: "Ajouter TOTP comme deuxième facteur"
+                                            },
+                                            usernameless: {
+                                                description: "Permettre aux utilisateurs de se connecter à " +
+                                                    "l'aidAjouter une connexion sans nom d'utilisateuré " +
+                                                    "FIDO2 ou de la biométrie sans entrer leur nom d'utilisateur " +
+                                                    "ou leur mot de passe.",
+                                                heading: "Add usernameless login"
                                             }
                                         }
                                     }
