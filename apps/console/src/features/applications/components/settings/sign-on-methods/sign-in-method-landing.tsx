@@ -90,7 +90,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                 size="small"
                             />
                             <Divider hidden />
-                            
+
                             <div className="default-config-description">
                                 <Heading as="h4">
                                     <Trans
@@ -205,6 +205,25 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                                 ".signOnMethod.sections.landing.flowBuilder.types.totp.description")
                                         }
                                         onClick={ () => onLoginFlowSelect(LoginFlowTypes.SECOND_FACTOR_TOTP) }
+                                    />
+                                )
+                            }
+                            {
+                                !hiddenOptions.includes(LoginFlowTypes.USERNAMELESS_LOGIN) && (
+                                    <InfoCard
+                                        fluid
+                                        data-testid="usernameless-flow-card"
+                                        image={ getAuthenticatorIcons().fido }
+                                        imageSize="mini"
+                                        header={
+                                            t("console:develop.features.applications.edit.sections" +
+                                                ".signOnMethod.sections.landing.flowBuilder.types.totp.heading")
+                                        }
+                                        description={
+                                            t("console:develop.features.applications.edit.sections" +
+                                                ".signOnMethod.sections.landing.flowBuilder.types.totp.description")
+                                        }
+                                        onClick={ () => onLoginFlowSelect(LoginFlowTypes.USERNAMELESS_LOGIN) }
                                     />
                                 )
                             }
