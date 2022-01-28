@@ -653,7 +653,7 @@ export const myAccount: MyAccountNS = {
                 description: "You can use a FIDO2 security key or biometrics in " +
                     "your device to sign in to your account.",
                 form: {
-                    label: "Security Key/Biometrics",
+                    label: "Security Key/Biometric",
                     placeholder: "Enter a name for the security key/biometric",
                     remove: "Remove the security key/biometric",
                     required: "Please enter a name for your security key/biometric"

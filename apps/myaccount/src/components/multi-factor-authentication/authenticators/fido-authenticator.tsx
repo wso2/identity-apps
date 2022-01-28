@@ -311,8 +311,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
             onClose={ (): void => setDeleteKey("") }
             type="negative"
             open={ Boolean(deleteKey) }
-            assertionHint={ t("console:manage.features.user.deleteUser.confirmationModal." +
-                "assertionHint") }
+            assertionHint={ t("myAccount:components.mfa.fido.modals.deleteConfirmation.assertionHint") }
             assertionType="checkbox"
             primaryAction={ t("common:confirm") }
             secondaryAction={ t("common:cancel") }
@@ -323,18 +322,18 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
             closeOnDimmerClick={ false }
         >
             <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
-                { t("myaccount:components:mfa:fido:modals:deleteConfirmation:heading") }
+                { t("myAccount:components.mfa.fido.modals.deleteConfirmation.heading") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 data-testid={ `${ testId }-confirmation-modal-message` }
                 attached
                 negative
             >
-                { t("myaccount:components:mfa:fido:modals:deleteConfirmation:description") }
+                { t("myAccount:components.mfa.fido.modals.deleteConfirmation.description") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content data-testid={ `${ testId }-confirmation-modal-content` }>
                 {
-                    t("myaccount:components:mfa:fido:modals:deleteConfirmation:content")
+                    t("myAccount:components.mfa.fido.modals.deleteConfirmation.content")
                 }
             </ConfirmationModal.Content>
         </ConfirmationModal>
