@@ -18,9 +18,9 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
-import { GenericIcon } from "@wso2is/react-components";
+import { ConfirmationModal, GenericIcon } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Form, Grid, Icon, List, ModalContent, Popup } from "semantic-ui-react";
@@ -61,13 +61,14 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
 
     const { onAlertFired, ["data-testid"]: testId } = props;
     const { t } = useTranslation();
-    const [deviceList, setDeviceList] = useState<FIDODevice[]>([]);
-    const [isDeviceErrorModalVisible, setDeviceErrorModalVisibility] = useState(false);
-    const [isDeviceSuccessModalVisible, setIsDeviceSuccessModalVisibility] = useState(false);
-    const [recentFIDOName, setRecentFIDOName] = useState("");
-    const [recentFIDONameError, setRecentFIDONameError] = useState(false);
-    const [recentlyAddedDevice, setRecentlyAddedDevice] = useState<string>();
-    const [editFIDO, setEditFido] = useState<Map<string, boolean>>();
+    const [ deviceList, setDeviceList ] = useState<FIDODevice[]>([]);
+    const [ isDeviceErrorModalVisible, setDeviceErrorModalVisibility ] = useState(false);
+    const [ isDeviceSuccessModalVisible, setIsDeviceSuccessModalVisibility ] = useState(false);
+    const [ recentFIDOName, setRecentFIDOName ] = useState("");
+    const [ recentFIDONameError, setRecentFIDONameError ] = useState(false);
+    const [ recentlyAddedDevice, setRecentlyAddedDevice ] = useState<string>();
+    const [ editFIDO, setEditFido ] = useState<Map<string, boolean>>();
+    const [ deleteKey, setDeleteKey ] = useState<string>("");
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
     const dispatch = useDispatch();
@@ -89,11 +90,12 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
 
     const getFidoMetaData = () => {
         let devices: FIDODevice[] = [];
+
         getMetaData()
             .then((response) => {
                 if (response.status === 200) {
                     if (response.data.length > 0) {
-                        devices = [...response.data];
+                        devices = [ ...response.data ];
                     }
                     setDeviceList(devices);
                 }
@@ -114,7 +116,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
         if (!isEmpty(recentlyAddedDevice)) {
             getFidoMetaData();
         }
-    }, [recentlyAddedDevice]);
+    }, [ recentlyAddedDevice ]);
 
     /**
      * This function fires a notification on successful removal of a device.
@@ -218,6 +220,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
      */
     const cancelEdit = (id: string) => {
         const tempEditFido: Map<string, boolean> = new Map(editFIDO);
+
         tempEditFido.set(id, false);
         setEditFido(tempEditFido);
         dispatch(setActiveForm(null));
@@ -228,6 +231,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
             .then(() => {
                 cancelEdit(id);
                 getFidoMetaData();
+                setDeleteKey("");
                 fireDeletionSuccessNotification();
             }).catch((error) => {
                 fireDeletionFailureNotification(error);
@@ -290,10 +294,51 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
      */
     const showEdit = (id: string) => {
         const tempEditFido: Map<string, boolean> = new Map(editFIDO);
+
         tempEditFido.set(id, true);
         setEditFido(tempEditFido);
         dispatch(setActiveForm(CommonConstants.SECURITY + FIDO + id));
     };
+
+    /**
+     * This methods generates and returns the delete confirmation modal.
+     *
+     * @returns {ReactElement} Generates the delete confirmation modal.
+     */
+    const generateDeleteConfirmationModal = (): ReactElement => (
+        <ConfirmationModal
+            data-testid={ `${ testId }-confirmation-modal` }
+            onClose={ (): void => setDeleteKey("") }
+            type="negative"
+            open={ Boolean(deleteKey) }
+            assertionHint={ t("console:manage.features.user.deleteUser.confirmationModal." +
+                "assertionHint") }
+            assertionType="checkbox"
+            primaryAction={ t("common:confirm") }
+            secondaryAction={ t("common:cancel") }
+            onSecondaryActionClick={ (): void => {
+                setDeleteKey("");
+            } }
+            onPrimaryActionClick={ (): void => removeDevice(deleteKey) }
+            closeOnDimmerClick={ false }
+        >
+            <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
+                { t("myaccount:components:mfa:fido:modals:deleteConfirmation:heading") }
+            </ConfirmationModal.Header>
+            <ConfirmationModal.Message
+                data-testid={ `${ testId }-confirmation-modal-message` }
+                attached
+                negative
+            >
+                { t("myaccount:components:mfa:fido:modals:deleteConfirmation:description") }
+            </ConfirmationModal.Message>
+            <ConfirmationModal.Content data-testid={ `${ testId }-confirmation-modal-content` }>
+                {
+                    t("myaccount:components:mfa:fido:modals:deleteConfirmation:content")
+                }
+            </ConfirmationModal.Content>
+        </ConfirmationModal>
+    );
 
     /**
      * Device registration error modal.
@@ -426,8 +471,9 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                     editFIDO?.get(device.credential.credentialId)
                                         && activeForm?.startsWith(CommonConstants.SECURITY+FIDO)
                                         ? (
-                                            <EditSection key={ device.credential.credentialId }
-                                                         data-testid={ `${testId}-device-${index}-edit-section` }>
+                                            <EditSection
+                                                key={ device.credential.credentialId }
+                                                data-testid={ `${testId}-device-${index}-edit-section` }>
                                                 <Grid>
                                                     <Grid.Row columns={ 2 }>
                                                         <Grid.Column width={ 4 }>
@@ -501,8 +547,10 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                             </EditSection>
                                         )
                                         : (
-                                            <List.Item className="inner-list-item" key={ index }
-                                                       data-testid={ `${testId}-devices-list-item` }>
+                                            <List.Item
+                                                className="inner-list-item"
+                                                key={ index }
+                                                data-testid={ `${testId}-devices-list-item` }>
                                                 <Grid padded={ true }>
                                                     <Grid.Row columns={ 2 } className="first-column">
                                                         <Grid.Column width={ 11 }>
@@ -550,7 +598,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                                             className="list-icon"
                                                                             onClick={
                                                                                 () => {
-                                                                                    removeDevice(
+                                                                                    setDeleteKey(
                                                                                         device.credential
                                                                                             .credentialId
                                                                                     );
@@ -578,14 +626,15 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                         floated="left"
                                         name="info circle"
                                     />
-                                    You don&apos;t have any devices registered yet.
-                            </p>
+                                    You don&apos;t have any security key/biometric registered yet.
+                                </p>
                             </>
                         )
                 }
             </div>
             <>{ deviceErrorModal() }</>
             <>{ deviceRegistrationSuccessModal() }</>
+            { deleteKey && generateDeleteConfirmationModal() }
         </>
     );
 };
