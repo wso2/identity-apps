@@ -217,11 +217,13 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                         imageSize="mini"
                                         header={
                                             t("console:develop.features.applications.edit.sections" +
-                                                ".signOnMethod.sections.landing.flowBuilder.types.totp.heading")
+                                                ".signOnMethod.sections.landing.flowBuilder." +
+                                                "types.usernameless.heading")
                                         }
                                         description={
                                             t("console:develop.features.applications.edit.sections" +
-                                                ".signOnMethod.sections.landing.flowBuilder.types.totp.description")
+                                                ".signOnMethod.sections.landing.flowBuilder." +
+                                                "types.usernameless.description")
                                         }
                                         onClick={ () => onLoginFlowSelect(LoginFlowTypes.USERNAMELESS_LOGIN) }
                                     />
