@@ -28,6 +28,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Popup } from "semantic-ui-react";
 import { AddAuthenticatorModal } from "./add-authenticator-modal";
 import { AuthenticationStep } from "./authentication-step";
+import { applicationConfig } from "../../../../../../extensions";
 import { AppState, ConfigReducerStateInterface, EventPublisher } from "../../../../../core";
 import {
     AuthenticatorCategories,
@@ -172,11 +173,11 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 moderatedLocalAuthenticators.push(authenticator);
             }
         });
-        
+
         federatedAuthenticators.forEach((authenticator: GenericAuthenticatorInterface) => {
             if (ApplicationManagementConstants.SOCIAL_AUTHENTICATORS
                 .includes(authenticator.defaultAuthenticator.authenticatorId)) {
-                
+
                 filteredSocialAuthenticators.push(authenticator);
             } else {
                 filteredEnterpriseAuthenticators.push(authenticator);
@@ -230,7 +231,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
      * Try to scroll to the end when a new step is added.
      */
     useEffect(() => {
-        
+
         if (!authenticationStepsDivRef?.current) {
             return;
         }
@@ -380,6 +381,11 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             return;
         }
 
+        if(!applicationConfig.signInMethod.authenticatorSelection
+            .customAuthenticatorAdditionValidation(authenticatorId, stepIndex, dispatch)) {
+            return;
+        }
+
         if (!isValid) {
             return;
         }
@@ -432,7 +438,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             const immediateStepHavingSpecificFactors: number = SignInMethodUtils.getImmediateStepHavingSpecificFactors(
                 ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS, steps);
 
-            // If the deleting step is a first factor, we have to check if there are other handlers that 
+            // If the deleting step is a first factor, we have to check if there are other handlers that
             // could handle the second factors on the right.
             if (isDeletingOptionFirstFactor || isDeletingOptionSecondFactorHandler) {
                 let firstFactorsInTheStep: number = 0;
@@ -462,7 +468,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                         : SignInMethodUtils.hasSpecificFactorsInSteps(
                             ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, leftSideSteps);
 
-                    // There are no possible authenticators on the left form the deleting option to handle the second 
+                    // There are no possible authenticators on the left form the deleting option to handle the second
                     // factor authenticators. Evaluate....
                     if (!containProperHandlersOnLeft) {
 
@@ -482,7 +488,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                 ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
                                 leftSideStepsFromImmediateSecondFactor);
 
-                        // If there are no other handlers, Show a warning and abort option delete. 
+                        // If there are no other handlers, Show a warning and abort option delete.
                         if (noOfProperHandlersOnLeft <= 1) {
                             dispatch(
                                 addAlert({
