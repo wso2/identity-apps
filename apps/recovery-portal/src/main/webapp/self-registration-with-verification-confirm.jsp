@@ -21,6 +21,7 @@
 <%@ page import="org.wso2.carbon.base.MultitenantConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.SelfRegisterApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.CodeValidationRequest" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
@@ -48,8 +49,8 @@
     String confirmationKey = request.getParameter("confirmation");
     String callback = request.getParameter("callback");
     String httpMethod = request.getMethod();
-    Boolean isAutoLoginEnable = Boolean.parseBoolean(Utils.getConnectorConfig("SelfRegistration.AutoLogin.Enable",
-                tenantDomain));
+    PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+    Boolean isAutoLoginEnable = preferenceRetrievalClient.checkAutoLoginAfterSelfRegistrationEnabled(tenantDomain);
 
     // Some mail providers initially sends a HEAD request to
     // check the validity of the link before redirecting users.
