@@ -41,6 +41,7 @@
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
     String AUTO_LOGIN_COOKIE_NAME = "ALOR";
+    String AUTO_LOGIN_COOKIE_DOMAIN = "AutoLoginCookieDomain";
     String AUTO_LOGIN_FLOW_TYPE = "SIGNUP";
     String username = null;
 
@@ -87,10 +88,14 @@
         if (isAutoLoginEnable) {
             username = userStoreDomain + "/" + username + "@" + tenantDomain;
 
+            String cookieDomain = application.getInitParameter(AUTO_LOGIN_COOKIE_DOMAIN);
             JSONObject contentValueInJson = new JSONObject();
             contentValueInJson.put("username", username);
             contentValueInJson.put("createdTime", System.currentTimeMillis());
             contentValueInJson.put("flowType", AUTO_LOGIN_FLOW_TYPE);
+            if (StringUtils.isNotBlank(cookieDomain)) {
+                contentValueInJson.put("domain", cookieDomain);
+            }
             String content = contentValueInJson.toString();
 
             JSONObject cookieValueInJson = new JSONObject();
@@ -102,6 +107,9 @@
             cookie.setPath("/");
             cookie.setSecure(true);
             cookie.setMaxAge(300);
+            if (StringUtils.isNotBlank(cookieDomain)) {
+                cookie.setDomain(cookieDomain);
+            }
             response.addCookie(cookie);
         }
 
