@@ -18,6 +18,7 @@
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import isEmpty from "lodash-es/isEmpty";
+import get from "lodash-es/get";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect } from "react";
 import { useAccess } from "react-access-control";
 import { AccessControlConstants } from "./access-control-constants";
@@ -85,23 +86,23 @@ export const AccessControlContext: FunctionComponent<PropsWithChildren<AccessCon
 
                 [ AccessControlConstants.BRANDING ] : hasRequiredScopes(
                     featureConfig.branding,
-                    featureConfig.branding.scopes.feature,
+                    get(featureConfig.branding.scopes.feature),
                     allowedScopes),
                 [ AccessControlConstants.BRANDING_READ ] : hasRequiredScopes(
                     featureConfig.branding,
-                    featureConfig.branding.scopes.read,
+                    get(featureConfig.branding.scopes.read),
                     allowedScopes),
                 [ AccessControlConstants.BRANDING_WRITE ] : hasRequiredScopes(
                     featureConfig.branding,
-                    featureConfig.branding.scopes.create,
+                    get(featureConfig.branding.scopes.create),
                     allowedScopes),
                 [ AccessControlConstants.BRANDING_EDIT ] : hasRequiredScopes(
                     featureConfig.branding,
-                    featureConfig.branding.scopes.update,
+                    get(featureConfig.branding.scopes.update),
                     allowedScopes),
                 [ AccessControlConstants.BRANDING_DELETE ] : hasRequiredScopes(
                     featureConfig.branding,
-                    featureConfig.branding.scopes.delete,
+                    get(featureConfig.branding.scopes.delete),
                     allowedScopes),
 
                 [ AccessControlConstants.GROUP ] : hasRequiredScopes(featureConfig.groups,
