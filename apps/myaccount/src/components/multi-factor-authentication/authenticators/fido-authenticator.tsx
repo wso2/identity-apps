@@ -23,7 +23,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Form, Grid, Icon, List, ModalContent, Popup } from "semantic-ui-react";
+import { Button, Divider, Form, Grid, Icon, List, ModalContent, Popup } from "semantic-ui-react";
 import { deleteDevice, getMetaData, startFidoFlow, startFidoUsernamelessFlow, updateDeviceName } from "../../../api";
 import { getMFAIcons } from "../../../configs";
 import { CommonConstants } from "../../../constants";
@@ -461,7 +461,8 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                     deviceList ? (
                         <List
                             data-testid={ `${testId}-devices-list` }
-                            divided={ true }
+                            divided
+                            relaxed
                             verticalAlign="middle"
                             className="main-content-inner settings-section-inner-list"
                         >
@@ -546,71 +547,70 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                             </EditSection>
                                         )
                                         : (
-                                            <List.Item
-                                                className="inner-list-item"
-                                                key={ index }
-                                                data-testid={ `${testId}-devices-list-item` }>
-                                                <Grid padded={ true }>
-                                                    <Grid.Row columns={ 2 } className="first-column">
-                                                        <Grid.Column width={ 11 }>
-                                                            <List.Header className="with-left-padding">
-                                                                <Icon
-                                                                    floated="right"
-                                                                    className="list-icon"
-                                                                    size="small"
-                                                                    color="grey"
-                                                                    name="dot circle outline"
-                                                                />
-                                                                {
-                                                                    device.displayName
+                                            <>
+                                                <List.Item
+                                                    className="inner-list-item"
+                                                    key={ index }
+                                                    data-testid={ `${testId}-devices-list-item` }>
+                                                    <Grid padded={ true }>
+                                                        <Grid.Row columns={ 2 } className="first-column">
+                                                            <Grid.Column width={ 11 }>
+                                                                <List.Header className="with-left-padding">
+                                                                    {
+                                                                        device.displayName
                                                                     || t("myAccount:components.mfa.fido.form.label")
                                                                     + ` ${index + 1}`
-                                                                }
-                                                            </List.Header>
-                                                        </Grid.Column>
-                                                        <Grid.Column width={ 5 } className="last-column">
-                                                            <List.Content floated="right">
-                                                                <Icon
-                                                                    id={ device.credential.credentialId }
-                                                                    link={ true }
-                                                                    className="list-icon"
-                                                                    size="large"
-                                                                    color="grey"
-                                                                    name="pencil alternate"
-                                                                    onClick={
-                                                                        () => {
-                                                                            showEdit(device.credential.credentialId);
-                                                                        }
                                                                     }
-                                                                />
-                                                                <Popup
-                                                                    content={
-                                                                        t("myAccount:components.mfa.fido.form.remove")
-                                                                    }
-                                                                    inverted
-                                                                    trigger={ (
-                                                                        <Icon
-                                                                            link={ true }
-                                                                            name="trash alternate outline"
-                                                                            color="red"
-                                                                            size="small"
-                                                                            className="list-icon"
-                                                                            onClick={
-                                                                                () => {
-                                                                                    setDeleteKey(
-                                                                                        device.credential
-                                                                                            .credentialId
-                                                                                    );
-                                                                                }
+                                                                </List.Header>
+                                                            </Grid.Column>
+                                                            <Grid.Column width={ 5 } className="last-column">
+                                                                <List.Content floated="right">
+                                                                    <Icon
+                                                                        id={ device.credential.credentialId }
+                                                                        link={ true }
+                                                                        className="list-icon"
+                                                                        size="large"
+                                                                        color="grey"
+                                                                        name="pencil alternate"
+                                                                        onClick={
+                                                                            () => {
+                                                                                showEdit(
+                                                                                    device.credential.credentialId);
                                                                             }
-                                                                        />
-                                                                    ) }
-                                                                />
-                                                            </List.Content>
-                                                        </Grid.Column>
-                                                    </Grid.Row>
-                                                </Grid>
-                                            </List.Item>
+                                                                        }
+                                                                    />
+                                                                    <Popup
+                                                                        content={
+                                                                            t("myAccount:components.mfa" +
+                                                                                ".fido.form.remove")
+                                                                        }
+                                                                        inverted
+                                                                        trigger={ (
+                                                                            <Icon
+                                                                                link={ true }
+                                                                                name="trash alternate outline"
+                                                                                color="red"
+                                                                                size="small"
+                                                                                className="list-icon"
+                                                                                onClick={
+                                                                                    () => {
+                                                                                        setDeleteKey(
+                                                                                            device.credential
+                                                                                                .credentialId
+                                                                                        );
+                                                                                    }
+                                                                                }
+                                                                            />
+                                                                        ) }
+                                                                    />
+                                                                </List.Content>
+                                                            </Grid.Column>
+                                                        </Grid.Row>
+                                                    </Grid>
+                                                </List.Item>
+                                                { deviceList.length !== index + 1
+                                                    && <Divider className="fido-list-divider" /> }
+                                            </>
                                         )
                                 ))
                             }
