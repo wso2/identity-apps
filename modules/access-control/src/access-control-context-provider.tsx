@@ -17,6 +17,7 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
+import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect } from "react";
 import { useAccess } from "react-access-control";
@@ -85,23 +86,23 @@ export const AccessControlContext: FunctionComponent<PropsWithChildren<AccessCon
 
                 [ AccessControlConstants.BRANDING ] : hasRequiredScopes(
                     featureConfig.branding,
-                    featureConfig.branding.scopes.feature,
+                    get(featureConfig, "branding.scopes.feature"),
                     allowedScopes),
                 [ AccessControlConstants.BRANDING_READ ] : hasRequiredScopes(
-                    featureConfig.attributeDialects,
-                    featureConfig.branding.scopes.read,
+                    featureConfig.branding,
+                    get(featureConfig, "branding.scopes.read"),
                     allowedScopes),
                 [ AccessControlConstants.BRANDING_WRITE ] : hasRequiredScopes(
-                    featureConfig.attributeDialects,
-                    featureConfig.branding.scopes.create,
+                    featureConfig.branding,
+                    get(featureConfig, "branding.scopes.create"),
                     allowedScopes),
                 [ AccessControlConstants.BRANDING_EDIT ] : hasRequiredScopes(
-                    featureConfig.attributeDialects,
-                    featureConfig.branding.scopes.update,
+                    featureConfig.branding,
+                    get(featureConfig, "branding.scopes.update"),
                     allowedScopes),
                 [ AccessControlConstants.BRANDING_DELETE ] : hasRequiredScopes(
-                    featureConfig.attributeDialects,
-                    featureConfig.branding.scopes.delete,
+                    featureConfig.branding,
+                    get(featureConfig, "branding.scopes.delete"),
                     allowedScopes),
 
                 [ AccessControlConstants.GROUP ] : hasRequiredScopes(featureConfig.groups,
