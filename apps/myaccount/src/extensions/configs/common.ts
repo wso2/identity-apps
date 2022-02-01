@@ -7,8 +7,8 @@
  * You may not alter or remove any copyright or other notice from copies of this content."
  */
 
-import { ProfileSchema } from "../../models";
 import { CommonConfig } from "./models";
+import { ProfileSchema } from "../../models";
 
 export const commonConfig: CommonConfig = {
     advancedSearchWithBasicFilters: {
@@ -32,6 +32,11 @@ export const commonConfig: CommonConfig = {
             emailRecovery: {
                 enableEditEmail: true
             }
+        },
+        mfa: {
+            fido2: {
+                allowLegacyKeyRegistration: true
+            }
         }
     },
     personalInfoPage: {
@@ -40,13 +45,13 @@ export const commonConfig: CommonConfig = {
         }
     },
     utils: {
-        isManageConsentAllowedForUser(userstore: string): boolean {
+        isManageConsentAllowedForUser(): boolean {
             return true;
         },
-        isShowAdditionalWidgetAllowed(userstore: string): boolean {
+        isShowAdditionalWidgetAllowed(): boolean {
             return false;
         },
-        isConsoleNavigationAllowed(userstore: string): boolean {
+        isConsoleNavigationAllowed(): boolean {
             return true;
         },
         isSchemaNameSkippableforProfileCompletion(schema: ProfileSchema): boolean {

@@ -27,6 +27,7 @@ import { Button, Divider, Form, Grid, Icon, List, ModalContent, Popup } from "se
 import { deleteDevice, getMetaData, startFidoFlow, startFidoUsernamelessFlow, updateDeviceName } from "../../../api";
 import { getMFAIcons } from "../../../configs";
 import { CommonConstants } from "../../../constants";
+import { commonConfig } from "../../../extensions";
 import { AlertInterface, AlertLevels } from "../../../models";
 import { FIDODevice } from "../../../models/fido-authenticator";
 import { AppState } from "../../../store";
@@ -356,15 +357,20 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                 onClose={ handleDeviceErrorModalClose }
                 type="negative"
                 header={ t("myAccount:components.mfa.fido.modals.deviceRegistrationErrorModal.heading") }
-                content={ t("myAccount:components.mfa.fido.modals.deviceRegistrationErrorModal.description") }
+                content={ commonConfig.accountSecurityPage.mfa.fido2.allowLegacyKeyRegistration
+                    ? `${t("myAccount:components.mfa.fido.modals.deviceRegistrationErrorModal.description")}
+                        ${t("myAccount:components.mfa.fido.modals.deviceRegistrationErrorModal.tryWithOlderDevice")}`
+                    : t("myAccount:components.mfa.fido.modals.deviceRegistrationErrorModal.description") }
             >
                 <ModalContent>
-                    <Button
-                        className="negative-modal-link-button"
-                        onClick={ addDevice }
-                    >
-                        { t("myAccount:components.mfa.fido.tryButton") }
-                    </Button>
+                    { commonConfig.accountSecurityPage.mfa.fido2.allowLegacyKeyRegistration &&
+                        (<Button
+                            className="negative-modal-link-button"
+                            onClick={ addDevice }
+                        >
+                            { t("myAccount:components.mfa.fido.tryButton") }
+                        </Button>)
+                    }
                 </ModalContent>
             </ModalComponent>
         );
