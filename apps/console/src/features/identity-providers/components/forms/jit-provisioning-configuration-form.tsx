@@ -274,7 +274,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         return (
             <div>
                 <Text>
-                    Make sure you know what you&apos;re doing as the <Link
+                    The <Link
                         icon="linkify"
                         onClick={ () => {
                             history.push({
@@ -283,14 +283,14 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                     .replace(":id", id),
                                 search: "#tab=4"
                             });
-                        } }>{ name }</Link> application requires Just-in-Time User
-                    Provisioning to be enabled.
+                        } }>{ name }</Link> application, which already uses this IdP, has multi-factor
+                    authentication (MFA) enabled.
                 </Text>
                 <Text>
-                    The authentication sequence of the application contains Multi-Factor
-                    Authentication (MFA) steps configured. MFA mechanisms such
-                    as <Code>TOTP</Code> and <Code>Email OTP</Code> require a <strong>provisioned user account
-                    in { config.ui.productName }</strong> for proper functionality.
+                    MFA mechanisms such as <Code>TOTP</Code> and <Code>Email OTP</Code> require a <strong>provisioned
+                    user account in { config.ui.productName }</strong> to function properly. Therefore,
+                    if you disable Just-In-Time User Provisioning for this IdP, the application&apos;s
+                    authentication flow will fail.
                     { documentationLinkForJIT() }
                 </Text>
             </div>
@@ -301,9 +301,9 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         return (
             <>
                 <Text>
-                    Make sure you know what you&apos;re doing as the following applications
-                    require Just-in-Time User Provisioning to be enabled.
-                    <ol className="mb-3">
+                    The following applications, which already use this IdP, have multi-factor
+                    authentication (MFA) enabled.
+                    <ul className="mb-3">
                         { conflictingApps?.map(({ name, id }, index) => (
                             <li key={ index }>
                                 <Link
@@ -318,11 +318,11 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                     } }>{ name }</Link>
                             </li>
                         )) }
-                    </ol>
-                    The authentication sequence of the applications contains Multi-Factor
-                    Authentication (MFA) steps configured. MFA mechanisms such
-                    as <Code>TOTP</Code> and <Code>Email OTP</Code> require a <strong>provisioned user
-                    account in { config.ui.productName }</strong> for proper functionality.
+                    </ul>
+                    MFA mechanisms such as <Code>TOTP</Code> and <Code>Email OTP</Code> require a <strong>provisioned
+                    user account in { config.ui.productName }</strong> to function properly. Therefore, if you disable
+                    Just-In-Time User Provisioning for this IdP, the authentication flow will fail
+                    in these applications.
                 </Text>
                 { documentationLinkForJIT() }
             </>
