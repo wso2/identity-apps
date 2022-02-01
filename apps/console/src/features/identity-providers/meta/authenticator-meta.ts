@@ -40,7 +40,7 @@ export class AuthenticatorMeta {
      * @return {string}
      */
     public static getAuthenticatorDescription(authenticatorId: string): string {
-        
+
         return get({
             [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ]: "Login users with username and password " +
             "credentials.",
@@ -77,11 +77,14 @@ export class AuthenticatorMeta {
      * @return {string[]}
      */
     public static getAuthenticatorLabels(authenticatorId: string): string[] {
-        
+
         return get({
             [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: [ AuthenticatorLabels.HANDLERS ],
             [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.SECOND_FACTOR, AuthenticatorLabels.PASSWORDLESS, AuthenticatorLabels.MULTI_FACTOR
+                AuthenticatorLabels.USERNAMELESS,
+                AuthenticatorLabels.SECOND_FACTOR,
+                AuthenticatorLabels.PASSWORDLESS,
+                AuthenticatorLabels.MULTI_FACTOR
             ],
             [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.SECOND_FACTOR, AuthenticatorLabels.MULTI_FACTOR
@@ -118,7 +121,7 @@ export class AuthenticatorMeta {
      * @return {string}
      */
     public static getAuthenticatorTypeDisplayName(type: AuthenticatorCategories): string {
-        
+
         return get({
             [ AuthenticatorCategories.ENTERPRISE ]: "console:develop.features." +
             "applications.edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
@@ -143,7 +146,7 @@ export class AuthenticatorMeta {
      * @return {string}
      */
     public static getAuthenticatorDisplayName(authenticatorId: string): string {
-        
+
         return get({
             [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR ]: "Username & Password",
             [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ]: "Username & Password",
@@ -166,20 +169,20 @@ export class AuthenticatorMeta {
 
         const icon: ReactNode = get({
             [
-                IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID
-                ]: getAuthenticatorIcons()?.identifierFirst,
+            IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID
+            ]: getAuthenticatorIcons()?.identifierFirst,
             [ IdentityProviderManagementConstants.JWT_BASIC_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.jwtBasic,
             [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.fido,
             [ IdentityProviderManagementConstants.X509_CERTIFICATE_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.x509,
             [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.totp,
             [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.basic,
             [
-                IdentityProviderManagementConstants.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
-                ]: getAuthenticatorIcons()?.sessionExecutor,
+            IdentityProviderManagementConstants.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
+            ]: getAuthenticatorIcons()?.sessionExecutor,
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.emailOTP,
             [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.smsOTP
         }, authenticatorId);
-        
+
         return icon ?? getAuthenticatorIcons().default;
     }
 
@@ -216,7 +219,7 @@ export class AuthenticatorMeta {
      * @return {string[]}
      */
     public static getAllowedFilterTags(): string[] {
-        
+
         return [
             AuthenticatorLabels.MULTI_FACTOR,
             AuthenticatorLabels.PASSWORDLESS,
@@ -234,7 +237,7 @@ export class AuthenticatorMeta {
      * @return {string}
      */
     public static getAuthenticatorTemplateName(authenticatorId: string): string {
-        
+
         return get({
             [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR ]: "username-and-password",
             [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ]: "username-and-password",
