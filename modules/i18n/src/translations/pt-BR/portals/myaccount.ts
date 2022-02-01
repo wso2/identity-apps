@@ -669,9 +669,10 @@ export const myAccount: MyAccountNS = {
                     },
                     deviceRegistrationErrorModal: {
                         description: "TA chave de segurança/registro biométrico foi interrompido. " +
-                            "Se isso não foi intencional, você pode tentar novamente o mesmo fluxo ou tentar " +
-                            "novamente com uma chave de segurança/biométrica mais antiga.",
-                        heading: "Falha no registro biométrico/chave de segurança"
+                            "Se isso não foi intencional, você pode tentar novamente o fluxo.",
+                        heading: "Falha no registro biométrico/chave de segurança",
+                        tryWithOlderDevice: "Você também pode tentar novamente com uma " +
+                            "chave de segurança/biométrica mais antiga."
                     }
                 },
                 notifications: {

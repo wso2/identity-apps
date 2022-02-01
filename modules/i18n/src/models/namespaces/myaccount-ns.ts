@@ -317,6 +317,7 @@ export interface MyAccountNS {
                 modals: {
                     deviceRegistrationErrorModal: {
                         description: string;
+                        tryWithOlderDevice: string;
                         heading: string;
                     };
                     deleteConfirmation: {

@@ -688,9 +688,10 @@ export const myAccount: MyAccountNS = {
                     },
                     deviceRegistrationErrorModal: {
                         description: "La clé de sécurité/l'enregistrement biométrique a " +
-                            "été interrompu. Si ce n'était pas intentionnel, vous pouvez réessayer le même flux" +
-                            " ou réessayer avec une ancienne clé de sécurité/biométrique.",
-                        heading: "Échec de l'enregistrement de la clé de sécurité/biométrique"
+                            "été interrompu. Si ce n'était pas intentionnel, vous pouvez réessayer le flux.",
+                        heading: "Échec de l'enregistrement de la clé de sécurité/biométrique",
+                        tryWithOlderDevice: "Vous pouvez également réessayer avec une " +
+                            "ancienne clé de sécurité/biométrique."
                     }
                 },
                 notifications: {

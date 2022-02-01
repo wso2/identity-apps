@@ -670,8 +670,9 @@ export const myAccount: MyAccountNS = {
                     deviceRegistrationErrorModal: {
                         description: "The security key/biometric registration was interrupted. "
                             + "If this was not intentional you "
-                            + "may retry the same flow or try again with an older security key/biometric.",
-                        heading: "Security Key/Biometric Registration Failed"
+                            + "may retry the flow.",
+                        heading: "Security Key/Biometric Registration Failed",
+                        tryWithOlderDevice: "You may also try again with an older security key/biometric."
                     }
                 },
                 notifications: {
