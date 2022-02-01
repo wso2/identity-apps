@@ -81,7 +81,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const { trySignInSilently, getDecodedIDToken } = useAuthContext();
+    const { trySignInSilently, getDecodedIDToken, signOut } = useAuthContext();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
 
@@ -358,6 +358,9 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                             >
                                                                 Sign In
                                                             </Trans>)
+                                                        }
+                                                        primaryAction={
+                                                            signOut
                                                         }
                                                     />
                                                     <ChunkErrorModal

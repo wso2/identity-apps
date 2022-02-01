@@ -63,7 +63,7 @@ export const App = (): ReactElement => {
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const { trySignInSilently } = useAuthContext();
+    const { signOut, trySignInSilently } = useAuthContext();
 
     /**
      * Set the deployment configs in redux state.
@@ -293,6 +293,9 @@ export const App = (): ReactElement => {
                                                     >
                                                         Sign In
                                                     </Trans>)
+                                                }
+                                                primaryAction={
+                                                    signOut
                                                 }
                                             />
                                             <ChunkErrorModal
