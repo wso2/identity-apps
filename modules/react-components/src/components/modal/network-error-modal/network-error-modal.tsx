@@ -28,6 +28,7 @@ interface NetworkErrorModalPropTypes {
     heading: ReactNode;
     description: ReactNode;
     primaryActionText: ReactNode;
+    primaryAction: () => void;
 }
 
 /**
@@ -44,7 +45,7 @@ interface NetworkErrorModalPropTypes {
 export const NetworkErrorModal: FunctionComponent<NetworkErrorModalPropTypes> = (
     props: NetworkErrorModalPropTypes
 ): ReactElement => {
-    const { heading, description, primaryActionText } = props;
+    const { heading, description, primaryActionText, primaryAction } = props;
 
     const [ showModal, setShowModal ] = useState(false);
 
@@ -73,7 +74,7 @@ export const NetworkErrorModal: FunctionComponent<NetworkErrorModalPropTypes> = 
             textAlign="center"
             primaryAction={ primaryActionText }
             onPrimaryActionClick={ () => {
-                location.reload();
+                primaryAction();
             } }
             data-testid={ "network-error-modal" }
             open={ showModal }
