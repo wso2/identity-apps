@@ -648,11 +648,11 @@
         <carbon.extension.identity.authenticator.version>3.0.0</carbon.extension.identity.authenticator.version>
         <org.wso2.carbon.identity.association.account>5.1.5</org.wso2.carbon.identity.association.account>
         <identity.extension.utils>1.0.8</identity.extension.utils>
-        <carbon.identity.framework.version>5.18.187.32</carbon.identity.framework.version>
+        <carbon.identity.framework.version>5.18.236</carbon.identity.framework.version>
         <carbon.identity.framework.imp.pkg.version.range>[5.0.0, 6.0.0)</carbon.identity.framework.imp.pkg.version.range>
-        <carbon.identity.oauth.version>6.4.111.11</carbon.identity.oauth.version>
+        <carbon.identity.oauth.version>6.4.166</carbon.identity.oauth.version>
         <carbon.identity.oauth.imp.pkg.version.range>[6.1.0, 7.0.0)</carbon.identity.oauth.imp.pkg.version.range>
-        <identity.governance.version>1.4.72.17</identity.governance.version>
+        <identity.governance.version>1.4.98</identity.governance.version>
 
         <commons-io.wso2.version>2.4.0.wso2v1</commons-io.wso2.version>
         <commons-lang.wso2.version>2.6.0.wso2v1</commons-lang.wso2.version>
