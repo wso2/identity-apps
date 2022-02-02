@@ -20,11 +20,20 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import { ConfirmationModal, GenericIcon } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Icon, List, ModalContent, Popup } from "semantic-ui-react";
-import { deleteDevice, getMetaData, startFidoFlow, startFidoUsernamelessFlow, updateDeviceName } from "../../../api";
+import UAParser from "ua-parser-js";
+import {
+    connectToDevice,
+    decodePublicKeyCredentialCreationOptions,
+    deleteDevice,
+    getMetaData,
+    startFidoFlow,
+    startFidoUsernamelessFlow,
+    updateDeviceName
+} from "../../../api";
 import { getMFAIcons } from "../../../configs";
 import { CommonConstants } from "../../../constants";
 import { commonConfig } from "../../../extensions";
@@ -59,8 +68,7 @@ interface FIDOAuthenticatorProps extends TestableComponentInterface {
 export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> = (
     props: FIDOAuthenticatorProps
 ): JSX.Element => {
-
-    const { onAlertFired, ["data-testid"]: testId } = props;
+    const { onAlertFired, [ "data-testid" ]: testId } = props;
     const { t } = useTranslation();
     const [ deviceList, setDeviceList ] = useState<FIDODevice[]>([]);
     const [ isDeviceErrorModalVisible, setDeviceErrorModalVisibility ] = useState(false);
@@ -70,6 +78,9 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const [ recentlyAddedDevice, setRecentlyAddedDevice ] = useState<string>();
     const [ editFIDO, setEditFido ] = useState<Map<string, boolean>>();
     const [ deleteKey, setDeleteKey ] = useState<string>("");
+    const [ fidoFlowStartResponse, setFidoFlowStartResponse ] = useState<any>(null);
+
+    const tryOlderDevice = useRef(false);
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
     const dispatch = useDispatch();
@@ -79,13 +90,9 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
      */
     const fireFailureNotification = () => {
         onAlertFired({
-            description: t(
-                "myAccount:components.mfa.fido.notifications.startFidoFlow.genericError.description"
-            ),
+            description: t("myAccount:components.mfa.fido.notifications.startFidoFlow.genericError.description"),
             level: AlertLevels.ERROR,
-            message: t(
-                "myAccount:components.mfa.fido.notifications.startFidoFlow.genericError.message"
-            )
+            message: t("myAccount:components.mfa.fido.notifications.startFidoFlow.genericError.message")
         });
     };
 
@@ -124,13 +131,9 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
      */
     const fireDeletionSuccessNotification = () => {
         onAlertFired({
-            description: t(
-                "myAccount:components.mfa.fido.notifications.removeDevice.success.description"
-            ),
+            description: t("myAccount:components.mfa.fido.notifications.removeDevice.success.description"),
             level: AlertLevels.SUCCESS,
-            message: t(
-                "myAccount:components.mfa.fido.notifications.removeDevice.success.message"
-            )
+            message: t("myAccount:components.mfa.fido.notifications.removeDevice.success.message")
         });
     };
 
@@ -139,16 +142,11 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
      */
     const fireDeletionFailureNotification = (error: string) => {
         onAlertFired({
-            description: t(
-                "myAccount:components.mfa.fido.notifications.removeDevice.error.description",
-                {
-                    description: error
-                }
-            ),
+            description: t("myAccount:components.mfa.fido.notifications.removeDevice.error.description", {
+                description: error
+            }),
             level: AlertLevels.ERROR,
-            message: t(
-                "myAccount:components.mfa.fido.notifications.removeDevice.error.message"
-            )
+            message: t("myAccount:components.mfa.fido.notifications.removeDevice.error.message")
         });
     };
 
@@ -157,13 +155,9 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
      */
     const fireDeviceNameUpdateSuccessNotification = () => {
         onAlertFired({
-            description: t(
-                "myAccount:components.mfa.fido.notifications.updateDeviceName.success.description"
-            ),
+            description: t("myAccount:components.mfa.fido.notifications.updateDeviceName.success.description"),
             level: AlertLevels.SUCCESS,
-            message: t(
-                "myAccount:components.mfa.fido.notifications.updateDeviceName.success.message"
-            )
+            message: t("myAccount:components.mfa.fido.notifications.updateDeviceName.success.message")
         });
     };
 
@@ -172,17 +166,45 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
      */
     const fireDeviceNameUpdateFailureNotification = (error: string) => {
         onAlertFired({
-            description: t(
-                "myAccount:components.mfa.fido.notifications.updateDeviceName.genericError.description",
-                {
-                    description: error
-                }
-            ),
+            description: t("myAccount:components.mfa.fido.notifications.updateDeviceName.genericError.description", {
+                description: error
+            }),
             level: AlertLevels.ERROR,
-            message: t(
-                "myAccount:components.mfa.fido.notifications.updateDeviceName.error.message"
-            )
+            message: t("myAccount:components.mfa.fido.notifications.updateDeviceName.error.message")
         });
+    };
+
+    const talkToDevice = (request?: any): void => {
+        const fidoRequest = request ?? fidoFlowStartResponse;
+
+        if (!fidoRequest) {
+            if (tryOlderDevice.current) {
+                fireFailureNotification();
+            } else {
+                setDeviceErrorModalVisibility(true);
+            }
+
+            return;
+        }
+
+        connectToDevice(
+            fidoRequest?.requestId,
+            decodePublicKeyCredentialCreationOptions(fidoRequest?.publicKeyCredentialCreationOptions)
+        )
+            .then(({ data }) => {
+                setRecentlyAddedDevice(data.credential.id);
+                setIsDeviceSuccessModalVisibility(true);
+            })
+            .catch(() => {
+                if (tryOlderDevice.current) {
+                    fireFailureNotification();
+                } else {
+                    setDeviceErrorModalVisibility(true);
+                }
+            })
+            .finally(() => {
+                tryOlderDevice.current = false;
+            });
     };
 
     /**
@@ -192,10 +214,20 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const addDevice = () => {
         setDeviceErrorModalVisibility(false);
         startFidoFlow()
-            .then(({ data }) => {
-                setRecentlyAddedDevice(data.credential.id);
-                setIsDeviceSuccessModalVisibility(true);
-            }).catch(() => {
+            .then((response) => {
+                // Safari doesn't allow the flow to be initiated in async.
+                // link https://bugs.webkit.org/show_bug.cgi?id=213595
+                if (new UAParser().getBrowser().name === "Safari") {
+                    setFidoFlowStartResponse(response);
+                    tryOlderDevice.current = true;
+                } else {
+                    tryOlderDevice.current = true;
+                    setFidoFlowStartResponse(response);
+                    talkToDevice(response);
+                }
+
+            })
+            .catch(() => {
                 fireFailureNotification();
             });
     };
@@ -207,10 +239,17 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const addUsernamelessDevice = () => {
         setDeviceErrorModalVisibility(false);
         startFidoUsernamelessFlow()
-            .then(({ data }) => {
-                setRecentlyAddedDevice(data.credential.id);
-                setIsDeviceSuccessModalVisibility(true);
-            }).catch(() => {
+            .then((response) => {
+                // Safari doesn't allow the flow to be initiated in async.
+                // link https://bugs.webkit.org/show_bug.cgi?id=213595
+                if (new UAParser().getBrowser().name === "Safari") {
+                    setFidoFlowStartResponse(response);
+                } else {
+                    setFidoFlowStartResponse(response);
+                    talkToDevice(response);
+                }
+            })
+            .catch(() => {
                 setDeviceErrorModalVisibility(true);
             });
     };
@@ -234,7 +273,8 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                 getFidoMetaData();
                 setDeleteKey("");
                 fireDeletionSuccessNotification();
-            }).catch((error) => {
+            })
+            .catch((error) => {
                 fireDeletionFailureNotification(error);
             });
     };
@@ -263,9 +303,9 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                     cancelEdit(id);
                     fireDeviceNameUpdateSuccessNotification();
                 })
-                .catch(((error) => {
+                .catch((error) => {
                     fireDeviceNameUpdateFailureNotification(error);
-                }));
+                });
         } else {
             setRecentFIDONameError(true);
         }
@@ -325,17 +365,11 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
             <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
                 { t("myAccount:components.mfa.fido.modals.deleteConfirmation.heading") }
             </ConfirmationModal.Header>
-            <ConfirmationModal.Message
-                data-testid={ `${ testId }-confirmation-modal-message` }
-                attached
-                negative
-            >
+            <ConfirmationModal.Message data-testid={ `${ testId }-confirmation-modal-message` } attached negative>
                 { t("myAccount:components.mfa.fido.modals.deleteConfirmation.description") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content data-testid={ `${ testId }-confirmation-modal-content` }>
-                {
-                    t("myAccount:components.mfa.fido.modals.deleteConfirmation.content")
-                }
+                { t("myAccount:components.mfa.fido.modals.deleteConfirmation.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );
@@ -348,29 +382,42 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const deviceErrorModal = (): JSX.Element => {
         return (
             <ModalComponent
-                data-testid={ `${testId}-error-modal-component` }
+                data-testid={ `${ testId }-error-modal-component` }
                 primaryAction={ t("common:retry") }
                 secondaryAction={ t("common:cancel") }
                 onSecondaryActionClick={ handleDeviceErrorModalClose }
-                onPrimaryActionClick={ addUsernamelessDevice }
+                onPrimaryActionClick={ () => {
+                    talkToDevice();
+                } }
                 open={ isDeviceErrorModalVisible }
                 onClose={ handleDeviceErrorModalClose }
                 type="negative"
                 header={ t("myAccount:components.mfa.fido.modals.deviceRegistrationErrorModal.heading") }
-                content={ commonConfig.accountSecurityPage.mfa.fido2.allowLegacyKeyRegistration
-                    ? `${t("myAccount:components.mfa.fido.modals.deviceRegistrationErrorModal.description")}
-                        ${t("myAccount:components.mfa.fido.modals.deviceRegistrationErrorModal.tryWithOlderDevice")}`
-                    : t("myAccount:components.mfa.fido.modals.deviceRegistrationErrorModal.description") }
+                content={
+                    commonConfig.accountSecurityPage.mfa.fido2.allowLegacyKeyRegistration
+                        ? `${ t("myAccount:components.mfa.fido.modals.deviceRegistrationErrorModal.description") }
+                        ${ t("myAccount:components.mfa.fido.modals.deviceRegistrationErrorModal.tryWithOlderDevice") }`
+                        : t("myAccount:components.mfa.fido.modals.deviceRegistrationErrorModal.description")
+                }
             >
                 <ModalContent>
-                    { commonConfig.accountSecurityPage.mfa.fido2.allowLegacyKeyRegistration &&
-                        (<Button
-                            className="negative-modal-link-button"
-                            onClick={ addDevice }
+                    { commonConfig.accountSecurityPage.mfa.fido2.allowLegacyKeyRegistration && (
+                        <div
+                            onClick={ () => {
+                                // Safari doesn't allow the flow to be initiated in async.
+                                // link https://bugs.webkit.org/show_bug.cgi?id=213595
+                                if (new UAParser().getBrowser().name === "Safari") {
+                                    setTimeout(() => {
+                                        talkToDevice();
+                                    }, 990);
+                                }
+                            } }
                         >
-                            { t("myAccount:components.mfa.fido.tryButton") }
-                        </Button>)
-                    }
+                            <Button className="negative-modal-link-button" onClick={ addDevice }>
+                                { t("myAccount:components.mfa.fido.tryButton") }
+                            </Button>
+                        </div>
+                    ) }
                 </ModalContent>
             </ModalComponent>
         );
@@ -382,7 +429,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const deviceRegistrationSuccessModal = (): JSX.Element => {
         return (
             <ModalComponent
-                data-testid={ `${testId}-success-modal-component` }
+                data-testid={ `${ testId }-success-modal-component` }
                 primaryAction={ t("common:save") }
                 secondaryAction={ t("common:cancel") }
                 onSecondaryActionClick={ handleDeviceSuccessModalClose }
@@ -402,10 +449,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                 autoFocus={ true }
                                 type="text"
                                 label=""
-                                placeholder={
-                                    t("myAccount:components" +
-                                        ".mfa.fido.form.placeholder")
-                                }
+                                placeholder={ t("myAccount:components" + ".mfa.fido.form.placeholder") }
                                 onChange={ handleDeviceNameChange }
                                 error={
                                     recentFIDONameError
@@ -443,199 +487,175 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                         <Grid.Column width={ 12 } className="first-column">
                             <List.Content>
                                 <List.Header>{ t("myAccount:components.mfa.fido.heading") }</List.Header>
-                                <List.Description>
-                                    { t("myAccount:components.mfa.fido.description") }
-                                </List.Description>
+                                <List.Description>{ t("myAccount:components.mfa.fido.description") }</List.Description>
                             </List.Content>
                         </Grid.Column>
                         <Grid.Column width={ 3 } className="last-column">
-                            <List.Content floated="right">
-                                <Icon
-                                    floated="right"
-                                    link={ true }
-                                    className="list-icon"
-                                    size="small"
-                                    color="grey"
-                                    name="add"
-                                    onClick={ addUsernamelessDevice }
-                                />
+                            <List.Content
+                                floated="right"
+                            >
+                                <span
+                                    onClick={ () => {
+                                        // Safari doesn't allow the flow to be initiated in async.
+                                        // link https://bugs.webkit.org/show_bug.cgi?id=213595
+                                        if (new UAParser().getBrowser().name === "Safari") {
+                                            setTimeout(() => {
+                                                talkToDevice();
+                                            }, 990);
+                                        }
+                                    } }>
+                                    <Icon
+                                        floated="right"
+                                        link={ true }
+                                        className="list-icon"
+                                        size="small"
+                                        color="grey"
+                                        name="add"
+                                        onClick={ addUsernamelessDevice }
+                                    />
+                                </span>
                             </List.Content>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-                {
-                    deviceList ? (
-                        <List
-                            data-testid={ `${testId}-devices-list` }
-                            divided
-                            relaxed
-                            verticalAlign="middle"
-                            className="main-content-inner settings-section-inner-list"
-                        >
-                            {
-                                deviceList.map((device, index) => (
-                                    editFIDO?.get(device.credential.credentialId)
-                                        && activeForm?.startsWith(CommonConstants.SECURITY+FIDO)
-                                        ? (
-                                            <EditSection
-                                                key={ device.credential.credentialId }
-                                                data-testid={ `${testId}-device-${index}-edit-section` }>
-                                                <Grid>
-                                                    <Grid.Row columns={ 2 }>
-                                                        <Grid.Column width={ 4 }>
-                                                            {
-                                                                t("myAccount:components.mfa.fido.form.label")
-                                                                + ` ${index + 1}`
-                                                            }
-                                                        </Grid.Column>
-                                                        <Grid.Column width={ 12 }>
-                                                            <List.Item>
-                                                                <List.Content>
-                                                                    <Forms
-                                                                        onSubmit={
-                                                                            (values: Map<string, string>) => {
-                                                                                submitName(
-                                                                                    values.get(
-                                                                                        device.credential.credentialId
-                                                                                    ),
-                                                                                    device.credential.credentialId
-                                                                                );
-                                                                            }
-                                                                        }
-                                                                    >
-                                                                        <Field
-                                                                            autoFocus={ true }
-                                                                            label=""
-                                                                            value={ device.displayName || "" }
-                                                                            required={ true }
-                                                                            requiredErrorMessage={
-                                                                                t("myAccount:components" +
-                                                                                    ".mfa.fido.form.required")
-                                                                            }
-                                                                            name={ device.credential.credentialId }
-                                                                            placeholder={
-                                                                                t("myAccount:components" +
-                                                                                    ".mfa.fido.form.placeholder")
-                                                                            }
-                                                                            type="text"
-                                                                        />
-                                                                        <Field
-                                                                            hidden={ true }
-                                                                            type="divider"
-                                                                        />
-                                                                        <Form.Group inline={ true }>
-                                                                            <Field
-                                                                                size="small"
-                                                                                type="submit"
-                                                                                value={ t("common:update").toString() }
-                                                                            />
-                                                                            <Field
-                                                                                className="link-button"
-                                                                                onClick={
-                                                                                    () => {
-                                                                                        cancelEdit(
-                                                                                            device.credential
-                                                                                                .credentialId
-                                                                                        );
-                                                                                    }
-                                                                                }
-                                                                                size="small"
-                                                                                type="button"
-                                                                                value={ t("common:cancel").toString() }
-                                                                            />
-                                                                        </Form.Group>
-                                                                    </Forms>
-                                                                </List.Content>
-                                                            </List.Item>
-                                                        </Grid.Column>
-                                                    </Grid.Row>
-                                                </Grid>
-                                            </EditSection>
-                                        )
-                                        : (
-                                            <>
-                                                <List.Item
-                                                    className="inner-list-item"
-                                                    key={ index }
-                                                    data-testid={ `${testId}-devices-list-item` }>
-                                                    <Grid padded={ true }>
-                                                        <Grid.Row columns={ 2 } className="first-column">
-                                                            <Grid.Column width={ 11 }>
-                                                                <List.Header className="with-left-padding">
-                                                                    {
-                                                                        device.displayName
-                                                                    || t("myAccount:components.mfa.fido.form.label")
-                                                                    + ` ${index + 1}`
-                                                                    }
-                                                                </List.Header>
-                                                            </Grid.Column>
-                                                            <Grid.Column width={ 5 } className="last-column">
-                                                                <List.Content floated="right">
-                                                                    <Icon
-                                                                        id={ device.credential.credentialId }
+                { deviceList ? (
+                    <List
+                        data-testid={ `${ testId }-devices-list` }
+                        divided
+                        relaxed
+                        verticalAlign="middle"
+                        className="main-content-inner settings-section-inner-list"
+                    >
+                        { deviceList.map((device, index) =>
+                            editFIDO?.get(device.credential.credentialId) &&
+                                activeForm?.startsWith(CommonConstants.SECURITY + FIDO) ? (
+                                    <EditSection
+                                        key={ device.credential.credentialId }
+                                        data-testid={ `${ testId }-device-${ index }-edit-section` }
+                                    >
+                                        <Grid>
+                                            <Grid.Row columns={ 2 }>
+                                                <Grid.Column width={ 4 }>
+                                                    { t("myAccount:components.mfa.fido.form.label")
+                                                        + ` ${ index + 1 }` }
+                                                </Grid.Column>
+                                                <Grid.Column width={ 12 }>
+                                                    <List.Item>
+                                                        <List.Content>
+                                                            <Forms
+                                                                onSubmit={ (values: Map<string, string>) => {
+                                                                    submitName(
+                                                                        values.get(device.credential.credentialId),
+                                                                        device.credential.credentialId
+                                                                    );
+                                                                } }
+                                                            >
+                                                                <Field
+                                                                    autoFocus={ true }
+                                                                    label=""
+                                                                    value={ device.displayName || "" }
+                                                                    required={ true }
+                                                                    requiredErrorMessage={ t(
+                                                                        "myAccount:components"
+                                                                        + ".mfa.fido.form.required"
+                                                                    ) }
+                                                                    name={ device.credential.credentialId }
+                                                                    placeholder={ t(
+                                                                        "myAccount:components" +
+                                                                    ".mfa.fido.form.placeholder"
+                                                                    ) }
+                                                                    type="text"
+                                                                />
+                                                                <Field hidden={ true } type="divider" />
+                                                                <Form.Group inline={ true }>
+                                                                    <Field
+                                                                        size="small"
+                                                                        type="submit"
+                                                                        value={ t("common:update").toString() }
+                                                                    />
+                                                                    <Field
+                                                                        className="link-button"
+                                                                        onClick={ () => {
+                                                                            cancelEdit(device.credential.credentialId);
+                                                                        } }
+                                                                        size="small"
+                                                                        type="button"
+                                                                        value={ t("common:cancel").toString() }
+                                                                    />
+                                                                </Form.Group>
+                                                            </Forms>
+                                                        </List.Content>
+                                                    </List.Item>
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        </Grid>
+                                    </EditSection>
+                                ) : (
+                                    <>
+                                        <List.Item
+                                            className="inner-list-item"
+                                            key={ index }
+                                            data-testid={ `${ testId }-devices-list-item` }
+                                        >
+                                            <Grid padded={ true }>
+                                                <Grid.Row columns={ 2 } className="first-column">
+                                                    <Grid.Column width={ 11 }>
+                                                        <List.Header className="with-left-padding">
+                                                            { device.displayName ||
+                                                            t("myAccount:components.mfa.fido.form.label") +
+                                                            ` ${ index + 1 }` }
+                                                        </List.Header>
+                                                    </Grid.Column>
+                                                    <Grid.Column width={ 5 } className="last-column">
+                                                        <List.Content floated="right">
+                                                            <Icon
+                                                                id={ device.credential.credentialId }
+                                                                link={ true }
+                                                                className="list-icon"
+                                                                size="large"
+                                                                color="grey"
+                                                                name="pencil alternate"
+                                                                onClick={ () => {
+                                                                    showEdit(device.credential.credentialId);
+                                                                } }
+                                                            />
+                                                            <Popup
+                                                                content={ t(
+                                                                    "myAccount:components.mfa" + ".fido.form.remove"
+                                                                ) }
+                                                                inverted
+                                                                trigger={
+                                                                    (<Icon
                                                                         link={ true }
+                                                                        name="trash alternate outline"
+                                                                        color="red"
+                                                                        size="small"
                                                                         className="list-icon"
-                                                                        size="large"
-                                                                        color="grey"
-                                                                        name="pencil alternate"
-                                                                        onClick={
-                                                                            () => {
-                                                                                showEdit(
-                                                                                    device.credential.credentialId);
-                                                                            }
-                                                                        }
-                                                                    />
-                                                                    <Popup
-                                                                        content={
-                                                                            t("myAccount:components.mfa" +
-                                                                                ".fido.form.remove")
-                                                                        }
-                                                                        inverted
-                                                                        trigger={ (
-                                                                            <Icon
-                                                                                link={ true }
-                                                                                name="trash alternate outline"
-                                                                                color="red"
-                                                                                size="small"
-                                                                                className="list-icon"
-                                                                                onClick={
-                                                                                    () => {
-                                                                                        setDeleteKey(
-                                                                                            device.credential
-                                                                                                .credentialId
-                                                                                        );
-                                                                                    }
-                                                                                }
-                                                                            />
-                                                                        ) }
-                                                                    />
-                                                                </List.Content>
-                                                            </Grid.Column>
-                                                        </Grid.Row>
-                                                    </Grid>
-                                                </List.Item>
-                                                { deviceList.length !== index + 1
-                                                    && <Divider className="fido-list-divider" /> }
-                                            </>
-                                        )
-                                ))
-                            }
-                        </List>
-                    )
-                        :
-                        (
-                            <>
-                                <p style={ { fontSize: "12px" } }>
-                                    <Icon
-                                        color="grey"
-                                        floated="left"
-                                        name="info circle"
-                                    />
-                                    You don&apos;t have any security key/biometric registered yet.
-                                </p>
-                            </>
-                        )
-                }
+                                                                        onClick={ () => {
+                                                                            setDeleteKey(
+                                                                                device.credential.credentialId);
+                                                                        } }
+                                                                    />)
+                                                                }
+                                                            />
+                                                        </List.Content>
+                                                    </Grid.Column>
+                                                </Grid.Row>
+                                            </Grid>
+                                        </List.Item>
+                                        { deviceList.length !== index + 1 && <Divider className="fido-list-divider" /> }
+                                    </>
+                                )
+                        ) }
+                    </List>
+                ) : (
+                    <>
+                        <p style={ { fontSize: "12px" } }>
+                            <Icon color="grey" floated="left" name="info circle" />
+                            You don&apos;t have any security key/biometric registered yet.
+                        </p>
+                    </>
+                ) }
             </div>
             <>{ deviceErrorModal() }</>
             <>{ deviceRegistrationSuccessModal() }</>
