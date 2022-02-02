@@ -40,7 +40,7 @@
     <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout authentication-portal-layout" onload="talkToDevice();">
+<body class="login-portal layout authentication-portal-layout">
 
     <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
         <jsp:include page="extensions/timeout.jsp"/>
@@ -83,6 +83,7 @@
                     <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
                     <input type="hidden" name="tokenResponse" id="tokenResponse" value="tmp val"/>
                 </form>
+                <input id="initiateFlow" type="hidden" onclick="talkToDevice()" />
             </div>
         </div>
     </main>
@@ -112,6 +113,9 @@
     <script type="text/javascript" src="libs/base64url.js"></script>
 
     <script type="text/javascript">
+        $(document).ready(function () {
+            $("#initiateFlow").click();
+        });
 
         function responseToObject(response) {
             if (response.u2fResponse) {
