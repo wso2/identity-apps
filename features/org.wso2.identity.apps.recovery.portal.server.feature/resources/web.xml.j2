@@ -42,6 +42,12 @@
                <param-value>{{ accountrecoveryendpoint.use_username_with_domain_for_self_signup_name_check }}</param-value>
            </context-param>
     {% endif %}
+    {% if accountrecoveryendpoint.auto_login_cookie_domain is defined %}
+        <context-param>
+                <param-name>AutoLoginCookieDomain</param-name>
+                <param-value>{{ accountrecoveryendpoint.auto_login_cookie_domain }}</param-value>
+        </context-param>
+    {% endif %}
     <!-- *************** End of Global configurations ********************** -->
     <!--  End of Custom Page configurations -->
     <context-param>
