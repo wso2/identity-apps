@@ -17,3 +17,9 @@
  */
 
 import "../node_modules/@testing-library/jest-dom/extend-expect";
+import { TextDecoder, TextEncoder } from "util";
+
+// jsdom Doesn't seem to have TextEncoder defined in global for the DOM.
+// Hence adding the node.js one. See https://github.com/jsdom/jsdom/issues/2524.
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;

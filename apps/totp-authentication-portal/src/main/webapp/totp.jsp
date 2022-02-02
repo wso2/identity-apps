@@ -27,6 +27,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.TenantDataManager" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.wso2.carbon.identity.application.authenticator.totp.util.TOTPUtil" %>
 <%@ include file="includes/localize.jsp" %>
 
     <%
@@ -36,7 +37,9 @@
         if (request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP) != null) {
             idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
         }
-
+    
+        boolean isSendVerificationCodeByEmailEnabled = TOTPUtil.isSendVerificationCodeByEmailEnabled();
+    
         String errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.retry");
         String authenticationFailed = "false";
 
@@ -133,10 +136,12 @@
                                        value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>' />
                                 <div class="ui divider hidden"></div>
                                 <div class="align-right buttons">
-                                    <a class="ui button link-button" id="genToken" href="#"
-                                       onclick="return requestTOTPToken();">
-                                       <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "get.verification.code")%>
-                                    </a>
+                                    <% if(isSendVerificationCodeByEmailEnabled) { %>
+                                        <a class="ui button link-button" id="genToken" href="#"
+                                           onclick="return requestTOTPToken();">
+                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "get.verification.code")%>
+                                        </a>
+                                    <% } %>
                                     <input type="submit" value="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "authenticate")%>" class="ui primary button">
                                 </div>
                             </form>

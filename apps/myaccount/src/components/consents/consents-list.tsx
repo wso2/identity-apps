@@ -16,26 +16,29 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, List, Responsive } from "semantic-ui-react";
 import { AppConsentEdit } from "./consent-edit";
 import { ConsentedAppIcon } from "../../configs";
-import { ConsentInterface, ConsentState, RevokedClaimInterface } from "../../models";
+import { ConsentInterface, ConsentState, PIICategoryClaimToggleItem } from "../../models";
 import { toSentenceCase } from "../../utils";
 import { ThemeIcon } from "../shared";
 
 /**
  * Proptypes for the application consents list component.
+ * Also see {@link AppConsentList.defaultProps}
  */
-interface ConsentsListProps {
+interface ConsentsListProps extends TestableComponentInterface {
     consentedApps: ConsentInterface[];
     consentListActiveIndexes?: number[];
     onAppConsentRevoke: (consent: ConsentInterface) => void;
     onConsentDetailClick: (index: number, id: string) => void;
     onClaimUpdate: (receiptId: string) => void;
-    onClaimRevokeToggle: (receiptId: string, claimId: number) => void;
-    revokedClaimList: RevokedClaimInterface[];
+    acceptedPIIClaimList?: Set<PIICategoryClaimToggleItem>;
+    deniedPIIClaimList?: Set<PIICategoryClaimToggleItem>;
+    onPIIClaimToggle?: (piiCategoryId: number, purposeId: number, receiptId: string) => void;
 }
 
 /**
@@ -53,9 +56,11 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
         consentListActiveIndexes,
         onAppConsentRevoke,
         onClaimUpdate,
-        onClaimRevokeToggle,
-        revokedClaimList,
-        onConsentDetailClick
+        onConsentDetailClick,
+        onPIIClaimToggle,
+        acceptedPIIClaimList,
+        deniedPIIClaimList,
+        ["data-testid"]: testId
     } = props;
     const { t } = useTranslation();
 
@@ -73,7 +78,7 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
 
     return (
         <>
-            <List divided verticalAlign="middle" className="main-content-inner">
+            <List divided verticalAlign="middle" className="main-content-inner" data-testid={ testId }>
                 {
                     (consentedApps && consentedApps.length && consentedApps.length > 0)
                         ? consentedApps.map((consent: ConsentInterface, index) => {
@@ -171,11 +176,13 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
                                             consentListActiveIndexes && consentListActiveIndexes.includes(index)
                                                 ? (
                                                     <AppConsentEdit
+                                                        data-testid={ `${testId}-app-consent-edit` }
                                                         editingConsent={ consent }
                                                         onAppConsentRevoke={ onAppConsentRevoke }
                                                         onClaimUpdate={ onClaimUpdate }
-                                                        onClaimRevokeToggle={ onClaimRevokeToggle }
-                                                        revokedClaimList={ revokedClaimList }
+                                                        onPIIClaimToggle={ onPIIClaimToggle }
+                                                        acceptedPIIClaimList={ acceptedPIIClaimList }
+                                                        deniedPIIClaimList={ deniedPIIClaimList }
                                                     />
                                                 ) : null
                                         }
@@ -188,4 +195,12 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
             </List>
         </>
     );
+};
+
+/**
+ * Default properties for the {@link AppConsentList}
+ * See type definitions in {@link ConsentsListProps}
+ */
+AppConsentList.defaultProps = {
+    "data-testid": "app-consent-list"
 };

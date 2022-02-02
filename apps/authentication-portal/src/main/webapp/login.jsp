@@ -22,6 +22,8 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityCoreConstants" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
+<%@ page import="org.wso2.carbon.base.ServerConfiguration" %>
+<%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.STATUS" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.STATUS_MSG" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.CONFIGURATION_ERROR" %>
@@ -45,6 +47,8 @@
     private static final String OPEN_ID_AUTHENTICATOR = "OpenIDAuthenticator";
     private static final String JWT_BASIC_AUTHENTICATOR = "JWTBasicAuthenticator";
     private static final String X509_CERTIFICATE_AUTHENTICATOR = "x509CertificateAuthenticator";
+    private String reCaptchaAPI = null;
+    private String reCaptchaKey = null;
 %>
 
 <%
@@ -84,13 +88,16 @@
 %>
 <%
     boolean reCaptchaEnabled = false;
-    if (request.getParameter("reCaptcha") != null && Boolean.parseBoolean(request.getParameter("reCaptcha"))) {
-        reCaptchaEnabled = true;
+    boolean reCaptchaResendEnabled = false;
+    if (CaptchaUtil.isReCaptchaEnabled()) {
+        reCaptchaEnabled = CaptchaUtil.isReCaptchaEnabledForFlow("sso.login.recaptcha.enable.always", tenantDomain);
+        reCaptchaResendEnabled = CaptchaUtil.isReCaptchaEnabledForFlow("SelfRegistration.ResendConfirmationReCaptcha",
+                                                                        tenantDomain);
     }
 
-    boolean reCaptchaResendEnabled = false;
-    if (request.getParameter("reCaptchaResend") != null && Boolean.parseBoolean(request.getParameter("reCaptchaResend"))) {
-        reCaptchaResendEnabled = true;
+    if (reCaptchaEnabled || reCaptchaResendEnabled) {
+        reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+        reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     }
 %>
 <%
@@ -120,11 +127,11 @@
     // Login context request url.
     String sessionDataKey = request.getParameter("sessionDataKey");
     String relyingParty = request.getParameter("relyingParty");
-    String loginContextRequestUrl = logincontextURL + "?sessionDataKey=" + sessionDataKey + "&relyingParty="
-            + relyingParty;
+    String loginContextRequestUrl = logincontextURL + "?sessionDataKey=" + Encode.forUriComponent(sessionDataKey) + "&relyingParty="
+            + Encode.forUriComponent(relyingParty);
     if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
         // We need to send the tenant domain as a query param only in non tenant qualified URL mode.
-        loginContextRequestUrl += "&tenantDomain=" + tenantDomain;
+        loginContextRequestUrl += "&tenantDomain=" + Encode.forUriComponent(tenantDomain);
     }
 %>
 
@@ -145,7 +152,7 @@
     <%
         if (reCaptchaEnabled || reCaptchaResendEnabled) {
     %>
-        <script src='<%=(Encode.forJavaScriptSource(request.getParameter("reCaptchaAPI")))%>'></script>
+        <script src='<%=(Encode.forJavaScriptSource(reCaptchaAPI))%>'></script>
     <%
         }
     %>
@@ -369,12 +376,28 @@
     <% } else { %>
         <jsp:include page="includes/footer.jsp"/>
     <% } %>
-
+    
+    <%
+        String contextPath =
+                ServerConfiguration.getInstance().getFirstProperty(IdentityCoreConstants.PROXY_CONTEXT_PATH);
+        if (contextPath != null && contextPath != "") {
+            if (contextPath.trim().charAt(0) != '/') {
+                contextPath = "/" + contextPath;
+            }
+            if (contextPath.trim().charAt(contextPath.length() - 1) == '/') {
+                contextPath = contextPath.substring(0, contextPath.length() - 1);
+            }
+            contextPath = contextPath.trim();
+        } else {
+            contextPath = "";
+        }
+    %>
     <script>
         function checkSessionKey() {
+            var proxyPath = "<%=contextPath%>"
             $.ajax({
                 type: "GET",
-                url: "<%=loginContextRequestUrl%>",
+                url: proxyPath + "<%=loginContextRequestUrl%>",
                 success: function (data) {
                     if (data && data.status == 'redirect' && data.redirectUrl && data.redirectUrl.length > 0) {
                         window.location.href = data.redirectUrl;

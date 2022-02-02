@@ -23,6 +23,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Error" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.ResetPasswordRequest" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.net.URISyntaxException" %>
@@ -53,7 +54,7 @@
     String newPassword = request.getParameter("reset-password");
     String callback = request.getParameter("callback");
     String sessionDataKey = request.getParameter("sessionDataKey");
-    String username = request.getParameter("username");
+    String username = null;
     boolean isAutoLoginEnable = Boolean.parseBoolean(Utils.getConnectorConfig("Recovery.AutoLogin.Enable",
             tenantDomain));
 
@@ -84,29 +85,34 @@
         resetPasswordRequest.setProperties(properties);
 
         try {
-            notificationApi.setPasswordPost(resetPasswordRequest);
+            User user = notificationApi.setUserPasswordPost(resetPasswordRequest);
+            username = user.getUsername();
+            String userStoreDomain = user.getRealm();
 
             if (isAutoLoginEnable) {
                 String queryParams = callback.substring(callback.indexOf("?") + 1);
                 String[] parameterList = queryParams.split("&");
                 Map<String, String> queryMap = new HashMap<>();
                 for (String param : parameterList) {
-                    String key = param.substring(0, param.indexOf("="));
-                    String value = param.substring(param.indexOf("=") + 1);
-                    queryMap.put(key, value);
+                    if (param.contains("=")) {
+                        String key = param.substring(0, param.indexOf("="));
+                        String value = param.substring(param.indexOf("=") + 1);
+                        queryMap.put(key, value);
+                    }
                 }
                 sessionDataKey = queryMap.get("sessionDataKey");
                 String referer = request.getHeader("referer");
                 String refererParams = referer.substring(referer.indexOf("?") + 1);
                 parameterList = refererParams.split("&");
                 for (String param : parameterList) {
-                    String key = param.substring(0, param.indexOf("="));
-                    String value = param.substring(param.indexOf("=") + 1);
-                    queryMap.put(key, value);
+                    if (param.contains("=")) {
+                        String key = param.substring(0, param.indexOf("="));
+                        String value = param.substring(param.indexOf("=") + 1);
+                        queryMap.put(key, value);
+                    }
                 }
-                String userstoredomain = queryMap.get("userstoredomain");
-                if (userstoredomain != null) {
-                  username = userstoredomain + "/" + username;
+                if (userStoreDomain != null) {
+                  username = userStoreDomain + "/" + username;
                 }
                 String signature = Base64.getEncoder().encodeToString(SignatureUtil.doSignature(username));
                 JSONObject cookieValueInJson = new JSONObject();
@@ -146,6 +152,8 @@
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                 "Password.cannot.be.empty"));
+        request.setAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN, tenantDomain);
+        request.setAttribute(IdentityManagementEndpointConstants.CALLBACK, callback);
         request.getRequestDispatcher("password-reset.jsp").forward(request, response);
         return;
     }
@@ -167,6 +175,7 @@
     <% } %>
 </head>
 <body>
+
     <form id="callbackForm" name="callbackForm" method="post" action="/commonauth">
         <%
             if (username != null) {
@@ -207,9 +216,17 @@
                 try {
                     if(isAutoLoginEnable) {
             %>
-                    document.callbackForm.submit();
                     <%
-                           } else {
+                        if (sessionDataKey != null) {
+                    %>
+                            document.callbackForm.submit();
+                    <%
+                        } else {
+                    %>
+                            location.href = "<%= IdentityManagementEndpointUtil.encodeURL(callback)%>";
+                    <%
+                        }
+                    } else {
                     %>
                     location.href = "<%= IdentityManagementEndpointUtil.getURLEncodedCallback(callback)%>&passwordReset=true";
                     <%

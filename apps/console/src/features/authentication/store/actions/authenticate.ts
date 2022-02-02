@@ -22,7 +22,7 @@ import {
     Hooks,
     IdentityClient,
     OIDC_SESSION_IFRAME_ENDPOINT,
-    ResponseModeTypes,
+    ResponseMode,
     ServiceResourcesType,
     Storage,
     TOKEN_ENDPOINT,
@@ -152,9 +152,9 @@ export const initializeAuthentication = () => (dispatch) => {
 
     const auth = IdentityClient.getInstance();
 
-    const responseModeFallback: ResponseModeTypes = process.env.NODE_ENV === "production"
-        ? "form_post"
-        : "query";
+    const responseModeFallback: ResponseMode = process.env.NODE_ENV === "production"
+        ? ResponseMode.formPost
+        : ResponseMode.query;
 
     const storageFallback: Storage = new UAParser().getBrowser().name === "IE"
         ? Storage.SessionStorage
@@ -202,6 +202,7 @@ export const initializeAuthentication = () => (dispatch) => {
             baseUrls: resolveBaseUrls(),
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
+            clockTolerance: window["AppUtils"].getConfig().idpConfigs?.clockTolerance,
             enablePKCE: window["AppUtils"].getConfig().idpConfigs?.enablePKCE
                 ?? true,
             endpoints: {

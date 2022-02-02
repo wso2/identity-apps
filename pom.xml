@@ -385,6 +385,11 @@
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon.identity.governance</groupId>
+                <artifactId>org.wso2.carbon.identity.captcha</artifactId>
+                <version>${identity.governance.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.governance</groupId>
                 <artifactId>org.wso2.carbon.identity.recovery</artifactId>
                 <version>${identity.governance.version}</version>
             </dependency>
@@ -524,6 +529,11 @@
                 <version>${project.version}</version>
                 <type>zip</type>
             </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.extension.identity.authenticator.outbound.totp</groupId>
+                <artifactId>org.wso2.carbon.extension.identity.authenticator.totp.connector</artifactId>
+                <version>${totp.authenticator.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -630,6 +640,7 @@
         <carbon.commons.version>4.7.22</carbon.commons.version>
         <carbon.commons.imp.pkg.version.range>[4.7.0, 5.0.0)</carbon.commons.imp.pkg.version.range>
         <carbon.logging.version>4.4.39</carbon.logging.version>
+        <totp.authenticator.version>2.2.10</totp.authenticator.version>
 
         <carbon.base.imp.pkg.version.range>[1.0.0, 2.0.0)</carbon.base.imp.pkg.version.range>
         <org.wso2.carbon.identity.outbound.auth.oidc>5.1.20</org.wso2.carbon.identity.outbound.auth.oidc>
@@ -637,11 +648,11 @@
         <carbon.extension.identity.authenticator.version>3.0.0</carbon.extension.identity.authenticator.version>
         <org.wso2.carbon.identity.association.account>5.1.5</org.wso2.carbon.identity.association.account>
         <identity.extension.utils>1.0.8</identity.extension.utils>
-        <carbon.identity.framework.version>5.18.176</carbon.identity.framework.version>
+        <carbon.identity.framework.version>5.18.236</carbon.identity.framework.version>
         <carbon.identity.framework.imp.pkg.version.range>[5.0.0, 6.0.0)</carbon.identity.framework.imp.pkg.version.range>
-        <carbon.identity.oauth.version>6.4.98</carbon.identity.oauth.version>
+        <carbon.identity.oauth.version>6.4.166</carbon.identity.oauth.version>
         <carbon.identity.oauth.imp.pkg.version.range>[6.1.0, 7.0.0)</carbon.identity.oauth.imp.pkg.version.range>
-        <identity.governance.version>1.4.16</identity.governance.version>
+        <identity.governance.version>1.4.98</identity.governance.version>
 
         <commons-io.wso2.version>2.4.0.wso2v1</commons-io.wso2.version>
         <commons-lang.wso2.version>2.6.0.wso2v1</commons-lang.wso2.version>

@@ -5,6 +5,7 @@
     "debug": false,
     "idpConfigs": {
         "enablePKCE": true,
+        "clockTolerance": 60,
         "responseMode": "query",
         "scope": [ "SYSTEM" ],
         "serverOrigin": "https://localhost:9443",
