@@ -207,7 +207,7 @@ export const endFidoFlow = (clientResponse: string): Promise<any> => {
  *
  * @return {Promise<any>} a promise containing the response.
  */
-const connectToDevice = (requestId, credentialCreationOptions): Promise<any> => {
+export const connectToDevice = (requestId, credentialCreationOptions): Promise<any> => {
     return navigator.credentials
         .create({ publicKey: credentialCreationOptions })
         .then((credential) => {
@@ -240,7 +240,7 @@ const connectToDevice = (requestId, credentialCreationOptions): Promise<any> => 
  *
  * @return {object} excludeCredentials
  */
-const decodePublicKeyCredentialCreationOptions = (request): Record<string, any> => {
+export const decodePublicKeyCredentialCreationOptions = (request): Record<string, any> => {
     const excludeCredentials = request.excludeCredentials.map((credential) => {
         return { ...credential, id: Decode(credential.id) };
     });
@@ -281,16 +281,7 @@ export const startFidoFlow = (): Promise<any> => {
                 );
             }
 
-            return connectToDevice(
-                response.data.requestId,
-                decodePublicKeyCredentialCreationOptions(response.data.publicKeyCredentialCreationOptions)
-            )
-                .then((responseAtCompletion) => {
-                    return Promise.resolve(responseAtCompletion);
-                })
-                .catch((error) => {
-                    return Promise.reject(`Failed to connect to device - ${error}`);
-                });
+            return Promise.resolve(response?.data);
         })
         .catch((error) => {
             return Promise.reject(`FIDO connection terminated - ${error}`);
@@ -322,16 +313,7 @@ export const startFidoUsernamelessFlow = (): Promise<any> => {
                 );
             }
 
-            return connectToDevice(
-                response.data.requestId,
-                decodePublicKeyCredentialCreationOptions(response.data.publicKeyCredentialCreationOptions)
-            )
-                .then((responseAtCompletion) => {
-                    return Promise.resolve(responseAtCompletion);
-                })
-                .catch((error) => {
-                    return Promise.reject(`Failed to connect to device - ${error}`);
-                });
+            return Promise.resolve(response?.data);
         })
         .catch((error) => {
             return Promise.reject(`FIDO connection terminated - ${error}`);
