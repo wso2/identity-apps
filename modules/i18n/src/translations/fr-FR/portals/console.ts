@@ -1144,8 +1144,7 @@ export const console: ConsoleNS = {
                                             usernameless: {
                                                 description: "Permettre aux utilisateurs de se connecter à " +
                                                     "l'aidAjouter une connexion sans nom d'utilisateuré " +
-                                                    "FIDO2 ou de la biométrie sans entrer leur nom d'utilisateur " +
-                                                    "ou leur mot de passe.",
+                                                    "FIDO2 ou de la biométrie.",
                                                 heading: "Add usernameless login"
                                             }
                                         }
