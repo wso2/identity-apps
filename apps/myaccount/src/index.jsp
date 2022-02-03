@@ -50,6 +50,10 @@
                     return serverOrigin + path;
                 }
 
+
+        <link href="<%= htmlWebpackPlugin.options.publicPath %>/libs/themes/default/theme.<%= htmlWebpackPlugin.options.themeHash %>.min.css" rel="stylesheet" type="text/css"/>
+        <link rel="shortcut icon" href="<%= htmlWebpackPlugin.options.publicPath %>/libs/themes/default/assets/images/branding/favicon.ico" />
+
                 return serverOrigin;
             }
 
@@ -77,5 +81,11 @@
                 auth.signIn();
             }
         </script>
+    </head>
+    <body>
+        <noscript>
+            You need to enable JavaScript to run this app.
+        </noscript>
+        <div id="root"></div>
     </body>
 </html>
