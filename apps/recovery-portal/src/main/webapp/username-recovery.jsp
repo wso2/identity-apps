@@ -48,17 +48,6 @@
 
     ReCaptchaApi reCaptchaApi = new ReCaptchaApi();
 
-    if (StringUtils.isNotEmpty(tenantDomain)) {
-        try {
-            IdentityTenantUtil.getTenantId(tenantDomain);
-        } catch (IdentityRuntimeException e) {
-            request.setAttribute("error", true);
-            request.setAttribute("errorMsg", e.getMessage());
-            request.getRequestDispatcher("username-recovery-tenant-request.jsp").forward(request, response);
-            return;
-        }
-    }
-
     try {
         ReCaptchaProperties reCaptchaProperties = reCaptchaApi.getReCaptcha(tenantDomain, true, "ReCaptcha",
                 "username-recovery");
@@ -118,8 +107,11 @@
 
     boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
 
-    boolean reCaptchaEnabled = CaptchaUtil.isReCaptchaEnabled() &&
-                        CaptchaUtil.isReCaptchaEnabledForFlow("Recovery.ReCaptcha.Username.Enable", tenantDomain);
+    boolean reCaptchaEnabled = false;
+    if (request.getAttribute("reCaptcha") != null &&
+            "TRUE".equalsIgnoreCase((String) request.getAttribute("reCaptcha"))) {
+        reCaptchaEnabled = true;
+    }
 %>
 
 <!doctype html>

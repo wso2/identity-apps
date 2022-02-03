@@ -41,6 +41,7 @@
 <%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClientException" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 
 <jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
 
@@ -146,7 +147,7 @@
         String path = config.getServletContext().getInitParameter(Constants.ACCOUNT_RECOVERY_REST_ENDPOINT_URL);
         String url;
         if (StringUtils.isNotBlank(EndpointConfigManager.getServerOrigin())) {
-            url = EndpointConfigManager.getServerOrigin() + proxyContextPath + path;
+            url = IdentityManagementEndpointUtil.getBasePath(tenantDomain, path, false);
         } else {
             url = IdentityUtil.getServerURL(path, true, false);
         }

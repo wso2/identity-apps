@@ -38,6 +38,7 @@
 <%@ page import="org.json.simple.JSONObject" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.recovery.util.Utils" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.framework.util.FrameworkUtils" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
@@ -90,20 +91,11 @@
             String userStoreDomain = user.getRealm();
 
             if (isAutoLoginEnable) {
-                String queryParams = callback.substring(callback.indexOf("?") + 1);
-                String[] parameterList = queryParams.split("&");
-                Map<String, String> queryMap = new HashMap<>();
-                for (String param : parameterList) {
-                    if (param.contains("=")) {
-                        String key = param.substring(0, param.indexOf("="));
-                        String value = param.substring(param.indexOf("=") + 1);
-                        queryMap.put(key, value);
-                    }
-                }
+                Map<String, String> queryMap = extractQueryParamsFromURL(callback);
                 sessionDataKey = queryMap.get("sessionDataKey");
                 String referer = request.getHeader("referer");
                 String refererParams = referer.substring(referer.indexOf("?") + 1);
-                parameterList = refererParams.split("&");
+                String[] parameterList = refererParams.split("&");
                 for (String param : parameterList) {
                     if (param.contains("=")) {
                         String key = param.substring(0, param.indexOf("="));
@@ -160,6 +152,23 @@
 
     session.invalidate();
 %>
+
+<%!
+    Map<String, String> extractQueryParamsFromURL(String url) {
+        String queryParams = url.substring(url.indexOf("?") + 1);
+        String[] parameterList = queryParams.split("&");
+        Map<String, String> queryMap = new HashMap<>();
+        for (String param : parameterList) {
+            if (param.contains("=")) {
+                String key = param.substring(0, param.indexOf("="));
+                String value = param.substring(param.indexOf("=") + 1);
+                queryMap.put(key, value);
+            }
+        }
+        return queryMap;
+    }
+%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!doctype html>
@@ -227,8 +236,11 @@
                     <%
                         }
                     } else {
+                        Map<String, String> queryMap = extractQueryParamsFromURL(callback);
+                        queryMap.put("passwordReset", "true");
+                        String parameterizedCallback = FrameworkUtils.buildURLWithQueryParams(callback, queryMap);
                     %>
-                    location.href = "<%= IdentityManagementEndpointUtil.getURLEncodedCallback(callback)%>&passwordReset=true";
+                    location.href = "<%= IdentityManagementEndpointUtil.getURLEncodedCallback(parameterizedCallback)%>";
                     <%
                     }
                     } catch (URISyntaxException e) {

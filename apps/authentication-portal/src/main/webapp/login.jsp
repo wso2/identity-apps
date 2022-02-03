@@ -88,11 +88,13 @@
 %>
 <%
     boolean reCaptchaEnabled = false;
+    if (request.getParameter("reCaptcha") != null && Boolean.parseBoolean(request.getParameter("reCaptcha"))) {
+        reCaptchaEnabled = true;
+    }
+
     boolean reCaptchaResendEnabled = false;
-    if (CaptchaUtil.isReCaptchaEnabled()) {
-        reCaptchaEnabled = CaptchaUtil.isReCaptchaEnabledForFlow("sso.login.recaptcha.enable.always", tenantDomain);
-        reCaptchaResendEnabled = CaptchaUtil.isReCaptchaEnabledForFlow("SelfRegistration.ResendConfirmationReCaptcha",
-                                                                        tenantDomain);
+    if (request.getParameter("reCaptchaResend") != null && Boolean.parseBoolean(request.getParameter("reCaptchaResend"))) {
+        reCaptchaResendEnabled = true;
     }
 
     if (reCaptchaEnabled || reCaptchaResendEnabled) {
