@@ -54,7 +54,7 @@
                                         sessionStorage.getItem("auth_callback_url_console").includes("develop/applications");
             
             if(isInviteUserFlow) {
-                window.location = window.location.origin;
+                window.location.href = window.location.origin;
             } 
             else {
                 if(!isSilentSignInDisabled && !isApplicationsPath){
