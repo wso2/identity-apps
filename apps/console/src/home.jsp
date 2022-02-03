@@ -25,10 +25,6 @@
     session.setAttribute("sessionState", request.getParameter("session_state"));
 </jsp:scriptlet>
 
-<%
-    String userTenant = request.getParameter("userTenant");
-%>
-
 <!DOCTYPE HTML>
 <html>
     <head>
@@ -45,13 +41,9 @@
             var serverOriginGlobal = "<%= htmlWebpackPlugin.options.serverUrl %>";
             var superTenantGlobal = "<%= htmlWebpackPlugin.options.superTenantConstant %>";
             var tenantPrefixGlobal = "<%= htmlWebpackPlugin.options.tenantPrefix %>";
-            var userTenant = "<%= htmlWebpackPlugin.options.userTenant %>";
         </script>
 
         <script>
-            if (userTenant == "null") {
-                userTenant = null;
-            }
 
             var userAccessedPath = sessionStorage.getItem("userAccessedPath");
             var isSilentSignInDisabled = userAccessedPath.includes("disable_silent_sign_in") || 
@@ -62,7 +54,7 @@
                                         sessionStorage.getItem("auth_callback_url_console").includes("develop/applications");
             
             if(isInviteUserFlow) {
-                window.location = window.location.origin+"/t/"+userTenant+"/authenticate?disable_silent_sign_in=true"
+                window.location = window.location.origin;
             } 
             else {
                 if(!isSilentSignInDisabled && !isApplicationsPath){

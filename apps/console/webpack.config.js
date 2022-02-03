@@ -504,7 +504,6 @@ module.exports = (env) => {
                         ? "<%=TENANT_AWARE_URL_PREFIX%>"
                         : "",
                     themeHash: themeHash,
-                    userTenant: "<%= userTenant %>",
                     vwoScriptVariable: "<%= vwo_ac_id %>",
                     // eslint-disable-next-line max-len
                     vwoSystemVariable: "<% String vwo_ac_id = System.getenv().getOrDefault(\"vwo_account_id\", null); %>"
