@@ -81,6 +81,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const [ fidoFlowStartResponse, setFidoFlowStartResponse ] = useState<any>(null);
 
     const tryOlderDevice = useRef(false);
+    const retryAttempt = useRef(0);
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
     const dispatch = useDispatch();
@@ -196,7 +197,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                 setIsDeviceSuccessModalVisibility(true);
             })
             .catch(() => {
-                if (tryOlderDevice.current) {
+                if (tryOlderDevice.current || retryAttempt.current > 1) {
                     fireFailureNotification();
                 } else {
                     setDeviceErrorModalVisibility(true);
@@ -387,6 +388,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                 secondaryAction={ t("common:cancel") }
                 onSecondaryActionClick={ handleDeviceErrorModalClose }
                 onPrimaryActionClick={ () => {
+                    retryAttempt.current++;
                     talkToDevice();
                 } }
                 open={ isDeviceErrorModalVisible }
@@ -643,7 +645,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                 </Grid.Row>
                                             </Grid>
                                         </List.Item>
-                                        { deviceList.length !== index + 1 && <Divider className="fido-list-divider" /> }
+                                        { deviceList.length !== index + 1 && <Divider className="list-divider" /> }
                                     </>
                                 )
                         ) }
