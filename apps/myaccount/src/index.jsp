@@ -92,7 +92,7 @@
                         sessionStorage.setItem("auth_callback_url_console", userAccessedPath.split(window.origin)[1])
                         sessionStorage.setItem("userAccessedPath", userAccessedPath.split(window.origin)[1])
                         
-                        window.location = applicationDomain+'/authenticate';
+                        window.location.href = applicationDomain+'/authenticate';
                     }
                 });
             }

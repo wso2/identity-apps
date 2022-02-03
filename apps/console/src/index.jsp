@@ -86,7 +86,7 @@
                     auth.initialize(authConfig);
                     auth.signIn();
                 } else {
-                    window.location = applicationDomain+'/authenticate?disable_silent_sign_in=true&invite_user=true';
+                    window.location.href = applicationDomain+'/authenticate?disable_silent_sign_in=true&invite_user=true';
                 }
             } else {
 
@@ -94,7 +94,7 @@
                     sessionStorage.setItem("auth_callback_url_console", userAccessedPath.split(window.origin)[1]);
                     sessionStorage.setItem("userAccessedPath", userAccessedPath.split(window.origin)[1]);
 
-                    window.location = applicationDomain+'/authenticate?code='+authorizationCode+'&state=sign-in-silently'+'&AuthenticatedIdPs='+authIdPs+
+                    window.location.href = applicationDomain+'/authenticate?code='+authorizationCode+'&state=sign-in-silently'+'&AuthenticatedIdPs='+authIdPs+
                                 '&session_state='+authSessionState;
                 } else {
                     auth.initialize(authConfig);
@@ -106,7 +106,7 @@
                             sessionStorage.setItem("auth_callback_url_console", userAccessedPath.split(window.origin)[1])
                             sessionStorage.setItem("userAccessedPath", userAccessedPath.split(window.origin)[1])
                             
-                            window.location = applicationDomain+'/authenticate';
+                            window.location.href = applicationDomain+'/authenticate';
                         }
                     });
                 }
