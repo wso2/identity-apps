@@ -45,10 +45,14 @@
             var serverOriginGlobal = "<%= htmlWebpackPlugin.options.serverUrl %>";
             var superTenantGlobal = "<%= htmlWebpackPlugin.options.superTenantConstant %>";
             var tenantPrefixGlobal = "<%= htmlWebpackPlugin.options.tenantPrefix %>";
-            var userTenant = "<%=userTenant%>" != "null" ? "<%=userTenant%>" : null;
+            var userTenant = "<%= htmlWebpackPlugin.options.userTenant %>";
         </script>
 
         <script>
+            if (userTenant == "null") {
+                userTenant = null;
+            }
+
             var userAccessedPath = sessionStorage.getItem("userAccessedPath");
             var isSilentSignInDisabled = userAccessedPath.includes("disable_silent_sign_in") || 
                                             window.location.href.includes("disable_silent_sign_in");
@@ -66,7 +70,7 @@
                 }
             }
         </script>
-        
+
     </head>
     <body>
         <noscript>
