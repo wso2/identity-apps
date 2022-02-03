@@ -16,37 +16,86 @@
 * under the License.
 -->
 
-<%= htmlWebpackPlugin.options.importUtil %>
-<%= htmlWebpackPlugin.options.importTenantPrefix %>
-<%= htmlWebpackPlugin.options.importSuperTenantConstant %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL" %>
 
-<jsp:scriptlet>
-    session.setAttribute("authCode",request.getParameter("code"));
-    session.setAttribute("sessionState", request.getParameter("session_state"));
-</jsp:scriptlet>
+<%
+    String serverUrl = getServerURL("", true, true);
+    String authorizationCode = request.getParameter("code");
+    String authSessionState = request.getParameter("session_state");
+    String authIdPs = request.getParameter("AuthenticatedIdPs");
+%>
 
 <!DOCTYPE html>
 <html>
     <head>
-        <%= htmlWebpackPlugin.options.contentType %>
-        <meta charset="utf-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-        <meta name="referrer" content="no-referrer" />
-
-        <link href="<%= htmlWebpackPlugin.options.publicPath %>/libs/themes/default/theme.<%= htmlWebpackPlugin.options.themeHash %>.min.css" rel="stylesheet" type="text/css"/>
-        <link rel="shortcut icon" href="<%= htmlWebpackPlugin.options.publicPath %>/libs/themes/default/assets/images/branding/favicon.ico" />
-
-        <script>
-            var contextPathGlobal = "<%= htmlWebpackPlugin.options.publicPath %>";
-            var serverOriginGlobal = "<%= htmlWebpackPlugin.options.serverUrl %>";
-            var superTenantGlobal = "<%= htmlWebpackPlugin.options.superTenantConstant %>";
-            var tenantPrefixGlobal = "<%= htmlWebpackPlugin.options.tenantPrefix %>";
-        </script>
+        <script src="https://unpkg.com/@asgardeo/auth-spa@0.2.19/dist/asgardeo-spa.production.min.js"></script>
     </head>
     <body>
-        <noscript>
-            You need to enable JavaScript to run this app.
-        </noscript>
-        <div id="root"></div>
+        <script>
+            var userAccessedPath = window.location.href;
+            var applicationDomain = window.location.origin;
+            var userTenant = userAccessedPath.split("/t/")[1] ?  userAccessedPath.split("/t/")[1].split("/")[0] : null;
+
+            var serverOrigin = "<%=serverUrl%>";
+            var authorizationCode = "<%=authorizationCode%>" != "null" ? "<%=authorizationCode%>" : null;
+            var authSessionState = "<%=authSessionState%>" != "null" ? "<%=authSessionState%>" : null;
+            var authIdPs = "<%=authIdPs%>" != "null" ? "<%=authIdPs%>" : null;
+
+            var serverOrigin = "<%=serverUrl%>";
+
+            function getApiPath(path) {
+                if(path) {
+                    return serverOrigin + path;
+                }
+
+                return serverOrigin;
+            }
+
+            var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
+
+            var authConfig = {
+                signInRedirectURL: applicationDomain.replace(/\/+$/, ''),
+                signOutRedirectURL: applicationDomain.replace(/\/+$/, ''),
+                clientID: "MY_ACCOUNT",
+                serverOrigin: getApiPath(),
+                responseMode: "form_post",
+                scope: ["openid SYSTEM"],
+                storage: "webWorker",
+                endpoints: {
+                    authorizationEndpoint: userTenant ? getApiPath("/t/"+userTenant+"/common/oauth2/authorize") : getApiPath("/t/a/common/oauth2/authorize"),
+                    clockTolerance: 300,
+                    jwksEndpointURL: undefined,
+                    logoutEndpointURL: userTenant ? getApiPath("/t/"+userTenant+"/common/oidc/logout") : getApiPath("/t/a/common/oidc/logout"),
+                    oidcSessionIFrameEndpointURL: userTenant ? getApiPath("/t/"+userTenant+"/common/oidc/checksession") : getApiPath("/t/a/common/oidc/checksession"),
+                    serverOrigin: getApiPath(),
+                    tokenEndpointURL: undefined,
+                    tokenRevocationEndpointURL: undefined,
+                    wellKnownEndpointURL: undefined,
+                },
+                enablePKCE: true,
+                overrideWellEndpointConfig: true
+            }
+            
+            if(authorizationCode) {
+                sessionStorage.setItem("auth_callback_url_console", userAccessedPath.split(window.origin)[1]);
+                sessionStorage.setItem("userAccessedPath", userAccessedPath.split(window.origin)[1]);
+                window.location = applicationDomain+'/authenticate?code='+authorizationCode+'&state=sign-in-silently'+'&AuthenticatedIdPs='+authIdPs+
+                            '&session_state='+authSessionState;
+            } else {
+                auth.initialize(authConfig);
+
+                auth.trySignInSilently().then(res => {
+                    if(res === false) {
+                        auth.signIn();
+                    } else {
+                        sessionStorage.setItem("auth_callback_url_console", userAccessedPath.split(window.origin)[1])
+                        sessionStorage.setItem("userAccessedPath", userAccessedPath.split(window.origin)[1])
+                        
+                        window.location = applicationDomain+'/authenticate';
+                    }
+                });
+            }
+        </script>
     </body>
 </html>

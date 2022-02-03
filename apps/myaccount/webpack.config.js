@@ -421,6 +421,12 @@ module.exports = (env) => {
                         force: true,
                         from: "auth.jsp",
                         to: "."
+                    },
+                    !isDeployedOnStaticServer && {
+                        context: path.join(__dirname, "src"),
+                        force: true,
+                        from: "index.jsp",
+                        to: "."
                     }
                 ].filter(Boolean)
             }),
@@ -429,7 +435,7 @@ module.exports = (env) => {
                     authorizationCode: "<%=request.getParameter(\"code\")%>",
                     contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" " +
                         "pageEncoding=\"UTF-8\" %>",
-                    filename: path.join(distFolder, "index.jsp"),
+                    filename: path.join(distFolder, "home.jsp"),
                     hash: true,
                     importSuperTenantConstant: !isDeployedOnExternalServer
                         ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
@@ -454,7 +460,7 @@ module.exports = (env) => {
                     superTenantConstant: !isDeployedOnExternalServer
                         ? "<%=SUPER_TENANT_DOMAIN_NAME%>"
                         : "",
-                    template: path.join(__dirname, "src", "index.jsp"),
+                    template: path.join(__dirname, "src", "home.jsp"),
                     tenantDelimiter: !isDeployedOnExternalServer
                         ? "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\""
                         : "",
