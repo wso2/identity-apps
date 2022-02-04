@@ -98,17 +98,7 @@
                                 '&session_state='+authSessionState;
                 } else {
                     auth.initialize(authConfig);
-
-                    auth.trySignInSilently().then(res => {
-                        if(res === false) {
-                            auth.signIn();
-                        } else {
-                            sessionStorage.setItem("auth_callback_url_console", userAccessedPath.split(window.origin)[1])
-                            sessionStorage.setItem("userAccessedPath", userAccessedPath.split(window.origin)[1])
-                            
-                            window.location.href = applicationDomain+'/authenticate';
-                        }
-                    });
+                    auth.signIn();
                 }
             }
         </script>

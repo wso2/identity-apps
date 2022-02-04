@@ -29,14 +29,22 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script>
+            // Handles myaccount tenanted signout before auth sdk get loaded
+            var applicationDomain = window.location.origin;
+            var userAccessedPath = window.location.href;
+            var isSignOutSuccess = userAccessedPath.includes("sign_out_success");
+            var userTenant = userAccessedPath.split("/t/")[1] ?  userAccessedPath.split("/t/")[1].split("/")[0] : null;
+            userTenant = userTenant ?  userTenant.split("?")[0] : null;
+
+            if(isSignOutSuccess && userTenant) {
+                window.location.href = applicationDomain+"/t/"+userTenant
+            }
+        </script>
         <script src="https://unpkg.com/@asgardeo/auth-spa@0.2.19/dist/asgardeo-spa.production.min.js"></script>
     </head>
     <body>
         <script>
-            var userAccessedPath = window.location.href;
-            var applicationDomain = window.location.origin;
-            var userTenant = userAccessedPath.split("/t/")[1] ?  userAccessedPath.split("/t/")[1].split("/")[0] : null;
-
             var serverOrigin = "<%=serverUrl%>";
             var authorizationCode = "<%=authorizationCode%>" != "null" ? "<%=authorizationCode%>" : null;
             var authSessionState = "<%=authSessionState%>" != "null" ? "<%=authSessionState%>" : null;
@@ -84,17 +92,7 @@
                             '&session_state='+authSessionState;
             } else {
                 auth.initialize(authConfig);
-
-                auth.trySignInSilently().then(res => {
-                    if(res === false) {
-                        auth.signIn();
-                    } else {
-                        sessionStorage.setItem("auth_callback_url_console", userAccessedPath.split(window.origin)[1])
-                        sessionStorage.setItem("userAccessedPath", userAccessedPath.split(window.origin)[1])
-                        
-                        window.location.href = applicationDomain+'/authenticate';
-                    }
-                });
+                auth.signIn();
             }
         </script>
     </body>
