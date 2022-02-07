@@ -46,7 +46,7 @@ export class AuthenticatorMeta {
             "credentials.",
             [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Get users Identity first to " +
             "control the authentication flow.",
-            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "Provide secure and fast passwordless " +
+            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "Provide secure and fast usernameless " +
             "login experience.",
             [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
             "Time-Based One Time passcode.",
@@ -150,7 +150,7 @@ export class AuthenticatorMeta {
         return get({
             [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR ]: "Username & Password",
             [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ]: "Username & Password",
-            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "FIDO",
+            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "Security Key/Biometrics",
             [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: "TOTP",
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Email OTP",
             [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Identifier First",
