@@ -73,8 +73,21 @@
                             <img class="img-responsive" src="images/U2F.png" />
                         </div>
                         <div class="ten wide column">
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "touch.your.u2f.device")%>
+                            <p>
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "touch.your.u2f.device")%>
+                            </p>
+                            <div id="safari-instruction" style="display:none">
+                                <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.failed.instruction" )%></p>
+                                <div class="ui divider hidden"></div>
+                                <button class="ui button primary" id="initiateFlow" type="button" onclick="talkToDevice()">
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.failed.retry" )%>
+                                </button>
+                            </div>
                         </div>
+                    </div>
+                    <div>
+
+                    </div>
                 </div>
 
 
@@ -83,7 +96,6 @@
                     <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
                     <input type="hidden" name="tokenResponse" id="tokenResponse" value="tmp val"/>
                 </form>
-                <input id="initiateFlow" type="hidden" onclick="talkToDevice()" />
             </div>
         </div>
     </main>
@@ -114,7 +126,28 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#initiateFlow").click();
+            let userAgent = navigator.userAgent;
+            let browserName;
+
+            if (userAgent.match(/chrome|chromium|crios/i)) {
+                browserName = "chrome";
+            } else if (userAgent.match(/firefox|fxios/i)) {
+                browserName = "firefox";
+            } else if (userAgent.match(/safari/i)) {
+                browserName = "safari";
+            } else if (userAgent.match(/opr\//i)) {
+                browserName = "opera";
+            } else if (userAgent.match(/edg/i)) {
+                browserName = "edge";
+            } else {
+                browserName = "No browser detection";
+            }
+
+            if(browserName === "safari"){
+                $('#safari-instruction').show();
+            } else {
+                $("#initiateFlow").click();
+            }
         });
 
         function responseToObject(response) {
