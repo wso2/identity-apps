@@ -86,7 +86,7 @@
                     auth.initialize(authConfig);
                     auth.signIn();
                 } else {
-                    window.location.href = applicationDomain+'/authenticate?disable_silent_sign_in=true&invite_user=true';
+                    window.location.href = applicationDomain + '/authenticate?disable_silent_sign_in=true&invite_user=true';
                 }
             } else {
 
