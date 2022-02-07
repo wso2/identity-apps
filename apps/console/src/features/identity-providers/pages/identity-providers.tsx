@@ -36,6 +36,7 @@ import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "
 import { AdvancedSearchWithBasicFilters, AppConstants, EventPublisher, UIConstants, history } from "../../core";
 import { getAuthenticatorTags, getAuthenticators, getIdentityProviderList } from "../api";
 import { AuthenticatorGrid, IdentityProviderList, handleGetIDPListCallError } from "../components";
+import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorMeta } from "../meta";
 import {
     AuthenticatorInterface,
@@ -296,6 +297,14 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                         ...localAuthenticators,
                         ...idpListFromResponse
                     ];
+                }
+
+                const fido = response?.identityProviders
+                    ?.find(idp => idp?.id
+                        === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID) as AuthenticatorInterface;
+
+                if (fido) {
+                    fido.tags = [ ...fido.tags, "Usernameless" ];
                 }
 
                 setIdPList(response);
