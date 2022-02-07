@@ -21,7 +21,7 @@
 <%= htmlWebpackPlugin.options.importSuperTenantConstant %>
 
 <jsp:scriptlet>
-    session.setAttribute("authCode",request.getParameter("code"));
+    session.setAttribute("authCode", request.getParameter("code"));
     session.setAttribute("sessionState", request.getParameter("session_state"));
 </jsp:scriptlet>
 
