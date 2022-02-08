@@ -462,6 +462,9 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
 
                                         setLocalClaimsSearchResults(itemList);
                                     } }
+                                    onClose={ () => {
+                                        setLocalClaimsSearchResults(filteredLocalClaims);
+                                    } }
                                     children={
                                         localClaimsSearchResults?.map((claim: Claim, index) => {
                                             return {
