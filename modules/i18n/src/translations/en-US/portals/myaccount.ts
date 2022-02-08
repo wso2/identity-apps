@@ -654,53 +654,53 @@ export const myAccount: MyAccountNS = {
                     "your device to sign in to your account.",
                 form: {
                     label: "Security Key/Biometric",
-                    placeholder: "Enter a name for the security key/biometric",
-                    remove: "Remove the security key/biometric",
-                    required: "Please enter a name for your security key/biometric"
+                    placeholder: "Enter a name for the security key/biometrics",
+                    remove: "Remove the security key/biometrics",
+                    required: "Please enter a name for your security key/biometrics"
                 },
                 heading: "Security Key/Biometrics",
                 modals: {
                     deleteConfirmation: {
                         assertionHint: "Please confirm your action.",
-                        content: "This action is irreversible and will permanently delete the security key/biometric.",
-                        description: "If you delete this security key/biometric, you may not be " +
+                        content: "This action is irreversible and will permanently delete the security key/biometrics.",
+                        description: "If you delete this security key/biometrics, you may not be " +
                             "able to sign in to your account again. Please proceed with caution.",
                         heading: "Are you sure?"
                     },
                     deviceRegistrationErrorModal: {
-                        description: "The security key/biometric registration was interrupted. "
+                        description: "The security key/biometrics registration was interrupted. "
                             + "If this was not intentional you "
                             + "may retry the flow.",
                         heading: "Security Key/Biometric Registration Failed",
-                        tryWithOlderDevice: "You may also try again with an older security key/biometric."
+                        tryWithOlderDevice: "You may also try again with an older security key/biometrics."
                     }
                 },
                 notifications: {
                     removeDevice: {
                         error: {
                             description: "{{description}}",
-                            message: "Error occurred while removing the security key/biometric"
+                            message: "Error occurred while removing the security key/biometrics"
                         },
                         genericError: {
-                            description: "Error occurred while removing the security key/biometric",
+                            description: "Error occurred while removing the security key/biometrics",
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "The security key/biometric was successfully removed from the list",
+                            description: "The security key/biometrics was successfully removed from the list",
                             message: "Your Security Key/Biometric Removed Successfully"
                         }
                     },
                     startFidoFlow: {
                         error: {
                             description: "{{description}}",
-                            message: "Error occurred while retrieving the security key/biometric"
+                            message: "Error occurred while retrieving the security key/biometrics"
                         },
                         genericError: {
-                            description: "Error occurred while retrieving the security key/biometric",
+                            description: "Error occurred while retrieving the security key/biometrics",
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "The security key/biometric was successfully registered and now you " +
+                            description: "The security key/biometrics was successfully registered and now you " +
                                 "can use it for authentication.",
                             message: "Your Security Key/Biometric Registered Successfully"
                         }
@@ -708,14 +708,14 @@ export const myAccount: MyAccountNS = {
                     updateDeviceName: {
                         error: {
                             description: "{{description}}",
-                            message: "Error occurred while updating the security key/biometric name"
+                            message: "Error occurred while updating the security key/biometrics name"
                         },
                         genericError: {
-                            description: "Error occurred while updating the security key/biometric name",
+                            description: "Error occurred while updating the security key/biometrics name",
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "The name of your security key/biometric was successfully updated",
+                            description: "The name of your security key/biometrics was successfully updated",
                             message: "Security Key/Biometric name updated successfully"
                         }
                     }
