@@ -50,8 +50,7 @@
                                             window.location.href.includes("disable_silent_sign_in");
             var isInviteUserFlow = userAccessedPath.includes("invite_user");
             var isApplicationsPath = userAccessedPath.includes("develop/applications") ||
-                                        window.location.href.includes("develop/applications") ||
-                                        sessionStorage.getItem("auth_callback_url_console").includes("develop/applications");
+                                        window.location.href.includes("develop/applications");
             
             if(isInviteUserFlow) {
                 window.location.href = window.location.origin;

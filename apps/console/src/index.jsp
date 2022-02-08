@@ -91,12 +91,12 @@
             } else {
 
                 if(authorizationCode) {
-                    sessionStorage.setItem("auth_callback_url_console", userAccessedPath.split(window.origin)[1]);
                     sessionStorage.setItem("userAccessedPath", userAccessedPath.split(window.origin)[1]);
 
                     window.location.href = applicationDomain+'/authenticate?code='+authorizationCode+'&state=sign-in-silently'+'&AuthenticatedIdPs='+authIdPs+
                                 '&session_state='+authSessionState;
                 } else {
+                    sessionStorage.setItem("auth_callback_url_console", userAccessedPath.split(window.origin)[1]);
                     auth.initialize(authConfig);
                     auth.signIn();
                 }
