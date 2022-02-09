@@ -52,6 +52,15 @@ jobs:
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           ${{ runner.os }}-maven-
+    - name: Bootstrap
+      id: bootstrap-npm-and-lerna-dependencies
+      run: npm run bootstrap:hoist
+    - name: Lint
+      id: static-analysis-with-eslint
+      run: npm run lint
+    - name: Run Unit Tests
+      id: run-unit-test-suite
+      run: npm run test
     - name: Build
       id: build-with-maven
-      run: mvn clean install -U -Dlint.exec.skip=false
+      run: mvn clean install -U -Dlint.exec.skip=true -Dbootstrap.exec.skip=true
