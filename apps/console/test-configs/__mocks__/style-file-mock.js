@@ -16,5 +16,8 @@
  * under the License.
  */
 
-export default "SvgrURL";
-export const ReactComponent = "div";
+/**
+ * @fileoverview Mocks style files such as .css, .less, etc.
+ */
+
+module.exports = {};

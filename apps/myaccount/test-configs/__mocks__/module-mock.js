@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,20 +16,22 @@
  * under the License.
  */
 
-import { Middleware } from "redux";
-import configureStore, { MockStoreCreator } from "redux-mock-store";
-import thunk from "redux-thunk";
 
 /**
- * Middleware for the Redux store.
- * @see {@link src/features/core/store/index.ts} for middleware used in the actual store.
+ * @fileoverview Mocks of NPM Modules.
+ *
+ * @remarks If you had to mock a certain npm module,
+ * document the reason and any references clearly in this file.
  */
-const middleware: Middleware[] = [
-    thunk
-];
 
 /**
- * Configure mock store.
- * @type {MockStoreCreator<any, Dispatch<AnyAction>>}
+ * Suggested fix for i18next warnings
+ * See also {@link https://github.com/i18next/react-i18next/issues/876}
  */
-export const mockStore: MockStoreCreator<any, Record<string, unknown>> = configureStore(middleware);
+jest.mock("react-i18next", () => ({
+    // this mock makes sure any components using the translate hook can use it without a warning being shown
+    Trans: ({ children }) => children,
+    useTranslation: () => ({
+        t: key => key
+    })
+}));

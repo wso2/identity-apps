@@ -16,4 +16,10 @@
  * under the License.
  */
 
+/**
+ * @fileoverview Stubs files such as .jpg, .png, etc.
+ *
+ * @see {@link jest.config.js} for more file types that uses this stub.
+ */
+
 module.exports = "test-file-stub";

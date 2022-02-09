@@ -16,4 +16,24 @@
  * under the License.
  */
 
-export * from "./utils";
+/**
+ * @fileoverview Mocks the Redux store.
+ */
+
+import { Middleware } from "redux";
+import configureStore, { MockStoreCreator } from "redux-mock-store";
+import thunk from "redux-thunk";
+
+/**
+ * Middleware for the Redux store.
+ * @see {@link src/features/core/store/index.ts} for middleware used in the actual store.
+ */
+const middleware: Middleware[] = [
+    thunk
+];
+
+/**
+ * Configure mock store.
+ * @type {MockStoreCreator<any, Dispatch<AnyAction>>}
+ */
+export const mockStore: MockStoreCreator<any, Record<string, unknown>> = configureStore(middleware);

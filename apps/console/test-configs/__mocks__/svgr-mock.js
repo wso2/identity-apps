@@ -16,15 +16,9 @@
  * under the License.
  */
 
-import { configure } from "@testing-library/react";
-import "./__mocks__/global-mock";
-import "./__mocks__/module-mock";
-import "./__mocks__/window-mock";
+/**
+ * @fileoverview Mocks SVGs loaded with `SVGR` plugin.
+ */
 
-require("../jest.config");
-require("@testing-library/jest-dom/extend-expect");
-require("babel-polyfill");
-
-configure({
-    testIdAttribute: "data-componentid"
-});
+export default "SvgrURL";
+export const ReactComponent = "div";
