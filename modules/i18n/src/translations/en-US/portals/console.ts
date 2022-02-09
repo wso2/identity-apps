@@ -1116,7 +1116,10 @@ export const console: ConsoleNS = {
                                             usernameless: {
                                                 description: "Enable users to log in using a FIDO2 security key " +
                                                     "or biometrics.",
-                                                heading: "Add usernameless login"
+                                                heading: "Add usernameless login",
+                                                info: "To sign in with usernameless authentication, your users " +
+                                                    "should have their FIDO2 security keys or biometrics " +
+                                                    "registered in their accounts."
                                             }
                                         }
                                     }

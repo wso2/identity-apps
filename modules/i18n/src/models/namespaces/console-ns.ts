@@ -672,6 +672,7 @@ export interface ConsoleNS {
                                             usernameless: {
                                                 description: string;
                                                 heading: string;
+                                                info: string;
                                             }
                                         }
                                     }

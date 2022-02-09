@@ -1145,7 +1145,11 @@ export const console: ConsoleNS = {
                                                 description: "Permettre aux utilisateurs de se connecter à " +
                                                     "l'aidAjouter une connexion sans nom d'utilisateuré " +
                                                     "FIDO2 ou de la biométrie.",
-                                                heading: "Add usernameless login"
+                                                heading: "Add usernameless login",
+                                                info: "Pour vous connecter avec une authentification sans nom " +
+                                                    "d'utilisateur, vos utilisateurs doivent avoir leurs clés de " +
+                                                    "sécurité FIDO2 ou leurs données biométriques enregistrées " +
+                                                    "dans leurs comptes."
                                             }
                                         }
                                     }
