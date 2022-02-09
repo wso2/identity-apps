@@ -19,7 +19,6 @@
 import { FunctionComponent, SVGProps } from "react";
 import BasicAuthIcon from "../../../themes/default/assets/images/authenticators/basic-auth.png";
 import { ReactComponent as EmailOTPIcon } from "../../../themes/default/assets/images/authenticators/email-otp.svg";
-import FIDOLogo from "../../../themes/default/assets/images/authenticators/fido.png";
 import { ReactComponent as SMSOTPIcon } from "../../../themes/default/assets/images/authenticators/sms-otp.svg";
 import TOTPIcon from "../../../themes/default/assets/images/authenticators/totp.png";
 import { ReactComponent as AuthorizeIcon } from "../../../themes/default/assets/images/icons/authorize.svg";
@@ -32,6 +31,7 @@ import { ReactComponent as CogWheelIcon } from "../../../themes/default/assets/i
 import { ReactComponent as CubeStack } from "../../../themes/default/assets/images/icons/cube-stack-icon.svg";
 import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
 import { ReactComponent as DoneButtonIcon } from "../../../themes/default/assets/images/icons/done-button.svg";
+import FIDOLogo from "../../../themes/default/assets/images/icons/fingerprint.svg";
 import { ReactComponent as GearsIcon } from "../../../themes/default/assets/images/icons/gears-icon.svg";
 import {
     ReactComponent as IDPCertificateIcon
@@ -311,7 +311,7 @@ export const getGeneralIcons = (): {
 export const getSignInMethodIllustrations = (): {
     basicAuth: FunctionComponent<SVGProps<SVGSVGElement>>;
 } => {
-    
+
     return {
         basicAuth: BasicAuthIllustration
     };
@@ -322,7 +322,7 @@ export const getSignInFlowIcons = (): {
     startButton: FunctionComponent<SVGProps<SVGSVGElement>>;
     doneButton: FunctionComponent<SVGProps<SVGSVGElement>>;
 } => {
-    
+
     return {
         addButton: AddCircleOutlineIcon,
         doneButton: DoneButtonIcon,
