@@ -54,7 +54,7 @@ jobs:
           ${{ runner.os }}-maven-
     - name: Bootstrap
       id: bootstrap-npm-and-lerna-dependencies
-      run: npm run bootstrap:hoist
+      run: npm run bootstrap
     - name: Lint
       id: static-analysis-with-eslint
       run: npm run lint
