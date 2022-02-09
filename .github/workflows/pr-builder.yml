@@ -8,59 +8,130 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
 
+  lint:
+    name: ⬣ ESLint
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
-        node-version: [12.x]
-        maven-version: [3.6.3]
-
+        node-version: [ 12.x ]
     steps:
-    - name: Checkout
-      id: checkout
-      uses: actions/checkout@v2.3.3
-    - name: Use Node.js ${{ matrix.node-version }}
-      id: node-setup
-      uses: actions/setup-node@v2.1.2
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Set up JDK 1.8
-      id: jdk-setup
-      uses: actions/setup-java@v1
-      with:
-        java-version: 1.8
-    - name: Set up Maven
-      uses: stCarolas/setup-maven@v4
-      id: mvn-setup
-      with:
-        maven-version: ${{ matrix.maven-version }}
-    - name: Get npm cache directory
-      id: cache-npm-modules
-      uses: actions/cache@v2
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
-    - name: Cache local Maven repository
-      id: cache-maven-m2
-      uses: actions/cache@v2
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
-    - name: Bootstrap
-      id: bootstrap-npm-and-lerna-dependencies
-      run:  npm run bootstrap
-    - name: Lint
-      id: static-analysis-with-eslint
-      run: npm run build:modules && npm run lint
-    - name: Run Unit Tests
-      id: run-unit-test-suite
-      run: npm run test
-    - name: Build
-      id: build-with-maven
-      run: mvn clean install -U -Dlint.exec.skip=true -Dbootstrap.exec.skip=true
+      - name: ⬇️ Checkout
+        id: checkout
+        uses: actions/checkout@v2.3.3
+
+      - name: 🟢 Setup node
+        id: setup-node
+        uses: actions/setup-node@v2.1.2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: 🔆 Cache NPM directory
+        id: cache-npm-modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: 🛠️ Bootstrap Dependencies
+        id: bootstrap-npm-and-lerna-dependencies
+        run:  npm run bootstrap
+
+      - name: 🔬 Lint
+        run: npm run lint
+
+  test:
+    name: 🃏 Unit Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 12.x ]
+    steps:
+      - name: ⬇️ Checkout
+        id: checkout
+        uses: actions/checkout@v2.3.3
+
+      - name: 🟢 Setup node
+        id: setup-node
+        uses: actions/setup-node@v2.1.2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: 🔆 Cache NPM directory
+        id: cache-npm-modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: 🛠️ Bootstrap Dependencies
+        id: bootstrap-npm-and-lerna-dependencies
+        run:  npm run bootstrap
+
+      - name: 👷 Build Re-usable Modules
+        id: build-reusable-modules
+        run:  npm run build:modules
+
+      - name: 🃏 Run jest
+        run: npm run test -- --coverage
+
+  build:
+    name: 🚧 Build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 12.x ]
+        maven-version: [ 3.6.3 ]
+        java-version: [ 1.8 ]
+    steps:
+      - name: ⬇️ Checkout
+        id: checkout
+        uses: actions/checkout@v2.3.3
+
+      - name: 🟢 Setup node
+        id: setup-node
+        uses: actions/setup-node@v2.1.2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: ☕ Set up JDK 1.8
+        id: jdk-setup
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java-version }}
+
+      - name: 🦩 Set up Maven
+        uses: stCarolas/setup-maven@v4
+        id: mvn-setup
+        with:
+          maven-version: ${{ matrix.maven-version }}
+
+      - name: 🔆 Cache NPM directory
+        id: cache-npm-modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: 💾 Cache local Maven repository
+        id: cache-maven-m2
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: 🛠️ Bootstrap Dependencies
+        id: bootstrap-npm-and-lerna-dependencies
+        run:  npm run bootstrap
+
+      - name: 🏗️ Maven Build
+        id: build-with-maven
+        run: mvn clean install -U -Dlint.exec.skip=true -Dbootstrap.exec.skip=true
