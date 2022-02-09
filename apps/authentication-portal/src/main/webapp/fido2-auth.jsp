@@ -73,7 +73,7 @@
                             <img class="img-responsive" src="images/U2F.png" />
                         </div>
                         <div class="ten wide column">
-                            <p>
+                            <p id="general-browser-instruction">
                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "touch.your.u2f.device")%>
                             </p>
                             <div id="safari-instruction" style="display:none">
@@ -146,7 +146,9 @@
 
                 if (browserName === "safari") {
                     $('#safari-instruction').show();
+                    $('#general-browser-instruction').show();
                 } else {
+                    $('#general-browser-instruction').hide();
                     $("#initiateFlow").click();
                 }
             }
