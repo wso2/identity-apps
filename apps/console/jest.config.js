@@ -19,7 +19,7 @@
 module.exports = {
     globals: {
         "ts-jest": {
-            tsConfig: "tsconfig.json"
+            tsconfig: "tsconfig.json"
         }
     },
     moduleDirectories: [
@@ -27,12 +27,19 @@ module.exports = {
         "test-configs",
         __dirname
     ],
-    moduleFileExtensions: ["js", "jsx", "ts", "tsx", "json", "node"],
+    moduleFileExtensions: [
+        "js",
+        "jsx",
+        "ts",
+        "tsx",
+        "json",
+        "node"
+    ],
     moduleNameMapper: {
-        "\\.(css|less)$": "<rootDir>/test-configs/style-mock.js",
+        "\\.(css|less)$": "<rootDir>/test-configs/__mocks__/style-file-mock.js",
         "\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|md)$":
-            "<rootDir>/test-configs/file-mock.js",
-        "\\.svg": "<rootDir>/test-configs/svgrMock.js",
+            "<rootDir>/test-configs/__mocks__/file-mock.js",
+        "\\.svg": "<rootDir>/test-configs/__mocks__/svgr-mock.js",
         "^@unit-testing(.*)$": "<rootDir>/test-configs/utils",
         "^lodash-es": "<rootDir>/../../node_modules/lodash",
         "^react($|/.+)": "<rootDir>/../../node_modules/react$1"
@@ -47,7 +54,9 @@ module.exports = {
         "<rootDir>/test-configs/setup-test.js"
     ],
     testEnvironment: "jest-environment-jsdom-global",
-    testMatch: ["<rootDir>/**/?(*.)test.{ts,tsx}"],
+    testMatch: [
+        "<rootDir>/**/?(*.)test.{ts,tsx}"
+    ],
     testPathIgnorePatterns: [
         "<rootDir>/(build|docs|node_modules)/"
     ],

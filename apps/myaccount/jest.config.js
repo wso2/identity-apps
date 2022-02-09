@@ -18,32 +18,54 @@
 
 module.exports = {
     globals: {
-        APP_BASENAME: "myaccount",
-        APP_HOME_PATH: "/overview",
-        APP_LOGIN_PATH: "/login",
-        CLIENT_HOST_DEFAULT: "https://localhost:9000",
-        CLIENT_ID_DEFAULT: "USER_PORTAL",
-        LOGIN_CALLBACK_URL: "https://localhost:9000/myaccount/login",
-        SERVER_HOST_DEFAULT: "https://localhost:9443"
+        "ts-jest": {
+            tsconfig: "tsconfig.json"
+        }
     },
     moduleDirectories: [
         "node_modules",
         "test-configs",
         __dirname
     ],
+    moduleFileExtensions: [
+        "js",
+        "jsx",
+        "ts",
+        "tsx",
+        "json",
+        "node"
+    ],
     moduleNameMapper: {
-        "\\.(css|less)$": "<rootDir>/test-configs/style-mock.js",
-        "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|md)$":
-            "<rootDir>/test-configs/file-mock.js",
+        "\\.(css|less)$": "<rootDir>/test-configs/__mocks__/style-file-mock.js",
+        "\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|md)$":
+            "<rootDir>/test-configs/__mocks__/file-mock.js",
+        "\\.svg": "<rootDir>/test-configs/__mocks__/svgr-mock.js",
         "^@unit-testing(.*)$": "<rootDir>/test-configs/utils",
         "^lodash-es": "<rootDir>/../../node_modules/lodash",
         "^react($|/.+)": "<rootDir>/../../node_modules/react$1"
     },
-    setupFilesAfterEnv: ["<rootDir>/test-configs/setup-test.ts"],
+    modulePaths: [
+        "<rootDir>"
+    ],
+    roots: [
+        "src"
+    ],
+    setupFilesAfterEnv: [
+        "<rootDir>/test-configs/setup-test.js"
+    ],
+    testEnvironment: "jest-environment-jsdom-global",
+    testMatch: [
+        "<rootDir>/**/?(*.)test.{ts,tsx}"
+    ],
+    testPathIgnorePatterns: [
+        "<rootDir>/(build|docs|node_modules)/"
+    ],
     transform: {
-        "^.+\\.js$": "babel-jest",
-        "^.+\\.jsx$": "babel-jest",
-        "^.+\\.ts$": "ts-jest",
-        "^.+\\.tsx$": "ts-jest"
-    }
+        "^.+\\.(js|jsx)?$": "babel-jest",
+        "^.+\\.(ts|tsx)?$": "ts-jest"
+    },
+    transformIgnorePatterns: [
+        "/node_modules/?(?!@wso2is)"
+    ],
+    verbose: true
 };
