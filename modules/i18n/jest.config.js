@@ -33,7 +33,9 @@ module.exports = {
     setupFilesAfterEnv: [
         "<rootDir>/test-configs/setup-test.js"
     ],
-    testMatch: [ "<rootDir>/**/?(*.)test.{ts,tsx}" ],
+    testMatch: [
+        "<rootDir>/**/?(*.)test.{ts,tsx}"
+    ],
     testPathIgnorePatterns: [
         "<rootDir>/(build|docs|node_modules)/"
     ],
