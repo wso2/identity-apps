@@ -554,7 +554,7 @@
                             <executable>npm</executable>
                             <arguments>
                                 <argument>run</argument>
-                                <argument>bootstrap:hoist</argument>
+                                <argument>bootstrap</argument>
                             </arguments>
                             <skip>${bootstrap.exec.skip}</skip>
                             <workingDirectory>${basedir}</workingDirectory>
