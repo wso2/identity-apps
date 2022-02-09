@@ -38,7 +38,7 @@ import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
 import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
-import { GenericAuthenticatorInterface } from "../../../../identity-providers";
+import { GenericAuthenticatorInterface, IdentityProviderManagementConstants } from "../../../../identity-providers";
 import { getRequestPathAuthenticators, updateAuthenticationSequence } from "../../../api";
 import {
     AdaptiveAuthTemplateInterface,
@@ -592,6 +592,19 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 }
             </div>
             <Divider hidden />
+            {
+                authenticationSequence.steps[ 0 ].options.find(authenticator =>
+                    authenticator.authenticator === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR)
+                && (
+                    <Message info>
+                        {
+                            t("console:develop.features.applications.edit.sections" +
+                                ".signOnMethod.sections.landing.flowBuilder." +
+                                "types.usernameless.info")
+                        }
+                    </Message>
+                )
+            }
             <StepBasedFlow
                 refreshAuthenticators={ refreshAuthenticators }
                 authenticators={ authenticators }
