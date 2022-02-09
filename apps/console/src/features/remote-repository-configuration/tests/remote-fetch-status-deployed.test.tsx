@@ -55,7 +55,7 @@ describe("UTC-2.0 - [Remote Fetch Configuration] - Deployed Configuration Status
     test("UTC-2.1 - Test proper rendering of Remote Fetch Configuration Status", async () => {
         render(
             <Provider store={ store }>
-                <RemoteFetchStatus data-testid="remote-fetch-details" />
+                <RemoteFetchStatus data-componentid="remote-fetch-details" />
             </Provider>
         );
         await waitFor(() => expect(configList).toHaveBeenCalledTimes(1));
@@ -65,7 +65,7 @@ describe("UTC-2.0 - [Remote Fetch Configuration] - Deployed Configuration Status
     test("UTC-2.2 - Test trigger configuration button click event", async () => {
         render(
             <Provider store={ store }>
-                <RemoteFetchStatus data-testid="remote-fetch-details" />
+                <RemoteFetchStatus data-componentid="remote-fetch-details" />
             </Provider>
         );
         await waitFor(() => expect(configList).toHaveBeenCalledTimes(4));

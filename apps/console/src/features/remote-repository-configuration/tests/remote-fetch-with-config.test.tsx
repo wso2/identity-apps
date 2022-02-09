@@ -58,7 +58,7 @@ describe("UTC-5.0 - [Remote Fetch Configuration] - With Configuration", () => {
         await act(async () => {
             render(
                 <Provider store={ store }>
-                    <RemoteRepoConfig data-testid="remote-fetch" />
+                    <RemoteRepoConfig data-componentid="remote-fetch" />
                 </Provider>
             );
             await waitFor(() => expect(configList).toHaveBeenCalledTimes(1));
@@ -75,7 +75,7 @@ describe("UTC-5.0 - [Remote Fetch Configuration] - With Configuration", () => {
         await act(async () => {
             render(
                 <Provider store={ store }>
-                    <RemoteRepoConfig data-testid="remote-fetch" />
+                    <RemoteRepoConfig data-componentid="remote-fetch" />
                 </Provider>
             );
             await waitFor(() => expect(configList).toHaveBeenCalledTimes(1));

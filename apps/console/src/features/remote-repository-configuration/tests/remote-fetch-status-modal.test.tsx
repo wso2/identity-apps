@@ -45,7 +45,7 @@ describe("UTC-3.0 - [Remote Fetch Configuration] - Configuration Status Modal", 
                 <RemoteFetchDetails
                     isOpen={ true }
                     remoteDeployment={ MockConfigDetailsRequestResponse }
-                    data-testid="remote-fetch-details" 
+                    data-componentid="remote-fetch-details"
                 />
             </Provider>
         );
