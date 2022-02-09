@@ -57,7 +57,7 @@ jobs:
       run:  npm run bootstrap
     - name: Lint
       id: static-analysis-with-eslint
-      run: npm run buid:modules && npm run lint
+      run: npm run build:modules && npm run lint
     - name: Run Unit Tests
       id: run-unit-test-suite
       run: npm run test
