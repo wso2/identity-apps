@@ -556,6 +556,7 @@
                                 <argument>run</argument>
                                 <argument>bootstrap:hoist</argument>
                             </arguments>
+                            <skip>${bootstrap.exec.skip}</skip>
                             <workingDirectory>${basedir}</workingDirectory>
                         </configuration>
                     </execution>
@@ -692,5 +693,6 @@
         <apache.tomcat-catalina.version>9.0.11</apache.tomcat-catalina.version>
 
         <lint.exec.skip>true</lint.exec.skip>
+        <bootstrap.exec.skip>false</bootstrap.exec.skip>
     </properties>
 </project>
