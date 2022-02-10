@@ -18,6 +18,7 @@
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL" %>
+<%@ page import="static org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_DOMAIN_NAME" %>
 
 <%
     String serverUrl = getServerURL("", true, true);
@@ -55,7 +56,7 @@
             var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
 
             var authConfig = {
-                signInRedirectURL: applicationDomain.replace(/\/+$/, ''),
+                signInRedirectURL: applicationDomain.replace(/\/+$/, '') + "/console",
                 signOutRedirectURL: applicationDomain.replace(/\/+$/, ''),
                 clientID: "CONSOLE",
                 serverOrigin: getApiPath(),
@@ -63,11 +64,11 @@
                 scope: ["openid SYSTEM"],
                 storage: "webWorker",
                 endpoints: {
-                    authorizationEndpoint: getApiPath(userTenant ? "/t/a/oauth2/authorize?ut="+userTenant.replace(/\/+$/, '') : "/t/a/oauth2/authorize"),
+                    authorizationEndpoint: getApiPath(userTenant ? "/t/" + "<%=SUPER_TENANT_DOMAIN_NAME%>" + "/oauth2/authorize?ut="+userTenant.replace(/\/+$/, '') : "/t/" + "<%=SUPER_TENANT_DOMAIN_NAME%>" + "/oauth2/authorize"),
                     clockTolerance: 300,
                     jwksEndpointURL: undefined,
-                    logoutEndpointURL: getApiPath("/t/a/oidc/logout"),
-                    oidcSessionIFrameEndpointURL: getApiPath("/t/a/oidc/checksession"),
+                    logoutEndpointURL: getApiPath("/t/" + "<%=SUPER_TENANT_DOMAIN_NAME%>" + "/oidc/logout"),
+                    oidcSessionIFrameEndpointURL: getApiPath("/t/" + "<%=SUPER_TENANT_DOMAIN_NAME%>" + "/oidc/checksession"),
                     serverOrigin: getApiPath(),
                     tokenEndpointURL: undefined,
                     tokenRevocationEndpointURL: undefined,
@@ -78,22 +79,20 @@
             }
 
             var isSilentSignInDisabled = userAccessedPath.includes("disable_silent_sign_in");
-            var isTenantSwitchPath = userAccessedPath.includes("switch_tenant");
+            var isSignOutSuccess = userAccessedPath.includes("sign_out_success");
+
+            if(isSignOutSuccess) {
+                window.location.href = applicationDomain+'/console'
+            }
             
             if(isSilentSignInDisabled) {
-
-                if(isTenantSwitchPath) {
-                    auth.initialize(authConfig);
-                    auth.signIn();
-                } else {
-                    window.location.href = applicationDomain + '/authenticate?disable_silent_sign_in=true&invite_user=true';
-                }
+                window.location.href = applicationDomain + '/console/authenticate?disable_silent_sign_in=true&invite_user=true';
             } else {
 
                 if(authorizationCode) {
                     sessionStorage.setItem("userAccessedPath", userAccessedPath.split(window.origin)[1]);
 
-                    window.location.href = applicationDomain+'/authenticate?code='+authorizationCode+'&state=sign-in-silently'+'&AuthenticatedIdPs='+authIdPs+
+                    window.location.href = applicationDomain+'/console/authenticate?code='+authorizationCode+
                                 '&session_state='+authSessionState;
                 } else {
                     sessionStorage.setItem("auth_callback_url_console", 
