@@ -12,6 +12,9 @@ jobs:
   lint:
     name: ⬣ ESLint
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 12.x ]
     steps:
       - name: ⬇️ Checkout
         id: checkout
@@ -21,7 +24,7 @@ jobs:
         id: setup-node
         uses: actions/setup-node@v2
         with:
-          node-version: 12.x
+          node-version: ${{ matrix.node-version }}
 
       - name: 🔆 Cache NPM directory
         id: cache-npm-modules
@@ -41,7 +44,11 @@ jobs:
 
   test:
     name: 🃏 Unit Test
+    needs: [ lint ]
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 12.x ]
     steps:
       - name: ⬇️ Checkout
         id: checkout
@@ -51,7 +58,7 @@ jobs:
         id: setup-node
         uses: actions/setup-node@v2
         with:
-          node-version: 12.x
+          node-version: ${{ matrix.node-version }}
 
       - name: 🔆 Cache NPM directory
         id: cache-npm-modules
@@ -75,8 +82,13 @@ jobs:
 
   build:
     name: 🚧 Build
-    needs: [ lint, test ]
+    needs: [ test ]
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 12.x ]
+        maven-version: [ 3.6.3 ]
+        java-version: [ 1.8 ]
     steps:
       - name: ⬇️ Checkout
         id: checkout
@@ -86,19 +98,19 @@ jobs:
         id: setup-node
         uses: actions/setup-node@v2
         with:
-          node-version: 12.x
+          node-version: ${{ matrix.node-version }}
 
       - name: ☕ Set up JDK 1.8
         id: jdk-setup
         uses: actions/setup-java@v1
         with:
-          java-version:  1.8
+          java-version: ${{ matrix.java-version }}
 
       - name: 🦩 Set up Maven
         uses: stCarolas/setup-maven@v4
         id: mvn-setup
         with:
-          maven-version: 3.6.3
+          maven-version: ${{ matrix.maven-version }}
 
       - name: 🔆 Cache NPM directory
         id: cache-npm-modules
