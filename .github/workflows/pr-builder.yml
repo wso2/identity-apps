@@ -12,9 +12,6 @@ jobs:
   lint:
     name: ⬣ ESLint
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [ 12.x ]
     steps:
       - name: ⬇️ Checkout
         id: checkout
@@ -22,9 +19,9 @@ jobs:
 
       - name: 🟢 Setup node
         id: setup-node
-        uses: actions/setup-node@v2.1.2
+        uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 12.x
 
       - name: 🔆 Cache NPM directory
         id: cache-npm-modules
@@ -44,11 +41,7 @@ jobs:
 
   test:
     name: 🃏 Unit Test
-    needs: [ lint ]
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [ 12.x ]
     steps:
       - name: ⬇️ Checkout
         id: checkout
@@ -56,9 +49,9 @@ jobs:
 
       - name: 🟢 Setup node
         id: setup-node
-        uses: actions/setup-node@v2.1.2
+        uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 12.x
 
       - name: 🔆 Cache NPM directory
         id: cache-npm-modules
@@ -82,13 +75,8 @@ jobs:
 
   build:
     name: 🚧 Build
-    needs: [ test ]
+    needs: [ lint, test ]
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [ 12.x ]
-        maven-version: [ 3.6.3 ]
-        java-version: [ 1.8 ]
     steps:
       - name: ⬇️ Checkout
         id: checkout
@@ -96,21 +84,21 @@ jobs:
 
       - name: 🟢 Setup node
         id: setup-node
-        uses: actions/setup-node@v2.1.2
+        uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 12.x
 
       - name: ☕ Set up JDK 1.8
         id: jdk-setup
         uses: actions/setup-java@v1
         with:
-          java-version: ${{ matrix.java-version }}
+          java-version:  1.8
 
       - name: 🦩 Set up Maven
         uses: stCarolas/setup-maven@v4
         id: mvn-setup
         with:
-          maven-version: ${{ matrix.maven-version }}
+          maven-version: 3.6.3
 
       - name: 🔆 Cache NPM directory
         id: cache-npm-modules
