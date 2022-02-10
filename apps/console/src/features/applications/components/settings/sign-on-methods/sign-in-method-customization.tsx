@@ -597,11 +597,23 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                     authenticator.authenticator === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR)
                 && (
                     <Message info>
-                        {
-                            t("console:develop.features.applications.edit.sections" +
+                        <Trans
+                            i18nKey={
+                                t("console:develop.features.applications.edit.sections" +
                                 ".signOnMethod.sections.landing.flowBuilder." +
                                 "types.usernameless.info")
-                        }
+                            }>
+                            To sign in with passwordless authentication, your users
+                            should have their FIDO2 security keys or biometrics
+                            registered via My Account. Learn more about
+                            this in our { window[ "AppUtils" ].getConfig().docSiteUrl
+                                ? (<a
+                                    href={ window[ "AppUtils" ].getConfig().docSiteUrl }
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    data-testid={ `fido-documentation-${ testId }` }>documentation</a>)
+                                : <span>documentation</span> }.
+                        </Trans>
                     </Message>
                 )
             }
