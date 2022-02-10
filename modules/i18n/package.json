@@ -20,7 +20,9 @@
         "clean": "rimraf ./dist",
         "clean:bundle": "rimraf ./dist/bundle",
         "clean:translations": "rimraf ./dist/src/translations && rimraf ./dist/types/translations",
-        "compile": "tsc -p tsconfig.json",
+        "compile": "npx run-script-os",
+        "compile:win32": "..\\..\\node_modules\\.bin\\tsc -p tsconfig.json",
+        "compile:default": "../../node_modules/.bin/tsc -p tsconfig.json",
         "lint": "npm run lint:all -- --max-warnings=0",
         "lint:all": "npm run lint:targeted -- .",
         "lint:autofix": "npm run lint:all -- --fix",
@@ -30,7 +32,8 @@
         "test:watch": "npm run test -- --watch",
         "jest": "npx run-script-os",
         "jest:win32": ".\\node_modules\\.bin\\jest",
-        "jest:default": "./node_modules/.bin/jest"
+        "jest:default": "./node_modules/.bin/jest",
+        "typecheck": "npm run compile"
     },
     "author": "WSO2",
     "license": "Apache-2.0",

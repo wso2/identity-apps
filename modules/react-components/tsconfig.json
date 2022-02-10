@@ -1,12 +1,11 @@
 {
     "compilerOptions": {
-        "experimentalDecorators": true,
-        "outDir": "./dist/src",
-        "declaration": true,
-        "rootDirs": ["src", "stories"],
         "baseUrl": ".",
-        "declarationDir": "dist/typings",
-        "typeRoots": [ "./types/*", "node_modules/@types" ],
+        "experimentalDecorators": true,
+        "declaration": true,
+        "declarationDir": "dist/types",
+        "outDir": "./dist/src",
+        "rootDirs": ["src", "stories"],
         "paths": {
             "*": ["types/*"],
             "@wso2is/core/api": ["node_modules/@wso2is/core/dist/src/api"],
@@ -18,8 +17,13 @@
             "@wso2is/core/models": ["node_modules/@wso2is/core/dist/src/models"],
             "@wso2is/core/store": ["node_modules/@wso2is/core/dist/src/store"],
             "@wso2is/core/utils": ["node_modules/@wso2is/core/dist/src/utils"]
-        }
+        },
+        "typeRoots": [ "./types/*", "node_modules/@types" ]
     },
-    "exclude": ["node_modules", "dist", "scripts", "stories"],
-    "extends": "../../configs/common.tsconfig.json"
+    "extends": "../../configs/common.tsconfig.json",
+    "exclude": [
+        "dist/types/*",
+        "scripts",
+        "stories"
+    ]
 }

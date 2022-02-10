@@ -17,6 +17,9 @@
         "build:prod:default": "../../node_modules/.bin/webpack --mode production --env NODE_ENV=production",
         "clean": "rimraf build && npm run clean:themes:src",
         "clean:themes:src": "rimraf src/themes",
+        "compile": "npx run-script-os",
+        "compile:win32": "..\\..\\node_modules\\.bin\\tsc -p tsconfig.json",
+        "compile:default": "../../node_modules/.bin/tsc -p tsconfig.json",
         "copy:themes:src": "node scripts/copy-themes-to-source.js",
         "lint": "npm run lint:all",
         "lint:all": "npm run lint:targeted -- .",
@@ -32,7 +35,8 @@
         "start:profile": "npm run start -- --env ENABLE_BUILD_PROFILER=true",
         "start:verbose": "npm run start -- --env LOG_LEVEL=verbose",
         "test": "npx jest --passWithNoTests",
-        "test:watch": "npm run test -- --watch"
+        "test:watch": "npm run test -- --watch",
+        "typecheck": "npm run compile"
     },
     "dependencies": {
         "@wso2is/core": "^1.2.792",

@@ -27,7 +27,8 @@
         "test": "npm run jest -- -- --passWithNoTests",
         "jest": "npx run-script-os",
         "jest:win32": ".\\node_modules\\.bin\\jest",
-        "jest:default": "./node_modules/.bin/jest"
+        "jest:default": "./node_modules/.bin/jest",
+        "typecheck": "npm run compile"
     },
     "author": "WSO2",
     "license": "Apache-2.0",

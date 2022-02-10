@@ -10,7 +10,7 @@ on:
 jobs:
 
   lint:
-    name: ⬣ ESLint
+    name: ⬣ ESLint (STATIC ANALYSIS)
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -39,12 +39,45 @@ jobs:
         id: bootstrap-npm-and-lerna-dependencies
         run:  npm run bootstrap
 
-      - name: 🔬 Lint
+      - name: ⏳ Lint
         run: npm run lint:ci
 
+  typecheck:
+    name: ʦ Typecheck (STATIC ANALYSIS)
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 12.x ]
+    steps:
+      - name: ⬇️ Checkout
+        id: checkout
+        uses: actions/checkout@v2.3.3
+
+      - name: 🟢 Setup node
+        id: setup-node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: 🔆 Cache NPM directory
+        id: cache-npm-modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: 🛠️ Bootstrap Dependencies
+        id: bootstrap-npm-and-lerna-dependencies
+        run:  npm run bootstrap
+
+      - name: ☄️ Check Type Errors
+        run: npm run typecheck
+
   test:
-    name: 🃏 Unit Test
-    needs: [ lint ]
+    name: 👾 Unit Test (TESTING)
+    needs: [ lint, typecheck ]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -82,7 +115,7 @@ jobs:
 
   build:
     name: 🚧 Build
-    needs: [ test ]
+    needs: [ lint, typecheck, test ]
     runs-on: ubuntu-latest
     strategy:
       matrix:

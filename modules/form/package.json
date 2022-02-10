@@ -27,7 +27,8 @@
         "test:watch": "npm run test -- --watch",
         "jest": "npx run-script-os",
         "jest:win32": ".\\node_modules\\.bin\\jest",
-        "jest:default": "./node_modules/.bin/jest"
+        "jest:default": "./node_modules/.bin/jest",
+        "typecheck": "npm run compile"
     },
     "dependencies": {
         "@wso2is/core": "^1.2.792",
@@ -53,7 +54,8 @@
         "jest": "^26.6.3",
         "rimraf": "^3.0.2",
         "run-script-os": "^1.0.7",
-        "ts-jest": "^26.5.4"
+        "ts-jest": "^26.5.4",
+        "typescript": "^4.2.2"
     },
     "peerDependencies": {
         "@types/react": "*",

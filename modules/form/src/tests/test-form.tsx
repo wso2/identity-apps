@@ -95,7 +95,7 @@ const getForm = (testFields: FormTestFields[]): ReactElement => {
     });
 
     return (
-        <Form onSubmit={ (value) => FieldTestConstants.onSubmit(value) }>
+        <Form uncontrolledForm onSubmit={ (value) => FieldTestConstants.onSubmit(value) }>
             {
                 formFields.map((formField, index) => {
                     return (

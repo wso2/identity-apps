@@ -2,12 +2,15 @@
     "compilerOptions": {
         "experimentalDecorators": true,
         // Common JS is required for the TS to JSON transpilation.
-        "module": "commonjs",
-        "rootDir": "src",
-        "outDir": "dist/src",
         "declaration": true,
         "declarationDir": "dist/types",
+        "module": "commonjs",
+        "outDir": "dist/src",
+        "rootDir": "src",
         "types": [ "node", "jest" ]
     },
-    "extends": "../../configs/common.tsconfig.json"
+    "extends": "../../configs/common.tsconfig.json",
+    "exclude": [
+        "dist/types/*",
+    ]
 }
