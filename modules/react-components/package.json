@@ -12,7 +12,7 @@
         "component-library"
     ],
     "main": "dist/src/index.js",
-    "types": "dist/typings/index.d.ts",
+    "types": "dist/types/index.d.ts",
     "scripts": {
         "start:storybook": "NODE_PATH=src start-storybook -p 6006 -c .storybook -s ./dist",
         "build:storybook": "build-storybook",

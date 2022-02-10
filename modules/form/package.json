@@ -10,7 +10,7 @@
         "form"
     ],
     "main": "dist/src/index.js",
-    "types": "dist/typings/index.d.ts",
+    "types": "dist/types/index.d.ts",
     "scripts": {
         "prebuild": "npm run clean",
         "build": "npm run compile",

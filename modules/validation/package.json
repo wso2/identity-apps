@@ -9,9 +9,9 @@
         "WSO2 Identity Apps",
         "validation"
     ],
-    "main": "dist/index.js",
+    "main": "dist/src/index.js",
     "module": "src/index.ts",
-    "types": "dist/index.d.ts",
+    "types": "dist/types/index.d.ts",
     "scripts": {
         "prebuild": "npm run clean",
         "build": "npm run compile",
