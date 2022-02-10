@@ -40,7 +40,7 @@ jobs:
         run:  npm run bootstrap
 
       - name: 🔬 Lint
-        run: npm run lint -- --format=compact
+        run: npm run lint:ci
 
   test:
     name: 🃏 Unit Test
@@ -78,7 +78,7 @@ jobs:
         run:  npm run build:modules
 
       - name: 🃏 Run jest
-        run: npm run test -- --coverage
+        run: npm run test:unit:coverage
 
   build:
     name: 🚧 Build
