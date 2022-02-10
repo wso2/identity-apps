@@ -61,26 +61,61 @@
             <% } %>
 
             <div class="ui segment left aligned">
-                <div class="loader-bar"></div>
+                <div id="loader-bar" class="loader-bar"></div>
 
                 <h3 class="ui header">
-                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "verification")%>
+                    <span id="fido-header">
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "verification" )%>
+                    </span>
+                    <span id="fido-header-error" style="display: none;">
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.error" )%>
+                    </span>
                 </h3>
                 <div class="ui divider hidden"></div>
                 <div class="ui two column left aligned stackable grid">
-                    <div class="middle aligned row">
+                    <div id="fido-initialize" class="middle aligned row">
                         <div class="six wide column">
                             <img class="img-responsive" src="images/U2F.png" />
                         </div>
                         <div class="ten wide column">
                             <p id="general-browser-instruction">
-                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "touch.your.u2f.device")%>
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "touch.your.u2f.device" )%>
                             </p>
                             <div id="safari-instruction" style="display:none">
-                                <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.failed.instruction" )%></p>
+                                <p>
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.failed.instruction" )%>
+                                </p>
                                 <div class="ui divider hidden"></div>
                                 <button class="ui button primary" id="initiateFlow" type="button" onclick="talkToDevice()">
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.failed.retry" )%>
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.proceed" )%>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="fido-error-content" style="display: none;" class="middle aligned row">
+                        <div class="sixteen wide column">
+                            <p>
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.registration.info" )%>
+                            </p>
+                            <p>
+                                <span>
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.learn.more.part.one" )%>
+                                </span>
+                                <a href="https://wso2.com/asgardeo/docs/guides/authentication/mfa/">
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.learn.more.documentation" )%>
+                                </a>
+                                <span>
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.learn.more.part.two" )%>
+                                </span>
+                                <a href="mailto:asgareo-help@wso2.com">asgardeo-help@wso2.com</a>.
+                            </p>
+                            <div class="ui divider hidden"></div>
+                            <div class="ui container fluid">
+                                <button class="ui right floated button primary" type="button" onclick="talkToDevice()">
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.retry" )%>
+                                </button>
+                                <button class="ui right floated button link-button" type="button" onclick="cancelFlow()">
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.cancel" )%>
                                 </button>
                             </div>
                         </div>
@@ -89,8 +124,6 @@
 
                     </div>
                 </div>
-
-
 
                 <form method="POST" action="<%=commonauthURL%>" id="form" onsubmit="return false;">
                     <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
@@ -146,9 +179,9 @@
 
                 if (browserName === "safari") {
                     $('#safari-instruction').show();
-                    $('#general-browser-instruction').show();
-                } else {
                     $('#general-browser-instruction').hide();
+                } else {
+                    $('#general-browser-instruction').show();
                     $("#initiateFlow").click();
                 }
             }
@@ -211,6 +244,8 @@
             return publicKeyCredentialRequestOptions;
         }
 
+        let fidoError;
+
         function talkToDevice(){
             var authRequest = '<%=Encode.forJavaScriptBlock(authRequest)%>';
             var jsonAuthRequest = JSON.parse(authRequest);
@@ -228,11 +263,21 @@
                 form.submit();
             })
             .catch(function(err) {
-                var form = document.getElementById('form');
-                var reg = document.getElementById('tokenResponse');
-                reg.value = JSON.stringify({errorCode : 400, message : err});
-                form.submit();
+                $("#fido-header-error").show();
+                $("#fido-error-content").show();
+                $("#fido-header").hide();
+                $("#fido-initialize").hide();
+                $("#loader-bar").hide();
+
+                fidoError = err;
             });
+        }
+
+        function cancelFlow(){
+            var form = document.getElementById('form');
+            var reg = document.getElementById('tokenResponse');
+            reg.value = JSON.stringify({ errorCode: 400, message: fidoError });
+            form.submit();
         }
 
     </script>
