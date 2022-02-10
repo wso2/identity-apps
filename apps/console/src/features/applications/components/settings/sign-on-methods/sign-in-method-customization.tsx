@@ -596,7 +596,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 authenticationSequence.steps[ 0 ].options.find(authenticator =>
                     authenticator.authenticator === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR)
                 && (
-                    <Message info>
+                    <Message warning>
                         <Trans
                             i18nKey={
                                 t("console:develop.features.applications.edit.sections" +
