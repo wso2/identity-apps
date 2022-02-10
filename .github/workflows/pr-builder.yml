@@ -40,10 +40,11 @@ jobs:
         run:  npm run bootstrap
 
       - name: 🔬 Lint
-        run: npm run lint
+        run: npm run lint -- --format=compact
 
   test:
     name: 🃏 Unit Test
+    needs: [ lint ]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -81,6 +82,7 @@ jobs:
 
   build:
     name: 🚧 Build
+    needs: [ test ]
     runs-on: ubuntu-latest
     strategy:
       matrix:
