@@ -28,6 +28,7 @@
         "lint": "npm run lint:all",
         "lint:all": "npm run lint:targeted -- .",
         "lint:autofix": "npm run lint:all -- --fix",
+        "lint:ci": "npm run lint -- -- --format=compact",
         "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to .",
         "transpile": "babel --extensions .ts,.tsx src --out-dir dist/src --copy-files --ignore spec.js,spec.jsx"
     },
