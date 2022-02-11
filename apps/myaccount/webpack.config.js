@@ -421,12 +421,6 @@ module.exports = (env) => {
                         force: true,
                         from: "auth.jsp",
                         to: "."
-                    },
-                    !isDeployedOnStaticServer && {
-                        context: path.join(__dirname, "src"),
-                        force: true,
-                        from: "index.jsp",
-                        to: "."
                     }
                 ].filter(Boolean)
             }),
@@ -471,6 +465,58 @@ module.exports = (env) => {
                     vwoScriptVariable: "<%= vwo_ac_id %>",
                     // eslint-disable-next-line max-len
                     vwoSystemVariable: "<% String vwo_ac_id = System.getenv().getOrDefault(\"vwo_account_id\", null); %>"
+                })
+                : new HtmlWebpackPlugin({
+                    filename: path.join(distFolder, "index.html"),
+                    hash: true,
+                    minify: false,
+                    publicPath: !isRootContext
+                        ? publicPath
+                        : "/",
+                    template: path.join(__dirname, "src", "index.html"),
+                    themeHash: themeHash
+                }),
+            isProduction && !isDeployedOnStaticServer
+                ? new HtmlWebpackPlugin({
+                    contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=ISO-8859-1\" " + 
+                    "pageEncoding=\"ISO-8859-1\"%>",
+                    filename: path.join(distFolder, "index.jsp"),
+                    hash: true,
+                    serverUrl: !isDeployedOnExternalServer
+                        ? "<%=getServerURL(\"\", true, true)%>"
+                        : "",
+                    authorizationCode: "<%=request.getParameter(\"code\")%>",
+                    importSuperTenantConstant: !isDeployedOnExternalServer
+                        ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
+                        "MultitenantConstants.SUPER_TENANT_DOMAIN_NAME\"%>"
+                        : "",
+                    importTenantPrefix: !isDeployedOnExternalServer
+                        ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
+                        "MultitenantConstants.TENANT_AWARE_URL_PREFIX\"%>"
+                        : "",
+                    importUtil: !isDeployedOnExternalServer
+                        ? "<%@ page import=\"" +
+                        "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>"
+                        : "",
+                    clientID: "MY_ACCOUNT",
+                    minify: false,
+                    publicPath: !isRootContext
+                        ? publicPath
+                        : "/",
+                    basename: basename,
+                    inject: false,
+                    sessionState: "<%=request.getParameter(\"session_state\")%>",
+                    superTenantConstant: !isDeployedOnExternalServer
+                        ? "<%=SUPER_TENANT_DOMAIN_NAME%>"
+                        : "",
+                    template: path.join(__dirname, "src", "index.jsp"),
+                    tenantDelimiter: !isDeployedOnExternalServer
+                        ? "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\""
+                        : "",
+                    tenantPrefix: !isDeployedOnExternalServer
+                        ? "<%=TENANT_AWARE_URL_PREFIX%>"
+                        : "",
+                    themeHash: themeHash
                 })
                 : new HtmlWebpackPlugin({
                     filename: path.join(distFolder, "index.html"),
