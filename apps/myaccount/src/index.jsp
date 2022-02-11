@@ -70,7 +70,7 @@
             if(authorizationCode) {
                 sessionStorage.setItem("auth_callback_url_console", userAccessedPath.split(window.origin)[1]);
                 sessionStorage.setItem("userAccessedPath", userAccessedPath.split(window.origin)[1]);
-                window.location.href = applicationDomain+'/'+"<%= htmlWebpackPlugin.options.basename %>"+'/authenticate?code='+authorizationCode+
+                window.location.href = applicationDomain + '/' + "<%= htmlWebpackPlugin.options.basename %>" + '/authenticate?code=' + authorizationCode+
                                 '&session_state='+authSessionState;
             } else {
                 auth.initialize(authConfig);
