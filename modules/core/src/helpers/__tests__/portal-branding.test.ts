@@ -18,12 +18,12 @@
  */
 
 import { resolveAppLogoFilePath, shouldResolveAppLogoFilePath } from "../../helpers";
-import { deploymentConfigMock } from "../__mocks__";
+import DeploymentConfigMock from "../__mocks__/deployment.config.json";
 
 describe("App logo path resolving necessity checker helper function", () => {
 
     test("Should return true for relative paths", () => {
-        expect(shouldResolveAppLogoFilePath(deploymentConfigMock.ui.appLogoPath)).toBe(true);
+        expect(shouldResolveAppLogoFilePath(DeploymentConfigMock.ui.appLogoPath)).toBe(true);
     });
 
     test("Should return false for HTTP urls", () => {
@@ -48,7 +48,7 @@ describe("App logo path resolving necessity checker helper function", () => {
 describe("App logo path resolver helper function", () => {
 
     test("Should properly resolve relative paths", () => {
-        const path = deploymentConfigMock.ui.appLogoPath;
+        const path = DeploymentConfigMock.ui.appLogoPath;
         const prefix = "https://localhost:9443/sample-portal/";
 
         expect(resolveAppLogoFilePath(path, prefix))

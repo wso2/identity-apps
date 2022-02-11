@@ -16,18 +16,10 @@
  * under the License.
  */
 
-require("@testing-library/jest-dom/extend-expect");
-require("babel-polyfill");
+/**
+ * @fileoverview Stubs files such as .jpg, .png, etc.
+ *
+ * @see {@link jest.config.ts} for more file types that uses this stub.
+ */
 
-class Worker {
-    constructor(stringUrl) {
-        this.url = stringUrl;
-        this.onmessage = () => { };
-    }
-
-    postMessage(msg) {
-        this.onmessage(msg);
-    }
-}
-
-window.Worker = Worker;
+module.exports = "test-file-stub";

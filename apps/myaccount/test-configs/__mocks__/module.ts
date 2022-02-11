@@ -16,7 +16,6 @@
  * under the License.
  */
 
-
 /**
  * @fileoverview Mocks of NPM Modules.
  *

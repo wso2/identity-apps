@@ -16,7 +16,6 @@
  * under the License.
  */
 
-
 /**
  * @fileoverview Mocks needed for the UI tests.
  *
@@ -24,7 +23,7 @@
  * document the reason and any references clearly in this file.
  */
 
-import MockDeploymentConfig from "../__mocks__/mock.deployment.config.json";
+import DeploymentConfig from "../../src/public/deployment.config.json";
 
 /**
  * `AppUtils` Mock.
@@ -33,7 +32,7 @@ import MockDeploymentConfig from "../__mocks__/mock.deployment.config.json";
  */
 window.AppUtils = {
     getConfig: function () {
-        return MockDeploymentConfig;
+        return DeploymentConfig;
     }
 };
 

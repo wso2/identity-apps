@@ -16,22 +16,16 @@
  * under the License.
  */
 
-
 /**
- * @fileoverview Mocks of NPM Modules.
+ * @fileoverview Mocks of Global objects.
  *
- * @remarks If you had to mock a certain npm module,
+ * @remarks If you had to mock a certain global object,
  * document the reason and any references clearly in this file.
  */
 
-/**
- * Suggested fix for i18next warnings
- * See also {@link https://github.com/i18next/react-i18next/issues/876}
- */
-jest.mock("react-i18next", () => ({
-    // this mock makes sure any components using the translate hook can use it without a warning being shown
-    Trans: ({ children }) => children,
-    useTranslation: () => ({
-        t: key => key
-    })
-}));
+import { TextDecoder, TextEncoder } from "util";
+
+// jsdom Doesn't seem to have TextEncoder defined in global for the DOM.
+// Hence adding the node.js one. See https://github.com/jsdom/jsdom/issues/2524.
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;

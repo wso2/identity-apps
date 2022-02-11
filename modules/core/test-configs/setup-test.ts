@@ -16,5 +16,5 @@
  * under the License.
  */
 
-export * from "./mock-config";
-export * from "./mock-deployment-config";
+import "@testing-library/jest-dom/extend-expect";
+import "babel-polyfill";

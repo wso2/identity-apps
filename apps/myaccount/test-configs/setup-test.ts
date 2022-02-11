@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,18 +16,14 @@
  * under the License.
  */
 
-require("@testing-library/jest-dom/extend-expect");
-require("babel-polyfill");
+import { configure } from "@testing-library/react";
+import "@testing-library/jest-dom/extend-expect";
+import "./__mocks__/global";
+import "./__mocks__/module";
+import "./__mocks__/window";
+import "../jest.config";
+import "babel-polyfill";
 
-class Worker {
-    constructor(stringUrl) {
-        this.url = stringUrl;
-        this.onmessage = () => { };
-    }
-
-    postMessage(msg) {
-        this.onmessage(msg);
-    }
-}
-
-window.Worker = Worker;
+configure({
+    testIdAttribute: "data-componentid"
+});

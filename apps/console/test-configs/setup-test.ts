@@ -17,13 +17,12 @@
  */
 
 import { configure } from "@testing-library/react";
-import "./__mocks__/global-mock";
-import "./__mocks__/module-mock";
-import "./__mocks__/window-mock";
-
-require("../jest.config");
-require("@testing-library/jest-dom/extend-expect");
-require("babel-polyfill");
+import "@testing-library/jest-dom/extend-expect";
+import "./__mocks__/global";
+import "./__mocks__/module";
+import "./__mocks__/window";
+import "../jest.config";
+import "babel-polyfill";
 
 configure({
     testIdAttribute: "data-componentid"

@@ -19,12 +19,24 @@
 module.exports = {
     globals: {
         "ts-jest": {
-            tsConfig: "tsconfig.json"
-        },
-        "window": true
+            tsconfig: "tsconfig.json"
+        }
     },
-    moduleFileExtensions: ["js", "jsx", "ts", "tsx", "json", "node"],
+    moduleDirectories: [
+        "node_modules",
+        "test-configs",
+        __dirname
+    ],
+    moduleFileExtensions: [
+        "js",
+        "jsx",
+        "ts",
+        "tsx",
+        "json",
+        "node"
+    ],
     moduleNameMapper: {
+        "^@unit-testing(.*)$": "<rootDir>/test-configs/utils",
         "^lodash-es": "<rootDir>/../../node_modules/lodash"
     },
     modulePaths: [
@@ -34,9 +46,11 @@ module.exports = {
         "src"
     ],
     setupFilesAfterEnv: [
-        "<rootDir>/test-configs/setup-test.js"
+        "<rootDir>/test-configs/setup-test.ts"
     ],
-    testMatch: ["<rootDir>/**/?(*.)test.{ts,tsx}"],
+    testMatch: [
+        "<rootDir>/**/?(*.)test.{ts,tsx}"
+    ],
     testPathIgnorePatterns: [
         "<rootDir>/(build|docs|node_modules)/"
     ],

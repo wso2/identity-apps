@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,13 +19,30 @@
 module.exports = {
     globals: {
         "ts-jest": {
-            tsConfig: "tsconfig.json"
-        },
-        "window": true
+            tsconfig: "tsconfig.json"
+        }
     },
-    moduleFileExtensions: ["js", "jsx", "ts", "tsx", "json", "node"],
+    moduleDirectories: [
+        "node_modules",
+        "test-configs",
+        __dirname
+    ],
+    moduleFileExtensions: [
+        "js",
+        "jsx",
+        "ts",
+        "tsx",
+        "json",
+        "node"
+    ],
     moduleNameMapper: {
-        "^lodash-es": "<rootDir>/../../node_modules/lodash"
+        "\\.(css|less)$": "<rootDir>/test-configs/__mocks__/style-file.ts",
+        "\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|md)$":
+            "<rootDir>/test-configs/__mocks__/file.ts",
+        "\\.svg": "<rootDir>/test-configs/__mocks__/svgr.ts",
+        "^@unit-testing(.*)$": "<rootDir>/test-configs/utils",
+        "^lodash-es": "<rootDir>/../../node_modules/lodash",
+        "^react($|/.+)": "<rootDir>/../../node_modules/react$1"
     },
     modulePaths: [
         "<rootDir>"
@@ -34,9 +51,12 @@ module.exports = {
         "src"
     ],
     setupFilesAfterEnv: [
-        "<rootDir>/test-configs/setup-test.js"
+        "<rootDir>/test-configs/setup-test.ts"
     ],
-    testMatch: ["<rootDir>/**/?(*.)test.{ts,tsx}"],
+    testEnvironment: "jest-environment-jsdom-global",
+    testMatch: [
+        "<rootDir>/**/?(*.)test.{ts,tsx}"
+    ],
     testPathIgnorePatterns: [
         "<rootDir>/(build|docs|node_modules)/"
     ],

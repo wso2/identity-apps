@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,9 +17,15 @@
  */
 
 /**
- * @fileoverview Stubs files such as .jpg, .png, etc.
+ * @fileoverview Mocks of Global objects.
  *
- * @see {@link jest.config.js} for more file types that uses this stub.
+ * @remarks If you had to mock a certain global object,
+ * document the reason and any references clearly in this file.
  */
 
-module.exports = "test-file-stub";
+import { TextDecoder, TextEncoder } from "util";
+
+// jsdom Doesn't seem to have TextEncoder defined in global for the DOM.
+// Hence adding the node.js one. See https://github.com/jsdom/jsdom/issues/2524.
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;

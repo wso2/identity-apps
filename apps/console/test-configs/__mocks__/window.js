@@ -16,7 +16,6 @@
  * under the License.
  */
 
-
 /**
  * @fileoverview Mocks needed for the UI tests.
  *
@@ -24,7 +23,7 @@
  * document the reason and any references clearly in this file.
  */
 
-import MockDeploymentConfig from "../__mocks__/mock.deployment.config.json";
+import DeploymentConfig from "../../src/public/deployment.config.json";
 
 /**
  * `AppUtils` Mock.
@@ -33,13 +32,14 @@ import MockDeploymentConfig from "../__mocks__/mock.deployment.config.json";
  */
 window.AppUtils = {
     getConfig: function () {
-        return MockDeploymentConfig;
+        return DeploymentConfig;
     }
 };
 
 /**
  * Worker class mock needed by the SDK since the storage strategy used in the apps is `webWorker`.
  * @see {@link https://github.com/asgardeo/asgardeo-auth-react-sdk#storage}
+ * Mock Reference @see {@link https://github.com/facebook/jest/issues/3449#issuecomment-347337666}
  */
 class Worker {
     constructor(stringUrl) {

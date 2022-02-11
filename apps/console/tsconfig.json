@@ -16,14 +16,32 @@
             "@wso2is/core/models": [ "node_modules/@wso2is/core/dist/types/models" ],
             "@wso2is/core/store": [ "node_modules/@wso2is/core/dist/types/store" ],
             "@wso2is/core/utils": [ "node_modules/@wso2is/core/dist/types/utils" ],
-            "@wso2is/core/workers/timer.worker": ["node_modules/@wso2is/core/dist/types/workers/timer.worker"],
-            "@unit-testing": ["test-configs/utils"]
+            "@wso2is/core/workers/timer.worker": [ "node_modules/@wso2is/core/dist/types/workers/timer.worker" ],
+            "@unit-testing": [ "test-configs/utils" ]
         },
         "types": [ "node", "webpack-env", "jest", "@testing-library/jest-dom" ]
     },
-    "extends": "../../configs/common.tsconfig.json",
     "exclude": [
-        "dist/types/*",
-        "src/themes/*",
-    ]
+        "build",
+        "cache",
+        "coverage",
+        "dist",
+        "node_modules",
+        "scripts",
+        "test-configs",
+        "types",
+        "jest.config.ts",
+        "**/tests/*",
+        "**/__tests__/*",
+        "**/__mocks__/*",
+        "**/*.test.js",
+        "**/*.test.jsx",
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "**/*.spec.js",
+        "**/*.spec.jsx",
+        "**/*.spec.ts",
+        "**/*.spec.tsx"
+    ],
+    "extends": "../../configs/common.tsconfig.json"
 }

@@ -36,13 +36,8 @@ module.exports = {
         "node"
     ],
     moduleNameMapper: {
-        "\\.(css|less)$": "<rootDir>/test-configs/__mocks__/style-file-mock.js",
-        "\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|md)$":
-            "<rootDir>/test-configs/__mocks__/file-mock.js",
-        "\\.svg": "<rootDir>/test-configs/__mocks__/svgr-mock.js",
         "^@unit-testing(.*)$": "<rootDir>/test-configs/utils",
-        "^lodash-es": "<rootDir>/../../node_modules/lodash",
-        "^react($|/.+)": "<rootDir>/../../node_modules/react$1"
+        "^lodash-es": "<rootDir>/../../node_modules/lodash"
     },
     modulePaths: [
         "<rootDir>"
@@ -51,9 +46,8 @@ module.exports = {
         "src"
     ],
     setupFilesAfterEnv: [
-        "<rootDir>/test-configs/setup-test.js"
+        "<rootDir>/test-configs/setup-test.ts"
     ],
-    testEnvironment: "jest-environment-jsdom-global",
     testMatch: [
         "<rootDir>/**/?(*.)test.{ts,tsx}"
     ],
