@@ -106,8 +106,7 @@
                                 </a>
                                 <span>
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.learn.more.part.two" )%>
-                                </span>
-                                <a href="mailto:asgareo-help@wso2.com">asgardeo-help@wso2.com</a>.
+                                </span>.
                             </p>
                             <div class="ui divider hidden"></div>
                             <div class="ui container fluid">
