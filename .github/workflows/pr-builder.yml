@@ -8,7 +8,6 @@ on:
   workflow_dispatch:
 
 jobs:
-
   lint:
     name: ⬣ ESLint (STATIC ANALYSIS)
     runs-on: ubuntu-latest
@@ -26,21 +25,23 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: 🔆 Cache NPM directory
-        id: cache-npm-modules
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
       - name: 🛠️ Bootstrap Dependencies
         id: bootstrap-npm-and-lerna-dependencies
         run:  npm run bootstrap
 
       - name: ⏳ Lint
         run: npm run lint:ci
+
+      - name: 🔆 Cache NPM directory
+        id: cache-npm-modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
 
   typecheck:
     name: ʦ Typecheck (STATIC ANALYSIS)
@@ -59,21 +60,23 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: 🔆 Cache NPM directory
-        id: cache-npm-modules
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
       - name: 🛠️ Bootstrap Dependencies
         id: bootstrap-npm-and-lerna-dependencies
         run:  npm run bootstrap
 
       - name: ☄️ Check Type Errors
         run: npm run typecheck
+
+      - name: 🔆 Cache NPM directory
+        id: cache-npm-modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
 
   test:
     name: 👾 Unit Test (TESTING)
@@ -93,15 +96,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: 🔆 Cache NPM directory
-        id: cache-npm-modules
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
       - name: 🛠️ Bootstrap Dependencies
         id: bootstrap-npm-and-lerna-dependencies
         run:  npm run bootstrap
@@ -112,6 +106,17 @@ jobs:
 
       - name: 🃏 Run jest
         run: npm run test:unit:coverage
+
+      - name: 🔆 Cache NPM directory
+        id: cache-npm-modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
 
   build:
     name: 🚧 Build
@@ -145,14 +150,24 @@ jobs:
         with:
           maven-version: ${{ matrix.maven-version }}
 
+      - name: 🛠️ Bootstrap Dependencies
+        id: bootstrap-npm-and-lerna-dependencies
+        run:  npm run bootstrap
+
+      - name: 🏗️ Maven Build
+        id: build-with-maven
+        run: mvn clean install -U -Dlint.exec.skip=true -Dbootstrap.exec.skip=true
+
       - name: 🔆 Cache NPM directory
         id: cache-npm-modules
         uses: actions/cache@v2
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-node-
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
 
       - name: 💾 Cache local Maven repository
         id: cache-maven-m2
@@ -162,11 +177,3 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
-
-      - name: 🛠️ Bootstrap Dependencies
-        id: bootstrap-npm-and-lerna-dependencies
-        run:  npm run bootstrap
-
-      - name: 🏗️ Maven Build
-        id: build-with-maven
-        run: mvn clean install -U -Dlint.exec.skip=true -Dbootstrap.exec.skip=true
