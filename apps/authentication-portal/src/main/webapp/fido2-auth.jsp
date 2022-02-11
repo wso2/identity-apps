@@ -18,6 +18,8 @@
 
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
+<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
+
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%@include file="includes/localize.jsp" %>
@@ -26,6 +28,9 @@
 <%
     String authRequest = request.getParameter("data");
 %>
+
+<!-- Branding Preferences -->
+<jsp:directive.include file="extensions/branding-preferences.jsp" />
 
 <!doctype html>
 <html>
@@ -104,9 +109,16 @@
                                 <a href="https://wso2.com/asgardeo/docs/guides/authentication/mfa/">
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.learn.more.documentation" )%>
                                 </a>
-                                <span>
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.learn.more.part.two" )%>
-                                </span>.
+                                <% if (supportEmail == null || supportEmail.isEmpty()) { %>
+                                    <span>
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.learn.more.part.two" )%>
+                                    </span>
+                                <% } else { %>
+                                    <span>
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.learn.more.part.two.email" )%>
+                                    </span>
+                                    <a href="mailto:<%=supportEmail%>"><%=StringEscapeUtils.escapeHtml4(supportEmail)%></a>.
+                                <% } %>
                             </p>
                             <div class="ui divider hidden"></div>
                             <div class="ui container fluid">
