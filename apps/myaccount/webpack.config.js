@@ -498,7 +498,7 @@ module.exports = (env) => {
                         ? "<%@ page import=\"" +
                         "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>"
                         : "",
-                    clientID: "MY_ACCOUNT",
+                    clientID: deploymentConfig.clientID,
                     minify: false,
                     publicPath: !isRootContext
                         ? publicPath

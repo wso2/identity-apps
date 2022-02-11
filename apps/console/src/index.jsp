@@ -31,10 +31,12 @@
             var applicationDomain = window.location.origin;
 
             var serverOrigin = "<%= htmlWebpackPlugin.options.serverUrl %>";
-            var authorizationCode = "<%= htmlWebpackPlugin.options.authorizationCode %>" != "null" ? 
-                                    "<%= htmlWebpackPlugin.options.authorizationCode %>" : null;
-            var authSessionState = "<%= htmlWebpackPlugin.options.sessionState %>" != "null" ? 
-                                    "<%= htmlWebpackPlugin.options.sessionState %>" : null;
+            var authorizationCode = "<%= htmlWebpackPlugin.options.authorizationCode %>" != "null" 
+                                        ? "<%= htmlWebpackPlugin.options.authorizationCode %>" 
+                                        : null;
+            var authSessionState = "<%= htmlWebpackPlugin.options.sessionState %>" != "null" 
+                                        ? "<%= htmlWebpackPlugin.options.sessionState %>" 
+                                        : null;
             
             function getApiPath(path) {
                 if(path) {
