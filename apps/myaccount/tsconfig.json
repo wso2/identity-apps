@@ -30,7 +30,6 @@
         "scripts",
         "src/themes/*",
         "test-configs",
-        "types",
         "jest.config.ts",
         "**/tests/*",
         "**/__tests__/*",

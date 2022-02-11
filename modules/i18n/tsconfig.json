@@ -15,7 +15,6 @@
         "node_modules",
         "scripts",
         "test-configs",
-        "types",
         "jest.config.ts",
         "**/tests/*",
         "**/__tests__/*",

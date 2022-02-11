@@ -27,7 +27,6 @@
         "scripts",
         "stories",
         "test-configs",
-        "types",
         "jest.config.ts",
         "**/tests/*",
         "**/__tests__/*",
