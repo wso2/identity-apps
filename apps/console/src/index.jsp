@@ -64,17 +64,17 @@
             var isSignOutSuccess = userAccessedPath.includes("sign_out_success");
 
             if(isSignOutSuccess) {
-                window.location.href = applicationDomain+'/'+"<%= htmlWebpackPlugin.options.basename %>"
+                window.location.href = applicationDomain + '/' + "<%= htmlWebpackPlugin.options.basename %>"
             }
             
             if(isSilentSignInDisabled) {
-                window.location.href = applicationDomain + '/'+"<%= htmlWebpackPlugin.options.basename %>"+'/authenticate?disable_silent_sign_in=true&invite_user=true';
+                window.location.href = applicationDomain + '/' + "<%= htmlWebpackPlugin.options.basename %>" + '/authenticate?disable_silent_sign_in=true&invite_user=true';
             } else {
 
                 if(authorizationCode) {
                     sessionStorage.setItem("userAccessedPath", userAccessedPath.split(window.origin)[1]);
 
-                    window.location.href = applicationDomain+'/'+"<%= htmlWebpackPlugin.options.basename %>"+'/authenticate?code='+authorizationCode+
+                    window.location.href = applicationDomain + '/' + "<%= htmlWebpackPlugin.options.basename %>"+'/authenticate?code='+authorizationCode+
                                 '&session_state='+authSessionState;
                 } else {
                     sessionStorage.setItem("auth_callback_url_console", 
