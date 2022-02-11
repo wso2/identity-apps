@@ -16,15 +16,9 @@
 * under the License.
 -->
 
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL" %>
-
-<%
-    String serverUrl = getServerURL("", true, true);
-    String authorizationCode = request.getParameter("code");
-    String authSessionState = request.getParameter("session_state");
-    String authIdPs = request.getParameter("AuthenticatedIdPs");
-%>
+<%= htmlWebpackPlugin.options.contentType %>
+<%= htmlWebpackPlugin.options.importUtil %>
+<%= htmlWebpackPlugin.options.importSuperTenantConstant %>
 
 <!DOCTYPE HTML>
 <html>
@@ -36,13 +30,13 @@
             var userAccessedPath = window.location.href;
             var applicationDomain = window.location.origin;
 
-            var userTenant = userAccessedPath.split("/t/")[1] ?  userAccessedPath.split("/t/")[1].split("/")[0] : null;
-            userTenant = userTenant ?  userTenant.split("?")[0] : null;
-
-            var serverOrigin = "<%=serverUrl%>";
-            var authorizationCode = "<%=authorizationCode%>" != "null" ? "<%=authorizationCode%>" : null;
-            var authSessionState = "<%=authSessionState%>" != "null" ? "<%=authSessionState%>" : null;
-            var authIdPs = "<%=authIdPs%>" != "null" ? "<%=authIdPs%>" : null;
+            var serverOrigin = "<%= htmlWebpackPlugin.options.serverUrl %>";
+            var authorizationCode = "<%= htmlWebpackPlugin.options.authorizationCode %>" != "null" 
+                                        ? "<%= htmlWebpackPlugin.options.authorizationCode %>" 
+                                        : null;
+            var authSessionState = "<%= htmlWebpackPlugin.options.sessionState %>" != "null" 
+                                        ? "<%= htmlWebpackPlugin.options.sessionState %>" 
+                                        : null;
             
             function getApiPath(path) {
                 if(path) {
@@ -55,45 +49,32 @@
             var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
 
             var authConfig = {
-                signInRedirectURL: applicationDomain.replace(/\/+$/, ''),
+                signInRedirectURL: applicationDomain.replace(/\/+$/, '') + "/" + "<%= htmlWebpackPlugin.options.basename %>",
                 signOutRedirectURL: applicationDomain.replace(/\/+$/, ''),
-                clientID: "CONSOLE",
+                clientID: "<%= htmlWebpackPlugin.options.clientID %>",
                 serverOrigin: getApiPath(),
                 responseMode: "form_post",
                 scope: ["openid SYSTEM"],
                 storage: "webWorker",
-                endpoints: {
-                    authorizationEndpoint: getApiPath(userTenant ? "/t/a/oauth2/authorize?ut="+userTenant.replace(/\/+$/, '') : "/t/a/oauth2/authorize"),
-                    clockTolerance: 300,
-                    jwksEndpointURL: undefined,
-                    logoutEndpointURL: getApiPath("/t/a/oidc/logout"),
-                    oidcSessionIFrameEndpointURL: getApiPath("/t/a/oidc/checksession"),
-                    serverOrigin: getApiPath(),
-                    tokenEndpointURL: undefined,
-                    tokenRevocationEndpointURL: undefined,
-                    wellKnownEndpointURL: undefined,
-                },
                 enablePKCE: true,
                 overrideWellEndpointConfig: true
             }
 
             var isSilentSignInDisabled = userAccessedPath.includes("disable_silent_sign_in");
-            var isTenantSwitchPath = userAccessedPath.includes("switch_tenant");
+            var isSignOutSuccess = userAccessedPath.includes("sign_out_success");
+
+            if(isSignOutSuccess) {
+                window.location.href = applicationDomain + '/' + "<%= htmlWebpackPlugin.options.basename %>"
+            }
             
             if(isSilentSignInDisabled) {
-
-                if(isTenantSwitchPath) {
-                    auth.initialize(authConfig);
-                    auth.signIn();
-                } else {
-                    window.location.href = applicationDomain + '/authenticate?disable_silent_sign_in=true&invite_user=true';
-                }
+                window.location.href = applicationDomain + '/' + "<%= htmlWebpackPlugin.options.basename %>" + '/authenticate?disable_silent_sign_in=true&invite_user=true';
             } else {
 
                 if(authorizationCode) {
                     sessionStorage.setItem("userAccessedPath", userAccessedPath.split(window.origin)[1]);
 
-                    window.location.href = applicationDomain+'/authenticate?code='+authorizationCode+'&state=sign-in-silently'+'&AuthenticatedIdPs='+authIdPs+
+                    window.location.href = applicationDomain + '/' + "<%= htmlWebpackPlugin.options.basename %>" + '/authenticate?code=' + authorizationCode +
                                 '&session_state='+authSessionState;
                 } else {
                     sessionStorage.setItem("auth_callback_url_console", 
