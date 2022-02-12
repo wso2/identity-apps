@@ -217,6 +217,11 @@ npm run build:external:static
 
 The respective build artifacts could be found inside the build folder. (`apps/(myaccount|console)/build`)
 
+## Configuration Guide
+
+The portals i.e. Console & My Account are configurable using the `deployment.toml` when they are hosted inside the Identity Server.
+Read through our [configurations guidelines](./docs/CONFIGURATION.md) to learn about the configuration process.
+
 ## Troubleshoot
 
 - If you face any out of memory build failures, make sure that you have set maven options to `set MAVEN_OPTS=-Xmx384M`

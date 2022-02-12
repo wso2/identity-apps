@@ -187,3 +187,6 @@ npm run test
 # From the root of the project.
 npm run test:unit:coverage
 ```
+
+[react-testing-library]: https://testing-library.com/docs/
+[react-testing-library-custom-renderer]: https://testing-library.com/docs/react-testing-library/setup#custom-render
