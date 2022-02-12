@@ -2,20 +2,6 @@
 
 Welcome to the WSO2 Identity Apps developer guide. If you would like to contribute to the code, see the information on this guide.
 
-* [Get started](#get-started)
-* [Configuration Guide](#configuration-guide)
-* [Writing Code](#writing-code)
-    * [Ensuring Code Quality](#ensuring-code-quality)
-    * [Formatting](#formatting)
-    * [Ensuring performance](#ensuring-performance)
-    * [Ensuring a good user experience](#ensuring-a-good-user-experience)
-* [Styling](#styling)
-    * [Forms](#forms)
-* [Writing Tests](#writing-tests)
-    * [Unit Tests](#unit-tests)
-    * [Integration Tests](#integration-tests)
-* [Troubleshoot](#troubleshoot)
-
 ## Get started
 
 1. [Setting Up Development Environment](SET_UP_DEV_ENVIRONMENT.md)
