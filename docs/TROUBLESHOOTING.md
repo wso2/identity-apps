@@ -1,5 +1,12 @@
 # Troubleshooting
 
+Look through here if you come across any issue.
+
+✨ If your issues isn't here and you were able to figure a solution, please consider contribute to the guide.
+
+* [Maven](#maven)
+    * [Build Failures](#build-failures)
+
 ## Maven
 
 ### Build Failures
