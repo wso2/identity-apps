@@ -197,11 +197,15 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
     const [
         copyToClipboardIcon,
         setCopyToClipboardIcon
-    ] = useState<FunctionComponent<SVGProps<SVGSVGElement>>>(CopyIcon);
+    ] = useState<FunctionComponent<SVGProps<SVGSVGElement>> | (() => FunctionComponent<SVGProps<SVGSVGElement>>)>(
+        CopyIcon
+    );
     const [
         fullScreenToggleIcon,
         setFullScreenToggleIcon
-    ] = useState<FunctionComponent<SVGProps<SVGSVGElement>>>(MaximizeIcon);
+    ] = useState<FunctionComponent<SVGProps<SVGSVGElement>> | (() => FunctionComponent<SVGProps<SVGSVGElement>>)>(
+        MaximizeIcon
+    );
     const [ isEditorFullScreen, setIsEditorFullScreen ] = useState<boolean>(false);
     const [ darkMode, setDarkMode ] = useState<boolean>(false);
 

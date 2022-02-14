@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms } from "@wso2is/forms";
 import {
@@ -54,7 +54,7 @@ import {
 /**
  * Proptypes for the remote config details component.
  */
-type RemoteConfigDetailsPropsInterface = TestableComponentInterface;
+type RemoteConfigDetailsPropsInterface = IdentifiableComponentInterface;
 
 /**
  * Component to handle Remote Repository Configuration.
@@ -71,7 +71,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
     const { t } = useTranslation();
 
     const {
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const [ remoteRepoConfig, setRemoteRepoConfig ] = useState<InterfaceRemoteRepoConfig>(undefined);
@@ -280,7 +280,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
     const getRemoteFetchForm = (): ReactElement => {
         return (
             <Forms
-                data-testid={ `${ testId }-config-form` }
+                data-componentid={ `${ componentId }-config-form` }
                 onSubmit={ (values) => {
                     handleFormSubmit(getFormValues(values));
                 } }
@@ -310,7 +310,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                             checked={
                                                 isEnabled
                                             }
-                                            data-testid={ `${ testId }-config-state` }
+                                            data-componentid={ `${ componentId }-config-state` }
                                             onChange={ ()=> {
                                                 setIsEnabled(!isEnabled);
                                                 updateRemoteRepoConfig(remoteRepoConfigDetail?.id, {
@@ -348,7 +348,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                         "gitURL.validations.required")
                                 }
                                 disabled={ !!remoteRepoConfig }
-                                data-testid={ `${ testId }-form-git-url` }
+                                data-componentid={ `${ componentId }-form-git-url` }
                                 value={
                                     remoteRepoConfigDetail ?
                                         remoteRepoConfigDetail?.
@@ -374,7 +374,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                         "gitBranch.validations.required")
                                 }
                                 disabled={ !!remoteRepoConfig }
-                                data-testid={ `${ testId }-form-git-branch` }
+                                data-componentid={ `${ componentId }-form-git-branch` }
                                 value={
                                     remoteRepoConfigDetail ?
                                         remoteRepoConfigDetail.
@@ -402,7 +402,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                         "gitFolder.validations.required")
                                 }
                                 disabled={ !!remoteRepoConfig }
-                                data-testid={ `${ testId }-form-git-directory` }
+                                data-componentid={ `${ componentId }-form-git-directory` }
                                 value={
                                     remoteRepoConfigDetail ?
                                         remoteRepoConfigDetail?.
@@ -428,7 +428,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                     name="radioGroup"
                                     checked={ connectivity === "POLLING" }
                                     disabled={ !!remoteRepoConfig }
-                                    data-testid={ `${ testId }-form-connection-polling` }
+                                    data-componentid={ `${ componentId }-form-connection-polling` }
                                     onChange={ () => {
                                         setConnectivity("POLLING");
                                     } }
@@ -443,7 +443,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                     name="radioGroup"
                                     disabled={ !!remoteRepoConfig }
                                     checked={ connectivity === "WEB_HOOK" }
-                                    data-testid={ `${ testId }-form-connection-webhook` }
+                                    data-componentid={ `${ componentId }-form-connection-webhook` }
                                     onChange={ () => {
                                         setConnectivity("WEB_HOOK");
                                     } }
@@ -470,7 +470,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                         required={ false }
                                         disabled={ !!remoteRepoConfig }
                                         requiredErrorMessage={ "" }
-                                        data-testid={ `${ testId }-form-git-username` }
+                                        data-componentid={ `${ componentId }-form-git-username` }
                                         value={
                                             remoteRepoConfigDetail ?
                                                 remoteRepoConfigDetail?.
@@ -493,7 +493,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                         required={ false }
                                         disabled={ !!remoteRepoConfig }
                                         requiredErrorMessage={ "" }
-                                        data-testid={ `${ testId }-form-git-accesstoken` }
+                                        data-componentid={ `${ componentId }-form-git-accesstoken` }
                                         value={
                                             remoteRepoConfigDetail ?
                                                 remoteRepoConfigDetail?.
@@ -534,7 +534,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                     required={ false }
                                     disabled={ !!remoteRepoConfig }
                                     requiredErrorMessage={ "" }
-                                    data-testid={ `${ testId }-form-git-shared-key` }
+                                    data-componentid={ `${ componentId }-form-git-shared-key` }
                                 />
                             </GridColumn>
                         </GridRow>
@@ -547,7 +547,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                 <PrimaryButton
                                     disabled={ !!remoteRepoConfig || isSubmitting }
                                     floated="left"
-                                    data-testid={ `${ testId }-save-configuration` }
+                                    data-componentid={ `${ componentId }-save-configuration` }
                                     loading={ isSubmitting }
                                 >
                                     {
@@ -559,7 +559,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                 <LinkButton
                                     floated="left"
                                     attached
-                                    data-testid={ `${ testId }-remove-configuration` }
+                                    data-componentid={ `${ componentId }-remove-configuration` }
                                     onClick={ () => {
                                         setShowDeleteConfirmationModal(true);
                                     } }
@@ -572,7 +572,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                             { showFetchForm &&
                                 <LinkButton
                                     floated="left"
-                                    data-testid={ `${ testId }-cancel-configuration` }
+                                    data-componentid={ `${ componentId }-cancel-configuration` }
                                     onClick={ () => {
                                         setShowFetchForm(false);
                                     } }
@@ -591,7 +591,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
         <PageLayout
             title={ t("console:manage.features.remoteFetch.pages.listing.title") }
             description={ t("console:manage.features.remoteFetch.pages.listing.subTitle") }
-            data-testid={ `${ testId }-page-layout` }
+            data-componentid={ `${ componentId }-page-layout` }
         >
             <Grid>
                 <Grid.Row columns={ 2 }>
@@ -633,7 +633,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                             <EmptyPlaceholder
                                                 action={
                                                     <PrimaryButton
-                                                        data-testid={ `${ testId }-add-configuration` }
+                                                        data-componentid={ `${ componentId }-add-configuration` }
                                                         onClick={ () => { setShowFetchForm(true); } }
                                                     >
                                                         <Icon name="add"/>
@@ -665,7 +665,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
             {
                 showConfigDeleteConfirmation &&
                 <ConfirmationModal
-                    data-testid={ `${ testId }-confirmation-modal` }
+                    data-componentid={ `${ componentId }-confirmation-modal` }
                     onClose={ (): void => setShowDeleteConfirmationModal(false) }
                     type="warning"
                     open={ showConfigDeleteConfirmation }
@@ -711,7 +711,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
  * Default props for the component.
  */
 RemoteRepoConfig.defaultProps = {
-    "data-testid": "remote-fetch"
+    "data-componentid": "remote-fetch"
 };
 
 /**

@@ -16,5 +16,4 @@
  * under the License.
  */
 
-export * from "./redux-store-mock";
 export * from "./utils";

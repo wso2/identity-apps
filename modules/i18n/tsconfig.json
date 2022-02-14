@@ -2,12 +2,31 @@
     "compilerOptions": {
         "experimentalDecorators": true,
         // Common JS is required for the TS to JSON transpilation.
-        "module": "commonjs",
-        "rootDir": "src",
-        "outDir": "dist/src",
         "declaration": true,
         "declarationDir": "dist/types",
+        "module": "commonjs",
+        "outDir": "dist/src",
+        "rootDir": "src",
         "types": [ "node", "jest" ]
     },
+    "exclude": [
+        "coverage",
+        "dist",
+        "node_modules",
+        "scripts",
+        "test-configs",
+        "jest.config.ts",
+        "**/tests/*",
+        "**/__tests__/*",
+        "**/__mocks__/*",
+        "**/*.test.js",
+        "**/*.test.jsx",
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "**/*.spec.js",
+        "**/*.spec.jsx",
+        "**/*.spec.ts",
+        "**/*.spec.tsx"
+    ],
     "extends": "../../configs/common.tsconfig.json"
 }

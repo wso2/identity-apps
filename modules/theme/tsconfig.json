@@ -1,4 +1,28 @@
 {
-    "compilerOptions": { "baseUrl": ".", "paths": { "*": ["types/*"] } },
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "*": [ "types/*" ]
+        }
+    },
+    "exclude": [
+        "coverage",
+        "dist",
+        "node_modules",
+        "scripts",
+        "test-configs",
+        "jest.config.ts",
+        "**/tests/*",
+        "**/__tests__/*",
+        "**/__mocks__/*",
+        "**/*.test.js",
+        "**/*.test.jsx",
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "**/*.spec.js",
+        "**/*.spec.jsx",
+        "**/*.spec.ts",
+        "**/*.spec.tsx"
+    ],
     "extends": "../../configs/common.tsconfig.json"
 }

@@ -16,10 +16,14 @@
  * under the License.
  */
 
-import "../node_modules/@testing-library/jest-dom/extend-expect";
-import { TextDecoder, TextEncoder } from "util";
+import { configure } from "@testing-library/react";
+import "@testing-library/jest-dom/extend-expect";
+import "./__mocks__/global";
+import "./__mocks__/module";
+import "./__mocks__/window";
+import "../jest.config";
+import "babel-polyfill";
 
-// jsdom Doesn't seem to have TextEncoder defined in global for the DOM.
-// Hence adding the node.js one. See https://github.com/jsdom/jsdom/issues/2524.
-global.TextEncoder = TextEncoder;
-global.TextDecoder = TextDecoder;
+configure({
+    testIdAttribute: "data-componentid"
+});

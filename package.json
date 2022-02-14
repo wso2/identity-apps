@@ -16,7 +16,7 @@
         "build:dev": "npm run bootstrap && npm run build -- --ignore @wso2is/theme && npx lerna run build:dev --stream --scope @wso2is/theme",
         "build": "npx lerna run build --stream",
         "build:apps": "npx lerna run build --stream --scope '{@wso2is/myaccount,@wso2is/console}'",
-        "build:modules": "npx lerna run build --stream --scope '{@wso2is/core,@wso2is/forms,@wso2is/form,@wso2is/i18n,@wso2is/react-components,@wso2is/theme,@wso2is/validation}'",
+        "build:modules": "npx lerna run build --stream --scope '{@wso2is/access-control,@wso2is/core,@wso2is/forms,@wso2is/form,@wso2is/i18n,@wso2is/react-components,@wso2is/theme,@wso2is/validation}'",
         "build:external": "npx lerna run build --stream --ignore '{@wso2is/console,@wso2is/myaccount}' && npx lerna run build:external --stream --scope '{@wso2is/console,@wso2is/myaccount}'",
         "build:external:static": "npx lerna run build --stream --ignore '{@wso2is/console,@wso2is/myaccount}' && npx lerna run build:external:static --stream --scope '{@wso2is/console,@wso2is/myaccount}'",
         "build:theme": "npx lerna run build --stream --scope @wso2is/theme && npx lerna run copy:themes:src --stream --scope '{@wso2is/myaccount,@wso2is/console}'",
@@ -47,8 +47,9 @@
         "update-version": "node scripts/update-version.js",
         "lint": "npx lerna run lint --stream",
         "lint:autofix": "npm run lint:autofix --stream",
-        "lint:ci": "npm run lint",
-        "lint:staged": "eslint -c .eslintrc.js $(git diff --diff-filter=d --name-only | grep -E \"(.js$|.ts$|.jsx$|.tsx$)\")"
+        "lint:ci": "npx lerna run lint:ci --stream",
+        "lint:staged": "eslint -c .eslintrc.js $(git diff --diff-filter=d --name-only | grep -E \"(.js$|.ts$|.jsx$|.tsx$)\")",
+        "typecheck": "npx lerna run typecheck --stream"
     },
     "author": "WSO2",
     "license": "Apache-2.0",

@@ -3,6 +3,7 @@
     "version": "1.2.795",
     "description": "Access control module for WSO2 Identity Server front end applications",
     "main": "dist/src/index.js",
+    "types": "dist/types/index.d.ts",
     "keywords": [
         "WSO2",
         "WSO2 IS",
@@ -22,11 +23,13 @@
         "lint": "npm run lint:all -- --max-warnings=0",
         "lint:all": "npm run lint:targeted -- .",
         "lint:autofix": "npm run lint:all -- --fix",
+        "lint:ci": "npm run lint -- --format=compact",
         "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to .",
         "test": "npm run jest -- -- --passWithNoTests",
         "jest": "npx run-script-os",
         "jest:win32": ".\\node_modules\\.bin\\jest",
-        "jest:default": "./node_modules/.bin/jest"
+        "jest:default": "./node_modules/.bin/jest",
+        "typecheck": "npm run compile"
     },
     "author": "WSO2",
     "license": "Apache-2.0",
