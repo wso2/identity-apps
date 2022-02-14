@@ -81,7 +81,6 @@ export class AuthenticatorMeta {
         return get({
             [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: [ AuthenticatorLabels.HANDLERS ],
             [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.USERNAMELESS,
                 AuthenticatorLabels.SECOND_FACTOR,
                 AuthenticatorLabels.PASSWORDLESS,
                 AuthenticatorLabels.MULTI_FACTOR
