@@ -106,7 +106,7 @@
                                 <span>
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.learn.more.part.one" )%>
                                 </span>
-                                <a href="https://wso2.com/asgardeo/docs/guides/authentication/mfa/">
+                                <a href="https://wso2.com/asgardeo/docs/guides/user-self-service/register-security-key/">
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.learn.more.documentation" )%>
                                 </a>
                                 <% if (supportEmail == null || supportEmail.isEmpty()) { %>
@@ -122,7 +122,7 @@
                             </p>
                             <div class="ui divider hidden"></div>
                             <div class="ui container fluid">
-                                <button class="ui right floated button primary" type="button" onclick="talkToDevice()">
+                                <button class="ui right floated button primary" type="button" onclick="retry()">
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.retry" )%>
                                 </button>
                                 <button class="ui right floated button link-button" type="button" onclick="cancelFlow()">
@@ -274,14 +274,30 @@
                 form.submit();
             })
             .catch(function(err) {
-                $("#fido-header-error").show();
-                $("#fido-error-content").show();
-                $("#fido-header").hide();
-                $("#fido-initialize").hide();
-                $("#loader-bar").hide();
-
+                showError();
                 fidoError = err;
             });
+        }
+
+        function retry() {
+            showFidoFlow();
+            talkToDevice();
+        }
+
+        function showError() {
+            $("#fido-header-error").show();
+            $("#fido-error-content").show();
+            $("#fido-header").hide();
+            $("#fido-initialize").hide();
+            $("#loader-bar").hide();
+        }
+
+        function showFidoFlow() {
+            $("#fido-header-error").hide();
+            $("#fido-error-content").hide();
+            $("#fido-header").show();
+            $("#fido-initialize").show();
+            $("#loader-bar").show();
         }
 
         function cancelFlow(){
