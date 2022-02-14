@@ -303,6 +303,10 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                     ?.find(idp => idp?.id
                         === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID) as AuthenticatorInterface;
 
+                if (fido) {
+                    fido.tags = [ ...identityProviderConfig.filterFidoTags(fido?.tags) ];
+                }
+
                 setIdPList(response);
             })
             .catch((error) => {
