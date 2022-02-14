@@ -608,7 +608,8 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                             registered via My Account. Learn more about
                             this in our { window[ "AppUtils" ].getConfig().docSiteUrl
                                 ? (<a
-                                    href={ window[ "AppUtils" ].getConfig().docSiteUrl }
+                                    href={ `${ window[ "AppUtils" ].getConfig().docSiteUrl
+                                    }/guides/authentication/passwordless-login/` }
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     data-testid={ `fido-documentation-${ testId }` }>documentation</a>)
