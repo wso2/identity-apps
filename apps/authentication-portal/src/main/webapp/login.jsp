@@ -88,7 +88,7 @@
             localAuthenticatorNames = Arrays.asList(authList.split(","));
         }
     }
-    
+
     String multiOptionURIParam = "";
     if (localAuthenticatorNames.size() > 1 || idpAuthenticatorMapping != null && idpAuthenticatorMapping.size() > 1) {
         String baseURL;
@@ -100,7 +100,7 @@
             request.getRequestDispatcher("error.do").forward(request, response);
             return;
         }
-        
+
         String queryParamString = request.getQueryString() != null ? ("?" + request.getQueryString()) : "";
         multiOptionURIParam = "&multiOptionURI=" + Encode.forUriComponent(baseURL + queryParamString);
     }
@@ -156,7 +156,7 @@
         // We need to send the tenant domain as a query param only in non tenant qualified URL mode.
         loginContextRequestUrl += "&tenantDomain=" + Encode.forUriComponent(tenantDomain);
     }
-    
+
     String t = request.getParameter("t");
     String ut = request.getParameter("ut");
     if (StringUtils.isNotBlank(t)) {
@@ -372,14 +372,17 @@
                                 if (localAuthenticatorNames.contains(FIDO_AUTHENTICATOR)) {
                             %>
                             <div class="field">
-                                <button class="ui grey basic labeled icon button fluid"
+                                <button class="ui grey labeled icon button fluid"
                                     onclick="handleNoDomain(this,
                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
                                         'FIDOAuthenticator')"
                                     id="icon-<%=iconId%>"
-                                    title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> FIDO">
+                                    title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> Security key">
                                     <i class="usb icon"></i>
-                                    <img src="libs/themes/default/assets/images/icons/fido-logo.png" height="13px" /> Key
+                                    <img src="libs/themes/default/assets/images/icons/fingerprint.svg" alt="Fido Logo" />
+                                    <span>
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.authenticator" )%>
+                                    </span>
                                 </button>
                             </div>
                             <%
