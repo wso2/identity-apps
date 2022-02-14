@@ -18,6 +18,7 @@
 
 import get from "lodash-es/get";
 import { ReactNode } from "react";
+import { identityProviderConfig } from "../../../extensions";
 import { getAuthenticatorIcons } from "../configs";
 import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorCategories, AuthenticatorLabels } from "../models";
@@ -80,11 +81,7 @@ export class AuthenticatorMeta {
 
         return get({
             [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: [ AuthenticatorLabels.HANDLERS ],
-            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.SECOND_FACTOR,
-                AuthenticatorLabels.PASSWORDLESS,
-                AuthenticatorLabels.MULTI_FACTOR
-            ],
+            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: identityProviderConfig.fidoTags,
             [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.SECOND_FACTOR, AuthenticatorLabels.MULTI_FACTOR
             ],
