@@ -377,10 +377,12 @@
                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
                                         'FIDOAuthenticator')"
                                     id="icon-<%=iconId%>"
-                                    title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> Security key">
+                                    title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>&nbsp;
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>">
                                     <i class="usb icon"></i>
                                     <img src="libs/themes/default/assets/images/icons/fingerprint.svg" alt="Fido Logo" />
                                     <span>
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>&nbsp;
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.authenticator" )%>
                                     </span>
                                 </button>
