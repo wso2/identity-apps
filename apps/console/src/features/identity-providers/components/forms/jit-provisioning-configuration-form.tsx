@@ -170,10 +170,10 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                     (
                         <div className="mt-3 mb-2">
                             <Text>
-                                Just-in-Time (JIT) User Provisioning should be enabled for external identity
-                                providers (connections) when there are MFA mechanisms such
-                                as <Code>TOTP</Code> and <Code>Email OTP</Code> configured in an
-                                application&apos;s login flow.
+                                JIT user provisioning should be enabled for external identity providers
+                                (connections) when there are MFA mechanisms
+                                such as <Code>TOTP</Code> and <Code>Email OTP</Code> configured
+                                in an application&apos;s login flow.
                             </Text>
                             <Text className="mt-3 mb-0">
                                 <DocumentationLink link={ getLink("develop.connections.edit.advancedSettings.jit") }>
@@ -222,8 +222,8 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                         readOnly={ isReadOnly }
                                     />
                                     <Hint>
-                                        Specify if users federated from this Identity Provider needs to be
-                                        locally provisioned in { config.ui.productName }.
+                                        When enabled, users who login with this identity provider will be
+                                        provisioned to your organization.
                                     </Hint>
                                     { !isJITProvisioningEnabled
                                         ? ProxyModeConflictMessage

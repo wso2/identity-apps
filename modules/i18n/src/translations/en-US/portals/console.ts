@@ -3297,7 +3297,7 @@ export const console: ConsoleNS = {
                                 " require it to be enabled.",
                             disabledMessageHeader: "Operation Not Allowed",
                             hint: "Specify if users federated from this identity provider need to be proxied.",
-                            label: "Just-in-Time User Provisioning"
+                            label: "Just-in-Time (JIT) User Provisioning"
                         },
                         provisioningScheme: {
                             children: {
@@ -4367,7 +4367,7 @@ export const console: ConsoleNS = {
                             },
                             disabledMessageHeader: "Operation Not Allowed",
                             hint: "Specify if users federated from this identity provider need to be proxied.",
-                            label: "Just-in-Time User Provisioning"
+                            label: "Just-in-Time (JIT) User Provisioning"
                         },
                         provisioningScheme: {
                             children: {

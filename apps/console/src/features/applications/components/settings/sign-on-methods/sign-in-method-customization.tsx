@@ -500,18 +500,12 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 ) }
                 content={ (
                     <div className="mt-3 mb-2">
-                        <Text>
-                            To configure <Code>TOTP</Code> and <Code>Email OTP</Code>, enable
-                            Just-in-Time (JIT) User Provisioning for the external identity
-                            providers (connections) in the login flow unless you&apos;re
-                            handling it using a conditional authentication script.
-                        </Text>
                         {
                             moreThan1IdP
                                 ? (
                                     <Text>
-                                        Currently, the following connections have Just-in-Time User
-                                        Provisioning <strong>disabled</strong>:
+                                        Currently, Just-in-Time (JIT) user provisioning
+                                        is <strong>disabled</strong> for the following connections:
                                         <ul className="mb-3">
                                             { idpList?.map(({ name }, index) => (
                                                 <li key={ index }>
@@ -523,8 +517,25 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                 )
                                 : (
                                     <Text>
-                                        Currently, the <strong>{ idpList[FIRST_ENTRY].name }</strong> connection
-                                        has Just-in-Time User Provisioning <strong>disabled</strong>.
+                                        Currently, Just-in-Time(JIT) user provisioning is disabled
+                                        for the <strong>{ idpList[FIRST_ENTRY].name }</strong> connection.
+                                    </Text>
+                                )
+                        }
+                        {
+                            moreThan1IdP
+                                ? (
+                                    <Text>
+                                        To use MFA with these connections, <em>enable JIT provisioning</em> or
+                                        use an <em>authentication script</em> to skip the MFA options for
+                                        these connections during user login.
+                                    </Text>
+                                )
+                                : (
+                                    <Text>
+                                        To use MFA with this connection, <em>enable JIT provisioning</em> or
+                                        use an <em>authentication script</em> to skip the MFA options for this
+                                        connection during user login.
                                     </Text>
                                 )
                         }
@@ -598,7 +609,10 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 } }
             />
             <Divider className="x1" hidden/>
-            { validationResult?.conflicting ? JITConflictMessage() : null }
+            { validationResult?.conflicting && validationResult?.idpList.length
+                ? JITConflictMessage()
+                : null
+            }
             <Divider className="x2"/>
             <ScriptBasedFlow
                 authenticationSequence={ sequence }
