@@ -501,16 +501,17 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 content={ (
                     <div className="mt-3 mb-2">
                         <Text>
-                            To configure <Code>TOTP</Code> and <Code>Email OTP</Code>, you
-                            should enable the Just-in-Time (JIT) User Provisioning configuration for
-                            connections (Identity Providers).
+                            To configure <Code>TOTP</Code> and <Code>Email OTP</Code>, enable
+                            Just-in-Time (JIT) User Provisioning for the external identity
+                            providers (connections) in the login flow unless you&apos;re
+                            handling it using a conditional authentication script.
                         </Text>
                         {
                             moreThan1IdP
                                 ? (
                                     <Text>
-                                        Currently, the following connections have Just-In-Time User
-                                        Provisioning config <strong>disabled</strong>.
+                                        Currently, the following connections have Just-in-Time User
+                                        Provisioning <strong>disabled</strong>:
                                         <ul className="mb-3">
                                             { idpList?.map(({ name }, index) => (
                                                 <li key={ index }>
@@ -522,16 +523,15 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                 )
                                 : (
                                     <Text>
-                                        Currently, the following
-                                        connection <strong>{ idpList[FIRST_ENTRY].name }</strong> has
-                                        Just-In-Time User Provisioning config <em>disabled</em>.
+                                        Currently, the <strong>{ idpList[FIRST_ENTRY].name }</strong> connection
+                                        has Just-in-Time User Provisioning <strong>disabled</strong>.
                                     </Text>
                                 )
                         }
                         <Text className="mt-3 mb-0">
-                            You can learn more about this from our <DocumentationLink
-                                link={ getLink("develop.connections.edit.advancedSettings.jit") }>
-                            docs</DocumentationLink>.
+                            <DocumentationLink link={ getLink("develop.connections.edit.advancedSettings.jit") }>
+                                Learn More
+                            </DocumentationLink>
                         </Text>
                     </div>
                 ) }

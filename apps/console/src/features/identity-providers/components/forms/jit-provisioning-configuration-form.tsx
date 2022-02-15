@@ -170,14 +170,15 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                     (
                         <div className="mt-3 mb-2">
                             <Text>
-                                Connections require Just-In-Time User Provisioning to be enabled when there are
-                                MFA mechanisms such as <Code>TOTP</Code> and <Code>Email OTP</Code> configured
-                                in an application&apos;s authentication sequence.
+                                Just-in-Time (JIT) User Provisioning should be enabled for external identity
+                                providers (connections) when there are MFA mechanisms such
+                                as <Code>TOTP</Code> and <Code>Email OTP</Code> configured in an
+                                application&apos;s login flow.
                             </Text>
                             <Text className="mt-3 mb-0">
-                                You can learn more about this from our <DocumentationLink
-                                    link={ getLink("develop.connections.edit.advancedSettings.jit") }>
-                                docs</DocumentationLink>.
+                                <DocumentationLink link={ getLink("develop.connections.edit.advancedSettings.jit") }>
+                                    Learn More
+                                </DocumentationLink>
                             </Text>
                         </div>
                     )
