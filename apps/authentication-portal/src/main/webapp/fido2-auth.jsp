@@ -76,7 +76,6 @@
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.error" )%>
                     </span>
                 </h3>
-                <div class="ui divider hidden"></div>
                 <div class="ui two column left aligned stackable grid">
                     <div id="fido-initialize" class="middle aligned row">
                         <div class="six wide column">
@@ -101,21 +100,12 @@
                         <div class="sixteen wide column">
                             <p>
                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.registration.info" )%>
+                                <a id="my-account-link">My Account</a>.
                             </p>
                             <p>
-                                <span>
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.learn.more.part.one" )%>
-                                </span>
-                                <a href="https://wso2.com/asgardeo/docs/guides/user-self-service/register-security-key/">
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.learn.more.documentation" )%>
-                                </a>
-                                <% if (supportEmail == null || supportEmail.isEmpty()) { %>
+                                <% if (supportEmail != null && !supportEmail.isEmpty()) { %>
                                     <span>
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.learn.more.part.two" )%>
-                                    </span>
-                                <% } else { %>
-                                    <span>
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.learn.more.part.two.email" )%>
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.learn.more.part.one" )%>
                                     </span>
                                     <a href="mailto:<%=supportEmail%>"><%=StringEscapeUtils.escapeHtml4(supportEmail)%></a>.
                                 <% } %>
@@ -170,6 +160,8 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            $("#my-account-link").attr("href", window.origin +"/myaccount");
+
             if(navigator ){
                 let userAgent = navigator.userAgent;
                 let browserName;
