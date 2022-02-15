@@ -160,7 +160,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            var myaccountUrl = window.origin;
+            var myaccountUrl = '<%=application.getInitParameter("MyAccountURL")%>';
 
             if ("<%=tenantDomain%>" !== "" || "<%=tenantDomain%>" !== "null") {
                 myaccountUrl = myaccountUrl + "/t/" + "<%=tenantDomain%>";
