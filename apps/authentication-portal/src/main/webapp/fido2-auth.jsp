@@ -160,7 +160,13 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#my-account-link").attr("href", window.origin +"/myaccount");
+            var myaccountUrl = window.origin;
+
+            if ("<%=tenantDomain%>" !== "" || "<%=tenantDomain%>" !== "null") {
+                myaccountUrl = myaccountUrl + "/t/" + "<%=tenantDomain%>";
+            }
+
+            $("#my-account-link").attr("href", myaccountUrl +"/myaccount");
 
             if(navigator ){
                 let userAgent = navigator.userAgent;
