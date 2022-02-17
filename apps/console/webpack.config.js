@@ -452,12 +452,6 @@ module.exports = (env) => {
                         force: true,
                         from: "auth.jsp",
                         to: "."
-                    },
-                    !isDeployedOnStaticServer && {
-                        context: path.join(__dirname, "src"),
-                        force: true,
-                        from: "index.jsp",
-                        to: "."
                     }
                 ].filter(Boolean)
             }),
