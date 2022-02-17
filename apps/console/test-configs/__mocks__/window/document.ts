@@ -17,42 +17,11 @@
  */
 
 /**
- * @fileoverview Mocks needed for the UI tests.
+ * @fileoverview window.document Mocks.
  *
- * @remarks If you had to mock a certain window object or document object,
+ * @remarks If you had to mock a certain document object,
  * document the reason and any references clearly in this file.
  */
-
-import DeploymentConfig from "../../src/public/deployment.config.json";
-
-/**
- * `AppUtils` Mock.
- * @remarks The `deployment.config.json file is resolved and stored in the window object under `AppUtils`.
- * This has a method called `getConfig` that needs mocking.
- */
-window.AppUtils = {
-    getConfig: function () {
-        return DeploymentConfig;
-    }
-};
-
-/**
- * Worker class mock needed by the SDK since the storage strategy used in the apps is `webWorker`.
- * @see {@link https://github.com/asgardeo/asgardeo-auth-react-sdk#storage}
- * Mock Reference @see {@link https://github.com/facebook/jest/issues/3449#issuecomment-347337666}
- */
-class Worker {
-    constructor(stringUrl) {
-        this.url = stringUrl;
-        this.onmessage = () => { };
-    }
-
-    postMessage(msg) {
-        this.onmessage(msg);
-    }
-}
-
-window.Worker = Worker;
 
 /**
  * Needed to avoid the JSDom exceptions due to Code Mirror.

@@ -21,8 +21,7 @@
  * @remarks If you add new attributes to the reducers, you will need to add them to this file.
  */
 
-/* eslint-disable */
-
+/* eslint-disable sort-keys, max-len */
 const ReduxStoreStateMock = {
     authenticationInformation: {
         displayName: "admin@carbon.super",
@@ -313,5 +312,6 @@ const ReduxStoreStateMock = {
         linkedAccounts: []
     }
 };
+/* eslint-enable sort-keys, max-len */
 
 export default ReduxStoreStateMock;

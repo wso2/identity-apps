@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,41 +17,11 @@
  */
 
 /**
- * @fileoverview Mocks needed for the UI tests.
+ * @fileoverview window.document Mocks.
  *
- * @remarks If you had to mock a certain window object or document object,
+ * @remarks If you had to mock a certain document object,
  * document the reason and any references clearly in this file.
  */
-
-import DeploymentConfig from "../../src/public/deployment.config.json";
-
-/**
- * `AppUtils` Mock.
- * @remarks The `deployment.config.json file is resolved and stored in the window object under `AppUtils`.
- * This has a method called `getConfig` that needs mocking.
- */
-window.AppUtils = {
-    getConfig: function () {
-        return DeploymentConfig;
-    }
-};
-
-/**
- * Worker class mock needed by the SDK since the storage strategy used in the apps is `webWorker`.
- * @see {@link https://github.com/asgardeo/asgardeo-auth-react-sdk#storage}
- */
-class Worker {
-    constructor(stringUrl) {
-        this.url = stringUrl;
-        this.onmessage = () => { };
-    }
-
-    postMessage(msg) {
-        this.onmessage(msg);
-    }
-}
-
-window.Worker = Worker;
 
 /**
  * Needed to avoid the JSDom exceptions due to Code Mirror.
