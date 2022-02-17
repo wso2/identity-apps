@@ -197,7 +197,9 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                                 >
                                                     The second-factor authenticators can only be used if <Code
                                                         withBackground>Username & Password</Code>, <Code withBackground>
-                                                    Social Login</Code> or any other handlers such as
+                                                    Social Login</Code>,
+                                                    <Code withBackground>Security Key/Biometrics</Code>
+                                                    or any other handlers such as
                                                     <Code withBackground>Identifier First</Code> that can handle these
                                                     factors are present in a previous step.
                                                 </Trans>
@@ -227,7 +229,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     /**
      * Handles authenticator select.
      *
-     * @param {GenericAuthenticatorInterface} selectedAuthenticator - Selected Authenticator. 
+     * @param {GenericAuthenticatorInterface} selectedAuthenticator - Selected Authenticator.
      */
     const handleAuthenticatorSelect = (selectedAuthenticator: GenericAuthenticatorInterface): void => {
 
