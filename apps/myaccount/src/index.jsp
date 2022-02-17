@@ -43,9 +43,9 @@
                                         : null;
             var authSessionState = "<%= htmlWebpackPlugin.options.sessionState %>" != "null" 
                                         ? "<%= htmlWebpackPlugin.options.sessionState %>" 
-                                        : null;
 
-            function getApiPath(path) {
+            var serverOrigin = "<%=serverUrl%>";
+
                 if(path) {
                     return serverOrigin + path;
                 }
@@ -81,11 +81,5 @@
                 auth.signIn();
             }
         </script>
-    </head>
-    <body>
-        <noscript>
-            You need to enable JavaScript to run this app.
-        </noscript>
-        <div id="root"></div>
     </body>
 </html>

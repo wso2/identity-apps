@@ -452,6 +452,12 @@ module.exports = (env) => {
                         force: true,
                         from: "auth.jsp",
                         to: "."
+                    },
+                    !isDeployedOnStaticServer && {
+                        context: path.join(__dirname, "src"),
+                        force: true,
+                        from: "index.jsp",
+                        to: "."
                     }
                 ].filter(Boolean)
             }),
@@ -460,7 +466,7 @@ module.exports = (env) => {
                     authorizationCode: "<%=request.getParameter(\"code\")%>",
                     contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" " +
                         "pageEncoding=\"UTF-8\" %>",
-                    filename: path.join(distFolder, "index.jsp"),
+                    filename: path.join(distFolder, "home.jsp"),
                     hash: true,
                     // eslint-disable-next-line max-len
                     hotjarSystemVariable: "<% String hotjar_track_code_system_var = System.getenv().getOrDefault(\"hotjar_tracking_code\", null); %>",
@@ -490,7 +496,7 @@ module.exports = (env) => {
                     superTenantConstant: !isDeployedOnExternalServer
                         ? "<%=SUPER_TENANT_DOMAIN_NAME%>"
                         : "",
-                    template: path.join(__dirname, "src", "index.jsp"),
+                    template: path.join(__dirname, "src", "home.jsp"),
                     tenantDelimiter: !isDeployedOnExternalServer
                         ? "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\""
                         : "",
