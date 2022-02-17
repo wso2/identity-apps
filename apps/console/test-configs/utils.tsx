@@ -17,6 +17,7 @@
  */
 
 import { RenderResult, render as rtlRender } from "@testing-library/react";
+import { AccessControlProvider } from "@wso2is/access-control";
 import React, { ComponentType, PropsWithChildren, ReactElement } from "react";
 import { Provider } from "react-redux";
 import { mockStore } from "./__mocks__/redux/redux-store";
@@ -27,7 +28,9 @@ import ReduxStoreStateMock from "./__mocks__/redux/redux-store-state";
  * @see {@link https://testing-library.com/docs/react-testing-library/setup#custom-render} for more info.
  *
  * @param {React.ReactElement} ui - Component to render.
- * @param {any} initialState - Redux store initial state.
+ * @param {string} allowedScopes - Set of allowed scopes for the logged in user.
+ * @param {Record<string, unknown>} featureConfig - UI Features configuration i.e permissions etc.
+ * @param {Record<string, unknown>} initialState - Redux store initial state.
  * @param {MockStoreEnhanced<any, Record<string, unknown>>} store - Mocked store.
  * @param {{}} renderOptions - Render options.
  *
@@ -36,6 +39,8 @@ import ReduxStoreStateMock from "./__mocks__/redux/redux-store-state";
 const render = (
     ui: ReactElement,
     {
+        allowedScopes = "internal_login",
+        featureConfig = window[ "AppUtils" ].getConfig().ui.features,
         initialState = ReduxStoreStateMock,
         store = mockStore(initialState),
         ...renderOptions
@@ -46,7 +51,16 @@ const render = (
         
         const { children } = props;
 
-        return <Provider store={ store }>{ children }</Provider>;
+        return (
+            <Provider store={ store }>
+                <AccessControlProvider
+                    allowedScopes={ allowedScopes }
+                    featureConfig={ featureConfig }
+                >
+                    { children }
+                </AccessControlProvider>
+            </Provider>
+        );
     };
 
     return rtlRender(ui, { wrapper: Wrapper, ...renderOptions });
