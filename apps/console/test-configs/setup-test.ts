@@ -21,6 +21,8 @@ import "@testing-library/jest-dom/extend-expect";
 import "./__mocks__/global";
 import "./__mocks__/module";
 import "./__mocks__/window";
+import "./__mocks__/server/hooks";
+import "../src/extensions/test-configs/setup-test";
 import "../jest.config";
 import "babel-polyfill";
 

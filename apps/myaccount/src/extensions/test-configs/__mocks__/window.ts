@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,16 +16,20 @@
  * under the License.
  */
 
-import { configure } from "@testing-library/react";
-import "@testing-library/jest-dom/extend-expect";
-import "./__mocks__/global";
-import "./__mocks__/module";
-import "./__mocks__/window";
-import "./__mocks__/server/hooks";
-import "../src/extensions/test-configs/setup-test";
-import "../jest.config";
-import "babel-polyfill";
+/**
+ * @fileoverview AppUtils object Mock.
+ *
+ * @remarks Document and place all the AppUtils mocks in this file.
+ */
 
-configure({
-    testIdAttribute: "data-componentid"
-});
+/**
+ * Custom window interface.
+ */
+interface CustomExtendedWindow extends Window {
+    __SAMPLE__: string;
+}
+
+/**
+ * Sample custom Window attribute mock
+ */
+(window as CustomExtendedWindow & typeof globalThis).__SAMPLE__ = "EXTENSIONS_DEMO";
