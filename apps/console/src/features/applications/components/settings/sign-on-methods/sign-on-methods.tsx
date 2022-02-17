@@ -274,9 +274,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 ...authenticationSequence,
                 ...cloneDeep(SecondFactorTOTPSequenceTemplate)
             });
-        } else if (loginFlow === LoginFlowTypes.USERNAMELESS_LOGIN) {
+        } else if (loginFlow === LoginFlowTypes.PASSWORDLESS_LOGIN) {
             eventPublisher.publish("application-sign-in-method-click-add", {
-                type: "usernameless"
+                type: "first-factor-fido"
             });
             setModeratedAuthenticationSequence({
                 ...authenticationSequence,
