@@ -20,8 +20,10 @@ import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Code, GenericIcon, Heading, InfoCard, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Divider, Grid, Responsive, Segment } from "semantic-ui-react";
-import { FeatureConfigInterface } from "../../../../core";
+import { AppState, Config, ConfigReducerStateInterface, FeatureConfigInterface } from "../../../../core";
+import { IdentityProviderManagementConstants } from "../../../../identity-providers";
 import { getAuthenticatorIcons, getSignInMethodIllustrations } from "../../../configs";
 import { LoginFlowTypes } from "../../../models";
 
@@ -66,6 +68,8 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
     } = props;
 
     const { t } = useTranslation();
+
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     return (
         <Segment
@@ -209,7 +213,9 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                 )
                             }
                             {
-                                !hiddenOptions.includes(LoginFlowTypes.USERNAMELESS_LOGIN) && (
+                                !hiddenOptions?.includes(LoginFlowTypes.USERNAMELESS_LOGIN)
+                                && !config.ui?.hiddenAuthenticators
+                                    .includes(IdentityProviderManagementConstants.FIDO_AUTHENTICATOR) && (
                                     <InfoCard
                                         fluid
                                         data-testid="usernameless-flow-card"
