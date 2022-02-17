@@ -43,16 +43,12 @@
                                         : null;
             var authSessionState = "<%= htmlWebpackPlugin.options.sessionState %>" != "null" 
                                         ? "<%= htmlWebpackPlugin.options.sessionState %>" 
+                                        : null;
 
-            var serverOrigin = "<%=serverUrl%>";
-
+            function getApiPath(path) {
                 if(path) {
                     return serverOrigin + path;
                 }
-
-
-        <link href="<%= htmlWebpackPlugin.options.publicPath %>/libs/themes/default/theme.<%= htmlWebpackPlugin.options.themeHash %>.min.css" rel="stylesheet" type="text/css"/>
-        <link rel="shortcut icon" href="<%= htmlWebpackPlugin.options.publicPath %>/libs/themes/default/assets/images/branding/favicon.ico" />
 
                 return serverOrigin;
             }
