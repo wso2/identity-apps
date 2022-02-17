@@ -461,6 +461,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                         }
                                         : false
                                 }
+                                maxLength={ 30 }
                             />
                         </Form.Field>
                     </Form>
