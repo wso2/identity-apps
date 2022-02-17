@@ -213,7 +213,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                 )
                             }
                             {
-                                !hiddenOptions?.includes(LoginFlowTypes.USERNAMELESS_LOGIN)
+                                !hiddenOptions?.includes(LoginFlowTypes.PASSWORDLESS_LOGIN)
                                 && !config.ui?.hiddenAuthenticators
                                     .includes(IdentityProviderManagementConstants.FIDO_AUTHENTICATOR) && (
                                     <InfoCard
@@ -231,7 +231,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                                 ".signOnMethod.sections.landing.flowBuilder." +
                                                 "types.usernameless.description")
                                         }
-                                        onClick={ () => onLoginFlowSelect(LoginFlowTypes.USERNAMELESS_LOGIN) }
+                                        onClick={ () => onLoginFlowSelect(LoginFlowTypes.PASSWORDLESS_LOGIN) }
                                     />
                                 )
                             }
