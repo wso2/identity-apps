@@ -19,8 +19,8 @@
 import { RenderResult, render as rtlRender } from "@testing-library/react";
 import React, { ComponentType, PropsWithChildren, ReactElement } from "react";
 import { Provider } from "react-redux";
-import { mockStore } from "./__mocks__/redux-store";
-import ReduxStoreStateMock from "./__mocks__/redux-store-state";
+import { mockStore } from "./__mocks__/redux/redux-store";
+import ReduxStoreStateMock from "./__mocks__/redux/redux-store-state";
 
 /**
  * Custom render method to includes things like global context providers, data stores, etc.
