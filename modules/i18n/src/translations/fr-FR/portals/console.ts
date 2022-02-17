@@ -1140,6 +1140,17 @@ export const console: ConsoleNS = {
                                                 description: "Activez une couche d'authentification supplémentaire " +
                                                     "avec OTP basé sur le temps.",
                                                 heading: "Ajouter TOTP comme deuxième facteur"
+                                            },
+                                            usernameless: {
+                                                description: "Permettre aux utilisateurs de se connecter à " +
+                                                    "l'aidAjouter une connexion sans nom d'utilisateuré " +
+                                                    "FIDO2 ou de la biométrie.",
+                                                heading: "Ajouter une connexion sans mot de passe",
+                                                info: "Pour vous connecter avec une authentification sans mot " +
+                                                    "de passe, vos utilisateurs doivent avoir leurs clés de " +
+                                                    "sécurité FIDO2 ou leurs données biométriques enregistrées " +
+                                                    "via Mon compte. En savoir plus à ce sujet " +
+                                                    "dans notre <1>documentation</1>."
                                             }
                                         }
                                     }
@@ -2546,6 +2557,12 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Les modèles d'application ont été récupérés avec succès.",
                             message: "Récupération réussie"
+                        }
+                    },
+                    firstFactorAuthenticatorToSecondStep: {
+                        genericError: {
+                            description: "Cet authentificateur ne peut être ajouté qu'à la première étape.",
+                            message: "Impossible d'ajouter à cette étape"
                         }
                     },
                     getInboundProtocolConfig: {

@@ -36,6 +36,7 @@ import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "
 import { AdvancedSearchWithBasicFilters, AppConstants, EventPublisher, UIConstants, history } from "../../core";
 import { getAuthenticatorTags, getAuthenticators, getIdentityProviderList } from "../api";
 import { AuthenticatorGrid, IdentityProviderList, handleGetIDPListCallError } from "../components";
+import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorMeta } from "../meta";
 import {
     AuthenticatorInterface,
@@ -298,6 +299,14 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                     ];
                 }
 
+                const fido = response?.identityProviders
+                    ?.find(idp => idp?.id
+                        === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID) as AuthenticatorInterface;
+
+                if (fido) {
+                    fido.tags = [ ...identityProviderConfig.filterFidoTags(fido?.tags) ];
+                }
+
                 setIdPList(response);
             })
             .catch((error) => {
@@ -379,7 +388,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
      * @param {DropdownProps} data - Dropdown data.
      */
     const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>,
-                                               data: DropdownProps): void => {
+        data: DropdownProps): void => {
 
         setListSortingStrategy(IDENTITY_PROVIDER_LIST_SORTING_OPTIONS.find((option) => {
             return data.value === option.value;
@@ -403,7 +412,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
      * @param {DropdownProps} data - Dropdown data.
      */
     const handleItemsPerPageDropdownChange = (event: MouseEvent<HTMLAnchorElement>,
-                                              data: DropdownProps): void => {
+        data: DropdownProps): void => {
         setListItemLimit(data.value as number);
     };
 
@@ -454,14 +463,14 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
             }
             description={
                 useNewConnectionsView
-                    ?   <>
-                            { t("console:develop.pages.authenticationProvider.subTitle") }
-                            <DocumentationLink
-                                link={ getLink("develop.connections.learnMore") }
-                            >
-                                { t("common:learnMore") }
-                            </DocumentationLink>
-                        </>
+                    ?   (<>
+                        { t("console:develop.pages.authenticationProvider.subTitle") }
+                        <DocumentationLink
+                            link={ getLink("develop.connections.learnMore") }
+                        >
+                            { t("common:learnMore") }
+                        </DocumentationLink>
+                    </>)
                     :   t("console:develop.pages.idp.subTitle")
             }
             data-testid={ `${ testId }-page-layout` }
@@ -566,7 +575,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                     : (
                         <ListLayout
                             advancedSearch={
-                                <AdvancedSearchWithBasicFilters
+                                (<AdvancedSearchWithBasicFilters
                                     onFilter={ handleIdentityProviderListFilter }
                                     filterAttributeOptions={ [
                                         {
@@ -595,7 +604,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                                     defaultSearchOperator="co"
                                     triggerClearQuery={ triggerClearQuery }
                                     data-testid={ `${ testId }-advance-search` }
-                                />
+                                />)
                             }
                             currentListSize={ idpList.count }
                             listItemLimit={ listItemLimit }
@@ -616,7 +625,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                         >
                             <IdentityProviderList
                                 advancedSearch={
-                                    <AdvancedSearchWithBasicFilters
+                                    (<AdvancedSearchWithBasicFilters
                                         onFilter={ handleIdentityProviderListFilter }
                                         filterAttributeOptions={ [
                                             {
@@ -646,7 +655,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                                         defaultSearchOperator="co"
                                         triggerClearQuery={ triggerClearQuery }
                                         data-testid={ `${ testId }-advance-search` }
-                                    />
+                                    />)
                                 }
                                 isLoading={ useNewConnectionsView === undefined && isIdPListRequestLoading }
                                 list={ idpList }

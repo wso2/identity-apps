@@ -668,6 +668,11 @@ export interface ConsoleNS {
                                             totp: {
                                                 description: string;
                                                 heading: string;
+                                            },
+                                            usernameless: {
+                                                description: string;
+                                                heading: string;
+                                                info: string;
                                             }
                                         }
                                     }
@@ -999,6 +1004,7 @@ export interface ConsoleNS {
                     updateProtocol: Notification;
                     fetchOIDCServiceEndpoints: Notification;
                     secondFactorAuthenticatorToFirstStep: Notification;
+                    firstFactorAuthenticatorToSecondStep: Notification;
                     conditionalScriptLoopingError: NotificationItem;
                     deleteCertificateSuccess: NotificationItem;
                     deleteCertificateGenericError: NotificationItem;

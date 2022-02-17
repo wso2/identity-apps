@@ -1112,6 +1112,15 @@ export const console: ConsoleNS = {
                                                 description: "Enable additional authentication layer with Time " +
                                                     "based OTP.",
                                                 heading: "Add TOTP as a second factor"
+                                            },
+                                            usernameless: {
+                                                description: "Enable users to log in using a FIDO2 security key " +
+                                                    "or biometrics.",
+                                                heading: "Add passwordless login",
+                                                info: "To sign in with passwordless login, your users " +
+                                                    "should have their FIDO2 security keys or biometrics " +
+                                                    "registered via My Account. Learn more about " +
+                                                    "this in our <1>documentation</1>."
                                             }
                                         }
                                     }
@@ -2503,6 +2512,12 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Successfully retrieved the application templates.",
                             message: "Retrieval successful"
+                        }
+                    },
+                    firstFactorAuthenticatorToSecondStep: {
+                        genericError: {
+                            description: "This authenticator can only be added to the first step.",
+                            message: "Cannot add to this step"
                         }
                     },
                     getInboundProtocolConfig: {

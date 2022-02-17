@@ -78,6 +78,14 @@
     </context-param>
     {% endif %}
 
+    <!-- *************** My Account URL ********************** -->
+    {% if authenticationendpoint.my_account_url is defined %}
+        <context-param>
+            <param-name>MyAccountURL</param-name>
+            <param-value>{{ authenticationendpoint.my_account_url }}</param-value>
+        </context-param>
+    {% endif %}
+
     <!-- *************** End of Account Recovery Endpoint Context URL Configuration ********************** -->
     <!-- *************** Identity Server Endpoint URL Configuration ********************** -->
     {% if authenticationendpoint.identity_server_endpoint_url is defined %}

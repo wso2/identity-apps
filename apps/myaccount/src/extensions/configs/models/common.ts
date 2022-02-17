@@ -34,6 +34,11 @@ export interface CommonConfig {
             emailRecovery: {
                 enableEditEmail: boolean;
             };
+        };
+        mfa: {
+            fido2: {
+                allowLegacyKeyRegistration: boolean;
+            }
         }
     };
     personalInfoPage: {

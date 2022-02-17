@@ -97,6 +97,8 @@ export interface IdentityProviderConfig {
         saml: boolean;
         oidc: boolean;
     }
+    fidoTags: string[];
+    filterFidoTags: (tags: string[]) => string[];
 }
 
 /**

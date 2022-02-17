@@ -38,7 +38,7 @@ import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
 import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
-import { GenericAuthenticatorInterface } from "../../../../identity-providers";
+import { GenericAuthenticatorInterface, IdentityProviderManagementConstants } from "../../../../identity-providers";
 import { getRequestPathAuthenticators, updateAuthenticationSequence } from "../../../api";
 import {
     AdaptiveAuthTemplateInterface,
@@ -592,6 +592,32 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 }
             </div>
             <Divider hidden />
+            {
+                authenticationSequence.steps[ 0 ].options.find(authenticator =>
+                    authenticator.authenticator === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR)
+                && (
+                    <Message warning>
+                        <Trans
+                            i18nKey={
+                                t("console:develop.features.applications.edit.sections" +
+                                ".signOnMethod.sections.landing.flowBuilder." +
+                                "types.usernameless.info")
+                            }>
+                            To sign in with passwordless login, your users
+                            should have their FIDO2 security keys or biometrics
+                            registered via My Account. Learn more about
+                            this in our { window[ "AppUtils" ].getConfig().docSiteUrl
+                                ? (<a
+                                    href={ `${ window[ "AppUtils" ].getConfig().docSiteUrl
+                                    }/guides/authentication/passwordless-login/` }
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    data-testid={ `fido-documentation-${ testId }` }>documentation</a>)
+                                : <span>documentation</span> }.
+                        </Trans>
+                    </Message>
+                )
+            }
             <StepBasedFlow
                 refreshAuthenticators={ refreshAuthenticators }
                 authenticators={ authenticators }
