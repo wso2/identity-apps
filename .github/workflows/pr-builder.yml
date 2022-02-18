@@ -114,7 +114,7 @@ jobs:
         run:  npm run build:modules
 
       - name: 🃏 Run jest
-        run: npm run test:unit:coverage
+        run: npm run test:unit:coverage:aggregated
 
       - name: 🔆 Cache NPM directory
         id: cache-npm-modules
