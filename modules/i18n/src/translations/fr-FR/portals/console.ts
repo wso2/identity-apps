@@ -1149,8 +1149,7 @@ export const console: ConsoleNS = {
                                                 info: "Pour vous connecter avec une authentification sans mot " +
                                                     "de passe, vos utilisateurs doivent avoir leurs clés de " +
                                                     "sécurité FIDO2 ou leurs données biométriques enregistrées " +
-                                                    "via Mon compte. En savoir plus à ce sujet " +
-                                                    "dans notre <1>documentation</1>."
+                                                    "via Mon compte."
                                             }
                                         }
                                     }
