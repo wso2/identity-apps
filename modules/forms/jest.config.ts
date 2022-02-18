@@ -37,7 +37,7 @@ module.exports = {
     ],
     moduleNameMapper: {
         "^@unit-testing(.*)$": "<rootDir>/test-configs/utils",
-        "^lodash-es/(.*)$": "<rootDir>/../../node_modules/lodash/$1",
+        "^lodash-es/(.*)$": "<rootDir>/../../node_modules/lodash/$1"
     },
     modulePaths: [
         "<rootDir>"
