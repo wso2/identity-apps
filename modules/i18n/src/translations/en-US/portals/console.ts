@@ -1119,8 +1119,7 @@ export const console: ConsoleNS = {
                                                 heading: "Add passwordless login",
                                                 info: "To sign in with passwordless login, your users " +
                                                     "should have their FIDO2 security keys or biometrics " +
-                                                    "registered via My Account. Learn more about " +
-                                                    "this in our <1>documentation</1>."
+                                                    "registered via My Account."
                                             }
                                         }
                                     }

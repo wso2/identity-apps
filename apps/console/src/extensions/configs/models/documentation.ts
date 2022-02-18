@@ -22,8 +22,15 @@ export type DocumentationLinksExtensionInterface = Record<string, unknown> & {
             edit: {
                 advancedSettings: {
                     jit: string;
-                }
-            }
-        }
-    }
+                };
+            };
+        };
+        applications: {
+            editApplication: {
+                signInMethod: {
+                    fido: string;
+                };
+            };
+        };
+    };
 };

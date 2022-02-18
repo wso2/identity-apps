@@ -568,6 +568,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                                     ".mfa.fido.form.placeholder"
                                                                     ) }
                                                                     type="text"
+                                                                    maxLength={ 30 }
                                                                 />
                                                                 <Field hidden={ true } type="divider" />
                                                                 <Form.Group inline={ true }>
