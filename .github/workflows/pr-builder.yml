@@ -121,8 +121,8 @@ jobs:
         id: aggregate-coverage-reports
         run: |
           npm run test:unit:coverage:aggregate
-          npx nyc:text-summary-report
-          npx nyc:text-report
+          npm run nyc:text-summary-report
+          npm run nyc:text-report
 
       - name: 🔆 Cache NPM directory
         id: cache-npm-modules
