@@ -605,16 +605,14 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                             }>
                             To sign in with passwordless login, your users
                             should have their FIDO2 security keys or biometrics
-                            registered via My Account. Learn more about
-                            this in our { window[ "AppUtils" ].getConfig().docSiteUrl
-                                ? (<a
-                                    href={ `${ window[ "AppUtils" ].getConfig().docSiteUrl
-                                    }/guides/authentication/passwordless-login/` }
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    data-testid={ `fido-documentation-${ testId }` }>documentation</a>)
-                                : <span>documentation</span> }.
+                            registered via My Account.
                         </Trans>
+                        <DocumentationLink
+                            link={ getLink("develop.applications.editApplication.signInMethod.fido") }
+                            showEmptyLink={ false }
+                        >
+                            { t("common:learnMore") }
+                        </DocumentationLink>
                     </Message>
                 )
             }
