@@ -23,7 +23,7 @@ import { Icon } from "semantic-ui-react";
 /**
  * DocumentationLink component Prop types.
  */
-interface DocumentationLinkPropsInterface { 
+interface DocumentationLinkPropsInterface {
     /**
      * Documentation URL.
      */
@@ -36,6 +36,10 @@ interface DocumentationLinkPropsInterface {
      * Additional CSS classes.
      */
     className?: string;
+    /**
+     * Specifies if a link text with an empty link or a `#` should be shown.
+     */
+    showEmptyLink?: boolean;
 }
 
 /**
@@ -49,11 +53,12 @@ export const DocumentationLink: FunctionComponent<PropsWithChildren<Documentatio
     props: PropsWithChildren<DocumentationLinkPropsInterface>
 ): ReactElement => {
 
-    const { 
+    const {
         children,
         className,
         link,
-        target
+        target,
+        showEmptyLink
     } = props;
 
     if (link === undefined) {
@@ -63,7 +68,8 @@ export const DocumentationLink: FunctionComponent<PropsWithChildren<Documentatio
     const classes = classNames("documentation-link ml-1 link external no-wrap", className);
 
     return (
-        <a
+        !(!showEmptyLink && (!link || link === "#")) &&
+        (<a
             href={ link }
             target={ target }
             rel="noopener noreferrer"
@@ -71,7 +77,7 @@ export const DocumentationLink: FunctionComponent<PropsWithChildren<Documentatio
         >
             { children }
             <Icon className="ml-1" name="external alternate"/>
-        </a>
+        </a>)
     );
 };
 
@@ -79,5 +85,6 @@ export const DocumentationLink: FunctionComponent<PropsWithChildren<Documentatio
  * Prop types for the DocumentationLink component.
  */
 DocumentationLink.defaultProps = {
+    showEmptyLink: true,
     target: "_blank"
 };
