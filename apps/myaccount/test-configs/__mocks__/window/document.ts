@@ -32,10 +32,13 @@ document.createRange = () => {
 
     range.getBoundingClientRect = jest.fn();
 
-    range.getClientRects = jest.fn(() => ({
-        item: () => null,
-        length: 0
-    }));
+    range.getClientRects = () => {
+        return {
+            item: () => null,
+            length: 0,
+            [Symbol.iterator]: jest.fn()
+        };
+    };
 
     return range;
 };
