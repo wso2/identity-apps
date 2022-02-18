@@ -21,18 +21,29 @@ const fs = require("fs");
 const path = require("path");
 const lernaManifest = require("../lerna.json");
 
+/**
+ * TODO: Remove this once the logger is added.
+ * Tracked here https://github.com/wso2/product-is/issues/11650.
+ */
 const logger = {
+    // eslint-disable-next-line no-console
+    debug: console.log,
     // eslint-disable-next-line no-console
     error: console.error,
     // eslint-disable-next-line no-console
     info: console.log
 };
 
+const debug = process.argv.indexOf("--debug") > -1 || true;        // CLI arg to set the debug mode.
+const silent = process.argv.indexOf("--silent") > -1 || false;     // CLI arg to set the silent mode.
+const verbose = process.argv.indexOf("--verbose") > -1;            // CLI arg to set the verbose mode.
+
 const NYC_OUTPUT_DIR_NAME = ".nyc_output";
 const NYC_OUTPUT_DIR_PATH = path.resolve(__dirname, "..", NYC_OUTPUT_DIR_NAME);
 const AGGREGATED_COVERAGE_OUTPUT_DIR_NAME = "coverage";
 const AGGREGATED_COVERAGE_OUTPUT_DIR_PATH = path.resolve(__dirname, "..", AGGREGATED_COVERAGE_OUTPUT_DIR_NAME);
 const TEXT_REPORT_FILE_NAME = "report.txt";
+const TEXT_REPORT_SUMMARY_NAME = "report-summary.txt";
 
 const getPackageDirectories = () => {
 
@@ -57,13 +68,15 @@ const getPackageDirectories = () => {
  */
 const createTempDir = () => {
 
-    logger.info(`Creating a temp ${NYC_OUTPUT_DIR_NAME} directory...`);
-
-    if (!fs.existsSync(NYC_OUTPUT_DIR_PATH)) {
-        fs.mkdirSync(NYC_OUTPUT_DIR_PATH);
+    if (debug) {
+        logger.debug(`Creating a temp ${ NYC_OUTPUT_DIR_NAME } directory...`); 
     }
 
-    logger.info("Done!\n");
+    if (fs.existsSync(NYC_OUTPUT_DIR_PATH)) {
+        return;
+    }
+
+    fs.mkdirSync(NYC_OUTPUT_DIR_PATH);
 };
 
 /**
@@ -77,7 +90,9 @@ const generateReports = () => {
 
         fs.readdir(packageDirPath, (readError, items) => {
             if (readError) {
-                logger.error("An error occurred while reading the packages", readError);
+                if (!silent) {
+                    logger.error("An error occurred while reading the packages", readError);
+                }
 
                 return;
             }
@@ -87,7 +102,9 @@ const generateReports = () => {
 
                 fs.stat(itemPath, (statsError, stats) => {
                     if (statsError) {
-                        logger.error("An error occurred while reading the file status", statsError);
+                        if (!silent) {
+                            logger.error("An error occurred while reading the file status", statsError);
+                        }
                     }
 
                     // if that item is a directory
@@ -97,14 +114,18 @@ const generateReports = () => {
 
                             // Check if the report file exists and try to copy.
                             if (fs.existsSync(targetFilePath)) {
-                                logger.info(`Copying the coverage report of ${ item }...`);
+                                if (debug) {
+                                    logger.debug(`Copying the coverage report of ${ item }...`);
+                                }
 
                                 const destFilePath = path.resolve(NYC_OUTPUT_DIR_PATH, `${ item }.json`);
 
                                 fs.copyFileSync(targetFilePath, destFilePath);
                             }
                         } catch (error) {
-                            logger.error("Failed to generate reports", error);
+                            if (!silent) {
+                                logger.error("Failed to generate reports", error);
+                            }
                         }
                     }
                 });
@@ -117,9 +138,33 @@ const generateReports = () => {
  * Aggregate separate coverage reports.
  */
 const aggregateReports = () => {
-    exec("npx nyc report --reporter=lcov --reporter=text", (_, stdout) => {
-        logger.info("\nWriting aggregated coverage output");
-        fs.writeFileSync(path.resolve(AGGREGATED_COVERAGE_OUTPUT_DIR_PATH, TEXT_REPORT_FILE_NAME), stdout);
+
+    // Collecting the Full Report.
+    exec("npm run nyc:full-report", (_, fullReport) => {
+
+        // Collecting the Report Summary
+        exec("nyc:text-summary-report", (_, reportSummary) => {
+            if (debug) {
+                logger.debug("\nWriting coverage summary to a file...");
+            }
+
+            if (verbose) {
+                logger.info(reportSummary);
+            }
+
+            fs.writeFileSync(path.resolve(AGGREGATED_COVERAGE_OUTPUT_DIR_PATH, TEXT_REPORT_SUMMARY_NAME),
+                reportSummary);
+
+            if (debug) {
+                logger.debug("\nWriting full coverage to a file...");
+            }
+
+            if (verbose) {
+                logger.info(fullReport);
+            }
+
+            fs.writeFileSync(path.resolve(AGGREGATED_COVERAGE_OUTPUT_DIR_PATH, TEXT_REPORT_FILE_NAME), fullReport);
+        });
     });
 };
 
