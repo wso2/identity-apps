@@ -117,12 +117,12 @@ jobs:
         id: run-jest-test-and-coverage
         run: npm run test:unit:coverage
 
-      - name: 🤖 Aggreaget Test Coverage
-        id: aggreaget-coverage-reports
+      - name: 🤖 Aggregate Test Coverage
+        id: aggregate-coverage-reports
         run: |
           npm run test:unit:coverage:aggregate
-          nyc:text-summary-report
-          nyc:text-report
+          npx nyc:text-summary-report
+          npx nyc:text-report
 
       - name: 🔆 Cache NPM directory
         id: cache-npm-modules
