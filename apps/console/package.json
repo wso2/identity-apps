@@ -124,6 +124,7 @@
         "jest": "^26.4.2",
         "jest-environment-jsdom": "^26.3.0",
         "jest-environment-jsdom-global": "^2.0.4",
+        "msw": "^0.36.8",
         "process": "^0.11.10",
         "react-refresh": "^0.9.0",
         "redux-devtools-extension": "^2.13.8",
