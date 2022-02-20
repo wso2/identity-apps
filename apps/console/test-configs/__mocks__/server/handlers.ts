@@ -17,6 +17,7 @@
  */
 
 import { ResponseComposition, RestContext, RestHandler, RestRequest, rest } from "msw";
+import { handlers as extendedHandlers } from "../../../src/extensions/test-configs/__mocks__/server/handlers";
 import { Config } from "../../../src/features/core/configs";
 
 /**
@@ -42,5 +43,8 @@ export const handlers: RestHandler[] = [
         return res(
             ctx.status(200)
         );
-    })
+    }),
+    // TODO: Use server.use once the extension model issue is fixed.
+    // Tracker: https://github.com/wso2/product-is/issues/13134
+    ...extendedHandlers
 ];

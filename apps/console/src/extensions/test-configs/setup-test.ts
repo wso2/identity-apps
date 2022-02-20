@@ -16,4 +16,4 @@
  * under the License.
  */
 
-import "__mocks__/window";
+import "./__mocks__/window";
