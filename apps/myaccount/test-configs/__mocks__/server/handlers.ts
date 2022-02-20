@@ -17,9 +17,15 @@
  */
 
 import { RestHandler } from "msw";
+import { handlers as extendedHandlers } from "../../../src/extensions/test-configs/__mocks__/server/handlers";
 
 /**
  * MSW Request Handlers.
  * @see {@link https://mswjs.io/docs/basics/request-handler}
  */
-export const handlers: RestHandler[] = [ ];
+export const handlers: RestHandler[] = [
+
+    // TODO: Use server.use once the extension model issue is fixed.
+    // Tracker: https://github.com/wso2/product-is/issues/13134
+    ...extendedHandlers
+];
