@@ -17,9 +17,9 @@
  */
 
 /**
- * @fileoverview AppUtils object Mock.
+ * @fileoverview Window Mocks.
  *
- * @remarks Document and place all the AppUtils mocks in this file.
+ * @remarks Document and place all the extended Window mocks in this file.
  */
 
 /**
