@@ -263,8 +263,12 @@ export const decodePublicKeyCredentialCreationOptions = (request): Record<string
  * @return {Promise<any>} a promise containing the response.
  */
 export const startFidoFlow = (): Promise<any> => {
+    const data: URLSearchParams = new URLSearchParams();
+
+    data.append("appId", window.location.origin);
+
     const requestConfig = {
-        data: { appId: window.location.origin },
+        data: data.toString(),
         headers: {
             "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
             "Content-Type": "application/x-www-form-urlencoded"
@@ -294,8 +298,12 @@ export const startFidoFlow = (): Promise<any> => {
  * @return {Promise<any>} a promise containing the response.
  */
 export const startFidoUsernamelessFlow = (): Promise<any> => {
+    const data: URLSearchParams = new URLSearchParams();
+
+    data.append("appId", window.location.origin);
+
     const requestConfig = {
-        data: { appId: window.location.origin },
+        data: data.toString(),
         headers: {
             "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
             "Content-Type": "application/x-www-form-urlencoded"
