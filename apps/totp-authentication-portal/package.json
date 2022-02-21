@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/totp-authentication-portal",
-    "version": "1.0.663",
+    "version": "1.0.664",
     "description": "WSO2 Identity Server TOTP Authentication Portal",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -8,6 +8,6 @@
         "build": "node scripts/build.js"
     },
     "dependencies": {
-        "@wso2is/theme": "^1.0.663"
+        "@wso2is/theme": "^1.0.664"
     }
 }
