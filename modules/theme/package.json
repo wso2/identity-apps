@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/theme",
-    "version": "1.2.803",
+    "version": "1.2.804",
     "description": "Theme for web components of WSO2 Identity Server Webapps.",
     "keywords": [
         "WSO2",
@@ -42,8 +42,8 @@
         "eslint-plugin-import": "^2.20.2",
         "eslint-plugin-react": "^7.18.3",
         "eslint-plugin-react-hooks": "^4.0.0",
-        "jest": "^26.4.2",
         "fs-extra": "^9.0.1",
+        "jest": "^26.4.2",
         "less": "^3.10.3",
         "less-plugin-rewrite-variable": "0.1.0",
         "less-to-json": "^1.2.0",
