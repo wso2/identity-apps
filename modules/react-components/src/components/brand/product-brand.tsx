@@ -16,7 +16,12 @@
  * under the License.
  */
 
-import { ProductReleaseTypes, ProductVersionConfigInterface, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    IdentifiableComponentInterface,
+    ProductReleaseTypes,
+    ProductVersionConfigInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import classNames from "classnames";
 import React, { CSSProperties, FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from "react";
@@ -26,7 +31,7 @@ import { Heading } from "../typography";
 /**
  * Product brand component Prop types.
  */
-export interface ProductBrandPropsInterface extends TestableComponentInterface {
+export interface ProductBrandPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * App name.
      */
@@ -82,6 +87,7 @@ export const ProductBrand: FunctionComponent<PropsWithChildren<ProductBrandProps
         version,
         versionUISettings,
         mobile,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -166,6 +172,7 @@ export const ProductBrand: FunctionComponent<PropsWithChildren<ProductBrandProps
                     color={ resolveVersionLabelColor(releaseType) }
                     className={ versionLabelClasses }
                     size="mini"
+                    data-componentid={ `${ componentId }-version` }
                     data-testid={ `${ testId }-version` }
                 >
                     { constructed }
@@ -175,7 +182,7 @@ export const ProductBrand: FunctionComponent<PropsWithChildren<ProductBrandProps
     };
 
     return (
-        <div className={ mainClasses } style={ style } data-testid={ testId }>
+        <div className={ mainClasses } style={ style } data-testid={ testId } data-componentid={ componentId }>
             { version && resolveReleaseVersionLabel() }
             <div className={ `product-title-main ${ mobile ? "mt-4" : "" }` }>
                 { logo && logo }
@@ -185,6 +192,7 @@ export const ProductBrand: FunctionComponent<PropsWithChildren<ProductBrandProps
                             <Heading
                                 className={ "product-title-text" }
                                 style={ style }
+                                data-componentid={ `${ componentId }-title` }
                                 data-testid={ `${ testId }-title` }
                                 compact
                             >
@@ -205,6 +213,7 @@ export const ProductBrand: FunctionComponent<PropsWithChildren<ProductBrandProps
  * Default props for the product brand component.
  */
 ProductBrand.defaultProps = {
+    "data-componentid": "product-brand",
     "data-testid": "product-brand",
     versionUISettings: {
         allowSnapshot: false,

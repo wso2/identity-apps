@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import {
@@ -32,7 +32,7 @@ import {
 /**
  * Proptypes for the message with icon component.
  */
-export interface MessageWithIconProps extends TestableComponentInterface {
+export interface MessageWithIconProps extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Type of the message.
      */
@@ -71,6 +71,7 @@ export const MessageWithIcon: FunctionComponent<MessageWithIconProps> = (props: 
         header,
         content,
         visible,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -121,6 +122,7 @@ export const MessageWithIcon: FunctionComponent<MessageWithIconProps> = (props: 
                                     </div>
                                 )
                         }
+                        data-componentid={ componentId }
                         data-testid={ testId }
                     />
                 );
@@ -150,6 +152,7 @@ export const MessageWithIcon: FunctionComponent<MessageWithIconProps> = (props: 
                                     </div>
                                 )
                         }
+                        data-componentid={ componentId }
                         data-testid={ testId }
                     />
                 );
@@ -179,6 +182,7 @@ export const MessageWithIcon: FunctionComponent<MessageWithIconProps> = (props: 
                                     </div>
                                 )
                         }
+                        data-componentid={ componentId }
                         data-testid={ testId }
                     />
                 );
@@ -208,6 +212,7 @@ export const MessageWithIcon: FunctionComponent<MessageWithIconProps> = (props: 
                                     </div>
                                 )
                         }
+                        data-componentid={ componentId }
                         data-testid={ testId }
                     />
                 );
@@ -217,6 +222,7 @@ export const MessageWithIcon: FunctionComponent<MessageWithIconProps> = (props: 
                         visible={ visible }
                         content={ generateContent() }
                         header={ header }
+                        data-componentid={ componentId }
                         data-testid={ testId }
                     />
                 );
@@ -234,6 +240,7 @@ export const MessageWithIcon: FunctionComponent<MessageWithIconProps> = (props: 
  * Default proptypes for the message with icon component.
  */
 MessageWithIcon.defaultProps = {
+    "data-componentid": "message-info",
     "data-testid": "message-info",
     visible: true
 };

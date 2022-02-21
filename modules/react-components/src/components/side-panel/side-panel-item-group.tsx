@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ChildRouteInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { ChildRouteInterface, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Menu } from "semantic-ui-react";
@@ -26,7 +26,9 @@ import { SidePanelItem } from "./side-panel-item";
 /**
  * Side panel item group component Prop types.
  */
-export interface SidePanelItemGroupPropsInterface extends CommonSidePanelPropsInterface, TestableComponentInterface {
+export interface SidePanelItemGroupPropsInterface extends CommonSidePanelPropsInterface, IdentifiableComponentInterface,
+    TestableComponentInterface {
+
     /**
      * Child routes array.
      */
@@ -57,6 +59,7 @@ export const SidePanelItemGroup: FunctionComponent<SidePanelItemGroupPropsInterf
         childRoutes,
         open,
         sidePanelItemHeight,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -72,7 +75,7 @@ export const SidePanelItemGroup: FunctionComponent<SidePanelItemGroupPropsInterf
     };
 
     return (
-        <Menu.Menu className={ classes } style={ styles } data-testid={ testId }>
+        <Menu.Menu className={ classes } style={ styles } data-testid={ testId } data-componentid={ componentId }>
             {
                 childRoutes.map((route, index) => (
                     <SidePanelItem
@@ -80,6 +83,7 @@ export const SidePanelItemGroup: FunctionComponent<SidePanelItemGroupPropsInterf
                         route={ route }
                         iconSize="nano"
                         allowedScopes={ allowedScopes }
+                        data-componentid={ `${ componentId }-child-item` }
                         data-testid={ `${ testId }-child-item` }
                         { ...props }
                     />
@@ -93,5 +97,6 @@ export const SidePanelItemGroup: FunctionComponent<SidePanelItemGroupPropsInterf
  * Default props for the side panel item group component.
  */
 SidePanelItemGroup.defaultProps = {
+    "data-componentid": "side-panel-item-group",
     "data-testid": "side-panel-item-group"
 };

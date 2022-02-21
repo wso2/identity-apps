@@ -64,7 +64,7 @@ export interface DataTableSubComponentsInterface {
  * Interface for the data table component.
  */
 export interface DataTablePropsInterface<T = Record<string, any>> extends Omit<TableProps, "columns" | "sortable">,
-    TestableComponentInterface {
+    IdentifiableComponentInterface, TestableComponentInterface {
 
     /**
      * Set of actions.
@@ -381,6 +381,7 @@ export const DataTable = <T extends Record<string, any> = Record<string, any>>(
         testId,
         isRowSelectable,
         transparent,
+        [ "data-componentid" ]: componentId,
         ...rest
     } = props;
 
@@ -722,6 +723,7 @@ export const DataTable = <T extends Record<string, any> = Record<string, any>>(
         <Table
             className={ classes }
             selectable={ !isLoading && selectable }
+            data-componentid={ componentId }
             data-testid={ testId }
             { ...dynamicTableProps }
             { ...rest }
@@ -971,6 +973,7 @@ export const DataTable = <T extends Record<string, any> = Record<string, any>>(
 };
 
 DataTable.defaultProps = {
+    "data-componentid": "data-table",
     "data-testid": "data-table",
     isRowSelectable: () => true,
     selectable: true,

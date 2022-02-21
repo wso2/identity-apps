@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Accordion, AccordionProps } from "semantic-ui-react";
@@ -34,7 +34,8 @@ export interface SegmentedAccordionSubComponentsInterface {
 /**
  * Proptypes for the segmented accordion component.
  */
-export interface SegmentedAccordionPropsInterface extends AccordionProps, TestableComponentInterface { }
+export interface SegmentedAccordionPropsInterface extends AccordionProps, IdentifiableComponentInterface,
+    TestableComponentInterface { }
 
 /**
  * Segmented accordion component.
@@ -51,6 +52,7 @@ export const SegmentedAccordion: FunctionComponent<SegmentedAccordionPropsInterf
         const {
             className,
             children,
+            [ "data-componentid" ]: componentId,
             [ "data-testid" ]: testId,
             ...rest
         } = props;
@@ -63,6 +65,7 @@ export const SegmentedAccordion: FunctionComponent<SegmentedAccordionPropsInterf
         return (
             <Accordion
                 className={ classes }
+                data-componentid={ componentId }
                 data-testid={ testId }
                 { ...rest }
             >
@@ -75,6 +78,7 @@ export const SegmentedAccordion: FunctionComponent<SegmentedAccordionPropsInterf
  * Default proptypes for the segmented accordion component.
  */
 SegmentedAccordion.defaultProps = {
+    "data-componentid": "segmented-accordion",
     "data-testid": "segmented-accordion"
 };
 

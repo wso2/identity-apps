@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, SyntheticEvent } from "react";
 import { Button, Checkbox, CheckboxProps, Header, Popup, Responsive, Segment } from "semantic-ui-react";
 
 /**
  * Danger zone component Prop types.
  */
-export interface DangerZoneProps extends TestableComponentInterface {
+export interface DangerZoneProps extends TestableComponentInterface, IdentifiableComponentInterface {
     /**
      * Title for the danger zone action.
      */
@@ -94,14 +94,25 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
         toggle,
         isButtonDisabled,
         buttonDisableHint,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
     return (
-        <Segment data-testid={ testId } className="danger-zone" padded clearing>
-            <Header as="h5" color="red" floated="left" data-testid={ `${ testId }-header` }>
+        <Segment data-testid={ testId } data-componentid={ componentId } className="danger-zone" padded clearing>
+            <Header
+                as="h5"
+                color="red"
+                floated="left"
+                data-componentid={ `${ componentId }-header` }
+                data-testid={ `${ testId }-header` }
+            >
                 { header }
-                <Header.Subheader className="sub-header" data-testid={ `${ testId }-sub-header` }>
+                <Header.Subheader
+                    className="sub-header"
+                    data-componentid={ `${ componentId }-sub-header` }
+                    data-testid={ `${ testId }-sub-header` }
+                >
                     { subheader }
                 </Header.Subheader>
             </Header>
@@ -114,6 +125,7 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
                             onChange={ toggle?.onChange }
                             checked={ toggle?.checked }
                             className="danger-zone toggle-switch"
+                            data-componentid={ `${ componentId }-toggle` }
                             data-testid={ `${ testId }-toggle` }
                         />
                     )
@@ -128,6 +140,7 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
                                     }
                                 >
                                     <Button
+                                        data-componentid={ componentId + "-delete-button" }
                                         data-testid={ testId + "-delete-button" }
                                         fluid={ window.innerWidth <= Responsive.onlyTablet.maxWidth }
                                         negative
@@ -158,5 +171,6 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
  * Default props for the danger zone component.
  */
 DangerZone.defaultProps = {
+    "data-componentid": "danger-zone",
     "data-testid": "danger-zone"
 };

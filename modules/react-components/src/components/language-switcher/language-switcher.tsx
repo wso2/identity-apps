@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { ReactElement, SyntheticEvent } from "react";
 import { FlagNameValues } from "semantic-ui-react";
 import { LanguageSwitcherDropdown } from "./language-switcher-dropdown";
@@ -24,7 +24,7 @@ import { LanguageSwitcherDropdown } from "./language-switcher-dropdown";
 /**
  * Proptypes for the language switcher component.
  */
-export interface LanguageSwitcherProps extends TestableComponentInterface {
+export interface LanguageSwitcherProps extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Additional CSS classes.
      */
@@ -100,6 +100,7 @@ export const LanguageSwitcher: React.FunctionComponent<LanguageSwitcherProps> = 
         showDropdownCaret,
         supportedLanguages,
         upward,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -122,6 +123,7 @@ export const LanguageSwitcher: React.FunctionComponent<LanguageSwitcherProps> = 
             changeLanguage={ handleLanguageChange }
             showCaret={ showDropdownCaret }
             supportedLanguages={ supportedLanguages }
+            data-componentid={ componentId }
             data-testid={ testId }
         />
     );
@@ -131,6 +133,7 @@ export const LanguageSwitcher: React.FunctionComponent<LanguageSwitcherProps> = 
  * Default proptypes for the language switcher component.
  */
 LanguageSwitcher.defaultProps = {
+    "data-componentid": "language-switcher",
     "data-testid": "language-switcher",
     direction: "left",
     showDropdownCaret: false,

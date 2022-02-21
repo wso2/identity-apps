@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Redirect, Route } from "react-router-dom";
 
 /**
  * Proptypes for the protected route component.
  */
-export interface ProtectedRouteProps extends TestableComponentInterface {
+export interface ProtectedRouteProps extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Component to render.
      */
@@ -69,6 +69,7 @@ export const ProtectedRoute: FunctionComponent<ProtectedRouteProps> = (
         onAuthCallbackUrlUpdate,
         loginPath,
         loginErrorPath,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
     } = props;

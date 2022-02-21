@@ -16,7 +16,11 @@
  * under the License.
  */
 
-import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    IdentifiableComponentInterface,
+    LoadableComponentInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import classNames from "classnames";
 import React, {
     FunctionComponent,
@@ -37,8 +41,8 @@ export interface ResourceGridSubComponentsInterface {
 /**
  * Interface for the Resource Grid component.
  */
-export interface ResourceGridPropsInterface extends CardGroupProps, TestableComponentInterface,
-    LoadableComponentInterface {
+export interface ResourceGridPropsInterface extends CardGroupProps, IdentifiableComponentInterface,
+    TestableComponentInterface, LoadableComponentInterface {
 
     /**
      * Empty placeholder component.
@@ -79,6 +83,7 @@ export const ResourceGrid: FunctionComponent<
             isPaginating,
             testId,
             wrapperClassName,
+            [ "data-componentid" ]: componentId,
             ...rest
         } = props;
 
@@ -93,7 +98,11 @@ export const ResourceGrid: FunctionComponent<
         );
 
         return (
-            <div className={ wrapperClasses } data-testid={ testId }>
+            <div
+                className={ wrapperClasses }
+                data-componentid={ componentId }
+                data-testid={ testId }
+            >
                 {
                     isEmpty
                         ? emptyPlaceholder
@@ -117,6 +126,7 @@ export const ResourceGrid: FunctionComponent<
  * Default props for the component.
  */
 ResourceGrid.defaultProps = {
+    "data-componentid": "resource-grid",
     "data-testid": "resource-grid"
 };
 

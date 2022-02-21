@@ -16,7 +16,12 @@
  * under the License.
  */
 
-import { CategorizedRouteInterface, RouteInterface, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    CategorizedRouteInterface,
+    IdentifiableComponentInterface,
+    RouteInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, ReactElement } from "react";
 import { Menu } from "semantic-ui-react";
@@ -26,7 +31,9 @@ import { SidePanelItem } from "./side-panel-item";
 /**
  * Side panel items component Prop types.
  */
-export interface SidePanelItemsPropsInterface extends CommonSidePanelPropsInterface, TestableComponentInterface {
+export interface SidePanelItemsPropsInterface extends CommonSidePanelPropsInterface, IdentifiableComponentInterface,
+    TestableComponentInterface {
+
     /**
      * Set of routes.
      */
@@ -64,6 +71,7 @@ export const SidePanelItems: FunctionComponent<SidePanelItemsPropsInterface> = (
         skipCategoryLabelForSingleItemCategories,
         type,
         translationHook,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -114,6 +122,7 @@ export const SidePanelItems: FunctionComponent<SidePanelItemsPropsInterface> = (
         <SidePanelItem
             key={ route.level ? `level-${ route.level }-${ index }` : `level-${ 0 }-${ index }` }
             route={ route }
+            data-componentid={ `${ componentId }-item` }
             data-testid={ `${ testId }-item` }
             allowedScopes={ allowedScopes }
             { ...props }
@@ -121,7 +130,14 @@ export const SidePanelItems: FunctionComponent<SidePanelItemsPropsInterface> = (
     );
 
     return (
-        <Menu className={ menuClasses } style={ style } data-testid={ testId } vertical fluid>
+        <Menu
+            className={ menuClasses }
+            style={ style }
+            data-componentid={ componentId }
+            data-testid={ testId }
+            vertical
+            fluid
+        >
             {
                 routes && (
                     routes instanceof Array
@@ -160,5 +176,6 @@ export const SidePanelItems: FunctionComponent<SidePanelItemsPropsInterface> = (
  * Default props for the side panel items component.
  */
 SidePanelItems.defaultProps = {
+    "data-componentid": "side-panel-items",
     "data-testid": "side-panel-items"
 };

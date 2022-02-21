@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { CookieStorageUtils } from "@wso2is/core/utils";
 import classNames from "classnames";
 import React, {
@@ -35,7 +35,8 @@ import { GenericIcon } from "../icon";
 /**
  * Proptypes for the Cookie Consent Banner.
  */
-export interface CookieConsentBannerPropsInterface extends SegmentProps, TestableComponentInterface {
+export interface CookieConsentBannerPropsInterface extends SegmentProps, IdentifiableComponentInterface,
+    TestableComponentInterface {
 
     /**
      * Confirm button text.
@@ -108,6 +109,7 @@ export const CookieConsentBanner: FunctionComponent<PropsWithChildren<CookieCons
         position,
         onConfirmButtonClick,
         storageStrategy,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -220,10 +222,15 @@ export const CookieConsentBanner: FunctionComponent<PropsWithChildren<CookieCons
                 id={ id }
                 styles={ style }
                 className={ classes }
+                data-componentid={ componentId }
                 data-testid={ testId }
                 { ...rest }
             >
-                <div className="banner-image" data-testid={ `${ testId }-image` }>
+                <div
+                    className="banner-image"
+                    data-componentid={ `${ componentId }-image` }
+                    data-testid={ `${ testId }-image` }
+                >
                     <GenericIcon
                         transparent
                         size="tiny"
@@ -232,13 +239,22 @@ export const CookieConsentBanner: FunctionComponent<PropsWithChildren<CookieCons
                         icon={ CookieIcon }
                     />
                 </div>
-                <div className="banner-content" data-testid={ `${ testId }-content` }>
+                <div
+                    className="banner-content"
+                    data-componentid={ `${ componentId }-content` }
+                    data-testid={ `${ testId }-content` }
+                >
                     { title }
                 </div>
-                <div className="actions" data-testid={ `${ testId }-actions` }>
+                <div
+                    className="actions"
+                    data-componentid={ `${ componentId }-actions` }
+                    data-testid={ `${ testId }-actions` }
+                >
                     <PrimaryButton
                         fluid
                         onClick={ handleConfirmButton }
+                        data-componentid={ `${ componentId }-confirm-button` }
                         data-testid={ `${ testId }-confirm-button` }
                     >
                         { confirmButtonText }
@@ -253,6 +269,7 @@ export const CookieConsentBanner: FunctionComponent<PropsWithChildren<CookieCons
  * Default props for the component.
  */
 CookieConsentBanner.defaultProps = {
+    "data-componentid": "cookie-consent-banner",
     "data-testid": "cookie-consent-banner",
     domainCookie: false,
     id: "cookie-consent-banner",

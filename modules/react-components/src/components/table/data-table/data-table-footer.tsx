@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { Table, TableFooterProps } from "semantic-ui-react";
@@ -24,7 +24,8 @@ import { Table, TableFooterProps } from "semantic-ui-react";
 /**
  * Proptypes for the Data Table Footer component.
  */
-export interface DataTableFooterPropsInterface extends TableFooterProps, TestableComponentInterface { }
+export interface DataTableFooterPropsInterface extends TableFooterProps, IdentifiableComponentInterface,
+    TestableComponentInterface { }
 
 /**
  * Data Table Footer component.
@@ -40,13 +41,18 @@ export const DataTableFooter: FunctionComponent<PropsWithChildren<DataTableFoote
     const {
         children,
         className,
+        [ "data-componentid" ]: componentId,
         ...rest
     } = props;
 
     const classes = classNames("data-table-footer", className);
 
     return (
-        <Table.Footer className={ classes } { ...rest }>
+        <Table.Footer
+            className={ classes }
+            data-componentid={ componentId }
+            { ...rest }
+        >
             { children }
         </Table.Footer>
     );
@@ -56,5 +62,6 @@ export const DataTableFooter: FunctionComponent<PropsWithChildren<DataTableFoote
  * Default props for the component.
  */
 DataTableFooter.defaultProps = {
+    "data-componentid": "data-table-footer",
     "data-testid": "data-table-footer"
 };

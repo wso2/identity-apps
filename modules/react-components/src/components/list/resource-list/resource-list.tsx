@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { List, ListProps, Placeholder } from "semantic-ui-react";
@@ -37,7 +37,9 @@ export interface ResourceListSubComponentsInterface {
 /**
  * Proptypes for the resource list component.
  */
-export interface ResourceListPropsInterface extends ListProps, TestableComponentInterface  {
+export interface ResourceListPropsInterface extends ListProps, IdentifiableComponentInterface,
+    TestableComponentInterface  {
+
     /**
      * Should the list appear on a filled background (usually with foreground color).
      */
@@ -89,6 +91,7 @@ export const ResourceList: FunctionComponent<ResourceListPropsInterface> & Resou
         isLoading,
         loadingStateOptions,
         transparent,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -136,6 +139,7 @@ export const ResourceList: FunctionComponent<ResourceListPropsInterface> & Resou
                             </Placeholder.Header>
                         </Placeholder>
                     ) }
+                    data-componentid={ `${ componentId }-loading-placeholder` }
                     data-testid={ `${ testId }-loading-placeholder` }
                 />
             );
@@ -149,6 +153,7 @@ export const ResourceList: FunctionComponent<ResourceListPropsInterface> & Resou
             className={ classes }
             divided={ celled }
             relaxed="very"
+            data-componentid={ componentId }
             data-testid={ testId }
             { ...rest }
         >
@@ -166,6 +171,7 @@ export const ResourceList: FunctionComponent<ResourceListPropsInterface> & Resou
  */
 ResourceList.defaultProps = {
     celled: true,
+    "data-componentid": "resource-list",
     "data-testid": "resource-list",
     isLoading: false,
     loadingStateOptions: {

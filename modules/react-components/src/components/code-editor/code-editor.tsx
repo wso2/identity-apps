@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import classNames from "classnames";
 import * as codemirror from "codemirror";
@@ -66,7 +66,8 @@ interface CustomWindow extends Window {
 /**
  * Code editor component Prop types.
  */
-export interface CodeEditorProps extends IUnControlledCodeMirror, TestableComponentInterface {
+export interface CodeEditorProps extends IUnControlledCodeMirror, IdentifiableComponentInterface,
+    TestableComponentInterface {
 
     /**
      * Allow going full screen.
@@ -189,6 +190,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
         translations,
         triggerFullScreen,
         withClipboardCopy,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -493,6 +495,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
                             ...options
                         }
                     }
+                    data-componentid={ componentId }
                     data-testid={ testId }
                 />
             </div>
@@ -518,6 +521,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
 CodeEditor.defaultProps = {
     allowFullScreen: false,
     controlledFullScreenMode: true,
+    "data-componentid": "code-editor",
     "data-testid": "code-editor",
     language: "javascript",
     lineWrapping: true,

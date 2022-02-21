@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { ButtonProps, Button as SemanticButton } from "semantic-ui-react";
 import { GenericIcon, GenericIconSizes } from "../icon";
@@ -24,7 +24,9 @@ import { GenericIcon, GenericIconSizes } from "../icon";
 /**
  * Icon button component Prop types.
  */
-export interface IconButtonPropsInterface extends ButtonProps, TestableComponentInterface {
+export interface IconButtonPropsInterface extends ButtonProps, IdentifiableComponentInterface,
+    TestableComponentInterface {
+
     customIcon?: any;
     customIconPosition?: "left" | "right";
     customIconSize?: GenericIconSizes;
@@ -46,12 +48,14 @@ export const IconButton: FunctionComponent<PropsWithChildren<IconButtonPropsInte
         customIcon,
         customIconPosition,
         customIconSize,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
     return (
         <SemanticButton
             { ...props }
+            data-componentid={ componentId }
             data-testid={ testId }
             negative
         >
@@ -63,6 +67,7 @@ export const IconButton: FunctionComponent<PropsWithChildren<IconButtonPropsInte
                         transparent={ true }
                         spaced="right"
                         floated={ customIconPosition }
+                        data-componentid={ `${ componentId }-icon` }
                         data-testid={ `${ testId }-icon` }
                     />
                 )
@@ -77,5 +82,6 @@ export const IconButton: FunctionComponent<PropsWithChildren<IconButtonPropsInte
  */
 IconButton.defaultProps = {
     customIconPosition: "left",
+    "data-componentid": "icon-button",
     "data-testid": "icon-button"
 };

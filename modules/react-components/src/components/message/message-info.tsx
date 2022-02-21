@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Divider, Header, Icon, Message } from "semantic-ui-react";
 import { MessageHeaderProps } from "semantic-ui-react/dist/commonjs/collections/Message/MessageHeader";
@@ -25,7 +25,7 @@ import { SemanticShorthandContent, SemanticShorthandItem } from "semantic-ui-rea
 /**
  * Proptypes for the messageInfo component.
  */
-export interface MessageInfoProps extends TestableComponentInterface {
+export interface MessageInfoProps extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Shorthand for MessageHeader.
      * */
@@ -48,6 +48,7 @@ export const MessageInfo: FunctionComponent<MessageInfoProps> = (props: MessageI
     const {
         header,
         content,
+        [ "data-componentid" ]: componentid,
         [ "data-testid" ]: testId
     } = props;
 
@@ -77,6 +78,7 @@ export const MessageInfo: FunctionComponent<MessageInfoProps> = (props: MessageI
                 </Header>
             ) }
             content={ generateContent() }
+            data-componentid={ componentid }
             data-testid={ testId }
         />
     );
@@ -87,6 +89,7 @@ export const MessageInfo: FunctionComponent<MessageInfoProps> = (props: MessageI
  */
 MessageInfo.defaultProps = {
     content: null,
+    "data-componentid": "message-info",
     "data-testid": "message-info",
     header: null
 };

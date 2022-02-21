@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Dimmer, Loader, LoaderProps } from "semantic-ui-react";
@@ -24,7 +24,9 @@ import { Dimmer, Loader, LoaderProps } from "semantic-ui-react";
 /**
  * Content loader component Prop types.
  */
-export interface ContentLoaderPropsInterface extends LoaderProps, TestableComponentInterface {
+export interface ContentLoaderPropsInterface extends LoaderProps, IdentifiableComponentInterface,
+    TestableComponentInterface {
+
     /**
      * Addition classes.
      */
@@ -54,6 +56,7 @@ export const ContentLoader: FunctionComponent<ContentLoaderPropsInterface> = (
         className,
         dimmer,
         text,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -64,9 +67,25 @@ export const ContentLoader: FunctionComponent<ContentLoaderPropsInterface> = (
     );
 
     return (
-        <div className={ classes } data-testid={ `${ testId }-wrapper` }>
-            <Dimmer active={ dimmer } data-testid={ `${ testId }-dimmer` } inverted>
-                <Loader { ...rest } data-testid={ testId } inverted>{ text }</Loader>
+        <div
+            className={ classes }
+            data-componentid={ `${ componentId }-wrapper` }
+            data-testid={ `${ testId }-wrapper` }
+        >
+            <Dimmer
+                active={ dimmer }
+                data-componentid={ `${ componentId }-dimmer` }
+                data-testid={ `${ testId }-dimmer` }
+                inverted
+            >
+                <Loader
+                    { ...rest }
+                    data-componentid={ componentId }
+                    data-testid={ testId }
+                    inverted
+                >
+                    { text }
+                </Loader>
             </Dimmer>
         </div>
     );
@@ -76,6 +95,7 @@ export const ContentLoader: FunctionComponent<ContentLoaderPropsInterface> = (
  * Content loader component default props.
  */
 ContentLoader.defaultProps = {
+    "data-componentid": "content-loader",
     "data-testid": "content-loader",
     dimmer: true,
     text: null

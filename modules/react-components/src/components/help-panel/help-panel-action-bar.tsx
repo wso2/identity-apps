@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 
 /**
  * Help side panel action bar Prop types.
  */
-export interface HelpPanelActionBarInterface extends TestableComponentInterface {
+export interface HelpPanelActionBarInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Additional CSS classes.
      */
@@ -54,6 +54,7 @@ export const HelpPanelActionBar: FunctionComponent<PropsWithChildren<HelpPanelAc
         clearing,
         className,
         floated,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -63,12 +64,25 @@ export const HelpPanelActionBar: FunctionComponent<PropsWithChildren<HelpPanelAc
     }, className);
 
     return (
-        <div className={ classes } data-testid={ testId }>
-            <div className="actions-group" data-testid={ `${ testId }-action-group` }>
+        <div
+            className={ classes }
+            data-componentid={ componentId }
+            data-testid={ testId }
+        >
+            <div
+                className="actions-group"
+                data-componentid={ `${ componentId }-action-group` }
+                data-testid={ `${ testId }-action-group` }
+            >
                 {
                     React.Children.map((children),
                         (action: ReactElement<any>, index: number) => (
-                            <div key={ index } className="action" data-testid={ `${ testId }-action-${ index }` }>
+                            <div
+                                key={ index }
+                                className="action"
+                                data-componentid={ `${ componentId }-action-${ index }` }
+                                data-testid={ `${ testId }-action-${ index }` }
+                            >
                                 { action }
                             </div>
                         ))
@@ -83,6 +97,7 @@ export const HelpPanelActionBar: FunctionComponent<PropsWithChildren<HelpPanelAc
  */
 HelpPanelActionBar.defaultProps = {
     clearing: true,
+    "data-componentid": "help-panel-action-bar",
     "data-testid": "help-panel-action-bar",
     floated: "right"
 };
