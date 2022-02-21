@@ -21,6 +21,11 @@
         "lint:autofix": "npm run lint:all -- --fix",
         "lint:ci": "npm run lint -- --format=compact",
         "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to .",
+        "jest": "npx run-script-os",
+        "jest:win32": ".\\node_modules\\.bin\\jest",
+        "jest:default": "./node_modules/.bin/jest",
+        "test": "npm run jest -- -- --passWithNoTests",
+        "test:watch": "npm run test -- --watch",
         "watch": "watch \"npm run build\" src"
     },
     "author": "WSO2",
@@ -28,6 +33,7 @@
     "devDependencies": {
         "@babel/core": "^7.11.4",
         "@babel/register": "^7.8.6",
+        "@types/jest": "^26.0.14",
         "@typescript-eslint/eslint-plugin": "^4.17.0",
         "@typescript-eslint/parser": "^4.17.0",
         "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
@@ -36,6 +42,7 @@
         "eslint-plugin-import": "^2.20.2",
         "eslint-plugin-react": "^7.18.3",
         "eslint-plugin-react-hooks": "^4.0.0",
+        "jest": "^26.4.2",
         "fs-extra": "^9.0.1",
         "less": "^3.10.3",
         "less-plugin-rewrite-variable": "0.1.0",
@@ -45,6 +52,8 @@
         "replace": "^1.1.5",
         "rimraf": "^3.0.2",
         "semantic-ui-css": "^2.4.1",
-        "semantic-ui-less": "^2.4.1"
+        "semantic-ui-less": "^2.4.1",
+        "ts-jest": "^26.4.0",
+        "ts-node": "^10.5.0"
     }
 }

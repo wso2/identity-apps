@@ -39,6 +39,7 @@ export class AuthenticateUtils {
      */
     public static hasLoginPermission(allowedScopes: string): boolean {
         const scopes = allowedScopes?.split(" ");
+
         return scopes?.includes(TokenConstants.LOGIN_SCOPE);
     }
 
@@ -49,6 +50,7 @@ export class AuthenticateUtils {
      */
     public static hasScope(scope: string, allowedScopes: string): boolean {
         const scopes = allowedScopes?.split(" ");
+
         return scopes?.includes(scope);
     }
 
@@ -58,8 +60,9 @@ export class AuthenticateUtils {
      * @return {boolean} True or false.
      */
     public static hasScopes(scope: string[], allowedScopes: string): boolean {
-        const userScopes: string[] = allowedScopes.split(" ");
-        return scope.every(i => userScopes.includes(i));
+        const userScopes: string[] = allowedScopes?.split(" ");
+
+        return scope.every(i => userScopes?.includes(i));
     }
 
     /**

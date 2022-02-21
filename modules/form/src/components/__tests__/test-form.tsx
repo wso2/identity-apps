@@ -18,8 +18,8 @@
 
 import React, { ReactElement } from "react";
 import { FieldTestConstants } from "./constants";
-import { Field, Form, FormFieldPropsInterface } from "../../src";
-import { Type } from "../models";
+import { Field, Form, FormFieldPropsInterface } from "../../components";
+import { Type } from "../../models";
 
 export interface FormTestFields extends FormFieldPropsInterface {
     isRequired: boolean;

@@ -113,8 +113,16 @@ jobs:
         id: build-reusable-modules
         run:  npm run build:modules
 
-      - name: 🃏 Run jest
+      - name: 🃏 Run Jest & Collect Coverage
+        id: run-jest-test-and-coverage
         run: npm run test:unit:coverage
+
+      - name: 🤖 Aggregate Test Coverage
+        id: aggregate-coverage-reports
+        run: |
+          npm run test:unit:coverage:aggregate
+          npm run nyc:text-summary-report
+          npm run nyc:text-report
 
       - name: 🔆 Cache NPM directory
         id: cache-npm-modules

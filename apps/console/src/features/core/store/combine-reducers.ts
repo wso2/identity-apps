@@ -41,7 +41,7 @@ import {
 } from "./reducers";
 import { applicationReducer } from "../../applications/store";
 import { commonAuthenticateReducerInitialState } from "../../authentication/store";
-import { identityProviderReducer } from "../../identity-providers";
+import { identityProviderReducer } from "../../identity-providers/store";
 import { governanceConnectorReducer } from "../../server-configurations";
 import {
     AuthReducerStateInterface,

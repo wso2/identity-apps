@@ -41,7 +41,7 @@ module.exports = {
             "<rootDir>/test-configs/__mocks__/file.ts",
         "\\.svg": "<rootDir>/test-configs/__mocks__/svgr.ts",
         "^@unit-testing(.*)$": "<rootDir>/test-configs/utils",
-        "^lodash-es": "<rootDir>/../../node_modules/lodash",
+        "^lodash-es/(.*)$": "<rootDir>/../../node_modules/lodash/$1",
         "^react($|/.+)": "<rootDir>/../../node_modules/react$1"
     },
     modulePaths: [

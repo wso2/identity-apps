@@ -28,7 +28,7 @@
         "dist",
         "node_modules",
         "scripts",
-        "test-configs",
+        "**/test-configs/*",
         "jest.config.ts",
         "**/tests/*",
         "**/__tests__/*",

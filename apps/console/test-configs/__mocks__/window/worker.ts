@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,55 +17,34 @@
  */
 
 /**
- * @fileoverview Mocks needed for the UI tests.
+ * @fileoverview Worker API Mocks.
  *
- * @remarks If you had to mock a certain window object or document object,
+ * @remarks If you had to mock a certain Worker API,
  * document the reason and any references clearly in this file.
  */
 
-import DeploymentConfig from "../../src/public/deployment.config.json";
-
-/**
- * `AppUtils` Mock.
- * @remarks The `deployment.config.json file is resolved and stored in the window object under `AppUtils`.
- * This has a method called `getConfig` that needs mocking.
- */
-window.AppUtils = {
-    getConfig: function () {
-        return DeploymentConfig;
-    }
-};
+/* eslint-disable @typescript-eslint/ban-ts-comment,  @typescript-eslint/no-empty-function */
 
 /**
  * Worker class mock needed by the SDK since the storage strategy used in the apps is `webWorker`.
  * @see {@link https://github.com/asgardeo/asgardeo-auth-react-sdk#storage}
+ * Mock Reference @see {@link https://github.com/facebook/jest/issues/3449#issuecomment-347337666}
  */
-class Worker {
+class WorkerMock {
     constructor(stringUrl) {
+        // @ts-ignore
         this.url = stringUrl;
+        // @ts-ignore
         this.onmessage = () => { };
     }
 
     postMessage(msg) {
+        // @ts-ignore
         this.onmessage(msg);
     }
 }
 
-window.Worker = Worker;
+// @ts-ignore
+window.Worker = WorkerMock;
 
-/**
- * Needed to avoid the JSDom exceptions due to Code Mirror.
- * @see {@link https://github.com/jsdom/jsdom/issues/3002}
- */
-document.createRange = () => {
-    const range = new Range();
-
-    range.getBoundingClientRect = jest.fn();
-
-    range.getClientRects = jest.fn(() => ({
-        item: () => null,
-        length: 0
-    }));
-
-    return range;
-};
+/* eslint-enable @typescript-eslint/ban-ts-comment,  @typescript-eslint/no-empty-function */
