@@ -298,7 +298,7 @@ export const startFidoFlow = (): Promise<any> => {
  * @return {Promise<any>} a promise containing the response.
  */
 export const startFidoUsernamelessFlow = (): Promise<any> => {
-    const data = new URLSearchParams();
+    const data: URLSearchParams = new URLSearchParams();
 
     data.append("appId", window.location.origin);
 
