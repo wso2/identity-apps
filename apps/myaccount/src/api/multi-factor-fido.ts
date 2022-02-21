@@ -263,7 +263,7 @@ export const decodePublicKeyCredentialCreationOptions = (request): Record<string
  * @return {Promise<any>} a promise containing the response.
  */
 export const startFidoFlow = (): Promise<any> => {
-    const data = new URLSearchParams();
+    const data: URLSearchParams = new URLSearchParams();
 
     data.append("appId", window.location.origin);
 
