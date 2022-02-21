@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { ButtonProps, Loader, LoaderProps, Button as SemanticButton } from "semantic-ui-react";
@@ -24,7 +24,9 @@ import { ButtonProps, Loader, LoaderProps, Button as SemanticButton } from "sema
 /**
  * Link button component Prop types.
  */
-export interface LinkButtonPropsInterface extends ButtonProps, TestableComponentInterface {
+export interface LinkButtonPropsInterface extends ButtonProps, IdentifiableComponentInterface,
+    TestableComponentInterface {
+
     /**
      * Compact mode with no padding.
      */
@@ -72,6 +74,7 @@ export const LinkButton: FunctionComponent<LinkButtonPropsInterface> = (
         loaderPosition,
         loaderSize,
         warning,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -92,18 +95,31 @@ export const LinkButton: FunctionComponent<LinkButtonPropsInterface> = (
         <SemanticButton
             className={ classes }
             loading={ loading && !loaderPosition }
+            data-componentid={ componentId }
             data-testid={ testId }
             { ...rest }
         >
             {
                 loading && loaderPosition === "left" && (
-                    <Loader active inline size={ loaderSize } data-testid={ `${ testId }-loader` } />
+                    <Loader
+                        active
+                        inline
+                        size={ loaderSize }
+                        data-componentid={ `${ componentId }-loader` }
+                        data-testid={ `${ testId }-loader` }
+                    />
                 )
             }
             { children }
             {
                 loading && loaderPosition === "right" && (
-                    <Loader active inline size={ loaderSize } data-testid={ `${ testId }-loader` } />
+                    <Loader
+                        active
+                        inline
+                        size={ loaderSize }
+                        data-componentid={ `${ componentId }-loader` }
+                        data-testid={ `${ testId }-loader` }
+                    />
                 )
             }
         </SemanticButton>
@@ -115,6 +131,7 @@ export const LinkButton: FunctionComponent<LinkButtonPropsInterface> = (
  */
 LinkButton.defaultProps = {
     basic: true,
+    "data-componentid": "link-button",
     "data-testid": "link-button",
     loaderSize: "mini",
     primary: true

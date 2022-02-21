@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { Icon } from "semantic-ui-react";
@@ -23,7 +24,7 @@ import { Icon } from "semantic-ui-react";
 /**
  * DocumentationLink component Prop types.
  */
-interface DocumentationLinkPropsInterface {
+interface DocumentationLinkPropsInterface extends IdentifiableComponentInterface {
     /**
      * Documentation URL.
      */
@@ -58,7 +59,8 @@ export const DocumentationLink: FunctionComponent<PropsWithChildren<Documentatio
         className,
         link,
         target,
-        showEmptyLink
+        showEmptyLink,
+        [ "data-componentid" ]: componentId
     } = props;
 
     if (link === undefined) {
@@ -74,6 +76,7 @@ export const DocumentationLink: FunctionComponent<PropsWithChildren<Documentatio
             target={ target }
             rel="noopener noreferrer"
             className={ classes }
+            data-componentid={ componentId }
         >
             { children }
             <Icon className="ml-1" name="external alternate"/>
@@ -85,6 +88,7 @@ export const DocumentationLink: FunctionComponent<PropsWithChildren<Documentatio
  * Prop types for the DocumentationLink component.
  */
 DocumentationLink.defaultProps = {
+    "data-componentid": "documentation-link",
     showEmptyLink: true,
     target: "_blank"
 };

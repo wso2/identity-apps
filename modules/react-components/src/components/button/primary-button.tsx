@@ -16,14 +16,15 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { ButtonProps, Button as SemanticButton } from "semantic-ui-react";
 
 /**
  * Primary button component Prop types.
  */
-export interface PrimaryButtonPropsInterface extends ButtonProps, TestableComponentInterface { }
+export interface PrimaryButtonPropsInterface extends ButtonProps, IdentifiableComponentInterface,
+    TestableComponentInterface { }
 
 /**
  * Primary button component.
@@ -36,10 +37,18 @@ export const PrimaryButton: FunctionComponent<PrimaryButtonPropsInterface> = (
     props: PrimaryButtonPropsInterface
 ): ReactElement => {
 
-    const { [ "data-testid" ]: testId } = props;
+    const {
+        [ "data-componentid" ]: componentId,
+        [ "data-testid" ]: testId
+    } = props;
 
     return (
-        <SemanticButton { ...props } primary data-testid={ testId } />
+        <SemanticButton
+            { ...props }
+            primary
+            data-componentid={ componentId }
+            data-testid={ testId }
+        />
     );
 };
 
@@ -47,5 +56,6 @@ export const PrimaryButton: FunctionComponent<PrimaryButtonPropsInterface> = (
  * Prop types for the primary button component.
  */
 PrimaryButton.defaultProps = {
+    "data-componentid": "primary-button",
     "data-testid": "primary-button"
 };

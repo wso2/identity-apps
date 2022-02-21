@@ -16,7 +16,12 @@
 * under the License.
 */
 
-import { DisplayCertificate, DistinguishedName, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    DisplayCertificate,
+    DistinguishedName,
+    IdentifiableComponentInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import moment from "moment";
 import React, { Fragment, FunctionComponent, ReactElement } from "react";
 import { Divider, Grid, Icon, Popup, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
@@ -24,7 +29,7 @@ import { Divider, Grid, Icon, Popup, Segment, SemanticCOLORS, SemanticICONS } fr
 /**
  * Prop types of the `Certificate` component.
  */
-export interface CertificatePropsInterface extends TestableComponentInterface {
+export interface CertificatePropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * The decoded certificate details
      */
@@ -58,6 +63,7 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
 
     const {
         labels,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -151,7 +157,12 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
     };
 
     return (
-        <Segment className="certificate" compact data-testid={ testId }>
+        <Segment
+            className="certificate"
+            compact
+            data-testid={ testId }
+            data-componentid={ componentId }
+        >
             <Grid>
                 <Grid.Row>
                     <Grid.Column computer={ 16 } mobile={ 16 } tablet={ 16 }>
@@ -270,5 +281,6 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
  * Default props for the component.
  */
 Certificate.defaultProps = {
+    "data-componentid": "certificate",
     "data-testid": "certificate"
 };

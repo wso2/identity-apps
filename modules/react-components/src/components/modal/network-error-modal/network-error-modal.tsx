@@ -17,6 +17,7 @@
  */
 
 import { AppConstants } from "@wso2is/core/constants";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Heading } from "../../typography";
 import { ConfirmationModal } from "../confirmation-modal";
@@ -24,7 +25,7 @@ import { ConfirmationModal } from "../confirmation-modal";
 /**
  * Prop type of the `NetworkErrorModal` component.
  */
-interface NetworkErrorModalPropTypes {
+interface NetworkErrorModalPropTypes extends IdentifiableComponentInterface {
     heading: ReactNode;
     description: ReactNode;
     primaryActionText: ReactNode;
@@ -45,7 +46,14 @@ interface NetworkErrorModalPropTypes {
 export const NetworkErrorModal: FunctionComponent<NetworkErrorModalPropTypes> = (
     props: NetworkErrorModalPropTypes
 ): ReactElement => {
-    const { heading, description, primaryActionText, primaryAction } = props;
+
+    const {
+        heading,
+        description,
+        primaryActionText,
+        primaryAction,
+        [ "data-componentid" ]: componentId
+    } = props;
 
     const [ showModal, setShowModal ] = useState(false);
 
@@ -76,6 +84,7 @@ export const NetworkErrorModal: FunctionComponent<NetworkErrorModalPropTypes> = 
             onPrimaryActionClick={ () => {
                 primaryAction();
             } }
+            data-componentid={ componentId }
             data-testid={ "network-error-modal" }
             open={ showModal }
         >
@@ -85,4 +94,11 @@ export const NetworkErrorModal: FunctionComponent<NetworkErrorModalPropTypes> = 
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+NetworkErrorModal.defaultProps = {
+    "data-componentid": "network-error-modal"
 };

@@ -76,7 +76,7 @@ tedious task. So we have written a custom renderer following the guide in
 
 ### Identifying Elements in DOM
 
-As a practice we use `data-componentid`(../../modules/core/src/models/core.ts) inorder to make our tests resilient to change.
+As a practice we use `data-componentid` inorder to make our tests resilient to change.
 Use the [getByTestId](https://testing-library.com/docs/queries/bytestid/) method to access with the component id.
 
 #### Example: Assert on components with `getByTestId`.
@@ -111,7 +111,7 @@ export const SampleComponent: FunctionComponent<SampleComponentInterface> = (
 ```
 
 :warning: Some components might have the `data-testid` already implemented using the [TestableComponentInterface](../../modules/core/src/models/core.ts).
-This interface and the data attribute since has been **deprecated*. Hence, :boom: **DO NOT USE IT** in new components. Refactor the usage where ever possible.
+This interface and the data attribute since has been **deprecated**. Hence, :boom: **DO NOT USE IT** in new components. Refactor the usage where ever possible.
 
 ### Snapshot Testing
 
@@ -188,5 +188,14 @@ npm run test
 npm run test:unit:coverage
 ```
 
+## References
+
+Blogs
+
+- [Common mistakes with React Testing Library][common-mistakes-with-react-testing-library] by Kent C. Dodds 
+- [Fix the "not wrapped in act(...)" warning][fix-the-not-wrapped-in-act-warning] by Kent C. Dodds
+
 [react-testing-library]: https://testing-library.com/docs/
 [react-testing-library-custom-renderer]: https://testing-library.com/docs/react-testing-library/setup#custom-render
+[common-mistakes-with-react-testing-library]: https://kentcdodds.com/blog/common-mistakes-with-react-testing-library#using-wrapper-as-the-variable-name-for-the-return-value-from-render
+[fix-the-not-wrapped-in-act-warning]: https://kentcdodds.com/blog/fix-the-not-wrapped-in-act-warning

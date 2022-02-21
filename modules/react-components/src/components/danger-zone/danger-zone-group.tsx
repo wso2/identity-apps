@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { Header, Segment } from "semantic-ui-react";
 
 /**
  * Danger zone group component Prop types.
  */
-export interface DangerZoneGroupProps extends TestableComponentInterface {
+export interface DangerZoneGroupProps extends TestableComponentInterface, IdentifiableComponentInterface {
     /**
      * Danger zone section heading.
      */
@@ -44,13 +44,25 @@ export const DangerZoneGroup: FunctionComponent<PropsWithChildren<DangerZoneGrou
     const {
         sectionHeader,
         children,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
     return (
         <div className="danger-zone-group-wrapper">
-            <Header as="h5" className="bold-text" data-testid={ `${ testId }-header` }>{ sectionHeader }</Header>
-            <Segment.Group className="danger-zone-group" data-testid={ `${ testId }` }>
+            <Header
+                as="h5"
+                className="bold-text"
+                data-componentid={ `${ componentId }-header` }
+                data-testid={ `${ testId }-header` }
+            >
+                { sectionHeader }
+            </Header>
+            <Segment.Group
+                className="danger-zone-group"
+                data-componentid={ `${ componentId }` }
+                data-testid={ `${ testId }` }
+            >
                 { children }
             </Segment.Group>
         </div>
@@ -61,5 +73,6 @@ export const DangerZoneGroup: FunctionComponent<PropsWithChildren<DangerZoneGrou
  * Default props for the danger zone group component.
  */
 DangerZoneGroup.defaultProps = {
+    "data-componentid": "danger-zone-group",
     "data-testid": "danger-zone-group"
 };

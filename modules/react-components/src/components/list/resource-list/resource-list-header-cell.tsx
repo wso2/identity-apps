@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { List, SemanticFLOATS, SemanticWIDTHS } from "semantic-ui-react";
@@ -24,7 +24,9 @@ import { List, SemanticFLOATS, SemanticWIDTHS } from "semantic-ui-react";
 /**
  * Proptypes for the resource list header cell component.
  */
-export interface ResourceListHeaderCellPropsInterface extends TestableComponentInterface {
+export interface ResourceListHeaderCellPropsInterface extends IdentifiableComponentInterface,
+    TestableComponentInterface {
+
     /**
      * Additional CSS classes.
      */
@@ -58,13 +60,19 @@ export const ResourceListHeaderCell: FunctionComponent<PropsWithChildren<Resourc
         children,
         className,
         floated,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
     const classes = classNames("resource-list-header-cell", className);
 
     return (
-        <List.Content className={ classes } floated={ floated } data-testid={ testId }>
+        <List.Content
+            className={ classes }
+            floated={ floated }
+            data-componentid={ componentId }
+            data-testid={ testId }
+        >
             { children }
         </List.Content>
     );
@@ -74,5 +82,6 @@ export const ResourceListHeaderCell: FunctionComponent<PropsWithChildren<Resourc
  * Default props for resource list header component.
  */
 ResourceListHeaderCell.defaultProps = {
+    "data-componentid": "resource-list-header-cell",
     "data-testid": "resource-list-header-cell"
 };

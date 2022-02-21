@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Divider, Grid, GridColumn, HeaderProps, Responsive, SemanticWIDTHS } from "semantic-ui-react";
@@ -27,7 +27,7 @@ import { Heading } from "../typography";
  *
  * Proptypes for the statistics overview widget.
  */
-interface StatsOverviewWidgetPropsInterface extends TestableComponentInterface {
+interface StatsOverviewWidgetPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Heading for the widget
      */
@@ -72,6 +72,7 @@ export const StatsOverviewWidget: FunctionComponent<StatsOverviewWidgetPropsInte
         subHeading,
         subHeadingAs,
         stats,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -105,6 +106,7 @@ export const StatsOverviewWidget: FunctionComponent<StatsOverviewWidgetPropsInte
                     ...iconOptions
                 } }
                 { ...statRest }
+                data-componentid={ `${ componentId }-${ kebabCase(label) }-card` }
                 data-testid={ `${ testId }-${ kebabCase(label) }-card` }
             />
         );
@@ -116,6 +118,7 @@ export const StatsOverviewWidget: FunctionComponent<StatsOverviewWidgetPropsInte
                 <Heading
                     className="stats-overview-widget-heading inline ellipsis"
                     as={ headingAs }
+                    data-componentid={ `${ componentId }-heading` }
                     data-testid={ `${ testId }-heading` }
                     compact
                 >
@@ -125,6 +128,7 @@ export const StatsOverviewWidget: FunctionComponent<StatsOverviewWidgetPropsInte
             { subHeading && (
                 <Heading
                     className="stats-overview-widget-sub-heading"
+                    data-componentid={ `${ componentId }-sub-heading` }
                     data-testid={ `${ testId }-sub-heading` }
                     as={ subHeadingAs }
                     subHeading
@@ -182,6 +186,7 @@ export const StatsOverviewWidget: FunctionComponent<StatsOverviewWidgetPropsInte
  * Default props for the component.
  */
 StatsOverviewWidget.defaultProps = {
+    "data-componentid": "stats-overview-widget",
     "data-testid": "stats-overview-widget",
     headingAs: "h3",
     maxRowCount: 4,

@@ -16,14 +16,15 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { ButtonProps, Button as SemanticButton } from "semantic-ui-react";
 
 /**
  * Danger button Prop types.
  */
-export interface DangerButtonPropsInterface extends ButtonProps, TestableComponentInterface { }
+export interface DangerButtonPropsInterface extends ButtonProps, IdentifiableComponentInterface,
+    TestableComponentInterface { }
 
 /**
  * Danger button component.
@@ -36,10 +37,18 @@ export const DangerButton: FunctionComponent<DangerButtonPropsInterface> = (
     props: DangerButtonPropsInterface
 ): ReactElement => {
 
-    const { [ "data-testid" ]: testId } = props;
+    const {
+        [ "data-componentid" ]: componentId,
+        [ "data-testid" ]: testId
+    } = props;
 
     return (
-        <SemanticButton { ...props } negative data-testid={ testId } />
+        <SemanticButton
+            { ...props }
+            negative
+            data-componentid={ componentId }
+            data-testid={ testId }
+        />
     );
 };
 
@@ -47,5 +56,6 @@ export const DangerButton: FunctionComponent<DangerButtonPropsInterface> = (
  * Default props for the danger button component.
  */
 DangerButton.defaultProps = {
+    "data-componentid": "danger-button",
     "data-testid": "danger-button"
 };

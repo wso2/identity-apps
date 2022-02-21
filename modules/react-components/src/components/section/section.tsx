@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, MouseEvent, PropsWithChildren, ReactElement } from "react";
 import { Card, Grid, Header, Icon, List, Menu, Message, Responsive, SemanticICONS } from "semantic-ui-react";
@@ -25,7 +25,7 @@ import { GenericIcon, GenericIconSizes } from "../icon";
 /**
  * Proptypes for the section component.
  */
-export interface SectionProps extends TestableComponentInterface {
+export interface SectionProps extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Additional CSS classes.
      */
@@ -148,6 +148,7 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
         showActionBar,
         topActionBar,
         accordion,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -178,6 +179,7 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                 <List.Content
                     className={ actionDisabled ? "disabled" : "" }
                     floated={ actionType === "secondary" ? "right" : "left" }
+                    data-componentid={ `${ componentId }-${ actionType }-action` }
                     data-testid={ `${ testId }-${ actionType }-action` }
                 >
                     { action }
@@ -191,6 +193,7 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                 <List.Content
                     className={ actionDisabled ? "disabled" : "" }
                     floated={ actionType === "secondary" ? "right" : "left" }
+                    data-componentid={ `${ componentId }-${ actionType }-action` }
                     data-testid={ `${ testId }-${ actionType }-action` }
                 >
                     <List.Header className="action-button-text" onClick={ actionOnClick }>
@@ -209,13 +212,30 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
     };
 
     return (
-        <Card className={ `settings-card ${ classes }` } fluid padded="very" data-testid={ testId }>
+        <Card
+            className={ `settings-card ${ classes }` }
+            fluid
+            padded="very"
+            data-componentid={ componentId }
+            data-testid={ testId }
+        >
             <Card.Content>
                 <Grid>
                     <Grid.Row className="header-section" columns={ 2 }>
                         <Grid.Column width={ (icon || iconMini) ? 10 : 16 } className="no-padding">
-                            <Header as="h2" data-testid={ `${ testId }-header` }>{ header }</Header>
-                            <Card.Meta data-testid={ `${ testId }-description` }>{ description }</Card.Meta>
+                            <Header
+                                as="h2"
+                                data-componentid={ `${ componentId }-header` }
+                                data-testid={ `${ testId }-header` }
+                            >
+                                { header }
+                            </Header>
+                            <Card.Meta
+                                data-componentid={ `${ componentId }-description` }
+                                data-testid={ `${ testId }-description` }
+                            >
+                                { description }
+                            </Card.Meta>
                         </Grid.Column>
                         {
                             icon || iconMini ? (
@@ -232,6 +252,7 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                                                         defaultIcon={ iconStyle === "default" }
                                                         twoTone={ iconStyle === "twoTone" }
                                                         colored={ iconStyle === "colored" }
+                                                        data-componentid={ `${ componentId }-icon` }
                                                         data-testid={ `${ testId }-icon` }
                                                     />
                                                 )
@@ -250,6 +271,7 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                                                         defaultIcon={ iconStyle === "default" }
                                                         twoTone={ iconStyle === "twoTone" }
                                                         colored={ iconStyle === "colored" }
+                                                        data-componentid={ `${ componentId }-icon-mini` }
                                                         data-testid={ `${ testId }-icon-mini` }
                                                     />
                                                 )
@@ -268,6 +290,7 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                                     ? (
                                         <Menu
                                             className="top-action-panel no-margin-bottom"
+                                            data-componentid={ `${ componentId }-top-action-panel` }
                                             data-testid={ `${ testId }-top-action-panel` }
                                         >
                                             <Menu.Menu position="right">
@@ -355,6 +378,7 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
 Section.defaultProps = {
     className: "",
     contentPadding: false,
+    "data-componentid": "section",
     "data-testid": "section",
     description: "",
     header: "",

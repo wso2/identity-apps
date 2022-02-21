@@ -68,6 +68,10 @@ export interface IframeProps extends IframeHTMLAttributes<HTMLIFrameElement>, Id
      */
     isReady?: (status: boolean) => void;
     /**
+     * Is the iframe loading.
+     */
+    isLoading?: boolean;
+    /**
      * The zoom percentage. By default will be 100%.
      */
     zoom?: number;
@@ -90,6 +94,7 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
         cloneParentStyleSheets,
         injectStyleNodeAfterParentStyles,
         isReady,
+        isLoading,
         responsive,
         styles,
         styleNodeInjectionStrategy,
@@ -112,7 +117,8 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
         "ui",
         "iframe",
         {
-            responsive
+            responsive,
+            [ "loading" ]: isLoading
         },
         className
     );

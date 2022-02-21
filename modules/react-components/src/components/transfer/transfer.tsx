@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from "react";
 import { Button, Checkbox, Grid, Icon, Segment } from "semantic-ui-react";
@@ -25,7 +25,7 @@ import { TransferListSearch } from "./transfer-list-search";
 /**
  * Proptypes transfer component.
  */
-export interface TransferComponentPropsInterface extends TestableComponentInterface {
+export interface TransferComponentPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Render segments with basic formatting.
      */
@@ -102,6 +102,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
         isHeaderCheckboxChecked,
         showSelectAllCheckbox,
         showListSearch,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -132,6 +133,9 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                     <Segment
                                                         basic={ basic }
                                                         disabled={ isLoading }
+                                                        data-componentid={
+                                                            `${ componentId }-unselected-groups`
+                                                        }
                                                         data-testid={
                                                             `${ testId }-unselected-groups`
                                                         }
@@ -140,6 +144,9 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                         {
                                                             showListSearch && (
                                                                 <TransferListSearch
+                                                                    data-componentid={
+                                                                        componentId + "-unselected-groups-search-input"
+                                                                    }
                                                                     data-testid={
                                                                         testId + "-unselected-groups-search-input"
                                                                     }
@@ -178,6 +185,9 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                 >
                                                     <Grid.Row>
                                                         <Button
+                                                            data-componentid={
+                                                                `${ componentId }-unselected-groups-add-button`
+                                                            }
                                                             data-testid={
                                                                 `${ testId }-unselected-groups-add-button`
                                                             }
@@ -191,6 +201,9 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                     </Grid.Row>
                                                     <Grid.Row>
                                                         <Button
+                                                            data-componentid={
+                                                                componentId + "-unselected-groups-remove-button"
+                                                            }
                                                             data-testid={ testId + "-unselected-groups-remove-button" }
                                                             type="button"
                                                             basic
@@ -212,10 +225,14 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                     <Segment
                                                         basic={ basic }
                                                         disabled={ isLoading }
+                                                        data-componentid={ `${ componentId }-selected-groups` }
                                                         data-testid={ `${ testId }-selected-groups` }
                                                         className="transfer-segment"
                                                     >
                                                         <TransferListSearch
+                                                            data-componentid={
+                                                                `${ componentId }-selected-groups-search-input`
+                                                            }
                                                             data-testid={ `${ testId }-selected-groups-search-input` }
                                                             handleListSearch={ handleSelectedListSearch }
                                                             iconPosition={ iconPosition }
@@ -245,6 +262,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
 TransferComponent.defaultProps = {
     basic: false,
     bordered: true,
+    "data-componentid": "transfer-component",
     "data-testid": "transfer-component",
     isLoading: false,
     selectAllCheckboxLabel: "Select all",

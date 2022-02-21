@@ -16,14 +16,15 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { ButtonProps, Button as SemanticButton } from "semantic-ui-react";
 
 /**
  * Secondary button component Prop types.
  */
-export interface SecondaryButtonPropsInterface extends ButtonProps, TestableComponentInterface { }
+export interface SecondaryButtonPropsInterface extends ButtonProps, IdentifiableComponentInterface,
+    TestableComponentInterface { }
 
 /**
  * Secondary button component.
@@ -36,10 +37,18 @@ export const SecondaryButton: FunctionComponent<SecondaryButtonPropsInterface> =
     props: SecondaryButtonPropsInterface
 ): ReactElement => {
 
-    const { [ "data-testid" ]: testId } = props;
+    const {
+        [ "data-componentid" ]: componentId,
+        [ "data-testid" ]: testId
+    } = props;
 
     return (
-        <SemanticButton { ...props } secondary data-testid={ testId } />
+        <SemanticButton
+            { ...props }
+            secondary
+            data-componentid={ componentId }
+            data-testid={ testId }
+        />
     );
 };
 
@@ -47,5 +56,6 @@ export const SecondaryButton: FunctionComponent<SecondaryButtonPropsInterface> =
  * Prop types for the secondary button component.
  */
 SecondaryButton.defaultProps = {
+    "data-componentid": "secondary-button",
     "data-testid": "secondary-button"
 };

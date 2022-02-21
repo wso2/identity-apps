@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import isObject from "lodash-es/isObject";
 import React, { PropsWithChildren, ReactElement } from "react";
@@ -25,7 +25,7 @@ import { Icon, Popup, PopupProps, SemanticCOLORS, SemanticICONS } from "semantic
 /**
  * Heading component prop types.
  */
-export interface HintPropsInterface extends TestableComponentInterface {
+export interface HintPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
 
     /**
      * Additional classes.
@@ -95,6 +95,7 @@ export const Hint: React.FunctionComponent<PropsWithChildren<HintPropsInterface>
         popup,
         popupOptions,
         warning,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -147,13 +148,18 @@ export const Hint: React.FunctionComponent<PropsWithChildren<HintPropsInterface>
     };
 
     return (
-        <div className={ classes } data-testid={ testId }>
+        <div
+            className={ classes }
+            data-componentid={ componentId }
+            data-testid={ testId }
+        >
             {
                 popup
                     ? (
                         <Popup
                             trigger={ resolveIcon() }
                             content={ children }
+                            data-componentid={ `${ componentId }-popup` }
                             data-testid={ `${ testId }-popup` }
                             { ...resolvePopupOptions() }
                         />
@@ -174,6 +180,7 @@ export const Hint: React.FunctionComponent<PropsWithChildren<HintPropsInterface>
  */
 Hint.defaultProps = {
     compact: false,
+    "data-componentid": "hint",
     "data-testid": "hint",
     inline: false,
     popup: false

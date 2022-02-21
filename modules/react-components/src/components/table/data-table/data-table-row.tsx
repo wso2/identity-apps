@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { Table, TableRowProps } from "semantic-ui-react";
@@ -24,7 +24,8 @@ import { Table, TableRowProps } from "semantic-ui-react";
 /**
  * Proptypes for the Data Table Row component.
  */
-export interface DataTableRowPropsInterface extends TableRowProps, TestableComponentInterface { }
+export interface DataTableRowPropsInterface extends TableRowProps, IdentifiableComponentInterface,
+    TestableComponentInterface { }
 
 /**
  * Data Table Row component.
@@ -41,13 +42,18 @@ export const DataTableRow: FunctionComponent<PropsWithChildren<DataTableRowProps
         children,
         className,
         selectable,
+        [ "data-componentid" ]: componentId,
         ...rest
     } = props;
 
     const classes = classNames("data-table-row", className, !selectable && "no-selectable");
 
     return (
-        <Table.Row className={ classes } { ...rest }>
+        <Table.Row
+            className={ classes }
+            data-componentid={ componentId }
+            { ...rest }
+        >
             { children }
         </Table.Row>
     );
@@ -57,5 +63,6 @@ export const DataTableRow: FunctionComponent<PropsWithChildren<DataTableRowProps
  * Default props for the component.
  */
 DataTableRow.defaultProps = {
+    "data-componentid": "data-table-row",
     "data-testid": "data-table-row"
 };

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Message, MessageProps } from "semantic-ui-react";
@@ -24,7 +24,9 @@ import { Message, MessageProps } from "semantic-ui-react";
 /**
  * Proptypes for the confirmation modal message component.
  */
-export interface ConfirmationModalMessagePropsInterface extends MessageProps, TestableComponentInterface {
+export interface ConfirmationModalMessagePropsInterface extends MessageProps, IdentifiableComponentInterface,
+    TestableComponentInterface {
+
     /**
      * If the message should be attached to the top.
      */
@@ -46,6 +48,7 @@ export const ConfirmationModalMessage: FunctionComponent<ConfirmationModalMessag
         attached,
         children,
         className,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -59,7 +62,14 @@ export const ConfirmationModalMessage: FunctionComponent<ConfirmationModalMessag
     );
 
     return (
-        <Message data-testid={ testId } { ...rest } className={ classes }>{ children }</Message>
+        <Message
+            data-testid={ testId }
+            data-componentid={ componentId }
+            { ...rest }
+            className={ classes }
+        >
+            { children }
+        </Message>
     );
 };
 
@@ -67,5 +77,6 @@ export const ConfirmationModalMessage: FunctionComponent<ConfirmationModalMessag
  * Default proptypes for the confirmation modal message component.
  */
 ConfirmationModalMessage.defaultProps = {
+    "data-componentid": "confirmation-modal-message",
     "data-testid": "confirmation-modal-message"
 };

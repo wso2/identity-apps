@@ -18,7 +18,11 @@
 
 import { getGravatarImage } from "@wso2is/core/api";
 import { resolveUserDisplayName, resolveUsername } from "@wso2is/core/helpers";
-import { LinkedAccountInterface, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    IdentifiableComponentInterface,
+    LinkedAccountInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent } from "react";
 import { Link } from "react-router-dom";
@@ -40,7 +44,7 @@ import { GenericIcon } from "../icon";
 /**
  * Header component prop types.
  */
-export interface HeaderPropsInterface extends TestableComponentInterface {
+export interface HeaderPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Top announcement component.
      */
@@ -91,7 +95,7 @@ export interface HeaderPropsInterface extends TestableComponentInterface {
 /**
  * Header extension interface.
  */
-export interface HeaderExtension extends TestableComponentInterface {
+export interface HeaderExtension extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Component to render.
      */
@@ -130,7 +134,7 @@ export interface HeaderLinkInterface extends StrictHeaderLinkInterface {
 /**
  * Header links strict interface.
  */
-export interface StrictHeaderLinkInterface extends TestableComponentInterface {
+export interface StrictHeaderLinkInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Children content.
      */
@@ -189,6 +193,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         userDropdownLinks,
         userDropdownPointing,
         onAvatarClick,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -215,24 +220,33 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 authState={ basicProfileInfo }
                 profileInfo={ profileInfo }
                 size="mini"
+                data-componentid={ `${ componentId }-user-avatar` }
                 data-testid={ `${ testId }-user-avatar` }
                 data-suppress=""
             />
         );
 
         return (
-            <span className="user-dropdown-trigger" data-testid={ `${ testId }-user-dropdown-trigger` }>
+            <span
+                className="user-dropdown-trigger"
+                data-componentid={ `${ componentId }-user-dropdown-trigger` }
+                data-testid={ `${ testId }-user-dropdown-trigger` }
+            >
                 {
                     showUserDropdownTriggerLabel && (
                         <Responsive
                             minWidth={ 767 }
                             className="username"
+                            data-componentid={ `${ componentId }-user-display-name` }
                             data-testid={ `${ testId }-user-display-name` }
                         >
                             {
                                 isProfileInfoLoading
                                     ? (
-                                        <Placeholder data-testid={ `${ testId }-username-loading-placeholder` }>
+                                        <Placeholder
+                                            data-componentid={ `${ componentId }-username-loading-placeholder` }
+                                            data-testid={ `${ testId }-username-loading-placeholder` }
+                                        >
                                             <Placeholder.Line/>
                                         </Placeholder>
                                     )
@@ -248,6 +262,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                 <Icon
                                     name="bars"
                                     size="large"
+                                    data-componentid={ `${ componentId }-hamburger-icon` }
                                     data-testid={ `${ testId }-hamburger-icon` }
                                     link
                                 />
@@ -313,6 +328,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             <Item.Group
                 unstackable
                 className="linked-accounts-list"
+                data-componentid={ `${ componentId }-linked-accounts-container` }
                 data-testid={ `${ testId }-linked-accounts-container` }
             >
                 {
@@ -328,6 +344,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                 size="little"
                                 image={ getGravatarImage(association.email) }
                                 name={ association.username }
+                                data-componentid={ `${ componentId }-la-avatar` }
                                 data-testid={ `${ testId }-la-avatar` }
                                 spaced="right"
                                 data-suppress=""
@@ -336,12 +353,14 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                 <Item.Description>
                                     <div
                                         className="name"
+                                        data-componentid={ `${ componentId }-la-name` }
                                         data-testid={ `${ testId }-la-name` }
                                     >
                                         { resolveUsername(association.username, association.userStoreDomain) }
                                     </div>
                                     <div
                                         className="email"
+                                        data-componentid={ `${ componentId }-la-email` }
                                         data-testid={ `${ testId }-la-email` }
                                     >
                                         { association.tenantDomain }
@@ -385,6 +404,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
                             const {
                                 content,
+                                "data-componentid": linkComponentId,
                                 "data-testid": linkTestId,
                                 icon,
                                 name,
@@ -396,6 +416,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                     key={ linkIndex }
                                     className="action-panel user-dropdown-link"
                                     onClick={ onClick }
+                                    data-componentid={ linkComponentId }
                                     data-testid={ linkTestId }
                                 >
                                     {
@@ -440,6 +461,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         if (typeof extension.component === "string") {
                             return (
                                 <div
+                                    data-componentid={ extension[ "data-componentid" ] }
                                     data-testid={ extension[ "data-testid" ] }
                                     className="header-link"
                                 >
@@ -456,10 +478,18 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     };
 
     return (
-        <Menu id="app-header" className={ classes } fixed={ fixed } borderless data-testid={ testId }>
+        <Menu
+            id="app-header"
+            className={ classes }
+            fixed={ fixed }
+            borderless
+            data-componentid={ componentId }
+            data-testid={ testId }
+        >
             { announcement }
             <Container
                 fluid={ fluid }
+                data-componentid={ `${ componentId }-container` }
                 data-testid={ `${ testId }-container` }
                 className="app-header-container"
             >
@@ -471,6 +501,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                     name="bars"
                                     size="large"
                                     onClick={ onSidePanelToggleClick }
+                                    data-componentid={ `${ componentId }-hamburger-icon` }
                                     data-testid={ `${ testId }-hamburger-icon` }
                                     link
                                 />
@@ -485,6 +516,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                 as={ Link }
                                 to={ brandLink }
                                 header
+                                data-componentid={ `${ componentId }-brand-container` }
                                 data-testid={ `${ testId }-brand-container` }
                             >
                                 { brand }
@@ -502,6 +534,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             <Menu.Menu
                                 position="left"
                                 className="header-extensions left"
+                                data-componentid={ `${ componentId }-left-extensions` }
                                 data-testid={ `${ testId }-left-extensions` }
                             >
                                 { renderHeaderExtensionLinks("left") }
@@ -513,6 +546,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     <Menu.Menu
                         position="right"
                         className="header-extensions right"
+                        data-componentid={ `${ componentId }-user-dropdown-container` }
                         data-testid={ `${ testId }-user-dropdown-container` }
                     >
                         { renderHeaderExtensionLinks("right") }
@@ -526,6 +560,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                         pointing={ userDropdownPointing }
                                         icon={ userDropdownIcon }
                                         className="user-dropdown"
+                                        data-componentid={ `${ componentId }-user-dropdown` }
                                         data-testid={ `${ testId }-user-dropdown` }
                                     >
                                         {
@@ -545,6 +580,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                                             authState={ basicProfileInfo }
                                                             profileInfo={ profileInfo }
                                                             isLoading={ isProfileInfoLoading }
+                                                            data-componentid={
+                                                                `${ componentId }-user-dropdown-avatar`
+                                                            }
                                                             data-testid={ `${ testId }-user-dropdown-avatar` }
                                                             size="x50"
                                                             onClick={ onAvatarClick }
@@ -560,6 +598,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                                             >
                                                                 <div
                                                                     className="name"
+                                                                    data-componentid={
+                                                                        `${ componentId }-user-dropdown-display-name`
+                                                                    }
                                                                     data-testid={
                                                                         `${ testId }-user-dropdown-display-name`
                                                                     }
@@ -586,6 +627,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                                                                 profileInfo, basicProfileInfo)) && (
                                                                         <div
                                                                             className="email"
+                                                                            data-componentid={
+                                                                                `${ componentId }-user-dropdown-email`
+                                                                            }
                                                                             data-testid={
                                                                                 `${ testId }-user-dropdown-email`
                                                                             }
@@ -632,6 +676,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
  * Default prop types for the header component.
  */
 Header.defaultProps = {
+    "data-componentid": "app-header",
     "data-testid": "app-header",
     fixed: "top",
     fluid: false,

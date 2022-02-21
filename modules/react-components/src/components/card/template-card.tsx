@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { CSSProperties, FunctionComponent, MouseEvent, ReactElement, ReactNode, useState } from "react";
 import { Card, CardProps, Icon, Label, Popup } from "semantic-ui-react";
@@ -25,7 +25,7 @@ import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
 /**
  * Proptypes for the template card component.
  */
-export interface TemplateCardPropsInterface extends TestableComponentInterface {
+export interface TemplateCardPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Additional classes.
      */
@@ -165,6 +165,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
         tagsAs,
         tagsSectionTitle,
         textAlign,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -210,6 +211,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
                     trigger={ (
                         <div
                             className="icon-wrapper"
+                            data-componentid={ `${ componentId }-logo-wrapper` }
                             data-testid={ `${ testId }-logo-wrapper` }
                         >
                             <GenericIcon
@@ -218,6 +220,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
                                 size={ tagSize }
                                 spaced="right"
                                 fill={ false }
+                                data-componentid={ `${ componentId }-logo` }
                                 data-testid={ `${ testId }-logo` }
                                 inline
                                 transparent
@@ -234,7 +237,12 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
 
         if (as === "label") {
             return (
-                <Label key={ index } size="mini" data-testid={ `${ testId }-logo-label` }>
+                <Label
+                    key={ index }
+                    size="mini"
+                    data-componentid={ `${ componentId }-logo-label` }
+                    data-testid={ `${ testId }-logo-label` }
+                >
                     { tag.displayName }
                 </Label>
             );
@@ -275,6 +283,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
             onClick={ onClick }
             link={ false }
             as="div"
+            data-componentid={ componentId }
             data-testid={ testId }
             onMouseEnter={ () => setDimmerState(true) }
             onMouseLeave={ () => setDimmerState(false) }
@@ -298,6 +307,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
                             className="card-image"
                             size={ imageSize }
                             icon={ image }
+                            data-componentid={ `${ componentId }-image` }
                             data-testid={ `${ testId }-image` }
                             { ...imageOptions }
                         />
@@ -305,18 +315,40 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
                 )
             }
             <Card.Content className="card-text-container" style={ textContainerStyles() }>
-                <Card.Header data-testid={ `${ testId }-header` }>{ name }</Card.Header>
-                <Card.Description data-testid={ `${ testId }-description` }>{ description }</Card.Description>
+                <Card.Header
+                    data-componentid={ `${ componentId }-header` }
+                    data-testid={ `${ testId }-header` }
+                >
+                    { name }
+                </Card.Header>
+                <Card.Description
+                    data-componentid={ `${ componentId }-description` }
+                    data-testid={ `${ testId }-description` }
+                >
+                    { description }
+                </Card.Description>
                 {
                     (showTags && tags && tags instanceof Array && tags.length > 0)
                         ? (
-                            <div className="tags-container" data-testid={ `${ testId }-tags-container` }>
+                            <div
+                                className="tags-container"
+                                data-componentid={ `${ componentId }-tags-container` }
+                                data-testid={ `${ testId }-tags-container` }
+                            >
                                 { tagsSectionTitle && (
-                                    <div className="title" data-testid={ `${ testId }-tags-title` }>
+                                    <div
+                                        className="title"
+                                        data-componentid={ `${ componentId }-tags-title` }
+                                        data-testid={ `${ testId }-tags-title` }
+                                    >
                                         { tagsSectionTitle }
                                     </div>
                                 ) }
-                                <div className="tags" data-testid={ `${ testId }-tags` }>
+                                <div
+                                    className="tags"
+                                    data-componentid={ `${ componentId }-tags` }
+                                    data-testid={ `${ testId }-tags` }
+                                >
                                     { showTagIcon && <Icon name="tag" className="tag-icon" size="tiny" color="grey" /> }
                                     {
                                         (tags as Array<TemplateCardTagInterface|string>)
@@ -336,6 +368,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
  * Default props for the template card.
  */
 TemplateCard.defaultProps = {
+    "data-componentid": "template-card",
     "data-testid": "template-card",
     imageSize: "tiny",
     inline: true,

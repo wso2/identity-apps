@@ -16,14 +16,15 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Modal, ModalHeaderProps } from "semantic-ui-react";
 
 /**
  * Confirmation modal header props.
  */
-export interface ConfirmationModalHeaderPropsInterface extends ModalHeaderProps, TestableComponentInterface { }
+export interface ConfirmationModalHeaderPropsInterface extends ModalHeaderProps, IdentifiableComponentInterface,
+    TestableComponentInterface { }
 
 /**
  * Confirmation modal header component.
@@ -38,12 +39,19 @@ export const ConfirmationModalHeader: FunctionComponent<ConfirmationModalHeaderP
 
     const {
         children,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
 
     return (
-        <Modal.Header data-testid={ testId } { ...rest }>{ children }</Modal.Header>
+        <Modal.Header
+            data-componentid={ componentId }
+            data-testid={ testId }
+            { ...rest }
+        >
+            { children }
+        </Modal.Header>
     );
 };
 
@@ -51,5 +59,6 @@ export const ConfirmationModalHeader: FunctionComponent<ConfirmationModalHeaderP
  * Default proptypes for the confirmation modal header component.
  */
 ConfirmationModalHeader.defaultProps = {
+    "data-componentid": "confirmation-modal-header",
     "data-testid": "confirmation-modal-header"
 };

@@ -16,7 +16,12 @@
  * under the License.
  */
 
-import { ChildRouteInterface, RouteInterface, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    ChildRouteInterface,
+    IdentifiableComponentInterface,
+    RouteInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import classNames from "classnames";
 import kebabCase from "lodash-es/kebabCase";
 import React, { ReactElement } from "react";
@@ -28,7 +33,9 @@ import { GenericIcon, GenericIconSizes } from "../icon";
 /**
  * Side panel item component Prop types.
  */
-export interface SidePanelItemPropsInterface extends CommonSidePanelPropsInterface, TestableComponentInterface {
+export interface SidePanelItemPropsInterface extends CommonSidePanelPropsInterface, IdentifiableComponentInterface,
+    TestableComponentInterface {
+
     /**
      * Size of the icon.
      */
@@ -68,6 +75,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
         translationHook,
         sidePanelItemHeight,
         hoverType,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -147,6 +155,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
                         disabled={ route.isFeatureEnabled === false }
                         active={ selected && (selected.path === route.path) }
                         onClick={ (): void => onSidePanelItemClick(route) }
+                        data-componentid={ `${ componentId }-${ kebabCase(route.id) }` }
                         data-testid={ `${ testId }-${ kebabCase(route.id) }` }
                     >
                         <GenericIcon
@@ -156,14 +165,20 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
                             floated="left"
                             spaced="right"
                             { ...route.icon }
+                            data-componentid={ `${ componentId }-icon` }
                             data-testid={ `${ testId }-icon` }
                         />
-                        <span className="route-name" data-testid={ `${ testId }-label` }>
+                        <span
+                            className="route-name"
+                            data-componentid={ `${ componentId }-label` }
+                            data-testid={ `${ testId }-label` }
+                        >
                             { translationHook ? translationHook(route.name) : route.name }
                             { route.featureStatus && (
                                 <Label
                                     className={ featureStatusLabelClasses }
                                     size="mini"
+                                    data-componentid={ `${ componentId }-version` }
                                     data-testid={ `${ testId }-version` }
                                 >
                                     { translationHook(route.featureStatusLabel) }
@@ -180,6 +195,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
                                         icon={ caretIcon }
                                         size="auto"
                                         floated="right"
+                                        data-componentid={ `${ componentId }-caret` }
                                         data-testid={ `${ testId }-caret` }
                                         transparent
                                     />
@@ -217,6 +233,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
  * Default props for the side panel item component.
  */
 SidePanelItem.defaultProps = {
+    "data-componentid": "side-panel-item",
     "data-testid": "side-panel-item",
     iconSize: "micro"
 };

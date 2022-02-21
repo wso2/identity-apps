@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import React, { FunctionComponent, ReactElement, ReactNode, useCallback, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -25,7 +25,7 @@ import { LinkButton } from "../button";
 import { LabelWithPopup } from "../label";
 import { Hint } from "../typography";
 
-export interface URLInputPropsInterface extends TestableComponentInterface {
+export interface URLInputPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     addURLTooltip?: string;
     duplicateURLErrorMessage: string;
     emptyErrorMessage?: string;
@@ -161,6 +161,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         skipInternalValidation,
         isCustom,
         addOriginByDefault,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -628,6 +629,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
             <Icon
                 name="delete"
                 onClick={ () => removeValue(url) }
+                data-componentid={ `${ componentId }-${ url }-delete-button` }
                 data-testid={ `${ testId }-${ url }-delete-button` }
             />
         );
@@ -642,7 +644,10 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                     <p>
                         { /*Section that contains | https://origin X |*/ }
                         { /*Chip widget with protocol highlights*/ }
-                        <Label data-testid={ `${ testId }-${ url }` }>
+                        <Label
+                            data-componentid={ `${ componentId }-${ url }` }
+                            data-testid={ `${ testId }-${ url }` }
+                        >
                             { urlTextWidget(url) }
                             { !readOnly && urlRemoveButtonWidget(url) }
                         </Label>
@@ -665,6 +670,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                                 onClick={ (e) => {
                                     onAllowOriginClick(e, origin);
                                 } }
+                                data-componentid={ `${ componentId }-${ url }-allow-button` }
                                 data-testid={ `${ testId }-${ url }-allow-button` }
                             >
                                 <span style={ { fontWeight: "bold" } }>Allow</span>
@@ -707,6 +713,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                             placeholder={ placeholder }
                             action
                             readOnly={ readOnly }
+                            data-componentid={ componentId }
                             data-testid={ testId }
                         >
                             <input
@@ -721,6 +728,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                                             icon="add"
                                             type="button"
                                             disabled={ readOnly || disabled || (!allowEmptyValues && !changeUrl) }
+                                            data-componentid={ `${ componentId }-add-button` }
                                             data-testid={ `${ testId }-add-button` }
                                         />
                                     )
@@ -762,7 +770,10 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                                 <Grid.Row key={ url } className={ "urlComponentTagRow" }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>
                                         <p>
-                                            <Label data-testid={ `${ testId }-${ url }` }>
+                                            <Label
+                                                data-componentid={ `${ componentId }-${ url }` }
+                                                data-testid={ `${ testId }-${ url }` }
+                                            >
                                                 <span>{ url }</span>
                                                 { !readOnly && urlRemoveButtonWidget(url) }
                                             </Label>
@@ -798,6 +809,7 @@ URLInput.defaultProps = {
     addOriginByDefault: false,
     addURLTooltip: "Add a URL",
     allowEmptyValues: false,
+    "data-componentid": "url-input",
     "data-testid": "url-input",
     duplicateURLErrorMessage: "This URL is already added. Please select a different one.",
     isAllowEnabled: true,

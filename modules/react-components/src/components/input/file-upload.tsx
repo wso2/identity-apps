@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useRef, useState } from "react";
 import { Button, Divider, Form, Icon, Message, Segment, Tab, TextArea } from "semantic-ui-react";
@@ -24,7 +24,7 @@ import { Button, Divider, Form, Icon, Message, Segment, Tab, TextArea } from "se
 /**
  * Component to upload file and read the content.
  */
-export interface FileUploadPropsInterface extends TestableComponentInterface {
+export interface FileUploadPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Dropzone placeholder icon.
      */
@@ -99,6 +99,7 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
         encode,
         triggerEmptyFileError,
         fileTypeToUpload,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -299,6 +300,7 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
                             onDragLeave={ () => {
                                 setDragOver(false);
                             } }
+                            data-componentid={ `${ componentId }-drop-zone` }
                             data-testid={ `${ testId }-drop-zone` }
                         >
                             <Segment placeholder className={ `drop-zone ${ dragOver ? "drag-over" : "" }` }>
@@ -355,6 +357,7 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
                         } }
                         spellCheck={ false }
                         className={ `certificate-editor ${ dark ? "dark" : "light" }` }
+                        data-componentid={ `${ componentId }-paste-content-textarea` }
                         data-testid={ `${ testId }-paste-content-textarea` }
                     />
                 </Form>
@@ -402,6 +405,7 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
                     event.target.value = null;
                     addFile(file);
                 } }
+                data-componentid={ componentId }
                 data-testid={ testId }
             />
             {
@@ -435,6 +439,7 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
  * Default props for the file upload component.
  */
 FileUpload.defaultProps = {
+    "data-componentid": "file-upload",
     "data-testid": "file-upload",
     encode: false,
     fileTypeToUpload: "text/xml"
