@@ -26,6 +26,8 @@ import MockSaveConfigResponse from "./__mocks__/mock.saveConfig";
 import * as api from "../api/remote-repo-config";
 import RemoteRepoConfig from "../pages/remote-repository-config";
 
+/* eslint-disable */
+
 /**
  * This will test the remote fetch configuration component with
  * no initial / saved configuration.
@@ -84,7 +86,7 @@ describe("UTC-1.0 - [Remote Fetch Configuration] - Without Configuration )", () 
             </Provider>
         );
         fireEvent.click(screen.getByTestId("remote-fetch-add-configuration"));
-        fireEvent.change(screen.getByTestId("remote-fetch-form-git-url").querySelector("input"), { 
+        fireEvent.change(screen.getByTestId("remote-fetch-form-git-url").querySelector("input"), {
             target: { value: "https://github.com/Thumimku/TestGit.git" } 
         });
         fireEvent.change(screen.getByTestId("remote-fetch-form-git-branch").querySelector("input"), { 

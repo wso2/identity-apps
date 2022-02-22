@@ -27,6 +27,8 @@ import NoConfigResponse from "./__mocks__/mock.noconfig";
 import * as api from "../api/remote-repo-config";
 import RemoteRepoConfig from "../pages/remote-repository-config";
 
+/* eslint-disable */
+
 /**
  * This will test the remote fetch configuration management
  * feature with a configuration.

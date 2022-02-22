@@ -25,6 +25,8 @@ import MockConfigDetailsResponse from "./__mocks__/mock.config-status";
 import * as api from "../api/remote-repo-config";
 import { RemoteFetchDetails } from "../components/remote-fetch-details";
 
+/* eslint-disable */
+
 /**
  * This will test the remote fetch status detail modal.
  * TODO: Enable once https://github.com/wso2/product-is/issues/10393 is fixed.
