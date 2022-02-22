@@ -26,6 +26,8 @@ import MockConfigTriggerResponse from "./__mocks__/mock.config-trigger-response"
 import * as api from "../api/remote-repo-config";
 import { RemoteFetchStatus } from "../components";
 
+/* eslint-disable */
+
 /**
  * This will test the remote configuration status component.
  * TODO: Enable once https://github.com/wso2/product-is/issues/10393 is fixed.
