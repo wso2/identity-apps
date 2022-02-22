@@ -45,6 +45,7 @@ const APP_SOURCE_DIRECTORY = "src";                    // App source code direct
 const APP_NODE_MODULES_DIRECTORY = "node_modules";     // Node modules.
 const OUTPUT_PATH = "build/myaccount";                 // Build artifacts output path.
 const CACHE_DIRECTORY = "cache";                       // Output directory for the cache files. Only applicable in dev mode.
+const STATIC_CSS_DIRECTORY = "static/css";             // Static root directory.
 const STATIC_ASSETS_DIRECTORY = "static/media";        // Output directory for static assets i.e .png, .jpg etc.
 const JAVA_EE_SERVER_FOLDERS = [ "**/WEB-INF/**/*" ];  // Java EE server specific folders.
 
@@ -413,6 +414,11 @@ module.exports = (env) => {
                                 : []
                         },
                         to: "."
+                    },
+                    {
+                        context: path.join(__dirname, "src", "extensions", "assets"),
+                        from: "css",
+                        to: STATIC_CSS_DIRECTORY
                     },
                     // For deployments on static servers, we don't require `auth.jsp` since we can't use
                     // `form_post` response mode.
