@@ -418,6 +418,7 @@ module.exports = (env) => {
                     {
                         context: path.join(__dirname, "src", "extensions", "assets"),
                         from: "css",
+                        noErrorOnMissing: true,
                         to: STATIC_CSS_DIRECTORY
                     },
                     // For deployments on static servers, we don't require `auth.jsp` since we can't use
