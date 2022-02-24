@@ -19,6 +19,7 @@
 
 <%@ page import="org.apache.commons.collections.map.HashedMap" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.wso2.carbon.identity.base.IdentityRuntimeException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
@@ -69,14 +70,26 @@
 
     if (isUsernameRecovery) {
         // Username Recovery Scenario
-        if (StringUtils.isNotBlank(callback) && !Utils.validateCallbackURL(callback, tenantDomain,
-            IdentityRecoveryConstants.ConnectorConfig.RECOVERY_CALLBACK_REGEX)) {
-            request.setAttribute("error", true);
-            request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                        "Callback.url.format.invalid"));
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-            return;
-        }
+        try {
+                    if (StringUtils.isNotBlank(callback) && !Utils.validateCallbackURL(callback, tenantDomain,
+                        IdentityRecoveryConstants.ConnectorConfig.RECOVERY_CALLBACK_REGEX)) {
+                        request.setAttribute("error", true);
+                        request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                    "Callback.url.format.invalid"));
+                        request.getRequestDispatcher("error.jsp").forward(request, response);
+                        return;
+                    }
+                } catch (IdentityRuntimeException e) {
+                    if (StringUtils.isBlank(tenantDomain)) {
+                        tenantDomain = IdentityManagementEndpointConstants.SUPER_TENANT;
+                    } else {
+                        request.setAttribute("error", true);
+                        request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                                    "Invalid.tenant.domain"));
+                        request.getRequestDispatcher("error.jsp").forward(request, response);
+                        return;
+                    }
+                }
         List<Claim> claims;
         UsernameRecoveryApi usernameRecoveryApi = new UsernameRecoveryApi();
         try {
