@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import { ConfirmationModal, GenericIcon } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { ReactElement, useEffect, useRef, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Icon, List, ModalContent, Popup } from "semantic-ui-react";
@@ -79,9 +79,28 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const [ editFIDO, setEditFido ] = useState<Map<string, boolean>>();
     const [ deleteKey, setDeleteKey ] = useState<string>("");
     const [ fidoFlowStartResponse, setFidoFlowStartResponse ] = useState<any>(null);
+    const [ oldFidoFlowStartResponse, setOldFidoFlowStartResponse ] = useState<any>(null);
 
-    const tryOlderDevice = useRef(false);
-    const retryAttempt = useRef(0);
+    // Safari doesn't allow the flow to be initiated in async.
+    // link https://bugs.webkit.org/show_bug.cgi?id=213595
+    // So the request is sent on component mount so that the button click can trigger the flow directly.
+    useEffect(() => {
+        if (new UAParser().getBrowser().name !== "Safari") {
+            return;
+        }
+
+        startFidoUsernamelessFlow()
+            .then((response) => {
+                setFidoFlowStartResponse(response);
+            });
+
+        commonConfig.accountSecurityPage.mfa.fido2.allowLegacyKeyRegistration &&
+            startFidoFlow()
+                .then((response) => {
+                    setOldFidoFlowStartResponse(response);
+                });
+
+    }, []);
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
     const dispatch = useDispatch();
@@ -176,14 +195,12 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     };
 
     const talkToDevice = (request?: any): void => {
+        setDeviceErrorModalVisibility(false);
+
         const fidoRequest = request ?? fidoFlowStartResponse;
 
         if (!fidoRequest) {
-            if (tryOlderDevice.current) {
-                fireFailureNotification();
-            } else {
-                setDeviceErrorModalVisibility(true);
-            }
+            fireFailureNotification();
 
             return;
         }
@@ -197,14 +214,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                 setIsDeviceSuccessModalVisibility(true);
             })
             .catch(() => {
-                if (tryOlderDevice.current || retryAttempt.current > 1) {
-                    fireFailureNotification();
-                } else {
-                    setDeviceErrorModalVisibility(true);
-                }
-            })
-            .finally(() => {
-                tryOlderDevice.current = false;
+                setDeviceErrorModalVisibility(true);
             });
     };
 
@@ -214,23 +224,22 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
      */
     const addDevice = () => {
         setDeviceErrorModalVisibility(false);
-        startFidoFlow()
-            .then((response) => {
-                // Safari doesn't allow the flow to be initiated in async.
-                // link https://bugs.webkit.org/show_bug.cgi?id=213595
-                if (new UAParser().getBrowser().name === "Safari") {
-                    setFidoFlowStartResponse(response);
-                    tryOlderDevice.current = true;
-                } else {
-                    tryOlderDevice.current = true;
-                    setFidoFlowStartResponse(response);
+        if (new UAParser().getBrowser().name === "Safari") {
+            // Safari doesn't allow the flow to be initiated in async.
+            // link https://bugs.webkit.org/show_bug.cgi?id=213595
+            if (new UAParser().getBrowser().name === "Safari") {
+                talkToDevice(oldFidoFlowStartResponse);
+            }
+        } else {
+            startFidoFlow()
+                .then((response) => {
+                    setOldFidoFlowStartResponse(response);
                     talkToDevice(response);
-                }
-
-            })
-            .catch(() => {
-                fireFailureNotification();
-            });
+                })
+                .catch(() => {
+                    fireFailureNotification();
+                });
+        }
     };
 
     /**
@@ -239,20 +248,21 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
      */
     const addUsernamelessDevice = () => {
         setDeviceErrorModalVisibility(false);
-        startFidoUsernamelessFlow()
-            .then((response) => {
-                // Safari doesn't allow the flow to be initiated in async.
-                // link https://bugs.webkit.org/show_bug.cgi?id=213595
-                if (new UAParser().getBrowser().name === "Safari") {
-                    setFidoFlowStartResponse(response);
-                } else {
+
+        // Safari doesn't allow the flow to be initiated in async.
+        // link https://bugs.webkit.org/show_bug.cgi?id=213595
+        if (new UAParser().getBrowser().name === "Safari") {
+            talkToDevice(fidoFlowStartResponse);
+        } else {
+            startFidoUsernamelessFlow()
+                .then((response) => {
                     setFidoFlowStartResponse(response);
                     talkToDevice(response);
-                }
-            })
-            .catch(() => {
-                setDeviceErrorModalVisibility(true);
-            });
+                })
+                .catch(() => {
+                    setDeviceErrorModalVisibility(true);
+                });
+        }
     };
 
     /**
@@ -388,7 +398,6 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                 secondaryAction={ t("common:cancel") }
                 onSecondaryActionClick={ handleDeviceErrorModalClose }
                 onPrimaryActionClick={ () => {
-                    retryAttempt.current++;
                     talkToDevice();
                 } }
                 open={ isDeviceErrorModalVisible }
@@ -404,21 +413,9 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
             >
                 <ModalContent>
                     { commonConfig.accountSecurityPage.mfa.fido2.allowLegacyKeyRegistration && (
-                        <div
-                            onClick={ () => {
-                                // Safari doesn't allow the flow to be initiated in async.
-                                // link https://bugs.webkit.org/show_bug.cgi?id=213595
-                                if (new UAParser().getBrowser().name === "Safari") {
-                                    setTimeout(() => {
-                                        talkToDevice();
-                                    }, 990);
-                                }
-                            } }
-                        >
-                            <Button className="negative-modal-link-button" onClick={ addDevice }>
-                                { t("myAccount:components.mfa.fido.tryButton") }
-                            </Button>
-                        </div>
+                        <Button className="negative-modal-link-button" onClick={ addDevice }>
+                            { t("myAccount:components.mfa.fido.tryButton") }
+                        </Button>
                     ) }
                 </ModalContent>
             </ModalComponent>
@@ -497,16 +494,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                             <List.Content
                                 floated="right"
                             >
-                                <span
-                                    onClick={ () => {
-                                        // Safari doesn't allow the flow to be initiated in async.
-                                        // link https://bugs.webkit.org/show_bug.cgi?id=213595
-                                        if (new UAParser().getBrowser().name === "Safari") {
-                                            setTimeout(() => {
-                                                talkToDevice();
-                                            }, 990);
-                                        }
-                                    } }>
+                                <span>
                                     <Icon
                                         floated="right"
                                         link={ true }
