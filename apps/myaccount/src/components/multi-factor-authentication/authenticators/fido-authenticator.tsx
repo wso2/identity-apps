@@ -89,11 +89,15 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
             return;
         }
 
+        // Exception is not handled here since this request is dispatched on page load.
+        // TODO: Add a logger to print the exception
         startFidoUsernamelessFlow()
             .then((response) => {
                 setFidoFlowStartResponse(response);
             });
 
+        // Exception is not handled here since this request is dispatched on page load.
+        // TODO: Add a logger to print the exception
         commonConfig.accountSecurityPage.mfa.fido2.allowLegacyKeyRegistration &&
             startFidoFlow()
                 .then((response) => {
