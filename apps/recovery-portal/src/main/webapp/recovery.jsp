@@ -70,6 +70,9 @@
 
     if (isUsernameRecovery) {
         // Username Recovery Scenario
+        if (StringUtils.isBlank(tenantDomain)) {
+            tenantDomain = IdentityManagementEndpointConstants.SUPER_TENANT;
+        }
         try {
             if (StringUtils.isNotBlank(callback) && !Utils.validateCallbackURL(callback, tenantDomain,
                 IdentityRecoveryConstants.ConnectorConfig.RECOVERY_CALLBACK_REGEX)) {
@@ -80,15 +83,10 @@
                 return;
             }
         } catch (IdentityRuntimeException e) {
-            if (StringUtils.isBlank(tenantDomain)) {
-                tenantDomain = IdentityManagementEndpointConstants.SUPER_TENANT;
-            } else {
-                request.setAttribute("error", true);
-                request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                    "Invalid.tenant.domain"));
-                request.getRequestDispatcher("error.jsp").forward(request, response);
-                return;
-            }
+            request.setAttribute("error", true);
+            request.setAttribute("errorMsg", e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
         List<Claim> claims;
         UsernameRecoveryApi usernameRecoveryApi = new UsernameRecoveryApi();
