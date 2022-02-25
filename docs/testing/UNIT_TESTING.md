@@ -55,16 +55,19 @@ features
 Writing unit tests for every component that you develop is mandatory.
 Take a look at the following example test case where we test if the component that we are writing mounts and renders as expected.
 
+⚠️ There are several ESLint plugins ([eslint-plugin-jest-dom][eslint-plugin-jest-dom], [eslint-plugin-testing-library][eslint-plugin-testing-library]) configured to make sure that developers follow the best practices.
+Please configure ESLint in your coding environment if you haven't already done so by [following this guide][eslint-ide-plugin-setup-guide].
+
 ```tsx
-import { render } from "@unit-testing";
+import { render, screen } from "@unit-testing";
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { ApplicationList } from "../../../components/applications";
 
 describe("Test if the Application List is working as expected", () => {
     it("<ApplicationList /> renders without exploding", () => {
-        const component = render(<ApplicationList />);
-        expect(component.getByTestId("application-list")).toBeInTheDocument();
+        render(<ApplicationList />);
+        expect(screen.getByTestId("application-list")).toBeInTheDocument();
     });
 });
 ```
@@ -113,16 +116,34 @@ export const SampleComponent: FunctionComponent<SampleComponentInterface> = (
 :warning: Some components might have the `data-testid` already implemented using the [TestableComponentInterface](../../modules/core/src/models/core.ts).
 This interface and the data attribute since has been **deprecated**. Hence, :boom: **DO NOT USE IT** in new components. Refactor the usage where ever possible.
 
+### Testing API Calls
+
+We have used [msw][msw] to mock the APIs. The mock implementation root for the core can be found at `<APP_ROOT>/test-configs/__mocks__/server`.
+If you need to add further endpoint mocks, add them in the `handlers.ts`.
+
+#### Extended Features
+
+The mock implementation root for the extensions can be found at `<APP_ROOT>/src/extensions/test-configs/__mocks__/server`.
+Add any extended API endpoint mocks in the `handlers.ts`.
+
+💡Checkout these references if you want to learn more about API mocking.
+
 ### Snapshot Testing
 
 Snapshot tests are a very useful tool whenever you want to make sure your UI does not change unexpectedly.
 
 A typical snapshot test case renders a UI component, takes a snapshot, then compares it to a reference snapshot file stored alongside the test. The test will fail if the two snapshots do not match: either the change is unexpected, or the reference snapshot needs to be updated to the new version of the UI component.
 
-```
+```tsx
+import { render } from "@unit-testing";
+import React from "react";
+import "@testing-library/jest-dom/extend-expect";
+import { ApplicationList } from "../../../components/applications";
+
 it("<ApplicationList /> matches snapshot", () => {
-    const component = render(<ApplicationList />);
-    expect(component.container).toMatchSnapshot();
+    const { container } = render(<ApplicationList />);
+
+    expect(container).toMatchSnapshot();
 });
 ```
 
@@ -132,21 +153,35 @@ For further reference, checkout the official documentation of [React Testing Lib
 
 Following are few of the useful commands that you can use to run the existing unit tests for modules.
 
-### Run Tests for all modules
+### Run the full test suite
 
 ```bash
 # From project root.
 npm run test
 ```
 
-### Run Tests for all modules in watch mode
+#### Run the full test suite in watch mode
 
 ```bash
 # From project root.
 npm run test:watch
 ```
 
-### Run Tests for individual component
+### Run Tests for a specific test file
+
+```bash
+# From console root
+npm run test ./src/features/applications/__tests__/applications-page.test.tsx
+```
+
+### Run Tests for a specific test file in watch mode
+
+```bash
+# From console root
+npm run test -- --watch ./src/features/applications/__tests__/applications-page.test.tsx
+```
+
+### Run Tests for an individual module
 
 #### Using Lerna
 
@@ -172,7 +207,7 @@ npm run test:unit:apps
 npm run test:unit:<MODULE_NAME>
 ```
 
-#### From inside respective component.
+#### From inside respective module.
 
 ```bash
 # From inside component ex: apps/console. Use `npm run test:watch for watch mode.
@@ -190,12 +225,23 @@ npm run test:unit:coverage
 
 ## References
 
-Blogs
+- Common
+    - [Common mistakes with React Testing Library][common-mistakes-with-react-testing-library] Blog by Kent C. Dodds 
+    - [Fix the "not wrapped in act(...)" warning][fix-the-not-wrapped-in-act-warning] Blog by Kent C. Dodds
+- API Mocking
+    - [Stop mocking fetch][stop-mocking-fetch] Blog by Kent C. Dodds
+    - [Use Mock Service Worker and Test Like a User][use-mock-Service-worker] Video Tutorial by Leigh Halliday
 
-- [Common mistakes with React Testing Library][common-mistakes-with-react-testing-library] by Kent C. Dodds 
-- [Fix the "not wrapped in act(...)" warning][fix-the-not-wrapped-in-act-warning] by Kent C. Dodds
+<!--- Local Links -->
+[eslint-ide-plugin-setup-guide]: ../SET_UP_DEV_ENVIRONMENT.md#eslint-ide-plugin
 
+<!--- Remote Links -->
 [react-testing-library]: https://testing-library.com/docs/
 [react-testing-library-custom-renderer]: https://testing-library.com/docs/react-testing-library/setup#custom-render
 [common-mistakes-with-react-testing-library]: https://kentcdodds.com/blog/common-mistakes-with-react-testing-library#using-wrapper-as-the-variable-name-for-the-return-value-from-render
+[stop-mocking-fetch]: https://kentcdodds.com/blog/stop-mocking-fetch
 [fix-the-not-wrapped-in-act-warning]: https://kentcdodds.com/blog/fix-the-not-wrapped-in-act-warning
+[eslint-plugin-jest-dom]: https://github.com/testing-library/eslint-plugin-jest-dom
+[eslint-plugin-testing-library]: https://github.com/testing-library/eslint-plugin-testing-library
+[msw]: https://mswjs.io/
+[use-mock-Service-worker]: https://www.youtube.com/watch?v=v77fjkKQTH0
