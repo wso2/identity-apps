@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, Hint } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Checkbox, Icon, Input, Popup, Table } from "semantic-ui-react";
 import { ExtendedClaimMappingInterface } from "./attribute-settings";
@@ -52,7 +52,7 @@ interface AttributeListItemPropInterface extends TestableComponentInterface {
     /**
      * Add a label.
      */
-    label?: any;
+    label?: ReactNode;
     /**
      * Specify whether hint is displayed.
      */
@@ -157,7 +157,8 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
     return (
         <Table.Row data-testid={ testId }>
             <Table.Cell>
-                <div>{ !localDialect ? localClaimDisplayName : displayName }
+                <div>
+                    { !localDialect ? localClaimDisplayName : displayName }
                     { hint? 
                         (<Hint warning= { true } popup>
                             {
@@ -176,7 +177,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                         position="bottom left">
                     </Popup>
                 }
-                <Hint warning={ true } hidden = { label? false : true }>{ label }</Hint>
+                <Hint warning={ true } hidden= { label ? false : true }>{ label }</Hint>
             </Table.Cell>
             {
                 localDialect && mappingOn && (

@@ -654,7 +654,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
      * Check if the claim has OIDC mapping
      * @return {boolean}
      */
-     const checkMapping = (claiminput) => {
+     const checkMapping = (claiminput): boolean => {
         let isMapping = false;
 
         openIDConnectClaims?.map((claim) => {
