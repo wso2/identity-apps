@@ -1677,7 +1677,7 @@ export const console: ConsoleNS = {
                                         hint: "Select to issue a new <1>refresh_token</1> each time a "+
                                             "<3>refresh_token</3> is " +
                                             "exchanged. The existing token will be invalidated.",
-                                        label: "Rotate refresh token",
+                                        label: "Renew refresh token",
                                         validations: {
                                             empty: "This is a required field."
                                         }
