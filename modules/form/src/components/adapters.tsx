@@ -27,10 +27,15 @@ import {
     PrimaryButton
 } from "@wso2is/react-components";
 import omit from "lodash-es/omit";
-import React, { ClipboardEvent, KeyboardEvent, ReactElement } from "react";
+import React, { ClipboardEvent, FormEvent, KeyboardEvent, ReactElement } from "react";
 import { Checkbox, Form, Input, Popup, Select } from "semantic-ui-react";
 import { QueryParameters } from "../addons";
-import { CheckboxAdapterPropsInterface, ColorPickerAdapterPropsInterface, FieldButtonTypes } from "../models";
+import {
+    CheckboxAdapterPropsInterface,
+    ColorPickerAdapterPropsInterface,
+    FieldButtonTypes,
+    RadioAdapterPropsInterface
+} from "../models";
 
 /**
  * The enter key.
@@ -305,6 +310,58 @@ export const CheckboxAdapter = (props: CheckboxAdapterPropsInterface): ReactElem
                     target: {
                         checked,
                         type: "checkbox",
+                        value
+                    }
+                });
+            } }
+        />
+    );
+};
+
+/**
+ * Semantic UI Radio Adapter.
+ *
+ * @param {RadioAdapterPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
+ */
+export const RadioAdapter = (props: RadioAdapterPropsInterface): ReactElement => {
+
+    const {
+        childFieldProps,
+        input: { value, ...input },
+        ...rest
+    } = props;
+
+    // unused, just don't pass it along with the ...rest
+    const {
+        /* eslint-disable @typescript-eslint/no-unused-vars */
+        type,
+        meta,
+        hint,
+        children,
+        parentFormProps,
+        render,
+        width,
+        /* eslint-enable @typescript-eslint/no-unused-vars */
+        ...filteredRest
+    } = rest;
+
+    return (
+        <Form.Radio
+            { ...input }
+            { ...filteredRest }
+            label={ childFieldProps?.label }
+            name={ childFieldProps?.name }
+            onChange={ (event: FormEvent<HTMLInputElement>, { checked }:  { checked: boolean }) => {
+                if (childFieldProps?.listen && typeof childFieldProps.listen === "function") {
+                    childFieldProps.listen(checked);
+                }
+
+                input.onChange({
+                    target: {
+                        checked,
+                        type: "radio",
                         value
                     }
                 });
