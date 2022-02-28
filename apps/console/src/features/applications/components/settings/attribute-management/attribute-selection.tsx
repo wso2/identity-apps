@@ -454,8 +454,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
                         if (!initialSelectedClaims.find(
                             (selectedExternalClaim) => selectedExternalClaim?.mappedLocalClaimURI 
-                            === claimMapping.localClaim.uri))
-                        {
+                            === claimMapping.localClaim.uri)){
                             initialSelectedClaims.push(option);
                         }                          
                     }
