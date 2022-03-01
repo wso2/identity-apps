@@ -417,7 +417,11 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
             >
                 <ModalContent>
                     { commonConfig.accountSecurityPage.mfa.fido2.allowLegacyKeyRegistration && (
-                        <Button className="negative-modal-link-button" onClick={ addDevice }>
+                        <Button
+                            className="negative-modal-link-button"
+                            onClick={ addDevice }
+                            data-testid={ `${ testId }-error-retry` }
+                        >
                             { t("myAccount:components.mfa.fido.tryButton") }
                         </Button>
                     ) }
@@ -463,6 +467,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                         : false
                                 }
                                 maxLength={ 30 }
+                                data-testid={ `${ testId }-fido-device-name` }
                             />
                         </Form.Field>
                     </Form>
@@ -506,6 +511,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                         size="small"
                                         color="grey"
                                         name="add"
+                                        data-testid={ `${ testId }-add-device-button` }
                                         onClick={ addUsernamelessDevice }
                                     />
                                 </span>
@@ -561,6 +567,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                                     ) }
                                                                     type="text"
                                                                     maxLength={ 30 }
+                                                                    data-testid={ `${ testId }-fido-device-name` }
                                                                 />
                                                                 <Field hidden={ true } type="divider" />
                                                                 <Form.Group inline={ true }>
@@ -568,6 +575,9 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                                         size="small"
                                                                         type="submit"
                                                                         value={ t("common:update").toString() }
+                                                                        data-testid={
+                                                                            `${ testId }-fido-device-name-submit`
+                                                                        }
                                                                     />
                                                                     <Field
                                                                         className="link-button"
@@ -577,6 +587,9 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                                         size="small"
                                                                         type="button"
                                                                         value={ t("common:cancel").toString() }
+                                                                        data-testid={
+                                                                            `${ testId }-fido-device-name-cancel`
+                                                                        }
                                                                     />
                                                                 </Form.Group>
                                                             </Forms>
@@ -611,6 +624,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                                 size="large"
                                                                 color="grey"
                                                                 name="pencil alternate"
+                                                                data-testid={ `${ testId }-edit-device` }
                                                                 onClick={ () => {
                                                                     showEdit(device.credential.credentialId);
                                                                 } }
@@ -627,6 +641,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                                         color="red"
                                                                         size="small"
                                                                         className="list-icon"
+                                                                        data-testid={ `${ testId }-remove-device` }
                                                                         onClick={ () => {
                                                                             setDeleteKey(
                                                                                 device.credential.credentialId);
