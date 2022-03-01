@@ -162,7 +162,8 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                     { hint? 
                         (<Hint warning= { true } popup>
                             {
-                                "Faulty OIDC Connect Attribute Mapping"
+                                t("console:develop.features.applications.edit.sections.attributes" +
+                                ".selection.mappingTable.listItem.faultyAttributeMapping")
                             }
                         </Hint>)
                         : "" }

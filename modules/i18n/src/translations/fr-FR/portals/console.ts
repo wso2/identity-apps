@@ -827,6 +827,7 @@ export const console: ConsoleNS = {
                                             subjectDisabledSelection: "Cet attribut est obligatoire car il " +
                                                 "s'agit de l'attribut sujet."
                                         },
+                                        faultyAttributeMapping: "Mappage de connexion OIDC défectueux",
                                         fields: {
                                             claim: {
                                                 label: "Veuillez entrer une valeur",

@@ -492,6 +492,7 @@ export interface ConsoleNS {
                                             removeRequested: string;
                                             subjectDisabledSelection: string;
                                         };
+                                        faultyAttributeMapping: string;
                                         fields: {
                                             claim: FormAttributes;
                                         };
