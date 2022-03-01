@@ -17,9 +17,9 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Code } from "@wso2is/react-components";
+import { Code, Hint } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Checkbox, Icon, Input, Popup, Table } from "semantic-ui-react";
 import { ExtendedClaimMappingInterface } from "./attribute-settings";
@@ -49,6 +49,14 @@ interface AttributeListItemPropInterface extends TestableComponentInterface {
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Add a label.
+     */
+    label?: ReactNode;
+    /**
+     * Specify whether hint is displayed.
+     */
+    hint?: boolean;
 }
 
 /**
@@ -79,6 +87,8 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         readOnly,
         deleteAttribute,
         subject,
+        label,
+        hint,
         [ "data-testid" ]: testId
     } = props;
 
@@ -147,7 +157,17 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
     return (
         <Table.Row data-testid={ testId }>
             <Table.Cell>
-                <div>{ !localDialect ? localClaimDisplayName : displayName }</div>
+                <div>
+                    { !localDialect ? localClaimDisplayName : displayName }
+                    { hint? 
+                        (<Hint warning= { true } popup>
+                            {
+                                t("console:develop.features.applications.edit.sections.attributes" +
+                                ".selection.mappingTable.listItem.faultyAttributeMapping")
+                            }
+                        </Hint>)
+                        : "" }
+                </div>
                 {
                     <Popup
                         content={ claimURI }
@@ -158,6 +178,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                         position="bottom left">
                     </Popup>
                 }
+                <Hint warning={ true } hidden= { label ? false : true }>{ label }</Hint>
             </Table.Cell>
             {
                 localDialect && mappingOn && (
