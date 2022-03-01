@@ -200,6 +200,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
         if (!userName) {
             return;
         }
+        
         ( async function _execute() {
             await getConsentedApps();
             await getAllPurposesDetails();
