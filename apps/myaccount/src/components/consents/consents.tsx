@@ -76,7 +76,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     const [ consentListActiveIndexes, setConsentListActiveIndexes ] = useState([]);
     const [ deniedPIIClaimList, setDeniedPIIClaimList ] = useState<Set<PIICategoryClaimToggleItem>>(new Set());
     const [ acceptedPIIClaimList, setAcceptedPIIClaimList ] = useState<Set<PIICategoryClaimToggleItem>>(new Set());
-    const userName: string = useSelector((state: AppState) => state?.authenticationInformation?.username);
+    const userName: string = useSelector((state: AppState) => state?.authenticationInformation?.profileInfo.userName);
     const tenantDomain: string = useSelector((state: AppState) => state?.authenticationInformation?.tenantDomain);
     const { t } = useTranslation();
     const endUserSession = useEndUserSession();
@@ -138,9 +138,8 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
         // thrown it will be handled in @link getConsentedApps function.
         const homeRealmIdentifiers: string[] = await fetchHomeRealmIdentifiers();
 
-        // Recreate the piiPrincipalId from currently authenticated user's username.
-        const fragments = userName.split("@");
-        const piiPrincipalId = fragments.length ? fragments[0] : "";
+        // Use the profile username for the piiPrincipalId.
+        const piiPrincipalId = userName;
 
         const receipt: ConsentInterface = {
             consentReceipt: {
@@ -198,11 +197,14 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
      * Apply any component side-effects here.
      */
     useEffect(() => {
+        if (!userName) {
+            return;
+        }
         ( async function _execute() {
             await getConsentedApps();
             await getAllPurposesDetails();
         }() );
-    }, []);
+    }, [userName]);
 
     /**
      * Populates the PII claim list to state hooks.
