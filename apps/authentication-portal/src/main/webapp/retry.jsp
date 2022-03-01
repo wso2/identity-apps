@@ -32,6 +32,10 @@
 <%@ include file="includes/localize.jsp" %>
 <%@include file="includes/init-url.jsp" %>
 
+<%!
+    private static final String SERVER_AUTH_URL = "/api/identity/auth/v1.1/";
+    private static final String REQUEST_PARAM_ERROR_KEY = "errorKey";
+%>
 <%
     String stat = request.getParameter("status");
     String statusMessage = request.getParameter("statusMsg");
@@ -39,20 +43,20 @@
     String applicationAccessURLWithoutEncoding = null;
     // Check the error is null or whether there is no corresponding value in the resource bundle.
     if (stat == null || statusMessage == null) {
-            String errorKey = request.getParameter("errorKey");
-            if (errorKey != null) {
-                String authAPIURL = application.getInitParameter(Constants.AUTHENTICATION_REST_ENDPOINT_URL);
-                if (StringUtils.isBlank(authAPIURL)) {
-                    authAPIURL = IdentityUtil.getServerURL("/api/identity/auth/v1.1/", true, true);
-                }
-                if (!authAPIURL.endsWith("/")) {
-                    authAPIURL += "/";
-                }
-                authAPIURL += "data/AuthenticationError/" + errorKey;
-                String contextProperties = AuthContextAPIClient.getContextProperties(authAPIURL);
-                Gson gson = new Gson();
-                Map<String, Object> parameters = gson.fromJson(contextProperties, Map.class);
-                if (parameters != null) {
+        String errorKey = request.getParameter(REQUEST_PARAM_ERROR_KEY);
+        if (errorKey != null) {
+            String authAPIURL = application.getInitParameter(Constants.AUTHENTICATION_REST_ENDPOINT_URL);
+            if (StringUtils.isBlank(authAPIURL)) {
+                authAPIURL = IdentityUtil.getServerURL(SERVER_AUTH_URL, true, true);
+            }
+            if (!authAPIURL.endsWith("/")) {
+                authAPIURL += "/";
+            }
+            authAPIURL += "data/AuthenticationError/" + errorKey;
+            String contextProperties = AuthContextAPIClient.getContextProperties(authAPIURL);
+            Gson gson = new Gson();
+            Map<String, Object> parameters = gson.fromJson(contextProperties, Map.class);
+            if (parameters != null) {
                 String statusParam = (String) parameters.get("status");
                 String statusMessageParam = (String) parameters.get("statusMsg");
                 if (StringUtils.isNotEmpty(statusParam)) {
