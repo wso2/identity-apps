@@ -34,6 +34,7 @@
 
 <%!
     private static final String SERVER_AUTH_URL = "/api/identity/auth/v1.1/";
+    private static final String DATA_AUTH_ERROR_URL = "data/AuthenticationError/";
     private static final String REQUEST_PARAM_ERROR_KEY = "errorKey";
 %>
 <%
@@ -52,7 +53,7 @@
             if (!authAPIURL.endsWith("/")) {
                 authAPIURL += "/";
             }
-            authAPIURL += "data/AuthenticationError/" + errorKey;
+            authAPIURL += DATA_AUTH_ERROR_URL + errorKey;
             String contextProperties = AuthContextAPIClient.getContextProperties(authAPIURL);
             Gson gson = new Gson();
             Map<String, Object> parameters = gson.fromJson(contextProperties, Map.class);
