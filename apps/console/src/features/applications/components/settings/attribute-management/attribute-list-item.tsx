@@ -54,9 +54,9 @@ interface AttributeListItemPropInterface extends TestableComponentInterface {
      */
     label?: ReactNode;
     /**
-     * Specify whether hint is displayed.
+     * Specify whether there is an OIDC mapping.
      */
-    hint?: boolean;
+     isOIDCMapping?: boolean;
 }
 
 /**
@@ -88,7 +88,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         deleteAttribute,
         subject,
         label,
-        hint,
+        isOIDCMapping,
         [ "data-testid" ]: testId
     } = props;
 
@@ -100,6 +100,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
     const [ requested, setRequested ] = useState(true);
     const [ mappedAttribute, setMappedAttribute ] = useState(claimURI);
     const [ defaultMappedAttribute ] = useState(mappedAttribute);
+    const localDialectURI = "http://wso2.org/claims";
 
     const handleMandatoryCheckChange = () => {
         if (mandatory) {
@@ -159,21 +160,29 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
             <Table.Cell>
                 <div>
                     { !localDialect ? localClaimDisplayName : displayName }
-                    { hint? 
-                        (<Hint warning= { true } popup>
-                            {
-                                t("console:develop.features.applications.edit.sections.attributes" +
-                                ".selection.mappingTable.listItem.faultyAttributeMapping")
-                            }
-                        </Hint>)
-                        : "" }
                 </div>
+                { isOIDCMapping?
+                    (<Hint warning= { true } popup>
+                        {
+                            t("console:develop.features.applications.edit.sections.attributes" +
+                                ".selection.mappingTable.listItem.faultyAttributeMappingHint")
+                        }
+                    </Hint>)
+                : "" }
                 {
                     <Popup
-                        content={ claimURI }
+                    content={ claimURI.startsWith(localDialectURI)
+                        ? t("console:develop.features.applications.edit.sections.attributes" +
+                            ".selection.mappingTable.listItem.faultyAttributeMapping")
+                        : claimURI }
                         inverted
                         trigger={ (
-                            <Code compact withBackground={ false }>{ claimURI }</Code>
+                            <Code compact withBackground={ false }>
+                                { claimURI.startsWith(localDialectURI)
+                                    ? t("console:develop.features.applications.edit.sections.attributes" +
+                                        ".selection.mappingTable.listItem.faultyAttributeMapping")
+                                    : claimURI }
+                            </Code>
                         ) }
                         position="bottom left">
                     </Popup>
@@ -213,7 +222,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                                 checked={ initialMandatory || mandatory || subject }
                                 onClick={ !readOnly && handleMandatoryCheckChange }
                                 disabled={ mappingOn ? !requested : false }
-                                readOnly={ subject || readOnly }
+                                readOnly={ subject || readOnly || isOIDCMapping }
                             />
                         )
                     }
@@ -238,7 +247,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                     flowing = { subject }
                 />
             </Table.Cell>
-            { !readOnly && deleteAttribute ? (
+            { (!readOnly || isOIDCMapping) && deleteAttribute ? (
                 <Table.Cell textAlign="right">
                     <Popup
                         trigger={ (

@@ -825,7 +825,9 @@ export const console: ConsoleNS = {
                                             subjectDisabledSelection: "මෙම ගුණාංගය අනිවාර්ය වන්නේ " +
                                                 "එය විෂය ගුණාංගය වන බැවිනි."
                                         },
-                                        faultyAttributeMapping: "දෝෂ සහිත OIDC සම්බන්ධක සිතියම්කරණය",
+                                        faultyAttributeMapping: "OIDC සම්බන්ධතා සිතියම්ගත කිරීම අස්ථානගත වී ඇත",
+                                        faultyAttributeMappingHint: "පරිශීලක පිවිසුමේදී උපලක්ෂණ අගය යෙදුම වෙත" +
+                                            " බෙදා නොගනු ඇත.",
                                         fields: {
                                             claim: {
                                                 label: "අගය ඇතුලත් කරන්න",
