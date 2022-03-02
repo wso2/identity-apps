@@ -822,7 +822,7 @@ export const console: ConsoleNS = {
                                             subjectDisabledSelection: "This attribute is mandatory because it " +
                                                 "is the subject attribute."
                                         },
-                                        faultyAttributeMapping: "Missing OIDC Connect Mapping",
+                                        faultyAttributeMapping: "Missing OpenID Connect Attribute Mapping",
                                         faultyAttributeMappingHint: "Attribute value will not be shared to the" +
                                             " application at the user login.",
                                         fields: {
