@@ -78,9 +78,7 @@
     } else {
         String i18nErrorMapping = AuthenticationEndpointUtil.getErrorCodeToi18nMapping(
             stat, statusMessage);
-        String i18nStatusMapping = AuthenticationEndpointUtil.getErrorCodeToi18nMapping(stat, stat);
-        if (!(Constants.ErrorToi18nMappingConstants.INCORRECT_ERROR_MAPPING_KEY).equals(i18nErrorMapping)
-                && !(Constants.ErrorToi18nMappingConstants.INCORRECT_ERROR_MAPPING_KEY).equals(i18nStatusMapping)) {
+        if (!(Constants.ErrorToi18nMappingConstants.INCORRECT_ERROR_MAPPING_KEY).equals(i18nErrorMapping)) {
             stat = AuthenticationEndpointUtil.customi18n(resourceBundle, stat);
             statusMessage = AuthenticationEndpointUtil.customi18n(resourceBundle, statusMessage);                  
         } else {
