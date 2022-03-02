@@ -161,7 +161,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                 <div>
                     { !localDialect ? localClaimDisplayName : displayName }
                 </div>
-                { isOIDCMapping?
+                { isOIDCMapping ?
                     (<Hint warning= { true } popup>
                         {
                             t("console:develop.features.applications.edit.sections.attributes" +
