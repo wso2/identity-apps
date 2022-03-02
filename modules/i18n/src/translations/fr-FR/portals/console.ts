@@ -827,7 +827,9 @@ export const console: ConsoleNS = {
                                             subjectDisabledSelection: "Cet attribut est obligatoire car il " +
                                                 "s'agit de l'attribut sujet."
                                         },
-                                        faultyAttributeMapping: "Mappage de connexion OIDC défectueux",
+                                        faultyAttributeMapping: "Mappage d'attribut OpenID Connect manquant",
+                                        faultyAttributeMappingHint: "La valeur d'attribut ne sera pas partagée" +
+                                            " avec l'application lors de la connexion de l'utilisateur.",
                                         fields: {
                                             claim: {
                                                 label: "Veuillez entrer une valeur",

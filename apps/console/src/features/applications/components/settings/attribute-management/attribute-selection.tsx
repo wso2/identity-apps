@@ -444,7 +444,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                     if (claimMapping.localClaim.uri === claim.claimURI){
                         const option: ExtendedExternalClaimInterface = {
                             claimDialectURI: claim.dialectURI,
-                            claimURI: claim.displayName.toLowerCase(),
+                            claimURI: claim.claimURI,
                             id: claim.id,
                             localClaimDisplayName: claim.displayName,
                             mandatory: claim.mandatory,
@@ -1013,7 +1013,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                 readOnly={
                                                                                     (selectedSubjectValue
                                                                                     === claim.mappedLocalClaimURI &&
-                                                                                    !onlyOIDCConfigured)
+                                                                                    !onlyOIDCConfigured
+                                                                                    || !checkMapping(claim))
                                                                                         ? true
                                                                                         : readOnly
                                                                                 }
@@ -1027,7 +1028,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                 subject={ selectedSubjectValue
                                                                                 === claim.mappedLocalClaimURI &&
                                                                                 !onlyOIDCConfigured }
-                                                                                hint={
+                                                                                isOIDCMapping={
                                                                                     checkMapping(claim)
                                                                                         ? false
                                                                                         : true

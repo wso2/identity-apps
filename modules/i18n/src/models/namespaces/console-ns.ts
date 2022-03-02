@@ -493,6 +493,7 @@ export interface ConsoleNS {
                                             subjectDisabledSelection: string;
                                         };
                                         faultyAttributeMapping: string;
+                                        faultyAttributeMappingHint: string;
                                         fields: {
                                             claim: FormAttributes;
                                         };
