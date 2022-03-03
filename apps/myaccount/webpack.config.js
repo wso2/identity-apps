@@ -25,6 +25,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ESLintPlugin = require("eslint-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const JsonMinimizerPlugin = require("json-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const webpack = require("webpack");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
@@ -180,6 +181,11 @@ module.exports = (env) => {
                     use: [ "postcss-loader" ]
                 },
                 {
+                    exclude: /node_modules/,
+                    test: /.*(i18n).*\.*(portals).*\.json$/i,
+                    type: "asset/resource"
+                },
+                {
                     generator: {
                         filename: isProduction
                             ? `${ PATHS.assets }/[hash][ext][query]`
@@ -279,7 +285,7 @@ module.exports = (env) => {
             concatenateModules: isProduction,
             minimize: isProduction,
             minimizer: [
-                 new TerserPlugin({
+                new TerserPlugin({
                     extractComments: true,
                     terserOptions: {
                         compress: {
@@ -307,7 +313,8 @@ module.exports = (env) => {
                             ecma: 8
                         }
                     }
-                })
+                }),
+                new JsonMinimizerPlugin()
             ].filter(Boolean),
             // Keep the runtime chunk separated to enable long term caching
             // https://twitter.com/wSokra/status/969679223278505985
