@@ -17,11 +17,11 @@
  */
 
 import { EmptyPlaceholder, ErrorBoundary  } from "@wso2is/react-components";
-import React, { ReactElement, Suspense, lazy, useEffect, useState } from "react";
+import React, { ErrorInfo, ReactElement, Suspense, lazy, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Placeholder } from "semantic-ui-react";
 import { ExtensionsManager } from "./extensions-manager";
-import { AppUtils, getEmptyPlaceholderIllustrations } from "../features/core";
+import { AppUtils, EventPublisher, getEmptyPlaceholderIllustrations } from "../features/core";
 
 /**
  * Extension Interface.
@@ -42,15 +42,17 @@ interface ExtensionInterface {
 export const ComponentPlaceholder = (props: ExtensionInterface): ReactElement => {
 
     const { section, type } = props;
-    
+
     const { t } = useTranslation();
 
     const [ Component, setComponent ] = useState<JSX.Element|any>(null);
-    
-    const fragment = ExtensionsManager.getConfig()?.sections[type + "s"]?.[section];
+
+    const fragment = ExtensionsManager.getConfig()?.sections[ type + "s" ]?.[ section ];
+
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     useEffect(() => {
-        
+
         if (Component || !fragment) {
             return;
         }
@@ -60,19 +62,26 @@ export const ComponentPlaceholder = (props: ExtensionInterface): ReactElement =>
 
     return (
         <ErrorBoundary
-                onChunkLoadError={ AppUtils.onChunkLoadError }
-                fallback={ (
-                    <EmptyPlaceholder
-                        image={ getEmptyPlaceholderIllustrations().genericError }
-                        imageSize="tiny"
-                        subtitle={ [
-                            t("console:common.placeholders.genericError.subtitles.0"),
-                            t("console:common.placeholders.genericError.subtitles.1")
-                        ] }
-                        title={ t("console:common.placeholders.genericError.title") }
-                    />
-                ) }
-            >
+            onChunkLoadError={ AppUtils.onChunkLoadError }
+            fallback={ (
+                <EmptyPlaceholder
+                    image={ getEmptyPlaceholderIllustrations().genericError }
+                    imageSize="tiny"
+                    subtitle={ [
+                        t("console:common.placeholders.genericError.subtitles.0"),
+                        t("console:common.placeholders.genericError.subtitles.1")
+                    ] }
+                    title={ t("console:common.placeholders.genericError.title") }
+                />
+            ) }
+            handleError={ (error: Error, errorInfo: ErrorInfo) => {
+                eventPublisher.publish("error-in-component-placeholder", {
+                    error: error?.name,
+                    errorInfo: errorInfo?.componentStack,
+                    stack: error?.stack
+                });
+            } }
+        >
             <Suspense
                 fallback={ (
                     <Placeholder>
