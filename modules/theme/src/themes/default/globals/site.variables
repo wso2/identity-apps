@@ -51,7 +51,7 @@
 --------------------*/
 
 @primaryColor        : @orange;
-@secondaryColor      : @doveGray;
+@secondaryColor      : #E0E1E2;
 @accentColor1        : #173163;
 @accentColor2        : #f5385b;
 @accentColor3        : #00b7e1;
