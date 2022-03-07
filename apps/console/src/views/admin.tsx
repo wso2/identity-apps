@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlProvider, AccessControlUtils } from "@wso2is/access-control";
+import { AccessControlUtils } from "@wso2is/access-control";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
@@ -34,6 +34,7 @@ import {
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
+    ErrorInfo,
     FunctionComponent,
     ReactElement,
     ReactNode,
@@ -56,6 +57,7 @@ import {
     AppUtils,
     AppViewTypes,
     ConfigReducerStateInterface,
+    EventPublisher,
     FeatureConfigInterface,
     Footer,
     Header,
@@ -131,6 +133,8 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
     const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<boolean>(false);
     const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
     const [ accessControlledRoutes, setAccessControlledRoutes ] = useState<RouteInterface[]>([]);
+
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     /**
      * Make sure `MANAGE` tab is highlighted when this layout is used.
@@ -230,6 +234,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                 allowedScopes)) {
 
             setGovernanceConnectorsEvaluated(true);
+
             return;
         }
 
@@ -265,34 +270,38 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
             serverConfigurationConfig.showConnectorsOnTheSidePanel
                 && governanceConnectorCategories.map(
                     (category: GovernanceConnectorCategoryInterface, index: number) => {
-                let subCategoryExists = false;
-                category.connectors?.map(connector => {
-                    if (connector.subCategory !== "DEFAULT") {
-                        subCategoryExists = true;
-                        return;
-                    }
-                });
-                if (subCategoryExists) {
-                    // TODO: Implement sub category handling logic here.
-                }
+                        let subCategoryExists = false;
 
-                filteredRoutesClone.unshift({
-                    category: "console:manage.features.sidePanel.categories.configurations",
-                    component: lazy(() => import("../features/server-configurations/pages/governance-connectors")),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().connectors[ category.id ] ?? getSidePanelIcons().connectors.default
-                    },
-                    id: category.id,
-                    name: category.name,
-                    order: (category.id === ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID)
-                        ? filteredRoutes.length + governanceConnectorCategories.length
-                        : filteredRoutes.length + index,
-                    path: AppConstants.getPaths().get("GOVERNANCE_CONNECTORS").replace(":id", category.id),
-                    protected: true,
-                    showOnSidePanel: true
-                });
-            });
+                        category.connectors?.map(connector => {
+                            if (connector.subCategory !== "DEFAULT") {
+                                subCategoryExists = true;
+
+                                return;
+                            }
+                        });
+                        if (subCategoryExists) {
+                            // TODO: Implement sub category handling logic here.
+                        }
+
+                        filteredRoutesClone.unshift({
+                            category: "console:manage.features.sidePanel.categories.configurations",
+                            component: lazy(
+                                () => import("../features/server-configurations/pages/governance-connectors")),
+                            exact: true,
+                            icon: {
+                                icon: getSidePanelIcons()
+                                    .connectors[ category.id ] ?? getSidePanelIcons().connectors.default
+                            },
+                            id: category.id,
+                            name: category.name,
+                            order: (category.id === ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID)
+                                ? filteredRoutes.length + governanceConnectorCategories.length
+                                : filteredRoutes.length + index,
+                            path: AppConstants.getPaths().get("GOVERNANCE_CONNECTORS").replace(":id", category.id),
+                            protected: true,
+                            showOnSidePanel: true
+                        });
+                    });
 
             setFilteredRoutes(filteredRoutesClone);
             setGovernanceConnectorRoutesAdded(true);
@@ -339,6 +348,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
     const handleLayoutOnUpdate = (event: SyntheticEvent<HTMLElement>, { width }): void => {
         if (width < Responsive.onlyTablet.minWidth) {
             setIsMobileViewport(true);
+
             return;
         }
 
@@ -362,26 +372,26 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
         route.redirectTo
             ? <Redirect key={ key } to={ route.redirectTo }/>
             : route.protected
-            ? (
-                <ProtectedRoute
-                    component={ route.component ? route.component : null }
-                    path={ route.path }
-                    key={ key }
-                    exact={ route.exact }
-                />
-            )
-            : (
-                <Route
-                    path={ route.path }
-                    render={ (renderProps): ReactNode =>
-                        route.component
-                            ? <route.component { ...renderProps } />
-                            : null
-                    }
-                    key={ key }
-                    exact={ route.exact }
-                />
-            )
+                ? (
+                    <ProtectedRoute
+                        component={ route.component ? route.component : null }
+                        path={ route.path }
+                        key={ key }
+                        exact={ route.exact }
+                    />
+                )
+                : (
+                    <Route
+                        path={ route.path }
+                        render={ (renderProps): ReactNode =>
+                            route.component
+                                ? <route.component { ...renderProps } />
+                                : null
+                        }
+                        key={ key }
+                        exact={ route.exact }
+                    />
+                )
     );
 
     /**
@@ -489,6 +499,13 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                         title={ t("console:common.placeholders.brokenPage.title") }
                     />
                 ) }
+                handleError={ (error: Error, errorInfo: ErrorInfo) => {
+                    eventPublisher.publish("error-in-admin-view", {
+                        error: error?.name,
+                        errorInfo: errorInfo?.componentStack,
+                        stack: error?.stack
+                    });
+                } }
             >
                 <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
                     <Switch>
