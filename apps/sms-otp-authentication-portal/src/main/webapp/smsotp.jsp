@@ -131,7 +131,7 @@
                                         String reSendCode = request.getParameter("resendCode");
                                         if ("true".equals(reSendCode)) {
                                 %>
-                                    <div id="resendCodeLinkDiv" class="ui button link-button">
+                                    <div id="resendCodeLinkDiv" class="ui button secondary">
                                         <a id="resend"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "resend.code")%></a>
                                     </div>
                                 <% } } %>

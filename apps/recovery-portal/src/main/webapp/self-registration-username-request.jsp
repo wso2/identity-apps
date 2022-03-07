@@ -141,7 +141,7 @@
                         <div class="ui divider hidden"></div>
 
                         <div class="align-right buttons">
-                            <a href="javascript:goBack()" class="ui button link-button">
+                            <a href="javascript:goBack()" class="ui button secondary">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
                             </a>
                             <button id="registrationSubmit" class="ui primary button" type="submit">
