@@ -75,10 +75,11 @@ export const ComponentPlaceholder = (props: ExtensionInterface): ReactElement =>
                 />
             ) }
             handleError={ (error: Error, errorInfo: ErrorInfo) => {
-                eventPublisher.publish("error-in-component-placeholder", {
+                eventPublisher.publish("error-captured-error-boundary", {
                     error: error?.name,
                     errorInfo: errorInfo?.componentStack,
-                    stack: error?.stack
+                    stack: error?.stack,
+                    type: "extension"
                 });
             } }
         >

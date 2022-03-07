@@ -78,10 +78,11 @@ export const AppLayout: FunctionComponent<{}> = (): ReactElement => {
                     />
                 ) }
                 handleError={ (error: Error, errorInfo: ErrorInfo) => {
-                    eventPublisher.publish("error-in-app-layout", {
+                    eventPublisher.publish("error-captured-error-boundary", {
                         error: error?.name,
                         errorInfo: errorInfo?.componentStack,
-                        stack: error?.stack
+                        stack: error?.stack,
+                        type: "app"
                     });
                 } }
             >

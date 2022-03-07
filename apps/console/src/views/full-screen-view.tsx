@@ -186,10 +186,11 @@ export const FullScreenView: FunctionComponent<FullScreenViewPropsInterface> = (
                     />
                 ) }
                 handleError={ (error: Error, errorInfo: ErrorInfo) => {
-                    eventPublisher.publish("error-in-full-screen-view", {
+                    eventPublisher.publish("error-captured-error-boundary", {
                         error: error?.name,
                         errorInfo: errorInfo?.componentStack,
-                        stack: error?.stack
+                        stack: error?.stack,
+                        type: "full-screen-view"
                     });
                 } }
             >

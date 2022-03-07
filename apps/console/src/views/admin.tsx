@@ -500,10 +500,11 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                     />
                 ) }
                 handleError={ (error: Error, errorInfo: ErrorInfo) => {
-                    eventPublisher.publish("error-in-admin-view", {
+                    eventPublisher.publish("error-captured-error-boundary", {
                         error: error?.name,
                         errorInfo: errorInfo?.componentStack,
-                        stack: error?.stack
+                        stack: error?.stack,
+                        type: "admin-view"
                     });
                 } }
             >

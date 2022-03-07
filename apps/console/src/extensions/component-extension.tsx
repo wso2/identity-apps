@@ -85,10 +85,11 @@ export const ComponentExtensionPlaceholder = (args: ComponentExtensionInterface)
                                 />
                             ) }
                             handleError={ (error: Error, errorInfo: ErrorInfo) => {
-                                eventPublisher.publish("error-in-component-extension", {
+                                eventPublisher.publish("error-captured-error-boundary", {
                                     error: error?.name,
                                     errorInfo: errorInfo?.componentStack,
-                                    stack: error?.stack
+                                    stack: error?.stack,
+                                    type: "component-extension"
                                 });
                             } }
                         >
