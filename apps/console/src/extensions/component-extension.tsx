@@ -18,14 +18,14 @@
 
 import { I18n } from "@wso2is/i18n";
 import { ContentLoader, EmptyPlaceholder, ErrorBoundary } from "@wso2is/react-components";
-import React, { Suspense, lazy } from "react";
+import React, { ErrorInfo, Suspense, lazy } from "react";
 import { Container } from "semantic-ui-react";
 import { ExtensionsManager } from "./extensions-manager";
-import { AppUtils, getEmptyPlaceholderIllustrations } from "../features/core";
+import { AppUtils, EventPublisher, getEmptyPlaceholderIllustrations } from "../features/core";
 
 interface ComponentExtensionInterface {
     component?: string;
-    props?: object;
+    props?: Record<string, unknown>;
     subComponent?: string;
     type?: string;
 }
@@ -49,6 +49,8 @@ export const ComponentExtensionPlaceholder = (args: ComponentExtensionInterface)
         type
     } = args;
 
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
     if (type === "tab") {
         const componentExtensionConfig: any[] = ExtensionsManager.getConfig().componentExtensions;
         const tabPanes: any[] = [];
@@ -64,6 +66,7 @@ export const ComponentExtensionPlaceholder = (args: ComponentExtensionInterface)
         if (config && config.panes && config.panes.length > 0) {
             config.panes.map(pane => {
                 const DynamicLoader = lazy(() => import(`${ pane.path }`));
+
                 tabPanes.push({
                     componentId: pane.componentid,
                     menuItem: I18n.instance.t(pane.title),
@@ -81,6 +84,13 @@ export const ComponentExtensionPlaceholder = (args: ComponentExtensionInterface)
                                     title={ I18n.instance.t("console:common.placeholders.genericError.title") }
                                 />
                             ) }
+                            handleError={ (error: Error, errorInfo: ErrorInfo) => {
+                                eventPublisher.publish("error-in-component-extension", {
+                                    error: error?.name,
+                                    errorInfo: errorInfo?.componentStack,
+                                    stack: error?.stack
+                                });
+                            } }
                         >
                             <Suspense
                                 fallback={ (
