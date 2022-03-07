@@ -25,11 +25,11 @@ import {
     ErrorBoundary,
     LinkButton
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
+import React, { ErrorInfo, FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { AppState, AppUtils, PreLoader } from "../features/core";
+import { AppState, AppUtils, EventPublisher, PreLoader } from "../features/core";
 import { ProtectedRoute } from "../features/core/components";
 import { getAppLayoutRoutes, getEmptyPlaceholderIllustrations } from "../features/core/configs";
 import { AppConstants } from "../features/core/constants";
@@ -47,6 +47,8 @@ export const AppLayout: FunctionComponent<{}> = (): ReactElement => {
     const [ appRoutes, setAppRoutes ] = useState<RouteInterface[]>(getAppLayoutRoutes());
     const isCookieConsentBannerEnabled: boolean = useSelector((state: AppState) =>
         state.config.ui.isCookieConsentBannerEnabled);
+
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     /**
      * Listen for base name changes and updated the layout routes.
@@ -75,6 +77,14 @@ export const AppLayout: FunctionComponent<{}> = (): ReactElement => {
                         title={ t("console:common.placeholders.brokenPage.title") }
                     />
                 ) }
+                handleError={ (error: Error, errorInfo: ErrorInfo) => {
+                    eventPublisher.publish("error-captured-error-boundary", {
+                        error: error?.name,
+                        errorInfo: errorInfo?.componentStack,
+                        stack: error?.stack,
+                        type: "app"
+                    });
+                } }
             >
                 <Suspense fallback={ <PreLoader /> }>
                     <Switch>
@@ -121,13 +131,13 @@ export const AppLayout: FunctionComponent<{}> = (): ReactElement => {
                                         These cookies are used to maintain an uninterrupted continuous
                                         session whilst providing smooth and personalized services.
                                         To learn more about how we use cookies, refer our <a
-                                        href="https://wso2.com/cookie-policy"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        data-testid="login-page-cookie-policy-link"
-                                    >
+                                            href="https://wso2.com/cookie-policy"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            data-testid="login-page-cookie-policy-link"
+                                        >
                                         Cookie Policy
-                                    </a>.
+                                        </a>.
                                     </Trans>
                                 </div>
                             ) }
