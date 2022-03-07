@@ -159,7 +159,7 @@
                         <div class="ui divider hidden"></div>
 
                         <div class="align-right buttons">
-                            <input class="ui large button link-button" type="reset"
+                            <input class="ui large button secondary" type="reset"
                                 value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"cancel")%>"
                                 onclick="javascript: deny(); return false;"/>
                             <input type="button" class="ui primary large button" id="approve"

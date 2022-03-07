@@ -66,7 +66,7 @@
                         <button
                             type="submit"
                             onclick="javascript: deny(); return false;"
-                            class="ui large button link-button"
+                            class="ui large button secondary"
                             role="button"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "no")%></button>
                     </div>
                     <input type="hidden" name="consent" id="consent" value="deny"/>

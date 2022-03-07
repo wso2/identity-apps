@@ -174,18 +174,18 @@
         ResendCodeRequestDTO selfRegistrationRequest = new ResendCodeRequestDTO();
         UserDTO userDTO = AuthenticationEndpointUtil.getUser(resendUsername);
         selfRegistrationRequest.setUser(userDTO);
-    
+
         PropertyDTO propertyDTO = new PropertyDTO();
         propertyDTO.setKey("RecoveryScenario");
         propertyDTO.setValue("SELF_SIGN_UP");
         selfRegistrationRequest.getProperties().add(propertyDTO);
-    
+
         // We have to send an empty property for the client to work properly.
         PropertyDTO dummyPropertyDTO = new PropertyDTO();
         dummyPropertyDTO.setKey("");
         dummyPropertyDTO.setValue("");
         selfRegistrationRequest.getProperties().add(dummyPropertyDTO);
-        
+
         String path = config.getServletContext().getInitParameter(Constants.ACCOUNT_RECOVERY_REST_ENDPOINT_URL);
         String url;
         if (StringUtils.isNotBlank(EndpointConfigManager.getServerOrigin())) {
@@ -485,7 +485,7 @@
             <button
                 type="button"
                 onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointURL, urlEncodedURL, urlParameters))%>';"
-                class="ui large button link-button"
+                class="ui large button secondary"
                 id="registerLink"
                 tabindex="8"
                 role="button"

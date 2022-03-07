@@ -82,11 +82,11 @@
                 </h3>
 
                 <form action="login.do?resend_username=<%=Encode.forHtml(URLEncoder.encode(request.getParameter("failedUsername"), UTF_8))%>&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>" method="post" id="resendForm">
-                
+
                     <div><%=AuthenticationEndpointUtil.i18n(resourceBundle, "resend.confirmation.page.message")%></div>
-                    
+
                     <div class="ui divider hidden"></div>
-        
+
                     <div class="resend-captcha-container ui hidden" id="resend-captcha-container">
                         <%
                              String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
@@ -103,7 +103,7 @@
                             <div class="ui divider hidden"></div>
 
                             <div class="align-right buttons text-right">
-                                <a href="javascript:goBack()" class="ui button link-button">
+                                <a href="javascript:goBack()" class="ui button secondary">
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "Cancel")%>
                                 </a>
                                 <button id="recoverySubmit"
@@ -147,7 +147,7 @@
         $(document).ready(function () {
             <% if (reCaptchaResendEnabled) { %>
                 $("#resend-captcha-container").show();
-            <% } else { %> 
+            <% } else { %>
                 $("#resendForm").submit();
             <% } %>
         });

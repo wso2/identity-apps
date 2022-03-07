@@ -210,7 +210,7 @@
             <input
                 type="button"
                 onclick="window.location.href='<%=getRegistrationUrl(accountRegistrationEndpointURL, urlEncodedURL, urlParameters)%>';"
-                class="ui large button link-button"
+                class="ui large button secondary"
                 id="registerLink"
                 role="button"
                 value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "create.account")%>" />
