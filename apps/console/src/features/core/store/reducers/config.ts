@@ -57,7 +57,12 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             clientHost: "",
             clientID: "",
             clientOrigin: "",
-            developerApp: null,
+            developerApp: {
+                basePath: "",
+                displayName: "",
+                path: "",
+                tenantQualifiedPath: ""
+            },
             docSiteURL: "",
             documentation: null,
             extensions: null,
