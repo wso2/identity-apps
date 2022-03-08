@@ -24,7 +24,7 @@
     <groupId>org.wso2.identity.apps</groupId>
     <artifactId>identity-apps</artifactId>
     <packaging>pom</packaging>
-    <version>1.2.823</version>
+    <version>1.2.824-SNAPSHOT</version>
     <name>WSO2 Identity Server Apps - Parent</name>
     <description>WSO2 Identity Server Web Apps</description>
 
@@ -40,7 +40,7 @@
         <url>https://github.com/wso2/identity-apps.git</url>
         <developerConnection>scm:git:https://github.com/wso2/identity-apps.git</developerConnection>
         <connection>scm:git:https://github.com/wso2/identity-apps.git</connection>
-        <tag>v1.2.823</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <modules>
