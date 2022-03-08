@@ -76,3 +76,27 @@ input[type=password]::-ms-reveal, input[type=password]::-ms-clear {
     display: none;
 }
 
+/*-------------------------------
+  Addon wrapper for input fields to avoid
+  overlapping with browser added icons
+  ex: Password Managers
+--------------------------------*/
+.ui.input {
+    &.addon-wrapper {
+        margin: 0;
+        outline: 0;
+        border: @border;
+        border-radius: @borderRadius;
+        box-shadow: @boxShadow;
+        transition: @transition;
+
+        &:focus-within {
+            border-color: @focusBorderColor;
+        }
+
+        > input {
+            border: none;
+            max-width: calc(100% - 2.67142857em);
+        }
+    }
+}
