@@ -36,8 +36,18 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
     UIConfigInterface> = {
 
         deployment: {
-            accountApp: null,
-            adminApp: null,
+            accountApp: {
+                basePath: "",
+                displayName: "",
+                path: "",
+                tenantQualifiedPath: ""
+            },
+            adminApp: {
+                basePath: "",
+                displayName: "",
+                path: "",
+                tenantQualifiedPath: ""
+            },
             allowMultipleAppProtocols: undefined,
             appBaseName: "",
             appBaseNameWithoutTenant: "",
@@ -47,7 +57,12 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             clientHost: "",
             clientID: "",
             clientOrigin: "",
-            developerApp: null,
+            developerApp: {
+                basePath: "",
+                displayName: "",
+                path: "",
+                tenantQualifiedPath: ""
+            },
             docSiteURL: "",
             documentation: null,
             extensions: null,
