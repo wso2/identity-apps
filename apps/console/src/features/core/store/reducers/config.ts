@@ -165,12 +165,32 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 userStores: null,
                 users: null
             },
-            gravatarConfig: null,
+            gravatarConfig: {
+                size: null,
+                defaultImage: "",
+                fallback: null
+            },
             hiddenAuthenticators: [],
             hiddenUserStores: [],
             i18nConfigs: null,
             identityProviderTemplateLoadingStrategy: null,
-            identityProviderTemplates: null,
+            identityProviderTemplates: {
+                enterpriseOIDC: {
+                    enabled: false
+                },
+                enterpriseSAML: {
+                    enabled: false
+                },
+                facebook: {
+                    enabled: false
+                },
+                google: {
+                    enabled: false
+                },
+                github: {
+                    enabled: false
+                }
+            },
             isClientSecretHashEnabled: undefined,
             isCookieConsentBannerEnabled: undefined,
             isDefaultDialectEditingEnabled: undefined,
@@ -187,6 +207,10 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             selfAppIdentifier: "",
             showAppSwitchButton: undefined,
             systemAppsIdentifiers: [],
-            theme: null
+            theme: {
+                name: "",
+                path: "",
+                styleSheets: null
+            }
         }
     };
