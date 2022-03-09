@@ -18,6 +18,7 @@
 
 import get from "lodash-es/get";
 import { ReactNode } from "react";
+import { identityProviderConfig } from "../../../extensions";
 import { getAuthenticatorIcons } from "../configs";
 import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorCategories, AuthenticatorLabels } from "../models";
@@ -40,14 +41,14 @@ export class AuthenticatorMeta {
      * @return {string}
      */
     public static getAuthenticatorDescription(authenticatorId: string): string {
-        
+
         return get({
             [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ]: "Login users with username and password " +
             "credentials.",
             [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Get users Identity first to " +
             "control the authentication flow.",
             [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "Provide secure and fast passwordless " +
-            "login experience.",
+            "login experience using FIDO2.",
             [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
             "Time-Based One Time passcode.",
             [ IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "Login users with " +
@@ -77,12 +78,10 @@ export class AuthenticatorMeta {
      * @return {string[]}
      */
     public static getAuthenticatorLabels(authenticatorId: string): string[] {
-        
+
         return get({
             [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: [ AuthenticatorLabels.HANDLERS ],
-            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.SECOND_FACTOR, AuthenticatorLabels.PASSWORDLESS, AuthenticatorLabels.MULTI_FACTOR
-            ],
+            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: identityProviderConfig.fidoTags,
             [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.SECOND_FACTOR, AuthenticatorLabels.MULTI_FACTOR
             ],
@@ -118,7 +117,7 @@ export class AuthenticatorMeta {
      * @return {string}
      */
     public static getAuthenticatorTypeDisplayName(type: AuthenticatorCategories): string {
-        
+
         return get({
             [ AuthenticatorCategories.ENTERPRISE ]: "console:develop.features." +
             "applications.edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
@@ -143,11 +142,11 @@ export class AuthenticatorMeta {
      * @return {string}
      */
     public static getAuthenticatorDisplayName(authenticatorId: string): string {
-        
+
         return get({
             [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR ]: "Username & Password",
             [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ]: "Username & Password",
-            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "FIDO",
+            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "Security Key/Biometrics",
             [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: "TOTP",
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Email OTP",
             [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Identifier First",
@@ -166,20 +165,20 @@ export class AuthenticatorMeta {
 
         const icon: ReactNode = get({
             [
-                IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID
-                ]: getAuthenticatorIcons()?.identifierFirst,
+            IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID
+            ]: getAuthenticatorIcons()?.identifierFirst,
             [ IdentityProviderManagementConstants.JWT_BASIC_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.jwtBasic,
             [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.fido,
             [ IdentityProviderManagementConstants.X509_CERTIFICATE_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.x509,
             [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.totp,
             [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.basic,
             [
-                IdentityProviderManagementConstants.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
-                ]: getAuthenticatorIcons()?.sessionExecutor,
+            IdentityProviderManagementConstants.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
+            ]: getAuthenticatorIcons()?.sessionExecutor,
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.emailOTP,
             [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.smsOTP
         }, authenticatorId);
-        
+
         return icon ?? getAuthenticatorIcons().default;
     }
 
@@ -216,7 +215,7 @@ export class AuthenticatorMeta {
      * @return {string[]}
      */
     public static getAllowedFilterTags(): string[] {
-        
+
         return [
             AuthenticatorLabels.MULTI_FACTOR,
             AuthenticatorLabels.PASSWORDLESS,
@@ -234,7 +233,7 @@ export class AuthenticatorMeta {
      * @return {string}
      */
     public static getAuthenticatorTemplateName(authenticatorId: string): string {
-        
+
         return get({
             [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR ]: "username-and-password",
             [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ]: "username-and-password",

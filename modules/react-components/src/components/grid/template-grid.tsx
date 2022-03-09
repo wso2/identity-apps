@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { ImageUtils, URLUtils } from "@wso2is/core/utils";
 import classNames from "classnames";
 import get from "lodash-es/get";
@@ -39,7 +39,7 @@ import { Heading } from "../typography";
 /**
  * Proptypes for the template grid component.
  */
-export interface TemplateGridPropsInterface<T> extends TestableComponentInterface {
+export interface TemplateGridPropsInterface<T> extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Additional CSS classes.
      */
@@ -243,6 +243,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
         templateIconSize,
         useNameInitialAsImage,
         comingSoonRibbonLabel,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -354,6 +355,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
                     imageOptions={ templateIconOptions }
                     onClick={ onClick }
                     selected={ selectedTemplate?.id === template.id }
+                    data-componentid={ `${ componentId }-selection-card` }
                     data-testid={ `${ testId }-selection-card` }
                 />
             ));
@@ -384,7 +386,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
     });
 
     return (
-        <Grid className={ classes } data-testid={ testId }>
+        <Grid className={ classes } data-testid={ testId } data-componentid={ componentId }>
             {
                 (heading || subHeading)
                     ? (
@@ -392,14 +394,25 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
                             <Grid.Column>
                                 {
                                     heading && (
-                                        <Heading as="h4" compact data-testid={ `${ testId }-heading` }>
+                                        <Heading
+                                            as="h4"
+                                            compact
+                                            data-componentid={ `${ componentId }-heading` }
+                                            data-testid={ `${ testId }-heading` }
+                                        >
                                             { heading }
                                         </Heading>
                                     )
                                 }
                                 {
                                     subHeading && (
-                                        <Heading subHeading ellipsis as="h6" data-testid={ `${ testId }-sub-heading` }>
+                                        <Heading
+                                            subHeading
+                                            ellipsis
+                                            as="h6"
+                                            data-componentid={ `${ componentId }-sub-heading` }
+                                            data-testid={ `${ testId }-sub-heading` }
+                                        >
                                             { subHeading }
                                         </Heading>
                                     )
@@ -414,6 +427,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
                                                     isShowMoreClicked ? (
                                                         <LinkButton
                                                             onClick={ viewLessTemplates }
+                                                            data-componentid={ `${ componentId }-show-less-button` }
                                                             data-testid={ `${ testId }-show-less-button` }
                                                         >
                                                             { paginationOptions.showLessButtonLabel }
@@ -421,6 +435,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
                                                     ) : (
                                                         <LinkButton
                                                             onClick={ viewMoreTemplates }
+                                                            data-componentid={ `${ componentId }-show-more-button` }
                                                             data-testid={ `${ testId }-show-more-button` }
                                                         >
                                                             { paginationOptions.showMoreButtonLabel }
@@ -498,6 +513,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
                                                             renderDisabledItemsAsGrayscale
                                                         }
                                                         tagSize={ tagSize }
+                                                        data-componentid={ template.id }
                                                         data-testid={ template.id }
                                                         disabled={ template.disabled || template.comingSoon }
                                                         ribbon={ template.comingSoon ? comingSoonRibbonLabel : null }
@@ -519,6 +535,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
  * Default props for template grid component.
  */
 TemplateGrid.defaultProps = {
+    "data-componentid": "template-grid",
     "data-testid": "template-grid",
     iconSize: "tiny",
     paginate: true,

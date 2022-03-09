@@ -17,9 +17,9 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Code } from "@wso2is/react-components";
+import { Code, Hint } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Checkbox, Icon, Input, Popup, Table } from "semantic-ui-react";
 import { ExtendedClaimMappingInterface } from "./attribute-settings";
@@ -49,6 +49,14 @@ interface AttributeListItemPropInterface extends TestableComponentInterface {
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Add a label.
+     */
+    label?: ReactNode;
+    /**
+     * Specify whether there is an OIDC mapping.
+     */
+     isOIDCMapping?: boolean;
 }
 
 /**
@@ -79,6 +87,8 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         readOnly,
         deleteAttribute,
         subject,
+        label,
+        isOIDCMapping,
         [ "data-testid" ]: testId
     } = props;
 
@@ -90,6 +100,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
     const [ requested, setRequested ] = useState(true);
     const [ mappedAttribute, setMappedAttribute ] = useState(claimURI);
     const [ defaultMappedAttribute ] = useState(mappedAttribute);
+    const localDialectURI = "http://wso2.org/claims";
 
     const handleMandatoryCheckChange = () => {
         if (mandatory) {
@@ -147,17 +158,36 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
     return (
         <Table.Row data-testid={ testId }>
             <Table.Cell>
-                <div>{ !localDialect ? localClaimDisplayName : displayName }</div>
+                <div>
+                    { !localDialect ? localClaimDisplayName : displayName }
+                </div>
+                { isOIDCMapping ?
+                    (<Hint warning= { true } popup>
+                        {
+                            t("console:develop.features.applications.edit.sections.attributes" +
+                                ".selection.mappingTable.listItem.faultyAttributeMappingHint")
+                        }
+                    </Hint>)
+                : "" }
                 {
                     <Popup
-                        content={ claimURI }
+                    content={ claimURI.startsWith(localDialectURI)
+                        ? t("console:develop.features.applications.edit.sections.attributes" +
+                            ".selection.mappingTable.listItem.faultyAttributeMapping")
+                        : claimURI }
                         inverted
                         trigger={ (
-                            <Code compact withBackground={ false }>{ claimURI }</Code>
+                            <Code compact withBackground={ false }>
+                                { claimURI.startsWith(localDialectURI)
+                                    ? t("console:develop.features.applications.edit.sections.attributes" +
+                                        ".selection.mappingTable.listItem.faultyAttributeMapping")
+                                    : claimURI }
+                            </Code>
                         ) }
                         position="bottom left">
                     </Popup>
                 }
+                <Hint warning={ true } hidden= { label ? false : true }>{ label }</Hint>
             </Table.Cell>
             {
                 localDialect && mappingOn && (
@@ -192,7 +222,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                                 checked={ initialMandatory || mandatory || subject }
                                 onClick={ !readOnly && handleMandatoryCheckChange }
                                 disabled={ mappingOn ? !requested : false }
-                                readOnly={ subject || readOnly }
+                                readOnly={ subject || readOnly || isOIDCMapping }
                             />
                         )
                     }
@@ -217,7 +247,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                     flowing = { subject }
                 />
             </Table.Cell>
-            { !readOnly && deleteAttribute ? (
+            { (!readOnly || isOIDCMapping) && deleteAttribute ? (
                 <Table.Cell textAlign="right">
                     <Popup
                         trigger={ (

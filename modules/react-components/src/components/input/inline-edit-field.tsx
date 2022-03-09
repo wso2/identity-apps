@@ -16,11 +16,11 @@
 * under the License.
 */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Grid, GridColumn, Icon, Input, InputOnChangeData, Popup } from "semantic-ui-react";
 
-export interface InlineEditInputPropsInterface extends TestableComponentInterface {
+export interface InlineEditInputPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     text: string;
     validation?: string;
     errorHandler?: (status: boolean) => void;
@@ -52,6 +52,7 @@ export const InlineEditInput: FunctionComponent<InlineEditInputPropsInterface> =
         onChangesSaved,
         onEdit,
         maxLength,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -92,6 +93,7 @@ export const InlineEditInput: FunctionComponent<InlineEditInputPropsInterface> =
                                     data: InputOnChangeData ) => {
                                     setTextValue(data.value.trim());
                                 } }
+                                data-componentid={ `${ componentId }-input` }
                                 data-testid={ `${ testId }-input` }
                             />
                         </GridColumn>
@@ -182,4 +184,11 @@ export const InlineEditInput: FunctionComponent<InlineEditInputPropsInterface> =
                 </Grid>
             )
     );
+};
+
+/**
+ * Default props for the component.
+ */
+InlineEditInput.defaultProps = {
+    "data-componentid": "inline-edit-field"
 };

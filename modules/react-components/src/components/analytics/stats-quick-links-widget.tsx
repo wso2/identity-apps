@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Card, Divider, HeaderProps } from "semantic-ui-react";
@@ -26,7 +26,7 @@ import { Heading } from "../typography";
 /**
  * Proptypes for the statistics quick links widget.
  */
-interface StatsQuickLinksWidgetPropsInterface extends TestableComponentInterface {
+interface StatsQuickLinksWidgetPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Heading for the widget
      */
@@ -66,6 +66,7 @@ export const StatsQuickLinksWidget: FunctionComponent<StatsQuickLinksWidgetProps
         subHeading,
         subHeadingAs,
         links,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -75,6 +76,7 @@ export const StatsQuickLinksWidget: FunctionComponent<StatsQuickLinksWidgetProps
                 <Heading
                     className="stats-quick-links-widget-heading inline ellipsis"
                     as={ headingAs }
+                    data-componentid={ `${ componentId }-heading` }
                     data-testid={ `${ testId }-heading` }
                     compact
                 >
@@ -84,6 +86,7 @@ export const StatsQuickLinksWidget: FunctionComponent<StatsQuickLinksWidgetProps
             { subHeading && (
                 <Heading
                     className="stats-quick-links-widget-sub-heading"
+                    data-componentid={ `${ componentId }-sub-heading` }
                     data-testid={ `${ testId }-sub-heading` }
                     as={ subHeadingAs }
                     subHeading
@@ -119,6 +122,7 @@ export const StatsQuickLinksWidget: FunctionComponent<StatsQuickLinksWidgetProps
                                             imageSize="mini"
                                             contentTopBorder={ false }
                                             description={ description }
+                                            data-componentid={ `${ componentId }-${ kebabCase(header) }-card` }
                                             data-testid={ `${ testId }-${ kebabCase(header) }-card` }
                                             multilineDescription
                                             showTooltips
@@ -139,6 +143,7 @@ export const StatsQuickLinksWidget: FunctionComponent<StatsQuickLinksWidgetProps
  * Default props for the component.
  */
 StatsQuickLinksWidget.defaultProps = {
+    "data-componentid": "stats-quick-links-widget",
     "data-testid": "stats-quick-links-widget",
     headingAs: "h3",
     subHeadingAs: "h5"

@@ -130,3 +130,16 @@
         }
     }
 }
+
+/*-------------------------------
+  Addon wrapper for input fields to avoid
+  overlapping with browser added icons
+  ex: Password Managers
+--------------------------------*/
+.ui.form {
+    .ui.input.addon-wrapper {
+        > input {
+            border: none;
+        }
+    }
+}

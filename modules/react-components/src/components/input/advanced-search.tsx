@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, {
     ChangeEvent,
@@ -37,7 +37,7 @@ import { Heading } from "../typography";
  *
  * Proptypes for the advanced search component.
  */
-export interface AdvancedSearchPropsInterface extends TestableComponentInterface {
+export interface AdvancedSearchPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Text alignment.
      */
@@ -160,6 +160,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
         resetSubmittedState,
         searchOptionsHeader,
         submitted,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         triggerClearQuery,
         filterConditionOptions,
@@ -319,9 +320,14 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
     };
 
     return (
-        <div className={ `advanced-search-wrapper ${ wrapperClasses }` } data-testid={ testId }>
+        <div
+            className={ `advanced-search-wrapper ${ wrapperClasses }` }
+            data-componentid={ componentId }
+            data-testid={ testId }
+        >
             <div ref={ searchInputRef }>
                 <Input
+                    data-componentid={ `${ componentId }-input` }
                     data-testid={ `${ testId }-input` }
                     action={ (
                         <>
@@ -333,6 +339,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                                             trigger={
                                                 (
                                                     <Button
+                                                        data-componentid={ `${ componentId }-clear-button` }
                                                         data-testid={ `${ testId }-clear-button` }
                                                         basic
                                                         compact
@@ -360,6 +367,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                                 trigger={
                                     (
                                         <Button
+                                            data-componentid={ `${ componentId }-options-button` }
                                             data-testid={ `${ testId }-options-button` }
                                             basic
                                             compact
@@ -391,11 +399,21 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                 context={ searchInputRef }
                 content={ (
                     <div className="search-filters-dropdown">
-                        <Heading as="h6" bold="500" compact data-testid={ `${ testId }-header` }>
+                        <Heading
+                            as="h6"
+                            bold="500"
+                            compact
+                            data-componentid={ `${ componentId }-header` }
+                            data-testid={ `${ testId }-header` }
+                        >
                             { searchOptionsHeader }
                         </Heading>
                         <Divider className="compact" />
-                        <div className="form-wrapper" data-testid={ `${ testId }-form-wrapper` }>
+                        <div
+                            className="form-wrapper"
+                            data-componentid={ `${ componentId }-form-wrapper` }
+                            data-testid={ `${ testId }-form-wrapper` }
+                        >
                             { children }
                         </div>
                     </div>
@@ -405,6 +423,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                 open={ isDropdownVisible }
                 onClose={ handleSearchDropdownClose }
                 closeOnPortalMouseLeave={ false }
+                data-componentid={ `${ componentId }-dropdown` }
                 data-testid={ `${ testId }-dropdown` }
                 hoverable
                 pinned
@@ -421,6 +440,7 @@ AdvancedSearch.defaultProps = {
     aligned: "left",
     className: null,
     clearButtonPopupLabel: null,
+    "data-componentid": "advanced-search",
     "data-testid": "advanced-search",
     dropdownPosition: "bottom left",
     dropdownTriggerPopupLabel: null,

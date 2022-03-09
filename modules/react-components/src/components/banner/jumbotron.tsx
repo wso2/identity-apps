@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { CSSProperties, FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from "react";
 import { HeaderProps, Responsive, Segment, SegmentProps } from "semantic-ui-react";
@@ -27,7 +27,9 @@ import { Heading } from "../typography";
 /**
  * Proptypes for the jumbotron component.
  */
-export interface JumbotronPropsInterface extends Omit<SegmentProps, "color">, TestableComponentInterface {
+export interface JumbotronPropsInterface extends Omit<SegmentProps, "color">, IdentifiableComponentInterface,
+    TestableComponentInterface {
+
     /**
      * Background color.
      */
@@ -114,6 +116,7 @@ export const Jumbotron: FunctionComponent<PropsWithChildren<JumbotronPropsInterf
         subHeading,
         subHeadingAs,
         topContent,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -185,6 +188,7 @@ export const Jumbotron: FunctionComponent<PropsWithChildren<JumbotronPropsInterf
                                 <Heading
                                     className="jumbotron-heading inline ellipsis"
                                     as={ headingAs }
+                                    data-componentid={ `${ componentId }-heading` }
                                     data-testid={ `${ testId }-heading` }
                                     compact
                                 >
@@ -198,6 +202,7 @@ export const Jumbotron: FunctionComponent<PropsWithChildren<JumbotronPropsInterf
                             ? (
                                 <Heading
                                     className="jumbotron-sub-heading"
+                                    data-componentid={ `${ componentId }-sub-heading` }
                                     data-testid={ `${ testId }-sub-heading` }
                                     as={ subHeadingAs }
                                     subHeading
@@ -236,6 +241,7 @@ Jumbotron.defaultProps = {
     bordered: "bottom",
     clearing: true,
     contentInline: false,
+    "data-componentid": "jumbotron",
     "data-testid": "jumbotron",
     headingAs: "h1",
     iconSize: "auto",

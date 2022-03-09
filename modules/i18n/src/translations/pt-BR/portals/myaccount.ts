@@ -650,68 +650,77 @@ export const myAccount: MyAccountNS = {
                 }
             },
             fido: {
-                description: "Autentique-se conectando uma chave FIDO",
+                description: "Você pode usar uma chave de segurança FIDO2 ou biometria em seu dispositivo " +
+                    "para fazer login em sua conta.",
                 form: {
-                    label: "Dispositivo de segurança",
-                    placeholder: "Digite o nome do dispositivo",
-                    remove: "Retire o dispositivo",
-                    required: "Digite um nome para o seu dispositivo de segurança"
+                    label: "Chave de segurança/biometria",
+                    placeholder: "Insira um nome para a chave de segurança/biométrico",
+                    remove: "Remova a chave de segurança/biométrica",
+                    required: "Insira um nome para sua chave de segurança/biometria"
                 },
-                heading: "FIDO",
+                heading: "Chave de segurança/biometria",
                 modals: {
+                    deleteConfirmation: {
+                        assertionHint: "Por favor, confirme sua ação.",
+                        content: "Esta ação é irreversível e excluirá permanentemente a chave de segurança/biométrica.",
+                        description: "Se você excluir essa chave de segurança/biométrica, talvez não consiga fazer" +
+                            " login na sua conta novamente. Por favor, prossiga com cautela.",
+                        heading: "Tem certeza?"
+                    },
                     deviceRegistrationErrorModal: {
-                        description: "O registro do dispositivo foi interrompido. Se isso não foi intencional, tente " +
-                            "novamente o mesmo fluxo ou tente novamente com uma chave de segurança mais antiga.",
-                        heading: "Falha no registro do dispositivo"
+                        description: "TA chave de segurança/registro biométrico foi interrompido. " +
+                            "Se isso não foi intencional, você pode tentar novamente o fluxo.",
+                        heading: "Falha no registro biométrico/chave de segurança",
+                        tryWithOlderDevice: "Você também pode tentar novamente com uma " +
+                            "chave de segurança/biométrica mais antiga."
                     }
                 },
                 notifications: {
                     removeDevice: {
                         error: {
                             description: "{{description}}",
-                            message: "Ocorreu um erro ao remover o dispositivo"
+                            message: "Ocorreu um erro ao remover a chave de segurança/biométrica"
                         },
                         genericError: {
-                            description: "Ocorreu um erro ao remover o dispositivo",
+                            description: "Ocorreu um erro ao remover a chave de segurança/biométrica",
                             message: "Algo deu errado"
                         },
                         success: {
-                            description: "O dispositivo foi removido com sucesso da lista",
-                            message: "Seu dispositivo foi removido com sucesso"
+                            description: "A chave de segurança/biometria foi removida com sucesso da lista",
+                            message: "Sua chave de segurança/biométrico removido com sucesso"
                         }
                     },
                     startFidoFlow: {
                         error: {
                             description: "{{description}}",
-                            message: "Ocorreu um erro ao recuperar o dispositivo"
+                            message: "Ocorreu um erro ao recuperar a chave de segurança/biométrica"
                         },
                         genericError: {
-                            description: "Ocorreu um erro ao recuperar o dispositivo",
+                            description: "Ocorreu um erro ao recuperar a chave de segurança/biométrica",
                             message: "Algo deu errado"
                         },
                         success: {
-                            description: "O dispositivo foi registrado com sucesso e agora você pode usá-lo como" +
-                                " um fator de autenticação",
-                            message: "Seu dispositivo registrado com sucesso"
+                            description: "A chave de segurança/biométrica foi registrada com sucesso " +
+                                "e agora você pode usá-la para autenticação.",
+                            message: "Sua chave de segurança/biométrico registrado com sucesso"
                         }
                     },
                     updateDeviceName: {
                         error: {
                             description: "{{description}}",
-                            message: "Ocorreu um erro ao atualizar o nome do dispositivo de segurança"
+                            message: "Ocorreu um erro ao atualizar a chave de segurança/nome biométrico"
                         },
                         genericError: {
-                            description: "Erro ao atualizar o nome do dispositivo de segurança",
+                            description: "Ocorreu um erro ao atualizar a chave de segurança/nome biométrico",
                             message: "Algo deu errado"
                         },
                         success: {
-                            description:
-                                "O nome do seu dispositivo de segurança foi atualizado com sucesso",
-                            message: "Nome do dispositivo de segurança atualizado com sucesso"
+                            description: "O nome da sua chave de segurança/biometria foi atualizado com sucesso",
+                            message: "Chave de segurança/nome biométrico atualizado com sucesso"
                         }
                     }
                 },
-                tryButton: "Tente com um dispositivo mais antigo"
+                tryButton: "Tente com uma chave de segurança/biométrica mais antiga"
             },
             smsOtp: {
                 descriptions: {

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { MenuProps, Tab, TabProps } from "semantic-ui-react";
@@ -32,7 +32,9 @@ export interface ResourceTabSubComponentsInterface {
 /**
  * Resource tabs component Prop types.
  */
-export interface ResourceTabPropsInterface extends TabProps, TestableComponentInterface {
+export interface ResourceTabPropsInterface extends TabProps, IdentifiableComponentInterface,
+    TestableComponentInterface {
+
     /**
      * Custom class for the component.
      */
@@ -75,6 +77,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
         pointing,
         secondary,
         onTabChange,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -124,6 +127,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
             } }
             panes={ panes }
             activeIndex={ activeIndex }
+            data-componentid={ componentId }
             data-testid={ testId }
             { ...rest }
         />
@@ -135,6 +139,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
  */
 ResourceTab.defaultProps = {
     attached: false,
+    "data-componentid": "resource-tabs",
     "data-testid": "resource-tabs",
     pointing: true,
     secondary: true

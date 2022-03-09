@@ -27,6 +27,7 @@ import {
 } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
+    ErrorInfo,
     FunctionComponent,
     ReactElement,
     ReactNode,
@@ -40,13 +41,13 @@ import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import {
     AppConstants,
     AppState,
+    AppUtils,
+    EventPublisher,
     FeatureConfigInterface,
-    PreLoader,
     ProtectedRoute,
     RouteUtils,
     getEmptyPlaceholderIllustrations,
-    getFullScreenViewRoutes,
-    AppUtils
+    getFullScreenViewRoutes
 } from "../features/core";
 
 /**
@@ -81,6 +82,8 @@ export const FullScreenView: FunctionComponent<FullScreenViewPropsInterface> = (
 
     const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(getFullScreenViewRoutes());
 
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
     useEffect(() => {
 
         // Allowed scopes is never empty. Wait until it's defined to filter the routes.
@@ -113,26 +116,26 @@ export const FullScreenView: FunctionComponent<FullScreenViewPropsInterface> = (
         route.redirectTo
             ? <Redirect key={ key } to={ route.redirectTo }/>
             : route.protected
-            ? (
-                <ProtectedRoute
-                    component={ route.component ? route.component : null }
-                    path={ route.path }
-                    key={ key }
-                    exact={ route.exact }
-                />
-            )
-            : (
-                <Route
-                    path={ route.path }
-                    render={ (renderProps): ReactNode =>
-                        route.component
-                            ? <route.component { ...renderProps } />
-                            : null
-                    }
-                    key={ key }
-                    exact={ route.exact }
-                />
-            )
+                ? (
+                    <ProtectedRoute
+                        component={ route.component ? route.component : null }
+                        path={ route.path }
+                        key={ key }
+                        exact={ route.exact }
+                    />
+                )
+                : (
+                    <Route
+                        path={ route.path }
+                        render={ (renderProps): ReactNode =>
+                            route.component
+                                ? <route.component { ...renderProps } />
+                                : null
+                        }
+                        key={ key }
+                        exact={ route.exact }
+                    />
+                )
     );
 
     /**
@@ -182,6 +185,14 @@ export const FullScreenView: FunctionComponent<FullScreenViewPropsInterface> = (
                         title={ t("console:common.placeholders.brokenPage.title") }
                     />
                 ) }
+                handleError={ (error: Error, errorInfo: ErrorInfo) => {
+                    eventPublisher.publish("error-captured-error-boundary", {
+                        error: error?.name,
+                        errorInfo: errorInfo?.componentStack,
+                        stack: error?.stack,
+                        type: "full-screen-view"
+                    });
+                } }
             >
                 <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
                     <Switch>

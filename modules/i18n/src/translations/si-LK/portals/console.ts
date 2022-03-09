@@ -825,6 +825,10 @@ export const console: ConsoleNS = {
                                             subjectDisabledSelection: "මෙම ගුණාංගය අනිවාර්ය වන්නේ " +
                                                 "එය විෂය ගුණාංගය වන බැවිනි."
                                         },
+                                        faultyAttributeMapping: "OpenID Connect Attribute සිතියම්ගත" +
+                                            " කිරීම අස්ථානගත වී ඇත",
+                                        faultyAttributeMappingHint: "පරිශීලක පිවිසුමේදී උපලක්ෂණ අගය යෙදුම වෙත" +
+                                            " බෙදා නොගනු ඇත.",
                                         fields: {
                                             claim: {
                                                 label: "අගය ඇතුලත් කරන්න",
@@ -1118,6 +1122,16 @@ export const console: ConsoleNS = {
                                                 description: "කාලය පදනම් කරගත් OTP සමඟ අතිරේක සත්‍යාපන ස්තරය " +
                                                     "සක්‍රීය කරන්න.",
                                                 heading: "TOTP දෙවන සාධකය ලෙස එක් කරන්න"
+                                            },
+                                            usernameless: {
+                                                description: "පරිශීලකයින්ට ඔවුන්ගේ FIDO2 ආරක්ෂක යතුරක් හෝ " +
+                                                    "ජෛවමිතික භාවිතයෙන් පුරනය වීමට සබල කරන්න.",
+                                                heading: "මුරපද රහිත සත්‍යාපනය එක් කරන්න",
+                                                info: "මුරපද රහිත සත්‍යාපනය සමඟින් පුරනය වීමට, " +
+                                                    "ඔබේ පරිශීලකයින්ට ඔවුන්ගේ FIDO2 ආරක්ෂක " +
+                                                    "යතුරු හෝ මගේ ගිණුම හරහා ජෛවමිතික ලියාපදිංචි " +
+                                                    "කර තිබිය යුතුය."
+
                                             }
                                         }
                                     }
@@ -2479,6 +2493,12 @@ export const console: ConsoleNS = {
                         success: {
                             description: "යෙදුම් සැකිලි සාර්ථකව ලබා ගන්නා ලදි.",
                             message: "නැවත ලබා ගැනීම සාර්ථකයි"
+                        }
+                    },
+                    firstFactorAuthenticatorToSecondStep: {
+                        genericError: {
+                            description: "මෙම සත්‍යාපකය එක් කළ හැක්කේ පළමු පියවරට පමණි.",
+                            message: "මෙම පියවරට එකතු කළ නොහැක"
                         }
                     },
                     getInboundProtocolConfig: {

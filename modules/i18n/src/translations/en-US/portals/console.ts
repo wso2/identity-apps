@@ -822,6 +822,9 @@ export const console: ConsoleNS = {
                                             subjectDisabledSelection: "This attribute is mandatory because it " +
                                                 "is the subject attribute."
                                         },
+                                        faultyAttributeMapping: "Missing OpenID Connect Attribute Mapping",
+                                        faultyAttributeMappingHint: "Attribute value will not be shared to the" +
+                                            " application at the user login.",
                                         fields: {
                                             claim: {
                                                 label: "Please enter a value",
@@ -1112,6 +1115,14 @@ export const console: ConsoleNS = {
                                                 description: "Enable additional authentication layer with Time " +
                                                     "based OTP.",
                                                 heading: "Add TOTP as a second factor"
+                                            },
+                                            usernameless: {
+                                                description: "Enable users to log in using a FIDO2 security key " +
+                                                    "or biometrics.",
+                                                heading: "Add passwordless login",
+                                                info: "To sign in with passwordless login, your users " +
+                                                    "should have their FIDO2 security keys or biometrics " +
+                                                    "registered via My Account."
                                             }
                                         }
                                     }
@@ -1669,7 +1680,7 @@ export const console: ConsoleNS = {
                                         hint: "Select to issue a new <1>refresh_token</1> each time a "+
                                             "<3>refresh_token</3> is " +
                                             "exchanged. The existing token will be invalidated.",
-                                        label: "Rotate refresh token",
+                                        label: "Renew refresh token",
                                         validations: {
                                             empty: "This is a required field."
                                         }
@@ -2505,6 +2516,12 @@ export const console: ConsoleNS = {
                             message: "Retrieval successful"
                         }
                     },
+                    firstFactorAuthenticatorToSecondStep: {
+                        genericError: {
+                            description: "This authenticator can only be added to the first step.",
+                            message: "Cannot add to this step"
+                        }
+                    },
                     getInboundProtocolConfig: {
                         error: {
                             description: "{{description}}",
@@ -3297,7 +3314,7 @@ export const console: ConsoleNS = {
                                 " require it to be enabled.",
                             disabledMessageHeader: "Operation Not Allowed",
                             hint: "Specify if users federated from this identity provider need to be proxied.",
-                            label: "Just-in-Time User Provisioning"
+                            label: "Just-in-Time (JIT) User Provisioning"
                         },
                         provisioningScheme: {
                             children: {
@@ -4367,7 +4384,7 @@ export const console: ConsoleNS = {
                             },
                             disabledMessageHeader: "Operation Not Allowed",
                             hint: "Specify if users federated from this identity provider need to be proxied.",
-                            label: "Just-in-Time User Provisioning"
+                            label: "Just-in-Time (JIT) User Provisioning"
                         },
                         provisioningScheme: {
                             children: {

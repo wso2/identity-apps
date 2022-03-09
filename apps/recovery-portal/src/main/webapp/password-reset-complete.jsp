@@ -40,6 +40,7 @@
 <%@ page import="org.apache.http.client.utils.URIBuilder" %>
 <%@ page import="java.net.URI" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
@@ -50,6 +51,7 @@
     String PASSWORD_RESET_PAGE = "password-reset.jsp";
     String AUTO_LOGIN_COOKIE_NAME = "ALOR";
     String AUTO_LOGIN_FLOW_TYPE = "RECOVERY";
+    String AUTO_LOGIN_COOKIE_DOMAIN = "AutoLoginCookieDomain";
     String passwordHistoryErrorCode = "22001";
     String passwordPatternErrorCode = "20035";
     String confirmationKey =
@@ -58,8 +60,8 @@
     String callback = request.getParameter("callback");
     String userStoreDomain = request.getParameter("userstoredomain");
     String username = null;
-    boolean isAutoLoginEnable = Boolean.parseBoolean(Utils.getConnectorConfig("Recovery.AutoLogin.Enable",
-            tenantDomain));
+    PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+    Boolean isAutoLoginEnable = preferenceRetrievalClient.checkAutoLoginAfterPasswordRecoveryEnabled(tenantDomain);
 
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
@@ -97,10 +99,14 @@
                     username = userStoreDomain + "/" + username + "@" + tenantDomain;
                 }
                 
+                String cookieDomain = application.getInitParameter(AUTO_LOGIN_COOKIE_DOMAIN);
                 JSONObject contentValueInJson = new JSONObject();
                 contentValueInJson.put("username", username);
                 contentValueInJson.put("createdTime", System.currentTimeMillis());
                 contentValueInJson.put("flowType", AUTO_LOGIN_FLOW_TYPE);
+                if (StringUtils.isNotBlank(cookieDomain)) {
+                    contentValueInJson.put("domain", cookieDomain);
+                }
                 String content = contentValueInJson.toString();
         
                 JSONObject cookieValueInJson = new JSONObject();
@@ -114,6 +120,9 @@
                 cookie.setPath("/");
                 cookie.setSecure(true);
                 cookie.setMaxAge(300);
+                if (StringUtils.isNotBlank(cookieDomain)) {
+                    cookie.setDomain(cookieDomain);
+                }
                 response.addCookie(cookie);
             }
         } catch (ApiException e) {

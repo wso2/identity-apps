@@ -209,82 +209,91 @@ export class SignInMethodUtils {
             leftSideSteps);
     }
 
-    /**
-     * Context
-     * -------
-     * When a application developer / someone with privileges adds federated IdP as a
-     * step through the sign-in configurations to a targeted application and disable
-     * JIT provisioning.
-     *
-     * Then, if they try to add a second factor authentication next system should not allow this
-     * operation because with the proxy mode enabled; users aren't provisioned locally.
-     * Therefore, making the second factor auth obsolete.
-     *
-     * ProxyMode === JIT Disabled ~ vice versa
-     * {@code isProxyMode = !idpModel.provisioning.jit.isEnable}
-     */
-    public static isMFAConflictingWithProxyModeConfig(
-        { addingStep, authenticators, steps, subjectStepId }: ProxyModeConflictTestArgs
-    ): ProxyModeConflictTestReturn {
+    public static isConnectionsJITUPConflictWithMFA(
+        args: ConnectionsJITUPConflictWithMFAArgs
+    ): ConnectionsJITUPConflictWithMFAReturnValue {
+
+        const { federatedAuthenticators, steps, subjectStepId } = args;
 
         /**
-         * In authentication step 0 users aren't allowed to add
-         * MFA whatsoever. So, this invariant skips this validation
-         * if this is the step 0. 0 maps to id:1 in {@code steps}.
-         */
-        if (addingStep === 0)
-            return { conflicting: false, idpList: [] };
-
-        /**
-         * More Context
-         * ------------
-         * Authentication steps are isolated. However, according to our requirement
-         * the user should not be able to plug in MFA in any step if one or more
-         * proxy mode identity providers were configured.
+         * We are solving two problems:
          *
-         * If you check the interface, you'd see that you can only configure one
-         * idp of the same category in a targeted step. But you can configure the
-         * same idp in a different step. So, our validation MUST ensure that
-         * cases like these also be handled properly. Also, a MFA instance can be
-         * absolute first option in a authentication step (except 1 step).
+         * 1) Find out the subject step all federated IdPs:
+         *    We have an array of {@code federatedAuthenticators} and
+         *    the configured steps. We are only focused on federated
+         *    authentications configured on subject identifier step and
+         *    pick only the ones that have JIT disabled.
          *
-         * Clarification
-         * -------------
-         * For some reason {@code addingStep} starts from index 0 and {@code steps}
-         * ids start from index 1. So, if you want to get the options in the previous
-         * step in {@link steps} you just do {@code steps[addingStep]} and if you
-         * want to get the options in current step you do {@code steps[addingStep + 1]}.
+         * 2) Walk forward and check other steps (step 2 and beyond) for MFA:
+         *    The reason to do this check is that, MFA(s) are the
+         *    authenticators that are affected by JIT disabled state.
          */
-
-        const allOptions = flatten(
-            steps
-                .filter(({ id }) => id === subjectStepId)
-                .map(({ options }) => options)
-        );
-
-        const limit = ApplicationManagementConstants.MAXIMUM_NUMBER_OF_LIST_ITEMS_TO_SHOW_INSIDE_POPUP;
 
         try {
 
+            /** Start solving the 1st problem **/
+
+            const allOptions = flatten(
+                steps
+                    .filter(({ id }) => id === subjectStepId)
+                    .map(({ options }) => options)
+            );
+
             /**
-             * Checks whether all auth steps has at least 1 or more proxied
-             * handlers. If yes then there's a conflict.
+             * Checks whether all auth steps has at least 1 or more
+             * proxied (JIT disabled) handlers. If yes then there
+             * can be a conflict.
              */
-            const result = [ ...(new Set(allOptions.map(({ idp }) => idp))) ] // Extract all the IdP names.
-                .map((idpName) => authenticators.find(({ name }) => name === idpName)) // Find the authenticator model.
-                .filter(Boolean) // Remove all the {@code undefined|null} ones please.
-                .filter(({ category }) => (
-                    category === AuthenticatorCategories.SOCIAL.toString() ||
-                    category === AuthenticatorCategories.ENTERPRISE.toString()
-                )) // Give me only ENTERPRISE and SOCIAL IdPs.
-                .filter((auth: GenericAuthenticatorWithProvisioningConfigs) => {
-                    return !auth?.provisioning?.jit?.isEnabled;
-                }) as GenericAuthenticatorWithProvisioningConfigs[];
+            const jitDisabledIdPsInSubjectIdStep =
+                // Extract all the IdP names.
+                [ ...(new Set(allOptions.map(({ idp }) => idp))) ]
+                    // Find the authenticator model.
+                    .map((idpName) => federatedAuthenticators.find(({ name }) => name === idpName))
+                    // Remove all the {@code undefined|null} ones please.
+                    .filter(Boolean)
+                    // Find all the JIT disabled ones in the subject identifier step.
+                    .filter((auth: GenericAuthenticatorWithProvisioningConfigs) => (
+                        !auth?.provisioning?.jit?.isEnabled
+                    )) as GenericAuthenticatorWithProvisioningConfigs[];
+
+            /** Start solving the 2nd problem **/
+
+            /**
+             * This means that we have only one step, and implies =>
+             * no MFA is being configured. This is because the interface only
+             * allows MFA to be added to step 2 or beyond.
+             */
+            if (steps.length < 2) {
+                return {
+                    conflicting: false,
+                    idpList: []
+                };
+            }
+
+            const allOtherOptions = flatten(
+                steps
+                    .slice(1) // Remove the first element (subject identifier step)
+                    .map(({ options }) => options) // Get all the options.
+            );
+
+            const LOCAL_MFA_OPTIONS = new Set(
+                ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS
+            );
+
+            /**
+             * If this list contains one or more items it means
+             * somewhere in the sequence we have MFA configured.
+             */
+            const configuredForwardMFA = allOtherOptions.filter(
+                (op) => LOCAL_MFA_OPTIONS.has(op.authenticator)
+            );
+
+            /** Finally compose the outcome **/
 
             return {
-                // If there's one or more proxy mode enabled IdPs means we have a conflict.
-                conflicting: result?.length > 0,
-                idpList: result.slice(0, limit)
+                conflicting: jitDisabledIdPsInSubjectIdStep.length > 0
+                    && configuredForwardMFA.length > 0,
+                idpList: jitDisabledIdPsInSubjectIdStep ?? []
             };
 
         } catch (e) {
@@ -298,20 +307,25 @@ export class SignInMethodUtils {
 
 }
 
-export type ProxyModeConflictTestArgs = {
-    authenticators: GenericAuthenticatorInterface[];
-    authenticatorId: string;
-    addingStep: number;
+export type ConnectionsJITUPConflictWithMFAArgs = {
+    /**
+     * This parameter should only pass in the configured federated
+     * authenticators under a tenant.
+     */
+    federatedAuthenticators: GenericAuthenticatorInterface[];
+    /**
+     * All the steps in the authentication sequence. Callee must pass
+     * all the authentication options without skipping any.
+     */
     steps: AuthenticationStepInterface[];
     subjectStepId: number;
-    attributeStepId: number;
 };
 
 export type GenericAuthenticatorWithProvisioningConfigs = GenericAuthenticatorInterface & {
     provisioning: ProvisioningInterface
 };
 
-export type ProxyModeConflictTestReturn = {
+export type ConnectionsJITUPConflictWithMFAReturnValue = {
     conflicting: boolean;
     idpList: GenericAuthenticatorWithProvisioningConfigs[];
 };

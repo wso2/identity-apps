@@ -16,15 +16,15 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Divider, Header, Icon, MessageProps, Message as SemanticMessage } from "semantic-ui-react";
 
 /**
  * Proptypes for the message component.
  */
-export interface MessageComponentPropsInterface extends MessageProps, TestableComponentInterface {
-}
+export interface MessageComponentPropsInterface extends MessageProps, IdentifiableComponentInterface,
+    TestableComponentInterface { }
 
 /**
  * Message component.
@@ -39,6 +39,7 @@ export const Message: FunctionComponent<MessageComponentPropsInterface> = (
     const {
         header,
         content,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ... rest
     } = props;
@@ -72,6 +73,7 @@ export const Message: FunctionComponent<MessageComponentPropsInterface> = (
                     : null
             }
             content={ generateContent() }
+            data-componentid={ componentId }
             data-testid={ testId }
         />
     );
@@ -82,6 +84,7 @@ export const Message: FunctionComponent<MessageComponentPropsInterface> = (
  */
 Message.defaultProps = {
     content: null,
+    "data-componentid": "message-component",
     "data-testid": "message-component",
     header: null
 };

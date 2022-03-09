@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
 import { KJUR, X509 } from "jsrsasign";
 import * as forge from "node-forge";
@@ -54,7 +55,7 @@ function poly() {
 
 // Developer facing interfaces
 
-export interface FilePickerProps {
+export interface FilePickerProps extends IdentifiableComponentInterface {
     /**
      * The target strategy of this file picker. This
      * can take many forms depending on the use-case.
@@ -179,7 +180,8 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
         normalizeStateOnRemoveOperations,
         emptyFileError,
         emptyFileErrorMsg,
-        hidePasteOption
+        hidePasteOption,
+        [ "data-componentid" ]: componentId
     } = props;
 
     // Document queries
@@ -534,6 +536,7 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
                 type="file"
                 accept={ fileStrategy.mimeTypes.join(",") }
                 onChange={ handleOnFileInputChange }
+                data-componentid={ `${ componentId }-input` }
             />
             { /*TODO: Improvement*/ }
             { /*A dynamic input should be placed here so that we can*/ }
@@ -546,6 +549,7 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
                             menu={ { pointing: true, secondary: true } }
                             panes={ [ dragOption, pasteOption ] }
                             activeIndex={ activeIndex }
+                            data-componentid={ `${ componentId }-tabs` }
                             onTabChange={ (event, { activeIndex }) => {
                                 const index = parseInt(activeIndex.toString());
 
@@ -570,6 +574,7 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
                     error
                     visible={ hasError }
                     data-testid={ "file-picker-error-message" }
+                    data-componentid={ `${ componentId }-error-message` }
                 >
                     <Icon name="file"/>
                     { errorMessage }
@@ -581,6 +586,7 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
 };
 
 FilePicker.defaultProps = {
+    "data-componentid": "file-picker",
     hidePasteOption: false
 };
 

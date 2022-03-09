@@ -44,4 +44,4 @@
 
 <title><%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%></title>
 
-<script src="libs/jquery_3.6.0/jquery-3.6.0.js"></script>
+<script src="libs/jquery_3.6.0/jquery-3.6.0.min.js"></script>

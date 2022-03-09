@@ -42,11 +42,6 @@ const httpClientAll = AsgardeoSPAClient.getInstance().httpRequestAll.bind(Asgard
  * @return {Promise<any>} A promise containing the response.
  */
 export const fetchConsentedApps = async (state: ConsentState, username: string): Promise<ConsentInterface[]> => {
-    const userName = username.split("@");
-
-    if (userName.length > 1) {
-        userName.pop();
-    }
 
     const requestConfig = {
         headers: {
@@ -56,7 +51,7 @@ export const fetchConsentedApps = async (state: ConsentState, username: string):
         },
         method: HttpMethods.GET,
         params: {
-            piiPrincipalId: userName.join("@"),
+            piiPrincipalId: username,
             state
         },
         url: store.getState().config.endpoints.consentManagement.consent.listAllConsents

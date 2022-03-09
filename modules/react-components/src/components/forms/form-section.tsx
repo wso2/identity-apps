@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from "react";
 import { Divider } from "semantic-ui-react";
@@ -25,7 +25,7 @@ import { Heading } from "../typography";
 /**
  * Form Section component Prop types.
  */
-export interface FormSectionPropsInterface extends TestableComponentInterface {
+export interface FormSectionPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Addition classes.
      */
@@ -57,6 +57,7 @@ export const FormSection: FunctionComponent<PropsWithChildren<FormSectionPropsIn
         className,
         heading,
         headingLevel,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -66,7 +67,7 @@ export const FormSection: FunctionComponent<PropsWithChildren<FormSectionPropsIn
     );
 
     return (
-        <div className={ classes } data-testid={ testId }>
+        <div className={ classes } data-testid={ testId } data-componentid={ componentId }>
             <Divider className="form-section-top-divider" />
             <Heading className="form-section-heading" as={ headingLevel }>
                 { heading }
@@ -81,6 +82,7 @@ export const FormSection: FunctionComponent<PropsWithChildren<FormSectionPropsIn
  * Default props for the component.
  */
 FormSection.defaultProps = {
+    "data-componentid": "form-section",
     "data-testid": "form-section",
     headingLevel: "h5"
 };

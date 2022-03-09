@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/i18n",
-    "version": "1.2.777",
+    "version": "1.2.824",
     "description": "This module contains the configs, helpers and translations required to make an identity app available in multiple languages.",
     "keywords": [
         "WSO2",
@@ -20,34 +20,37 @@
         "clean": "rimraf ./dist",
         "clean:bundle": "rimraf ./dist/bundle",
         "clean:translations": "rimraf ./dist/src/translations && rimraf ./dist/types/translations",
-        "compile": "tsc -p tsconfig.json",
+        "compile": "npx run-script-os",
+        "compile:win32": "..\\..\\node_modules\\.bin\\tsc -p tsconfig.json",
+        "compile:default": "../../node_modules/.bin/tsc -p tsconfig.json",
         "lint": "npm run lint:all -- --max-warnings=0",
         "lint:all": "npm run lint:targeted -- .",
         "lint:autofix": "npm run lint:all -- --fix",
+        "lint:ci": "npm run lint -- --format=compact",
         "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to .",
-        "test": "npm run jest -- -- --passWithNoTests",
-        "test:watch": "npm run test -- --watch",
         "jest": "npx run-script-os",
         "jest:win32": ".\\node_modules\\.bin\\jest",
-        "jest:default": "./node_modules/.bin/jest"
+        "jest:default": "./node_modules/.bin/jest",
+        "test": "npm run jest -- -- --passWithNoTests",
+        "test:watch": "npm run test -- --watch",
+        "typecheck": "npm run compile"
     },
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
         "@types/jest": "^26.0.14",
-        "@wso2is/core": "^1.2.777",
+        "@wso2is/core": "^1.2.824",
         "babel-jest": "^26.3.0",
         "i18next": "^17.0.11",
         "i18next-browser-languagedetector": "^3.0.3",
         "i18next-xhr-backend": "^3.2.2",
-        "jest": "^26.4.2",
         "lodash-es": "^4.17.21",
-        "react-i18next": "^10.11.5",
-        "ts-jest": "^26.4.0"
+        "react-i18next": "^10.11.5"
     },
     "devDependencies": {
         "@types/i18next": "8.4.3",
         "@types/i18next-xhr-backend": "^1.4.2",
+        "@types/jest": "^26.0.14",
         "@types/lodash-es": "^4.17.4",
         "@types/node": "^13.9.2",
         "@typescript-eslint/eslint-plugin": "^4.17.0",
@@ -56,8 +59,11 @@
         "eslint-plugin-import": "^2.20.2",
         "eslint-plugin-react": "^7.18.3",
         "eslint-plugin-react-hooks": "^4.0.0",
+        "jest": "^26.4.2",
         "rimraf": "^3.0.2",
         "run-script-os": "^1.0.7",
+        "ts-jest": "^26.4.0",
+        "ts-node": "^10.5.0",
         "typescript": "^4.2.2"
     }
 }

@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/core",
-    "version": "1.2.777",
+    "version": "1.2.824",
     "description": "Commonly used configs, schemas, utilities and low level services for WSO2 Identity Server frontend apps",
     "keywords": [
         "WSO2",
@@ -12,7 +12,7 @@
         "utils"
     ],
     "main": "dist/src/index.js",
-    "types": "dist/src/index.d.ts",
+    "types": "dist/types/index.d.ts",
     "scripts": {
         "prebuild": "npm run clean",
         "build": "npm run compile",
@@ -23,12 +23,14 @@
         "lint": "npm run lint:all",
         "lint:all": "npm run lint:targeted -- .",
         "lint:autofix": "npm run lint:all -- --fix",
+        "lint:ci": "npm run lint -- -- --format=compact",
         "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to .",
         "test": "npm run jest -- -- --passWithNoTests",
         "test:watch": "npm run test -- --watch",
         "jest": "npx run-script-os",
         "jest:win32": ".\\node_modules\\.bin\\jest",
-        "jest:default": "./node_modules/.bin/jest"
+        "jest:default": "./node_modules/.bin/jest",
+        "typecheck": "npm run compile"
     },
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -65,6 +67,7 @@
         "rimraf": "^3.0.2",
         "run-script-os": "^1.0.7",
         "ts-jest": "^26.4.0",
+        "ts-node": "^10.5.0",
         "typescript": "^4.2.2"
     },
     "peerDependencies": {

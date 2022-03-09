@@ -16,7 +16,11 @@
  * under the License.
  */
 
-import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    IdentifiableComponentInterface,
+    LoadableComponentInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { MouseEventHandler, ReactElement, ReactNode } from "react";
 import { Divider, Grid, Header, Icon, Placeholder, SemanticWIDTHS } from "semantic-ui-react";
@@ -25,7 +29,9 @@ import { GenericIcon, GenericIconProps } from "../icon";
 /**
  * Page header component Prop types.
  */
-export interface PageHeaderPropsInterface extends LoadableComponentInterface, TestableComponentInterface {
+export interface PageHeaderPropsInterface extends LoadableComponentInterface, TestableComponentInterface,
+    IdentifiableComponentInterface {
+
     /**
      * Action component.
      */
@@ -91,7 +97,7 @@ export interface PageHeaderPropsInterface extends LoadableComponentInterface, Te
 /**
  * Back button interface.
  */
-export interface BackButtonInterface extends TestableComponentInterface {
+export interface BackButtonInterface extends TestableComponentInterface, IdentifiableComponentInterface {
     /**
      * Button label.
      */
@@ -130,6 +136,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
         titleTextAlign,
         pageHeaderMaxWidth,
         truncateContent,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -188,6 +195,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                     size="tiny"
                     transparent
                     spaced={ (typeof imageSpaced === "boolean" && !imageSpaced) ? null : "right" }
+                    data-componentid={ `${ componentId }-image` }
                     data-testid={ `${ testId }-image` }
                 />
             ) }
@@ -199,6 +207,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                             className="page-header ellipsis"
                             as={ titleAs }
                             textAlign={ titleTextAlign }
+                            data-componentid={ `${ componentId }-text-wrapper-loading` }
                             data-testid={ `${ testId }-text-wrapper-loading` }
                         >
                             <div style={ { width: "250px" } }>
@@ -216,9 +225,13 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                             className={ headerContentClasses }
                             as={ titleAs }
                             textAlign={ titleTextAlign }
+                            data-componentid={ `${ componentId }-text-wrapper` }
                             data-testid={ `${ testId }-text-wrapper` }
                         >
-                            <span data-testid={ `${ testId }-title` }>
+                            <span
+                                data-componentid={ `${ componentId }-title` }
+                                data-testid={ `${ testId }-title` }
+                            >
                                 { title ? title : (
                                     <div style={ { width: "400px" } }>
                                         <Placeholder fluid>
@@ -233,6 +246,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                             { description && (
                                 <Header.Subheader
                                     className={ subHeaderContentClasses }
+                                    data-componentid={ `${ componentId }-sub-title` }
                                     data-testid={ `${ testId }-sub-title` }
                                 >
                                     { description }
@@ -247,7 +261,11 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
     return (
         (title || description)
             ? (
-                <div className={ wrapperClasses } data-testid={ testId }>
+                <div
+                    className={ wrapperClasses }
+                    data-componentid={ componentId }
+                    data-testid={ testId }
+                >
                     {
                         backButton && backButton.text && (
                             isLoading
@@ -260,6 +278,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                                 )
                                 : (
                                     <div
+                                        data-componentid={ backButton[ "data-componentid" ] }
                                         data-testid={ backButton[ "data-testid" ] }
                                         className={ backButtonClasses }
                                         onClick={ backButton.onClick }
@@ -304,6 +323,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
 PageHeader.defaultProps = {
     actionColumnWidth: 6,
     bottomMargin: true,
+    "data-componentid": "page-header",
     "data-testid": "page-header",
     headingColumnWidth: 10,
     imageSpaced: "right",

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Checkbox, Table, TableProps } from "semantic-ui-react";
@@ -31,7 +31,9 @@ interface TransferListItemInterface {
 /**
  * Proptypes transfer list component.
  */
-export interface TransferListPropsInterface extends TableProps, TestableComponentInterface {
+export interface TransferListPropsInterface extends TableProps, IdentifiableComponentInterface,
+    TestableComponentInterface {
+
     listValues?: TransferListItemInterface[] | string[];
     listHeaders?: any;
     listType: "selected" | "unselected";
@@ -67,6 +69,7 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
         emptyPlaceholderContent,
         selectionComponent,
         isLoading,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -86,6 +89,7 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
                                                     !selectionComponent && (
                                                         <Table.HeaderCell>
                                                             <Checkbox
+                                                                data-componentid={ componentId }
                                                                 data-testid={ testId }
                                                                 checked={ isHeaderCheckboxChecked }
                                                                 onChange={ handleHeaderCheckboxChange }
@@ -124,6 +128,7 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
                                         ? emptyPlaceholderContent
                                         : t("console:manage.features.transferList.list.emptyPlaceholders.default")
                                 ] }
+                                data-componentid={ `${ componentId }-placeholder` }
                                 data-testid={ `${ testId }-placeholder` }
                             />
                         </div>
@@ -138,5 +143,6 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
  * Default props for the transfer list component.
  */
 TransferList.defaultProps = {
+    "data-componentid": "transfer-list",
     "data-testid": "transfer-list"
 };

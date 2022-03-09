@@ -16,5 +16,5 @@
   ~ under the License.
 --%>
 
-<script src="libs/jquery_3.6.0/jquery-3.6.0.js"></script>
+<script src="libs/jquery_3.6.0/jquery-3.6.0.min.js"></script>
 <script src="libs/themes/default/semantic.min.js"></script>

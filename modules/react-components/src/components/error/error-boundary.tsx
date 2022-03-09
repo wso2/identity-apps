@@ -32,6 +32,7 @@ interface ErrorBoundaryState {
 interface ErrorBoundaryProps {
     fallback: React.ReactNode;
     onChunkLoadError: () => void;
+    handleError?: (error: Error, errorInfo: ErrorInfo) => void;
 }
 
 /**
@@ -59,7 +60,9 @@ export class ErrorBoundary extends Component<
 
     componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
 
-        const { onChunkLoadError } = this.props;
+        const { onChunkLoadError, handleError } = this.props;
+
+        handleError && handleError(error, errorInfo);
 
         if (error.name === "ChunkLoadError") {
             onChunkLoadError && onChunkLoadError();

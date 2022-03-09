@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import kebabCase from "lodash-es/kebabCase";
 import React, { CSSProperties, FunctionComponent, ReactElement, useState } from "react";
@@ -27,7 +27,9 @@ import { GenericIcon } from "../icon";
 /**
  * Proptypes for the selection card component.
  */
-export interface TechnologyCardPropsInterface extends Omit<CardProps, "image">, TestableComponentInterface {
+export interface TechnologyCardPropsInterface extends Omit<CardProps, "image">, IdentifiableComponentInterface,
+    TestableComponentInterface {
+
     /**
      * Is card disabled.
      */
@@ -82,6 +84,7 @@ export const TechnologyCard: FunctionComponent<TechnologyCardPropsInterface> = (
         onClick,
         overlayOpacity,
         raised,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -113,6 +116,9 @@ export const TechnologyCard: FunctionComponent<TechnologyCardPropsInterface> = (
             link={ false }
             key={ key }
             raised={ raised }
+            data-componentid={
+                componentId ?? `technology-card-${ kebabCase(displayName) }`
+            }
             data-testid={
                 testId ?? `technology-card-${ kebabCase(displayName) }`
             }
@@ -150,5 +156,6 @@ export const TechnologyCard: FunctionComponent<TechnologyCardPropsInterface> = (
  * Default props for the technology card component.
  */
 TechnologyCard.defaultProps = {
+    "data-componentid": "technology-card",
     "data-testid": "technology-card"
 };

@@ -17,24 +17,18 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { AlertLevels, HttpCodes, TestableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
-import { Code, ContentLoader, DocumentationLink, Hint, Link, Text, useDocumentation } from "@wso2is/react-components";
-import { AxiosError, AxiosResponse } from "axios";
-import flatten from "lodash-es/flatten";
-import intersection from "lodash-es/intersection";
+import { Code, DocumentationLink, Hint, Text, useDocumentation } from "@wso2is/react-components";
+import classNames from "classnames";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Button, Grid, Icon, Message } from "semantic-ui-react";
 import { identityProviderConfig } from "../../../../extensions";
-import { ApplicationInterface, SimpleUserStoreListItemInterface, getApplicationsByIds } from "../../../applications";
-import { AppConstants, AppState, ConfigReducerStateInterface, history } from "../../../core";
-import { getIDPConnectedApps } from "../../api";
-import { IdentityProviderManagementConstants } from "../../constants";
+import { SimpleUserStoreListItemInterface } from "../../../applications";
+import { AppState, ConfigReducerStateInterface } from "../../../core";
 import {
-    ConnectedAppsInterface,
     IdentityProviderInterface,
     JITProvisioningResponseInterface,
     SupportedJITProvisioningSchemes
@@ -72,7 +66,6 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
 ): ReactElement => {
 
     const {
-        idpId,
         initialValues,
         onSubmit,
         useStoreList,
@@ -81,19 +74,12 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         [ "data-testid" ]: testId
     } = props;
 
-    const dispatch = useDispatch();
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const [ isJITProvisioningEnabled, setIsJITProvisioningEnabled ] = useState<boolean>(false);
-    const [
-        cannotModifyProxyModeDueToConnectApps,
-        setCannotModifyProxyModeDueToConnectApps
-    ] = useState<boolean>(false);
-    const [ fetchingConnectedApps, setFetchingConnectedApps ] = useState<boolean>(false);
-    const [ conflictingApps, setConflictingApps ] = useState<ApplicationInterface[]>([]);
 
     /**
      * Prepare form values for submitting.
@@ -137,107 +123,8 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
     useEffect(() => {
         if (initialValues?.isEnabled) {
             setIsJITProvisioningEnabled(initialValues?.isEnabled);
-            setFetchingConnectedApps(true);
-            setCannotModifyProxyModeDueToConnectApps(true);
-            validateJITConfigurationState().finally(() => {
-                setFetchingConnectedApps(false);
-            });
         }
     }, [ initialValues ]);
-
-    /**
-     * Context
-     * -------
-     * Used to check this IdP's {@code idpId} connected applications and
-     * check which applications has configured TOTP or Email OTP in their
-     * authentication steps.
-     */
-    const validateJITConfigurationState = async (): Promise<void> => {
-
-        try {
-
-            const { count, connectedApps }: ConnectedAppsInterface = await getIDPConnectedApps(idpId);
-
-            if (count === 0) {
-                setCannotModifyProxyModeDueToConnectApps(false);
-
-                return;
-            }
-
-            const limit = IdentityProviderManagementConstants.MAXIMUM_NUMBER_OF_LIST_ITEMS_TO_SHOW_INSIDE_CALLOUTS;
-
-            // Gets all the applications concurrently.
-            const responses: AxiosResponse<ApplicationInterface>[] = await getApplicationsByIds(
-                new Set(connectedApps.slice(0, limit).map((app) => app.appId))
-            );
-
-            const applicationsMap: Map<string, ApplicationInterface> = new Map();
-
-            for (const res of responses) {
-                const { status, data: app } = res;
-
-                if (HttpCodes.OK !== status) {
-                    const error = (res as unknown) as AxiosError;
-
-                    if (error?.response && error.response?.data && error.response.data?.description) {
-                        dispatch(addAlert({
-                            description: error.response.data.description || "Unable to get application details.",
-                            level: AlertLevels.ERROR,
-                            message: error?.message || "Error Occurred."
-                        }));
-                    }
-
-                    continue;
-                }
-                applicationsMap.set(app.id, app);
-            }
-
-            // What's happening here?
-            //
-            // #1 - Extracting all the options associated to its authentication steps and flat it out. n^2
-            // #2 - Extracting the authenticator types. n^2
-            // #3 - Checking if sequence has restricted set of MFA configured. n^2
-            // #4 - Finding conflicting apps. n
-            // #5 - Finding the original modal of each app. 1
-            //
-            // takes n^2
-
-            const mfaAuthenticators = [
-                IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
-                IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR
-            ];
-
-            const apps = [ ...applicationsMap.values() ]
-                .map(({ id, authenticationSequence: seq }) => ({
-                    id, options: flatten(seq.steps.map(({ options }) => options))
-                })) // #1
-                .map(({ id, options }) => ({
-                    authenticators: options.map(({ authenticator: a }) => a), id
-                })) // #2
-                .map(({ id, authenticators }) => ({
-                    hasMFAConfigured: intersection(authenticators, mfaAuthenticators)?.length > 0, id
-                })) // #3
-                .filter(({ hasMFAConfigured }) => hasMFAConfigured) // #4
-                .map(({ id }) => applicationsMap.get(id)); // #5
-
-            if (apps?.length) {
-                setCannotModifyProxyModeDueToConnectApps(true);
-                setConflictingApps(apps);
-
-                return;
-            }
-
-            setCannotModifyProxyModeDueToConnectApps(false);
-
-        } catch (error) {
-            dispatch(addAlert({
-                description: error?.description || "Unable to validate provisioning configs at this time.",
-                level: AlertLevels.ERROR,
-                message: error?.message || "Error Occurred."
-            }));
-        }
-
-    };
 
     const supportedProvisioningSchemes = [ {
         label: t("console:develop.features.authenticationProvider" +
@@ -257,104 +144,47 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         value: SupportedJITProvisioningSchemes.PROVISION_SILENTLY
     } ];
 
-    const documentationLinkForJIT = () => {
-        return (
-            <Text className="mt-3 mb-0">
-                You can learn more about this from our <DocumentationLink
-                    link={ getLink("develop.connections.edit.advancedSettings.jit") }>
-                docs</DocumentationLink>.
-            </Text>
-        );
-    };
-
-    const whenTheresOnly1AppConflict = () => {
-        const FIRST_ENTRY = 0;
-        const { name, id } = conflictingApps[ FIRST_ENTRY ];
-
-        return (
-            <div>
-                <Text>
-                    Make sure you know what you&apos;re doing as the <Link
-                        icon="linkify"
-                        onClick={ () => {
-                            history.push({
-                                pathname: AppConstants.getPaths()
-                                    .get("APPLICATION_EDIT")
-                                    .replace(":id", id),
-                                search: "#tab=4"
-                            });
-                        } }>{ name }</Link> application requires Just-in-Time User
-                    Provisioning to be enabled.
-                </Text>
-                <Text>
-                    The authentication sequence of the application contains Multi-Factor
-                    Authentication (MFA) steps configured. MFA mechanisms such
-                    as <Code>TOTP</Code> and <Code>Email OTP</Code> require a <strong>provisioned user account
-                    in { config.ui.productName }</strong> for proper functionality.
-                    { documentationLinkForJIT() }
-                </Text>
-            </div>
-        );
-    };
-
-    const whenTheresMultipleAppConflicts = () => {
-        return (
-            <>
-                <Text>
-                    Make sure you know what you&apos;re doing as the following applications
-                    require Just-in-Time User Provisioning to be enabled.
-                    <ol className="mb-3">
-                        { conflictingApps?.map(({ name, id }, index) => (
-                            <li key={ index }>
-                                <Link
-                                    icon="linkify"
-                                    onClick={ () => {
-                                        history.push({
-                                            pathname: AppConstants.getPaths()
-                                                .get("APPLICATION_EDIT")
-                                                .replace(":id", id),
-                                            search: "#tab=4"
-                                        });
-                                    } }>{ name }</Link>
-                            </li>
-                        )) }
-                    </ol>
-                    The authentication sequence of the applications contains Multi-Factor
-                    Authentication (MFA) steps configured. MFA mechanisms such
-                    as <Code>TOTP</Code> and <Code>Email OTP</Code> require a <strong>provisioned user
-                    account in { config.ui.productName }</strong> for proper functionality.
-                </Text>
-                { documentationLinkForJIT() }
-            </>
-        );
-    };
-
     const ProxyModeConflictMessage = (
-        <Message
-            data-componentid="proxy-mode-conflict-warning-message"
-            data-testid="proxy-mode-conflict-warning-message"
-            warning
-            // Semantic hides warning messages inside <form> by default
-            // Overriding the behaviour here to make sure it renders properly.
-            className="warning visible"
-            header={
-                (
-                    <Fragment>
-                        <Icon name="exclamation triangle" className="mr-2"/>
-                        Warning
-                    </Fragment>
-                )
-            }
-            content={
-                (
-                    <div className="mt-3 mb-2">
-                        { fetchingConnectedApps && <ContentLoader/> }
-                        { conflictingApps?.length === 1 ? whenTheresOnly1AppConflict() : null }
-                        { conflictingApps?.length > 1 ? whenTheresMultipleAppConflicts() : null }
-                    </div>
-                )
-            }
-        />
+        <div
+            style={ { animationDuration: "350ms" } }
+            className={ classNames("ui image warning scale transition", {
+                "hidden animating out": isJITProvisioningEnabled,
+                "visible animating in": !isJITProvisioningEnabled
+            }) }>
+            <Message
+                data-componentid="proxy-mode-conflict-warning-message"
+                data-testid="proxy-mode-conflict-warning-message"
+                warning
+                // Semantic hides warning messages inside <form> by default
+                // Overriding the behaviour here to make sure it renders properly.
+                className="warning visible"
+                header={
+                    (
+                        <Fragment>
+                            <Icon name="exclamation triangle" className="mr-2"/>
+                            Warning
+                        </Fragment>
+                    )
+                }
+                content={
+                    (
+                        <div className="mt-3 mb-2">
+                            <Text>
+                                JIT user provisioning should be enabled for external identity providers
+                                (connections) when there are MFA mechanisms
+                                such as <Code>TOTP</Code> and <Code>Email OTP</Code> configured
+                                in an application&apos;s login flow.
+                            </Text>
+                            <Text className="mt-3 mb-0">
+                                <DocumentationLink link={ getLink("develop.connections.edit.advancedSettings.jit") }>
+                                    Learn More
+                                </DocumentationLink>
+                            </Text>
+                        </div>
+                    )
+                }
+            />
+        </div>
     );
 
     return (
@@ -366,7 +196,6 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
                                     <Field
-                                        loading={ fetchingConnectedApps }
                                         name={ JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY }
                                         label=""
                                         required={ false }
@@ -393,10 +222,10 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                         readOnly={ isReadOnly }
                                     />
                                     <Hint>
-                                        Specify if users federated from this Identity Provider needs to be
-                                        locally provisioned in { config.ui.productName }.
+                                        When enabled, users who log in with this identity provider will be
+                                        provisioned to your organization.
                                     </Hint>
-                                    { cannotModifyProxyModeDueToConnectApps
+                                    { !isJITProvisioningEnabled
                                         ? ProxyModeConflictMessage
                                         : <Fragment/>
                                     }

@@ -42,6 +42,12 @@
                <param-value>{{ accountrecoveryendpoint.use_username_with_domain_for_self_signup_name_check }}</param-value>
            </context-param>
     {% endif %}
+    {% if accountrecoveryendpoint.auto_login_cookie_domain is defined %}
+        <context-param>
+                <param-name>AutoLoginCookieDomain</param-name>
+                <param-value>{{ accountrecoveryendpoint.auto_login_cookie_domain }}</param-value>
+        </context-param>
+    {% endif %}
     <!-- *************** End of Global configurations ********************** -->
     <!--  End of Custom Page configurations -->
     <context-param>
@@ -90,7 +96,7 @@
         </filter-class>
         <init-param>
            <param-name>patterns</param-name>
-           <param-value>"text/html" ,"application/json" ,"plain/text"</param-value>
+           <param-value>"text/html.*" ,"application/json" ,"plain/text"</param-value>
         </init-param>
         <init-param>
            <param-name>filterAction</param-name>
@@ -106,7 +112,9 @@
 
     <filter-mapping>
         <filter-name>ContentTypeBasedCachePreventionFilter</filter-name>
-        <url-pattern>*</url-pattern>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
 
     <filter>

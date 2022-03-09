@@ -23,7 +23,8 @@ import { I18n } from "@wso2is/i18n";
 import { TemplateCardTagInterface } from "@wso2is/react-components";
 import groupBy from "lodash-es/groupBy";
 import startCase  from "lodash-es/startCase";
-import { getTechnologyLogos, store } from "../../core";
+import { getTechnologyLogos } from "../../core/configs";
+import { store } from "../../core/store";
 import {
     getApplicationTemplateList
 } from "../api";

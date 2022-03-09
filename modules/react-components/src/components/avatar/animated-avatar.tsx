@@ -16,13 +16,14 @@
 * under the License.
 */
 
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Image, ImageProps } from "semantic-ui-react";
 
 /**
  * Prop types of the component
  */
-export interface AnimatedAvatarPropsInterface extends ImageProps {
+export interface AnimatedAvatarPropsInterface extends ImageProps, IdentifiableComponentInterface {
     /**
      * Sets if the avatar is of primary color or not
      */
@@ -47,6 +48,7 @@ export const AnimatedAvatar: FunctionComponent<AnimatedAvatarPropsInterface> = (
     const {
         name,
         primary,
+        [ "data-componentid" ]: componentId,
         ...rest
     } = props;
     
@@ -56,6 +58,7 @@ export const AnimatedAvatar: FunctionComponent<AnimatedAvatarPropsInterface> = (
             xmlns="http://www.w3.org/2000/svg"
             version="1.1"
             viewBox="0 0 1024 1024"
+            data-componentid={ componentId }
         >
             <g>
                 <path
@@ -478,19 +481,21 @@ export const AnimatedAvatar: FunctionComponent<AnimatedAvatarPropsInterface> = (
                     rounded
                     centered
                     className="animated-avatar"
+                    data-componentid={ `${ componentId }-with-initials` }
                     { ...rest }
                 >
                     <AnimatedSVGBackground/>
-                    <span className="initial">
+                    <span data-componentid={ `${ componentId }-initials` } className="initial">
                         { generateInitials(name) }
                     </span>
                 </Image>
             )
-            : <AnimatedSVGBackground/>
+            : <AnimatedSVGBackground />
     );
 };
 
 AnimatedAvatar.defaultProps = {
+    "data-componentid": "animated-avatar",
     size: "mini",
     verticalAlign: "middle"
 };

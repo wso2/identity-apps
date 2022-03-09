@@ -56,6 +56,10 @@ export interface IframeProps extends IframeHTMLAttributes<HTMLIFrameElement>, Id
      */
     styleNodeInjectionStrategy?: "append" | "prepend";
     /**
+     * Should the style node be injected after the parent stylesheets have been cloned.
+     */
+    injectStyleNodeAfterParentStyles?: boolean;
+    /**
      * External style sheets to be injected in to the iframe.
      */
     stylesheets?: string[];
@@ -63,6 +67,10 @@ export interface IframeProps extends IframeHTMLAttributes<HTMLIFrameElement>, Id
      * Is the iframe ready.
      */
     isReady?: (status: boolean) => void;
+    /**
+     * Is the iframe loading.
+     */
+    isLoading?: boolean;
     /**
      * The zoom percentage. By default will be 100%.
      */
@@ -84,7 +92,9 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
         children,
         className,
         cloneParentStyleSheets,
+        injectStyleNodeAfterParentStyles,
         isReady,
+        isLoading,
         responsive,
         styles,
         styleNodeInjectionStrategy,
@@ -107,7 +117,8 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
         "ui",
         "iframe",
         {
-            responsive
+            responsive,
+            [ "loading" ]: isLoading
         },
         className
     );
@@ -236,6 +247,13 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
             return;
         }
 
+        // Check if the parent stylesheet cloning is completed.
+        if (styles && !isParentStylesheetsCloningCompleted) {
+            isReady(false);
+
+            return;
+        }
+
         // Remove the existing style nodes before adding the new styles to avoid adding the same
         // styles on `style` prop changes.
         const styleNodesCollection: HTMLCollectionOf<HTMLStyleElement> = iFrameWindow.document
@@ -249,12 +267,17 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
 
         styleNode.innerHTML = styles;
         
-        if (styleNodeInjectionStrategy === "append") {
+        // If the `injectStyleNodeAfterParentStyles` flag is set, change the inject strategy to append.
+        if (injectStyleNodeAfterParentStyles) {
+            iFrameWindow.document.head.appendChild(styleNode);
+        } else if (styleNodeInjectionStrategy === "append") {
             iFrameWindow.document.head.appendChild(styleNode);
         } else {
             iFrameWindow.document.head.prepend(styleNode);
         }
-    }, [ styles, iFrameWindow ]);
+
+        isReady(true);
+    }, [ styles, iFrameWindow, isParentStylesheetsCloningCompleted, injectStyleNodeAfterParentStyles ]);
 
     /**
      * Add styling to the iframe body.

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, {
     ChangeEvent,
@@ -37,7 +37,9 @@ import { LinkButton } from "../../button";
 /**
  * Confirmation modal component props.
  */
-export interface ConfirmationModalPropsInterface extends ModalProps, TestableComponentInterface {
+export interface ConfirmationModalPropsInterface extends ModalProps, TestableComponentInterface,
+    IdentifiableComponentInterface {
+
     /**
      * If the animated icons should be shown.
      */
@@ -132,6 +134,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
             skipAssertion,
             textAlign,
             primaryActionLoading,
+            [ "data-componentid" ]: componentId,
             [ "data-testid" ]: testId,
             ...rest
         } = props;
@@ -192,7 +195,11 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
         const resolveIcon = (type: string): ReactElement => {
             if (type === "positive") {
                 return (
-                    <div className="svg-box" data-testid={ `${ testId }-${ type }-animated-icon` }>
+                    <div
+                        className="svg-box"
+                        data-componentid={ `${ componentId }-${ type }-animated-icon` }
+                        data-testid={ `${ testId }-${ type }-animated-icon` }
+                    >
                         <svg className="circular positive-stroke">
                             <circle
                                 className="path"
@@ -217,7 +224,11 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                 );
             } else if (type === "negative") {
                 return (
-                    <div className="svg-box" data-testid={ `${ testId }-${ type }-animated-icon` }>
+                    <div
+                        className="svg-box"
+                        data-componentid={ `${ componentId }-${ type }-animated-icon` }
+                        data-testid={ `${ testId }-${ type }-animated-icon` }
+                    >
                         <svg className="circular negative-stroke">
                             <circle
                                 className="path"
@@ -241,7 +252,11 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                 );
             } else if (type === "warning") {
                 return (
-                    <div className="svg-box" data-testid={ `${ testId }-${ type }-animated-icon` }>
+                    <div
+                        className="svg-box"
+                        data-componentid={ `${ componentId }-${ type }-animated-icon` }
+                        data-testid={ `${ testId }-${ type }-animated-icon` }
+                    >
                         <svg className="circular warning-stroke">
                             <circle
                                 className="path"
@@ -272,6 +287,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                         name="info circle"
                         size="huge"
                         color="blue"
+                        data-componentid={ `${ componentId }-info-animated-icon` }
                         data-testid={ `${ testId }-info-animated-icon` }
                     />
                 );
@@ -295,6 +311,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                                 : assertionHint
                         }
                         <Input
+                            data-componentid={ `${ componentId }-assertion-input` }
                             data-testid={ `${ testId }-assertion-input` }
                             onChange={ (e: ChangeEvent<HTMLInputElement>): void => setAssertionInput(e.target?.value) }
                             onKeyDown={ handleKeyDown }
@@ -313,6 +330,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                         label={ assertionHint }
                         checked={ confirmed }
                         onChange={ (): void => setConfirmed(!confirmed) }
+                        data-componentid={ `${ componentId }-assertion-checkbox` }
                         data-testid={ `${ testId }-assertion-checkbox` }
                     />
                 );
@@ -323,6 +341,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
 
         return (
             <Modal
+                data-componentid={ componentId }
                 data-testid={ testId }
                 { ...rest }
                 className={ classes }
@@ -344,6 +363,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                             {
                                 (secondaryAction && onSecondaryActionClick) && (
                                     <LinkButton
+                                        data-componentid={ componentId + "-cancel-button" }
                                         data-testid={ testId + "-cancel-button" }
                                         positive={ type === "positive" }
                                         negative={ type === "negative" }
@@ -359,6 +379,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                                 (primaryAction && onPrimaryActionClick) && (
                                     <Button
                                         loading={ primaryActionLoading }
+                                        data-componentid={ componentId + "-confirm-button" }
                                         data-testid={ testId + "-confirm-button" }
                                         className={ `${ type } ${ primaryActionFluid ? "fluid" : "" }` }
                                         disabled={
@@ -384,6 +405,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
  * Default proptypes for the confirmation modal component.
  */
 ConfirmationModal.defaultProps = {
+    "data-componentid": "confirmation-modal",
     "data-testid": "confirmation-modal",
     dimmer: "blurring",
     primaryActionLoading: false,

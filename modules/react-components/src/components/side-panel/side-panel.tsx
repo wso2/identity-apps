@@ -20,6 +20,7 @@ import { UIConstants } from "@wso2is/core/constants";
 import {
     CategorizedRouteInterface,
     ChildRouteInterface,
+    IdentifiableComponentInterface,
     RouteInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
@@ -32,7 +33,7 @@ import { SidePanelItems } from "./side-panel-items";
 /**
  * Common side panel base component Prop types.
  */
-export interface CommonSidePanelPropsInterface extends TestableComponentInterface {
+export interface CommonSidePanelPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Caret icon.
      */
@@ -144,6 +145,7 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
         onSidePanelItemClick,
         onSidePanelPusherClick,
         routes,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -251,6 +253,7 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
                     <Sidebar
                         animation="push"
                         visible={ mobileSidePanelVisibility }
+                        data-componentid={ componentId }
                         data-testid={ testId }
                     >
                         <SidePanelItems
@@ -264,6 +267,7 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
                                         ? sortRoutes(items)
                                         : items
                             }
+                            data-componentid={ `${ componentId }-items` }
                             data-testid={ `${testId}-items` }
                             allowedScopes={ allowedScopes }
                         />
@@ -285,7 +289,7 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
                 style={ desktopContentStyle }
                 minWidth={ Responsive.onlyTablet.minWidth }
             >
-                <div className={ wrapperClasses } data-testid={ testId }>
+                <div className={ wrapperClasses } data-testid={ testId } data-componentid={ componentId }>
                     <SidePanelItems
                         { ...props }
                         type="desktop"
@@ -297,6 +301,7 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
                                     ? sortRoutes(items)
                                     : items
                         }
+                        data-componentid={ `${ componentId }-items` }
                         data-testid={ `${ testId }-items` }
                     />
                 </div>
@@ -313,6 +318,7 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
  */
 SidePanel.defaultProps = {
     categorized: false,
+    "data-componentid": "side-panel",
     "data-testid": "side-panel",
     desktopContentTopSpacing: UIConstants.DEFAULT_DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING,
     fluid: false,

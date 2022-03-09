@@ -28,6 +28,8 @@
         sessionState = "";
     }
 
+    response.setHeader("Cache-Control","no-store");
+
     out.print("{\"authCode\": \""+authCode+"\", \"sessionState\": \""+sessionState+"\"}");
 
     authCode = "";

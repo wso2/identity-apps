@@ -22,6 +22,7 @@
 ------------------------------*/
 
 .ui.card {
+    overflow: clip;
     .content {
         &.extra {
             &.selection {
@@ -1129,3 +1130,28 @@
     }
 }
 
+/*-----------------------------------------
+         Reusable Card Directives
+-------------------------------------------*/
+
+.ui.card {
+    .coming-soon-ribbon {
+        top: 0;
+        width: fit-content;
+        min-width: 100px;
+        font-size: 0.8em;
+        height: 24px;
+        position: absolute;
+        right: 0;
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+        align-items: center;
+        justify-content: space-around;
+        font-weight: 500;
+        color: @white;
+        background: linear-gradient(270deg, lighten(@primaryColor, 15) 0%, @primaryColor 100%);
+        clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
+        -webkit-clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
+    }
+}

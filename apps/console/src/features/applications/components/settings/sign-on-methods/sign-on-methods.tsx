@@ -31,6 +31,7 @@ import FacebookLoginSequenceTemplate from "./templates/facebook-login-sequence.j
 import GitHubLoginSequenceTemplate from "./templates/github-login-sequence.json";
 import GoogleLoginSequenceTemplate from "./templates/google-login-sequence.json";
 import SecondFactorTOTPSequenceTemplate from "./templates/second-factor-totp-sequence.json";
+import UsernamelessSequenceTemplate from "./templates/usernameless-login-sequence.json";
 import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "../../../../core";
 import {
     AuthenticatorCreateWizardFactory,
@@ -210,7 +211,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 setGitHubAuthenticators(gitHub);
                 setFacebookAuthenticators(facebook);
                 setAuthenticators(response);
-                
+
                 // Trigger the onsuccess callback and send the responses to the calller.
                 // Reason for this is that the invoker needs the responses ASAP,
                 // but the state update takes time.
@@ -273,16 +274,24 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 ...authenticationSequence,
                 ...cloneDeep(SecondFactorTOTPSequenceTemplate)
             });
+        } else if (loginFlow === LoginFlowTypes.PASSWORDLESS_LOGIN) {
+            eventPublisher.publish("application-sign-in-method-click-add", {
+                type: "first-factor-fido"
+            });
+            setModeratedAuthenticationSequence({
+                ...authenticationSequence,
+                ...cloneDeep(UsernamelessSequenceTemplate)
+            });
         } else if (loginFlow === LoginFlowTypes.GOOGLE_LOGIN) {
             eventPublisher.publish("application-sign-in-method-click-add", {
                 type: "google-login"
             });
             setSocialDisclaimerModalType(LoginFlowTypes.GOOGLE_LOGIN);
-            
+
             // If there are no IDP's with google authenticator, show missing authenticator modal.
             if (isEmpty(googleAuthenticators)) {
                 setShowMissingSocialAuthenticatorModal(true);
-               
+
                 return;
             }
 
@@ -291,7 +300,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 // Set the first element as the selected google authenticator.
                 setSelectedSocialAuthenticator(googleAuthenticators[0]);
                 setShowDuplicateSocialAuthenticatorSelectionModal(true);
-               
+
                 return;
             }
 
@@ -307,9 +316,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             eventPublisher.publish("application-sign-in-method-click-add", {
                 type: "github-login"
             });
-            
+
             setSocialDisclaimerModalType(LoginFlowTypes.GITHUB_LOGIN);
-            
+
             // If there are no IDP's with GitHub authenticator, show missing authenticator modal.
             if (isEmpty(gitHubAuthenticators)) {
                 setShowMissingSocialAuthenticatorModal(true);
@@ -340,7 +349,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             });
 
             setSocialDisclaimerModalType(LoginFlowTypes.FACEBOOK_LOGIN);
-            
+
             // If there are no IDP's with Facebook authenticator, show missing authenticator modal.
             if (isEmpty(facebookAuthenticators)) {
                 setShowMissingSocialAuthenticatorModal(true);
@@ -381,7 +390,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
 
         let modifiedSequenceTemplate: AuthenticationSequenceInterface = {};
         let authenticatorType: string = null;
-        
+
         if (loginType === LoginFlowTypes.GOOGLE_LOGIN) {
             modifiedSequenceTemplate = cloneDeep(GoogleLoginSequenceTemplate);
             authenticatorType = IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_NAME;
@@ -440,7 +449,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 }
                 onSecondaryActionClick={ () => setShowMissingSocialAuthenticatorModal(false) }
                 onPrimaryActionClick={ (): void => {
-                    
+
                     // Trigger the IDP create wizard based on the type.
                     setIDPTemplateTypeToTrigger(idpTemplateTypeToTrigger);
                     setShowMissingSocialAuthenticatorModal(false);
@@ -488,7 +497,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     };
 
     /**
-     * Shows a modal to select the IDP when multiple IDP's have the selected 
+     * Shows a modal to select the IDP when multiple IDP's have the selected
      * social authenticator configured as default.
      *
      * @return {ReactElement}

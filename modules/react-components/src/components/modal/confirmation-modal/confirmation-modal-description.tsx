@@ -16,16 +16,15 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Modal, ModalDescriptionProps } from "semantic-ui-react";
 
 /**
  * Confirmation modal description props.
  */
-export interface ConfirmationModalDescriptionPropsInterface extends ModalDescriptionProps, TestableComponentInterface {
-
-}
+export interface ConfirmationModalDescriptionPropsInterface extends ModalDescriptionProps,
+    IdentifiableComponentInterface, TestableComponentInterface { }
 
 /**
  * Confirmation modal description component.
@@ -40,12 +39,19 @@ export const ConfirmationModalDescription: FunctionComponent<ConfirmationModalDe
 
     const {
         children,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
 
     return (
-        <Modal.Description data-testid={ testId } { ...rest }>{ children }</Modal.Description>
+        <Modal.Description
+            data-componentid={ componentId }
+            data-testid={ testId }
+            { ...rest }
+        >
+            { children }
+        </Modal.Description>
     );
 };
 
@@ -53,5 +59,6 @@ export const ConfirmationModalDescription: FunctionComponent<ConfirmationModalDe
  * Default proptypes for the confirmation modal description component.
  */
 ConfirmationModalDescription.defaultProps = {
+    "data-componentid": "confirmation-modal-description",
     "data-testid": "confirmation-modal-description"
 };

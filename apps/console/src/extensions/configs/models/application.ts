@@ -17,6 +17,7 @@
  */
 
 import { ReactNode } from "react";
+import { Dispatch } from "redux";
 import {
     ExtendedClaimInterface,
     ExtendedExternalClaimInterface,
@@ -78,6 +79,11 @@ export interface ApplicationConfig {
                 secondFactorDisabled: ReactNode;
                 secondFactorDisabledInFirstStep: ReactNode;
             };
+            customAuthenticatorAdditionValidation(
+                authenticatorID: string,
+                stepIndex: number,
+                dispatch: Dispatch
+            ): boolean;
         };
     };
     templates: {
@@ -90,6 +96,5 @@ export interface ApplicationConfig {
     };
     customApplication: {
         allowedProtocolTypes: string[];
-    }
-
+    };
 }
