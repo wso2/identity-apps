@@ -223,6 +223,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
         }
 
         eventPublisher.publish("application-click-create-new", {
+            source: "application-listing-page",
             type: selected.templateId
         });
         setSelectedTemplate(selected);
