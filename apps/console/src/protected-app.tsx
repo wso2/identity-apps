@@ -87,8 +87,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             dispatchEvent(event);
 
+            const tenantDomain = CommonAuthenticateUtils.deriveTenantDomainFromSubject(response.sub);
+
             // Update the app base name with the newly resolved tenant.
-            window[ "AppUtils" ].updateTenantQualifiedBaseName(response.tenantDomain);
+            window[ "AppUtils" ].updateTenantQualifiedBaseName(tenantDomain);
 
             // When the tenant domain changes, we have to reset the auth callback in session storage.
             // If not, it will hang and the app will be unresponsive with in the tab.
