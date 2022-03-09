@@ -96,7 +96,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             dispatchEvent(event);
 
-            const tenantDomain = AuthenticateUtils.deriveTenantDomainFromSubject(response.sub);
+            const tenantDomain: string = AuthenticateUtils.deriveTenantDomainFromSubject(response.sub);
 
             // Update the app base name with the newly resolved tenant.
             window[ "AppUtils" ].updateTenantQualifiedBaseName(tenantDomain);
