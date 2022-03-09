@@ -37,6 +37,11 @@ public class AppPortalApplicationMgtListener extends AbstractApplicationMgtListe
 
     private Set<String> systemApplications;
 
+    /**
+     * Constructor for app portal application management listener with enable flag.
+     *
+     * @param enable Enable flag.
+     */
     public AppPortalApplicationMgtListener(boolean enable) {
 
         this.enable = enable;
