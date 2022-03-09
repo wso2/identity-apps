@@ -410,6 +410,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
         if (!connector) {
             return (
                 <AppAvatar
+                    hoverable={ false }
                     isLoading={ true }
                     size="tiny"
                 />
@@ -420,6 +421,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
             if (connector.image) {
                 return (
                     <AppAvatar
+                        hoverable={ false }
                         name={ connector.name }
                         image={ connector.image }
                         size="tiny"
@@ -429,6 +431,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
 
             return (
                 <AnimatedAvatar
+                    hoverable={ false }
                     name={ connector.name }
                     size="tiny"
                     floated="left"
@@ -438,6 +441,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
 
         return (
             <AppAvatar
+                hoverable={ false }
                 name={ connector.name }
                 image={ AuthenticatorMeta.getAuthenticatorIcon(connector.id) }
                 size="tiny"
