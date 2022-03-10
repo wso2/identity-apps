@@ -593,6 +593,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 template={ template }
                 readOnly={ readOnly }
                 data-testid={ `${ testId }-general-settings` }
+                isManagementApp={ application.isManagementApp }
             />
         </ResourceTab.Pane>
     );

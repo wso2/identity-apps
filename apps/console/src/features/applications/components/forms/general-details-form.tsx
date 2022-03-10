@@ -18,9 +18,11 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
+import { Message } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { Icon } from "semantic-ui-react";
 import { AppState, UIConfigInterface } from "../../../core";
 import { ApplicationManagementConstants } from "../../constants";
 
@@ -68,6 +70,10 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
      * Specifies if the form is submitting.
      */
     isSubmitting?: boolean;
+    /**
+     * Specifies a Management Application
+     */
+    isManagementApp?: boolean;
 }
 
 /**
@@ -102,6 +108,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         onSubmit,
         readOnly,
         isSubmitting,
+        isManagementApp,
         [ "data-testid" ]: testId
     } = props;
 
@@ -199,6 +206,13 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             } }
             validate={ validateForm }
         >
+            { isManagementApp && 
+                (<Message className="with-inline-icon" icon visible info small>
+                    <Icon name="info" size="small" />
+                    { t("console:develop.features.applications.forms.generalDetails.managementAppBanner") } 
+                </Message>)
+            }
+
             { !UIConfig.systemAppsIdentifiers.includes(name) && (
                 <Field.Input
                     ariaLabel="Application name"

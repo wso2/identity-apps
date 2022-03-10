@@ -23,6 +23,7 @@ import {
     ContentLoader,
     DocumentationLink,
     Heading,
+    Hint,
     LinkButton,
     PrimaryButton,
     SelectionCard,
@@ -262,6 +263,13 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
         application.name = generalFormValues.get("name").toString();
         application.templateId = selectedTemplate.id;
+        // If the application is a OIDC standard-based application
+        if (customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+            && selectedTemplate?.templateId === "custom-application") {
+            application.isManagementApp = generalFormValues.get("isManagementApp").length >= 2
+                ? true
+                : false;
+        }
 
         // If the selected template is Custom, assign the proper `template ids`.
         if (selectedTemplate.id === CustomApplicationTemplate.id) {
@@ -682,7 +690,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             : subTemplates;
 
         return (
-            <Grid.Row className="pt-0">
+            <Grid.Row className="pt-0 mt-0">
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                     <div className="sub-template-selection">
                         <label className="sub-templates-label">{ subTemplatesSectionTitle }</label>
@@ -882,11 +890,38 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         </Grid.Column>
                     </Grid.Row>
                     { renderSubTemplateSelection() }
-                    <Grid.Row className="pt-0">
+                    <Grid.Row className="pt-0 mt-0">
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                             { resolveMinimalProtocolFormFields() }
                         </Grid.Column>
                     </Grid.Row>
+                    { 
+                        // The Management App checkbox is only present in OIDC Standard-Based apps
+                        (customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+                            && selectedTemplate?.templateId === "custom-application") && (
+                            <div className="pt-0 mt-0">
+                                <Field
+                                    data-testid={ `${ testId }-management-app-checkbox` }
+                                    name={ "isManagementApp" }
+                                    required={ false }
+                                    requiredErrorMessage={ "is required" }
+                                    type="checkbox"
+                                    value={ [ "isManagementApp" ] }
+                                    children={ [
+                                        {
+                                            label: t("console:develop.features.applications.forms.generalDetails" +
+                                                ".fields.isManagementApp.label" ),
+                                            value: "manageApp"
+                                        }
+                                    ] }
+                                />
+                                <Hint compact>
+                                    { t("console:develop.features.applications.forms.generalDetails.fields" +
+                                            ".isManagementApp.hint" ) }
+                                </Hint>
+                            </div>
+                        )
+                    }
                 </Grid>
             </Forms>
         );

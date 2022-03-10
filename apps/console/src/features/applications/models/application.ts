@@ -35,6 +35,7 @@ export interface ApplicationBasicInterface {
     description?: string;
     accessUrl?: string;
     templateId?: string;
+    isManagementApp?: boolean;
 }
 
 export enum ApplicationAccessTypes {
@@ -243,6 +244,10 @@ export interface ApplicationTemplateListItemInterface {
     description?: string;
     image?: string;
     authenticationProtocol?: string;
+    /**
+     * Specifies a Management Application
+     */
+    isManagementApp?: boolean;
     /**
      * Template group.
      * ex: "web-application"
