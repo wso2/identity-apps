@@ -111,4 +111,17 @@ export class AuthenticateUtils {
     public static removeAuthenticationCallbackUrl(app: string): void {
         window.sessionStorage.removeItem(`auth_callback_url_${app}`);
     }
+
+   /**
+    * Tenant domain decoded from the subject claim of the ID Token.
+    *
+    * @param {string} sub - Subject claim of the ID Token.
+    * @return {string} Tenant domain.
+    */
+    public static deriveTenantDomainFromSubject(sub: string): string {
+        const subParts: string[] = sub.split("@");
+        const tenantDomain: string = subParts[ subParts.length - 1 ];
+
+        return tenantDomain;
+    }
 }
