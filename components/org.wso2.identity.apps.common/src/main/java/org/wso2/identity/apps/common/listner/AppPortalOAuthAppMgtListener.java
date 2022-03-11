@@ -36,6 +36,11 @@ public class AppPortalOAuthAppMgtListener implements OAuthApplicationMgtListener
 
     private Set<String> systemAppConsumerKeys;
 
+    /**
+     * Constructor for app portal OAuth application management listener with enabled flag.
+     *
+     * @param enabled Enabled flag.
+     */
     public AppPortalOAuthAppMgtListener(boolean enabled) {
 
         this.enabled = enabled;
