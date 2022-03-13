@@ -24,6 +24,7 @@ import {
     AppSwitcher,
     Logo,
     ProductBrand,
+    GenericIcon,
     Header as ReusableHeader,
     HeaderPropsInterface as ReusableHeaderPropsInterface
 } from "@wso2is/react-components";
@@ -35,11 +36,14 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Menu } from "semantic-ui-react";
 import { commonConfig } from "../../../extensions/configs";
-import { AppSwitcherIcons } from "../configs";
 import { history } from "../helpers";
 import { AppViewTypes, ConfigReducerStateInterface, StrictAppViewTypes } from "../models";
 import { AppState, setActiveView } from "../store";
 import { CommonUtils, EventPublisher } from "../utils";
+import { AppViewExtensionTypes } from "../../../extensions/configs/models";
+import { ApplicationListInterface, getApplicationList } from "../../applications";
+import { AppSwitcherIcons, getAppHeaderIcons } from "../configs";
+import { AppConstants } from "../constants";
 
 /**
  * Dashboard layout Prop types.
@@ -107,8 +111,21 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         useSelector((state: AppState) => state.accessControl.isManageAllowed);
 
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>(undefined);
+    const [ isApplicationsAvailable, setIsApplicationsAvailable ] = useState<boolean>(undefined);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    useEffect(() => {
+
+        getApplicationList(null, null, null)
+            .then((response: ApplicationListInterface) => {
+                setIsApplicationsAvailable(response.totalResults > 0);
+            })
+            .catch(() => {
+                // Add debug logs here one a logger is added.
+                // Tracked here https://github.com/wso2/product-is/issues/11650.
+            });
+    }, []);
 
     /**
      * Listens to  the changes in the `externallyProvidedActiveView` and sets the `activeView`.
@@ -260,6 +277,29 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 order: 2
             }
         ];
+
+        if (itemExtensions[0]?.order === 0 && isApplicationsAvailable) {
+            itemExtensions[0].component = (
+                currentActiveView?: AppViewTypes, onClickCb?: (newActiveView: AppViewTypes) => void) => (
+                <Menu.Item
+                    active={ currentActiveView === "QUICKSTART" as AppViewTypes }
+                    className="secondary-panel-item quickstart-page-switch"
+                    onClick={ () => {
+                        history.push(`${ AppConstants.getMainViewBasePath() }/getting-started`);
+                        onClickCb && onClickCb("QUICKSTART" as AppViewTypes);
+                    } }
+                    data-testid="app-header-quick-start-switch"
+                >
+                    <GenericIcon
+                        defaultIcon
+                        transparent
+                        size="x22"
+                        hoverable={ false }
+                        icon={ getAppHeaderIcons().homeIcon }
+                    />
+                </Menu.Item>
+            );
+        }
 
         sortBy([ ...itemExtensions, ...defaultItems ], [ "order" ]).filter((item: HeaderSubPanelItemInterface) => {
             if (item.floated === floated) {
