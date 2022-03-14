@@ -18,7 +18,7 @@
 
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { AnnouncementBannerInterface, ProfileInfoInterface } from "@wso2is/core/models";
-import { CommonUtils as ReusableCommonUtils } from "@wso2is/core/utils";
+import { CommonUtils as ReusableCommonUtils, LocalStorageUtils } from "@wso2is/core/utils";
 import {
     Announcement,
     AppSwitcher,
@@ -40,7 +40,6 @@ import { history } from "../helpers";
 import { AppViewTypes, ConfigReducerStateInterface, StrictAppViewTypes } from "../models";
 import { AppState, setActiveView } from "../store";
 import { CommonUtils, EventPublisher } from "../utils";
-import { AppViewExtensionTypes } from "../../../extensions/configs/models";
 import { ApplicationListInterface, getApplicationList } from "../../applications";
 import { AppSwitcherIcons, getAppHeaderIcons } from "../configs";
 import { AppConstants } from "../constants";
@@ -111,15 +110,24 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         useSelector((state: AppState) => state.accessControl.isManageAllowed);
 
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>(undefined);
-    const [ isApplicationsAvailable, setIsApplicationsAvailable ] = useState<boolean>(undefined);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
+    /**
+     * Check if there are applications registered and set the value to local storage.
+     */
     useEffect(() => {
+        if (!isEmpty(LocalStorageUtils.getValueFromLocalStorage("IsAppsAvailable"))
+            && LocalStorageUtils.getValueFromLocalStorage("IsAppsAvailable") === "true") {
+            return;
+        }
 
         getApplicationList(null, null, null)
-            .then((response: ApplicationListInterface) => {
-                setIsApplicationsAvailable(response.totalResults > 0);
+            .then(
+                (response: ApplicationListInterface) => {
+                    LocalStorageUtils.setValueInLocalStorage("IsAppsAvailable", response.totalResults > 0
+                        ? "true" : "false"
+                );
             })
             .catch(() => {
                 // Add debug logs here one a logger is added.
@@ -278,7 +286,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             }
         ];
 
-        if (itemExtensions[0]?.order === 0 && isApplicationsAvailable) {
+        // If the user is a user is not logging in for the first time the quick start icon will switch to home icon.
+        if (itemExtensions[0]?.order === 0 &&
+            LocalStorageUtils.getValueFromLocalStorage("IsAppsAvailable") === "true") {
             itemExtensions[0].component = (
                 currentActiveView?: AppViewTypes, onClickCb?: (newActiveView: AppViewTypes) => void) => (
                 <Menu.Item
