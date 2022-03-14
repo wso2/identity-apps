@@ -170,6 +170,16 @@
 @lightInputBackground : #fafafa;
 
 /*-------------------
+    Focused Input
+--------------------*/
+
+/* Used on inputs, textarea etc */
+@focusedFormBorderColor: lighten(@primaryColor, 30);
+
+/* Used on dropdowns, other larger blocks */
+@focusedFormMutedBorderColor: lighten(@primaryColor, 30);
+
+/*-------------------
    Advanced search
 --------------------*/
 
