@@ -524,12 +524,7 @@ module.exports = (env) => {
                     tenantPrefix: !isDeployedOnExternalServer
                         ? "<%=TENANT_AWARE_URL_PREFIX%>"
                         : "",
-                    themeHash: themeHash,
-                    requestForwardSnippet : "if(request.getParameter(\"code\") != null && "+
-                        "!request.getParameter(\"code\").trim().isEmpty()) "+
-                        "{request.getRequestDispatcher(\"/authenticate?code=\"+request.getParameter(\"code\")+"+
-                        "\"&state=sign-in-silently&AuthenticatedIdPs=\"+request.getParameter(\"AuthenticatedIdPs\")"+
-                        "+\"&session_state=\"+request.getParameter(\"session_state\")).forward(request, response);}"
+                    themeHash: themeHash
                 })
                 : new HtmlWebpackPlugin({
                     filename: path.join(distFolder, "index.html"),
