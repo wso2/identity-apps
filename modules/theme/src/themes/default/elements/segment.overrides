@@ -713,3 +713,18 @@
         }
     }
 }
+
+/*-------------------------------
+         Image Preview
+--------------------------------*/
+
+.ui.segment {
+    &.image-preview {
+        border: @imagePreviewBorder;
+        height: @imagePreviewHeight;
+        display: flex;
+        align-items: center;
+        border-radius: @imagePreviewBorderRadius;
+        justify-content: center;
+    }
+}
