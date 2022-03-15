@@ -86,6 +86,9 @@ import {
     ReactComponent as LightModeIcon
 } from "../../../themes/default/assets/images/icons/solid-icons/light-icon.svg";
 import {
+    ReactComponent as MyAccountSolidIcon
+} from "../../../themes/default/assets/images/icons/solid-icons/my-account-icon.svg";
+import {
     ReactComponent as OpenBookIcon
 } from "../../../themes/default/assets/images/icons/solid-icons/oidc.svg";
 import { ReactComponent as UnPinIcon } from "../../../themes/default/assets/images/icons/unpin-icon.svg";
@@ -474,6 +477,7 @@ export const AppSwitcherIcons = (): GetAppSwitcherIconsInterface => {
  */
 export type GetGeneralIconsInterface = {
     crossIcon: FunctionComponent,
+    myAccountSolidIcon: FunctionComponent
 };
 
 /**
@@ -484,6 +488,7 @@ export type GetGeneralIconsInterface = {
 export const getGeneralIcons = (): GetGeneralIconsInterface => {
 
     return {
-        crossIcon: CrossIcon
+        crossIcon: CrossIcon,
+        myAccountSolidIcon: MyAccountSolidIcon
     };
 };

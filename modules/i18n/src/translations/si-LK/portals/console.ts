@@ -2247,6 +2247,12 @@ export const console: ConsoleNS = {
                         name: "නම"
                     }
                 },
+                myaccount: {
+                    description: "Asgardeo භාවිතා කරන්නන් සඳහා ස්වයං සේවා ද්වාරය",
+                    popup: "මගේ ගිණුමට ප්‍රවේශ වීමට සහ ඔවුන්ගේ ගිණුම් කළමනාකරණය කිරීමට" +
+                    " ඔබේ පරිශීලකයන් සමඟ මෙම සබැඳිය බෙදා ගන්න.",
+                    title: "මගේ ගිණුම"
+                },
                 notifications: {
                     addApplication: {
                         error: {

@@ -973,6 +973,11 @@ export interface ConsoleNS {
                         custom: string;
                     };
                 };
+                myaccount: {
+                    title: string;
+                    description: string;
+                    popup: string;
+                };
                 notifications: {
                     addApplication: Notification;
                     apiLimitReachedError: Notification;

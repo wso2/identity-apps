@@ -22,7 +22,10 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import {
+    CopyInputField,
     DocumentationLink,
+    EmphasizedSegment,
+    GenericIcon,
     GridLayout,
     ListLayout,
     PageLayout,
@@ -43,8 +46,11 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     DropdownItemProps,
     DropdownProps,
+    Grid,
     Icon,
-    PaginationProps
+    List,
+    PaginationProps,
+    Popup
 } from "semantic-ui-react";
 import {
     AdvancedSearchWithBasicFilters,
@@ -54,6 +60,7 @@ import {
     EventPublisher,
     FeatureConfigInterface,
     UIConstants,
+    getGeneralIcons,
     history
 } from "../../core";
 import { RemoteFetchStatus } from "../../remote-repository-configuration";
@@ -128,6 +135,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ isApplicationsNextPageAvailable, setIsApplicationsNextPageAvailable ] = useState<boolean>(undefined);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const consumerAccountURL: string = useSelector((state: AppState) => 
+        state?.config?.deployment?.accountApp?.tenantQualifiedPath);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -276,6 +285,75 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         return <RemoteFetchStatus data-testid={ "remote-fetch" } />;
     };
 
+    /**
+     * Renders the URL for the tenanted my account login.
+     *
+     * @return {React.ReactElement}
+     */
+    const renderTenantedMyAccountLink = (): ReactElement => {
+        if (AppConstants.getTenant() === AppConstants.getSuperTenant()) {
+            return null;
+        }
+
+        return (
+            <EmphasizedSegment
+                className="mt-0 mb-5"
+                data-componentid="application-consumer-account-link"
+            >
+                <List>
+                    <List.Item>
+                        <Grid verticalAlign="middle">
+                            <Grid.Column 
+                                floated="left"
+                                width={ 11 }
+                            >
+                                <GenericIcon
+                                    icon={ getGeneralIcons().myAccountSolidIcon }
+                                    floated="left"
+                                    size="tiny"
+                                    spaced="right"
+                                    verticalAlign="middle"
+                                    inline
+                                    square
+                                    transparent
+                                />
+                                <List.Header
+                                    className="mb-1"
+                                    data-componentid="application-consumer-account-link-title"
+                                >
+                                    { t("console:develop.features.applications.myaccount.title") }
+                                </List.Header>
+                                <List.Description
+                                    data-componentid="application-consumer-account-link-description"
+                                >
+                                    { t("console:develop.features.applications.myaccount.description") }
+                                </List.Description>
+                            </Grid.Column>
+                            <Popup
+                                trigger={
+                                    (<Grid.Column
+                                        floated="right" 
+                                        width={ 5 }
+                                    >
+                                        <CopyInputField
+                                            value={ consumerAccountURL }
+                                            data-componentid={ "application-consumer-account-link-copy-field" }
+                                        />
+                                    </Grid.Column>)
+                                }
+                                content={ t("console:develop.features.applications.myaccount.popup") }
+                                position="top center"
+                                size="mini"
+                                hideOnScroll
+                                inverted
+                            />
+                        </Grid>
+                    </List.Item>
+                </List>
+            </EmphasizedSegment>
+        );
+    };
+
     return (
         <PageLayout
             action={
@@ -308,10 +386,12 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     </DocumentationLink>
                 </p>
             ) }
+            contentTopMargin={ (AppConstants.getTenant() === AppConstants.getSuperTenant()) }
             data-testid={ `${ testId }-page-layout` }
         >
             { !isLoading? (
                 <>
+                    { renderTenantedMyAccountLink() }
                     { renderRemoteFetchStatus() }
                     <ListLayout
                         advancedSearch={ (
