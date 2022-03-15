@@ -16,11 +16,12 @@
  * under the License.
  */
 
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, ReactNode } from "react";
 import { Divider, Grid, Label, LabelProps, Popup, PopupProps } from "semantic-ui-react";
 
-export interface LabelWithPopupPropsInterface extends LabelProps {
+export interface LabelWithPopupPropsInterface extends IdentifiableComponentInterface, LabelProps {
     /**
      * Header of the popup
      */
@@ -81,6 +82,7 @@ export const LabelWithPopup: FunctionComponent<LabelWithPopupPropsInterface> = (
         popupOptions,
         labelColor,
         trigger,
+        [ "data-componentid" ]: componentId,
         ...rest
     } = props;
 
@@ -104,9 +106,10 @@ export const LabelWithPopup: FunctionComponent<LabelWithPopupPropsInterface> = (
                 )
             }
             on="hover"
+            data-componentid={ componentId }
             { ...popupOptions }
         >
-            <Popup.Content>
+            <Popup.Content data-componentid={ `${ componentId }-content-container` }>
                 <Grid>
                     {
                         (popupHeader || popupSubHeader) && (
@@ -114,7 +117,7 @@ export const LabelWithPopup: FunctionComponent<LabelWithPopupPropsInterface> = (
                                 <Grid.Column>
                                     {
                                         popupHeader && (
-                                            <Popup.Header>
+                                            <Popup.Header data-componentid={ `${ componentId }-header` }>
                                                 <strong>{ popupHeader }</strong>
                                             </Popup.Header>
                                         )
@@ -127,7 +130,7 @@ export const LabelWithPopup: FunctionComponent<LabelWithPopupPropsInterface> = (
                     {
                         popupContent && (
                             <Grid.Row>
-                                <Grid.Column>
+                                <Grid.Column data-componentid={ `${ componentId }-content` }>
                                     { popupContent }
                                 </Grid.Column>
                             </Grid.Row>
@@ -140,14 +143,24 @@ export const LabelWithPopup: FunctionComponent<LabelWithPopupPropsInterface> = (
                                 <Grid.Row>
                                     {
                                         popupFooterLeftContent && (
-                                            <Grid.Column verticalAlign="middle" floated="left" width={ 10 }>
+                                            <Grid.Column
+                                                verticalAlign="middle"
+                                                floated="left"
+                                                width={ 10 }
+                                                data-componentid={ `${ componentId }-footer-left-content` }
+                                            >
                                                 { popupFooterLeftContent }
                                             </Grid.Column>
                                         )
                                     }
                                     {
                                         popupFooterRightActions && (
-                                            <Grid.Column verticalAlign="middle" floated="right" width={ 6 }>
+                                            <Grid.Column
+                                                verticalAlign="middle"
+                                                floated="right"
+                                                width={ 6 }
+                                                data-componentid={ `${ componentId }-footer-right-actions` }
+                                            >
                                                 { popupFooterRightActions }
                                             </Grid.Column>
                                         )
@@ -166,5 +179,6 @@ export const LabelWithPopup: FunctionComponent<LabelWithPopupPropsInterface> = (
  * Default proptypes for component.
  */
 LabelWithPopup.defaultProps = {
+    "data-componentid": "label-with-popup",
     "data-testid": "label-with-popup"
 };

@@ -26,6 +26,7 @@ export const commonConfig: CommonConfig = {
     },
     blockLoopBackCalls: false,
     checkForUIResourceScopes: false,
+    enableOrganizationAssociations: false,
     header: {
         getHeaderExtensions: (): HeaderExtension[] => [],
         getHeaderSubPanelExtensions: (): HeaderSubPanelItemInterface[] => [],
@@ -41,5 +42,10 @@ export const commonConfig: CommonConfig = {
     userEditSection: {
         isGuestUser: false,
         showEmail: true
-    }
+    },
+    hotjarTracking : {
+        tagAttributes : () : void => {
+            return;
+        }
+     }
 };

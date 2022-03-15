@@ -16,12 +16,21 @@
  * under the License.
  */
 
-import { Button, CopyInputField, DangerButton, LinkButton, Password, PrimaryButton } from "@wso2is/react-components";
+import {
+    Button,
+    ColorPicker,
+    ColorPickerResponseInterface,
+    CopyInputField,
+    DangerButton,
+    LinkButton,
+    Password,
+    PrimaryButton
+} from "@wso2is/react-components";
 import omit from "lodash-es/omit";
 import React, { ClipboardEvent, KeyboardEvent, ReactElement } from "react";
-import { Checkbox, Form, Input, Select } from "semantic-ui-react";
+import { Checkbox, Form, Input, Popup, Select } from "semantic-ui-react";
 import { QueryParameters } from "../addons";
-import { FieldButtonTypes, CheckboxAdapterPropsInterface } from "../models";
+import { CheckboxAdapterPropsInterface, ColorPickerAdapterPropsInterface, FieldButtonTypes } from "../models";
 
 /**
  * The enter key.
@@ -412,4 +421,103 @@ export const QueryParamsAdapter = ({ input, childFieldProps }): ReactElement => 
         />
     );
 
+};
+
+/**
+ * Color Picker Adapter implemented with `react-color`.
+ *
+ * @param {ColorPickerAdapterPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
+ */
+export const ColorPickerAdapter = (props: ColorPickerAdapterPropsInterface): ReactElement => {
+
+    const {
+        childFieldProps,
+        input: { value, ...input },
+        ...rest
+    } = props;
+
+    // unused, just don't pass it along with the ...rest
+    const {
+        /* eslint-disable @typescript-eslint/no-unused-vars */
+        type,
+        meta,
+        hint,
+        children,
+        parentFormProps,
+        render,
+        width,
+        readOnly,
+        /* eslint-enable @typescript-eslint/no-unused-vars */
+        ...filteredRest
+    } = rest;
+
+    return (
+        <Popup
+            on="click"
+            positionFixed
+            hoverable
+            className="color-picker-popup"
+            trigger={ (
+                <Form.Field>
+                    <label>{ childFieldProps.label !== "" ? childFieldProps.label : null }</label>
+                    <Input
+                        className={ `color-picker-input ${ readOnly ? "readonly" : "" }` }
+                        aria-label={ childFieldProps.ariaLabel }
+                        key={ childFieldProps.testId }
+                        required={ childFieldProps.required }
+                        data-componentid={ childFieldProps.componentId }
+                        onChange={ (event, data) => {
+                            if (childFieldProps.listen && typeof childFieldProps.listen === "function") {
+                                childFieldProps.listen(data?.value);
+                            }
+
+                            input.onChange(data?.value);
+                        } }
+                        onBlur={ (event) => input.onBlur(event) }
+                        control={ Input }
+                        autoFocus={ childFieldProps.autoFocus || false }
+                        value={
+                            meta.modified
+                                ? value
+                                : (childFieldProps?.value
+                                    ? childFieldProps?.value
+                                    : (parentFormProps?.values[ childFieldProps?.name ]
+                                        ? parentFormProps?.values[ childFieldProps?.name ]
+                                        : ""))
+                        }
+                        { ...omit(childFieldProps, [ "value", "listen", "label" ]) }
+                        type="text"
+                        error={
+                            (meta.error && meta.touched)
+                                ? meta.error
+                                : null
+                        }
+                    >
+                        <div className="color-swatch">
+                            <div className="color-swatch-inner" style={ { background: value } } />
+                        </div>
+                        <input />
+                    </Input>
+                </Form.Field>
+            ) }
+            disabled={ readOnly }
+            content={ (
+                <ColorPicker
+                    show
+                    popup
+                    color={ value }
+                    onChangeComplete={ (color: ColorPickerResponseInterface) => {
+                        if (childFieldProps.listen && typeof childFieldProps.listen === "function") {
+                            childFieldProps.listen(color.hex);
+                        }
+
+                        input.onChange(color.hex);
+                    } }
+                    { ...filteredRest }
+                />
+            ) }
+        />
+    );
 };

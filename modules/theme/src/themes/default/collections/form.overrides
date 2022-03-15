@@ -130,3 +130,31 @@
         }
     }
 }
+
+/*-------------------------------
+  Addon wrapper for input fields to avoid
+  overlapping with browser added icons
+  ex: Password Managers
+--------------------------------*/
+.ui.form {
+    .ui.input.addon-wrapper {
+        > input {
+            border: none;
+        }
+    }
+}
+
+/*-------------------------------
+  Addon field wrapper for input fields in My Account
+  & Console to avoid overlapping with browser added icons
+  ex: Password Managers
+--------------------------------*/
+.ui.form {
+    .addon-field-wrapper{
+        .ui.input {
+            > input {
+                border: none;
+            }
+        }
+    }
+}

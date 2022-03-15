@@ -108,9 +108,9 @@ export const common: CommonNS = {
     myAccount: "පුද්ගලික ගිණුම",
     name: "නම",
     networkErrorMessage: {
-        description: "කරුණාකර යෙදුම නැවත පූරණය කිරීමට උත්සාහ කරන්න.",
-        heading: "මොකක්හරි වැරැද්දක් වෙලා",
-        primaryActionText: "යෙදුම නැවත පූරණය කරන්න"
+        description: "කරුණාකර නැවත පුරනය වීමට උත්සාහ කරන්න.",
+        heading: "ඔබගේ සැසිය කල් ඉකුත් වී ඇත",
+        primaryActionText: "පුරන්න"
     },
     next: "ඊළඟ ",
     okay: "හරි",

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, ReactNode } from "react";
 import { Header } from "semantic-ui-react";
@@ -25,7 +25,7 @@ import { GenericIcon, GenericIconSizes } from "../icon";
 /**
  * Proptypes for the placeholder component.
  */
-export interface PlaceholderProps extends TestableComponentInterface {
+export interface PlaceholderProps extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Action of the placeholder.
      */
@@ -68,6 +68,7 @@ export const EmptyPlaceholder: FunctionComponent<PlaceholderProps> = (props: Pla
         imageSize,
         subtitle,
         title,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -77,7 +78,11 @@ export const EmptyPlaceholder: FunctionComponent<PlaceholderProps> = (props: Pla
     );
 
     return (
-        <div className={ classes } data-testid={ testId }>
+        <div
+            className={ classes }
+            data-componentid={ componentId }
+            data-testid={ testId }
+        >
             {
                 image
                     ? (
@@ -86,6 +91,7 @@ export const EmptyPlaceholder: FunctionComponent<PlaceholderProps> = (props: Pla
                                 fill="default"
                                 icon={ image }
                                 size={ imageSize }
+                                data-componentid={ `${ componentId }-icon` }
                                 data-testid={ `${ testId }-icon` }
                                 transparent
                             />
@@ -93,24 +99,46 @@ export const EmptyPlaceholder: FunctionComponent<PlaceholderProps> = (props: Pla
                     )
                     : null
             }
-            { title && <Header as="h4" className="title" data-testid={ `${ testId }-header` }>{ title }</Header> }
+            { title && (
+                <Header
+                    as="h4"
+                    className="title"
+                    data-componentid={ `${ componentId }-header` }
+                    data-testid={ `${ testId }-header` }
+                >
+                    { title }
+                </Header>
+            ) }
             {
                 subtitle
                     ? Array.isArray(subtitle) && (subtitle.length > 0) && subtitle.map((line, index) => (
                         <div
                             key={ index }
                             className="subtitle"
+                            data-componentid={ `${ componentId }-sub-header-line-${ index }` }
                             data-testid={ `${ testId }-sub-header-line-${ index }` }
                         >
                             { line }
                         </div>
                     ))
-                    : <div className="subtitle" data-testid={ `${ testId }-sub-header` }>{ subtitle }</div>
+                    : (
+                        <div
+                            className="subtitle"
+                            data-componentid={ `${ componentId }-sub-header` }
+                            data-testid={ `${ testId }-sub-header` }
+                        >
+                            { subtitle }
+                        </div>
+                    )
             }
             {
                 action
                     ? (
-                        <div className="action-container" data-testid={ `${ testId }-action-container` }>
+                        <div
+                            className="action-container"
+                            data-componentid={ `${ componentId }-action-container` }
+                            data-testid={ `${ testId }-action-container` }
+                        >
                             { action }
                         </div>
                     )
@@ -125,6 +153,7 @@ export const EmptyPlaceholder: FunctionComponent<PlaceholderProps> = (props: Pla
  */
 EmptyPlaceholder.defaultProps = {
     action: null,
+    "data-componentid": "empty-placeholder",
     "data-testid": "empty-placeholder",
     image: null,
     imageSize: "auto"

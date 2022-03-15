@@ -17,7 +17,7 @@
  *
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import cloneDeep from "lodash-es/cloneDeep";
 import React, { FormEvent, FunctionComponent, ReactElement } from "react";
 import { Checkbox, Form, Popup } from "semantic-ui-react";
@@ -26,7 +26,9 @@ import { ReactComponent as ColumnIcon } from "../../../assets/images/column-icon
 import { GenericIcon, GenericIconProps } from "../../icon";
 import { Heading } from "../../typography";
 
-export interface DataTableColumnSelectorInterface extends TestableComponentInterface {
+export interface DataTableColumnSelectorInterface extends IdentifiableComponentInterface,
+    TestableComponentInterface {
+
     /**
      * Heading for the column selector dropdown.
      */
@@ -76,6 +78,7 @@ export const DataTableColumnSelector: FunctionComponent<DataTableColumnSelectorI
         onColumnSelectionChange,
         showToggleDisallowedColumns,
         triggerIcon,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -113,7 +116,11 @@ export const DataTableColumnSelector: FunctionComponent<DataTableColumnSelectorI
     return (
         isColumnSelectorValid(columns)
             ? (
-                <div className="data-table-column-selector" data-testid={ testId }>
+                <div
+                    className="data-table-column-selector"
+                    data-componentid={ componentId }
+                    data-testid={ testId }
+                >
                     <Popup
                         flowing
                         basic
@@ -194,6 +201,7 @@ export const DataTableColumnSelector: FunctionComponent<DataTableColumnSelectorI
 DataTableColumnSelector.defaultProps = {
     columnSelectorHeader: "Show/Hide Columns",
     columnSelectorWidth: 240,
+    "data-componentid": "data-table-column-selector",
     "data-testid": "data-table-column-selector",
     floated: "right",
     showToggleDisallowedColumns: false,

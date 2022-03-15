@@ -36,7 +36,7 @@ const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAC
 export const getMetaData = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost.clientHost,
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
             "Content-Type": "application/x-www-form-urlencoded"
         },
         method: HttpMethods.GET,
@@ -71,7 +71,7 @@ export const updateDeviceName = (credentialId: string, deviceName: string): Prom
             value: deviceName
         } ],
         headers: {
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost.clientHost,
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
@@ -102,7 +102,7 @@ export const deleteDevice = (credentialId: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost.clientHost
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost
         },
         method: HttpMethods.DELETE,
         url: `${store.getState().config.endpoints.fidoMetaData}/${credentialId}`
@@ -176,7 +176,7 @@ export const endFidoFlow = (clientResponse: string): Promise<any> => {
         data: clientResponse,
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost.clientHost,
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
@@ -207,7 +207,7 @@ export const endFidoFlow = (clientResponse: string): Promise<any> => {
  *
  * @return {Promise<any>} a promise containing the response.
  */
-const connectToDevice = (requestId, credentialCreationOptions): Promise<any> => {
+export const connectToDevice = (requestId, credentialCreationOptions): Promise<any> => {
     return navigator.credentials
         .create({ publicKey: credentialCreationOptions })
         .then((credential) => {
@@ -240,7 +240,7 @@ const connectToDevice = (requestId, credentialCreationOptions): Promise<any> => 
  *
  * @return {object} excludeCredentials
  */
-const decodePublicKeyCredentialCreationOptions = (request): Record<string, any> => {
+export const decodePublicKeyCredentialCreationOptions = (request): Record<string, any> => {
     const excludeCredentials = request.excludeCredentials.map((credential) => {
         return { ...credential, id: Decode(credential.id) };
     });
@@ -263,10 +263,14 @@ const decodePublicKeyCredentialCreationOptions = (request): Record<string, any> 
  * @return {Promise<any>} a promise containing the response.
  */
 export const startFidoFlow = (): Promise<any> => {
+    const data: URLSearchParams = new URLSearchParams();
+
+    data.append("appId", window.location.origin);
+
     const requestConfig = {
-        data: { appId: window.location.origin },
+        data: data.toString(),
         headers: {
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost.clientHost,
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
             "Content-Type": "application/x-www-form-urlencoded"
         },
         method: HttpMethods.POST,
@@ -281,16 +285,7 @@ export const startFidoFlow = (): Promise<any> => {
                 );
             }
 
-            return connectToDevice(
-                response.data.requestId,
-                decodePublicKeyCredentialCreationOptions(response.data.publicKeyCredentialCreationOptions)
-            )
-                .then((responseAtCompletion) => {
-                    return Promise.resolve(responseAtCompletion);
-                })
-                .catch((error) => {
-                    return Promise.reject(`Failed to connect to device - ${error}`);
-                });
+            return Promise.resolve(response?.data);
         })
         .catch((error) => {
             return Promise.reject(`FIDO connection terminated - ${error}`);
@@ -303,10 +298,14 @@ export const startFidoFlow = (): Promise<any> => {
  * @return {Promise<any>} a promise containing the response.
  */
 export const startFidoUsernamelessFlow = (): Promise<any> => {
+    const data: URLSearchParams = new URLSearchParams();
+
+    data.append("appId", window.location.origin);
+
     const requestConfig = {
-        data: { appId: window.location.origin },
+        data: data.toString(),
         headers: {
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost.clientHost,
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
             "Content-Type": "application/x-www-form-urlencoded"
         },
         method: HttpMethods.POST,
@@ -322,16 +321,7 @@ export const startFidoUsernamelessFlow = (): Promise<any> => {
                 );
             }
 
-            return connectToDevice(
-                response.data.requestId,
-                decodePublicKeyCredentialCreationOptions(response.data.publicKeyCredentialCreationOptions)
-            )
-                .then((responseAtCompletion) => {
-                    return Promise.resolve(responseAtCompletion);
-                })
-                .catch((error) => {
-                    return Promise.reject(`Failed to connect to device - ${error}`);
-                });
+            return Promise.resolve(response?.data);
         })
         .catch((error) => {
             return Promise.reject(`FIDO connection terminated - ${error}`);

@@ -44,4 +44,11 @@ export class CommonConstants {
      * @type {string}
      */
     public static readonly SESSION_TIMEOUT_WARNING_URL_SEARCH_PARAM_KEY: string = "session_timeout_warning";
+    /**
+     * The name of the event dispatched when authentication successful.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly AUTHENTICATION_SUCCESSFUL_EVENT: string = "authentication-successful";
 }

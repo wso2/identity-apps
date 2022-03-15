@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { ImageUtils } from "@wso2is/core/utils";
 import classNames from "classnames";
 import React, {
@@ -35,7 +35,9 @@ import { GenericIcon, GenericIconProps } from "../icon";
 /**
  * Prop types for the Avatar component.
  */
-export interface AvatarPropsInterface extends TestableComponentInterface, Omit<ImageProps, "size"> {
+export interface AvatarPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface,
+    Omit<ImageProps, "size"> {
+
     /**
      * To determine if avatar with initials should be displayed.
      */
@@ -193,6 +195,7 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
         transparent,
         width,
         withBackgroundImage,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -257,9 +260,13 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
             <Image
                 className={ imgElementClasses }
                 circular={ shape === "circular" }
+                data-componentid={ `${ componentId }-loading` }
                 data-testid={ `${ testId }-loading` }
             >
-                <Placeholder data-testid={ `${ testId }-loading-placeholder` }>
+                <Placeholder
+                    data-componentid={ `${ componentId }-loading-placeholder` }
+                    data-testid={ `${ testId }-loading-placeholder` }
+                >
                     <Placeholder.Image square/>
                 </Placeholder>
             </Image>
@@ -335,10 +342,15 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
                         onClick={ onClick }
                         onMouseOver={ onMouseOver }
                         onMouseOut={ onMouseOut }
+                        data-componentid={ componentId }
                         data-testid={ testId }
                         { ...rest }
                     >
-                        <div className="inner-content" data-testid={ `${ testId }-inner-content` }>
+                        <div
+                            className="inner-content"
+                            data-componentid={ `${ componentId }-inner-content` }
+                            data-testid={ `${ testId }-inner-content` }
+                        >
                             { image }
                         </div>
                     </Image>
@@ -359,10 +371,15 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
                         onClick={ onClick }
                         onMouseOver={ onMouseOver }
                         onMouseOut={ onMouseOut }
+                        data-componentid={ componentId }
                         data-testid={ testId }
                         { ...rest }
                     >
-                        <div className="inner-content" data-testid={ `${ testId }-inner-content` }>
+                        <div
+                            className="inner-content"
+                            data-componentid={ `${ componentId }-inner-content` }
+                            data-testid={ `${ testId }-inner-content` }
+                        >
                             { children }
                             <img className={ innerImageClasses } alt="avatar" src={ image as string }/>
                         </div>
@@ -385,11 +402,18 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
                         onClick={ onClick }
                         onMouseOver={ onMouseOver }
                         onMouseOut={ onMouseOut }
+                        data-componentid={ componentId }
                         data-testid={ testId }
                         { ...rest }
                     >
                         { children }
-                        <span className="initials" data-testid={ `${ testId }-initials` }>{ generateInitials() }</span>
+                        <span
+                            className="initials"
+                            data-componentid={ `${ componentId }-initials` }
+                            data-testid={ `${ testId }-initials` }
+                        >
+                            { generateInitials() }
+                        </span>
                     </Image>
                     { renderEditBubble() }
                 </div>
@@ -408,15 +432,21 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
                     onClick={ onClick }
                     onMouseOver={ onMouseOver }
                     onMouseOut={ onMouseOut }
+                    data-componentid={ componentId }
                     data-testid={ testId }
                     { ...rest }
                 >
-                    <div className="content-wrapper" data-testid={ `${ testId }-image-content-wrapper` }>
+                    <div
+                        className="content-wrapper"
+                        data-componentid={ `${ componentId }-image-content-wrapper` }
+                        data-testid={ `${ testId }-image-content-wrapper` }
+                    >
                         { children }
                         <img
                             className={ innerImageClasses }
                             alt="avatar"
                             src={ defaultIcon }
+                            data-componentid={ `${ componentId }-image` }
                             data-testid={ `${ testId }-image` }
                         />
                     </div>
@@ -435,6 +465,7 @@ Avatar.defaultProps = {
     avatarInitialsLimit: 1,
     bordered: true,
     className: "",
+    "data-componentid": "avatar",
     "data-testid": "avatar",
     editIconSize: "micro",
     initialsColor: "white",

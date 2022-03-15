@@ -73,13 +73,13 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
     **My Account**
 
     ```
-    regexp=(https://localhost:9443/myaccount/login|https://localhost:9443/myaccount/logout|https://localhost:9000/myaccount/login|https://localhost:9000/myaccount/logout)
+    regexp=(https://localhost:9443/myaccount/login|https://localhost:9443/myaccount/logout|https://localhost:9000/myaccount/login|https://localhost:9000/myaccount/logout|https://localhost:9000/myaccount)
     ```
 
     **Console**
 
     ```
-    regexp=(https://localhost:9443/console/login|https://localhost:9443/console/logout|https://localhost:9001/console/login|https://localhost:9001/console/logout)
+    regexp=(https://localhost:9443/console/login|https://localhost:9443/console/logout|https://localhost:9001/console/login|https://localhost:9001/console/logout|https://localhost:9001/console)
     ```
 
 8. Open cloned or downloaded Identity Apps repo and run the following commands from the command line in the project root directory (where the `package.json` is located) to build all the packages with dependencies. _(Note:- Not necessary if you have already done above identity apps build steps)_

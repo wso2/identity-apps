@@ -19,24 +19,33 @@
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms } from "@wso2is/forms";
-import { Code, Heading, Hint, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import {
+    Code,
+    DocumentationLink,
+    Heading,
+    Hint,
+    LinkButton,
+    PrimaryButton,
+    Text,
+    useDocumentation
+} from "@wso2is/react-components";
 import kebabCase from "lodash-es/kebabCase";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid, Icon } from "semantic-ui-react";
+import { Divider, Grid, Icon, Message } from "semantic-ui-react";
 import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
 import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
-import { GenericAuthenticatorInterface } from "../../../../identity-providers";
+import { GenericAuthenticatorInterface, IdentityProviderManagementConstants } from "../../../../identity-providers";
 import { getRequestPathAuthenticators, updateAuthenticationSequence } from "../../../api";
 import {
     AdaptiveAuthTemplateInterface,
     AuthenticationSequenceInterface,
     AuthenticationStepInterface
 } from "../../../models";
-import { AdaptiveScriptUtils } from "../../../utils";
+import { AdaptiveScriptUtils, ConnectionsJITUPConflictWithMFAReturnValue, SignInMethodUtils } from "../../../utils";
 
 /**
  * Proptypes for the sign in methods customization entry point component.
@@ -77,6 +86,7 @@ interface SignInMethodCustomizationPropsInterface extends SBACInterface<FeatureC
      * Make the form read only.
      */
     readOnly?: boolean;
+    refreshAuthenticators: () => Promise<void>;
 }
 
 /**
@@ -100,11 +110,12 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         onReset,
         onUpdate,
         readOnly,
+        refreshAuthenticators,
         [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
-
+    const { getLink } = useDocumentation();
     const dispatch = useDispatch();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
@@ -119,7 +130,24 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
     const [ isButtonDisabled, setIsButtonDisabled ] = useState<boolean>(false);
     const [ updatedSteps, setUpdatedSteps ] = useState<AuthenticationStepInterface[]>();
 
+    const [ validationResult, setValidationResult ] =
+        useState<ConnectionsJITUPConflictWithMFAReturnValue | undefined>(undefined);
+
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    useEffect(() => {
+
+        const FEDERATED_CONNECTIONS = 1;
+
+        const result = SignInMethodUtils.isConnectionsJITUPConflictWithMFA({
+            federatedAuthenticators: authenticators[FEDERATED_CONNECTIONS],
+            steps: updatedSteps,
+            subjectStepId: authenticationSequence?.subjectStepId
+        });
+
+        setValidationResult(result);
+
+    }, [ steps, authenticators, updatedSteps ]);
 
     /**
      * Toggles the update trigger.
@@ -216,7 +244,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
      */
     const handleSequenceUpdate = (sequence: AuthenticationSequenceInterface, forceReset?: boolean): void => {
 
-        let requestBody = {};
+        let requestBody;
 
         if (forceReset) {
             requestBody = {
@@ -448,6 +476,80 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         );
     };
 
+
+    const JITConflictMessage = () => {
+
+        const FIRST_ENTRY = 0;
+        const { idpList } = validationResult;
+        const moreThan1IdP = idpList.length > 1;
+
+        return (
+            <Message
+                size="large"
+                data-componentid="jit-provisioning-mfa-in-sequence-warning-message"
+                data-testid="jit-provisioning-mfa-in-sequence-warning-message"
+                warning
+                // Semantic hides warning messages inside <form> by default.
+                // Overriding the behaviour here to make sure it renders properly.
+                className="warning visible"
+                header={ (
+                    <Fragment>
+                        <Icon name="exclamation triangle" className="mr-2"/>
+                        Warning
+                    </Fragment>
+                ) }
+                content={ (
+                    <div className="mt-3 mb-2">
+                        {
+                            moreThan1IdP
+                                ? (
+                                    <Text>
+                                        Currently, Just-in-Time (JIT) user provisioning
+                                        is <strong>disabled</strong> for the following connections:
+                                        <ul className="mb-3">
+                                            { idpList?.map(({ name }, index) => (
+                                                <li key={ index }>
+                                                    <strong>{ name }</strong>
+                                                </li>
+                                            )) }
+                                        </ul>
+                                    </Text>
+                                )
+                                : (
+                                    <Text>
+                                        Currently, Just-in-Time(JIT) user provisioning is disabled
+                                        for the <strong>{ idpList[FIRST_ENTRY].name }</strong> connection.
+                                    </Text>
+                                )
+                        }
+                        {
+                            moreThan1IdP
+                                ? (
+                                    <Text>
+                                        To use MFA with these connections, <em>enable JIT provisioning</em> or
+                                        use an <em>authentication script</em> to skip the MFA options for
+                                        these connections during user login.
+                                    </Text>
+                                )
+                                : (
+                                    <Text>
+                                        To use MFA with this connection, <em>enable JIT provisioning</em> or
+                                        use an <em>authentication script</em> to skip the MFA options for this
+                                        connection during user login.
+                                    </Text>
+                                )
+                        }
+                        <Text className="mt-3 mb-0">
+                            <DocumentationLink link={ getLink("develop.connections.edit.advancedSettings.jit") }>
+                                Learn More
+                            </DocumentationLink>
+                        </Text>
+                    </div>
+                ) }
+            />
+        );
+    };
+
     return (
         <div>
             <div>
@@ -490,7 +592,32 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 }
             </div>
             <Divider hidden />
+            {
+                authenticationSequence.steps[ 0 ].options.find(authenticator =>
+                    authenticator.authenticator === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR)
+                && (
+                    <Message warning>
+                        <Trans
+                            i18nKey={
+                                t("console:develop.features.applications.edit.sections" +
+                                ".signOnMethod.sections.landing.flowBuilder." +
+                                "types.usernameless.info")
+                            }>
+                            To sign in with passwordless login, your users
+                            should have their FIDO2 security keys or biometrics
+                            registered via My Account.
+                        </Trans>
+                        <DocumentationLink
+                            link={ getLink("develop.applications.editApplication.signInMethod.fido") }
+                            showEmptyLink={ false }
+                        >
+                            { t("common:learnMore") }
+                        </DocumentationLink>
+                    </Message>
+                )
+            }
             <StepBasedFlow
+                refreshAuthenticators={ refreshAuthenticators }
                 authenticators={ authenticators }
                 authenticationSequence={ sequence }
                 isLoading={ isLoading }
@@ -505,6 +632,11 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                     setUpdatedSteps(updatedSteps);
                 } }
             />
+            <Divider className="x1" hidden/>
+            { validationResult?.conflicting && validationResult?.idpList.length
+                ? JITConflictMessage()
+                : null
+            }
             <Divider className="x2"/>
             <ScriptBasedFlow
                 authenticationSequence={ sequence }

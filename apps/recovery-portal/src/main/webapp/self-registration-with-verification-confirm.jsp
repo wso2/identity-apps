@@ -21,6 +21,7 @@
 <%@ page import="org.wso2.carbon.base.MultitenantConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.SelfRegisterApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.CodeValidationRequest" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
@@ -41,14 +42,15 @@
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
     String AUTO_LOGIN_COOKIE_NAME = "ALOR";
+    String AUTO_LOGIN_COOKIE_DOMAIN = "AutoLoginCookieDomain";
     String AUTO_LOGIN_FLOW_TYPE = "SIGNUP";
     String username = null;
 
     String confirmationKey = request.getParameter("confirmation");
     String callback = request.getParameter("callback");
     String httpMethod = request.getMethod();
-    Boolean isAutoLoginEnable = Boolean.parseBoolean(Utils.getConnectorConfig("SelfRegistration.AutoLogin.Enable",
-                tenantDomain));
+    PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+    Boolean isAutoLoginEnable = preferenceRetrievalClient.checkAutoLoginAfterSelfRegistrationEnabled(tenantDomain);
 
     // Some mail providers initially sends a HEAD request to
     // check the validity of the link before redirecting users.
@@ -87,10 +89,14 @@
         if (isAutoLoginEnable) {
             username = userStoreDomain + "/" + username + "@" + tenantDomain;
 
+            String cookieDomain = application.getInitParameter(AUTO_LOGIN_COOKIE_DOMAIN);
             JSONObject contentValueInJson = new JSONObject();
             contentValueInJson.put("username", username);
             contentValueInJson.put("createdTime", System.currentTimeMillis());
             contentValueInJson.put("flowType", AUTO_LOGIN_FLOW_TYPE);
+            if (StringUtils.isNotBlank(cookieDomain)) {
+                contentValueInJson.put("domain", cookieDomain);
+            }
             String content = contentValueInJson.toString();
 
             JSONObject cookieValueInJson = new JSONObject();
@@ -102,6 +108,9 @@
             cookie.setPath("/");
             cookie.setSecure(true);
             cookie.setMaxAge(300);
+            if (StringUtils.isNotBlank(cookieDomain)) {
+                cookie.setDomain(cookieDomain);
+            }
             response.addCookie(cookie);
         }
 
@@ -189,7 +198,7 @@
             <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
-    <script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
+    <script src="libs/jquery_3.6.0/jquery-3.6.0.min.js"></script>
     <script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
     </body>
     </html>

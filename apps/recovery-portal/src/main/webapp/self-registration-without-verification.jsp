@@ -19,6 +19,7 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.apache.cxf.jaxrs.impl.ResponseImpl" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.serviceclient.UserRegistrationClient" %>
@@ -90,8 +91,9 @@
 
         <%
             if (reCaptchaEnabled) {
+                String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
         %>
-        <script src='<%=(request.getAttribute("reCaptchaAPI"))%>'></script>
+        <script src='<%=(reCaptchaAPI)%>'></script>
         <%
             }
         %>
@@ -220,10 +222,11 @@
                             %>
                             <%
                                 if (reCaptchaEnabled) {
+                                    String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
                             %>
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
                                 <div class="g-recaptcha"
-                                     data-sitekey="<%=Encode.forHtmlContent((String)request.getAttribute("reCaptchaKey"))%>">
+                                     data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>">
                                 </div>
                             </div>
                             <%
@@ -273,7 +276,7 @@
             <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
-    <script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
+    <script src="libs/jquery_3.6.0/jquery-3.6.0.min.js"></script>
     <script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
     <script type="text/javascript">
 

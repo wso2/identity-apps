@@ -57,32 +57,75 @@ const skipSample = process.argv.indexOf("--skipSample") > -1;     // CLI arg to 
 const skipManifest = process.argv.indexOf("--skipManifest") > -1; // CLI arg to skip the asset manifest generation.
 const skipHashing = process.argv.indexOf("--skipHashing") > -1;   // CLI arg to skip the hashing the css artifacts.
 
-/*
- * Generate Default Site Variables JSON files
+/**
+ * Generate Default Site Variables JSON files.
+ *
+ * @param theme - Theme to generate variables.
+ * @return {Promise<void>}
  */
-const createVariablesLessJson = async () => {
+const createVariablesLessJson = async (theme) => {
+
     const exportJsFileName = "theme-variables.json";
     const exportMergeLessFileName = "theme-variables.less";
+    
+    const themeDistDir = path.join(distDir, "lib", "themes", theme);
 
-    const exportMergeLessFile = path.join(distDir, exportMergeLessFileName);
-    const exportJsFile = path.join(distDir, exportJsFileName);
+    const exportMergeLessFile = path.join(themeDistDir, exportMergeLessFileName);
+    const exportJsFile = path.join(themeDistDir, exportJsFileName);
 
-    const semanticUISiteVariablesFile =
-        path.join(semanticUICorePath, DEFAULT_THEME_NAME, "globals", "site.variables");
+    /**
+     * Merges the LESS variable files.
+     * `mergeFiles` has a limitation when merging more than 2 files at once. Hence, temp files should be maintained.
+     *
+     * @param files - Files to be merge.
+     * @return {Promise<void>}
+     */
+    const mergeVariableFiles = async (files) => {
+
+        const exportMergeLessTempFileWithSiteVariables = path.join(themeDistDir, exportMergeLessFileName + "-temp-001");
+        const exportMergeLessTempFileWithLoginVariables = path.join(themeDistDir,
+            exportMergeLessFileName + "-temp-002");
+
+        await mergeFiles([ files[0], files[1] ], exportMergeLessTempFileWithSiteVariables);
+        await mergeFiles([ exportMergeLessTempFileWithSiteVariables, files[2] ],
+            exportMergeLessTempFileWithLoginVariables);
+
+        fs.removeSync(exportMergeLessFile);
+        fs.removeSync(exportMergeLessTempFileWithSiteVariables);
+        fs.renameSync(exportMergeLessTempFileWithLoginVariables, exportMergeLessFile);
+    };
+
+    const semanticUISiteVariablesFile = path.join(semanticUICorePath, DEFAULT_THEME_NAME, "globals", "site.variables");
     const themeCoreSiteVariablesFile = path.join(themesDir, DEFAULT_THEME_NAME, "globals", "site.variables");
+    const themeCoreLoginPortalVariablesFile = path.join(themesDir, DEFAULT_THEME_NAME, "apps",
+        "login-portal.variables");
 
-    const inputPathList = [ semanticUISiteVariablesFile, themeCoreSiteVariablesFile ];
+    await mergeVariableFiles([
+        semanticUISiteVariablesFile,
+        themeCoreSiteVariablesFile,
+        themeCoreLoginPortalVariablesFile
+    ]);
 
-    await mergeFiles(inputPathList, exportMergeLessFile);
+    // If the requested theme is a sub theme, merge the sub theme's `site.variables` too.
+    if (theme !== DEFAULT_THEME_NAME) {
+        const subThemeSiteVariablesFile = path.join(themesDir, theme, "globals", "site.variables");
+        const subThemeLoginPortalVariablesFile = path.join(themesDir, theme, "apps", "login-portal.variables");
 
-    const variablesJson =  lessToJson(exportMergeLessFile);
+        await mergeVariableFiles([
+            exportMergeLessFile,
+            subThemeSiteVariablesFile,
+            subThemeLoginPortalVariablesFile
+        ]);
+    }
+
+    const variablesJson = lessToJson(exportMergeLessFile);
 
     fs.writeFileSync(exportJsFile, JSON.stringify(variablesJson, null, 4), (error) => {
         log.error(exportJsFileName + " generation failed.");
         log.error(error);
     });
 
-    log.info(exportJsFileName + " generated.");
+    log.info(exportJsFileName + " for " + theme + " theme generated.");
 
     log.info("build finished.");
 };
@@ -248,11 +291,23 @@ const generateThemes = () => {
         });
     });
 
-    Promise.all(fileWritePromises).then(() => {
-        createVariablesLessJson();
-    }).catch((error) => {
-        log.error(error);
-    });
+    Promise.all(fileWritePromises)
+        .then(() => {
+            // Generate Variables files for all the themes.
+            themes.map((theme) => {
+                if (!fs.lstatSync(path.join(themesDir, theme)).isDirectory()) {
+                    return;
+                }
+
+                createVariablesLessJson(theme)
+                    .catch((error) => {
+                        log.error(error);
+                    });
+            });
+        })
+        .catch((error) => {
+            log.error(error);
+        });
 };
 
 /*

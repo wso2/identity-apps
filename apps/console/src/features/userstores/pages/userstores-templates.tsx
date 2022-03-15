@@ -194,7 +194,7 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
                                 onTemplateSelect={ (e: SyntheticEvent, { id }: { id: string }) => {
                                     setSelectedType(rawUserstoreTypes.find((type) => type.typeId === id));
                                 } }
-                                templateIcons={ getUserstoreTemplateIllustrations() }
+                                templateIcons={ getUserstoreTemplateIllustrations() as any }
                                 templateIconOptions={ {
                                     fill: "primary"
                                 } }

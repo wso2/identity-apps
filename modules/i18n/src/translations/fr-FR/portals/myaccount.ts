@@ -668,68 +668,84 @@ export const myAccount: MyAccountNS = {
                 }
             },
             fido: {
-                description: "Authentifiez-vous à l'aide un dispositif biométrique ou dispositif FIDO",
+                description: "Vous pouvez utiliser une clé de sécurité FIDO2 ou des données biométriques" +
+                    " dans votre appareil pour vous connecter à votre compte.",
                 form: {
-                    label: "Dispositif de sécurité",
-                    placeholder: "Entrez un nom pour le dispositif",
-                    remove: "Supprimer le dispositif",
-                    required: "Veuillez saisir un nom pour votre dispositif de sécurité"
+                    label: "Clé de sécurité/Biométrie",
+                    placeholder: "Entrez un nom pour la clé de sécurité/biométrique",
+                    remove: "Retirer la clé de sécurité/biométrique",
+                    required: "Veuillez entrer un nom pour votre clé de sécurité/biométrique"
                 },
-                heading: "à l'aide d'un dispositif de sécurité",
+                heading: "Clé de sécurité/Biométrie",
                 modals: {
+                    deleteConfirmation: {
+                        assertionHint: "Veuillez confirmer votre action.",
+                        content: "Cette action est irréversible et supprimera définitivement " +
+                            "la clé de sécurité/biométrique.",
+                        description: "Si vous supprimez cette clé de sécurité/biométrique, vous ne pourrez " +
+                            "peut-être plus vous connecter à votre compte. Veuillez procéder avec prudence.",
+                        heading: "Es-tu sûr?"
+                    },
                     deviceRegistrationErrorModal: {
-                        description: "L'enregistrement du dispositif a été interrompu. " +
-                            "Si ce n'était pas intentionnel, veuillez recommencer la procédure d'ajout " +
-                            "du dispositif ou réessayer avec un dispositif moins récent.",
-                        heading: "Échec de l'enregistrement du dispositif"
+                        description: "La clé de sécurité/l'enregistrement biométrique a " +
+                            "été interrompu. Si ce n'était pas intentionnel, vous pouvez réessayer le flux.",
+                        heading: "Échec de l'enregistrement de la clé de sécurité/biométrique",
+                        tryWithOlderDevice: "Vous pouvez également réessayer avec une " +
+                            "ancienne clé de sécurité/biométrique."
                     }
                 },
                 notifications: {
                     removeDevice: {
                         error: {
                             description: "{{description}}",
-                            message: "Une erreur s'est produite lors de la suppression du dispositif"
+                            message: "Une erreur s'est produite lors de la suppression " +
+                                "de la clé de sécurité/biométrique"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la suppression du dispositif",
+                            description: "Une erreur s'est produite lors de la " +
+                                "suppression de la clé de sécurité/biométrique",
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "Le dispositif a été supprimé de votre compte avec succès",
-                            message: "Dispositif retiré avec succès"
+                            description: "La clé de sécurité/biométrique a été supprimée avec succès de la liste",
+                            message: "Votre clé de sécurité/biométrique a été supprimée avec succès"
                         }
                     },
                     startFidoFlow: {
                         error: {
                             description: "{{description}}",
-                            message: "Une erreur s'est produite lors de l'accès au dispositif"
+                            message: "Une erreur s'est produite lors de la récupération " +
+                                "de la clé de sécurité/biométrique"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de l'accès au dispositif",
+                            description: "Une erreur s'est produite lors de la récupération" +
+                                " de la clé de sécurité/biométrique",
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "Le dispositif a été enregistré avec succès. Vous pouvez dès " +
-                                "à présent l'utiliser comme un facteur d'authentification",
-                            message: "Votre dispositif a été enregistré avec succès"
+                            description: "La clé de sécurité/biométrique a été enregistrée " +
+                                "avec succès et vous pouvez maintenant l'utiliser pour l'authentification.",
+                            message: "Votre clé de sécurité/biométrique enregistrée avec succès"
                         }
                     },
                     updateDeviceName: {
                         error: {
                             description: "{{description}}",
-                            message: "Une erreur s'est produite lors de la mise à jour du nom du dispositif"
+                            message: "Une erreur s'est produite lors de la mise à jour " +
+                                "de la clé de sécurité/du nom biométrique"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la mise à jour du nom du dispositif",
+                            description: "Une erreur s'est produite lors de la mise à " +
+                                "jour de la clé de sécurité/du nom biométrique",
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "Le nom de votre dispositif a été mis à jour avec succès",
-                            message: "Nom du dispositif mis à jour avec succès"
+                            description: "Le nom de votre clé de sécurité/biométrique a été mis à jour avec succès",
+                            message: "Clé de sécurité/Nom biométrique mis à jour avec succès"
                         }
                     }
                 },
-                tryButton: "Essayez avec un dispositif moins récent"
+                tryButton: "Essayez avec une ancienne clé de sécurité/biométrique"
             },
             smsOtp: {
                 descriptions: {

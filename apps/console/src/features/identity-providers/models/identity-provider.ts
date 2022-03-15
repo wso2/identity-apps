@@ -751,7 +751,8 @@ export enum AuthenticatorLabels {
     OIDC = "OIDC",
     SAML = "SAML",
     PASSWORDLESS = "Passwordless",
-    HANDLERS = "Handlers"
+    HANDLERS = "Handlers",
+    USERNAMELESS = "Usernameless"
 }
 
 /**

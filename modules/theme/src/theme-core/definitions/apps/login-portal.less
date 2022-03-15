@@ -71,8 +71,13 @@
                 }
 
                 > .ui.segment {
-                    padding: 3rem;
+                    background: @loginPortalLoginCardBackground;
+                    padding: @loginPortalLoginCardPadding;
                     border-radius: @loginPortalLoginCardBorderRadius;
+                    
+                    > .ui.header {
+                        color: @loginPortalLoginCardFontColor;
+                    }
 
                     .segment-form {
                         text-align: left;
@@ -108,6 +113,10 @@
                         .align-right {
                             text-align: right;
                         }
+
+                        .ui.checkbox label, .ui.checkbox+label {
+                            color: @loginPortalLoginCardFontColor;
+                        }
                     }
                 }
             }
@@ -120,6 +129,12 @@
                     img {
                         height: @loginPortalProductLogoHeight;
                     }
+                }
+            }
+
+            .product-logo {
+                img {
+                    max-height: @loginPortalProductLogoMaxHeight;
                 }
             }
         }
@@ -174,6 +189,40 @@
         footer {
             padding: 2rem 0;
         }
+    }
+}
+
+/*-----------------------------
+        Loader Bar
+------------------------------*/
+.loader-bar{
+    width: calc(100% + 84px);
+    height: 0.2em;
+    background-color: fade(@primaryColor, 50%);
+    margin-top: -42px;
+    margin-left: -42px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    overflow: hidden;
+}
+.loader-bar::before {
+    width: 50%;
+    height: 0.2em;
+    background-color: @primaryColor;
+    content: "";
+    display: block;
+    margin-left: -50%;
+    animation-duration: 1s;
+    animation-name: loader-bar-motion;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+@keyframes loader-bar-motion {
+    from {
+        margin-left: -50%;
+    }
+    to {
+        margin-left: 100%;
     }
 }
 

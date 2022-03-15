@@ -45,6 +45,18 @@ Use the component along with your other react components.
 />
 ```
 
+## What's Available
+
+### Hooks
+
+#### useWindowDimensions
+
+`useWindowDimensions` hook automatically updates width and height values when screen size changes.
+
+```tsx
+    const { width, height } = useWindowDimensions();
+```
+
 ## License
 
 Licenses this source under the Apache License, Version 2.0 ([LICENSE](../../LICENSE)), You may not use this file except in compliance with the License.

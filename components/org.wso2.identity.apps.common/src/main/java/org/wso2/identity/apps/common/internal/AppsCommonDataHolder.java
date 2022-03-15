@@ -84,6 +84,11 @@ public class AppsCommonDataHolder {
         return systemAppConsumerKeys;
     }
 
+    /**
+     * Set system app consumer keys.
+     *
+     * @param systemAppConsumerKeys System app consumer keys.
+     */
     public void setSystemAppConsumerKeys(Set<String> systemAppConsumerKeys) {
 
         if (systemAppConsumerKeys != null && !systemAppConsumerKeys.isEmpty()) {
@@ -96,6 +101,11 @@ public class AppsCommonDataHolder {
         return systemApplications;
     }
 
+    /**
+     * Set system applications.
+     *
+     * @param systemApplications System applications.
+     */
     public void setSystemApplications(Set<String> systemApplications) {
 
         if (systemApplications != null && !systemApplications.isEmpty()) {

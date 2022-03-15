@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, {
     ForwardRefExoticComponent,
@@ -56,7 +56,9 @@ export interface HelpPanelSubComponentsInterface {
 /**
  * Help panel interface.
  */
-export interface HelpPanelPropsInterface extends SidebarProps, TestableComponentInterface {
+export interface HelpPanelPropsInterface extends SidebarProps, IdentifiableComponentInterface,
+    TestableComponentInterface {
+
     /**
      * Set of actions for the top action bar.
      */
@@ -160,6 +162,7 @@ export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelCompo
                 visible,
                 tabsActiveIndex,
                 onSidebarMiniItemClick,
+                [ "data-componentid" ]: componentId,
                 [ "data-testid" ]: testId,
                 ...rest
             } = props;
@@ -219,6 +222,7 @@ export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelCompo
                     animation="overlay"
                     className={ classes }
                     visible={ sidebarMiniEnabled || visible }
+                    data-componentid={ componentId }
                     data-testid={ testId }
                     { ...rest }
                 >
@@ -231,6 +235,7 @@ export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelCompo
                                             <Menu.Item
                                                 as="a"
                                                 onClick={ onSidebarToggle }
+                                                data-componentid={ `${ componentId }-visibility-toggle` }
                                                 data-testid={ `${ testId }-visibility-toggle` }
                                             >
                                                 <Tooltip
@@ -245,6 +250,9 @@ export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelCompo
                                                                 icon={ CaretLeftIcon }
                                                                 size="default"
                                                                 hoverType="circular"
+                                                                data-componentid={
+                                                                    `${ componentId }-visibility-toggle-icon`
+                                                                }
                                                                 data-testid={ `${ testId }-visibility-toggle-icon` }
                                                             />
                                                         </div>
@@ -262,6 +270,9 @@ export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelCompo
                                                     as="a"
                                                     key={ index }
                                                     onClick={ () => onSidebarMiniItemClick(pane.menuItem) }
+                                                    data-componentid={
+                                                        `${ componentId }-sidebar-mini-item-${ index }`
+                                                    }
                                                     data-testid={ `${ testId }-sidebar-mini-item-${ index }` }
                                                 >
                                                     <Tooltip
@@ -278,6 +289,11 @@ export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelCompo
                                                                     transparent
                                                                     size="default"
                                                                     hoverType="circular"
+                                                                    data-componentid={
+                                                                        `${ componentId }-sidebar-mini-item-${
+                                                                            index
+                                                                        }-icon`
+                                                                    }
                                                                     data-testid={
                                                                         `${ testId }-sidebar-mini-item-${ index }-icon`
                                                                     }
@@ -301,7 +317,10 @@ export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelCompo
                                 <>
                                     {
                                         actions && actions instanceof Array && actions.length > 0 && (
-                                            <HelpPanel.ActionBar data-testid={ `${ testId }-action-bar` }>
+                                            <HelpPanel.ActionBar
+                                                data-componentid={ `${ componentId }-action-bar` }
+                                                data-testid={ `${ testId }-action-bar` }
+                                            >
                                                 {
                                                     actions.map((action, index) => (
                                                         <Tooltip
@@ -318,6 +337,11 @@ export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelCompo
                                                                         transparent
                                                                         defaultIcon
                                                                         size="default"
+                                                                        data-componentid={
+                                                                            `${ componentId }-action-bar-action-${
+                                                                                index
+                                                                            }`
+                                                                        }
                                                                         data-testid={
                                                                             `${ testId }-action-bar-action-${ index }`
                                                                         }
@@ -337,6 +361,7 @@ export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelCompo
                                         className="help-panel-tabs"
                                         panes={ tabPanes }
                                         defaultActiveIndex={ tabsActiveIndex }
+                                        data-componentid={ `${ componentId }-tabs` }
                                         data-testid={ `${ testId }-tabs` }
                                     />
                                     { children }
@@ -353,6 +378,7 @@ export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelCompo
  */
 HelpPanel.defaultProps = {
     bordered: "left",
+    "data-componentid": "help-panel",
     "data-testid": "help-panel",
     direction: "right",
     raised: false,

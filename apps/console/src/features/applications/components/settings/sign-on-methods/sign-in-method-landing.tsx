@@ -20,8 +20,10 @@ import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Code, GenericIcon, Heading, InfoCard, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Divider, Grid, Responsive, Segment } from "semantic-ui-react";
-import { FeatureConfigInterface } from "../../../../core";
+import { AppState, Config, ConfigReducerStateInterface, FeatureConfigInterface } from "../../../../core";
+import { IdentityProviderManagementConstants } from "../../../../identity-providers";
 import { getAuthenticatorIcons, getSignInMethodIllustrations } from "../../../configs";
 import { LoginFlowTypes } from "../../../models";
 
@@ -67,6 +69,8 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
 
     const { t } = useTranslation();
 
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+
     return (
         <Segment
             basic
@@ -90,7 +94,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                 size="small"
                             />
                             <Divider hidden />
-                            
+
                             <div className="default-config-description">
                                 <Heading as="h4">
                                     <Trans
@@ -205,6 +209,29 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                                 ".signOnMethod.sections.landing.flowBuilder.types.totp.description")
                                         }
                                         onClick={ () => onLoginFlowSelect(LoginFlowTypes.SECOND_FACTOR_TOTP) }
+                                    />
+                                )
+                            }
+                            {
+                                !hiddenOptions?.includes(LoginFlowTypes.PASSWORDLESS_LOGIN)
+                                && !config.ui?.hiddenAuthenticators
+                                    .includes(IdentityProviderManagementConstants.FIDO_AUTHENTICATOR) && (
+                                    <InfoCard
+                                        fluid
+                                        data-testid="usernameless-flow-card"
+                                        image={ getAuthenticatorIcons().fido }
+                                        imageSize="mini"
+                                        header={
+                                            t("console:develop.features.applications.edit.sections" +
+                                                ".signOnMethod.sections.landing.flowBuilder." +
+                                                "types.usernameless.heading")
+                                        }
+                                        description={
+                                            t("console:develop.features.applications.edit.sections" +
+                                                ".signOnMethod.sections.landing.flowBuilder." +
+                                                "types.usernameless.description")
+                                        }
+                                        onClick={ () => onLoginFlowSelect(LoginFlowTypes.PASSWORDLESS_LOGIN) }
                                     />
                                 )
                             }

@@ -1,5 +1,5 @@
 <!--
-* Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+* Copyright (c) 2022, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 * WSO2 Inc. licenses this file to you under the Apache License,
 * Version 2.0 (the "License"); you may not use this file except
@@ -16,37 +16,66 @@
 * under the License.
 -->
 
+<%= htmlWebpackPlugin.options.contentType %>
 <%= htmlWebpackPlugin.options.importUtil %>
-<%= htmlWebpackPlugin.options.importTenantPrefix %>
 <%= htmlWebpackPlugin.options.importSuperTenantConstant %>
-
-<jsp:scriptlet>
-    session.setAttribute("authCode",request.getParameter("code"));
-    session.setAttribute("sessionState", request.getParameter("session_state"));
-</jsp:scriptlet>
 
 <!DOCTYPE html>
 <html>
     <head>
-        <%= htmlWebpackPlugin.options.contentType %>
-        <meta charset="utf-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-        <meta name="referrer" content="no-referrer" />
-
-        <link href="<%= htmlWebpackPlugin.options.publicPath %>/libs/themes/default/theme.<%= htmlWebpackPlugin.options.themeHash %>.min.css" rel="stylesheet" type="text/css"/>
-        <link rel="shortcut icon" href="<%= htmlWebpackPlugin.options.publicPath %>/libs/themes/default/assets/images/branding/favicon.ico" />
-
         <script>
-            var contextPathGlobal = "<%= htmlWebpackPlugin.options.publicPath %>";
-            var serverOriginGlobal = "<%= htmlWebpackPlugin.options.serverUrl %>";
-            var superTenantGlobal = "<%= htmlWebpackPlugin.options.superTenantConstant %>";
-            var tenantPrefixGlobal = "<%= htmlWebpackPlugin.options.tenantPrefix %>";
+            // Handles myaccount tenanted signout before auth sdk get loaded
+            var applicationDomain = window.location.origin;
+            var userAccessedPath = window.location.href;
+            var isSignOutSuccess = userAccessedPath.includes("sign_out_success");
+
+            if(isSignOutSuccess) {
+                window.location.href = applicationDomain+'/'+"<%= htmlWebpackPlugin.options.basename %>"
+            }
         </script>
+        <script src="https://unpkg.com/@asgardeo/auth-spa@0.2.19/dist/asgardeo-spa.production.min.js"></script>
     </head>
     <body>
-        <noscript>
-            You need to enable JavaScript to run this app.
-        </noscript>
-        <div id="root"></div>
+        <script>
+            var serverOrigin = "<%= htmlWebpackPlugin.options.serverUrl %>";
+            var authorizationCode = "<%= htmlWebpackPlugin.options.authorizationCode %>" != "null" 
+                                        ? "<%= htmlWebpackPlugin.options.authorizationCode %>" 
+                                        : null;
+            var authSessionState = "<%= htmlWebpackPlugin.options.sessionState %>" != "null" 
+                                        ? "<%= htmlWebpackPlugin.options.sessionState %>" 
+                                        : null;
+
+            function getApiPath(path) {
+                if(path) {
+                    return serverOrigin + path;
+                }
+
+                return serverOrigin;
+            }
+
+            var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
+
+            var authConfig = {
+                signInRedirectURL: applicationDomain.replace(/\/+$/, '') + "/" + "<%= htmlWebpackPlugin.options.basename %>",
+                signOutRedirectURL: applicationDomain.replace(/\/+$/, ''),
+                clientID: "<%= htmlWebpackPlugin.options.clientID %>",
+                serverOrigin: getApiPath(),
+                responseMode: "form_post",
+                scope: ["openid SYSTEM"],
+                storage: "webWorker",
+                enablePKCE: true,
+                overrideWellEndpointConfig: true
+            }
+            
+            if(authorizationCode) {
+                sessionStorage.setItem("auth_callback_url_console", userAccessedPath.split(window.origin)[1]);
+                sessionStorage.setItem("userAccessedPath", userAccessedPath.split(window.origin)[1]);
+                window.location.href = applicationDomain + '/' + "<%= htmlWebpackPlugin.options.basename %>" + '/authenticate?code=' + authorizationCode+
+                                '&session_state='+authSessionState;
+            } else {
+                auth.initialize(authConfig);
+                auth.signIn();
+            }
+        </script>
     </body>
 </html>

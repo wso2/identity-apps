@@ -19,7 +19,7 @@
     <parent>
         <groupId>org.wso2.identity.apps</groupId>
         <artifactId>identity-apps</artifactId>
-        <version>1.2.726-SNAPSHOT</version>
+        <version>1.2.831-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -237,6 +237,11 @@
         <dependency>
             <groupId>org.wso2.carbon.extension.identity.authenticator.outbound.totp</groupId>
             <artifactId>org.wso2.carbon.extension.identity.authenticator.totp.connector</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.identity.governance</groupId>
+            <artifactId>org.wso2.carbon.identity.captcha</artifactId>
             <scope>provided</scope>
         </dependency>
     </dependencies>

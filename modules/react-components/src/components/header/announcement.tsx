@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, ReactNode } from "react";
 import {
@@ -31,7 +31,7 @@ import { GenericIcon } from "../icon";
  * Announcement component prop types.
  */
 export interface AnnouncementPropsInterface extends StrictAnnouncementPropsInterface, Omit<MessageProps, "color">,
-    TestableComponentInterface {
+    IdentifiableComponentInterface, TestableComponentInterface {
 
     [ key: string ]: any;
 }
@@ -77,6 +77,7 @@ export const Announcement: FunctionComponent<AnnouncementPropsInterface> = (
         onDismiss,
         showCloseIcon,
         visible,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -92,7 +93,12 @@ export const Announcement: FunctionComponent<AnnouncementPropsInterface> = (
     return (
         visible
             ? (
-                <Message className={ classes } data-testid={ testId } { ...rest }>
+                <Message
+                    className={ classes }
+                    data-testid={ testId }
+                    data-componentid={ componentId }
+                    { ...rest }
+                >
                     <Container fluid={ fluid }>
                         <p>
                             { message }
@@ -123,6 +129,7 @@ export const Announcement: FunctionComponent<AnnouncementPropsInterface> = (
  */
 Announcement.defaultProps = {
     color: "primary",
+    "data-componentid": "announcement",
     "data-testid": "announcement",
     fluid: false,
     showCloseIcon: true,

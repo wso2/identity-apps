@@ -162,6 +162,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
+    const [ openIDConnectClaims ] = useState<ExtendedExternalClaimInterface[]>(externalClaims);
+
     useEffect(() => {
         const tempFilterSelectedExternalClaims = [ ...filterSelectedExternalClaims ];
 
@@ -435,6 +437,30 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                         initialAvailableClaims.push(claim);
                     }
                 });
+            const tempFilterSelectedExternalClaims = [ ...filterSelectedExternalClaims ];
+
+            claimConfigurations?.claimMappings?.map((claimMapping) => {
+                claims?.map((claim) => {
+                    if (claimMapping.localClaim.uri === claim.claimURI){
+                        const option: ExtendedExternalClaimInterface = {
+                            claimDialectURI: claim.dialectURI,
+                            claimURI: claim.claimURI,
+                            id: claim.id,
+                            localClaimDisplayName: claim.displayName,
+                            mandatory: claim.mandatory,
+                            mappedLocalClaimURI: claimMapping.localClaim.uri,
+                            requested: claim.requested
+                        };
+
+                        if (!initialSelectedClaims.find(
+                            (selectedExternalClaim) => selectedExternalClaim?.mappedLocalClaimURI 
+                            === claimMapping.localClaim.uri)){
+                            initialSelectedClaims.push(option);
+                        }                          
+                    }
+                });
+            });
+            setFilterSelectedExternalClaims(tempFilterSelectedExternalClaims);
             setSelectedExternalClaims(initialSelectedClaims);
             setExternalClaims(initialAvailableClaims);
             setAvailableExternalClaims(initialAvailableClaims);
@@ -622,6 +648,23 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         );
+    };
+
+    /**
+     * Check if the claim has OIDC mapping
+     * @return {boolean}
+     */
+     const checkMapping = (claiminput): boolean => {
+        let isMapping = false;
+
+        openIDConnectClaims?.map((claim) => {
+            if (claim.mappedLocalClaimURI === claiminput.mappedLocalClaimURI || 
+                claiminput.mappedLocalClaimURI  === defaultSubjectAttribute){
+                isMapping = true;
+            }
+        });
+
+        return isMapping;   
     };
 
     /**
@@ -970,7 +1013,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                 readOnly={
                                                                                     (selectedSubjectValue
                                                                                     === claim.mappedLocalClaimURI &&
-                                                                                    !onlyOIDCConfigured)
+                                                                                    !onlyOIDCConfigured
+                                                                                    || !checkMapping(claim))
                                                                                         ? true
                                                                                         : readOnly
                                                                                 }
@@ -984,6 +1028,11 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                 subject={ selectedSubjectValue
                                                                                 === claim.mappedLocalClaimURI &&
                                                                                 !onlyOIDCConfigured }
+                                                                                isOIDCMapping={
+                                                                                    checkMapping(claim)
+                                                                                        ? false
+                                                                                        : true
+                                                                                }
                                                                             />
                                                                         );
                                                                     })

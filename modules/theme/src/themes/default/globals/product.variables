@@ -224,3 +224,11 @@
 
 @preLoaderWrapperBackgroundColor: @white;
 @preLoaderWrapperBackgroundImage: none;
+
+/*-------------------------------
+        Image Preview
+--------------------------------*/
+
+@imagePreviewBorder: 2px dashed @defaultBorderColor;
+@imagePreviewHeight: 120px;
+@imagePreviewBorderRadius: @defaultBorderRadius;

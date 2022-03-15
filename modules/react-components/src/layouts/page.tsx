@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { Divider } from "semantic-ui-react";
@@ -25,7 +25,9 @@ import { PageHeader, PageHeaderPropsInterface } from "../components";
 /**
  * Page layout component Prop types.
  */
-export interface PageLayoutPropsInterface extends PageHeaderPropsInterface, TestableComponentInterface {
+export interface PageLayoutPropsInterface extends PageHeaderPropsInterface, TestableComponentInterface,
+    IdentifiableComponentInterface {
+
     /**
      * Flag to enable/disable content top margin.
      */
@@ -64,6 +66,7 @@ export const PageLayout: FunctionComponent<PropsWithChildren<PageLayoutPropsInte
         children,
         contentTopMargin,
         className,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         padded,
         ...rest
@@ -83,11 +86,12 @@ export const PageLayout: FunctionComponent<PropsWithChildren<PageLayoutPropsInte
     );
 
     return (
-        <div className={ layoutClasses } data-tesid={ testId }>
+        <div className={ layoutClasses } data-testid={ testId } data-componentid={ componentId }>
             <div className={ layoutContentClasses }>
                 <PageHeader
                     action={ action }
                     data-testid={ `${ testId }-page-header` }
+                    data-componentid={ `${ componentId }-page-header` }
                     { ...rest }
                 />
                 { contentTopMargin && <Divider hidden/> }
@@ -102,6 +106,7 @@ export const PageLayout: FunctionComponent<PropsWithChildren<PageLayoutPropsInte
  */
 PageLayout.defaultProps = {
     contentTopMargin: true,
+    "data-componentid": "page-layout",
     "data-testid": "page-layout",
     padded: true,
     titleTextAlign: "left"

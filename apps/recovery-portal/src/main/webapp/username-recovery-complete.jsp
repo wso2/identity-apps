@@ -16,7 +16,7 @@
   ~ under the License.
   --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.CallBackValidator" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.IdentityRecoveryException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
@@ -28,18 +28,25 @@
 <%
     String callback = (String) request.getAttribute("callback");
     String tenantDomain = (String) request.getAttribute("tenantDomain");
+    String username = request.getParameter("username");
     CallBackValidator callBackValidator = new CallBackValidator();
     try {
         if (!callBackValidator.isValidCallbackURL(callback, tenantDomain)) {
             request.setAttribute("error", true);
             request.setAttribute("errorMsg", "Configured callback URL does not match with the provided callback " +
                     "URL in the request.");
+            if (!StringUtils.isBlank(username)) {
+                request.setAttribute("username", username);
+            }
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
     } catch (IdentityRecoveryException e) {
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", "Callback URL validation failed. " + e);
+        if (!StringUtils.isBlank(username)) {
+            request.setAttribute("username", username);
+        }
         request.getRequestDispatcher("error.jsp").forward(request, response);
         return;
     }
@@ -103,6 +110,9 @@
                     } catch (URISyntaxException e) {
                         request.setAttribute("error", true);
                         request.setAttribute("errorMsg", "Invalid callback URL found in the request.");
+                        if (!StringUtils.isBlank(username)) {
+                            request.setAttribute("username", username);
+                        }
                         request.getRequestDispatcher("error.jsp").forward(request, response);
                         return;
                     }

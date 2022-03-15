@@ -16,7 +16,7 @@
 * under the License.
 */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, useState } from "react";
@@ -25,7 +25,7 @@ import { Button, Icon, Input, Popup } from "semantic-ui-react";
 /**
  * Copy to clipboard input field props.
  */
-export interface CopyInputFieldPropsInterface extends TestableComponentInterface {
+export interface CopyInputFieldPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Input value.
      */
@@ -70,6 +70,7 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
         secret,
         showSecretLabel,
         label,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -171,6 +172,7 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
                     />
                 )
             }
+            data-componentid={ `${ componentId }-wrapper` }
             data-testid={ `${ testId }-wrapper` }
         />
     );
@@ -180,6 +182,7 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
  * Default proptypes for the copy input component.
  */
 CopyInputField.defaultProps = {
+    "data-componentid": "copy-input",
     "data-testid": "copy-input",
     hideSecretLabel: "Show",
     secret: false,

@@ -17,7 +17,13 @@
  *
  */
 
-import { IdentityProviderManagementConstants } from "../../identity-providers";
+import flatten from "lodash-es/flatten";
+import {
+    AuthenticatorCategories,
+    GenericAuthenticatorInterface,
+    IdentityProviderManagementConstants,
+    ProvisioningInterface
+} from "../../identity-providers";
 import { ApplicationManagementConstants } from "../constants";
 import { AuthenticationStepInterface } from "../models";
 
@@ -30,7 +36,7 @@ export class SignInMethodUtils {
      * Private constructor to avoid object instantiation from outside
      * the class.
      *
-     * @hideconstructor
+     * @hideConstructor
      */
     private constructor() { }
 
@@ -54,7 +60,11 @@ export class SignInMethodUtils {
             ? steps.slice(stepIndex + 1)
             : [];
 
-        return [ leftSideSteps, rightSideSteps ];
+        const nextStep: AuthenticationStepInterface[] = ((stepIndex + 1) in steps)
+            ? steps.slice(stepIndex + 1, stepIndex + 2)
+            : [];
+
+        return [ leftSideSteps, rightSideSteps, nextStep ];
     };
 
     /**
@@ -119,6 +129,36 @@ export class SignInMethodUtils {
     };
 
     /**
+      * Checks if immediate step is having at least one of the passed factors.
+      *
+      * @param {string[]} factors - Set of factors to check.
+      * @param {[]} steps - Authentication steps.
+      *
+      * @return {boolean}
+      */
+      public static checkImmediateStepHavingSpecificFactors = (factors: string[],
+          steps: AuthenticationStepInterface[]): boolean => {
+
+          let isFound: boolean = false;
+
+          for (const [ , step ] of steps.entries()) {
+              for (const option of step.options) {
+                  if (factors.includes(option.authenticator)) {
+                      isFound = true;
+
+                      break;
+                  }
+              }
+
+              if (isFound) {
+                  break;
+              }
+          }
+
+          return isFound;
+      };
+
+    /**
      * Counts the occurrence of a specific factors in the passed in steps.
      *
      * @param {string[]} factors - Set of factors to check.
@@ -168,4 +208,124 @@ export class SignInMethodUtils {
         return this.hasSpecificFactorsInSteps(ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
             leftSideSteps);
     }
+
+    public static isConnectionsJITUPConflictWithMFA(
+        args: ConnectionsJITUPConflictWithMFAArgs
+    ): ConnectionsJITUPConflictWithMFAReturnValue {
+
+        const { federatedAuthenticators, steps, subjectStepId } = args;
+
+        /**
+         * We are solving two problems:
+         *
+         * 1) Find out the subject step all federated IdPs:
+         *    We have an array of {@code federatedAuthenticators} and
+         *    the configured steps. We are only focused on federated
+         *    authentications configured on subject identifier step and
+         *    pick only the ones that have JIT disabled.
+         *
+         * 2) Walk forward and check other steps (step 2 and beyond) for MFA:
+         *    The reason to do this check is that, MFA(s) are the
+         *    authenticators that are affected by JIT disabled state.
+         */
+
+        try {
+
+            /** Start solving the 1st problem **/
+
+            const allOptions = flatten(
+                steps
+                    .filter(({ id }) => id === subjectStepId)
+                    .map(({ options }) => options)
+            );
+
+            /**
+             * Checks whether all auth steps has at least 1 or more
+             * proxied (JIT disabled) handlers. If yes then there
+             * can be a conflict.
+             */
+            const jitDisabledIdPsInSubjectIdStep =
+                // Extract all the IdP names.
+                [ ...(new Set(allOptions.map(({ idp }) => idp))) ]
+                    // Find the authenticator model.
+                    .map((idpName) => federatedAuthenticators.find(({ name }) => name === idpName))
+                    // Remove all the {@code undefined|null} ones please.
+                    .filter(Boolean)
+                    // Find all the JIT disabled ones in the subject identifier step.
+                    .filter((auth: GenericAuthenticatorWithProvisioningConfigs) => (
+                        !auth?.provisioning?.jit?.isEnabled
+                    )) as GenericAuthenticatorWithProvisioningConfigs[];
+
+            /** Start solving the 2nd problem **/
+
+            /**
+             * This means that we have only one step, and implies =>
+             * no MFA is being configured. This is because the interface only
+             * allows MFA to be added to step 2 or beyond.
+             */
+            if (steps.length < 2) {
+                return {
+                    conflicting: false,
+                    idpList: []
+                };
+            }
+
+            const allOtherOptions = flatten(
+                steps
+                    .slice(1) // Remove the first element (subject identifier step)
+                    .map(({ options }) => options) // Get all the options.
+            );
+
+            const LOCAL_MFA_OPTIONS = new Set(
+                ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS
+            );
+
+            /**
+             * If this list contains one or more items it means
+             * somewhere in the sequence we have MFA configured.
+             */
+            const configuredForwardMFA = allOtherOptions.filter(
+                (op) => LOCAL_MFA_OPTIONS.has(op.authenticator)
+            );
+
+            /** Finally compose the outcome **/
+
+            return {
+                conflicting: jitDisabledIdPsInSubjectIdStep.length > 0
+                    && configuredForwardMFA.length > 0,
+                idpList: jitDisabledIdPsInSubjectIdStep ?? []
+            };
+
+        } catch (e) {
+            return {
+                conflicting: false,
+                idpList: []
+            };
+        }
+
+    }
+
 }
+
+export type ConnectionsJITUPConflictWithMFAArgs = {
+    /**
+     * This parameter should only pass in the configured federated
+     * authenticators under a tenant.
+     */
+    federatedAuthenticators: GenericAuthenticatorInterface[];
+    /**
+     * All the steps in the authentication sequence. Callee must pass
+     * all the authentication options without skipping any.
+     */
+    steps: AuthenticationStepInterface[];
+    subjectStepId: number;
+};
+
+export type GenericAuthenticatorWithProvisioningConfigs = GenericAuthenticatorInterface & {
+    provisioning: ProvisioningInterface
+};
+
+export type ConnectionsJITUPConflictWithMFAReturnValue = {
+    conflicting: boolean;
+    idpList: GenericAuthenticatorWithProvisioningConfigs[];
+};

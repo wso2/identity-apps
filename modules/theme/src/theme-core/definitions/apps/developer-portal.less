@@ -228,7 +228,7 @@
                 }
 
                 &.add {
-                    margin-left: 1px;
+                    margin-left: -1.9px;
 
                     svg.icon {
                         width: 28px;
@@ -238,7 +238,7 @@
                         background-color: @signOnMethodsAuthStepBorderColor;
                         content: "";
                         display: block;
-                        left: 15px;
+                        left: 18px;
                         position: relative;
                         top: 23px;
                         height: 18px;
@@ -518,6 +518,12 @@
                 &:not(.hamburger) {
                     padding-left: 2px;
                     padding-right: 2px;
+                }
+            }
+
+            .selected-secret {
+                .theme-icon {
+                    background: @subtleTransparentBlack;
                 }
             }
         }
@@ -956,7 +962,7 @@
         }
 
         .transfer-list-segment {
-            max-height: 150px !important;
+            max-height: 14.6rem !important;
             overflow: auto;
 
             thead tr:first-child {

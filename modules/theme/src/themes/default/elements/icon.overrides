@@ -61,4 +61,8 @@ i.icon {
     &.padded-icon{
         padding-top: 0.7em;
     }
+    
+    &.primary {
+        color: @primaryColor;
+    }
 }

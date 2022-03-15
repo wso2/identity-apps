@@ -21,6 +21,13 @@
 
 module.exports = {
     extends: [
-        "../../.eslintrc.js"
+        "../../.eslintrc.js",
+        "plugin:testing-library/dom",
+        "plugin:testing-library/react",
+        "plugin:jest-dom/recommended"
+    ],
+    plugins: [
+        "jest-dom",
+        "testing-library"
     ]
 };

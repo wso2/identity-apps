@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { PropsWithChildren, ReactElement } from "react";
 
 /**
  * Code component prop types.
  */
-export interface CodePropsInterface extends TestableComponentInterface {
+export interface CodePropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Extra CSS classes.
      */
@@ -64,6 +64,7 @@ export const Code: React.FunctionComponent<PropsWithChildren<CodePropsInterface>
         compact,
         fontColor,
         fontSize,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -79,7 +80,14 @@ export const Code: React.FunctionComponent<PropsWithChildren<CodePropsInterface>
     );
 
     return (
-        <code className={ classes } data-testid={ testId } { ...rest }>{ children }</code>
+        <code
+            className={ classes }
+            data-componentid={ componentId }
+            data-testid={ testId }
+            { ...rest }
+        >
+            { children }
+        </code>
     );
 };
 
@@ -87,6 +95,7 @@ export const Code: React.FunctionComponent<PropsWithChildren<CodePropsInterface>
  * Default props for the Code component.
  */
 Code.defaultProps = {
+    "data-componentid": "code",
     "data-testid": "code",
     withBackground: true
 };

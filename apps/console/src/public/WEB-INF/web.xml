@@ -41,6 +41,11 @@
         <servlet-name>auth</servlet-name>
         <jsp-file>/auth.jsp</jsp-file>
     </servlet>
+
+    <servlet>
+        <servlet-name>home</servlet-name>
+        <jsp-file>/home.jsp</jsp-file>
+    </servlet>
     
     <servlet-mapping>
         <servlet-name>default</servlet-name>
@@ -65,6 +70,11 @@
     <servlet-mapping>
         <servlet-name>auth</servlet-name>
         <url-pattern>/auth</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>home</servlet-name>
+        <url-pattern>/authenticate</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

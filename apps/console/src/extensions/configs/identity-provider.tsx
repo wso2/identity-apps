@@ -17,7 +17,7 @@
  */
 
 import { IdentityProviderConfig } from "./models";
-import { IdentityProviderManagementConstants } from "../../features/identity-providers";
+import { AuthenticatorLabels, IdentityProviderManagementConstants } from "../../features/identity-providers";
 
 export const identityProviderConfig: IdentityProviderConfig = {
     authenticatorResponseExtension: [],
@@ -27,6 +27,18 @@ export const identityProviderConfig: IdentityProviderConfig = {
         showAdvancedSettings: true,
         showJitProvisioning: true,
         showOutboundProvisioning: true
+    },
+    jitProvisioningSettings: {
+        menuItemName: "Just-in-Time Provisioning",
+        enableJitProvisioningField: {
+            show: true
+        },
+        userstoreDomainField: {
+            show: true,
+        },
+        provisioningSchemeField: {
+            show: true
+        }
     },
     generalDetailsForm: {
         showCertificate: true
@@ -41,6 +53,14 @@ export const identityProviderConfig: IdentityProviderConfig = {
         google: true,
         oidc: true,
         saml: true
+    },
+    fidoTags: [
+        AuthenticatorLabels.SECOND_FACTOR,
+        AuthenticatorLabels.PASSWORDLESS,
+        AuthenticatorLabels.MULTI_FACTOR
+    ],
+    filterFidoTags:(tags: string[]): string[] => {
+        return tags;
     },
     // Handles backward compatibility with the legacy IDP view & new connections view.
     // TODO: Remove this usage once https://github.com/wso2/product-is/issues/12052 is addressed.

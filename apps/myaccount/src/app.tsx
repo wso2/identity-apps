@@ -30,7 +30,7 @@ import {
 import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement, Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { Trans, useTranslation } from "react-i18next";
+import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { PreLoader, ProtectedRoute } from "./components";
@@ -57,14 +57,13 @@ export const App = (): ReactElement => {
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
     const uuid: string = useSelector((state: AppState) => state.authenticationInformation.profileInfo.id);
+    const theme: string = useSelector((state: AppState) => state?.config?.ui?.theme?.name);
 
     const [ appRoutes, setAppRoutes ] = useState<RouteInterface[]>(getAppRoutes());
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const { trySignInSilently } = useAuthContext();
-
-    const { t } = useTranslation();
+    const { signOut, trySignInSilently } = useAuthContext();
 
     /**
      * Set the deployment configs in redux state.
@@ -117,6 +116,7 @@ export const App = (): ReactElement => {
                     ...tenantAppSettings,
                     [ userName ]: emptyIdentityAppsSettings()
                 };
+
                 LocalStorageUtils.setValueInLocalStorage(tenant, JSON.stringify(newUserSettings));
             }
         }
@@ -155,6 +155,7 @@ export const App = (): ReactElement => {
     const sessionStorageDisabled = () => {
         try {
             const storage = sessionStorage;
+
             if (!storage && location.pathname !== AppConstants.getPaths().get("STORING_DATA_DISABLED")) {
                 history.push(AppConstants.getPaths().get("STORING_DATA_DISABLED"));
             }
@@ -255,60 +256,76 @@ export const App = (): ReactElement => {
                                         <>
                                             <Helmet>
                                                 <title>{ appTitle }</title>
+                                                {
+                                                    (window?.themeHash && window?.publicPath && theme)
+                                                        ? (
+                                                            <link
+                                                                href={
+                                                                    `${window?.origin}${window?.publicPath}/libs/themes/${theme}/theme.${window?.themeHash}.min.css`
+                                                                }
+                                                                rel="stylesheet"
+                                                                type="text/css"
+                                                            />
+                                                        ) 
+                                                        : null
+                                                }
                                             </Helmet>
                                             <NetworkErrorModal
                                                 heading={
-                                                    <Trans
+                                                    (<Trans
                                                         i18nKey={ "common:networkErrorMessage.heading" }
                                                     >
-                                                        Something went wrong
-                                                    </Trans>
+                                                        Your session has expired
+                                                    </Trans>)
                                                 }
                                                 description={
-                                                    <Trans
+                                                    (<Trans
                                                         i18nKey={ "common:networkErrorMessage.description" }
                                                     >
-                                                        Please try reloading the app.
-                                                    </Trans>
+                                                        Please try signing in again.
+                                                    </Trans>)
                                                 }
                                                 primaryActionText={
-                                                    <Trans
+                                                    (<Trans
                                                         i18nKey={
                                                             "common:networkErrorMessage.primaryActionText"
                                                         }
                                                     >
-                                                        Reload the App
-                                                    </Trans>
+                                                        Sign In
+                                                    </Trans>)
+                                                }
+                                                primaryAction={
+                                                    signOut
                                                 }
                                             />
                                             <ChunkErrorModal
                                                 heading={
-                                                    <Trans
+                                                    (<Trans
                                                         i18nKey={
                                                             "common:chunkLoadErrorMessage.heading"
                                                         }
                                                     >
                                                         Something went wrong
-                                                    </Trans>
+                                                    </Trans>)
                                                 }
                                                 description={
-                                                    <Trans
+                                                    (<Trans
                                                         i18nKey={
                                                             "common:chunkLoadErrorMessage.description"
                                                         }
                                                     >
                                                         An error occurred when serving the requested
                                                         application. Please try reloading the app.
-                                                    </Trans>
+                                                    </Trans>)
                                                 }
                                                 primaryActionText={
-                                                    <Trans
+                                                    (<Trans
                                                         i18nKey={
                                                             "common:chunkLoadErrorMessage.primaryActionText"
                                                         }
                                                     >
                                                         Reload the App
-                                                    </Trans>
+                                                    </Trans>)
                                                 }
                                             />
                                             <Switch>
@@ -319,10 +336,10 @@ export const App = (): ReactElement => {
                                                             .map((route, index) => {
                                                                 return (
                                                                     route.redirectTo
-                                                                        ? <Redirect
+                                                                        ? (<Redirect
                                                                             to={ route.redirectTo }
                                                                             path={ route.path }
-                                                                        />
+                                                                        />)
                                                                         : route.protected ?
                                                                             (
                                                                                 <ProtectedRoute

@@ -50,6 +50,10 @@ const httpClient = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance())
     .bind(AsgardeoSPAClient.getInstance());
 
+const httpClientAll = AsgardeoSPAClient.getInstance()
+    .httpRequestAll.bind(AsgardeoSPAClient.getInstance())
+    .bind(AsgardeoSPAClient.getInstance());
+
 /**
  * Gets the basic information about the application.
  *
@@ -179,6 +183,43 @@ export const getApplicationList = (limit: number, offset: number,
         }).catch((error) => {
             return Promise.reject(error);
         });
+};
+
+export const getApplicationsByIds = async (
+    ids: Set<string>
+): Promise<AxiosResponse<ApplicationInterface>[]> => {
+
+    const requests = [];
+
+    for (const id of ids) {
+        requests.push({
+            headers: {
+                "Accept": "application/json",
+                "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+                "Content-Type": "application/json"
+            },
+            method: HttpMethods.GET,
+            url: store.getState().config.endpoints.applications + "/" + id
+        });
+    }
+
+    try {
+        const responses = await httpClientAll(requests);
+
+        return Promise.resolve<AxiosResponse<ApplicationInterface>[]>(responses);
+    } catch (error: AxiosError | any) {
+        return Promise.reject(
+            new IdentityAppsApiException(
+                ApplicationManagementConstants.UNABLE_FETCH_APPLICATIONS,
+                error?.stack,
+                error?.code,
+                error?.request,
+                error?.response,
+                error?.config
+            )
+        );
+    }
+
 };
 
 /**

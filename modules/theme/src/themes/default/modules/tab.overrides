@@ -23,10 +23,10 @@
 
 .tabs {
     &.resource-tabs {
-        .ui.secondary.pointing.menu {
+        > .ui.menu {
             .item {
                 &.active {
-                    border-color: @primaryColor;
+                    border-bottom-color: @primaryColor;
                     color: @primaryColor
                 }
 
@@ -52,16 +52,36 @@
                     }
                 }
             }
+            
+            &:not(.secondary) {
+                background: transparent;
+                
+                .item {
+                    background-color: transparent;
+                    border-bottom-width: 2px;
+                    border-bottom-style: solid;
+                    border-bottom-color: transparent;
+                    
+                    &.active {
+                        border-bottom-color: @primaryColor;
+                    }
+                    
+                    &:before {
+                        background: transparent;
+                    }
+                }
+            }
         }
-
-        .ui.tab {
-            border: none;
-            box-shadow: none;
+        
+        &:not(.attached){
+            .resource-tab-pane {
+                border: none;
+                box-shadow: none;
+                margin-top: @resourceTabsPaneMarginTop;
+            }
         }
         
         .resource-tab-pane {
-            margin-top: @resourceTabsPaneMarginTop;
-
             &.controlled-segments {
                 background: @resourceTabsControlledSegmentsPaneBackground;
                 padding: @resourceTabsControlledSegmentsPanePadding;

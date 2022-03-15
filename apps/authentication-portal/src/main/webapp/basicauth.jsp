@@ -111,10 +111,12 @@
     });
 
     function showResendReCaptcha() {
-        <% if (reCaptchaResendEnabled) { %>
-            window.location.href="resend-confirmation-captcha.jsp?<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>";
-        <% } else { %>
-            window.location.href="login.do?resend_username=<%=Encode.forHtml(request.getParameter("failedUsername"))%>&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>";
+        <% if (StringUtils.isNotBlank(request.getParameter("failedUsername"))){ %>
+            <% if (reCaptchaResendEnabled) { %>
+                window.location.href="resend-confirmation-captcha.jsp?<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>";
+            <% } else { %>
+                window.location.href="login.do?resend_username=<%=Encode.forHtml(URLEncoder.encode(request.getParameter("failedUsername"), UTF_8))%>&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>";
+            <% } %>
         <% } %>
     }
 </script>
@@ -328,7 +330,7 @@
     %>
         <div class="field">
             <div class="g-recaptcha"
-                data-sitekey="<%=Encode.forHtmlContent(request.getParameter("reCaptchaKey"))%>"
+                data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
                 data-testid="login-page-g-recaptcha"
             >
             </div>
@@ -563,4 +565,5 @@
 <form action="<%=loginFormActionURL%>" method="post" id="restartFlowForm">
     <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
     <input type="hidden" name="restart_flow" value='true'/>
+    <input id="tocommonauth" name="tocommonauth" type="hidden" value="true">
 </form>

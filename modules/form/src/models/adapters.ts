@@ -16,13 +16,25 @@
  * under the License.
  */
 
-import { CheckboxProps } from "semantic-ui-react";
+import { ColorPickerPropsInterface } from "@wso2is/react-components";
+import { CheckboxProps, InputProps } from "semantic-ui-react";
 import { CheckboxField } from "./form";
 
 /**
  * Checkbox adapter props interface.
  */
 export interface CheckboxAdapterPropsInterface extends CheckboxProps {
+
+    /**
+     * Props for the child.
+     */
+    childFieldProps: CheckboxField;
+}
+
+/**
+ * Color Picker Adapter props interface.
+ */
+export interface ColorPickerAdapterPropsInterface extends ColorPickerPropsInterface, Omit<InputProps, "onChange"> {
 
     /**
      * Props for the child.

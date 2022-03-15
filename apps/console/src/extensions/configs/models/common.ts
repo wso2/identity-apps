@@ -18,6 +18,7 @@
 
 import { HeaderExtension, HeaderLinkCategoryInterface } from "@wso2is/react-components";
 import { HeaderSubPanelItemInterface } from "../../../features/core/components";
+import { FeatureConfigInterface } from "../../../features/core/models";
 
 export interface CommonConfig {
     advancedSearchWithBasicFilters: {
@@ -25,6 +26,7 @@ export interface CommonConfig {
     };
     blockLoopBackCalls: boolean;
     checkForUIResourceScopes: boolean;
+    enableOrganizationAssociations: boolean;
     header: {
         /**
          * Get the extensions for the header.
@@ -60,6 +62,12 @@ export interface CommonConfig {
         isGuestUser: boolean;
         showEmail: boolean;
     };
+    hotjarTracking : {
+        /*
+         * Tag hotjar attributes. 
+        */
+        tagAttributes : () => void;
+    }
 }
 
 /**
@@ -69,3 +77,8 @@ export interface CommonConfig {
  * @enum {string}
  */
 export enum AppViewExtensionTypes { }
+
+/**
+ * Interface for the extended feature configs.
+ */
+export type ExtendedFeatureConfigInterface = FeatureConfigInterface;

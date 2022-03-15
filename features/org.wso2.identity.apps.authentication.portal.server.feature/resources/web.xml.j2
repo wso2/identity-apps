@@ -78,12 +78,12 @@
     </context-param>
     {% endif %}
 
-    <!-- *************** Configuration to switch between self registration & early access ********************** -->
-    {% if authenticationendpoint.switch_to_self_registration is defined %}
-    <context-param>
-        <param-name>SwitchToSelfRegistrationEndpoint</param-name>
-        <param-value>{{ authenticationendpoint.switch_to_self_registration }}</param-value>
-    </context-param>
+    <!-- *************** My Account URL ********************** -->
+    {% if authenticationendpoint.my_account_url is defined %}
+        <context-param>
+            <param-name>MyAccountURL</param-name>
+            <param-value>{{ authenticationendpoint.my_account_url }}</param-value>
+        </context-param>
     {% endif %}
 
     <!-- *************** End of Account Recovery Endpoint Context URL Configuration ********************** -->
@@ -179,7 +179,7 @@
         </filter-class>
         <init-param>
            <param-name>patterns</param-name>
-           <param-value>"text/html" ,"application/json" ,"plain/text"</param-value>
+           <param-value>"text/html.*" ,"application/json" ,"plain/text"</param-value>
         </init-param>
         <init-param>
            <param-name>filterAction</param-name>
@@ -195,7 +195,9 @@
 
     <filter-mapping>
         <filter-name>ContentTypeBasedCachePreventionFilter</filter-name>
-        <url-pattern>*</url-pattern>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
 
     <listener>

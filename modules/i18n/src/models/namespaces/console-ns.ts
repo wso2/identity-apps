@@ -492,6 +492,8 @@ export interface ConsoleNS {
                                             removeRequested: string;
                                             subjectDisabledSelection: string;
                                         };
+                                        faultyAttributeMapping: string;
+                                        faultyAttributeMappingHint: string;
                                         fields: {
                                             claim: FormAttributes;
                                         };
@@ -622,8 +624,9 @@ export interface ConsoleNS {
                                                     subjectIdentifierFrom: FormAttributes;
                                                 };
                                             };
-                                            secondFactorDisabledInFirstStep: string;
                                             secondFactorDisabled: string;
+                                            secondFactorDisabledDueToProxyMode: string;
+                                            secondFactorDisabledInFirstStep: string;
                                             authenticatorDisabled: string;
                                         };
                                     };
@@ -667,6 +670,11 @@ export interface ConsoleNS {
                                             totp: {
                                                 description: string;
                                                 heading: string;
+                                            },
+                                            usernameless: {
+                                                description: string;
+                                                heading: string;
+                                                info: string;
                                             }
                                         }
                                     }
@@ -998,6 +1006,7 @@ export interface ConsoleNS {
                     updateProtocol: Notification;
                     fetchOIDCServiceEndpoints: Notification;
                     secondFactorAuthenticatorToFirstStep: Notification;
+                    firstFactorAuthenticatorToSecondStep: Notification;
                     conditionalScriptLoopingError: NotificationItem;
                     deleteCertificateSuccess: NotificationItem;
                     deleteCertificateGenericError: NotificationItem;
@@ -3630,11 +3639,13 @@ export interface ConsoleNS {
                 };
                 profile: {
                     fields: {
+                        createdDate: string;
                         generic: {
                             default: string;
                         };
                         userId: string;
                         emails: string;
+                        modifiedDate: string;
                         profileUrl: string;
                         name_familyName: string;
                         name_givenName: string;

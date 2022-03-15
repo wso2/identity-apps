@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { useAuthContext } from "@asgardeo/auth-react";
+import { DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { AccessControlProvider } from "@wso2is/access-control";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
 import { RouteInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
@@ -38,12 +38,14 @@ import {
     SessionManagementProvider,
     SessionTimeoutModalTypes
 } from "@wso2is/react-components";
+import has from "lodash-es/has";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Trans } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
+import { commonConfig } from "./extensions";
 import { EventPublisher, PreLoader } from "./features/core";
 import { ProtectedRoute } from "./features/core/components";
 import { Config, DocumentationLinks, getBaseRoutes } from "./features/core/configs";
@@ -73,12 +75,13 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
     const uuid: string = useSelector((state: AppState) => state.profile.profileInfo.id);
+    const theme: string = useSelector((state: AppState) => state?.config?.ui?.theme?.name);
 
     const [ baseRoutes, setBaseRoutes ] = useState<RouteInterface[]>(getBaseRoutes());
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const { trySignInSilently } = useAuthContext();
+    const { trySignInSilently, getDecodedIDToken, signOut } = useAuthContext();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
 
@@ -146,10 +149,37 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
             return;
         }
 
-        history.push({
-            pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
-            search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
-        });
+        if (commonConfig?.enableOrganizationAssociations) {
+            /**
+             * Checks if the portal access is denied due to no association.
+             */
+            getDecodedIDToken()
+                .then((idToken: DecodedIDTokenPayload) => {
+
+                    if(has(idToken, "associated_tenants")) {
+                        // If there is an assocation, the user is likely unauthorized by other criteria.
+                        history.push({
+                            pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
+                            search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
+                        });
+                    } else {
+                        // If there is no assocation, the user should be redirected to creation flow.
+                        history.push({
+                            pathname: AppConstants.getPaths().get("CREATE_TENANT")
+                        });
+                    }
+                })
+                .catch(() => {
+                    // No need to show UI errors here.
+                    // Add debug logs here one a logger is added.
+                    // Tracked here https://github.com/wso2/product-is/issues/11650.
+                });
+        } else {
+            history.push({
+                pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
+                search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
+            });
+        }
     }, [ config, loginInit ]);
 
     /**
@@ -291,20 +321,33 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                 <>
                                                     <Helmet>
                                                         <title>{ appTitle }</title>
+                                                        {
+                                                            (window?.themeHash && window?.publicPath && theme)
+                                                                ? (
+                                                                    <link
+                                                                        href={
+                                                                            `${window?.origin}${window?.publicPath}/libs/themes/${theme}/theme.${window?.themeHash}.min.css`
+                                                                        }
+                                                                        rel="stylesheet"
+                                                                        type="text/css"
+                                                                    />
+                                                                ) 
+                                                                : null
+                                                        }
                                                     </Helmet>
                                                     <NetworkErrorModal
                                                         heading={
                                                             (<Trans
                                                                 i18nKey={ "common:networkErrorMessage.heading" }
                                                             >
-                                                                Something went wrong
+                                                                Your session has expired
                                                             </Trans>)
                                                         }
                                                         description={
                                                             (<Trans
                                                                 i18nKey={ "common:networkErrorMessage.description" }
                                                             >
-                                                                Please try reloading the app.
+                                                                Please try signing in again.
                                                             </Trans>)
                                                         }
                                                         primaryActionText={
@@ -313,8 +356,11 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                                     "common:networkErrorMessage.primaryActionText"
                                                                 }
                                                             >
-                                                                Reload the App
+                                                                Sign In
                                                             </Trans>)
+                                                        }
+                                                        primaryAction={
+                                                            signOut
                                                         }
                                                     />
                                                     <ChunkErrorModal

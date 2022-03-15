@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, PropsWithChildren, ReactElement, ReactNode } from "react";
 import { ButtonProps, Icon } from "semantic-ui-react";
@@ -27,7 +27,8 @@ import { GenericIcon } from "../../icon";
 /**
  * Interface for the Resource Grid Card component.
  */
-export interface ResourceGridCardPropsInterface extends InfoCardPropsInterface, TestableComponentInterface {
+export interface ResourceGridCardPropsInterface extends InfoCardPropsInterface, IdentifiableComponentInterface,
+    TestableComponentInterface {
 
     /**
      * Is resource disabled.
@@ -114,6 +115,7 @@ export const ResourceGridCard: FunctionComponent<PropsWithChildren<ResourceGridC
         showResourceDelete,
         showTooltips,
         testId,
+        [ "data-componentid" ]: componentId,
         ...rest
     } = props;
 
@@ -142,6 +144,7 @@ export const ResourceGridCard: FunctionComponent<PropsWithChildren<ResourceGridC
                                     hoverType="underline"
                                     className="info-card-inner-action"
                                     onClick={ onEdit }
+                                    data-componentid={ `${ componentId }-item-edit-button` }
                                     data-testid={ `${ testId }-item-edit-button` }
                                 >
                                     { editButtonLabel }
@@ -158,6 +161,7 @@ export const ResourceGridCard: FunctionComponent<PropsWithChildren<ResourceGridC
                                     floated="right"
                                     className="delete-button"
                                     icon={ <Icon name="trash alternate"/> }
+                                    data-componentid={ `${ componentId }-item-delete-button` }
                                     data-testid={ `${ testId }-item-delete-button` }
                                     onClick={ onDelete }
                                 />
@@ -166,6 +170,7 @@ export const ResourceGridCard: FunctionComponent<PropsWithChildren<ResourceGridC
                     </div>
                 )
             }
+            data-componentid={ componentId }
             { ...rest }
         >
             { children }
@@ -178,6 +183,7 @@ export const ResourceGridCard: FunctionComponent<PropsWithChildren<ResourceGridC
  */
 ResourceGridCard.defaultProps = {
     comingSoonRibbonLabel: "Coming Soon",
+    "data-componentid": "resource-grid-card",
     "data-testid": "resource-grid-card",
     editButtonLabel: "Configure",
     imageOptions: {

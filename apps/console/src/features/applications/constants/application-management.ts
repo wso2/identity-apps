@@ -29,6 +29,9 @@ export class ApplicationManagementConstants {
 
     public static readonly EMPTY_STRING = "";
     public static readonly LINE_BREAK = "\n";
+    public static readonly MAXIMUM_NUMBER_OF_LIST_ITEMS_TO_SHOW_INSIDE_POPUP = 3;
+    public static readonly AUTHENTICATORS_LOCAL_STORAGE_KEY = btoa("Authenticators");
+    public static readonly EMPTY_JSON_ARRAY = "[]";
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -332,6 +335,8 @@ export class ApplicationManagementConstants {
     public static readonly REQUEST_PATH_AUTHENTICATORS_FETCH_ERROR: string = "An error occurred while fetching the " +
         "request path authenticators.";
 
+    public static readonly UNABLE_FETCH_APPLICATIONS: string = "An error occurred while fetching applications.";
+
     public static readonly IDENTIFIER_FIRST_AUTHENTICATOR_ID = IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER
         + "-" + "SWRlbnRpZmllckV4ZWN1dG9y";
 
@@ -347,13 +352,12 @@ export class ApplicationManagementConstants {
     // First factor authenticators.
     public static readonly FIRST_FACTOR_AUTHENTICATORS = [
         IdentityProviderManagementConstants.BASIC_AUTHENTICATOR,
-        IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
+        IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR,
+        IdentityProviderManagementConstants.FIDO_AUTHENTICATOR
     ];
 
     // Second factor authenticators.
     public static readonly SECOND_FACTOR_AUTHENTICATORS = [
-        IdentityProviderManagementConstants.FIDO_AUTHENTICATOR,
-        IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID,
         IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
         IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID,
         IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,

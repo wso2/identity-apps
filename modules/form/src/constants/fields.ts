@@ -37,7 +37,8 @@ export class FieldConstants {
     public static INVALID_URL_ERROR = "Please enter a valid URL";
     public static INVALID_NAME_ERROR = "Please enter a valid name";
     public static INVALID_RESOURCE_ERROR = "Please enter a valid input";
-    public static INVALID_SECRET_NAME_ERROR = "Please enter a valid secret name";
+    public static INVALID_SECRET_NAME_ERROR = "Please enter a valid secret name. "+
+        "You can only use alphanumeric characters, underscores (_), dashes (-)";
     public static INVALID_CLIENT_ID_ERROR = "Please enter a valid Client ID";
     public static INVALID_DESCRIPTION_ERROR = "Please enter a valid description";
     public static INVALID_PHONE_NUMBER_ERROR = "Please enter a valid phone number";

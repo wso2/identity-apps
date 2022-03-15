@@ -17,7 +17,7 @@
  */
 
 import { getGravatarImage } from "@wso2is/core/api";
-import { GravatarFallbackTypes, TestableComponentInterface } from "@wso2is/core/models";
+import { GravatarFallbackTypes, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { ImageUtils, ProfileUtils, URLUtils } from "@wso2is/core/utils";
 import classNames from "classnames";
 import React, {
@@ -54,7 +54,9 @@ import { Hint } from "../../typography";
 /**
  * Edit Avatar Modal props interface.
  */
-export interface EditAvatarModalPropsInterface extends ModalProps, TestableComponentInterface {
+export interface EditAvatarModalPropsInterface extends ModalProps, IdentifiableComponentInterface,
+    TestableComponentInterface {
+
     /**
      * Set of Emails to look for Gravatar.
      */
@@ -191,6 +193,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
         showOptionTitle,
         submitButtonText,
         isSubmitting,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         translations,
         ...rest
@@ -579,6 +582,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
 
     return (
         <Modal
+            data-componentid={ componentId }
             data-testid={ testId }
             className={ classes }
             closeOnDimmerClick={ false }
@@ -763,6 +767,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
  */
 EditAvatarModal.defaultProps = {
     cancelButtonText: "Cancel",
+    "data-componentid": "edit-avatar-modal",
     "data-testid": "edit-avatar-modal",
     dimmer: "blurring",
     heading: "Update profile picture",

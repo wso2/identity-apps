@@ -128,6 +128,36 @@
         "showAppSwitchButton": "{{ console.ui.show_app_switch_button }}",
         {% endif %}
         "features": {
+            {% if console.extensions.features is defined %}
+            {% for name, feature in console.extensions.features.items() %}
+            "{{ name }}": {
+                "disabledFeatures": [
+                    {% if feature.disabled_features is defined %}
+                    {% for disabled_feature in feature.disabled_features %}
+                    "{{ disabled_feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ feature.enabled }},
+                "scopes": {
+                    {% if feature.scopes is defined %}
+                    {% for operation, scopes in feature.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endfor %}
+            {% endif %}
             "applications": {
                 "disabledFeatures": [
                     {% if console.applications.disabled_features is defined %}

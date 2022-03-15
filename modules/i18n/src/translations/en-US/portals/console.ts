@@ -822,6 +822,9 @@ export const console: ConsoleNS = {
                                             subjectDisabledSelection: "This attribute is mandatory because it " +
                                                 "is the subject attribute."
                                         },
+                                        faultyAttributeMapping: "Missing OpenID Connect Attribute Mapping",
+                                        faultyAttributeMappingHint: "Attribute value will not be shared to the" +
+                                            " application at the user login.",
                                         fields: {
                                             claim: {
                                                 label: "Please enter a value",
@@ -1034,6 +1037,9 @@ export const console: ConsoleNS = {
                                                 "passe</1>, <3>Connexion sociale</3> ou tout autre gestionnaire " +
                                                 "tel que <5>Identifier First</5> qui peut gérer ces facteurs sont " +
                                                 "présents dans une étape précédente.",
+                                            secondFactorDisabledDueToProxyMode: "To configure <1>{{auth}}</1>," +
+                                                " you should enable the Just-in-Time provisioning" +
+                                                " setting from the following Identity Providers.",
                                             secondFactorDisabledInFirstStep: "Second factor authenticators can " +
                                                 "not be used in the first step."
                                         }
@@ -1058,28 +1064,31 @@ export const console: ConsoleNS = {
                                     flowBuilder: {
                                         addMissingSocialAuthenticatorModal: {
                                             content: {
-                                                body: "You do not have an active Identity Provider configured with " +
+                                                body: "You do not have an active Social " +
+                                                    "Connection configured with " +
                                                     "<1>{{authenticator}} Authenticator</1>. Click on the " +
-                                                    "<3>Configure</3> button to register a new <5>{{authenticator}} " +
-                                                    "Identity Provider</5> or navigate to the <7>Identity " +
-                                                    "Providers</7> section manually.",
-                                                message: "No active {{authenticator}} Identity Provider configured"
+                                                    "<3>Configure</3> button to register" +
+                                                    " a new <5>{{authenticator}} " +
+                                                    "Social Connection</5> or navigate to the <7>Connections</7>" +
+                                                    " section manually.",
+                                                message: "No active {{authenticator}} Social " +
+                                                    "Connection configured"
                                             },
                                             description: "",
-                                            heading: "Configure {{authenticator}} Identity Provider",
+                                            heading: "Configure {{authenticator}} Social Connection",
                                             primaryButton: "Configure",
                                             secondaryButton: "Cancel"
                                         },
                                         duplicateSocialAuthenticatorSelectionModal: {
                                             content: {
-                                                body: "You have multiple Identity Providers configured with <1>" +
+                                                body: "You have multiple Social Connections configured with <1>" +
                                                     "{{authenticator}} Authenticator</1>. Select the desired one " +
                                                     "from the selection below to proceed.",
-                                                message: "Multiple Identity Providers found with {{authenticator}} " +
+                                                message: "Multiple Social Connections found with {{authenticator}} " +
                                                     "Authenticator."
                                             },
                                             description: "",
-                                            heading: "Select {{authenticator}} Identity Provider",
+                                            heading: "Select {{authenticator}} Social Connection",
                                             primaryButton: "Continue",
                                             secondaryButton: "Cancel"
                                         },
@@ -1106,6 +1115,14 @@ export const console: ConsoleNS = {
                                                 description: "Enable additional authentication layer with Time " +
                                                     "based OTP.",
                                                 heading: "Add TOTP as a second factor"
+                                            },
+                                            usernameless: {
+                                                description: "Enable users to log in using a FIDO2 security key " +
+                                                    "or biometrics.",
+                                                heading: "Add passwordless login",
+                                                info: "To sign in with passwordless login, your users " +
+                                                    "should have their FIDO2 security keys or biometrics " +
+                                                    "registered via My Account."
                                             }
                                         }
                                     }
@@ -1321,7 +1338,6 @@ export const console: ConsoleNS = {
                                 }
                             },
                             description: {
-                                description: "A text description of the application.",
                                 label: "Description",
                                 placeholder: "Enter a description for the application"
                             },
@@ -1664,7 +1680,7 @@ export const console: ConsoleNS = {
                                         hint: "Select to issue a new <1>refresh_token</1> each time a "+
                                             "<3>refresh_token</3> is " +
                                             "exchanged. The existing token will be invalidated.",
-                                        label: "Rotate refresh token",
+                                        label: "Renew refresh token",
                                         validations: {
                                             empty: "This is a required field."
                                         }
@@ -2500,6 +2516,12 @@ export const console: ConsoleNS = {
                             message: "Retrieval successful"
                         }
                     },
+                    firstFactorAuthenticatorToSecondStep: {
+                        genericError: {
+                            description: "This authenticator can only be added to the first step.",
+                            message: "Cannot add to this step"
+                        }
+                    },
                     getInboundProtocolConfig: {
                         error: {
                             description: "{{description}}",
@@ -3287,9 +3309,12 @@ export const console: ConsoleNS = {
                     },
                     jitProvisioning: {
                         enableJITProvisioning: {
-                            hint: "Specifies if users federated from this identity provider " +
-                                "needs to be provisioned locally.",
-                            label: "Enable Just-in-time Provisioning"
+                            disabledMessageContent: "You cannot disable the Just-in-Time User" +
+                                " Provisioning setting because the following applications" +
+                                " require it to be enabled.",
+                            disabledMessageHeader: "Operation Not Allowed",
+                            hint: "Specify if users federated from this identity provider need to be proxied.",
+                            label: "Just-in-Time (JIT) User Provisioning"
                         },
                         provisioningScheme: {
                             children: {
@@ -4349,9 +4374,17 @@ export const console: ConsoleNS = {
                     },
                     jitProvisioning: {
                         enableJITProvisioning: {
-                            hint: "Specifies if users federated from this identity provider " +
-                                "needs to be provisioned locally.",
-                            label: "Enable Just-in-time Provisioning"
+                            disabledMessageContent: {
+                                1: "You cannot modify Proxy Mode settings since multiple applications" +
+                                    " depend on this connection. To resolve this conflict, you need" +
+                                    " to remove this connection from the listed resources.",
+                                2: "You are not allowed to modify Proxy Mode settings as an application" +
+                                    " depends on this connection. To resolve this conflict, you need to remove" +
+                                    " this connection from the listed resource."
+                            },
+                            disabledMessageHeader: "Operation Not Allowed",
+                            hint: "Specify if users federated from this identity provider need to be proxied.",
+                            label: "Just-in-Time (JIT) User Provisioning"
                         },
                         provisioningScheme: {
                             children: {
@@ -7947,10 +7980,12 @@ export const console: ConsoleNS = {
                 },
                 profile: {
                     fields: {
+                        createdDate: "Created Date",
                         emails: "Email",
                         generic: {
                             default: "Add {{fieldName}}"
                         },
+                        modifiedDate: "Modified Date",
                         name_familyName: "Last Name",
                         name_givenName: "First Name",
                         oneTimePassword: "One Time Password",

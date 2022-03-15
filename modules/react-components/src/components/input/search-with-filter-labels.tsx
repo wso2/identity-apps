@@ -16,7 +16,11 @@
  * under the License.
  */
 
-import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    IdentifiableComponentInterface,
+    LoadableComponentInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import classNames from "classnames";
 import React, {
     ChangeEvent,
@@ -32,6 +36,7 @@ import { Icon, Input, InputProps, Label } from "semantic-ui-react";
  * Proptypes for the advanced search component.
  */
 export interface SearchWithFilterLabelsPropsInterface extends InputProps,
+    IdentifiableComponentInterface,
     TestableComponentInterface,
     LoadableComponentInterface {
 
@@ -77,6 +82,7 @@ export const SearchWithFilterLabels: FunctionComponent<PropsWithChildren<SearchW
         icon,
         placeholder,
         searchInput,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -122,6 +128,7 @@ export const SearchWithFilterLabels: FunctionComponent<PropsWithChildren<SearchW
     return (
         <div
             className={ classes }
+            data-componentid={ componentId }
             data-testid={ testId }
         >
             {
@@ -178,6 +185,7 @@ export const SearchWithFilterLabels: FunctionComponent<PropsWithChildren<SearchW
  * Default proptypes for the component.
  */
 SearchWithFilterLabels.defaultProps = {
+    "data-componentid": "search-with-filters",
     "data-testid": "search-with-filters",
     placeholder: "Search"
 };

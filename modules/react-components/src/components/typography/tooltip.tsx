@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { PropsWithChildren, ReactElement } from "react";
 import { Popup, PopupProps } from "semantic-ui-react";
@@ -24,7 +24,8 @@ import { Popup, PopupProps } from "semantic-ui-react";
 /**
  * Tooltip component prop types.
  */
-export interface TooltipPropsInterface extends PopupProps, TestableComponentInterface { }
+export interface TooltipPropsInterface extends PopupProps, IdentifiableComponentInterface,
+    TestableComponentInterface { }
 
 /**
  * Tooltip component.
@@ -41,6 +42,7 @@ export const Tooltip: React.FunctionComponent<PropsWithChildren<TooltipPropsInte
         children,
         className,
         compact,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -56,6 +58,7 @@ export const Tooltip: React.FunctionComponent<PropsWithChildren<TooltipPropsInte
     return (
         <Popup
             className={ classes }
+            data-componentid={ componentId }
             data-testid={ testId }
             { ...rest }
         >
@@ -70,6 +73,7 @@ export const Tooltip: React.FunctionComponent<PropsWithChildren<TooltipPropsInte
 Tooltip.defaultProps = {
     basic: true,
     compact: false,
+    "data-componentid": "tooltip",
     "data-testid": "tooltip",
     inverted: true,
     pinned: true,

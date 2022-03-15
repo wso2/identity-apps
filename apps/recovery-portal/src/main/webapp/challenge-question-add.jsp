@@ -18,6 +18,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.serviceclient.UserIdentityManagementAdminServiceClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.stub.dto.ChallengeQuestionDTO" %>
@@ -33,8 +34,9 @@
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
 
     Map<String, List<ChallengeQuestionDTO>> challengeQuestionSets = new HashMap<String, List<ChallengeQuestionDTO>>();
+    String username = session.getAttribute("username");
 
-    if (session.getAttribute("username") != null) {
+    if (!StringUtils.isBlank(username)) {
         UserIdentityManagementAdminServiceClient userIdentityManagementAdminServiceClient = new
                 UserIdentityManagementAdminServiceClient();
         ChallengeQuestionDTO[] challengeQuestionDTOs =
@@ -54,6 +56,7 @@
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                 "Registered.user.not.found.in.session"));
+        request.setAttribute("username", username);
         request.getRequestDispatcher("error.jsp").forward(request, response);
     }
 %>
@@ -188,7 +191,7 @@
             <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
-    <script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
+    <script src="libs/jquery_3.6.0/jquery-3.6.0.min.js"></script>
     <script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
     </body>
     </html>

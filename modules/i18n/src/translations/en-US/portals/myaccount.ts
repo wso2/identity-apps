@@ -650,67 +650,77 @@ export const myAccount: MyAccountNS = {
                 }
             },
             fido: {
-                description: "Authenticate yourself by connecting a biometric device or a FIDO key",
+                description: "You can use a FIDO2 security key or biometrics in " +
+                    "your device to sign in to your account.",
                 form: {
-                    label: "Security Device",
-                    placeholder: "Enter a device name",
-                    remove: "Remove the device",
-                    required: "Please enter a name for your security device"
+                    label: "Security Key/Biometric",
+                    placeholder: "Enter a name for the security key/biometrics",
+                    remove: "Remove the security key/biometrics",
+                    required: "Please enter a name for your security key/biometrics"
                 },
-                heading: "Security Device",
+                heading: "Security Key/Biometrics",
                 modals: {
+                    deleteConfirmation: {
+                        assertionHint: "Please confirm your action.",
+                        content: "This action is irreversible and will permanently delete the security key/biometrics.",
+                        description: "If you delete this security key/biometrics, you may not be " +
+                            "able to sign in to your account again. Please proceed with caution.",
+                        heading: "Are you sure?"
+                    },
                     deviceRegistrationErrorModal: {
-                        description: "The device registration was interrupted. If this was not intentional you " +
-                            "may retry the same flow or try again with an older security key.",
-                        heading: "Device Registration Failed"
+                        description: "The security key/biometrics registration was interrupted. "
+                            + "If this was not intentional you "
+                            + "may retry the flow.",
+                        heading: "Security Key/Biometric Registration Failed",
+                        tryWithOlderDevice: "You may also try again with an older security key/biometrics."
                     }
                 },
                 notifications: {
                     removeDevice: {
                         error: {
                             description: "{{description}}",
-                            message: "Error occurred while removing the device"
+                            message: "Error occurred while removing the security key/biometrics"
                         },
                         genericError: {
-                            description: "Error occurred while removing the device",
+                            description: "Error occurred while removing the security key/biometrics",
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "The device was successfully removed from the list",
-                            message: "Your Device Removed Successfully"
+                            description: "The security key/biometrics was successfully removed from the list",
+                            message: "Your Security Key/Biometric Removed Successfully"
                         }
                     },
                     startFidoFlow: {
                         error: {
                             description: "{{description}}",
-                            message: "Error occurred while retrieving the device"
+                            message: "Error occurred while retrieving the security key/biometrics"
                         },
                         genericError: {
-                            description: "Error occurred while retrieving the device",
+                            description: "Error occurred while retrieving the security key/biometrics",
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "The device was successfully registered and now you can use it as an " +
-                                "authentication factor",
-                            message: "Your Device Registered Successfully"
+                            description: "The security key/biometrics was successfully registered and now you " +
+                                "can use it for authentication.",
+                            message: "Your Security Key/Biometric Registered Successfully"
                         }
                     },
                     updateDeviceName: {
                         error: {
                             description: "{{description}}",
-                            message: "Error occurred while updating the security device name"
+                            message: "Error occurred while updating the security key/biometrics name"
                         },
                         genericError: {
-                            description: "Error occurred while updating the security device name",
+                            description: "Error occurred while updating the security key/biometrics name",
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "The name of your security device was successfully updated",
-                            message: "Security Device name updated successfully"
+                            description: "The name of your security key/biometrics was successfully updated",
+                            message: "Security Key/Biometric name updated successfully"
                         }
                     }
                 },
-                tryButton: "Try with an older Device"
+                tryButton: "Try with an older Security Key/Biometric"
             },
             smsOtp: {
                 descriptions: {
@@ -1492,8 +1502,9 @@ export const myAccount: MyAccountNS = {
         },
         mfa: {
             description:
-                "Add an extra layer of protection to your account by configuring multiple steps of authentication.",
-            heading: "Multi-Factor Authentication"
+                "Configure additional authentications to sign in easily or " +
+                "to add an extra layer of security to your account.",
+            heading: "Additional Authentication"
         },
         profile: {
             description: "Manage your personal profile",

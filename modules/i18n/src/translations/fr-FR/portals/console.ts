@@ -827,6 +827,9 @@ export const console: ConsoleNS = {
                                             subjectDisabledSelection: "Cet attribut est obligatoire car il " +
                                                 "s'agit de l'attribut sujet."
                                         },
+                                        faultyAttributeMapping: "Mappage d'attribut OpenID Connect manquant",
+                                        faultyAttributeMappingHint: "La valeur d'attribut ne sera pas partagée" +
+                                            " avec l'application lors de la connexion de l'utilisateur.",
                                         fields: {
                                             claim: {
                                                 label: "Veuillez entrer une valeur",
@@ -1050,6 +1053,10 @@ export const console: ConsoleNS = {
                                                 "</1> ou tout autre gestionnaire tel que <3>Identifiant d’abord " +
                                                 "</3>qui peut gérer ces facteurs est présent dans une étape " +
                                                 "précédente.",
+                                            secondFactorDisabledDueToProxyMode: "Pour configurer" +
+                                                " <1>{{auth}}</1>, vous devez activer le paramètre" +
+                                                " d'approvisionnement juste-à-temps à partir des" +
+                                                " fournisseurs d'identité suivants.",
                                             secondFactorDisabledInFirstStep: "Les authentificateurs de deuxième " +
                                                 "facteur ne peuvent pas être utilisés dans la première étape."
                                         }
@@ -1077,29 +1084,38 @@ export const console: ConsoleNS = {
                                     flowBuilder: {
                                         addMissingSocialAuthenticatorModal: {
                                             content: {
-                                                body: "Vous n'avez pas de fournisseur d'identité configuré avec " +
+                                                body: "Vous n'avez pas de connexion sociale" +
+                                                    " active configurée avec " +
                                                     "<1>{{authenticator}} Authenticator</1>. Cliquez sur " +
-                                                    "<3>Configurer</3> bouton pour lancer le processus de " +
-                                                    "configuration ou accéder à la section <5>{{authenticator}} " +
-                                                    "d'identité</5> manuellement.",
-                                                message: "Aucun fournisseur d'identité {{authenticator}} configuré"
+                                                    "<3>Configurer</3> bouton pour lancer le" +
+                                                    " processus de " +
+                                                    "configuration ou accéder à la" +
+                                                    " section <5>{{authenticator}} " +
+                                                    "Connexion Sociale</5> manuellement.",
+                                                message: "Aucun fournisseur Connexion sociale" +
+                                                    " {{authenticator}} configuré"
                                             },
                                             description: "",
-                                            heading: "Configurer le fournisseur d'identité {{authenticator}}",
+                                            heading: "Configurer le fournisseur Connexion " +
+                                                "sociale {{authenticator}}",
                                             primaryButton: "Configurer",
                                             secondaryButton: "Annuler"
                                         },
                                         duplicateSocialAuthenticatorSelectionModal: {
                                             content: {
-                                                body: "Vous avez plusieurs fournisseurs d'identité configurés " +
+                                                body: "Vous avez plusieurs fournisseurs " +
+                                                    "Connexions sociales" +
+                                                    " configurés " +
                                                     "avec <1> {{authenticator}} Authenticator </1>. " +
                                                     "Sélectionnez celui de votre choix dans la sélection " +
                                                     "ci-dessous pour continuer.",
-                                                message: "Plusieurs fournisseurs d'identité trouvés avec " +
+                                                message: "Plusieurs fournisseurs Connexions" +
+                                                    " sociales trouvés avec " +
                                                     "{{authenticator}} Authenticator."
                                             },
                                             description: "",
-                                            heading: "Sélectionnez le fournisseur d'identité {{authenticator}}",
+                                            heading: "Sélectionnez le fournisseur Connexion" +
+                                                " sociale {{authenticator}}",
                                             primaryButton: "Continuer",
                                             secondaryButton: "Annuler"
                                         },
@@ -1127,6 +1143,16 @@ export const console: ConsoleNS = {
                                                 description: "Activez une couche d'authentification supplémentaire " +
                                                     "avec OTP basé sur le temps.",
                                                 heading: "Ajouter TOTP comme deuxième facteur"
+                                            },
+                                            usernameless: {
+                                                description: "Permettre aux utilisateurs de se connecter à " +
+                                                    "l'aidAjouter une connexion sans nom d'utilisateuré " +
+                                                    "FIDO2 ou de la biométrie.",
+                                                heading: "Ajouter une connexion sans mot de passe",
+                                                info: "Pour vous connecter avec une authentification sans mot " +
+                                                    "de passe, vos utilisateurs doivent avoir leurs clés de " +
+                                                    "sécurité FIDO2 ou leurs données biométriques enregistrées " +
+                                                    "via Mon compte."
                                             }
                                         }
                                     }
@@ -1345,7 +1371,6 @@ export const console: ConsoleNS = {
                                 }
                             },
                             description: {
-                                description: "Une description textuelle de l'application.",
                                 label: "Description",
                                 placeholder: "Saisissez une description pour l'application"
                             },
@@ -2536,6 +2561,12 @@ export const console: ConsoleNS = {
                             message: "Récupération réussie"
                         }
                     },
+                    firstFactorAuthenticatorToSecondStep: {
+                        genericError: {
+                            description: "Cet authentificateur ne peut être ajouté qu'à la première étape.",
+                            message: "Impossible d'ajouter à cette étape"
+                        }
+                    },
                     getInboundProtocolConfig: {
                         error: {
                             description: "{{description}}",
@@ -3051,9 +3082,13 @@ export const console: ConsoleNS = {
                     },
                     jitProvisioning: {
                         enableJITProvisioning: {
-                            hint: "Précise si les utilisateurs fédérés à partir de ce fournisseur " +
-                                "d'identité doivent être approvisionnés localement.",
-                            label: "Activer l' approvisionnement juste à temps"
+                            disabledMessageContent: "Vous ne pouvez pas désactiver le" +
+                                " paramètre de provisionnement d'utilisateurs juste-à-temps" +
+                                " car les applications suivantes nécessitent son activation.",
+                            disabledMessageHeader: "Opération non autorisée",
+                            hint: "Spécifiez si les utilisateurs fédérés à partir de ce" +
+                                " fournisseur d'identité doivent être mandatés.",
+                            label: "Provisionnement d'utilisateurs juste à temps"
                         },
                         provisioningScheme: {
                             children: {
@@ -6538,10 +6573,12 @@ export const console: ConsoleNS = {
                 },
                 profile: {
                     fields: {
+                        createdDate: "Date de création",
                         emails: "Email",
                         generic: {
                             default: "Ajouter l'attribut {{fieldName}}"
                         },
+                        modifiedDate: "Date modifiée",
                         name_familyName: "Nom de famille",
                         name_givenName: "Prénom",
                         oneTimePassword: "Mot de passe à usage unique",

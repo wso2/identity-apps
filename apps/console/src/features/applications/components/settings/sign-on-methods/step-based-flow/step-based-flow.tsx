@@ -22,18 +22,13 @@ import { ConfirmationModal, GenericIcon } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import orderBy from "lodash-es/orderBy";
 import union from "lodash-es/union";
-import React, {
-    Fragment,
-    FunctionComponent,
-    ReactElement,
-    useEffect,
-    useRef,
-    useState
-} from "react";
+import React, { Fragment, FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Popup } from "semantic-ui-react";
 import { AddAuthenticatorModal } from "./add-authenticator-modal";
 import { AuthenticationStep } from "./authentication-step";
+import { applicationConfig } from "../../../../../../extensions";
 import { AppState, ConfigReducerStateInterface, EventPublisher } from "../../../../../core";
 import {
     AuthenticatorCategories,
@@ -100,6 +95,7 @@ interface AuthenticationFlowPropsInterface extends TestableComponentInterface {
      * Callback to update the button disable state change.
      */
     onAuthenticationSequenceChange: (isDisabled: boolean, updatedSteps: AuthenticationStepInterface[]) => void;
+    refreshAuthenticators: () => Promise<void>;
 }
 
 /**
@@ -122,6 +118,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         triggerUpdate,
         updateSteps,
         onAuthenticationSequenceChange,
+        refreshAuthenticators,
         [ "data-testid" ]: testId
     } = props;
 
@@ -176,11 +173,11 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 moderatedLocalAuthenticators.push(authenticator);
             }
         });
-        
+
         federatedAuthenticators.forEach((authenticator: GenericAuthenticatorInterface) => {
             if (ApplicationManagementConstants.SOCIAL_AUTHENTICATORS
                 .includes(authenticator.defaultAuthenticator.authenticatorId)) {
-                
+
                 filteredSocialAuthenticators.push(authenticator);
             } else {
                 filteredEnterpriseAuthenticators.push(authenticator);
@@ -234,7 +231,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
      * Try to scroll to the end when a new step is added.
      */
     useEffect(() => {
-        
+
         if (!authenticationStepsDivRef?.current) {
             return;
         }
@@ -384,6 +381,11 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             return;
         }
 
+        if(!applicationConfig.signInMethod.authenticatorSelection
+            .customAuthenticatorAdditionValidation(authenticatorId, stepIndex, dispatch)) {
+            return;
+        }
+
         if (!isValid) {
             return;
         }
@@ -436,7 +438,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             const immediateStepHavingSpecificFactors: number = SignInMethodUtils.getImmediateStepHavingSpecificFactors(
                 ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS, steps);
 
-            // If the deleting step is a first factor, we have to check if there are other handlers that 
+            // If the deleting step is a first factor, we have to check if there are other handlers that
             // could handle the second factors on the right.
             if (isDeletingOptionFirstFactor || isDeletingOptionSecondFactorHandler) {
                 let firstFactorsInTheStep: number = 0;
@@ -466,7 +468,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                         : SignInMethodUtils.hasSpecificFactorsInSteps(
                             ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, leftSideSteps);
 
-                    // There are no possible authenticators on the left form the deleting option to handle the second 
+                    // There are no possible authenticators on the left form the deleting option to handle the second
                     // factor authenticators. Evaluate....
                     if (!containProperHandlersOnLeft) {
 
@@ -486,7 +488,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                 ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
                                 leftSideStepsFromImmediateSecondFactor);
 
-                        // If there are no other handlers, Show a warning and abort option delete. 
+                        // If there are no other handlers, Show a warning and abort option delete.
                         if (noOfProperHandlersOnLeft <= 1) {
                             dispatch(
                                 addAlert({
@@ -560,25 +562,31 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         const [
             leftSideSteps,
-            rightSideSteps
+            rightSideSteps,
+            nextStep
         ]: AuthenticationStepInterface[][] = SignInMethodUtils.getLeftAndRightSideSteps(stepIndex, steps);
 
         const containSecondFactorOnRight: boolean = SignInMethodUtils.hasSpecificFactorsInSteps(
             ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS, rightSideSteps);
-        const noOfSecondFactorsOnRight: number = SignInMethodUtils.countSpecificFactorInSteps(
-            ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS, rightSideSteps);
         const noOfTOTPOnRight: number = SignInMethodUtils.countSpecificFactorInSteps(
             [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR ], rightSideSteps);
-        const onlyTOTPOnRight: boolean = noOfSecondFactorsOnRight === noOfTOTPOnRight;
+        const noOfFactorsOnRight: number = SignInMethodUtils.countSpecificFactorInSteps(
+            ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS, rightSideSteps)
+            + SignInMethodUtils.countSpecificFactorInSteps(
+                ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, rightSideSteps);
+        const onlyTOTPOnRight: boolean = noOfFactorsOnRight === noOfTOTPOnRight;
 
         // If there are second factors in the right side from the step that is to be deleted,
-        // Check if there are first factors on the left. If not, do not delete the step.
+        // Check if there are first factors on the left or if there is an immediate first factor on right.
+        // If not, do not delete the step.
         if (containSecondFactorOnRight) {
             const containProperHandlersOnLeft: boolean = onlyTOTPOnRight
                 ? SignInMethodUtils.hasSpecificFactorsInSteps(
                     ApplicationManagementConstants.TOTP_HANDLERS,leftSideSteps)
-                : SignInMethodUtils.hasSpecificFactorsInSteps(
-                    ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, leftSideSteps);
+                : (SignInMethodUtils.hasSpecificFactorsInSteps(
+                    ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, leftSideSteps)
+                    || SignInMethodUtils.checkImmediateStepHavingSpecificFactors(
+                        ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, nextStep));
 
             if (!containProperHandlersOnLeft) {
                 dispatch(
@@ -808,6 +816,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         return (
             <AddAuthenticatorModal
+                refreshAuthenticators={ refreshAuthenticators }
                 authenticationSteps={ authenticationSteps }
                 allowSocialLoginAddition={ true }
                 currentStep={ authenticatorAddStep }
@@ -843,6 +852,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 onAddNewClick={ handleAddNewAuthenticatorClick }
                 onIDPCreateWizardTrigger={ onIDPCreateWizardTrigger }
                 categorizedIDPTemplates={ categorizedTemplates }
+                subjectStepId={ subjectStepId }
+                attributeStepId={ attributeStepId }
             />
         );
     };
@@ -899,14 +910,22 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 {
                     !readOnly && (
                         <div className="timeline-button add">
-                            <GenericIcon
-                                link
-                                transparent
-                                size="mini"
-                                fill="primary"
-                                icon={ getSignInFlowIcons().addButton }
-                                onClick={ handleAuthenticationStepAdd }
-                                data-tourid="add-new-step-button"
+                            <Popup
+                                trigger={ (
+                                    <div>
+                                        <GenericIcon
+                                            link
+                                            transparent
+                                            size="mini"
+                                            fill="primary"
+                                            icon={ getSignInFlowIcons().addButton }
+                                            onClick={ handleAuthenticationStepAdd }
+                                            data-tourid="add-new-step-button"
+                                        />
+                                    </div>
+                                ) }
+                                position="left center"
+                                content={ "Add a new authentication step" }
                             />
                         </div>
                     )

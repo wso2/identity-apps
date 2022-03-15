@@ -32,8 +32,10 @@ export const EXTENSION_ROUTES = (): ExtensionRoutesInterface  => {
     const developRoutes: RouteInterface[]  =  [ ...ExtensionsManager.getConfig().routes.develop ];
     const manageRoutes: RouteInterface[]  =  [ ...ExtensionsManager.getConfig().routes.manage ];
     const fullscreenRoutes: RouteInterface[]  = [ ...ExtensionsManager.getConfig().routes.fullscreen ];
+    const authRoutes: RouteInterface[]  = [ ...ExtensionsManager.getConfig().routes.auth ];
 
     return {
+        auth: loadRouteComponents(authRoutes),
         default: loadRouteComponents(defaultRoutes),
         develop: loadRouteComponents(developRoutes),
         fullscreen: loadRouteComponents(fullscreenRoutes),

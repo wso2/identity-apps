@@ -19,21 +19,16 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, Heading, InfoCard, Text } from "@wso2is/react-components";
 import classNames from "classnames";
-import React, {
-    Fragment,
-    FunctionComponent,
-    ReactElement,
-    useEffect,
-    useState
-} from "react";
+import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Label, Popup } from "semantic-ui-react";
-import { applicationConfig } from "../../../../../../extensions/configs";
+import { applicationConfig } from "../../../../../../extensions";
 import {
     AuthenticatorCategories,
     AuthenticatorMeta,
     FederatedAuthenticatorInterface,
-    GenericAuthenticatorInterface
+    GenericAuthenticatorInterface,
+    ProvisioningInterface
 } from "../../../../../identity-providers";
 import { AuthenticationStepInterface } from "../../../../models";
 import { SignInMethodUtils } from "../../../../utils";
@@ -83,6 +78,9 @@ interface AuthenticatorsPropsInterface extends TestableComponentInterface {
      * Show/Hide authenticator labels in UI.
      */
     showLabels?: boolean;
+    attributeStepId: number;
+    refreshAuthenticators: () => Promise<void>;
+    subjectStepId: number;
 }
 
 /**
@@ -104,6 +102,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         onAuthenticatorSelect,
         selected,
         showLabels,
+        // refreshAuthenticators,
         [ "data-testid" ]: testId
     } = props;
 
@@ -119,11 +118,11 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
      * Updates the internal selected authenticators state when the prop changes.
      */
     useEffect(() => {
-        
+
         if (!selected) {
             return;
         }
-        
+
         setSelectedAuthenticators(selected);
     }, [ selected ]);
 
@@ -136,8 +135,11 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                 return false;
             }
 
-            return SignInMethodUtils.isSecondFactorAdditionValid(authenticator.defaultAuthenticator.authenticatorId,
-                currentStep, authenticationSteps);
+            return SignInMethodUtils.isSecondFactorAdditionValid(
+                authenticator.defaultAuthenticator.authenticatorId,
+                currentStep,
+                authenticationSteps
+            );
         }
 
         return true;
@@ -152,27 +154,39 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
      */
     const resolvePopupContent = (authenticator: GenericAuthenticatorInterface): ReactElement => {
 
+        const InfoLabel = (
+            <Label attached="top">
+                <Icon name="info circle"/> Info
+            </Label>
+        );
+
         if (authenticator.category === AuthenticatorCategories.SECOND_FACTOR) {
+
             return (
                 <>
                     {
                         (currentStep === 0)
                             ? (
-                                <Text>
-                                    {
-                                        applicationConfig.signInMethod.authenticatorSelection.messages
-                                            .secondFactorDisabledInFirstStep
+                                <Fragment>
+                                    { InfoLabel }
+                                    <Text>
+                                        {
+                                            applicationConfig.signInMethod.authenticatorSelection.messages
+                                                .secondFactorDisabledInFirstStep
                                             ?? t("console:develop.features.applications.edit.sections" +
                                                 ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
                                                 ".secondFactorDisabledInFirstStep")
-                                    }
-                                </Text>
+                                        }
+                                    </Text>
+                                </Fragment>
                             )
                             : (
-                                <Text>
-                                    {
-                                        applicationConfig.signInMethod.authenticatorSelection.messages
-                                            .secondFactorDisabled
+                                <Fragment>
+                                    { InfoLabel }
+                                    <Text>
+                                        {
+                                            applicationConfig.signInMethod.authenticatorSelection.messages
+                                                .secondFactorDisabled
                                             ?? (
                                                 <Trans
                                                     i18nKey={
@@ -183,25 +197,31 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                                 >
                                                     The second-factor authenticators can only be used if <Code
                                                         withBackground>Username & Password</Code>, <Code withBackground>
-                                                    Social Login</Code> or any other handlers such as 
-                                                    <Code withBackground>Identifier First</Code> that can handle these 
+                                                    Social Login</Code>,
+                                                    <Code withBackground>Security Key/Biometrics</Code>
+                                                    or any other handlers such as
+                                                    <Code withBackground>Identifier First</Code> that can handle these
                                                     factors are present in a previous step.
                                                 </Trans>
                                             )
-                                    }
-                                </Text>
+                                        }
+                                    </Text>
+                                </Fragment>
                             )
                     }
                 </>
             );
         } else if (authenticator.category === AuthenticatorCategories.SOCIAL) {
             return (
-                <Text>
-                    {
-                        t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                            "authenticationFlow.sections.stepBased.authenticatorDisabled")
-                    }
-                </Text>
+                <Fragment>
+                    { InfoLabel }
+                    <Text>
+                        {
+                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                "authenticationFlow.sections.stepBased.authenticatorDisabled")
+                        }
+                    </Text>
+                </Fragment>
             );
         }
     };
@@ -209,7 +229,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     /**
      * Handles authenticator select.
      *
-     * @param {GenericAuthenticatorInterface} selectedAuthenticator - Selected Authenticator. 
+     * @param {GenericAuthenticatorInterface} selectedAuthenticator - Selected Authenticator.
      */
     const handleAuthenticatorSelect = (selectedAuthenticator: GenericAuthenticatorInterface): void => {
 
@@ -261,14 +281,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                         key={ index }
                         on="hover"
                         disabled={ isFactorEnabled(authenticator) }
-                        content={ (
-                            <>
-                                <Label attached="top">
-                                    <Icon name="info circle"/> Info
-                                </Label>
-                                { resolvePopupContent(authenticator) }
-                            </>
-                        ) }
+                        content={ resolvePopupContent(authenticator) }
                         trigger={ (
                             <InfoCard
                                 showTooltips

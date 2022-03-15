@@ -33,6 +33,7 @@ import {
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
+    ErrorInfo,
     FunctionComponent,
     ReactElement,
     ReactNode,
@@ -54,6 +55,7 @@ import {
     AppUtils,
     AppViewTypes,
     ConfigReducerStateInterface,
+    EventPublisher,
     FeatureConfigInterface,
     Footer,
     Header,
@@ -119,6 +121,8 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<boolean>(false);
     const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
 
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
     /**
      * Make sure `DEVELOP` tab is highlighted when this layout is used.
      */
@@ -160,7 +164,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
         if (routes.length === 2
             && routes.filter(route => route.id === AccessControlUtils.DEVELOP_GETTING_STARTED_ID).length > 0
                 && routes.filter(route => route.id === "404").length > 0) {
-                    routes = routes.filter(route => route.id === "404");
+            routes = routes.filter(route => route.id === "404");
         }
 
         const controlledRoutes = AccessControlUtils.getAuthenticatedRoutes(
@@ -228,6 +232,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     const handleLayoutOnUpdate = (event: SyntheticEvent<HTMLElement>, { width }): void => {
         if (width < Responsive.onlyTablet.minWidth) {
             setIsMobileViewport(true);
+
             return;
         }
 
@@ -251,26 +256,26 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
         route.redirectTo
             ? <Redirect key={ key } to={ route.redirectTo }/>
             : route.protected
-            ? (
-                <ProtectedRoute
-                    component={ route.component ? route.component : null }
-                    path={ route.path }
-                    key={ key }
-                    exact={ route.exact }
-                />
-            )
-            : (
-                <Route
-                    path={ route.path }
-                    render={ (renderProps): ReactNode =>
-                        route.component
-                            ? <route.component { ...renderProps } />
-                            : null
-                    }
-                    key={ key }
-                    exact={ route.exact }
-                />
-            )
+                ? (
+                    <ProtectedRoute
+                        component={ route.component ? route.component : null }
+                        path={ route.path }
+                        key={ key }
+                        exact={ route.exact }
+                    />
+                )
+                : (
+                    <Route
+                        path={ route.path }
+                        render={ (renderProps): ReactNode =>
+                            route.component
+                                ? <route.component { ...renderProps } />
+                                : null
+                        }
+                        key={ key }
+                        exact={ route.exact }
+                    />
+                )
     );
 
     /**
@@ -383,6 +388,14 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
                         title={ t("console:common.placeholders.brokenPage.title") }
                     />
                 ) }
+                handleError={ (error: Error, errorInfo: ErrorInfo) => {
+                    eventPublisher.publish("error-captured-error-boundary", {
+                        error: error?.name,
+                        errorInfo: errorInfo?.componentStack,
+                        stack: error?.stack,
+                        type: "developer-view"
+                    });
+                } }
             >
                 <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
                     <Switch>

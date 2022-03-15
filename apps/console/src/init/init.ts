@@ -21,6 +21,8 @@ import { AppUtils } from "./app-utils";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 import TimerWorker from "@wso2is/core/src/workers/timer.worker";
+// DO NOT SHORTEN THE IMPORT PATH as it could lead to circular dependencies.
+import { commonConfig } from "../extensions/configs/common";
 
 
 if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {

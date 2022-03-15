@@ -240,8 +240,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 maxLength={ 300 }
                 minLength={ 3 }
                 data-testid={ `${ testId }-application-description-textarea` }
-                hint={ t("console:develop.features.applications.forms.generalDetails.fields.description." +
-                    "description") }
                 width={ 16 }
             />
             {

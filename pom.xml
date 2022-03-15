@@ -24,7 +24,7 @@
     <groupId>org.wso2.identity.apps</groupId>
     <artifactId>identity-apps</artifactId>
     <packaging>pom</packaging>
-    <version>1.2.726-SNAPSHOT</version>
+    <version>1.2.831-SNAPSHOT</version>
     <name>WSO2 Identity Server Apps - Parent</name>
     <description>WSO2 Identity Server Web Apps</description>
 
@@ -388,6 +388,11 @@
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon.identity.governance</groupId>
+                <artifactId>org.wso2.carbon.identity.captcha</artifactId>
+                <version>${identity.governance.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.governance</groupId>
                 <artifactId>org.wso2.carbon.identity.recovery</artifactId>
                 <version>${identity.governance.version}</version>
             </dependency>
@@ -549,8 +554,9 @@
                             <executable>npm</executable>
                             <arguments>
                                 <argument>run</argument>
-                                <argument>bootstrap:hoist</argument>
+                                <argument>bootstrap</argument>
                             </arguments>
+                            <skip>${bootstrap.exec.skip}</skip>
                             <workingDirectory>${basedir}</workingDirectory>
                         </configuration>
                     </execution>
@@ -659,9 +665,9 @@
         <identity.extension.utils>1.0.8</identity.extension.utils>
         <carbon.identity.framework.version>5.20.337</carbon.identity.framework.version>
         <carbon.identity.framework.imp.pkg.version.range>[5.0.0, 6.0.0)</carbon.identity.framework.imp.pkg.version.range>
-        <carbon.identity.oauth.version>6.7.35</carbon.identity.oauth.version>
+        <carbon.identity.oauth.version>6.7.114</carbon.identity.oauth.version>
         <carbon.identity.oauth.imp.pkg.version.range>[6.1.0, 7.0.0)</carbon.identity.oauth.imp.pkg.version.range>
-        <identity.governance.version>1.4.97</identity.governance.version>
+        <identity.governance.version>1.5.48</identity.governance.version>
         <totp.authenticator.version>3.0.18</totp.authenticator.version>
 
         <commons-io.wso2.version>2.7.0.wso2v1</commons-io.wso2.version>
@@ -687,5 +693,6 @@
         <apache.tomcat-catalina.version>9.0.11</apache.tomcat-catalina.version>
 
         <lint.exec.skip>true</lint.exec.skip>
+        <bootstrap.exec.skip>false</bootstrap.exec.skip>
     </properties>
 </project>

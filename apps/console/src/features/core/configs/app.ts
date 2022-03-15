@@ -19,6 +19,7 @@
 import { DocumentationConstants } from "@wso2is/core/constants";
 import { DocumentationProviders, DocumentationStructureFileTypes } from "@wso2is/core/models";
 import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
+import { getExtendedFeatureResourceEndpoints } from "../../../extensions/configs/endpoints";
 import { getApplicationsResourceEndpoints } from "../../applications";
 import { getCertificatesResourceEndpoints } from "../../certificates";
 import { getClaimResourceEndpoints } from "../../claims";
@@ -88,13 +89,15 @@ export class Config {
                 structureFileURL: window["AppUtils"].getConfig().documentation?.structureFileURL
                     ?? DocumentationConstants.DEFAULT_STRUCTURE_FILE_URL
             },
+            extensions: window["AppUtils"].getConfig().extensions,
             idpConfigs: window["AppUtils"].getConfig().idpConfigs,
             loginCallbackUrl: window["AppUtils"].getConfig().loginCallbackURL,
             serverHost: window["AppUtils"].getConfig().serverOriginWithTenant,
             serverOrigin: window["AppUtils"].getConfig().serverOrigin,
             superTenant: window["AppUtils"].getConfig().superTenant,
             tenant: window["AppUtils"].getConfig().tenant,
-            tenantPath: window["AppUtils"].getConfig().tenantPath
+            tenantPath: window["AppUtils"].getConfig().tenantPath,
+            tenantPrefix: window["AppUtils"].getConfig().tenantPrefix
         };
     }
 
@@ -176,6 +179,7 @@ export class Config {
             ...getGroupsResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getRemoteFetchConfigResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getSecretsManagementEndpoints(this.getDeploymentConfig().serverHost),
+            ...getExtendedFeatureResourceEndpoints(this.getDeploymentConfig().serverHost),
             CORSOrigins: `${this.getDeploymentConfig().serverHost}/api/server/v1/cors/origins`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${this.getDeploymentConfig().serverHost}/scim2/Me`,

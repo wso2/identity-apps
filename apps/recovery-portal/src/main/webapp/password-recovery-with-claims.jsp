@@ -20,6 +20,7 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.base.IdentityRuntimeException" %>
+<%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
@@ -39,6 +40,7 @@
 
 <%
     ReCaptchaApi reCaptchaApi = new ReCaptchaApi();
+    String username = request.getParameter("username");
 
     if (StringUtils.isNotEmpty(tenantDomain)) {
         try {
@@ -65,6 +67,9 @@
     } catch (ApiException e) {
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", e.getMessage());
+        if (!StringUtils.isBlank(username)) {
+            request.setAttribute("username", username);
+        }
         request.getRequestDispatcher("error.jsp").forward(request, response);
         return;
     }
@@ -82,6 +87,9 @@
     } catch (ApiException e) {
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", e.getMessage());
+        if (!StringUtils.isBlank(username)) {
+            request.setAttribute("username", username);
+        }
         request.getRequestDispatcher("error.jsp").forward(request, response);
         return;
     }
@@ -90,6 +98,9 @@
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                 "No.recovery.supported.claims.found"));
+        if (!StringUtils.isBlank(username)) {
+            request.setAttribute("username", username);
+        }
         request.getRequestDispatcher("error.jsp").forward(request, response);
         return;
     }
@@ -130,8 +141,9 @@
 
     <%
         if (reCaptchaEnabled) {
+            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
-    <script src='<%=(request.getAttribute("reCaptchaAPI"))%>'></script>
+    <script src='<%=(reCaptchaAPI)%>'></script>
     <%
         }
     %>
@@ -256,11 +268,12 @@
 
                         <%
                             if (reCaptchaEnabled) {
+                                String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
                         %>
                         <div class="field">
                             <div class="g-recaptcha"
                                  data-sitekey=
-                                         "<%=Encode.forHtmlContent((String)request.getAttribute("reCaptchaKey"))%>">
+                                         "<%=Encode.forHtmlContent(reCaptchaKey)%>">
                             </div>
                         </div>
                         <%

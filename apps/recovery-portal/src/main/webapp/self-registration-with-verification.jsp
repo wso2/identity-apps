@@ -23,6 +23,7 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
+<%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.constants.SelfRegistrationStatusCodes" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
@@ -221,8 +222,9 @@
 
     <%
         if (reCaptchaEnabled) {
+            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
-    <script src='<%=(request.getAttribute("reCaptchaAPI"))%>'></script>
+    <script src='<%=(reCaptchaAPI)%>'></script>
     <%
         }
     %>
@@ -550,10 +552,11 @@
                             <div class="field">
                                 <%
                                     if (reCaptchaEnabled) {
+                                        String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
                                 %>
                                 <div class="field">
                                     <div class="g-recaptcha"
-                                         data-sitekey="<%=Encode.forHtmlContent((String)request.getAttribute("reCaptchaKey"))%>">
+                                         data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>">
                                     </div>
                                 </div>
                                 <%
@@ -809,7 +812,7 @@
 
                 var firstname = $("#firstname").val();
 
-                if (!firstname.trim()) {
+                if (firstname && !firstname.trim()) {
                     error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                         "Invalid.firstname")%>");
                     error_msg.show();
@@ -819,7 +822,7 @@
 
                 var lastname = $("#lastname").val();
 
-                if (!lastname.trim()) {
+                if (lastname && !lastname.trim()) {
                     error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                         "Invalid.lastname")%>");
                     error_msg.show();

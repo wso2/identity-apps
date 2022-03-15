@@ -84,8 +84,8 @@
 
             <div class="ui segment">
                 <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "saml.sso")%></h2>
-                <h4><%=AuthenticationEndpointUtil.i18nBase64(resourceBundle, errorStat)%></h4>
-                <p><%=AuthenticationEndpointUtil.i18nBase64(resourceBundle, errorMsg)%></p>
+                <h4><%=AuthenticationEndpointUtil.i18n(resourceBundle, errorStat)%></h4>
+                <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, errorMsg)%></p>
             </div>
         </div>
     </main>

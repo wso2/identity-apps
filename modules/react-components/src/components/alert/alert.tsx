@@ -16,7 +16,12 @@
  * under the License.
  */
 
-import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    AlertInterface,
+    AlertLevels,
+    IdentifiableComponentInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import NotificationSystem from "react-notification-system";
@@ -29,7 +34,7 @@ import { GenericIcon } from "../icon";
 /**
  * Prop types interface for the Alert component.
  */
-export interface AlertPropsInterface extends TestableComponentInterface {
+export interface AlertPropsInterface extends TestableComponentInterface, IdentifiableComponentInterface {
     /**
      * Unset the position of the alert.
      */
@@ -97,6 +102,7 @@ export const Alert: FunctionComponent<AlertPropsInterface> = (
         dismissInterval,
         onAlertSystemInitialize,
         withIcon,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -152,11 +158,23 @@ export const Alert: FunctionComponent<AlertPropsInterface> = (
             dismissible,
             level: alert.level,
             message: (
-                <div className="alert-message" data-testid={ `${ testId }-${ alert.level }-body` }>
-                    <div className="header bold-text" data-testid={ `${ testId }-${ alert.level }-message` }>
+                <div
+                    className="alert-message"
+                    data-componentid={ `${ componentId }-${ alert.level }-body` }
+                    data-testid={ `${ testId }-${ alert.level }-body` }
+                >
+                    <div
+                        className="header bold-text"
+                        data-componentid={ `${ componentId }-${ alert.level }-message` }
+                        data-testid={ `${ testId }-${ alert.level }-message` }
+                    >
                         { alert.message }
                     </div>
-                    <div className="description" data-testid={ `${ testId }-${ alert.level }-description` }>
+                    <div
+                        className="description"
+                        data-componentid={ `${ componentId }-${ alert.level }-description` }
+                        data-testid={ `${ testId }-${ alert.level }-description` }
+                    >
                         { alert.description }
                     </div>
                 </div>
@@ -172,6 +190,7 @@ export const Alert: FunctionComponent<AlertPropsInterface> = (
                         size="mini"
                         inline
                         spaced="right"
+                        data-componentid={ `${ componentId }-${ alert.level }-icon` }
                         data-testid={ `${ testId }-${ alert.level }-icon` }
                         relaxed
                     />
@@ -193,6 +212,7 @@ export const Alert: FunctionComponent<AlertPropsInterface> = (
              */
             onMouseLeave={ () => setIntermediateDissmissInterval(dismissInterval) } 
             className={ `alert-wrapper ${ classes }` } 
+            data-componentid={ componentId }
             data-testid={ testId }
         >
             <NotificationSystem
@@ -215,6 +235,7 @@ export const Alert: FunctionComponent<AlertPropsInterface> = (
 Alert.defaultProps = {
     absolute: false,
     alertsPosition: "br",
+    "data-componentid": "alert",
     "data-testid": "alert",
     dismissInterval: 15,
     dismissible: true,

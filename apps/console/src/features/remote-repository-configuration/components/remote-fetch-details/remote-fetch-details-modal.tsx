@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CodeEditor, Hint, LinkButton, PrimaryButton, SegmentedAccordion } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
@@ -36,7 +36,7 @@ import {
 /**
  * Remote fetch details props interface.
  */
-interface RemoteFetchDetailsPropsInterface extends TestableComponentInterface {
+interface RemoteFetchDetailsPropsInterface extends IdentifiableComponentInterface {
     isOpen?: boolean;
     onClose?: () => void;
     remoteDeployment: InterfaceRemoteConfigDetails;
@@ -56,7 +56,7 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
         isOpen,
         onClose,
         remoteDeployment,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const dispatch = useDispatch();
@@ -109,7 +109,7 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
             dimmer="blurring"
             size="small"
             className="wizard"
-            data-testid={ `${ testId }-modal` }
+            data-componentid={ `${ componentId }-modal` }
         >
             <Modal.Header className="wizard-header">
                 { t("console:manage.features.remoteFetch.modal.appStatusModal.heading") }
@@ -120,12 +120,12 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
             <Modal.Content
                 scrolling
             >
-                <Grid className="wizard-summary" data-testid={ testId }>
+                <Grid className="wizard-summary" data-componentid={ componentId }>
                     <Grid.Row>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } textAlign="center">
                         <SegmentedAccordion
                             fluid
-                            data-testid={ testId }
+                            data-componentid={ componentId }
                         >
                             {
                                 deploymentStatus && deploymentStatus?.remoteFetchRevisionStatuses.length > 0 &&
@@ -137,7 +137,7 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
                                             <SegmentedAccordion.Title
                                                 id={ value.itemName }
                                                 key={ index }
-                                                data-testid={ `${ testId }-title` }
+                                                data-componentid={ `${ componentId }-title` }
                                                 active={ activeIndex.includes(index) }
                                                 index={ index }
                                                 onClick={ handleAccordionOnClick }
@@ -161,7 +161,7 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
                                             />
                                             <SegmentedAccordion.Content
                                                 active={ activeIndex.includes(index) }
-                                                data-testid={ `${ testId }-content` }
+                                                data-componentid={ `${ componentId }-content` }
                                             >
                                                 <CodeEditor
                                                     className="text-left"
@@ -194,7 +194,7 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <PrimaryButton
                                 floated="right"
-                                data-testid={ `${ testId }-import-button` }
+                                data-componentid={ `${ componentId }-import-button` }
                                 loading={ isSubmitting }
                                 disabled={ isSubmitting }
                                 onClick={ () => {
