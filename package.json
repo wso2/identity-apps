@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/webapps",
-    "version": "1.2.831",
+    "version": "1.2.832",
     "description": "WSO2 Identity Server Web Applications",
     "keywords": [
         "WSO2",
@@ -135,7 +135,6 @@
         "autoprefixer": "^9.8.6",
         "babel-loader": "^8.1.0",
         "babel-plugin-rename-jsx-attribute": "^0.2.4",
-        "brotli-webpack-plugin": "1.1.0",
         "child_process": "^1.0.2",
         "compression-webpack-plugin": "^7.1.2",
         "copy-webpack-plugin": "^7.0.0",

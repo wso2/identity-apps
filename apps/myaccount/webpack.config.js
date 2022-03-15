@@ -18,8 +18,8 @@
 
 const fs = require("fs");
 const path = require("path");
+const zlib = require("zlib");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
-const BrotliPlugin = require("brotli-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ESLintPlugin = require("eslint-webpack-plugin");
@@ -551,13 +551,19 @@ module.exports = (env) => {
                 algorithm: "gzip",
                 filename: "[path][base].gz",
                 minRatio: 0.8,
-                test: /\.(js|css|html|svg)$/,
+                test: /\.js$|\.css$|\.html$|\.png$|\.svg$|\.jpeg$|\.jpg$/,
                 threshold: 10240
             }),
-            isProduction && new BrotliPlugin({
-                asset: "[path].br[query]",
+            isProduction && new CompressionPlugin({
+                algorithm: "brotliCompress",
+                compressionOptions: {
+                    params: {
+                        [ zlib.constants.BROTLI_PARAM_QUALITY ]: 11
+                    }
+                },
+                filename: "[path][base].br",
                 minRatio: 0.8,
-                test: /\.(js|css|html|svg)$/,
+                test: /\.(js|css|html|png|svg|jpeg|jpg)$/,
                 threshold: 10240
             }),
             !isESLintPluginDisabled && new ESLintPlugin({

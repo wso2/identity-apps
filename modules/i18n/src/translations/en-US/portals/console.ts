@@ -2263,6 +2263,12 @@ export const console: ConsoleNS = {
                         name: "Name"
                     }
                 },
+                myaccount: {
+                    description: "Self-service portal for your users",
+                    popup: "Share this link with your users to allow access to My Account" +
+                    " and to manage their accounts.",
+                    title: "My Account"
+                },
                 notifications: {
                     addApplication: {
                         error: {
