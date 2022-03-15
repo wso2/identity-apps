@@ -357,6 +357,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                     key={ index }
                                                     label={ name }
                                                     name={ selectedTypeDetail.name }
+                                                    className="addon-field-wrapper"
                                                     type="password"
                                                     required={ true }
                                                     requiredErrorMessage={

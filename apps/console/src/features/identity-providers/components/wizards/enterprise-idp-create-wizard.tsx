@@ -659,6 +659,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 />
                 <Field.Input
                     ariaLabel="clientSecret"
+                    className="addon-field-wrapper"
                     inputType="password"
                     name="clientSecret"
                     label={ "Client secret" }

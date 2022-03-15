@@ -254,6 +254,7 @@ export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
                         <Field.Input
                             ariaLabel="Google Client Secret"
                             inputType="password"
+                            className="addon-field-wrapper"
                             name="clientSecret"
                             label={
                                 t("console:develop.features.authenticationProvider.templates.google" +

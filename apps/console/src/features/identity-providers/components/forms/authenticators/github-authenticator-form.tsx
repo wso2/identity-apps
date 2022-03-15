@@ -309,6 +309,7 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
             />
             <Field.Input
                 ariaLabel="GitHub authenticator client secret"
+                className="addon-field-wrapper"
                 inputType="password"
                 type="password"
                 name="ClientSecret"

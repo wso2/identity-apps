@@ -261,6 +261,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
                                 data-testid="user-mgt-add-user-form-newPassword-input"
+                                className="addon-field-wrapper"
                                 hidePassword={ t("common:hidePassword") }
                                 label={ t(
                                     "console:manage.features.user.forms.addUserForm.inputs.newPassword.label"
@@ -336,6 +337,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             <Field
                                 ref={ confirmPasswordRef }
                                 data-testid="user-mgt-add-user-form-confirmPassword-input"
+                                className="addon-field-wrapper"
                                 hidePassword={ t("common:hidePassword") }
                                 label={ t(
                                     "console:manage.features.user.forms.addUserForm.inputs.confirmPassword.label"

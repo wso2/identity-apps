@@ -128,6 +128,7 @@ export const OidcAuthenticationWizardFrom = (props: OidcAuthenticationWizardFrom
                     <Field.Input
                         ariaLabel= "clientSecret"
                         inputType="password"
+                        className="addon-field-wrapper"
                         name="clientSecret"
                         label={ "Client secret" }
                         required={ true }
