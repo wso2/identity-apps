@@ -258,6 +258,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                             <Field
                                 data-testid="user-mgt-edit-user-form-newPassword-input"
+                                className="addon-field-wrapper"
                                 hidePassword={ t("common:hidePassword") }
                                 label={ t(
                                     "console:manage.features.user.forms.addUserForm.inputs.newPassword.label"
@@ -294,6 +295,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                             <Field
                                 data-testid="user-mgt-edit-user-form-confirmPassword-input"
+                                className="addon-field-wrapper"
                                 hidePassword={ t("common:hidePassword") }
                                 label={ t(
                                     "console:manage.features.user.forms.addUserForm.inputs.confirmPassword.label"
@@ -491,6 +493,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                            <Field
                                data-testid="user-mgt-edit-user-form-newPassword-input"
+                               className="addon-field-wrapper"
                                hidePassword={ t("common:hidePassword") }
                                label={ t(
                                    "console:manage.features.user.forms.addUserForm.inputs.newPassword.label"
@@ -527,6 +530,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                            <Field
                                data-testid="user-mgt-edit-user-form-confirmPassword-input"
+                               className="addon-field-wrapper"
                                hidePassword={ t("common:hidePassword") }
                                label={ t(
                                    "console:manage.features.user.forms.addUserForm.inputs.confirmPassword.label"

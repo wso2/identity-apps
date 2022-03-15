@@ -342,6 +342,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
             />
             <Field.Input
                 ariaLabel="Google authenticator client secret"
+                className="addon-field-wrapper"
                 inputType="password"
                 type="password"
                 name="ClientSecret"
