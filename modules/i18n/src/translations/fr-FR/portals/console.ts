@@ -2302,6 +2302,12 @@ export const console: ConsoleNS = {
                         name: "Nom"
                     }
                 },
+                myaccount: {
+                    description: "Portail libre-service pour les utilisateurs d'Asgardeo",
+                    popup: "Partagez ce lien avec vos utilisateurs pour autoriser" +
+                    " l'accès à Mon compte et gérer leurs comptes.",
+                    title: "Mon compte"
+                },
                 notifications: {
                     addApplication: {
                         error: {
