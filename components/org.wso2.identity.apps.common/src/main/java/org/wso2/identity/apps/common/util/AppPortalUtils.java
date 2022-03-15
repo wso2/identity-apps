@@ -129,6 +129,7 @@ public class AppPortalUtils {
         serviceProvider.setApplicationName(appName);
         serviceProvider.setDescription(appDescription);
         serviceProvider.setSaasApp(true);
+        serviceProvider.setManagementApp(true);
 
         InboundAuthenticationRequestConfig inboundAuthenticationRequestConfig
                 = new InboundAuthenticationRequestConfig();
