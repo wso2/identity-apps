@@ -136,7 +136,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const [ isApplicationsNextPageAvailable, setIsApplicationsNextPageAvailable ] = useState<boolean>(undefined);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const consumerAccountURL: string = useSelector((state: AppState) => 
-        state.config.deployment.accountApp.tenantQualifiedPath);
+        state?.config?.deployment?.accountApp?.tenantQualifiedPath);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
