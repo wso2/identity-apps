@@ -25,7 +25,12 @@ import { Accordion, AccordionContentProps, Segment } from "semantic-ui-react";
  * Proptypes for the segmented accordion content component.
  */
 export interface SegmentedAccordionContentPropsInterface extends AccordionContentProps, IdentifiableComponentInterface,
-    TestableComponentInterface { }
+    TestableComponentInterface {
+        /**
+         * Should the segment be rendered as an empasized segment.
+         */
+        emphasized?: boolean;
+    }
 
 /**
  * Segmented accordion content component.
@@ -41,6 +46,7 @@ export const SegmentedAccordionContent: FunctionComponent<SegmentedAccordionCont
     const {
         className,
         children,
+        emphasized,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
@@ -49,6 +55,9 @@ export const SegmentedAccordionContent: FunctionComponent<SegmentedAccordionCont
     const classes = classNames(
         "segmented-accordion-content",
         "lighter-bg",
+        {
+            emphasized
+        },
         className
     );
 
