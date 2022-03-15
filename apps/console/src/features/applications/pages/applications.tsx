@@ -298,7 +298,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         return (
             <EmphasizedSegment
                 className="mt-0 mb-5"
-                data-testid={ `${ testId }-consumer-account-link` }
+                data-componentid="application-consumer-account-link"
             >
                 <List>
                     <List.Item>
@@ -319,12 +319,12 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                 />
                                 <List.Header
                                     className="mb-1"
-                                    data-testid={ `${ testId }-consumer-account-link-title` }
+                                    data-componentid="application-consumer-account-link-title"
                                 >
                                     { t("console:develop.features.applications.myaccount.title") }
                                 </List.Header>
                                 <List.Description
-                                    data-testid={ `${ testId }-consumer-account-link-description` }
+                                    data-componentid="application-consumer-account-link-description"
                                 >
                                     { t("console:develop.features.applications.myaccount.description") }
                                 </List.Description>
@@ -337,7 +337,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     >
                                         <CopyInputField
                                             value={ consumerAccountURL }
-                                            data-testid={ `${ testId }-consumer-account-link-copy-field` }
+                                            data-componentid={ "application-consumer-account-link-copy-field" }
                                         />
                                     </Grid.Column>)
                                 }
