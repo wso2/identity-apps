@@ -124,5 +124,6 @@ export const FieldColorPicker: FunctionComponent<FieldColorPickerPropsInterface>
  * Default props for the component.
  */
 FieldColorPicker.defaultProps = {
-    "data-componentid": "color-picker-field"
+    "data-componentid": "color-picker-field",
+    editableInput: false
 };

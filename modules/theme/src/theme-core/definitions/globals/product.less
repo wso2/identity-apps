@@ -2166,6 +2166,12 @@ code {
         }
     }
 
+    &:not(.editable) {
+        input[readonly] {
+            background: initial !important;
+        }
+    }
+
     &.readonly {
         .color-swatch {
             background: @readOnlyFormFieldBgColor;

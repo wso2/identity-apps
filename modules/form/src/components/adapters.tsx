@@ -498,6 +498,7 @@ export const ColorPickerAdapter = (props: ColorPickerAdapterPropsInterface): Rea
     // unused, just don't pass it along with the ...rest
     const {
         /* eslint-disable @typescript-eslint/no-unused-vars */
+        editableInput,
         type,
         meta,
         hint,
@@ -520,12 +521,18 @@ export const ColorPickerAdapter = (props: ColorPickerAdapterPropsInterface): Rea
                 <Form.Field>
                     <label>{ childFieldProps.label !== "" ? childFieldProps.label : null }</label>
                     <Input
-                        className={ `color-picker-input ${ readOnly ? "readonly" : "" }` }
+                        className={
+                            `color-picker-input ${ readOnly ? "readonly" : "" } ${ editableInput ? "editable" : "" }`
+                        }
                         aria-label={ childFieldProps.ariaLabel }
                         key={ childFieldProps.testId }
                         required={ childFieldProps.required }
                         data-componentid={ childFieldProps.componentId }
                         onChange={ (event, data) => {
+                            if (!editableInput) {
+                                return;
+                            }
+
                             if (childFieldProps.listen && typeof childFieldProps.listen === "function") {
                                 childFieldProps.listen(data?.value);
                             }
@@ -555,7 +562,7 @@ export const ColorPickerAdapter = (props: ColorPickerAdapterPropsInterface): Rea
                         <div className="color-swatch">
                             <div className="color-swatch-inner" style={ { background: value } } />
                         </div>
-                        <input />
+                        <input readOnly={ !editableInput } />
                     </Input>
                 </Form.Field>
             ) }
