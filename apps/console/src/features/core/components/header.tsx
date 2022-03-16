@@ -18,13 +18,13 @@
 
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { AnnouncementBannerInterface, ProfileInfoInterface } from "@wso2is/core/models";
-import { CommonUtils as ReusableCommonUtils, LocalStorageUtils } from "@wso2is/core/utils";
+import { LocalStorageUtils, CommonUtils as ReusableCommonUtils } from "@wso2is/core/utils";
 import {
     Announcement,
     AppSwitcher,
+    GenericIcon,
     Logo,
     ProductBrand,
-    GenericIcon,
     Header as ReusableHeader,
     HeaderPropsInterface as ReusableHeaderPropsInterface
 } from "@wso2is/react-components";
@@ -35,14 +35,14 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Menu } from "semantic-ui-react";
-import { commonConfig } from "../../../extensions/configs";
+import { AppViewExtensionTypes, commonConfig } from "../../../extensions";
+import { ApplicationListInterface, getApplicationList } from "../../applications";
+import { AppSwitcherIcons, getAppHeaderIcons } from "../configs";
+import { AppConstants } from "../constants";
 import { history } from "../helpers";
 import { AppViewTypes, ConfigReducerStateInterface, StrictAppViewTypes } from "../models";
 import { AppState, setActiveView } from "../store";
 import { CommonUtils, EventPublisher } from "../utils";
-import { ApplicationListInterface, getApplicationList } from "../../applications";
-import { AppSwitcherIcons, getAppHeaderIcons } from "../configs";
-import { AppConstants } from "../constants";
 
 /**
  * Dashboard layout Prop types.
@@ -292,11 +292,11 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             itemExtensions[0].component = (
                 currentActiveView?: AppViewTypes, onClickCb?: (newActiveView: AppViewTypes) => void) => (
                 <Menu.Item
-                    active={ currentActiveView === "QUICKSTART" as AppViewTypes }
+                    active={ currentActiveView === AppViewExtensionTypes?.QUICKSTART }
                     className="secondary-panel-item quickstart-page-switch"
                     onClick={ () => {
                         history.push(`${ AppConstants.getMainViewBasePath() }/getting-started`);
-                        onClickCb && onClickCb("QUICKSTART" as AppViewTypes);
+                        onClickCb && onClickCb(AppViewExtensionTypes?.QUICKSTART);
                     } }
                     data-testid="app-header-quick-start-switch"
                 >

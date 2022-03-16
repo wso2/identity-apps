@@ -72,11 +72,13 @@ export interface CommonConfig {
 
 /**
  * Types of views that are extended.
- * @remarks Any views other thant `DEVELOP` and `MANAGE` can go here.
+ * @remarks Any views other than `DEVELOP` and `MANAGE` can go here.
  * @readonly
  * @enum {string}
  */
-export enum AppViewExtensionTypes { }
+export enum AppViewExtensionTypes {
+    QUICKSTART = "QUICKSTART"
+}
 
 /**
  * Interface for the extended feature configs.
