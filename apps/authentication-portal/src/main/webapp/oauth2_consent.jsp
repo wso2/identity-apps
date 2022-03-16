@@ -328,7 +328,7 @@
                                     value="<%=Encode.forHtmlAttribute(request.getParameter(Constants.SESSION_DATA_KEY_CONSENT))%>"/>
                             <input type="hidden" name="consent" id="consent" value="deny"/>
 
-                            <input class="ui large button link-button" type="reset"
+                            <input class="ui large button secondary" type="reset"
                                 onclick="deny(); return false;"
                                 value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"deny")%>" />
                             <input type="button" class="ui primary large button" id="approve" name="approve"

@@ -27,6 +27,7 @@ import { FieldColorPicker } from "./field-color-picker";
 import { FieldDropdown } from "./field-dropdown";
 import { FieldInput } from "./field-input";
 import { FieldQueryParams } from "./field-query-params";
+import { FieldRadio } from "./field-radio";
 import { FieldTextarea } from "./field-textarea";
 
 export interface FormFieldPropsInterface extends FieldProps<any, any, any>, TestableComponentInterface,
@@ -55,6 +56,7 @@ type FieldType = FC<FormFieldPropsInterface> & {
     Dropdown: typeof FieldDropdown;
     QueryParams: typeof FieldQueryParams;
     ColorPicker: typeof FieldColorPicker;
+    Radio: typeof FieldRadio;
 }
 
 /**
@@ -102,3 +104,4 @@ Field.Checkbox = FieldCheckbox;
 Field.Dropdown = FieldDropdown;
 Field.QueryParams = FieldQueryParams;
 Field.ColorPicker = FieldColorPicker;
+Field.Radio = FieldRadio;

@@ -115,7 +115,7 @@
                                 <button class="ui right floated button primary" type="button" onclick="retry()">
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.retry" )%>
                                 </button>
-                                <button class="ui right floated button link-button" type="button" onclick="cancelFlow()">
+                                <button class="ui right floated button secondary" type="button" onclick="cancelFlow()">
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.cancel" )%>
                                 </button>
                             </div>

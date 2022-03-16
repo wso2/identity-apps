@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,14 +20,14 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Hint, MessageWithIcon } from "@wso2is/react-components";
 import React, { Fragment, FunctionComponent, ReactElement } from "react";
 import { Field as FinalFormField } from "react-final-form";
-import { ColorPickerAdapter } from "./adapters";
+import { RadioAdapter } from "./adapters";
 import { FormFieldPropsInterface } from "./field";
 import { FormFieldMessage } from "../models";
 
 /**
- * Interface for the Color Picker field component.
+ * Interface for the Radio field component.
  */
-export interface FieldColorPickerPropsInterface extends FormFieldPropsInterface, IdentifiableComponentInterface {
+export interface FieldRadioPropsInterface extends FormFieldPropsInterface, IdentifiableComponentInterface {
 
     /**
      * Hint of the form field.
@@ -44,51 +44,54 @@ export interface FieldColorPickerPropsInterface extends FormFieldPropsInterface,
 }
 
 /**
- * Implementation of the Color Picker component.
+ * Implementation of the Radio Field component.
  *
- * @param {FieldColorPickerPropsInterface} props - Props injected to the component.
+ * @param {FieldRadioPropsInterface} props - Props injected to the component.
  *
  * @return {React.ReactElement}
  */
-export const FieldColorPicker: FunctionComponent<FieldColorPickerPropsInterface> = (
-    props: FieldColorPickerPropsInterface
+export const FieldRadio: FunctionComponent<FieldRadioPropsInterface> = (
+    props: FieldRadioPropsInterface
 ): ReactElement => {
 
     const {
+        [ "data-componentid" ]: componentId,
         hint,
         message,
-        name,
-        [ "data-testid" ]: testId
+        ...rest
     } = props;
 
-    /**
-     * Resolves the input message.
-     * @return {ReactElement}
-     */
-    const resolveInputFieldMessage = (): ReactElement => {
-        switch (message.type) {
+    const resolveInputFieldMessage = () => {
+
+        const  {
+            type,
+            content,
+            header
+        } = message;
+
+        switch (type) {
             case "info":
                 return (
                     <MessageWithIcon
-                        type={ message.type }
-                        content={ message.content }
-                        header={ message.header }
+                        type={ type }
+                        content={ content }
+                        header={ header }
                     />
                 );
             case "warning":
                 return (
                     <MessageWithIcon
-                        type={ message.type }
-                        content={ message.content }
-                        header={ message.header }
+                        type={ type }
+                        content={ content }
+                        header={ header }
                     />
                 );
             case "error":
                 return (
                     <MessageWithIcon
-                        type={ message.type }
-                        content={ message.content }
-                        header={ message.header }
+                        type={ type }
+                        content={ content }
+                        header={ header }
                     />
                 );
         }
@@ -97,12 +100,11 @@ export const FieldColorPicker: FunctionComponent<FieldColorPickerPropsInterface>
     return (
         <Fragment>
             <FinalFormField
-                key={ testId }
-                type="text"
-                name={ name }
-                parse={ value => value }
-                component={ ColorPickerAdapter }
-                { ...props }
+                key={ componentId }
+                type="radio"
+                component={ RadioAdapter }
+                data-componentid={ componentId }
+                { ...rest }
             />
             {
                 hint && (
@@ -111,11 +113,7 @@ export const FieldColorPicker: FunctionComponent<FieldColorPickerPropsInterface>
                     </Hint>
                 )
             }
-            {
-                message && (
-                    resolveInputFieldMessage()
-                )
-            }
+            { message && resolveInputFieldMessage() }
         </Fragment>
     );
 };
@@ -123,7 +121,6 @@ export const FieldColorPicker: FunctionComponent<FieldColorPickerPropsInterface>
 /**
  * Default props for the component.
  */
-FieldColorPicker.defaultProps = {
-    "data-componentid": "color-picker-field",
-    editableInput: false
+FieldRadio.defaultProps = {
+    "data-testid": "radio-field"
 };

@@ -119,7 +119,7 @@
                                 </div>
 
                                 <div class="align-right buttons">
-                                    <input type="button" name="cancel" id="cancel" value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "cancel")%>" class="ui button link-button">
+                                    <input type="button" name="cancel" id="cancel" value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "cancel")%>" class="ui button secondary">
                                     <input type="button" name="continue" id="continue" value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>" class="ui primary button">
                                 </div>
                             </form>
@@ -134,7 +134,7 @@
                 </div>
                 <div class="actions">
                     <div class="align-right buttons">
-                        <input type="button" name="cancelM" id="cancelM" value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "cancel")%>" class="ui button link-button">
+                        <input type="button" name="cancelM" id="cancelM" value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "cancel")%>" class="ui button secondary">
                         <input type="button" name="continueM" id="continueM" value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>" class="ui primary button">
                     </div>
                 </div>

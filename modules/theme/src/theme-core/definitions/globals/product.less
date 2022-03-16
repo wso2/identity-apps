@@ -1214,6 +1214,9 @@ body {
             }
         }
     }
+    &.inverted {
+        background: @genericIconInvertedBackgroundColor;
+    }
     &.hoverable {
         display: flex;
 
@@ -2128,17 +2131,8 @@ code {
 }
 
 /*-------------------------------
-         Image Previews
+        Color Picker
 --------------------------------*/
-
-.image-preview {
-    border: @imagePreviewBorder;
-    height: @imagePreviewHeight;
-    display: flex;
-    align-items: center;
-    border-radius: @imagePreviewBorderRadius;
-    justify-content: center;
-}
 
 .color-picker-popup {
     padding: 0 !important;
@@ -2169,6 +2163,12 @@ code {
             height: 100%;
             border-radius: @defaultBorderRadius;
             border: @defaultBorderWidth solid @defaultBorderColor;
+        }
+    }
+
+    &:not(.editable) {
+        input[readonly] {
+            background: initial !important;
         }
     }
 

@@ -18,7 +18,18 @@
 
 import { ColorPickerPropsInterface } from "@wso2is/react-components";
 import { CheckboxProps, InputProps } from "semantic-ui-react";
-import { CheckboxField } from "./form";
+import { CheckboxField, RadioField } from "./form";
+
+/**
+ * Radio Adapter props interface.
+ */
+export interface RadioAdapterPropsInterface extends CheckboxProps {
+
+    /**
+     * Props for the child.
+     */
+    childFieldProps: RadioField;
+}
 
 /**
  * Checkbox adapter props interface.

@@ -158,7 +158,7 @@
 
                                 <div class="ten wide column mobile center aligned tablet left aligned computer left aligned buttons tablet no-padding-left-first-child computer no-padding-left-first-child">
                                     <% if(isSendVerificationCodeByEmailEnabled) { %>
-                                        <a class="ui button link-button" id="genToken" href="#"
+                                        <a class="ui button secondary" id="genToken" href="#"
                                         onclick="return requestTOTPToken();">
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "get.verification.code")%>
                                         </a>
@@ -166,7 +166,7 @@
                                         String multiOptionURI = request.getParameter("multiOptionURI");
                                         if (multiOptionURI != null) {
                                     %>
-                                        <a class="ui button link-button" id="goBackLink"
+                                        <a class="ui button secondary" id="goBackLink"
                                             href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
                                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "choose.other.option")%>
                                         </a>
@@ -183,7 +183,7 @@
                                 String multiOptionURI = request.getParameter("multiOptionURI");
                                 if (multiOptionURI != null && isSendVerificationCodeByEmailEnabled) {
                             %>
-                                <a class="ui button link-button" id="goBackLink"
+                                <a class="ui button secondary" id="goBackLink"
                                 href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "choose.other.option")%>
                                 </a>

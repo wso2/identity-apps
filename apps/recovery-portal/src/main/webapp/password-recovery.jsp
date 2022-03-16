@@ -45,14 +45,14 @@
     if (StringUtils.isBlank(tenantDomain)) {
         tenantDomain = IdentityManagementEndpointConstants.SUPER_TENANT;
     }
-    
+
     // The user could have already been resolved and sent here.
     // Trying to resolve tenant domain from user to handle saas scenario.
     if (isSaaSApp &&
             StringUtils.isNotBlank(username) &&
             !IdentityTenantUtil.isTenantQualifiedUrlsEnabled() &&
             StringUtils.equals(tenantDomain, IdentityManagementEndpointConstants.SUPER_TENANT)) {
-        
+
         tenantDomain = IdentityManagementServiceUtil.getInstance().getUser(username).getTenantDomain();
     }
 
@@ -280,7 +280,7 @@
                         %>
                         <div class="ui divider hidden"></div>
                         <div class="align-right buttons">
-                            <a href="javascript:goBack()" class="ui button link-button">
+                            <a href="javascript:goBack()" class="ui button secondary">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
                             </a>
                             <button id="recoverySubmit"

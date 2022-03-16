@@ -38,6 +38,7 @@
 @genericIconCircularHoverPadding: 10px;
 @genericIconCircularHoverWidth: fit-content;
 @genericIconCircularHoverMargin: 0 auto;
+@genericIconInvertedBackgroundColor: @black;
 
 /*-------------------
    Advanced search
@@ -224,11 +225,3 @@
 
 @preLoaderWrapperBackgroundColor: @white;
 @preLoaderWrapperBackgroundImage: none;
-
-/*-------------------------------
-        Image Preview
---------------------------------*/
-
-@imagePreviewBorder: 2px dashed @defaultBorderColor;
-@imagePreviewHeight: 120px;
-@imagePreviewBorderRadius: @defaultBorderRadius;
