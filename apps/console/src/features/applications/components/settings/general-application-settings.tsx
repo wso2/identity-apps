@@ -92,6 +92,10 @@ interface GeneralApplicationSettingsInterface extends SBACInterface<FeatureConfi
      * Application template.
      */
     template?: ApplicationTemplateListItemInterface;
+    /**
+     * Specifies a Management Application
+     */
+    isManagementApp?: boolean;
 }
 
 /**
@@ -118,6 +122,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         onDelete,
         onUpdate,
         readOnly,
+        isManagementApp,
         [ "data-testid" ]: testId
     } = props;
 
@@ -287,6 +292,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                             }
                             data-testid={ `${ testId }-form` }
                             isSubmitting={ isSubmitting }
+                            isManagementApp={ isManagementApp }
                         />
                     </EmphasizedSegment>
                     <Divider hidden />

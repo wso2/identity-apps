@@ -752,7 +752,10 @@ export interface ConsoleNS {
                             imageUrl: FormAttributes;
                             discoverable: FormAttributes;
                             accessUrl: FormAttributes;
+                            isManagementApp: FormAttributes;
                         };
+                        managementAppBanner: string;
+                        
                     };
                     inboundCustom: {
                         fields: {

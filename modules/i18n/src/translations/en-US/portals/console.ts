@@ -1355,6 +1355,10 @@ export const console: ConsoleNS = {
                                     invalid: "This is not a valid image URL"
                                 }
                             },
+                            isManagementApp: {
+                                hint: "Enable to allow the application to access management API of this organization.",
+                                label: "Management Application"
+                            },
                             name: {
                                 label: "Name",
                                 placeholder: "My App",
@@ -1364,7 +1368,9 @@ export const console: ConsoleNS = {
                                     empty: "Application name is required."
                                 }
                             }
-                        }
+                        },
+                        managementAppBanner: "The application is allowed to access the management APIs of this " +
+                            "organization."
                     },
                     inboundCustom: {
                         fields: {

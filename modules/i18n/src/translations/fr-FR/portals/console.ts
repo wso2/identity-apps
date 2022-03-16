@@ -1388,6 +1388,11 @@ export const console: ConsoleNS = {
                                     invalid: "Ceci n'est pas une URL d'image valide"
                                 }
                             },
+                            isManagementApp: {
+                                hint: "Activez pour autoriser l'application à accéder à l'API de gestion de cette " +
+                                "organisation.",
+                                label: "Application de gestion"
+                            },
                             name: {
                                 label: "Nom",
                                 placeholder: "Mon appli",
@@ -1395,7 +1400,9 @@ export const console: ConsoleNS = {
                                     empty: "Ceci est un champ obligatoire."
                                 }
                             }
-                        }
+                        },
+                        managementAppBanner: "L'application est autorisée à accéder aux API de gestion de cette " +
+                            "organisation."
                     },
                     inboundCustom: {
                         fields: {

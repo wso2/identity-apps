@@ -1361,6 +1361,10 @@ export const console: ConsoleNS = {
                                     invalid: "මෙය වලංගු රූප URL එකක් නොවේ"
                                 }
                             },
+                            isManagementApp: {
+                                hint: "මෙම සංවිධානයේ කළමනාකරණ API වෙත ප්‍රවේශ වීමට යෙදුමට ඉඩ දීමට සබල කරන්න.",
+                                label: "කළමනාකරණ යෙදුම"
+                            },
                             name: {
                                 label: "නම",
                                 placeholder: "මගේ යෙදුම",
@@ -1370,7 +1374,8 @@ export const console: ConsoleNS = {
                                     empty: "මෙය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි."
                                 }
                             }
-                        }
+                        },
+                        managementAppBanner: "මෙම සංවිධානයේ කළමනාකරණ API වෙත ප්‍රවේශ වීමට යෙදුමට අවසර ඇත."
                     },
                     inboundCustom: {
                         fields: {

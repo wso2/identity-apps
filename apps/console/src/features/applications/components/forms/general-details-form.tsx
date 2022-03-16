@@ -18,9 +18,11 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
+import { DocumentationLink, Message, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { Divider, Icon } from "semantic-ui-react";
 import { AppState, UIConfigInterface } from "../../../core";
 import { ApplicationManagementConstants } from "../../constants";
 
@@ -68,6 +70,10 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
      * Specifies if the form is submitting.
      */
     isSubmitting?: boolean;
+    /**
+     * Specifies a Management Application
+     */
+    isManagementApp?: boolean;
 }
 
 /**
@@ -102,10 +108,13 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         onSubmit,
         readOnly,
         isSubmitting,
+        isManagementApp,
         [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
+
+    const { getLink } = useDocumentation();
 
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
 
@@ -199,6 +208,28 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             } }
             validate={ validateForm }
         >
+            { getLink("develop.connections.newConnection.enterprise.samlLearnMore") === undefined
+                ? null
+                : <Divider hidden/>
+            }
+            { isManagementApp && (
+                <Message className="with-inline-icon" icon visible info small >
+                    <div className="ui grid">
+                        <div className="one wide column pt-0 pb-0 mt-1">
+                            <Icon name="info" size="large"/>
+                        </div>
+                        <div className="fifteen wide column pt-0 pb-0">
+                            { t("console:develop.features.applications.forms.generalDetails.managementAppBanner") } 
+                            <DocumentationLink 
+                                link={ getLink("develop.applications.managementApplication.learnMore") } >
+                                {
+                                    t("common:learnMore")
+                                }
+                            </DocumentationLink>
+                        </div>
+                    </div>
+                </Message>
+            ) }
             { !UIConfig.systemAppsIdentifiers.includes(name) && (
                 <Field.Input
                     ariaLabel="Application name"
