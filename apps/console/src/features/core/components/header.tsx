@@ -292,11 +292,12 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             itemExtensions[0].component = (
                 currentActiveView?: AppViewTypes, onClickCb?: (newActiveView: AppViewTypes) => void) => (
                 <Menu.Item
-                    active={ currentActiveView === AppViewExtensionTypes?.QUICKSTART }
+                    active={ currentActiveView === commonConfig.header.headerQuickstartMenuItem }
                     className="secondary-panel-item quickstart-page-switch"
                     onClick={ () => {
                         history.push(`${ AppConstants.getMainViewBasePath() }/getting-started`);
-                        onClickCb && onClickCb(AppViewExtensionTypes?.QUICKSTART);
+                        onClickCb &&
+                        onClickCb(commonConfig.header.headerQuickstartMenuItem as AppViewTypes);
                     } }
                     data-testid="app-header-quick-start-switch"
                 >

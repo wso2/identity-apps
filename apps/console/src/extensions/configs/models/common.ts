@@ -48,6 +48,10 @@ export interface CommonConfig {
          * Should the app switcher be shown as nine dots dropdown.
          */
         renderAppSwitcherAsDropdown: boolean;
+        /**
+         * Header menu item config.
+         */
+        headerQuickstartMenuItem: string;
     };
     leftNavigation: {
         /**
@@ -76,9 +80,7 @@ export interface CommonConfig {
  * @readonly
  * @enum {string}
  */
-export enum AppViewExtensionTypes {
-    QUICKSTART = "QUICKSTART"
-}
+export enum AppViewExtensionTypes { }
 
 /**
  * Interface for the extended feature configs.
