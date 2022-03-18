@@ -48,6 +48,10 @@ export interface CommonConfig {
          * Should the app switcher be shown as nine dots dropdown.
          */
         renderAppSwitcherAsDropdown: boolean;
+        /**
+         * Header menu item config.
+         */
+        headerQuickstartMenuItem: string;
     };
     leftNavigation: {
         /**
@@ -72,7 +76,7 @@ export interface CommonConfig {
 
 /**
  * Types of views that are extended.
- * @remarks Any views other thant `DEVELOP` and `MANAGE` can go here.
+ * @remarks Any views other than `DEVELOP` and `MANAGE` can go here.
  * @readonly
  * @enum {string}
  */

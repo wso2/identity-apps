@@ -132,6 +132,7 @@ import { ReactComponent as ReactLogo } from "../../../themes/default/assets/imag
 import { ReactComponent as VueLogo } from "../../../themes/default/assets/images/technologies/vue-logo.svg";
 import { ReactComponent as WindowsLogo } from "../../../themes/default/assets/images/technologies/windows-logo.svg";
 import { ServerConfigurationsConstants } from "../../server-configurations/constants";
+import { ReactComponent as HomeIcon } from "../../../themes/default/assets/images/icons/outline-icons/home-outline.svg";
 
 /**
  * Typed interface of {@link getTechnologyLogos}
@@ -490,5 +491,24 @@ export const getGeneralIcons = (): GetGeneralIconsInterface => {
     return {
         crossIcon: CrossIcon,
         myAccountSolidIcon: MyAccountSolidIcon
+    };
+};
+
+/**
+ * Typed interface of {@link getAppHeaderIcons}
+ */
+export type GetAppHeaderIconsInterface = {
+    homeIcon: FunctionComponent,
+};
+
+/**
+ * App Header Icons. Please add the types to
+ * {@link GetAppHeaderIconsInterface} if introducing
+ * new icons/images.
+ */
+export const getAppHeaderIcons = (): GetAppHeaderIconsInterface => {
+
+    return {
+        homeIcon: HomeIcon
     };
 };

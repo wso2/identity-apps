@@ -31,6 +31,7 @@ export const commonConfig: CommonConfig = {
         getHeaderExtensions: (): HeaderExtension[] => [],
         getHeaderSubPanelExtensions: (): HeaderSubPanelItemInterface[] => [],
         getUserDropdownLinkExtensions: (): HeaderLinkCategoryInterface[] => [],
+        headerQuickstartMenuItem: "",
         renderAppSwitcherAsDropdown: false
     },
     leftNavigation: {

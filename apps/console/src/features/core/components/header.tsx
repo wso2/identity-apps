@@ -18,10 +18,11 @@
 
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { AnnouncementBannerInterface, ProfileInfoInterface } from "@wso2is/core/models";
-import { CommonUtils as ReusableCommonUtils } from "@wso2is/core/utils";
+import { LocalStorageUtils, CommonUtils as ReusableCommonUtils } from "@wso2is/core/utils";
 import {
     Announcement,
     AppSwitcher,
+    GenericIcon,
     Logo,
     ProductBrand,
     Header as ReusableHeader,
@@ -34,8 +35,10 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Menu } from "semantic-ui-react";
-import { commonConfig } from "../../../extensions/configs";
-import { AppSwitcherIcons } from "../configs";
+import { AppViewExtensionTypes, commonConfig } from "../../../extensions";
+import { ApplicationListInterface, getApplicationList } from "../../applications";
+import { AppSwitcherIcons, getAppHeaderIcons } from "../configs";
+import { AppConstants } from "../constants";
 import { history } from "../helpers";
 import { AppViewTypes, ConfigReducerStateInterface, StrictAppViewTypes } from "../models";
 import { AppState, setActiveView } from "../store";
@@ -109,6 +112,28 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>(undefined);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    /**
+     * Check if there are applications registered and set the value to local storage.
+     */
+    useEffect(() => {
+        if (!isEmpty(LocalStorageUtils.getValueFromLocalStorage("IsAppsAvailable"))
+            && LocalStorageUtils.getValueFromLocalStorage("IsAppsAvailable") === "true") {
+            return;
+        }
+
+        getApplicationList(null, null, null)
+            .then(
+                (response: ApplicationListInterface) => {
+                    LocalStorageUtils.setValueInLocalStorage("IsAppsAvailable", response.totalResults > 0
+                        ? "true" : "false"
+                );
+            })
+            .catch(() => {
+                // Add debug logs here one a logger is added.
+                // Tracked here https://github.com/wso2/product-is/issues/11650.
+            });
+    }, []);
 
     /**
      * Listens to  the changes in the `externallyProvidedActiveView` and sets the `activeView`.
@@ -260,6 +285,32 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 order: 2
             }
         ];
+
+        // If the user is a user is not logging in for the first time the quick start icon will switch to home icon.
+        if (itemExtensions[0]?.order === 0 &&
+            LocalStorageUtils.getValueFromLocalStorage("IsAppsAvailable") === "true") {
+            itemExtensions[0].component = (
+                currentActiveView?: AppViewTypes, onClickCb?: (newActiveView: AppViewTypes) => void) => (
+                <Menu.Item
+                    active={ currentActiveView === commonConfig.header.headerQuickstartMenuItem }
+                    className="secondary-panel-item quickstart-page-switch"
+                    onClick={ () => {
+                        history.push(`${ AppConstants.getMainViewBasePath() }/getting-started`);
+                        onClickCb &&
+                        onClickCb(commonConfig.header.headerQuickstartMenuItem as AppViewTypes);
+                    } }
+                    data-testid="app-header-quick-start-switch"
+                >
+                    <GenericIcon
+                        defaultIcon
+                        transparent
+                        size="x22"
+                        hoverable={ false }
+                        icon={ getAppHeaderIcons().homeIcon }
+                    />
+                </Menu.Item>
+            );
+        }
 
         sortBy([ ...itemExtensions, ...defaultItems ], [ "order" ]).filter((item: HeaderSubPanelItemInterface) => {
             if (item.floated === floated) {
