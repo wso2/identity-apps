@@ -91,7 +91,7 @@ export const TechnologyCard: FunctionComponent<TechnologyCardPropsInterface> = (
     const { t } = useTranslation();
 
     const classes = classNames(
-        "tech-selection basic-card",
+        "tech-selection basic-card rounded mb-1",
         {
             "disabled no-hover": disabled
         },
@@ -106,49 +106,57 @@ export const TechnologyCard: FunctionComponent<TechnologyCardPropsInterface> = (
     const imageContainerStyles = (): CSSProperties | undefined => {
 
         return {
+            display: "flex",
+            height: "100%",
+            justifyContent: "center",
             opacity: disabled ? overlayOpacity : 1
         };
     };
 
     return (
-        <Card
-            as={ "div" }
-            link={ false }
-            key={ key }
-            raised={ raised }
-            data-componentid={
-                componentId ?? `technology-card-${ kebabCase(displayName) }`
-            }
-            data-testid={
-                testId ?? `technology-card-${ kebabCase(displayName) }`
-            }
-            className={ classes }
-            onClick={ !disabled && onClick }
-            onMouseEnter={ () => setDimmerState(true) }
-            onMouseLeave={ () => setDimmerState(false) }
-        >
-            {
-                disabled && (
-                    <Dimmer className="lighter" active={ dimmerState }>
-                        { t("common:featureAvailable" ) }
-                    </Dimmer>
-                )
-            }
-            <Card.Content
-                textAlign="center"
-                style={ imageContainerStyles() }
+        <div className="tech-selection-wrapper">
+            <Card
+                as={ "div" }
+                link={ false }
+                key={ key }
+                raised={ raised }
+                data-componentid={ componentId ?? `technology-card-${ kebabCase(displayName) }` }
+                data-testid={ testId ?? `technology-card-${ kebabCase(displayName) }` }
+                className={ classes }
+                onClick={ !disabled && onClick }
+                onMouseEnter={ () => setDimmerState(true) }
+                onMouseLeave={ () => setDimmerState(false) }
             >
-                <GenericIcon
-                    transparent
-                    size="x50"
-                    className="mb-2"
-                    icon={ image }
-                />
-                <Card.Description>
-                    { displayName }
-                </Card.Description>
-            </Card.Content>
-        </Card>
+                {
+                    disabled && (
+                        <Dimmer className="lighter" active={ dimmerState }>
+                            { t("common:featureAvailable") }
+                        </Dimmer>
+                    )
+                }
+                <Card.Content
+                    textAlign="center"
+                    style={ imageContainerStyles() }
+                >
+                    <GenericIcon
+                        transparent
+                        size="x50"
+                        icon={ image }
+                    />
+                </Card.Content>
+            </Card>
+            <div
+                data-componentid={ `technology-card-alias-${ kebabCase(displayName) }` }
+                className={
+                    classNames("name", {
+                        "tech-name-visible": dimmerState,
+                        "tech-name-hidden": !dimmerState
+                    })
+                }>
+                { displayName }
+            </div>
+        </div>
+
     );
 };
 
