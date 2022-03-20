@@ -22,7 +22,6 @@
 ------------------------------*/
 
 .ui.card {
-    overflow: clip;
     .content {
         &.extra {
             &.selection {
@@ -36,6 +35,12 @@
         &.compact {
             padding: 0;
         }
+    }
+    &.clipped {
+        overflow: clip;
+    }
+    &.rounded {
+       border-radius: 100%;
     }
 }
 
@@ -241,7 +246,7 @@
         transition: @basicCardTransition;
         border: @basicCardBorder;
         box-shadow: none;
-        
+
         &:hover {
             transform: none !important;
             text-decoration: none;
@@ -252,11 +257,16 @@
                 box-shadow: @basicCardHoverBoxShadow !important;
             }
         }
-        
+
         &.no-hover {
             &:hover {
                 box-shadow: none !important;
             }
+        }
+
+        &.no-background {
+            background: unset !important;
+            background-color: transparent !important;
         }
     }
 }
@@ -466,11 +476,11 @@
         .ui.card {
             &.info-card {
                 width: @resourceCardDefaultWidth;
-                
+
                 .content {
                     &:not(:first-child) {
                         padding-top: 0.4em;
-                        
+
                         &:not(:last-child) {
                             padding-bottom: 0.4em;
                         }
@@ -489,7 +499,7 @@
                         }
                     }
                 }
-                
+
                 &:hover {
                     .action-container {
                         .delete-button {
@@ -517,7 +527,7 @@
             transition: @templateCardTransition;
             border: @templateCardBorder;
             box-shadow: none;
-    
+
             &:hover {
                 transform: none;
                 text-decoration: none;
@@ -544,7 +554,7 @@
             .card-text-container {
                 padding: @templateCardTextContainerPadding;
                 border-top: none;
-    
+
                 .header {
                     font-size: @templateCardHeaderFontSize;
                     font-weight: @templateCardHeaderFontWeight;
@@ -567,13 +577,13 @@
                 }
                 .tags-container {
                     margin: 8px 0;
-    
+
                     .title {
                         font-size: @templateCardTagTitleFontSize;
                         color: @lightFontColor;
                         margin-bottom: 5px;
                     }
-                    
+
                     .tags {
                         display: flex;
                         flex-direction: row;
@@ -585,13 +595,13 @@
                         .tag-icon {
                             color: @templateCardTagIconColor;
                         }
-                        
+
                         .tag {
                             &.default {
                                 font-size: @templateCardTextTagFontSize;
                                 color: @templateCardTextTagColor;
                             }
-                            
+
                             &:not(:first-child) {
                                 margin: @templateCardTextTagMargin;
                             }
@@ -715,7 +725,7 @@
 
     .card-label {
         font-size: @labeledCardLabelFontColor;
-        
+
         &.multiline {
             word-break: break-word;
             overflow: hidden;
