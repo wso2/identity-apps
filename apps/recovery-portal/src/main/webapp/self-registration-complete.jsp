@@ -22,11 +22,21 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="java.net.MalformedURLException" %>
 <%@ page import="java.io.File" %>
+<%@ page import="org.wso2.carbon.identity.recovery.util.Utils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="java.util.HashMap" %>
+<%@ page import="java.util.Map" %>
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
 <%
     boolean isEmailNotificationEnabled = false;
     String callback = (String) request.getAttribute("callback");
+    String username = request.getParameter("username");
+    String userStoreDomain = request.getParameter("userstoredomain");
+    String sessionDataKey = null;
+    String fullyQualifiedUsername = username;
+    boolean hasAutoLoginCookie = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("isAutoLoginEnabled"));
+
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain);
@@ -36,6 +46,26 @@
 
     isEmailNotificationEnabled = Boolean.parseBoolean(application.getInitParameter(
             IdentityManagementEndpointConstants.ConfigConstants.ENABLE_EMAIL_NOTIFICATION));
+    boolean isSessionDataKeyPresent = false;
+    if (userStoreDomain != null) {
+        fullyQualifiedUsername = userStoreDomain + "/" + username + "@" + tenantDomain;
+    }
+
+    // Check for query params in callback URL.
+    if (callback.contains("?")) {
+        String queryParams = callback.substring(callback.indexOf("?") + 1);
+        String[] parameterList = queryParams.split("&");
+        Map<String, String> queryMap = new HashMap<>();
+        for (String param : parameterList) {
+            String key = param.substring(0, param.indexOf("="));
+            String value = param.substring(param.indexOf("=") + 1);
+            queryMap.put(key, value);
+        }
+        sessionDataKey = queryMap.get("sessionDataKey");
+        if (StringUtils.isNotBlank(sessionDataKey)) {
+            isSessionDataKeyPresent = true;
+        }
+    }
 %>
 
 <!doctype html>
@@ -84,6 +114,20 @@
             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Close")%>
         </button>
     </div>
+    <form id="callbackForm" name="callbackForm" method="post" action="/commonauth">
+        <%
+            if (username != null) {
+        %>
+        <div>
+            <input type="hidden" name="username" value="<%=Encode.forHtmlAttribute(fullyQualifiedUsername)%>"/>
+        </div>
+        <%
+            }
+        %>
+        <div>
+            <input type="hidden" name="sessionDataKey" value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
+        </div>
+    </form>
 </div>
 <% }%>
 
@@ -103,9 +147,15 @@
             onHide: function () {
                 <%
                     try {
+                        if (hasAutoLoginCookie && isSessionDataKeyPresent)  {
                 %>
-                        location.href = "<%= IdentityManagementEndpointUtil.encodeURL(callback)%>";
+                document.callbackForm.submit();
                 <%
+                    } else {
+                %>
+                location.href = "<%= IdentityManagementEndpointUtil.encodeURL(callback)%>";
+                <%
+                        }
                 } catch (MalformedURLException e) {
                     request.setAttribute("error", true);
                     request.setAttribute("errorMsg", "Invalid callback URL found in the request.");
