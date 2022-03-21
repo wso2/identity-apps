@@ -35,7 +35,7 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@braintree/sanitize-url": "^5.0.0",
+        "@braintree/sanitize-url": "^6.0.0",
         "@types/jest": "^26.0.14",
         "axios": "^0.21.1",
         "country-language": "^0.1.7",
