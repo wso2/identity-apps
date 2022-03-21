@@ -139,6 +139,6 @@
         Image Preview
 --------------------------------*/
 
-@imagePreviewBorder: 2px dashed @defaultBorderColor;
+@imagePreviewOutline: @defaultBorderColor dashed 2px;
 @imagePreviewHeight: 120px;
 @imagePreviewBorderRadius: @defaultBorderRadius;
