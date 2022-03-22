@@ -34,6 +34,7 @@ import { FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
 import { toggleApplicationsPageVisibility } from "../../store/actions";
 import { filterRoutes } from "../../utils";
+import { convertToBoolean } from "../../utils/common-utils";
 
 /**
  * Side panel items component Prop types.
@@ -84,14 +85,6 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
             top: `${ headerHeight + UIConstants.DESKTOP_CONTENT_TOP_PADDING }px`
         }
         : null;
-
-    /**
-     * Converts the isReadOnlyUserString to a boolean variable
-     * @return {boolean} True/False
-     */
-    const convertToBoolean = (isReadOnlyUserString: any): boolean => {
-        return (isReadOnlyUserString === "true");
-    };
       
     /**
      * Listen for base name changes and updated the routes.

@@ -41,6 +41,7 @@ import * as UIConstants from "../../constants/ui-constants";
 import { AlertInterface, AlertLevels, AuthStateInterface, FeatureConfigInterface, ProfileSchema } from "../../models";
 import { AppState } from "../../store";
 import { getProfileInformation, setActiveForm } from "../../store/actions";
+import { convertToBoolean } from "../../utils/common-utils";
 import { EditSection, SettingsSection } from "../shared";
 import { MobileUpdateWizard } from "../shared/mobile-update-wizard";
 import { commonConfig } from "../../extensions";
@@ -74,7 +75,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     const isProfileInfoLoading: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoLoading);
     const isSCIMEnabled: boolean = useSelector((state: AppState) => state.profile.isSCIMEnabled);
     const profileSchemaLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileSchemaLoading);
-    const isReadOnlyUser: boolean = useSelector((state: AppState) => 
+    const isReadOnlyUser = useSelector((state: AppState) => 
         state.authenticationInformation.profileInfo.isReadOnly);
     const config = useSelector((state: AppState) => state.config);
 
@@ -520,14 +521,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         return schemaFormValue;
 
-    };
-
-    /**
-     * Converts the isReadOnlyUserString to a boolean variable
-     * @return {boolean} True/False
-     */
-    const convertToBoolean = (isReadOnlyUserString: any): boolean => {
-        return (isReadOnlyUserString === "true");
     };
       
     /**

@@ -46,6 +46,7 @@ import { InnerPageLayout } from "../layouts";
 import { AlertInterface, AuthStateInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 import { addAlert } from "../store/actions";
+import { convertToBoolean } from "../utils/common-utils";
 
 /**
 * Prop types for the Account Security page.
@@ -134,14 +135,6 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
             setUserstore(userstore);
         }
     }, [profileDetails?.profileInfo]);
-
-    /**
-     * Converts the isReadOnlyUserString to a boolean variable
-     * @return {boolean} True/False
-     */
-    const convertToBoolean = (isReadOnlyUserString: any): boolean => {
-        return (isReadOnlyUserString === "true");
-    };
 
     /**
      * Dispatches the alert object to the redux store.

@@ -26,6 +26,7 @@ import { FIDOAuthenticator, SMSOTPAuthenticator, TOTPAuthenticator } from "./aut
 import { AppConstants } from "../../constants";
 import { AlertInterface, FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
+import { convertToBoolean } from "../../utils/common-utils";
 import { SettingsSection } from "../shared";
 
 /**
@@ -35,14 +36,6 @@ import { SettingsSection } from "../shared";
 interface MfaProps extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
 }
-
-/**
- * Converts the isReadOnlyUserString to a boolean variable
- * @return {boolean} True/False
- */
-const convertToBoolean = (isReadOnlyUserString: any): boolean => {
-    return (isReadOnlyUserString === "true");
-};
 
 export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (props: MfaProps): JSX.Element => {
 
