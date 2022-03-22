@@ -62,6 +62,7 @@
     String username = null;
     PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
     Boolean isAutoLoginEnable = preferenceRetrievalClient.checkAutoLoginAfterPasswordRecoveryEnabled(tenantDomain);
+    String sessionDataKey = null;
 
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
@@ -124,6 +125,18 @@
                     cookie.setDomain(cookieDomain);
                 }
                 response.addCookie(cookie);
+
+                if (callback.contains("?")) {
+                    String queryParams = callback.substring(callback.indexOf("?") + 1);
+                    String[] parameterList = queryParams.split("&");
+                    Map<String, String> queryMap = new HashMap<>();
+                    for (String param : parameterList) {
+                        String key = param.substring(0, param.indexOf("="));
+                        String value = param.substring(param.indexOf("=") + 1);
+                        queryMap.put(key, value);
+                    }
+                    sessionDataKey = queryMap.get("sessionDataKey");
+                }
             }
         } catch (ApiException e) {
 
@@ -178,6 +191,23 @@
 </head>
 <body>
 
+<div>
+    <form id="callbackForm" name="callbackForm" method="post" action="/commonauth">
+        <%
+            if (username != null) {
+        %>
+        <div>
+            <input type="hidden" name="username" value="<%=Encode.forHtmlAttribute(username)%>"/>
+        </div>
+        <%
+            }
+        %>
+        <div>
+            <input type="hidden" name="sessionDataKey" value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
+        </div>
+    </form>
+</div>
+
     <!-- footer -->
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
@@ -190,22 +220,27 @@
 
     <script type="application/javascript">
         $(document).ready(function () {
-
             <%
                 try {
+                    if (isAutoLoginEnable && StringUtils.isNotBlank(sessionDataKey))  {
+                        %>
+                        document.callbackForm.submit();
+                        <%
+                    } else {
                         URIBuilder callbackUrlBuilder = new
                                 URIBuilder(IdentityManagementEndpointUtil.encodeURL(callback));
                         URI callbackUri = callbackUrlBuilder.addParameter("passwordReset", "true").build();
-                    %>
-                    location.href = "<%=callbackUri.toString()%>";
-                    <%
-                    } catch (URISyntaxException e) {
-                        request.setAttribute("error", true);
-                        request.setAttribute("errorMsg", "Invalid callback URL found in the request.");
-                        request.getRequestDispatcher("error.jsp").forward(request, response);
-                        return;
+                        %>
+                        location.href = "<%=callbackUri.toString()%>";
+                        <%
                     }
-            %>
+                } catch (URISyntaxException e) {
+                    request.setAttribute("error", true);
+                    request.setAttribute("errorMsg", "Invalid callback URL found in the request.");
+                    request.getRequestDispatcher("error.jsp").forward(request, response);
+                    return;
+            }
+    %>
 
         });
     </script>
