@@ -307,7 +307,7 @@
         <input id="username" name="username" type="hidden" data-testid="login-page-username-input" value="<%=username%>">
     <% } %>
         <div class="field">
-            <div class="ui fluid left icon input">
+            <div class="ui fluid left icon input addon-wrapper">
                 <input
                     type="password"
                     id="password"
