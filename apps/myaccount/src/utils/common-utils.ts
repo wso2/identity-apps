@@ -77,10 +77,10 @@ export class CommonUtils {
 }
 
 /**
-    * Converts the isReadOnlyUser string to a boolean variable
-    * 
-    * @return {boolean} True/False
-*/
+ * Converts the isReadOnlyUser string to a boolean variable
+ *
+ * @return {boolean} True/False
+ */
 export const convertToBoolean = (isReadOnlyUserString: string): boolean => {
     return (isReadOnlyUserString === "true");
 };
