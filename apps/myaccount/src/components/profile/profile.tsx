@@ -522,7 +522,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         return schemaFormValue;
 
     };
-      
+
     /**
      * This function generates the Edit Section based on the input Profile Schema
      * @param {Profile Schema} schema
