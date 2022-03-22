@@ -17,7 +17,7 @@
  */
 
 // DO NOT SHORTEN THE IMPORT PATH as it could lead to circular dependencies.
-import { DocumentationLinksExtension } from "../../../extensions/configs/documentation";
+import { getDocumentationLinksExtension } from "../../../extensions/configs/documentation";
 import { DocumentationLinksInterface } from "../models";
 
 /**
@@ -26,5 +26,5 @@ import { DocumentationLinksInterface } from "../models";
  * @return {DocumentationLinksInterface}
  */
 export const DocumentationLinks: DocumentationLinksInterface = {
-    ...DocumentationLinksExtension
+    ...getDocumentationLinksExtension()
 };

@@ -18,21 +18,23 @@
 
 import { DocumentationLinksExtensionInterface } from "./models";
 
-export const DocumentationLinksExtension: DocumentationLinksExtensionInterface = {
-    develop: {
-        applications: {
-            editApplication: {
-                signInMethod: {
-                    fido: "#"
+export const getDocumentationLinksExtension = () : DocumentationLinksExtensionInterface => {
+    return {
+        develop: {
+            applications: {
+                editApplication: {
+                    signInMethod: {
+                        fido: "#"
+                    }
                 }
-            }
-        },
-        connections: {
-            edit: {
-                advancedSettings: {
-                    jit: "#"
+            },
+            connections: {
+                edit: {
+                    advancedSettings: {
+                        jit: "#"
+                    }
                 }
             }
         }
-    }
+    };
 };
