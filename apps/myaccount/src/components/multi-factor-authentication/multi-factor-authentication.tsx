@@ -36,6 +36,14 @@ interface MfaProps extends SBACInterface<FeatureConfigInterface>, TestableCompon
     onAlertFired: (alert: AlertInterface) => void;
 }
 
+/**
+ * Converts the isReadOnlyUserString to a boolean variable
+ * @return {boolean} True/False
+ */
+const convertToBoolean = (isReadOnlyUserString: any): boolean => {
+    return (isReadOnlyUserString === "true");
+};
+
 export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (props: MfaProps): JSX.Element => {
 
     const {
@@ -60,7 +68,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                 className="main-content-inner"
                 data-testid={ `${testId}-list` }
             >
-                { !isReadOnlyUser
+                { !convertToBoolean(isReadOnlyUser)
                     && hasRequiredScopes(featureConfig?.security, featureConfig?.security?.scopes?.read, allowedScopes)
                     && isFeatureEnabled(
                         featureConfig?.security,

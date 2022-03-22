@@ -74,7 +74,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     const isProfileInfoLoading: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoLoading);
     const isSCIMEnabled: boolean = useSelector((state: AppState) => state.profile.isSCIMEnabled);
     const profileSchemaLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileSchemaLoading);
-    const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
+    const isReadOnlyUser: boolean = useSelector((state: AppState) => 
+        state.authenticationInformation.profileInfo.isReadOnly);
     const config = useSelector((state: AppState) => state.config);
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
@@ -522,6 +523,14 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     };
 
     /**
+     * Converts the isReadOnlyUserString to a boolean variable
+     * @return {boolean} True/False
+     */
+    const convertToBoolean = (isReadOnlyUserString: any): boolean => {
+        return (isReadOnlyUserString === "true");
+    };
+      
+    /**
      * This function generates the Edit Section based on the input Profile Schema
      * @param {Profile Schema} schema
      */
@@ -829,7 +838,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                     : resolveProfileInfoSchemaValue(schema)
                                             )
                                             : (
-                                                !isReadOnlyUser &&
+                                                !(convertToBoolean(isReadOnlyUser)) &&
                                                 schema.mutability !== ProfileConstants.READONLY_SCHEMA ?
                                                     (
                                                         <a
@@ -875,7 +884,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             }
                         >
                             <List.Content floated="right">
-                                { !isReadOnlyUser
+                                { !convertToBoolean(isReadOnlyUser)
                                 && schema.mutability !== ProfileConstants.READONLY_SCHEMA
                                 && !isEmpty(profileInfo.get(schema.name))
                                 && hasRequiredScopes(featureConfig?.personalInfo,
@@ -1080,8 +1089,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      * @return {boolean}
      */
     const isProfileUrlReadOnly = (): boolean => {
-        return !(!isReadOnlyUser && hasRequiredScopes(featureConfig?.personalInfo,
-            featureConfig?.personalInfo?.scopes?.update, allowedScopes)
+        return !(!convertToBoolean(isReadOnlyUser)
+            && hasRequiredScopes(featureConfig?.personalInfo,featureConfig?.personalInfo?.scopes?.update, allowedScopes)
             && profileSchema?.some((schema: ProfileSchema) => {
                 return schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("PROFILE_URL")
                     && schema.mutability !== ProfileConstants.READONLY_SCHEMA;
@@ -1184,7 +1193,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                     }
                                     {
                                         !isEmpty(profileInfo.get(schema.name)) ||
-                                        (!isReadOnlyUser && (schema.mutability !== ProfileConstants.READONLY_SCHEMA)
+                                        (!convertToBoolean(isReadOnlyUser) 
+                                            && (schema.mutability !== ProfileConstants.READONLY_SCHEMA)
                                             && hasRequiredScopes(featureConfig?.personalInfo,
                                                 featureConfig?.personalInfo?.scopes?.update, allowedScopes))
                                             ? (

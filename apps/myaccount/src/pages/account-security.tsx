@@ -135,6 +135,13 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
         }
     }, [profileDetails?.profileInfo]);
 
+    /**
+     * Converts the isReadOnlyUserString to a boolean variable
+     * @return {boolean} True/False
+     */
+    const convertToBoolean = (isReadOnlyUserString: any): boolean => {
+        return (isReadOnlyUserString === "true");
+    };
 
     /**
      * Dispatches the alert object to the redux store.
@@ -157,9 +164,9 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
             }
         >
             <Grid>
-                { !isReadOnlyUser && !isNonLocalCredentialUser &&
-                    hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
-                    isFeatureEnabled(
+                { !convertToBoolean(isReadOnlyUser) && !isNonLocalCredentialUser 
+                    && hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) 
+                    && isFeatureEnabled(
                         accessConfig?.security,
                         AppConstants.FEATURE_DICTIONARY.get("SECURITY_CHANGE_PASSWORD")
                     ) ? (
@@ -183,8 +190,8 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
                 { /*            </Grid.Column>*/ }
                 { /*        </Grid.Row>*/ }
                 { /*    ) : null }*/ }
-                { !isReadOnlyUser && !isNonLocalCredentialUser &&
-                    hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
+                { !convertToBoolean(isReadOnlyUser) && !isNonLocalCredentialUser
+                    && hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
                     isFeatureEnabled(
                         accessConfig?.security,
                         AppConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY")
