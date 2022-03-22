@@ -35,8 +35,9 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Menu } from "semantic-ui-react";
-import { AppViewExtensionTypes, commonConfig } from "../../../extensions";
-import { ApplicationListInterface, getApplicationList } from "../../applications";
+import { commonConfig } from "../../../extensions";
+import { getApplicationList } from "../../applications/api";
+import { ApplicationListInterface } from "../../applications/models";
 import { AppSwitcherIcons, getAppHeaderIcons } from "../configs";
 import { AppConstants } from "../constants";
 import { history } from "../helpers";
@@ -127,8 +128,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 (response: ApplicationListInterface) => {
                     LocalStorageUtils.setValueInLocalStorage("IsAppsAvailable", response.totalResults > 0
                         ? "true" : "false"
-                );
-            })
+                    );
+                })
             .catch(() => {
                 // Add debug logs here one a logger is added.
                 // Tracked here https://github.com/wso2/product-is/issues/11650.
