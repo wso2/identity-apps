@@ -73,5 +73,14 @@ export class CommonUtils {
         set(newPref, CommonConstants.SEEN_ANNOUNCEMENTS_KEY, [ ...seen, id ]);
 
         AppUtils.setUserPreferences(newPref);
-    }
+    }  
 }
+
+/**
+    * Converts the isReadOnlyUser string to a boolean variable
+    * 
+    * @return {boolean} True/False
+*/
+export const convertToBoolean = (isReadOnlyUserString: string): boolean => {
+    return (isReadOnlyUserString === "true");
+};

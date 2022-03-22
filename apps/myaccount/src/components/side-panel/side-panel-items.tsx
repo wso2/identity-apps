@@ -139,6 +139,7 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
      * Validates if the overview page should be displayed in the side panel.
      *
      * @param {string} path - specific route.
+     * 
      * @return {boolean}
      */
     const validateOverviewVisibility = (path: string): boolean => {
