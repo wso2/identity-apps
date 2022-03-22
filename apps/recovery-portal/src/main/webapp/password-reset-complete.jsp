@@ -62,7 +62,7 @@
     String username = null;
     PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
     Boolean isAutoLoginEnable = preferenceRetrievalClient.checkAutoLoginAfterPasswordRecoveryEnabled(tenantDomain);
-    String sessionDataKey = null;
+    String sessionDataKey = StringUtils.EMPTY;
 
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
@@ -193,15 +193,9 @@
 
 <div>
     <form id="callbackForm" name="callbackForm" method="post" action="/commonauth">
-        <%
-            if (username != null) {
-        %>
         <div>
             <input type="hidden" name="username" value="<%=Encode.forHtmlAttribute(username)%>"/>
         </div>
-        <%
-            }
-        %>
         <div>
             <input type="hidden" name="sessionDataKey" value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
         </div>
@@ -222,7 +216,7 @@
         $(document).ready(function () {
             <%
                 try {
-                    if (isAutoLoginEnable && StringUtils.isNotBlank(sessionDataKey))  {
+                    if (isAutoLoginEnable && StringUtils.isNotBlank(sessionDataKey) && (StringUtils.isNotBlank(username))) {
                         %>
                         document.callbackForm.submit();
                         <%

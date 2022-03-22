@@ -33,7 +33,7 @@
     String callback = (String) request.getAttribute("callback");
     String username = request.getParameter("username");
     String userStoreDomain = request.getParameter("userstoredomain");
-    String sessionDataKey = null;
+    String sessionDataKey = StringUtils.EMPTY;
     String fullyQualifiedUsername = username;
     boolean hasAutoLoginCookie = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("isAutoLoginEnabled"));
 
@@ -47,7 +47,7 @@
     isEmailNotificationEnabled = Boolean.parseBoolean(application.getInitParameter(
             IdentityManagementEndpointConstants.ConfigConstants.ENABLE_EMAIL_NOTIFICATION));
     boolean isSessionDataKeyPresent = false;
-    if (userStoreDomain != null) {
+    if (StringUtils.isNotBlank(userStoreDomain)) {
         fullyQualifiedUsername = userStoreDomain + "/" + username + "@" + tenantDomain;
     }
 
@@ -115,15 +115,9 @@
         </button>
     </div>
     <form id="callbackForm" name="callbackForm" method="post" action="/commonauth">
-        <%
-            if (username != null) {
-        %>
         <div>
             <input type="hidden" name="username" value="<%=Encode.forHtmlAttribute(fullyQualifiedUsername)%>"/>
         </div>
-        <%
-            }
-        %>
         <div>
             <input type="hidden" name="sessionDataKey" value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
         </div>
@@ -147,7 +141,8 @@
             onHide: function () {
                 <%
                     try {
-                        if (hasAutoLoginCookie && isSessionDataKeyPresent)  {
+                        if (hasAutoLoginCookie && isSessionDataKeyPresent &&
+                        StringUtils.isNotBlank(fullyQualifiedUsername)) {
                 %>
                 document.callbackForm.submit();
                 <%
