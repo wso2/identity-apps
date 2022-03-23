@@ -74,13 +74,13 @@ export class CommonUtils {
 
         AppUtils.setUserPreferences(newPref);
     }  
-}
 
-/**
- * Converts the isReadOnlyUser string to a boolean variable
- *
- * @return {boolean} True/False
- */
-export const convertToBoolean = (isReadOnlyUserString: string): boolean => {
-    return (isReadOnlyUserString === "true");
-};
+    /**
+     * Converts the isReadOnlyUser string to a boolean variable
+     *
+     * @return {boolean} True/False
+     */
+    public static isProfileReadOnly(state: string): boolean {
+        return (state === "true");
+    }
+}

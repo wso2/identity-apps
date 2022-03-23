@@ -26,7 +26,7 @@ import {
     resolveUserEmails
 } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { CommonUtils, ProfileUtils } from "@wso2is/core/utils";
+import { ProfileUtils, CommonUtils as ReusableCommonUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { EditAvatarModal, LinkButton, PrimaryButton, UserAvatar } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -41,7 +41,7 @@ import * as UIConstants from "../../constants/ui-constants";
 import { AlertInterface, AlertLevels, AuthStateInterface, FeatureConfigInterface, ProfileSchema } from "../../models";
 import { AppState } from "../../store";
 import { getProfileInformation, setActiveForm } from "../../store/actions";
-import { convertToBoolean } from "../../utils/common-utils";
+import { CommonUtils } from "../../utils";
 import { EditSection, SettingsSection } from "../shared";
 import { MobileUpdateWizard } from "../shared/mobile-update-wizard";
 import { commonConfig } from "../../extensions";
@@ -259,7 +259,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      * This will load the countries to the dropdown.
      */
     useEffect(() => {
-        setCountryList(CommonUtils.getCountryList());
+        setCountryList(ReusableCommonUtils.getCountryList());
     }, []);
 
     /**
@@ -831,7 +831,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                     : resolveProfileInfoSchemaValue(schema)
                                             )
                                             : (
-                                                !(convertToBoolean(isReadOnlyUser)) &&
+                                                !(CommonUtils.isProfileReadOnly(isReadOnlyUser)) &&
                                                 schema.mutability !== ProfileConstants.READONLY_SCHEMA ?
                                                     (
                                                         <a
@@ -877,7 +877,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             }
                         >
                             <List.Content floated="right">
-                                { !convertToBoolean(isReadOnlyUser)
+                                { !CommonUtils.isProfileReadOnly(isReadOnlyUser)
                                 && schema.mutability !== ProfileConstants.READONLY_SCHEMA
                                 && !isEmpty(profileInfo.get(schema.name))
                                 && hasRequiredScopes(featureConfig?.personalInfo,
@@ -1082,7 +1082,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      * @return {boolean}
      */
     const isProfileUrlReadOnly = (): boolean => {
-        return !(!convertToBoolean(isReadOnlyUser)
+        return !(!CommonUtils.isProfileReadOnly(isReadOnlyUser)
             && hasRequiredScopes(featureConfig?.personalInfo,featureConfig?.personalInfo?.scopes?.update, allowedScopes)
             && profileSchema?.some((schema: ProfileSchema) => {
                 return schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("PROFILE_URL")
@@ -1186,7 +1186,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                     }
                                     {
                                         !isEmpty(profileInfo.get(schema.name)) ||
-                                        (!convertToBoolean(isReadOnlyUser) 
+                                        (!CommonUtils.isProfileReadOnly(isReadOnlyUser) 
                                             && (schema.mutability !== ProfileConstants.READONLY_SCHEMA)
                                             && hasRequiredScopes(featureConfig?.personalInfo,
                                                 featureConfig?.personalInfo?.scopes?.update, allowedScopes))

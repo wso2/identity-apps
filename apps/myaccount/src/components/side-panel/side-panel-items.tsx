@@ -33,9 +33,7 @@ import * as UIConstants from "../../constants/ui-constants";
 import { FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
 import { toggleApplicationsPageVisibility } from "../../store/actions";
-import { filterRoutes } from "../../utils";
-import { convertToBoolean } from "../../utils/common-utils";
-
+import { CommonUtils, filterRoutes } from "../../utils";
 /**
  * Side panel items component Prop types.
  * Also see {@link SidePanelItems.defaultProps}
@@ -143,7 +141,7 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
      * @return {boolean}
      */
     const validateOverviewVisibility = (path: string): boolean => {
-        if ((path === AppConstants.getPaths().get("OVERVIEW")) && convertToBoolean(isReadOnlyUser)) {
+        if ((path === AppConstants.getPaths().get("OVERVIEW")) && CommonUtils.isProfileReadOnly(isReadOnlyUser)) {
             return false; 
         }
 

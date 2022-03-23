@@ -26,7 +26,7 @@ import { FIDOAuthenticator, SMSOTPAuthenticator, TOTPAuthenticator } from "./aut
 import { AppConstants } from "../../constants";
 import { AlertInterface, FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
-import { convertToBoolean } from "../../utils/common-utils";
+import { CommonUtils } from "../../utils";
 import { SettingsSection } from "../shared";
 
 /**
@@ -61,7 +61,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                 className="main-content-inner"
                 data-testid={ `${testId}-list` }
             >
-                { !convertToBoolean(isReadOnlyUser)
+                { !CommonUtils.isProfileReadOnly(isReadOnlyUser)
                     && hasRequiredScopes(featureConfig?.security, featureConfig?.security?.scopes?.read, allowedScopes)
                     && isFeatureEnabled(
                         featureConfig?.security,

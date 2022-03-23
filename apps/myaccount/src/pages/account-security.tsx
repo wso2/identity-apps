@@ -46,7 +46,7 @@ import { InnerPageLayout } from "../layouts";
 import { AlertInterface, AuthStateInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 import { addAlert } from "../store/actions";
-import { convertToBoolean } from "../utils/common-utils";
+import { CommonUtils } from "../utils";
 
 /**
 * Prop types for the Account Security page.
@@ -157,7 +157,7 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
             }
         >
             <Grid>
-                { !convertToBoolean(isReadOnlyUser) && !isNonLocalCredentialUser 
+                { !CommonUtils.isProfileReadOnly(isReadOnlyUser) && !isNonLocalCredentialUser 
                     && hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) 
                     && isFeatureEnabled(
                         accessConfig?.security,
@@ -183,7 +183,7 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
                 { /*            </Grid.Column>*/ }
                 { /*        </Grid.Row>*/ }
                 { /*    ) : null }*/ }
-                { !convertToBoolean(isReadOnlyUser) && !isNonLocalCredentialUser
+                { !CommonUtils.isProfileReadOnly(isReadOnlyUser) && !isNonLocalCredentialUser
                     && hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
                     isFeatureEnabled(
                         accessConfig?.security,
