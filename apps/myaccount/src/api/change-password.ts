@@ -48,7 +48,7 @@ export const updatePassword = (currentPassword: string, newPassword: string): Pr
     const requestConfig: AxiosRequestConfig = {
         auth: {
             password: currentPassword,
-            username: store.getState().authenticationInformation.username
+            username: [store.getState().authenticationInformation?.profileInfo.userName, '@', store.getState().authenticationInformation.tenantDomain].join('')
         },
         data: {
             Operations: [
