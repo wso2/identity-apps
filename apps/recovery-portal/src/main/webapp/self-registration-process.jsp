@@ -242,6 +242,7 @@
                         cookie.setDomain(cookieDomain);
                     }
                     response.addCookie(cookie);
+                    request.setAttribute("isAutoLoginEnabled", true);
                 }
                 request.setAttribute("callback", callback);
                 request.getRequestDispatcher("self-registration-complete.jsp").forward(request, response);
