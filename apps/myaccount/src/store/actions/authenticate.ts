@@ -129,8 +129,8 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                         dispatch(
                             setProfileInfo({
                                 ...infoResponse,
-                                isReadOnly:
-                                    response[SCIMConfigs.scim.enterpriseSchema]
+                                isReadOnly: 
+                                    response[SCIMConfigs.scim.customEnterpriseSchema]
                                         ?.isReadOnlyUser
                             })
                         );
@@ -139,7 +139,7 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                         if (isEmpty(store.getState().authenticationInformation.profileSchemas)) {
                             isCompletionCalculated = true;
                             dispatch(getScimSchemas(infoResponse,
-                                response[SCIMConfigs.scim.enterpriseSchema]?.isReadOnlyUser));
+                                response[SCIMConfigs.scim.customEnterpriseSchema]?.isReadOnlyUser));
                         }
 
                         // If `updateProfileCompletion` flag is enabled, update the profile completion.
@@ -148,7 +148,7 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                                 getProfileCompletion(
                                     infoResponse,
                                     store.getState().authenticationInformation.profileSchemas,
-                                    response[SCIMConfigs.scim.enterpriseSchema]
+                                    response[SCIMConfigs.scim.customEnterpriseSchema]
                                         ?.isReadOnlyUser
                                 );
                             } catch (e) {

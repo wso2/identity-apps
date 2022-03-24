@@ -46,6 +46,7 @@ import { InnerPageLayout } from "../layouts";
 import { AlertInterface, AuthStateInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 import { addAlert } from "../store/actions";
+import { CommonUtils } from "../utils";
 
 /**
 * Prop types for the Account Security page.
@@ -135,7 +136,6 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
         }
     }, [profileDetails?.profileInfo]);
 
-
     /**
      * Dispatches the alert object to the redux store.
      * @param {AlertInterface} alert - Alert object.
@@ -157,9 +157,9 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
             }
         >
             <Grid>
-                { !isReadOnlyUser && !isNonLocalCredentialUser &&
-                    hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
-                    isFeatureEnabled(
+                { !CommonUtils.isProfileReadOnly(isReadOnlyUser) && !isNonLocalCredentialUser 
+                    && hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) 
+                    && isFeatureEnabled(
                         accessConfig?.security,
                         AppConstants.FEATURE_DICTIONARY.get("SECURITY_CHANGE_PASSWORD")
                     ) ? (
@@ -183,8 +183,8 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
                 { /*            </Grid.Column>*/ }
                 { /*        </Grid.Row>*/ }
                 { /*    ) : null }*/ }
-                { !isReadOnlyUser && !isNonLocalCredentialUser &&
-                    hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
+                { !CommonUtils.isProfileReadOnly(isReadOnlyUser) && !isNonLocalCredentialUser
+                    && hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
                     isFeatureEnabled(
                         accessConfig?.security,
                         AppConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY")

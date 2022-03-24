@@ -33,8 +33,7 @@ import * as UIConstants from "../../constants/ui-constants";
 import { FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
 import { toggleApplicationsPageVisibility } from "../../store/actions";
-import { filterRoutes } from "../../utils";
-
+import { CommonUtils, filterRoutes } from "../../utils";
 /**
  * Side panel items component Prop types.
  * Also see {@link SidePanelItems.defaultProps}
@@ -67,6 +66,7 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
     const dispatch = useDispatch();
 
     const isApplicationsPageVisible = useSelector((state: AppState) => state.global.isApplicationsPageVisible);
+    const [ isOverviewPageVisible ] = useState(false);
     const appConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
 
@@ -75,6 +75,7 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
         selectedRoute,
         setSelectedRoute
     ] = useState<RouteInterface | ChildRouteInterface>(getAppRoutes()[ 0 ]);
+    const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
 
     const style = type === "desktop"
         ? {
@@ -82,7 +83,7 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
             top: `${ headerHeight + UIConstants.DESKTOP_CONTENT_TOP_PADDING }px`
         }
         : null;
-
+      
     /**
      * Listen for base name changes and updated the routes.
      */
@@ -132,6 +133,21 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
         return true;
     };
 
+    /**
+     * Validates if the overview page should be displayed in the side panel.
+     *
+     * @param {string} path - specific route.
+     * 
+     * @return {boolean}
+     */
+    const validateOverviewVisibility = (path: string): boolean => {
+        if ((path === AppConstants.getPaths().get("OVERVIEW")) && CommonUtils.isProfileReadOnly(isReadOnlyUser)) {
+            return false; 
+        }
+
+        return true;
+    };
+
     return (
         <Menu className={ `side-panel ${ type }` }
               data-testid={ `${testId}-menu` }
@@ -141,7 +157,8 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
                     filteredRoutes.map((route, index) => (
                         (route.showOnSidePanel
                             && hasRequiredScopes(appConfig[route.id], appConfig[route.id]?.scopes?.read, allowedScopes)
-                            && validateSidePanelVisibility(route.path))
+                            && validateSidePanelVisibility(route.path)
+                            && validateOverviewVisibility(route.path))
                             ? (
                                 <Menu.Item
                                     data-testid={ `${testId}-menu-item` }
