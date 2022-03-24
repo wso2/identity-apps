@@ -131,7 +131,7 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
                                         <SegmentedAccordion.Title
                                             id={ authenticator.id }
                                             data-testid={ `${ testId }-${ authenticator.id }-title` }
-                                            active={ accordionActiveIndexes.includes(accordionIndex) }
+                                            active={ accordionActiveIndexes?.includes(accordionIndex) || false }
                                             accordionIndex={ accordionIndex }
                                             onClick={ handleAccordionOnClick }
                                             content={ (
@@ -155,7 +155,7 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
                                             hideChevron={ hideChevron }
                                         />
                                         <SegmentedAccordion.Content
-                                            active={ accordionActiveIndexes.includes(accordionIndex) }
+                                            active={ accordionActiveIndexes?.includes(accordionIndex) || false }
                                             data-testid={ `${ testId }-${ authenticator.id }-content` }
                                         >
                                             { authenticator.content }
