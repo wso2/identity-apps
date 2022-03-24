@@ -329,21 +329,20 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
      * Handles accordion title click.
      *
      * @param {React.SyntheticEvent} e - Click event.
-     * @param {AccordionTitleProps} SegmentedAuthenticatedAccordion - Clicked title.
+     * @param {AccordionTitleProps} data - Clicked title.
      */
-    const handleAccordionOnClick = (e: MouseEvent<HTMLDivElement>,
-        SegmentedAuthenticatedAccordion: AccordionTitleProps): void => {
-        if (!SegmentedAuthenticatedAccordion) {
+    const handleAccordionOnClick = (e: MouseEvent<HTMLDivElement>, data: AccordionTitleProps): void => {
+        if (!data) {
             return;
         }
-        const newIndexes = [ ...accordionActiveIndexes ];
+        const newIndexes: number[] = [ ...accordionActiveIndexes ];
 
-        if (newIndexes.includes(SegmentedAuthenticatedAccordion.accordionIndex)) {
-            const removingIndex = newIndexes.indexOf(SegmentedAuthenticatedAccordion.accordionIndex);
+        if (newIndexes.includes(data.accordionIndex)) {
+            const removingIndex: number = newIndexes.indexOf(data.accordionIndex);
 
             newIndexes.splice(removingIndex, 1);
         } else {
-            newIndexes.push(SegmentedAuthenticatedAccordion.accordionIndex);
+            newIndexes.push(data.accordionIndex);
         }
 
         setAccordionActiveIndexes(newIndexes);
