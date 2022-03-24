@@ -104,6 +104,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const accountAppURL: string = useSelector((state: AppState) => state.config.deployment.accountApp.path);
     const consoleAppURL: string = useSelector((state: AppState) => state.config.deployment.appHomePath);
     const activeView: AppViewTypes = useSelector((state: AppState) => state.global.activeView);
+    const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
+    const associatedTenants: any[] = useSelector((state: AppState) => state?.auth?.tenants);
 
     const isDevelopAllowed: boolean =
         useSelector((state: AppState) => state.accessControl.isDevelopAllowed);
@@ -402,7 +404,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             }
                         ]
                     },
-                    ...commonConfig?.header?.getUserDropdownLinkExtensions(),
+                    ...commonConfig?.header?.getUserDropdownLinkExtensions(tenantDomain, associatedTenants),
                     {
                         category: "GENERAL",
                         categoryLabel: null,

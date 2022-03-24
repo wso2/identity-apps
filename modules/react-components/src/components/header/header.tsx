@@ -386,18 +386,18 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         }
 
         const adjustedUserDropdownLinks : HeaderLinkCategoryInterface[] = userDropdownLinks
-            .reduce((previousValue, currentValue) => {
-                const { category, categoryLabel, links } : Partial<HeaderLinkCategoryInterface> = currentValue;
-                const findObj : Partial<HeaderLinkCategoryInterface> = previousValue
+            .reduce((previous, current) => {
+                const { category, categoryLabel, links } : Partial<HeaderLinkCategoryInterface> = current;
+                const findObj : Partial<HeaderLinkCategoryInterface> = [ ...previous ]
                     .find((obj) => obj.category === category);
 
                 if (!findObj) {
-                    previousValue.push({ category, categoryLabel, links });
+                    previous.push({ category, categoryLabel, links });
                 } else {
                     findObj.links.push(...links);
                 }
 
-                return previousValue;
+                return previous;
             }, []);
 
         return adjustedUserDropdownLinks.map((category: HeaderLinkCategoryInterface, categoryIndex: number) => {
@@ -416,6 +416,10 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     ) }
                     {
                         category.links.map((link: HeaderLinkInterface, linkIndex: number) => {
+
+                            if(!link){
+                                return;
+                            }
 
                             const {
                                 content,
