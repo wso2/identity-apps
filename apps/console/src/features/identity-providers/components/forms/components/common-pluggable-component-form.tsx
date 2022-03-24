@@ -334,9 +334,9 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
         setDynamicValues(initialValues);
 
-        const initialFormValues = initialValues.properties.reduce((values, { key, value }) => {
+        const initialFormValues = initialValues?.properties?.reduce((values, { key, value }) => {
             return values.set(key, value);
-        }, new Map<string, FormValue>());
+        }, new Map<string, FormValue>()) || new Map<string, FormValue>();
 
         triggerAlgorithmSelectionDropdowns("IsLogoutReqSigned", initialFormValues);
         triggerAlgorithmSelectionDropdowns("ISAuthnReqSigned", initialFormValues);
@@ -372,7 +372,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             data-testid={ `${ testId }-form` }
         >
             <Grid>
-                { dynamicValues && getSortedPropertyFields(metadata?.properties, false) }
+                { getSortedPropertyFields(metadata?.properties, false) }
                 { showCustomProperties && customProperties && (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
