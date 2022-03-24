@@ -335,6 +335,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         if (!data) {
             return;
         }
+        
         const newIndexes: number[] = [ ...accordionActiveIndexes ];
 
         if (newIndexes.includes(data.accordionIndex)) {
