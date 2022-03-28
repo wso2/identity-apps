@@ -56,6 +56,9 @@ export const applicationConfig: ApplicationConfig = {
         makeSubjectMandatory: true,
         roleMapping: true
     },
+    customApplication: {
+        allowedProtocolTypes: []
+    },
     editApplication: {
         extendTabs: false,
         renderHelpPanelItems: (): ReactNode => {
@@ -63,6 +66,7 @@ export const applicationConfig: ApplicationConfig = {
         },
         showProvisioningSettings: true
     },
+    excludeIdentityClaims: false,
     inboundOIDCForm: {
         disabledGrantTypes: [],
         shouldValidateCertificate: true,
@@ -100,8 +104,5 @@ export const applicationConfig: ApplicationConfig = {
         saml: true,
         spa: true,
         windows: true
-    },
-    customApplication: {
-        allowedProtocolTypes: []
     }
 };

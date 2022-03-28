@@ -226,7 +226,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     const getClaims = () => {
         setIsClaimLoading(true);
         const params: ClaimsGetParams = {
-            "exclude-identity-claims": true,
+            "exclude-identity-claims": applicationConfig.excludeIdentityClaims,
             filter: null,
             limit: null,
             offset: null,
