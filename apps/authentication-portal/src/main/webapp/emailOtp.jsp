@@ -116,12 +116,18 @@
                         <label for="password"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.code")%>
                             (<%=Encode.forHtmlContent(request.getParameter("screenValue"))%>)
                         </label>
-                        <input type="password" id='OTPCode' name="OTPCode" c size='30'/>
+                        <div class="ui fluid icon input addon-wrapper">
+                            <input type="password" id='OTPCode' name="OTPCode" c size='30'/>
+                            <i id="password-eye" class="eye icon right-align password-toggle slash" onclick="showOTPCode()"></i>
+                        </div>
                             <% } else { %>
                         <div class="field">
                             <label for="password"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.code")%>
                                 :</label>
-                            <input type="password" id='OTPCode' name="OTPCode" size='30'/>
+                            <div class="ui fluid icon input addon-wrapper">
+                                <input type="password" id='OTPCode' name="OTPCode" size='30'/>
+                                <i id="password-eye" class="eye icon right-align password-toggle slash" onclick="showOTPCode()"></i>
+                            </div>
                             <% } %>
                         </div>
                         <input type="hidden" name="sessionDataKey"
@@ -168,31 +174,40 @@
 <% } %>
 
 <script type="text/javascript">
-            $(document).ready(function () {
-                $('#authenticate').click(function () {
-                    var code = document.getElementById("OTPCode").value;
-                    if (code == "") {
-                        document.getElementById('alertDiv').innerHTML
-                            = '<div id="error-msg" class="ui negative message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.enter.code")%></div>'
-                              +'<div class="ui divider hidden"></div>';
-                    } else {
-                        if ($('#codeForm').data("submitted") === true) {
-                            console.warn("Prevented a possible double submit event");
-                        } else {
-                            $('#codeForm').data("submitted", true);
-                            $('#codeForm').submit();
-                        }
-                    }
-                });
-            });
-            $(document).ready(function () {
-                $('#resend').click(function () {
-                    document.getElementById("resendCode").value = "true";
+    $(document).ready(function () {
+        $('#authenticate').click(function () {
+            var code = document.getElementById("OTPCode").value;
+            if (code == "") {
+                document.getElementById('alertDiv').innerHTML
+                    = '<div id="error-msg" class="ui negative message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.enter.code")%></div>'
+                        +'<div class="ui divider hidden"></div>';
+            } else {
+                if ($('#codeForm').data("submitted") === true) {
+                    console.warn("Prevented a possible double submit event");
+                } else {
+                    $('#codeForm').data("submitted", true);
                     $('#codeForm').submit();
-                });
-            });
+                }
+            }
+        });
+    });
+    $(document).ready(function () {
+        $('#resend').click(function () {
+            document.getElementById("resendCode").value = "true";
+            $('#codeForm').submit();
+        });
+    });
 
+    // Show OTP code function.
+    function showOTPCode() {
+        var otpField = $('#OTPCode');
 
+        if (otpField.attr("type") === 'text') {
+            otpField.attr("type", "password");
+        } else {
+            otpField.attr("type", "text");
+        }
+    }
 
 </script>
 </body>
