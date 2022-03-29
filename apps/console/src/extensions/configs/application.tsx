@@ -69,7 +69,7 @@ export const applicationConfig: ApplicationConfig = {
         showBackChannelLogout: true,
         showCertificates: true,
         showClientSecretMessage: true,
-        showFrontChannelLogout: true,
+        showFrontChannelLogout: false,
         showIdTokenEncryption: true,
         showNativeClientSecretMessage: true,
         showRequestObjectSignatureValidation: true,
