@@ -665,7 +665,7 @@
         <identity.extension.utils>1.0.8</identity.extension.utils>
         <carbon.identity.framework.version>5.20.349</carbon.identity.framework.version>
         <carbon.identity.framework.imp.pkg.version.range>[5.0.0, 6.0.0)</carbon.identity.framework.imp.pkg.version.range>
-        <carbon.identity.oauth.version>6.7.114</carbon.identity.oauth.version>
+        <carbon.identity.oauth.version>6.7.130</carbon.identity.oauth.version>
         <carbon.identity.oauth.imp.pkg.version.range>[6.1.0, 7.0.0)</carbon.identity.oauth.imp.pkg.version.range>
         <identity.governance.version>1.5.48</identity.governance.version>
         <totp.authenticator.version>3.0.18</totp.authenticator.version>
