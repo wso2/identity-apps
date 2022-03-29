@@ -375,7 +375,6 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         featureConfig?.applications?.scopes?.delete, allowedScopes);
 
                     return hasScopes ||
-                            UIConfig.systemAppsIdentifiers.includes(app?.name) ||
                             (app?.access === ApplicationAccessTypes.READ);
                 },
                 icon: (): SemanticICONS => "trash alternate",
