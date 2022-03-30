@@ -7903,9 +7903,7 @@ export const console: ConsoleNS = {
                                     empty: "Username is a required field",
                                     invalid: "A user already exists with this username.",
                                     invalidCharacters: "Username seems to contain invalid characters.",
-                                    regExViolation: "Your email must contain 3 to 50 characters. You can use " +
-                                        "alphanumeric characters, unicode characters, underscores (_), dashes (-), " +
-                                        "plus signs (+), periods (.), and an at sign (@)."
+                                    regExViolation: "Please enter a valid email address."
                                 }
                             }
                         },
@@ -8451,9 +8449,7 @@ export const console: ConsoleNS = {
                                 empty: "Username is a required field",
                                 invalid: "A user already exists with this username.",
                                 invalidCharacters: "Username seems to contain invalid characters.",
-                                regExViolation: "Your email must contain 3 to 50 characters. You can use " +
-                                    "alphanumeric characters, unicode characters, underscores (_), dashes (-), " +
-                                    "plus signs (+), periods (.), and an at sign (@)."
+                                regExViolation: "Please enter a valid email address."
                             }
                         }
                     }
@@ -8486,9 +8482,7 @@ export const console: ConsoleNS = {
                                 empty: "Username is a required field",
                                 invalid: "A user already exists with this username.",
                                 invalidCharacters: "Username seems to contain invalid characters.",
-                                regExViolation: "Your email must contain 3 to 50 characters. You can use " +
-                                "alphanumeric characters, unicode characters, underscores (_), dashes (-), " +
-                                    "periods (.), and an at sign (@)."
+                                regExViolation: "Please enter a valid email address."
                             }
                         }
                     }
