@@ -204,8 +204,10 @@
 
         if (otpField.attr("type") === 'text') {
             otpField.attr("type", "password");
+            document.getElementById("password-eye").classList.add("slash");
         } else {
             otpField.attr("type", "text");
+            document.getElementById("password-eye").classList.remove("slash");
         }
     }
 
