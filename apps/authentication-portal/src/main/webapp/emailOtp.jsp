@@ -118,7 +118,7 @@
                         </label>
                         <div class="ui fluid icon input addon-wrapper">
                             <input type="password" id='OTPCode' name="OTPCode" c size='30'/>
-                            <i id="password-eye" class="eye icon right-align password-toggle slash" onclick="showOTPCode()"></i>
+                            <i id="password-eye" class="eye icon right-align password-toggle" onclick="showOTPCode()"></i>
                         </div>
                             <% } else { %>
                         <div class="field">
@@ -126,7 +126,7 @@
                                 :</label>
                             <div class="ui fluid icon input addon-wrapper">
                                 <input type="password" id='OTPCode' name="OTPCode" size='30'/>
-                                <i id="password-eye" class="eye icon right-align password-toggle slash" onclick="showOTPCode()"></i>
+                                <i id="password-eye" class="eye icon right-align password-toggle" onclick="showOTPCode()"></i>
                             </div>
                             <% } %>
                         </div>
@@ -204,10 +204,10 @@
 
         if (otpField.attr("type") === 'text') {
             otpField.attr("type", "password");
-            document.getElementById("password-eye").classList.add("slash");
+            document.getElementById("password-eye").classList.remove("slash");
         } else {
             otpField.attr("type", "text");
-            document.getElementById("password-eye").classList.remove("slash");
+            document.getElementById("password-eye").classList.add("slash");
         }
     }
 
