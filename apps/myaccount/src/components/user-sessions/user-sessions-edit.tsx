@@ -93,7 +93,7 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
             },
             windows: {
                 icon: "windows",
-                values: [ "Windows [Phone/Mobile]" ]
+                values: [ "Windows 10", "Windows [Phone/Mobile]" ]
             }
         };
 
@@ -144,7 +144,7 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
     };
 
     return (
-        <EditSection data-testid={ `${testId}-editing-section` }>
+        <EditSection data-testid={ `${testId}-editing-section` } className="user-sessions-edit-secion">
             <Grid.Row>
                 <Grid.Column>
                     <List.Content>
@@ -155,10 +155,12 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
                                 </Grid.Column>
                                 <Grid.Column width={ 11 }>
                                     <List.Description>
-                                        <Icon
-                                            name={ resolveOSIcon(os.name) }
-                                            color="grey"
-                                        />
+                                        { resolveOSIcon(os.name) && (
+                                            <Icon
+                                                name={ resolveOSIcon(os.name) }
+                                                color="grey"
+                                            />
+                                        ) }
                                         { os.name }{ " " }{ os.version }
                                     </List.Description>
                                 </Grid.Column>
@@ -215,7 +217,7 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
                                                         as={ Divider }
                                                         hidden
                                                     />
-                                                    <Table celled compact className="opaque">
+                                                    <Table celled compact className="session-table opaque">
                                                         { /* Temporarily removed table headers as currently one column
                                                          is displayed. */ }
                                                         { /*<Table.Header>*/ }
@@ -235,11 +237,11 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
                                                                 userSession.applications.map(
                                                                     (app, i) => (
                                                                         <Table.Row key={ i }>
-                                                                            <Table.Cell>
+                                                                            <Table.Cell className="app-name">
                                                                                 { app.appName }
                                                                             </Table.Cell>
                                                                             {
-                                                                                showUsernameInApplicationUsingSub &&
+                                                                                true &&
                                                                                 (<Table.Cell>
                                                                                     { app.subject.split("@")[0] }
                                                                                 </Table.Cell>)
