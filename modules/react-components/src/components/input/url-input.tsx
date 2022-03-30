@@ -182,7 +182,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
      */
     const addUrl = useCallback((): string => {
 
-        const url: string = changeUrl;
+        let url: string = changeUrl;
 
         /**
          * If the entered URL is a invalid i.e not a standard URL input, then we won't add
@@ -199,6 +199,15 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
             : validation(url);
 
         setValidURL(urlValid);
+
+        /*
+         * If the entered URL is valid and it is intended to be an origin URL,
+         * and it has a trailing "/" at the end, it is sliced to get the valid origin. 
+        */
+        if (urlValid && onlyOrigin && url.charAt(url.length - 1) === "/") {
+            url = url.slice(0, -1);
+        }
+
         if (urlValid && (urlState === "" || urlState === undefined)) {
             setURLState(url);
             if (addOriginByDefault) {
