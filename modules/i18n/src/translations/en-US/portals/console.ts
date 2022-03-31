@@ -7836,6 +7836,12 @@ export const console: ConsoleNS = {
                             subheader: "Once you change the password, the user will no longer be able to log in to " +
                                 "any application using the current password."
                         }
+                    },
+                    dateOfBirth: {
+                        placeholder: {
+                            part1:"Enter the",
+                            part2: "in the format YYYY-MM-DD"
+                        }
                     }
                 },
                 forms: {
