@@ -6727,9 +6727,9 @@ export const console: ConsoleNS = {
                                 message: "Un problème est survenu"
                             },
                             success: {
-                                description: "La réinitialisation du mot de passe du compte utilisateur a été " +
-                                    "déclenchée avec succès",
-                                message: "Réinitialisation du mot de passe déclenchée avec succès"
+                                description: "La réinitialisation du mot de passe est lancée avec succès " +
+                                    "pour le compte d'utilisateur.",
+                                message: "Réinitialisation du mot de passe lancée"
                             }
                         },
                         getProfileInfo: {
