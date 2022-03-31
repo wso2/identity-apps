@@ -211,8 +211,10 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         if (urlValid && (urlState === "" || urlState === undefined)) {
             setURLState(url);
             if (addOriginByDefault) {
-                handleAddAllowedOrigin(url);
-                allowedOrigins.push(url);
+                const originOfURL = URLUtils.urlComponents(url).origin;
+
+                handleAddAllowedOrigin(originOfURL);
+                allowedOrigins.push(originOfURL);
             }
             setChangeUrl("");
 

@@ -89,6 +89,7 @@ interface OAuthProtocolSettingsWizardFormPropsInterface extends TestableComponen
      */
     isProtocolConfig?: boolean;
     addOriginByDefault?: boolean;
+    isAllowEnabled?: boolean;
 }
 
 /**
@@ -115,6 +116,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         showCallbackURL,
         tenantDomain,
         addOriginByDefault,
+        isAllowEnabled,
         [ "data-testid" ]: testId
     } = props;
 
@@ -527,7 +529,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         required={ true }
                                         showPredictions={ false }
                                         customLabel={ callbackURLsErrorLabel }
-                                        isAllowEnabled={ false }
+                                        isAllowEnabled={ isAllowEnabled }
                                         addOriginByDefault={ addOriginByDefault }
                                     />
                                     {
