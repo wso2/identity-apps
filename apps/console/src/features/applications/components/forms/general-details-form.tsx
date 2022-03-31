@@ -318,10 +318,25 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         }
                         tOptions={ { myAccount: "My Account" } }
                     >
-                        Please type
-                        <strong data-testid="application-name-assertion">
-                            My Account
-                        </strong>
+                        { " " }
+                        { getLink("develop.applications.managementApplication.selfServicePortal") === undefined
+                            ? (
+                                <strong data-testid="application-name-assertion">
+                                    My Account
+                                </strong>
+                            )
+                            : (
+                                <strong 
+                                    className="link pointing"
+                                    data-testid="application-name-assertion" 
+                                    onClick={ 
+                                        () => window.open(getLink("develop.applications.managementApplication"+
+                                                        ".selfServicePortal"), "_blank") 
+                                    }>
+                                    My Account
+                                </strong>
+                            )
+                        }
                     </Trans>
                 ) }
                 width={ 16 }

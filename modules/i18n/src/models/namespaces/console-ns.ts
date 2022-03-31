@@ -3506,6 +3506,12 @@ export interface ConsoleNS {
                         lockUserZone: DangerZone;
                         passwordResetZone: DangerZone;
                     };
+                    dateOfBirth: {
+                        placeholder: {
+                            part1: string;
+                            part2: string;
+                        }
+                    };
                 };
                 forms: {
                     addUserForm: {

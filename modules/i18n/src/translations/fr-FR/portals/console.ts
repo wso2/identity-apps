@@ -6424,6 +6424,12 @@ export const console: ConsoleNS = {
                             subheader: "Une fois le mot de passe modifié, l'utilisateur ne pourra plus se connecter " +
                                 "à aucune application en utilisant le mot de passe actuel."
                         }
+                    },
+                    dateOfBirth: {
+                        placeholder: {
+                            part1:"Entrer le",
+                            part2: "au format AAAA-MM-JJ"
+                        }
                     }
                 },
                 forms: {
@@ -6492,10 +6498,7 @@ export const console: ConsoleNS = {
                                     invalid: "Ce nom d'utilisateur n'est pas disponible.",
                                     invalidCharacters: "Le nom d'utilisateur semble contenir des caractères " +
                                         "non valides.",
-                                    regExViolation: "Votre email doit contenir de 3 à 50 caractères. Vous pouvez " +
-                                        "utiliser des caractères alphanumériques, caractères Unicode, " +
-                                        "des traits de soulignement (_), des tirets (-), des signes plus (+), " +
-                                        "des points (.), et un signe arobase (@)."
+                                    regExViolation: "S'il vous plaît, mettez une adresse email valide."
                                 }
                             }
                         },
@@ -7075,10 +7078,7 @@ export const console: ConsoleNS = {
                                 empty: "Le nom d'utilisateur est obligatoire",
                                 invalid: "Ce nom d'utilisateur n'est pas disponible.",
                                 invalidCharacters: "Le nom d'utilisateur semble contenir des caractères non valides.",
-                                regExViolation: "Votre email doit contenir de 3 à 50 caractères. Vous pouvez " +
-                                    "utiliser des caractères alphanumériques, caractères Unicode, " +
-                                    "des traits de soulignement (_), des tirets (-), des signes plus (+), " +
-                                    "des points (.), et un signe arobase (@)."
+                                regExViolation: "S'il vous plaît, mettez une adresse email valide."
                             }
                         }
                     }
@@ -7110,10 +7110,7 @@ export const console: ConsoleNS = {
                                 empty: "Le nom d'utilisateur est obligatoire",
                                 invalid: "Ce nom d'utilisateur n'est pas disponible.",
                                 invalidCharacters: "Le nom d'utilisateur semble contenir des caractères non valides.",
-                                regExViolation: "Votre email doit contenir de 3 à 50 caractères. Vous pouvez " +
-                                    "utiliser des caractères alphanumériques, caractères Unicode, " +
-                                    "des traits de soulignement (_), des tirets (-), des points (.), " +
-                                    "et un signe arobase (@)."
+                                regExViolation: "S'il vous plaît, mettez une adresse email valide."
                             }
                         }
                     }

@@ -1342,8 +1342,8 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter a description for the application"
                             },
                             discoverable: {
-                                hint: "Enable to make the application visible to end-users on their " +
-                                    "<1>{{ myAccount }}</1> application catalog.",
+                                hint: "If enabled, customers can access this application from the " +
+                                    "<1>{{ myAccount }}</1> portal.",
                                 label: "Discoverable application"
                             },
                             imageUrl: {
@@ -7836,6 +7836,12 @@ export const console: ConsoleNS = {
                             subheader: "Once you change the password, the user will no longer be able to log in to " +
                                 "any application using the current password."
                         }
+                    },
+                    dateOfBirth: {
+                        placeholder: {
+                            part1:"Enter the",
+                            part2: "in the format YYYY-MM-DD"
+                        }
                     }
                 },
                 forms: {
@@ -7903,9 +7909,7 @@ export const console: ConsoleNS = {
                                     empty: "Username is a required field",
                                     invalid: "A user already exists with this username.",
                                     invalidCharacters: "Username seems to contain invalid characters.",
-                                    regExViolation: "Your email must contain 3 to 50 characters. You can use " +
-                                        "alphanumeric characters, unicode characters, underscores (_), dashes (-), " +
-                                        "plus signs (+), periods (.), and an at sign (@)."
+                                    regExViolation: "Please enter a valid email address."
                                 }
                             }
                         },
@@ -8451,9 +8455,7 @@ export const console: ConsoleNS = {
                                 empty: "Username is a required field",
                                 invalid: "A user already exists with this username.",
                                 invalidCharacters: "Username seems to contain invalid characters.",
-                                regExViolation: "Your email must contain 3 to 50 characters. You can use " +
-                                    "alphanumeric characters, unicode characters, underscores (_), dashes (-), " +
-                                    "plus signs (+), periods (.), and an at sign (@)."
+                                regExViolation: "Please enter a valid email address."
                             }
                         }
                     }
@@ -8486,9 +8488,7 @@ export const console: ConsoleNS = {
                                 empty: "Username is a required field",
                                 invalid: "A user already exists with this username.",
                                 invalidCharacters: "Username seems to contain invalid characters.",
-                                regExViolation: "Your email must contain 3 to 50 characters. You can use " +
-                                "alphanumeric characters, unicode characters, underscores (_), dashes (-), " +
-                                    "periods (.), and an at sign (@)."
+                                regExViolation: "Please enter a valid email address."
                             }
                         }
                     }
