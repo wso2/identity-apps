@@ -44,29 +44,31 @@ export class AuthenticatorMeta {
 
         return get({
             [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ]: "Login users with username and password " +
-            "credentials.",
+                "credentials.",
             [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Get users Identity first to " +
-            "control the authentication flow.",
+                "control the authentication flow.",
             [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "Provide secure and fast passwordless " +
-            "login experience using FIDO2.",
+                "login experience using FIDO2.",
             [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
-            "Time-Based One Time passcode.",
+                "Time-Based One Time passcode.",
             [ IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "Login users with " +
-            "existing Google accounts.",
+                "existing Google accounts.",
             [ IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID ]: "Login users with " +
-            "existing GitHub accounts.",
+                "existing GitHub accounts.",
             [ IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID ]: "Login users with " +
-            "existing Facebook accounts.",
+                "existing Facebook accounts.",
             [ IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID ]: "Login users with " +
-            "existing Twitter accounts.",
+                "existing Twitter accounts.",
             [ IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID ]: "Authenticate users with " +
-            "Enterprise OIDC connections.",
+                "Enterprise OIDC connections.",
             [ IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID ]: "Authenticate users with " +
-            "Enterprise SAML connections.",
+                "Enterprise SAML connections.",
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
-            "one-time passcode sent via email.",
+                "one-time passcode sent via email.",
             [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
-            "SMS one-time passcode."
+                "SMS one-time passcode.",
+            [ IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: "Email users a magic link to " +
+                "log in passwordless"
         }, authenticatorId);
     }
 
@@ -105,6 +107,9 @@ export class AuthenticatorMeta {
             ],
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.MULTI_FACTOR
+            ],
+            [ IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.PASSWORDLESS
             ]
         }, authenticatorId);
     }
@@ -120,17 +125,17 @@ export class AuthenticatorMeta {
 
         return get({
             [ AuthenticatorCategories.ENTERPRISE ]: "console:develop.features." +
-            "applications.edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
-            "addAuthenticatorModal.content.authenticatorGroups.enterprise.heading",
+                "applications.edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
+                "addAuthenticatorModal.content.authenticatorGroups.enterprise.heading",
             [ AuthenticatorCategories.LOCAL ]: "console:develop.features." +
-            "applications.edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
-            "addAuthenticatorModal.content.authenticatorGroups.basic.heading",
+                "applications.edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
+                "addAuthenticatorModal.content.authenticatorGroups.basic.heading",
             [ AuthenticatorCategories.SECOND_FACTOR ]: "console:develop.features." +
-            "applications.edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
-            "addAuthenticatorModal.content.authenticatorGroups.mfa.heading",
+                "applications.edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
+                "addAuthenticatorModal.content.authenticatorGroups.mfa.heading",
             [ AuthenticatorCategories.SOCIAL ]: "console:develop.features." +
-            "applications.edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
-            "addAuthenticatorModal.content.authenticatorGroups.social.heading"
+                "applications.edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
+                "addAuthenticatorModal.content.authenticatorGroups.social.heading"
         }, type);
     }
 
@@ -150,7 +155,8 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: "TOTP",
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Email OTP",
             [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Identifier First",
-            [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "SMS OTP"
+            [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "SMS OTP",
+            [ IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: "Magic Link"
         }, authenticatorId);
     }
 
@@ -176,7 +182,8 @@ export class AuthenticatorMeta {
             IdentityProviderManagementConstants.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
             ]: getAuthenticatorIcons()?.sessionExecutor,
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.emailOTP,
-            [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.smsOTP
+            [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.smsOTP,
+            [ IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.magicLink
         }, authenticatorId);
 
         return icon ?? getAuthenticatorIcons().default;
@@ -194,6 +201,7 @@ export class AuthenticatorMeta {
         return get({
             [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Predefined",
             [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "Predefined",
+            [ IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: "Predefined",
             [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: "Predefined",
             [ IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "Google",
             [ IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID ]: "GitHub",
