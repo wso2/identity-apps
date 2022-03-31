@@ -21,7 +21,6 @@ import { UserstoreConstants } from "@wso2is/core/constants";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import { generate } from "generate-password";
 import React, { ReactElement, Suspense, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -37,6 +36,7 @@ import {
 } from "../../userstores";
 import { getUsersList } from "../api";
 import { BasicUserDetailsInterface } from "../models";
+import { generatePassword } from "../utils";
 
 /**
  * import pass strength bat dynamically.
@@ -169,16 +169,15 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      */
     const handlePasswordChange = (values: Map<string, FormValue>): void => {
         const password: string = values.get("newPassword").toString();
+
         setPassword(password);
     };
 
-    /**
-     * The following function generate a random password.
-     */
     const generateRandomPassword = (): void => {
-        const genPasswrod = generate({ length: 11, numbers: true, symbols: true, uppercase: true });
-        setPassword(genPasswrod);
-        setRandomPassword(genPasswrod);
+        const generatedPassword: string = generatePassword(11, true, true, true, true, 1, 1, 1, 1);
+
+        setPassword(generatedPassword);
+        setRandomPassword(generatedPassword);
     };
 
     /**
