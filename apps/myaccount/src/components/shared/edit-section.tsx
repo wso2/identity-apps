@@ -25,6 +25,13 @@ import { Segment } from "semantic-ui-react";
  * Proptypes for the edit section component.
  */
 interface EditSectionProps extends TestableComponentInterface {
+    /**
+     * External CSS classes.
+     */
+    className?: string;
+    /**
+     * Should shoe a top margin.
+     */
     marginTop?: boolean;
 }
 
@@ -38,13 +45,18 @@ export const EditSection: React.FunctionComponent<EditSectionProps> = (
     props: PropsWithChildren<EditSectionProps>
 ): JSX.Element => {
 
-    const { marginTop, ["data-testid"]: testId } = props;
-    const classes = classNames({
+    const {
+        className,
+        marginTop,
+        ["data-testid"]: testId
+    } = props;
+
+    const classes = classNames("edit-segment",{
         "top-margin": marginTop
-    });
+    }, className);
 
     return (
-        <Segment padded className={ `edit-segment ${classes}` } data-testid={ testId }>
+        <Segment padded className={ classes } data-testid={ testId }>
             { props.children }
         </Segment>
     );
