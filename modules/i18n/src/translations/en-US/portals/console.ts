@@ -8130,8 +8130,8 @@ export const console: ConsoleNS = {
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "The user account password reset triggered successfully.",
-                                message: "Successfully triggered password reset"
+                                description: "Password reset is successfully initiated for the user account.",
+                                message: "Initiated password reset"
                             }
                         },
                         getProfileInfo: {
