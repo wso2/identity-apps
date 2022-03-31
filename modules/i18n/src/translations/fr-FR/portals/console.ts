@@ -6424,6 +6424,12 @@ export const console: ConsoleNS = {
                             subheader: "Une fois le mot de passe modifié, l'utilisateur ne pourra plus se connecter " +
                                 "à aucune application en utilisant le mot de passe actuel."
                         }
+                    },
+                    dateOfBirth: {
+                        placeholder: {
+                            part1:"Entrer le",
+                            part2: "au format AAAA-MM-JJ"
+                        }
                     }
                 },
                 forms: {

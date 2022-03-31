@@ -6282,6 +6282,12 @@ export const console: ConsoleNS = {
                             subheader: "ඔබ මුරපදය වෙනස් කළ පසු, පරිශීලකයාට දැනට පවතින මුරපදය භාවිතා කර " +
                                 "කිසිඳු යෙදුමකට ප්‍රවේශ විය නොහැක."
                         }
+                    },
+                    dateOfBirth: {
+                        placeholder: {
+                            part1:"ඇතුල් කරන්න",
+                            part2: "YYYY-MM-DD ආකෘතියෙන්"
+                        }
                     }
                 },
                 forms: {
