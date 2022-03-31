@@ -226,44 +226,64 @@ export class IdentityProviderManagementConstants {
 
     public static readonly IDENTITY_PROVIDER_TEMPLATE_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an " +
         "invalid status code while fetching identity provider template.";
+
     public static readonly IDENTITY_PROVIDER_TEMPLATE_FETCH_ERROR: string = "An error occurred while fetching " +
         "the required identity provider template.";
+
     public static readonly IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an " +
         "invalid status code while fetching identity provider templates list.";
+
     public static readonly IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_ERROR: string = "An error occurred while fetching " +
         "the required identity provider templates list.";
+
     public static readonly IDENTITY_PROVIDER_JIT_PROVISIONING_UPDATE_ERROR: string = "An error occurred while" +
         " updating the JIT provisioning configurations of the identity provider.";
+
     public static readonly LOCAL_AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while fetching local authenticators.";
+
     public static readonly LOCAL_AUTHENTICATORS_FETCH_ERROR: string = "An error occurred while fetching the local" +
         "authenticators.";
+
     public static readonly LOCAL_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while fetching the local authenticator.";
+
     public static readonly LOCAL_AUTHENTICATOR_FETCH_ERROR: string = "An error occurred while fetching the " +
         "local authenticator.";
+
     public static readonly AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while fetching the authenticators.";
+
     public static readonly AUTHENTICATORS_FETCH_ERROR: string = "An error occurred while fetching the " +
         "authenticators.";
+
     public static readonly AUTHENTICATOR_TAGS_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while fetching the authenticator tags.";
+
     public static readonly AUTHENTICATOR_TAGS_FETCH_ERROR: string = "An error occurred while fetching the " +
         "authenticator tags.";
+
     public static readonly MULTI_FACTOR_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while fetching the multi-factor authenticator.";
+
     public static readonly MULTI_FACTOR_AUTHENTICATOR_FETCH_ERROR: string = "An error occurred while fetching the " +
         "multi-factor authenticator.";
+
     public static readonly MULTI_FACTOR_AUTHENTICATOR_UPDATE_INVALID_STATUS_CODE_ERROR: string = "Received an " +
         "invalid status code while updating the multi-factor authenticator.";
+
     public static readonly MULTI_FACTOR_AUTHENTICATOR_UPDATE_ERROR: string = "An error occurred while updating the " +
         "multi-factor authenticator.";
+
     public static readonly COMBINED_AUTHENTICATOR_FETCH_ERROR: string = "An error occurred while fetching the local" +
         "and federated authenticators.";
+
     public static readonly IDENTITY_PROVIDER_CLAIMS_UPDATE_ERROR: string = "An error occurred while updating claims " +
         "configurations of the identity provider.";
+
     public static readonly IDENTITY_PROVIDER_CERTIFICATE_UPDATE_ERROR: string = "An error occurred while updating " +
         "the certificate of the identity provider.";
+
     public static readonly BASIC_AUTH_REQUEST_PATH_AUTHENTICATOR: string = "BasicAuthRequestPathAuthenticator";
     public static readonly OAUTH_REQUEST_PATH_AUTHENTICATOR: string = "OAuthRequestPathAuthenticator";
     public static readonly PROVISIONING_CONNECTOR_DISPLAY_NAME: string = "displayName";
@@ -334,9 +354,9 @@ export class IdentityProviderManagementConstants {
      * @default
      */
      public static readonly ERROR_CREATE_LIMIT_REACHED_IDP = new IdentityAppsError(
-        "IDP-60035",
-        "console:develop.features.authenticationProvider.notifications.apiLimitReachedError.error.description",
-        "console:develop.features.authenticationProvider.notifications.apiLimitReachedError.error.message",
-        "cec1f247-32fd-4624-9915-f469195a53ac"
-    )
+         "IDP-60035",
+         "console:develop.features.authenticationProvider.notifications.apiLimitReachedError.error.description",
+         "console:develop.features.authenticationProvider.notifications.apiLimitReachedError.error.message",
+         "cec1f247-32fd-4624-9915-f469195a53ac"
+     )
 }
