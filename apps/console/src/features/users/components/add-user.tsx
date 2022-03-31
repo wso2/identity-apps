@@ -78,7 +78,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     ] = useState<string>(PRIMARY_USERSTORE_PROPERTY_VALUES.UsernameJavaScriptRegEx);
     const [ isUsernameRegExLoading, setUsernameRegExLoading ] = useState<boolean>(false);
     const [ password, setPassword ] = useState<string>("");
-    const [ passwordScore, setPasswordScore ] = useState<number>(-1);
+    const [ _passwordScore, setPasswordScore ] = useState<number>(-1);
     const confirmPasswordRef = useRef<HTMLDivElement>();
 
     const { t } = useTranslation();
@@ -136,6 +136,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      */
     const handleUserStoreChange = (values: Map<string, FormValue>): void => {
         const domain: string = values.get("domain").toString();
+
         setUserStore(domain);
         setUserStoreRegEx(domain)
             .finally(() => {
@@ -185,18 +186,19 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      */
     const getUserStores = (): void => {
         const storeOptions = [
-                {
-                    key: -1,
-                    text: t("console:manage.features.users.userstores.userstoreOptions.primary"),
-                    value: "primary"
-                }
-            ];
+            {
+                key: -1,
+                text: t("console:manage.features.users.userstores.userstoreOptions.primary"),
+                value: "primary"
+            }
+        ];
         let storeOption =
             {
                 key: null,
                 text: "",
                 value: ""
             };
+
         getUserStoreList()
             .then((response) => {
                 if (storeOptions === []) {
@@ -283,6 +285,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                     triggerConfirmPasswordInputValidation();
 
                                     let passwordRegex = "";
+
                                     if (userStore !== UserstoreConstants.PRIMARY_USER_STORE) {
                                         // Set the username regEx of the secondary user store.
                                         passwordRegex
@@ -454,6 +457,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                     if (value) {
                                         const usersList
                                             = await getUsersList(null, null, "userName eq " + value, null, userStore);
+                                            
                                         if (usersList?.totalResults > 0) {
                                             validation.isValid = false;
                                             validation.errorMessages.push(USER_ALREADY_EXIST_ERROR_MESSAGE);
@@ -563,7 +567,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                     </Grid.Column>
                 </Grid.Row>
                 { emailVerificationEnabled &&
-                    <Grid.Row columns={ 1 }>
+                    (<Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                             <Field
                                 type="radio"
@@ -576,7 +580,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 tabIndex={ 6 }
                             />
                         </Grid.Column>
-                    </Grid.Row>
+                    </Grid.Row>)
                 }
                 { handlePasswordOptions() }
             </Grid>
