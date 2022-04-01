@@ -5690,6 +5690,14 @@ export const console: ConsoleNS = {
                         heading: "SCIM 2.0"
                     }
                 },
+                scopeMappings: {
+                    deletionConfirmationModal: {
+                        assertionHint: "Please confirm your action.",
+                        content: "If you delete this claim, the claim will not available in the token. Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will permanently delete the scope claim mapping"
+                    }
+                },
                 dialects: {
                     advancedSearch: {
                         error: "Filter query format incorrect",
