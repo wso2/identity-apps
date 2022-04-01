@@ -25,6 +25,7 @@ import CertificateColoredIcon from "../../../themes/default/assets/images/icons/
 import ClockColoredIcon from "../../../themes/default/assets/images/icons/clock-colored-icon.svg";
 import ConnectionIcon from "../../../themes/default/assets/images/icons/connection.svg";
 import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
+import MagicLinkLogo from "../../../themes/default/assets/images/icons/email-icon.svg";
 import FIDOLogo from "../../../themes/default/assets/images/icons/fingerprint.svg";
 import { ReactComponent as GearsIcon } from "../../../themes/default/assets/images/icons/gears-icon.svg";
 import MagnifierColoredIcon from "../../../themes/default/assets/images/icons/magnifier-colored-icon.svg";
@@ -99,6 +100,7 @@ export const getAuthenticatorIcons = (): any => {
         google: GoogleLogo,
         identifierFirst: MagnifierColoredIcon,
         jwtBasic: JWTLogo,
+        magicLink: MagicLinkLogo,
         microsoft: MicrosoftLogo,
         office365: Office365Logo,
         sessionExecutor: ClockColoredIcon,
@@ -123,6 +125,7 @@ export const getConnectorIcons = (): any => {
 export const getIdPIcons = (): any => {
 
     return {
+        apple: AppleLogo,
         default: ConnectionIcon,
         emailOTP: EmailOTPIcon,
         enterprise: EnterpriseModeIdPIcon,
@@ -130,9 +133,8 @@ export const getIdPIcons = (): any => {
         github: GithubIdPIcon,
         google: GoogleIdPIcon,
         iwaKerberos: IWAKerberosIdPIllustration,
-        microsoft: MicrosoftLogo,
-        apple: AppleLogo,
         linkedIn: LinkedInLogo,
+        microsoft: MicrosoftLogo,
         office365: Office365IdPIllustration,
         oidc: OIDCLogo,
         saml: SamlLogo,
