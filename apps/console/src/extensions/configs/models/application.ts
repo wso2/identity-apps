@@ -97,4 +97,5 @@ export interface ApplicationConfig {
     customApplication: {
         allowedProtocolTypes: string[];
     };
+    excludeIdentityClaims: boolean;
 }

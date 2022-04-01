@@ -1342,8 +1342,8 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter a description for the application"
                             },
                             discoverable: {
-                                hint: "Enable to make the application visible to end-users on their " +
-                                    "<1>{{ myAccount }}</1> application catalog.",
+                                hint: "If enabled, customers can access this application from the " +
+                                    "<1>{{ myAccount }}</1> portal.",
                                 label: "Discoverable application"
                             },
                             imageUrl: {
@@ -2845,7 +2845,7 @@ export const console: ConsoleNS = {
                     addAuthenticator: "New Authenticator",
                     addCertificate: "New Certificate",
                     addConnector: "New Connector",
-                    addIDP: "New Connection"
+                    addIDP: "Create Connection"
                 },
                 confirmations: {
                     deleteAuthenticator: {
@@ -5353,7 +5353,7 @@ export const console: ConsoleNS = {
                     authenticationDisplayName: "Authentication",
                     provisioningDisplayName: "Provisioning"
                 },
-                title: "Create Connection"
+                title: "Create a New Connection"
             },
             idp: {
                 subTitle: "Manage identity providers to allow users to log in to your application through them.",
@@ -7917,9 +7917,7 @@ export const console: ConsoleNS = {
                                     empty: "Username is a required field",
                                     invalid: "A user already exists with this username.",
                                     invalidCharacters: "Username seems to contain invalid characters.",
-                                    regExViolation: "Your email must contain 3 to 50 characters. You can use " +
-                                        "alphanumeric characters, unicode characters, underscores (_), dashes (-), " +
-                                        "plus signs (+), periods (.), and an at sign (@)."
+                                    regExViolation: "Please enter a valid email address."
                                 }
                             }
                         },
@@ -8140,8 +8138,8 @@ export const console: ConsoleNS = {
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "The user account password reset triggered successfully.",
-                                message: "Successfully triggered password reset"
+                                description: "Password reset is successfully initiated for the user account.",
+                                message: "Initiated password reset"
                             }
                         },
                         getProfileInfo: {
@@ -8465,9 +8463,7 @@ export const console: ConsoleNS = {
                                 empty: "Username is a required field",
                                 invalid: "A user already exists with this username.",
                                 invalidCharacters: "Username seems to contain invalid characters.",
-                                regExViolation: "Your email must contain 3 to 50 characters. You can use " +
-                                    "alphanumeric characters, unicode characters, underscores (_), dashes (-), " +
-                                    "plus signs (+), periods (.), and an at sign (@)."
+                                regExViolation: "Please enter a valid email address."
                             }
                         }
                     }
@@ -8500,9 +8496,7 @@ export const console: ConsoleNS = {
                                 empty: "Username is a required field",
                                 invalid: "A user already exists with this username.",
                                 invalidCharacters: "Username seems to contain invalid characters.",
-                                regExViolation: "Your email must contain 3 to 50 characters. You can use " +
-                                "alphanumeric characters, unicode characters, underscores (_), dashes (-), " +
-                                    "periods (.), and an at sign (@)."
+                                regExViolation: "Please enter a valid email address."
                             }
                         }
                     }

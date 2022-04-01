@@ -30,7 +30,8 @@ export const commonConfig: CommonConfig = {
     header: {
         getHeaderExtensions: (): HeaderExtension[] => [],
         getHeaderSubPanelExtensions: (): HeaderSubPanelItemInterface[] => [],
-        getUserDropdownLinkExtensions: (): HeaderLinkCategoryInterface[] => [],
+        getUserDropdownLinkExtensions: (tenantDomain: string,
+            associatedTenants: any[]): HeaderLinkCategoryInterface[] => [],
         headerQuickstartMenuItem: "",
         renderAppSwitcherAsDropdown: false
     },

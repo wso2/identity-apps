@@ -720,7 +720,7 @@
 
 .ui.segment {
     &.image-preview {
-        border: @imagePreviewBorder;
+        outline: @imagePreviewOutline;
         height: @imagePreviewHeight;
         display: flex;
         align-items: center;

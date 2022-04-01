@@ -111,7 +111,8 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
     const [ showAssertionConsumerUrlError, setAssertionConsumerUrlError ] = useState<boolean>(false);
     const [ assertionConsumerURLsErrorLabel, setAssertionConsumerURLsErrorLabel ] = useState<ReactElement>(null);
     const [ configureMode, setConfigureMode ] = useState<string>(undefined);
-
+    const [ hasAssertionConsumerUrls, setHasAssertionConsumerUrls ] = useState<boolean>(false);
+    
     // State related to file picker
     const [ xmlBase64String, setXmlBase64String ] = useState<string>();
     const [ selectedMetadataFile, setSelectedMetadataFile ] = useState<File>(null);
@@ -186,6 +187,31 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
             setIssuerLFromTemplate(templatedIssuer);
         }
     }, [ templateValues ]);
+
+     /**
+      * Update AssertionConsumerUrls based on the new value and previous 
+      * values available in assertionConsumerUrls variable.
+      * 
+      * @param {string} value - UrlState value of Assertion consumer url URLInput field.
+      */
+      const updateAssertionConsumerUrls = (value : string): void => {
+        if (!hasAssertionConsumerUrls) {
+            if (assertionConsumerUrls) {
+               setAssertionConsumerUrls(assertionConsumerUrls)
+               setHasAssertionConsumerUrls(true)
+            } else {
+               if (value){
+                   setHasAssertionConsumerUrls(true)
+               }
+               setAssertionConsumerUrls(value)
+            }
+        } else {
+           setAssertionConsumerUrls(value)
+           if (!value) {
+              setHasAssertionConsumerUrls(false)
+           }
+        }
+    }
 
     /**
      * Sanitizes and prepares the form values for submission.
@@ -268,6 +294,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                         onClick={ (event) => {
                                             event.preventDefault();
                                             setConfigureMode(mode);
+                                            setHasAssertionConsumerUrls(false)
                                         } }
                                     />
                                 );
@@ -315,7 +342,10 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                             validation.errorMessages.push(
                                                 t("console:develop.features.applications.forms.inboundSAML" +
                                                     ".fields.issuer.errorMessage"));
+                                        } else {
+                                            setIssuer(value)
                                         }
+                                        
                                     } }
                                     data-testid={ `${testId}-issuer-input` }
                                 />
@@ -367,7 +397,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } className="field">
                                 <URLInput
                                     urlState={ assertionConsumerUrls }
-                                    setURLState={ setAssertionConsumerUrls }
+                                    setURLState={ updateAssertionConsumerUrls }
                                     labelName={
                                         t("console:develop.features.applications.forms.inboundSAML" +
                                             ".fields.assertionURLs.label")
@@ -445,6 +475,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                                             setAssertionConsumerUrls(
                                                                 assertionConsumerURLFromTemplate);
                                                             setIssuer(issuerFromTemplate);
+                                                            setHasAssertionConsumerUrls(true)
                                                         } }
                                                         data-testid={ `${testId}-add-now-button` }
                                                     >

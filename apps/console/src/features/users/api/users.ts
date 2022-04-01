@@ -35,7 +35,14 @@ const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAC
  *
  * @returns {Promise<UserListInterface>} a promise containing the user list.
  */
-export const getUsersList = (count: number, startIndex: number, filter: string, attributes: string, domain: string):
+export const getUsersList = (
+    count: number, 
+    startIndex: number, 
+    filter: string, 
+    attributes: string, 
+    domain: string,
+    excludedAttributes?: string
+):
     Promise<UserListInterface> => {
     const requestConfig = {
         headers: {
@@ -47,6 +54,7 @@ export const getUsersList = (count: number, startIndex: number, filter: string, 
             attributes,
             count,
             domain,
+            excludedAttributes,
             filter,
             startIndex
         },

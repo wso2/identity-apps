@@ -486,6 +486,8 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
                 )
             }
             data-testid={ `${ testId }-page-layout` }
+            actionColumnWidth={ 4 }
+            headingColumnWidth={ 12 }
         >
             { useNewConnectionsView ? (
                 <GridLayout
