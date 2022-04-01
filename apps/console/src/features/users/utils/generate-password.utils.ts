@@ -16,11 +16,22 @@
  * under the License.
  */
 
+/**
+ * The following function is for generating random numbers in range of [0 - upperlimit)
+ * @param {number} upperLimit - upperlimit (exclusive) for random numbers range
+ * @returns {number}
+ */
 const generateRandomNumbers = (upperLimit: number): number => {
     return Math.random() * (upperLimit);
 };
 
-const removeIgnoredCharacters = (str: string, ignoredChars: string[]) => {
+/**
+ * The following function is to remove an array of strings from a string
+ * @param {string} str - original string
+ * @param {string[]} ignoredChars - array of strings to be removed
+ * @returns {string} - modified original string by removing ignoredChars
+ */
+const removeIgnoredCharacters = (str: string, ignoredChars: string[]): string => {
     for (const char of ignoredChars) {
         str = str.replace(char, "");
     }
@@ -28,6 +39,20 @@ const removeIgnoredCharacters = (str: string, ignoredChars: string[]) => {
     return str;
 };
 
+/**
+ * The following function is to generate a random password according to the provided options
+ * @param {number} length - length of password
+ * @param {boolean} isAlphabetsLowercaseAllowed - whether to include lowercase alphabets
+ * @param {boolean} isAlphabetsUppercaseAllowed - whether to include uppercase alphabets
+ * @param {boolean} isNumbersAllowed - whether to include numbers
+ * @param {boolean} isSpecialCharactersAllowed - whether to include special characters
+ * @param {number} minAlphabetsLowercase - required minimum number of lowercase alphabets
+ * @param {number} minAlphabetsUppercase - required minimum number of uppercase alphabets
+ * @param {number} minNumbers - required minimum number of numbers
+ * @param {number} minSpecialCharacters - required minimum number of special charaters
+ * @param {string[]} ignoredCharactors - array of charaters to be excluded
+ * @returns {string} - generated password
+ */
 export const generatePassword = (
     length: number = 10,
     isAlphabetsLowercaseAllowed: boolean = true,

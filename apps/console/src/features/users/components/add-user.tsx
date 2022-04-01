@@ -173,6 +173,9 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         setPassword(password);
     };
 
+    /**
+     * The following function generate a random password.
+     */
     const generateRandomPassword = (): void => {
         const generatedPassword: string = generatePassword(11, true, true, true, true, 1, 1, 1, 1);
 
@@ -562,8 +565,8 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                         />
                     </Grid.Column>
                 </Grid.Row>
-                { emailVerificationEnabled &&
-                    (<Grid.Row columns={ 1 }>
+                { emailVerificationEnabled && (
+                    <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                             <Field
                                 type="radio"
@@ -576,8 +579,8 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 tabIndex={ 6 }
                             />
                         </Grid.Column>
-                    </Grid.Row>)
-                }
+                    </Grid.Row>
+                ) }
                 { handlePasswordOptions() }
             </Grid>
         </Forms>
