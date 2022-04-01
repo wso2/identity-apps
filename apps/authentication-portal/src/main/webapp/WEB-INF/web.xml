@@ -337,6 +337,16 @@
         <jsp-file>/emailOtpError.jsp</jsp-file>
     </servlet>
 
+    <servlet>
+        <servlet-name>MagicLinkNotification.do</servlet-name>
+        <jsp-file>/MagicLinkNotification.jsp</jsp-file>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>MagicLinkNotification.do</servlet-name>
+        <url-pattern>/MagicLinkNotification.do</url-pattern>
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>totp_enroll.do</servlet-name>
         <url-pattern>/totp_enroll.do</url-pattern>
