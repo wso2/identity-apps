@@ -319,7 +319,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                                     ? `${ testId }-group-update-button`
                                                     : `${ testId }-role-update-button`
                                             }
-                                            disabled={ !isRegExLoading || isSubmitting }
+                                            disabled={ isRegExLoading || isSubmitting }
                                         >
                                             { t("console:manage.features.roles.edit.basics.buttons.update") }
                                         </Button>
