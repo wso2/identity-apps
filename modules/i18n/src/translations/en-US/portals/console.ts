@@ -2845,7 +2845,7 @@ export const console: ConsoleNS = {
                     addAuthenticator: "New Authenticator",
                     addCertificate: "New Certificate",
                     addConnector: "New Connector",
-                    addIDP: "New Connection"
+                    addIDP: "Create Connection"
                 },
                 confirmations: {
                     deleteAuthenticator: {
@@ -5353,7 +5353,7 @@ export const console: ConsoleNS = {
                     authenticationDisplayName: "Authentication",
                     provisioningDisplayName: "Provisioning"
                 },
-                title: "Create Connection"
+                title: "Create a New Connection"
             },
             idp: {
                 subTitle: "Manage identity providers to allow users to log in to your application through them.",
