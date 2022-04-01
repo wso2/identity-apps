@@ -374,7 +374,12 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     const hasScopes: boolean = !hasRequiredScopes(featureConfig?.applications,
                         featureConfig?.applications?.scopes?.delete, allowedScopes);
 
+                    const isSuperTenant: boolean = (tenantDomain === AppConstants.getSuperTenant());
+                    const hasSystemAppName: boolean = (UIConfig.systemAppsIdentifiers.includes(app?.name));
+                    const isInvalidAppName: boolean = isSuperTenant && hasSystemAppName;
+
                     return hasScopes ||
+                            UIConfig.systemAppsIdentifiers.includes(app?.name) ||
                             (app?.access === ApplicationAccessTypes.READ);
                 },
                 icon: (): SemanticICONS => "trash alternate",
