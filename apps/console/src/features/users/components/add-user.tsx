@@ -78,7 +78,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     ] = useState<string>(PRIMARY_USERSTORE_PROPERTY_VALUES.UsernameJavaScriptRegEx);
     const [ isUsernameRegExLoading, setUsernameRegExLoading ] = useState<boolean>(false);
     const [ password, setPassword ] = useState<string>("");
-    const [ _passwordScore, setPasswordScore ] = useState<number>(-1);
     const confirmPasswordRef = useRef<HTMLDivElement>();
 
     const { t } = useTranslation();
@@ -309,9 +308,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             <Suspense fallback={ null } >
                                 <PasswordMeter
                                     password={ password }
-                                    onChangeScore={ (score: number) => {
-                                        setPasswordScore(score);
-                                    } }
                                     scoreWords={ [
                                         t("common:tooShort"),
                                         t("common:weak"),
