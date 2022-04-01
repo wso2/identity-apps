@@ -2533,14 +2533,6 @@ export interface ConsoleNS {
                         description: string;
                     };
                 };
-                scopeMappings: {
-                    deletionConfirmationModal: {
-                        assertionHint: string;
-                        content: string;
-                        header: string;
-                        message: string;
-                    }
-                },
                 dialects: {
                     advancedSearch: {
                         form: {
@@ -2846,6 +2838,14 @@ export interface ConsoleNS {
                         };
                     };
                     warning: string;
+                };
+                scopeMappings: {
+                    deletionConfirmationModal: {
+                        assertionHint: string;
+                        content: string;
+                        header: string;
+                        message: string;
+                    }
                 };
             };
             emailLocale: {

@@ -4291,15 +4291,6 @@ export const console: ConsoleNS = {
                         heading: "System for Cross-Domain Identity Management"
                     }
                 },
-                scopeMappings: {
-                    deletionConfirmationModal: {
-                        assertionHint: "කරුණාකර ඔබගේ ක්‍රියාව තහවුරු කරන්න.",
-                        content: "ඔබ මෙම හිමිකම් පෑම මකා දැමුවහොත්, හිමිකම් පෑම ටෝකනයෙහි නොලැබේ. " +
-                            "කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
-                        header: "ඔයාට විශ්වාස ද?",
-                        message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර විෂය පථය හිමිකම් සිතියම්ගත කිරීම ස්ථිරවම මකනු ඇත"
-                    }
-                },
                 dialects: {
                     advancedSearch: {
                         error: "පෙරහන් විමසුම් ආකෘතිය වැරදිය",
@@ -4843,6 +4834,15 @@ export const console: ConsoleNS = {
                             supportedByDefault: "මෙම ගුණාංගය පරිශීලක පැතිකඩ සහ පරිශීලක ලියාපදිංචි පිටුවෙහි දැක්වේ",
                             userstore: "පරිශීලක වෙළඳසැල"
                         }
+                    }
+                },
+                scopeMappings: {
+                    deletionConfirmationModal: {
+                        assertionHint: "කරුණාකර ඔබගේ ක්‍රියාව තහවුරු කරන්න.",
+                        content: "ඔබ මෙම හිමිකම් පෑම මකා දැමුවහොත්, හිමිකම් පෑම ටෝකනයෙහි නොලැබේ. " +
+                            "කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
+                        header: "ඔයාට විශ්වාස ද?",
+                        message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර විෂය පථය හිමිකම් සිතියම්ගත කිරීම ස්ථිරවම මකනු ඇත"
                     }
                 }
             },

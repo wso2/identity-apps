@@ -5690,14 +5690,6 @@ export const console: ConsoleNS = {
                         heading: "SCIM 2.0"
                     }
                 },
-                scopeMappings: {
-                    deletionConfirmationModal: {
-                        assertionHint: "Please confirm your action.",
-                        content: "If you delete this claim, it will not be available in the token. Please proceed with caution.",
-                        header: "Are you sure?",
-                        message: "This action is irreversible and will permanently delete the scope claim mapping"
-                    }
-                },
                 dialects: {
                     advancedSearch: {
                         error: "Filter query format incorrect",
@@ -6243,6 +6235,15 @@ export const console: ConsoleNS = {
                             supportedByDefault: "This attribute is shown on user profile and user registration page",
                             userstore: "Userstore"
                         }
+                    }
+                },
+                scopeMappings: {
+                    deletionConfirmationModal: {
+                        assertionHint: "Please confirm your action.",
+                        content: "If you delete this claim, it will not be available in the token." + 
+                            " Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will permanently delete the scope claim mapping"
                     }
                 }
             },

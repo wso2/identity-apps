@@ -4396,16 +4396,6 @@ export const console: ConsoleNS = {
                         heading: "System for Cross-Domain Identity Management"
                     }
                 },
-                scopeMappings: {
-                    deletionConfirmationModal: {
-                        assertionHint: "Veuillez confirmer votre action.",
-                        content: "Si vous supprimez cette revendication, la revendication ne sera pas " +
-                            "disponible dans le jeton. Veuillez procéder avec prudence.",
-                        header: "Êtes-vous sûr?",
-                        message: "Cette action est irréversible et supprimera définitivement le mappage " +
-                            "de revendication de champ d'application"
-                    }
-                },
                 dialects: {
                     advancedSearch: {
                         error: "Le format de la requête est incorrect",
@@ -4963,6 +4953,16 @@ export const console: ConsoleNS = {
                                 "la page d'enregistrement de l'utilisateur",
                             userstore: "Annuaire"
                         }
+                    }
+                },
+                scopeMappings: {
+                    deletionConfirmationModal: {
+                        assertionHint: "Veuillez confirmer votre action.",
+                        content: "Si vous supprimez cette revendication, la revendication ne sera pas " +
+                            "disponible dans le jeton. Veuillez procéder avec prudence.",
+                        header: "Êtes-vous sûr?",
+                        message: "Cette action est irréversible et supprimera définitivement le mappage " +
+                            "de revendication de champ d'application"
                     }
                 }
             },
