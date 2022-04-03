@@ -377,10 +377,10 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
 
                     const isSuperTenant: boolean = (tenantDomain === AppConstants.getSuperTenant());
                     const hasSystemAppName: boolean = (UIConfig.systemAppsIdentifiers.includes(app?.name));
-                    const isInvalidAppName: boolean = isSuperTenant && hasSystemAppName;
+                    const isSystemApp: boolean = isSuperTenant && hasSystemAppName;
 
                     return hasScopes ||
-                            UIConfig.systemAppsIdentifiers.includes(app?.name) ||
+                            isSystemApp ||
                             (app?.access === ApplicationAccessTypes.READ);
                 },
                 icon: (): SemanticICONS => "trash alternate",
