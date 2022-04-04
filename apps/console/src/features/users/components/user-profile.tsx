@@ -41,16 +41,16 @@ import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Icon, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
 import { commonConfig,userConfig } from "../../../extensions";
-import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
 import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../server-configurations";
 import { getUserDetails, updateUserInfo } from "../api";
 import { UserManagementConstants } from "../constants";
+
 /**
  * Prop types for the basic details component.
  */
@@ -246,6 +246,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             tempProfileInfo.set(
                                 schema.name, userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]
                             );
+
                             return;
                         }
                         tempProfileInfo.set(schema.name, userInfo[schemaNames[0]]);
@@ -254,8 +255,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     if (schemaNames[0] === "name") {
                         const name = schemaNames[1] && userInfo[schemaNames[0]] &&
                             userInfo[schemaNames[0]][schemaNames[1]] && (
-                                tempProfileInfo.set(schema.name, userInfo[schemaNames[0]][schemaNames[1]])
-                            );
+                            tempProfileInfo.set(schema.name, userInfo[schemaNames[0]][schemaNames[1]])
+                        );
                     } else {
                         if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]) {
                             const complexEnterprise = schemaNames[0] && schemaNames[1] &&
@@ -263,12 +264,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]][schemaNames[1]] && (
                                 tempProfileInfo.set(schema.name,
                                     userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]][schemaNames[1]])
-                                );
+                            );
                         } else {
                             const subValue = userInfo[schemaNames[0]] &&
                                 Array.isArray(userInfo[schemaNames[0]]) &&
                                 userInfo[schemaNames[0]]
                                     .find((subAttribute) => subAttribute.type === schemaNames[1]);
+                            
                             if (schemaNames[0] === "addresses") {
                                 tempProfileInfo.set(
                                     schema.name,
@@ -293,7 +295,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * Sort the elements of the profileSchema state according by the displayOrder attribute in the ascending order.
      */
     useEffect(() => {
-        const sortedSchemas = ProfileUtils.flattenSchemas([...profileSchemas])
+        const sortedSchemas = ProfileUtils.flattenSchemas([ ...profileSchemas ])
             .sort((a: ProfileSchemaInterface, b: ProfileSchemaInterface) => {
                 if (!a.displayOrder) {
                     return -1;
@@ -305,15 +307,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             });
 
         setProfileSchema(sortedSchemas);
-
-        const url = sortedSchemas.filter((schema: ProfileSchemaInterface) => {
-            return schema.name === "profileUrl";
-        });
-    }, [profileSchemas]);
+    }, [ profileSchemas ]);
 
     useEffect(() => {
         mapUserToSchema(profileSchema, user);
-    }, [profileSchema, user]);
+    }, [ profileSchema, user ]);
 
     /**
      * This function handles deletion of the user.
@@ -363,7 +361,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         const data = {
             Operations: [],
-            schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
         let operation = {
@@ -401,7 +399,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 }
                             }
 
-                            for (const [key, value] of attValues) {
+                            for (const [ key, value ] of attValues) {
                                 const attribute = key.split(".");
 
                                 if (value && value !== "") {
@@ -409,8 +407,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         attributeValues.push(value);
                                     } else {
                                         attributeValues.push({
-                                                type: attribute[1],
-                                                value: value
+                                            type: attribute[1],
+                                            value: value
                                         });
                                     }
                                 }
@@ -432,8 +430,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 };
                             } else {
                                 opValue = schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
-                                        .get("EMAILS")
-                                    ? { emails: [values.get(schema.name)] }
+                                    .get("EMAILS")
+                                    ? { emails: [ values.get(schema.name) ] }
                                     : { [schemaNames[0]]: values.get(schemaNames[0]) };
                             }
                         } else {
@@ -498,14 +496,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         updateUserInfo(user.id, data)
             .then(() => {
                 onAlertFired({
-                        description: t(
-                            "console:manage.features.user.profile.notifications.updateProfileInfo.success.description"
-                        ),
-                        level: AlertLevels.SUCCESS,
-                        message: t(
-                            "console:manage.features.user.profile.notifications.updateProfileInfo.success.message"
-                        )
-                    });
+                    description: t(
+                        "console:manage.features.user.profile.notifications.updateProfileInfo.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "console:manage.features.user.profile.notifications.updateProfileInfo.success.message"
+                    )
+                });
 
                 handleUserUpdate(user.id);
             })
@@ -532,8 +530,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             })
             .finally(() => {
                 setIsSubmitting(false);
-            })
-;
+            });
     };
 
     /**
@@ -569,7 +566,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     }
                 }
             ],
-            "schemas": ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+            "schemas": [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
         updateUserInfo(user.id, data)
@@ -611,38 +608,38 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 handleUserUpdate(user.id);
                 setEditingAttribute(undefined);
             })
-        .catch((error) => {
-            if (error.response && error.response.data && error.response.data.description) {
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    onAlertFired({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message:
+                            attributeName === "accountLocked"
+                                ? t("console:manage.features.user.profile.notifications.lockUserAccount.error." +
+                                "message")
+                                : t("console:manage.features.user.profile.notifications.disableUserAccount.error." +
+                                "message")
+                    });
+
+                    return;
+                }
+
                 onAlertFired({
-                    description: error.response.data.description,
+                    description:
+                        editingAttribute?.name === "accountLocked"
+                            ? t("console:manage.features.user.profile.notifications.lockUserAccount.genericError." +
+                            "description")
+                            : t("console:manage.features.user.profile.notifications.disableUserAccount.genericError." +
+                            "description"),
                     level: AlertLevels.ERROR,
                     message:
-                        attributeName === "accountLocked"
-                            ? t("console:manage.features.user.profile.notifications.lockUserAccount.error." +
+                        editingAttribute?.name === "accountLocked"
+                            ? t("console:manage.features.user.profile.notifications.lockUserAccount.genericError." +
                             "message")
-                            : t("console:manage.features.user.profile.notifications.disableUserAccount.error." +
+                            : t("console:manage.features.user.profile.notifications.disableUserAccount.genericError." +
                             "message")
                 });
-
-                return;
-            }
-
-            onAlertFired({
-                description:
-                    editingAttribute?.name === "accountLocked"
-                        ? t("console:manage.features.user.profile.notifications.lockUserAccount.genericError." +
-                        "description")
-                        : t("console:manage.features.user.profile.notifications.disableUserAccount.genericError." +
-                        "description"),
-                level: AlertLevels.ERROR,
-                message:
-                    editingAttribute?.name === "accountLocked"
-                        ? t("console:manage.features.user.profile.notifications.lockUserAccount.genericError." +
-                        "message")
-                        : t("console:manage.features.user.profile.notifications.disableUserAccount.genericError." +
-                        "message")
             });
-        });
     };
 
     const resolveDangerActions = (): ReactElement => {
@@ -739,7 +736,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     required={ schema.required }
                     requiredErrorMessage={ fieldName + " " + "is required" }
                     type="checkbox"
-                    value={ profileInfo.get(schema.name) ? [schema.name] : [] }
+                    value={ profileInfo.get(schema.name) ? [ schema.name ] : [] }
                     children={ [
                         {
                             label: fieldName,
@@ -764,10 +761,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     children={ countryList ? countryList.map(list => {
                         return {
                             "data-testid": `${ testId }-profile-form-country-dropdown-` +  list.value as string,
+                            flag: list.flag,
                             key: list.key as string,
                             text: list.text as string,
-                            value: list.value as string,
-                            flag: list.flag
+                            value: list.value as string
                         };
                     }) : [] }
                     key={ key }
@@ -786,8 +783,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     name={ schema.name }
                     label={ schema.name === "profileUrl" ? "Profile Image URL" :
                         (  (!commonConfig.userEditSection.showEmail && schema.name === "userName")
-                                ? fieldName +" (Email)"
-                                : fieldName
+                            ? fieldName +" (Email)"
+                            : fieldName
                         )
                     }
                     required={ schema.required }
@@ -875,16 +872,16 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     return (
-        !isReadOnlyUserStoresLoading ? (
-        <>
-            {
-                <Grid>
-                    <Grid.Row>
-                        <Grid.Column>
-                            {
-                                (hasRequiredScopes(featureConfig?.users,
-                                    featureConfig?.users?.scopes?.update, allowedScopes) &&
-                                    !isReadOnly && user.userName !== "admin") && (
+        !isReadOnlyUserStoresLoading 
+            ? (<>
+                {
+                    <Grid>
+                        <Grid.Row>
+                            <Grid.Column>
+                                {
+                                    (hasRequiredScopes(featureConfig?.users,
+                                        featureConfig?.users?.scopes?.update, allowedScopes) &&
+                                        !isReadOnly && user.userName !== "admin") && (
                                         <Button
                                             basic
                                             color="orange"
@@ -895,190 +892,190 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             { t("console:manage.features.user.modals.changePasswordModal.button") }
                                         </Button>
                                     )
+                                }
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                }
+                {
+                    !isEmpty(profileInfo) && (
+                        <EmphasizedSegment padded="very">
+                            {
+                                (isReadOnly && !isEmpty(tenantAdmin)) && editUserDisclaimerMessage
                             }
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            }
-            {
-                !isEmpty(profileInfo) && (
-                    <EmphasizedSegment padded="very">
-                        {
-                            (isReadOnly && !isEmpty(tenantAdmin)) && editUserDisclaimerMessage
-                        }
-                        <Forms
-                            data-testid={ `${ testId }-form` }
-                            onSubmit={ (values) => handleSubmit(values) }
-                        >
-                            <Grid>
-                                {
-                                    user.id && (
-                                        <Grid.Row columns={ 1 }>
-                                            <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
-                                                <Form.Field>
-                                                    <label>
-                                                        { t("console:manage.features.user.profile.fields.userId") }
-                                                    </label>
-                                                    <Input
-                                                        name="userID"
-                                                        type="text"
-                                                        value={ user.id }
-                                                        readOnly={ true }
-                                                    />
-                                                </Form.Field>
-                                            </Grid.Column>
-                                        </Grid.Row>
-                                    )
-                                }
-                                {
-                                    profileSchema
-                                    && profileSchema.map((schema: ProfileSchemaInterface, index: number) => {
-                                        if (!(schema.name === ProfileConstants?.
+                            <Forms
+                                data-testid={ `${ testId }-form` }
+                                onSubmit={ (values) => handleSubmit(values) }
+                            >
+                                <Grid>
+                                    {
+                                        user.id && (
+                                            <Grid.Row columns={ 1 }>
+                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
+                                                    <Form.Field>
+                                                        <label>
+                                                            { t("console:manage.features.user.profile.fields.userId") }
+                                                        </label>
+                                                        <Input
+                                                            name="userID"
+                                                            type="text"
+                                                            value={ user.id }
+                                                            readOnly={ true }
+                                                        />
+                                                    </Form.Field>
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        )
+                                    }
+                                    {
+                                        profileSchema
+                                        && profileSchema.map((schema: ProfileSchemaInterface, index: number) => {
+                                            if (!(schema.name === ProfileConstants?.
                                                 SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT")
-                                            || schema.name === ProfileConstants?.
-                                                SCIM2_SCHEMA_DICTIONARY.get("GROUPS")
-                                            || schema.name === ProfileConstants?.
-                                                SCIM2_SCHEMA_DICTIONARY.get("PROFILE_URL")
-                                            || schema.name === ProfileConstants?.
-                                                SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
-                                            || schema.name === ProfileConstants?.
-                                                SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_DISABLED")
-                                            || schema.name === ProfileConstants?.
-                                                SCIM2_SCHEMA_DICTIONARY.get("ONETIME_PASSWORD")
-                                            || (!commonConfig.userEditSection.showEmail &&
-                                                schema.name === ProfileConstants?.
-                                                SCIM2_SCHEMA_DICTIONARY.get("EMAILS")))
-                                            && isFieldDisplayable(schema)) {
-                                            return (
-                                                generateProfileEditForm(schema, index)
-                                            );
-                                        }
-                                    })
-                                }
-                                {
-                                    oneTimePassword && (
-                                        <Grid.Row columns={ 1 }>
-                                            <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
-                                                <Field
-                                                    data-testid={ `${ testId }-profile-form-one-time-pw }
-                                                    -input` }
-                                                    name="oneTimePassword"
-                                                    label={ t("console:manage.features.user.profile.fields." +
-                                                        "oneTimePassword") }
-                                                    required={ false }
-                                                    requiredErrorMessage=""
-                                                    type="text"
-                                                    hidden={ oneTimePassword === undefined }
-                                                    value={ oneTimePassword && oneTimePassword }
-                                                    readOnly={ true }
-                                                />
-                                            </Grid.Column>
-                                        </Grid.Row>
-                                    )
-                                }
-                                {
-                                    createdDate && (
-                                        <Grid.Row columns={ 1 }>
-                                            <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
-                                                <Form.Field>
-                                                    <label>
-                                                        { t("console:manage.features.user.profile.fields."+
-                                                            "createdDate") }
-                                                    </label>
-                                                    <Input
-                                                        name="createdDate"
+                                                || schema.name === ProfileConstants?.
+                                                    SCIM2_SCHEMA_DICTIONARY.get("GROUPS")
+                                                || schema.name === ProfileConstants?.
+                                                    SCIM2_SCHEMA_DICTIONARY.get("PROFILE_URL")
+                                                || schema.name === ProfileConstants?.
+                                                    SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
+                                                || schema.name === ProfileConstants?.
+                                                    SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_DISABLED")
+                                                || schema.name === ProfileConstants?.
+                                                    SCIM2_SCHEMA_DICTIONARY.get("ONETIME_PASSWORD")
+                                                || (!commonConfig.userEditSection.showEmail &&
+                                                    schema.name === ProfileConstants?.
+                                                        SCIM2_SCHEMA_DICTIONARY.get("EMAILS")))
+                                                && isFieldDisplayable(schema)) {
+                                                return (
+                                                    generateProfileEditForm(schema, index)
+                                                );
+                                            }
+                                        })
+                                    }
+                                    {
+                                        oneTimePassword && (
+                                            <Grid.Row columns={ 1 }>
+                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
+                                                    <Field
+                                                        data-testid={ `${ testId }-profile-form-one-time-pw }
+                                                        -input` }
+                                                        name="oneTimePassword"
+                                                        label={ t("console:manage.features.user.profile.fields." +
+                                                            "oneTimePassword") }
+                                                        required={ false }
+                                                        requiredErrorMessage=""
                                                         type="text"
-                                                        value={ createdDate ? 
-                                                            moment(createdDate).format("YYYY-MM-DD") : "" }
+                                                        hidden={ oneTimePassword === undefined }
+                                                        value={ oneTimePassword && oneTimePassword }
                                                         readOnly={ true }
                                                     />
-                                                </Form.Field>
-                                            </Grid.Column>
-                                        </Grid.Row>
-                                    )
-                                }
-                                {
-                                    modifiedDate && (
-                                        <Grid.Row columns={ 1 }>
-                                            <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
-                                                <Form.Field>
-                                                    <label>
-                                                        { t("console:manage.features.user.profile.fields."+
-                                                                "modifiedDate") }
-                                                    </label>
-                                                    <Input
-                                                        name="modifiedDate"
-                                                        type="text"
-                                                        value={ modifiedDate ? 
-                                                            moment(modifiedDate).format("YYYY-MM-DD") : "" }
-                                                        readOnly={ true }
-                                                    />
-                                                </Form.Field>
-                                            </Grid.Column>
-                                        </Grid.Row>
-                                    )
-                                }
-                                <Grid.Row columns={ 1 }>
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                        {
-                                            !isReadOnly && (
-                                                <Button
-                                                    data-testid={ `${ testId }-form-update-button` }
-                                                    primary
-                                                    type="submit"
-                                                    size="small"
-                                                    className="form-button"
-                                                    loading={ isSubmitting }
-                                                    disabled={ isSubmitting }
-                                                >
-                                                    Update
-                                                </Button>
-                                            )
-                                        }
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        </Forms>
-                    </EmphasizedSegment>
-                )
-            }
-            <Divider hidden />
-            { resolveDangerActions() }
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        )
+                                    }
+                                    {
+                                        createdDate && (
+                                            <Grid.Row columns={ 1 }>
+                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
+                                                    <Form.Field>
+                                                        <label>
+                                                            { t("console:manage.features.user.profile.fields."+
+                                                                "createdDate") }
+                                                        </label>
+                                                        <Input
+                                                            name="createdDate"
+                                                            type="text"
+                                                            value={ createdDate ? 
+                                                                moment(createdDate).format("YYYY-MM-DD") : "" }
+                                                            readOnly={ true }
+                                                        />
+                                                    </Form.Field>
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        )
+                                    }
+                                    {
+                                        modifiedDate && (
+                                            <Grid.Row columns={ 1 }>
+                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
+                                                    <Form.Field>
+                                                        <label>
+                                                            { t("console:manage.features.user.profile.fields."+
+                                                                    "modifiedDate") }
+                                                        </label>
+                                                        <Input
+                                                            name="modifiedDate"
+                                                            type="text"
+                                                            value={ modifiedDate ? 
+                                                                moment(modifiedDate).format("YYYY-MM-DD") : "" }
+                                                            readOnly={ true }
+                                                        />
+                                                    </Form.Field>
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        )
+                                    }
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                            {
+                                                !isReadOnly && (
+                                                    <Button
+                                                        data-testid={ `${ testId }-form-update-button` }
+                                                        primary
+                                                        type="submit"
+                                                        size="small"
+                                                        className="form-button"
+                                                        loading={ isSubmitting }
+                                                        disabled={ isSubmitting }
+                                                    >
+                                                        Update
+                                                    </Button>
+                                                )
+                                            }
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </Grid>
+                            </Forms>
+                        </EmphasizedSegment>
+                    )
+                }
+                <Divider hidden />
+                { resolveDangerActions() }
                 {
                     deletingUser && (
                         <ConfirmationModal
-                            data-testid={`${testId}-confirmation-modal`}
-                            onClose={(): void => setShowDeleteConfirmationModal(false)}
+                            data-testid={ `${testId}-confirmation-modal` }
+                            onClose={ (): void => setShowDeleteConfirmationModal(false) }
                             type="negative"
-                            open={showDeleteConfirmationModal}
-                            assertionHint={t("console:manage.features.user.deleteUser.confirmationModal." +
-                                "assertionHint")}
+                            open={ showDeleteConfirmationModal }
+                            assertionHint={ t("console:manage.features.user.deleteUser.confirmationModal." +
+                                "assertionHint") }
                             assertionType="checkbox"
-                            primaryAction={t("common:confirm")}
-                            secondaryAction={t("common:cancel")}
-                            onSecondaryActionClick={(): void => {
+                            primaryAction={ t("common:confirm") }
+                            secondaryAction={ t("common:cancel") }
+                            onSecondaryActionClick={ (): void => {
                                 setShowDeleteConfirmationModal(false);
                                 setAlert(null);
-                            }}
-                            onPrimaryActionClick={(): void => handleUserDelete(deletingUser)}
-                            closeOnDimmerClick={false}
+                            } }
+                            onPrimaryActionClick={ (): void => handleUserDelete(deletingUser) }
+                            closeOnDimmerClick={ false }
                         >
-                            <ConfirmationModal.Header data-testid={`${testId}-confirmation-modal-header`}>
-                                {t("console:manage.features.user.deleteUser.confirmationModal.header")}
+                            <ConfirmationModal.Header data-testid={ `${testId}-confirmation-modal-header` }>
+                                { t("console:manage.features.user.deleteUser.confirmationModal.header") }
                             </ConfirmationModal.Header>
                             <ConfirmationModal.Message
-                                data-testid={`${testId}-confirmation-modal-message`}
+                                data-testid={ `${testId}-confirmation-modal-message` }
                                 attached
                                 negative
                             >
-                                {commonConfig.userEditSection.isGuestUser
+                                { commonConfig.userEditSection.isGuestUser
                                     ? t("extensions:manage.guest.deleteUser.confirmationModal.message")
                                     : t("console:manage.features.user.deleteUser.confirmationModal.message")
                                 }
                             </ConfirmationModal.Message>
                             <ConfirmationModal.Content>
-                                <div className="modal-alert-wrapper"> {alert && alertComponent}</div>
-                                {commonConfig.userEditSection.isGuestUser
+                                <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
+                                { commonConfig.userEditSection.isGuestUser
                                     ? t("extensions:manage.guest.deleteUser.confirmationModal.content")
                                     : t("console:manage.features.user.deleteUser.confirmationModal.content")
                                 }
@@ -1145,17 +1142,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         </ConfirmationModal>
                     )
                 }
-            <ChangePasswordComponent
-                handleForcePasswordResetTrigger={ () => setForcePasswordTriggered(true) }
-                connectorProperties={ connectorProperties }
-                handleCloseChangePasswordModal={ () => setOpenChangePasswordModal(false) }
-                openChangePasswordModal={ openChangePasswordModal }
-                onAlertFired={ onAlertFired }
-                user={ user }
-                handleUserUpdate={ handleUserUpdate }
-            />
-        </>
-        ) : <ContentLoader dimmer/>
+                <ChangePasswordComponent
+                    handleForcePasswordResetTrigger={ () => setForcePasswordTriggered(true) }
+                    connectorProperties={ connectorProperties }
+                    handleCloseChangePasswordModal={ () => setOpenChangePasswordModal(false) }
+                    openChangePasswordModal={ openChangePasswordModal }
+                    onAlertFired={ onAlertFired }
+                    user={ user }
+                    handleUserUpdate={ handleUserUpdate }
+                />
+            </>) 
+            : <ContentLoader dimmer/>
     );
 };
 
