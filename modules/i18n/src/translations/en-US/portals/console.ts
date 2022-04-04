@@ -4006,8 +4006,7 @@ export const console: ConsoleNS = {
                 templates: {
                     enterprise: {
                         addWizard: {
-                            subtitle: "Configure a new Identity Provider to connect with standard authentication " +
-                                "protocols.",
+                            subtitle: "Configure an IDP to connect with standard authentication protocols.",
                             title: "Standard based Identity Providers"
                         },
                         saml: {
