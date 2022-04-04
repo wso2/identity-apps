@@ -138,8 +138,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         forcePasswordReset: "false"
     });
     const [ forcePasswordTriggered, setForcePasswordTriggered ] = useState<boolean>(false);
-    const [ accountLock, setAccountLock ] = useState<string>(undefined);
-    const [ accountDisable, setAccountDisable ] = useState<string>(undefined);
+    const [ accountLocked, setAccountLock ] = useState<boolean>(false);
+    const [ accountDisabled, setAccountDisable ] = useState<boolean>(false);
     const [ oneTimePassword, setOneTimePassword ] = useState<string>(undefined);
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
     const [ countryList, setCountryList ] = useState<DropdownItemProps[]>([]);
@@ -206,8 +206,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         getUserDetails(user?.id, attributes)
             .then((response) => {
-                setAccountLock(response[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.accountLocked);
-                setAccountDisable(response[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.accountDisabled);
+                setAccountLock(response[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.accountLocked ?? false);
+                setAccountDisable(response[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.accountDisabled ?? false);
                 setOneTimePassword(response[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.oneTimePassword);
             });
     }, [ user ]);
@@ -573,35 +573,35 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             .then(() => {
                 onAlertFired({
                     description:
-                        attributeName === "accountLocked"
+                        attributeName === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
                             ? (
                                 attributeValue
                                     ? t("console:manage.features.user.profile.notifications.lockUserAccount." +
-                                    "success.description")
+                                        "success.description")
                                     : t("console:manage.features.user.profile.notifications.unlockUserAccount." +
-                                    "success.description")
+                                        "success.description")
                             ) : (
                                 attributeValue
                                     ? t("console:manage.features.user.profile.notifications.disableUserAccount." +
-                                    "success.description")
+                                        "success.description")
                                     : t("console:manage.features.user.profile.notifications.enableUserAccount." +
-                                    "success.description")
+                                        "success.description")
                             ),
                     level: AlertLevels.SUCCESS,
                     message:
-                        attributeName === "accountLocked"
+                        attributeName === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
                             ? (
                                 attributeValue
                                     ? t("console:manage.features.user.profile.notifications.lockUserAccount." +
-                                    "success.message", { name: user.userName })
+                                        "success.message", { name: user.userName })
                                     : t("console:manage.features.user.profile.notifications.unlockUserAccount." +
-                                    "success.message", { name: user.userName })
+                                        "success.message", { name: user.userName })
                             ) : (
                                 attributeValue
                                     ? t("console:manage.features.user.profile.notifications.disableUserAccount." +
-                                    "success.message", { name: user.userName })
+                                        "success.message", { name: user.userName })
                                     : t("console:manage.features.user.profile.notifications.enableUserAccount." +
-                                    "success.message", { name: user.userName })
+                                        "success.message", { name: user.userName })
                             )
                 });
                 setShowLockDisableConfirmationModal(false);
@@ -614,11 +614,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
                         message:
-                            attributeName === "accountLocked"
+                            attributeName === UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY.get("ACCOUNT_LOCKED")
                                 ? t("console:manage.features.user.profile.notifications.lockUserAccount.error." +
-                                "message")
+                                    "message")
                                 : t("console:manage.features.user.profile.notifications.disableUserAccount.error." +
-                                "message")
+                                    "message")
                     });
 
                     return;
@@ -626,18 +626,20 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
                 onAlertFired({
                     description:
-                        editingAttribute?.name === "accountLocked"
+                        editingAttribute?.name === UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY
+                            .get("ACCOUNT_LOCKED")
                             ? t("console:manage.features.user.profile.notifications.lockUserAccount.genericError." +
-                            "description")
+                                "description")
                             : t("console:manage.features.user.profile.notifications.disableUserAccount.genericError." +
-                            "description"),
+                                "description"),
                     level: AlertLevels.ERROR,
                     message:
-                        editingAttribute?.name === "accountLocked"
+                        editingAttribute?.name === UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY
+                            .get("ACCOUNT_LOCKED")
                             ? t("console:manage.features.user.profile.notifications.lockUserAccount.genericError." +
-                            "message")
+                                "message")
                             : t("console:manage.features.user.profile.notifications.disableUserAccount.genericError." +
-                            "message")
+                                "message")
                 });
             });
     };
@@ -670,9 +672,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             "disableUserZone.subheader") }
                                         onActionClick={ undefined }
                                         toggle={ {
-                                            checked: accountDisable
-                                                ? accountDisable
-                                                : user[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.accountDisabled,
+                                            checked: accountDisabled,
                                             id: "accountDisabled",
                                             onChange: handleDangerZoneToggles
                                         } }
@@ -695,9 +695,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         }
                                         onActionClick={ undefined }
                                         toggle={ {
-                                            checked: accountLock
-                                                ? accountLock
-                                                : user[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.accountLocked,
+                                            checked: accountLocked,
                                             id: "accountLocked",
                                             onChange: handleDangerZoneToggles
                                         } }
@@ -1094,11 +1092,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             type="warning"
                             open={ showLockDisableConfirmationModal }
                             assertion={ user.userName }
-                            assertionHint={ editingAttribute.name === "accountLocked"
-                                ? (
-                                    t("console:manage.features.user.lockUser.confirmationModal.assertionHint")) 
-                                : (
-                                    t("console:manage.features.user.disableUser.confirmationModal.assertionHint")) }
+                            assertionHint={ editingAttribute.name === ProfileConstants
+                                .SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
+                                ? t("console:manage.features.user.lockUser.confirmationModal.assertionHint")
+                                : t("console:manage.features.user.disableUser.confirmationModal.assertionHint") }
                             assertionType="checkbox"
                             primaryAction={ t("common:confirm") }
                             secondaryAction={ t("common:cancel") }
@@ -1112,11 +1109,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             closeOnDimmerClick={ false }
                         >
                             <ConfirmationModal.Header data-testid={ `${testId}-confirmation-modal-header` }>
-                                { editingAttribute.name === "accountLocked"
-                                    ? (
-                                        t("console:manage.features.user.lockUser.confirmationModal.header")) 
-                                    : (
-                                        t("console:manage.features.user.disableUser.confirmationModal.header")) 
+                                { editingAttribute.name === ProfileConstants
+                                    .SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
+                                    ? t("console:manage.features.user.lockUser.confirmationModal.header")
+                                    : t("console:manage.features.user.disableUser.confirmationModal.header") 
                                 }
                             </ConfirmationModal.Header>
                             <ConfirmationModal.Message
@@ -1124,19 +1120,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 attached
                                 warning
                             >
-                                { editingAttribute.name === "accountLocked"
-                                    ? (
-                                        t("console:manage.features.user.lockUser.confirmationModal.message")) 
-                                    : (
-                                        t("console:manage.features.user.disableUser.confirmationModal.message")) 
+                                { editingAttribute.name === ProfileConstants
+                                    .SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
+                                    ? t("console:manage.features.user.lockUser.confirmationModal.message")
+                                    : t("console:manage.features.user.disableUser.confirmationModal.message")
                                 }
                             </ConfirmationModal.Message>
                             <ConfirmationModal.Content>
-                                { editingAttribute.name === "accountLocked"
-                                    ? (
-                                        t("console:manage.features.user.lockUser.confirmationModal.content")) 
-                                    : (
-                                        t("console:manage.features.user.disableUser.confirmationModal.content")) 
+                                { editingAttribute.name === ProfileConstants
+                                    .SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
+                                    ? t("console:manage.features.user.lockUser.confirmationModal.content")
+                                    : t("console:manage.features.user.disableUser.confirmationModal.content")
                                 }
                             </ConfirmationModal.Content>
                         </ConfirmationModal>
