@@ -130,8 +130,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<ProfileInfoInterface>(undefined);
     const [ editingAttribute, setEditingAttribute ] = useState(undefined);
-    const [ showDisableConfirmationModal, setShowDisableConfirmationModal ] = useState<boolean>(false);
-    const [ showLockConfirmationModal, setShowLockConfirmationModal ] = useState<boolean>(false);
+    const [ showLockDisableConfirmationModal, setShowLockDisableConfirmationModal ] = useState<boolean>(false);
     const [ openChangePasswordModal, setOpenChangePasswordModal ] = useState<boolean>(false);
     const [ configSettings, setConfigSettings ] = useState({
         accountDisable: "false",
@@ -549,7 +548,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         });
 
         if(toggleData?.target?.checked) {
-            setShowDisableConfirmationModal(true);
+            setShowLockDisableConfirmationModal(true);
         } else {
             handleDangerActions(toggleData?.target?.id, toggleData?.target?.checked);
         }
@@ -607,11 +606,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     : t("console:manage.features.user.profile.notifications.enableUserAccount." +
                                     "success.message", { name: user.userName })
                             )
-            });
-            setShowDisableConfirmationModal(false);
-            handleUserUpdate(user.id);
-            setEditingAttribute(undefined);
-        })
+                });
+                setShowLockDisableConfirmationModal(false);
+                handleUserUpdate(user.id);
+                setEditingAttribute(undefined);
+            })
         .catch((error) => {
             if (error.response && error.response.data && error.response.data.description) {
                 onAlertFired({
@@ -1045,154 +1044,107 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             }
             <Divider hidden />
             { resolveDangerActions() }
-            {
-                deletingUser && (
-                    <ConfirmationModal
-                        data-testid={ `${ testId }-confirmation-modal` }
-                        onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                        type="negative"
-                        open={ showDeleteConfirmationModal }
-                        assertionHint={ t("console:manage.features.user.deleteUser.confirmationModal." +
-                            "assertionHint") }
-                        assertionType="checkbox"
-                        primaryAction={ t("common:confirm") }
-                        secondaryAction={ t("common:cancel") }
-                        onSecondaryActionClick={ (): void => {
-                            setShowDeleteConfirmationModal(false);
-                            setAlert(null);
-                        } }
-                        onPrimaryActionClick={ (): void => handleUserDelete(deletingUser) }
-                        closeOnDimmerClick={ false }
-                    >
-                        <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
-                            { t("console:manage.features.user.deleteUser.confirmationModal.header") }
-                        </ConfirmationModal.Header>
-                        <ConfirmationModal.Message
-                            data-testid={ `${ testId }-confirmation-modal-message` }
-                            attached
-                            negative
+                {
+                    deletingUser && (
+                        <ConfirmationModal
+                            data-testid={`${testId}-confirmation-modal`}
+                            onClose={(): void => setShowDeleteConfirmationModal(false)}
+                            type="negative"
+                            open={showDeleteConfirmationModal}
+                            assertionHint={t("console:manage.features.user.deleteUser.confirmationModal." +
+                                "assertionHint")}
+                            assertionType="checkbox"
+                            primaryAction={t("common:confirm")}
+                            secondaryAction={t("common:cancel")}
+                            onSecondaryActionClick={(): void => {
+                                setShowDeleteConfirmationModal(false);
+                                setAlert(null);
+                            }}
+                            onPrimaryActionClick={(): void => handleUserDelete(deletingUser)}
+                            closeOnDimmerClick={false}
                         >
-                            { commonConfig.userEditSection.isGuestUser
-                                ? t("extensions:manage.guest.deleteUser.confirmationModal.message")
-                                : t("console:manage.features.user.deleteUser.confirmationModal.message")
-                            }
-                        </ConfirmationModal.Message>
-                        <ConfirmationModal.Content>
-                            <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
-                            { commonConfig.userEditSection.isGuestUser
-                                ? t("extensions:manage.guest.deleteUser.confirmationModal.content")
-                                : t("console:manage.features.user.deleteUser.confirmationModal.content")
-                            }
-                        </ConfirmationModal.Content>
-                    </ConfirmationModal>
-                )
-            }
-            {
-                editingAttribute && (
-                    <ConfirmationModal
-                        data-testid={ `${ testId }-confirmation-modal` }
-                        onClose={ (): void => {
-                            setShowDisableConfirmationModal(false);
-                            setEditingAttribute(undefined);
-                        } }
-                        type="warning"
-                        open={ showDisableConfirmationModal }
-                        assertion={ user.userName }
-                        assertionHint={ (
-                            <p>
-                                <Trans
-                                    i18nKey={ "console:manage.features.user.disableUser.confirmationModal." +
-                                    "assertionHint" }
-                                    tOptions={ { userName: user.userName } }
-                                >
-                                    Please type <strong>{ user.userName }</strong> to confirm.
-                                </Trans>
-                            </p>
-                        ) }
-                        assertionType="input"
-                        primaryAction={ t("common:confirm") }
-                        secondaryAction={ t("common:cancel") }
-                        onSecondaryActionClick={ (): void => {
-                            setEditingAttribute(undefined);
-                            handleUserUpdate(user.id);
-                            setShowDisableConfirmationModal(false);
-                        } }
-                        onPrimaryActionClick={ () =>
-                            handleDangerActions(editingAttribute.name, editingAttribute.value)
-                        }
-                        closeOnDimmerClick={ false }
-                    >
-                        <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
-                            { t("console:manage.features.user.disableUser.confirmationModal.header") }
-                        </ConfirmationModal.Header>
-                        <ConfirmationModal.Message
-                            data-testid={ `${ testId }-disable-confirmation-modal-message` }
-                            attached
-                            warning
-                        >
-                            { t("console:manage.features.user.disableUser.confirmationModal.message") }
-                        </ConfirmationModal.Message>
-                        <ConfirmationModal.Content>
-                            {
-                                deletingUser[SCIMConfigs.scim.enterpriseSchema]?.userSourceId
-                                    ? t("console:manage.features.user.deleteJITUser.confirmationModal.content")
+                            <ConfirmationModal.Header data-testid={`${testId}-confirmation-modal-header`}>
+                                {t("console:manage.features.user.deleteUser.confirmationModal.header")}
+                            </ConfirmationModal.Header>
+                            <ConfirmationModal.Message
+                                data-testid={`${testId}-confirmation-modal-message`}
+                                attached
+                                negative
+                            >
+                                {commonConfig.userEditSection.isGuestUser
+                                    ? t("extensions:manage.guest.deleteUser.confirmationModal.message")
+                                    : t("console:manage.features.user.deleteUser.confirmationModal.message")
+                                }
+                            </ConfirmationModal.Message>
+                            <ConfirmationModal.Content>
+                                <div className="modal-alert-wrapper"> {alert && alertComponent}</div>
+                                {commonConfig.userEditSection.isGuestUser
+                                    ? t("extensions:manage.guest.deleteUser.confirmationModal.content")
                                     : t("console:manage.features.user.deleteUser.confirmationModal.content")
+                                }
+                            </ConfirmationModal.Content>
+                        </ConfirmationModal>
+                    )
+                }
+                {
+                    editingAttribute && (
+                        <ConfirmationModal
+                            data-testid={ `${testId}-confirmation-modal` }
+                            onClose={ (): void => {
+                                setShowLockDisableConfirmationModal(false);
+                                setEditingAttribute(undefined);
+                            } }
+                            type="warning"
+                            open={ showLockDisableConfirmationModal }
+                            assertion={ user.userName }
+                            assertionHint={ editingAttribute.name === "accountLocked"
+                                ? (
+                                    t("console:manage.features.user.lockUser.confirmationModal.assertionHint")) 
+                                : (
+                                    t("console:manage.features.user.disableUser.confirmationModal.assertionHint")) }
+                            assertionType="checkbox"
+                            primaryAction={ t("common:confirm") }
+                            secondaryAction={ t("common:cancel") }
+                            onSecondaryActionClick={ (): void => {
+                                setEditingAttribute(undefined);
+                                setShowLockDisableConfirmationModal(false);
+                            } }
+                            onPrimaryActionClick={ () =>
+                                handleDangerActions(editingAttribute.name, editingAttribute.value)
                             }
-                        </ConfirmationModal.Content>
-                    </ConfirmationModal>
-                )
-            }
-            {
-                editingAttribute && (
-                    <ConfirmationModal
-                        data-testid={ `${ testId }-lock-confirmation-modal` }
-                        onClose={ (): void => {
-                            setShowLockConfirmationModal(false);
-                            setEditingAttribute(undefined);
-                        } }
-                        type="warning"
-                        open={ showLockConfirmationModal }
-                        assertion={ user.userName }
-                        assertionHint={ (
-                            <p>
-                                <Trans
-                                    i18nKey={ "console:manage.features.user.lockUser.confirmationModal." +
-                                    "assertionHint" }
-                                    tOptions={ { userName: user.userName } }
-                                >
-                                    Please type <strong>{ user.userName }</strong> to confirm.
-                                </Trans>
-                            </p>
-                        ) }
-                        assertionType="input"
-                        primaryAction={ t("common:confirm") }
-                        secondaryAction={ t("common:cancel") }
-                        onSecondaryActionClick={ (): void => {
-                            setEditingAttribute(undefined);
-                            handleUserUpdate(user.id);
-                            setShowLockConfirmationModal(false);
-                        } }
-                        onPrimaryActionClick={ () =>
-                            handleDangerActions(editingAttribute.name, editingAttribute.value)
-                        }
-                        closeOnDimmerClick={ false }
-                    >
-                        <ConfirmationModal.Header data-testid={ `${ testId }-lock-confirmation-modal-header` }>
-                            { t("console:manage.features.user.lockUser.confirmationModal.header") }
-                        </ConfirmationModal.Header>
-                        <ConfirmationModal.Message
-                            data-testid={ `${ testId }-confirmation-modal-message` }
-                            attached
-                            warning
+                            closeOnDimmerClick={ false }
                         >
-                            { t("console:manage.features.user.lockUser.confirmationModal.message") }
-                        </ConfirmationModal.Message>
-                        <ConfirmationModal.Content>
-                            { t("console:manage.features.user.lockUser.confirmationModal.content") }
-                        </ConfirmationModal.Content>
-                    </ConfirmationModal>
-                )
-            }
+                            <ConfirmationModal.Header data-testid={ `${testId}-confirmation-modal-header` }>
+                                { editingAttribute.name === "accountLocked"
+                                    ? (
+                                        t("console:manage.features.user.lockUser.confirmationModal.header")) 
+                                    : (
+                                        t("console:manage.features.user.disableUser.confirmationModal.header")) 
+                                }
+                            </ConfirmationModal.Header>
+                            <ConfirmationModal.Message
+                                data-testid={ `${testId}-disable-confirmation-modal-message` }
+                                attached
+                                warning
+                            >
+                                { editingAttribute.name === "accountLocked"
+                                    ? (
+                                        t("console:manage.features.user.lockUser.confirmationModal.message")) 
+                                    : (
+                                        t("console:manage.features.user.disableUser.confirmationModal.message")) 
+                                }
+                            </ConfirmationModal.Message>
+                            <ConfirmationModal.Content>
+                                { editingAttribute.name === "accountLocked"
+                                    ? (
+                                        t("console:manage.features.user.lockUser.confirmationModal.content")) 
+                                    : (
+                                        t("console:manage.features.user.disableUser.confirmationModal.content")) 
+                                }
+                            </ConfirmationModal.Content>
+                        </ConfirmationModal>
+                    )
+                }
             <ChangePasswordComponent
                 handleForcePasswordResetTrigger={ () => setForcePasswordTriggered(true) }
                 connectorProperties={ connectorProperties }
