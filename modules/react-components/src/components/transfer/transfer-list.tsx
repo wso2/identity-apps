@@ -46,6 +46,10 @@ export interface TransferListPropsInterface extends TableProps, IdentifiableComp
      * Show loading placeholders.
      */
     isLoading?: boolean;
+    /**
+     * Resolve i18n tag for empty placeholder content
+     */
+    emptyPlaceholderDefaultContent?: string;
 }
 
 /**
@@ -58,8 +62,6 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
     props: TransferListPropsInterface
 ): ReactElement => {
 
-    const { t } = useTranslation();
-
     const {
         children,
         listHeaders,
@@ -69,6 +71,7 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
         emptyPlaceholderContent,
         selectionComponent,
         isLoading,
+        emptyPlaceholderDefaultContent,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
@@ -126,7 +129,9 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
                                 subtitle={ [
                                     emptyPlaceholderContent
                                         ? emptyPlaceholderContent
-                                        : t("console:manage.features.transferList.list.emptyPlaceholders.default")
+                                        : (emptyPlaceholderDefaultContent 
+                                            ? emptyPlaceholderDefaultContent
+                                            : "There are no items in this list at the moment.")
                                 ] }
                                 data-componentid={ `${ componentId }-placeholder` }
                                 data-testid={ `${ testId }-placeholder` }

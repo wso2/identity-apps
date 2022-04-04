@@ -162,6 +162,8 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                     emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders.users." +
                         "roles.unselected", { type: "groups" }) }
                     data-testid="user-mgt-add-user-wizard-modal-unselected-groups-select-all-checkbox"
+                    emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                        + "emptyPlaceholders.default") }
                 >
                     {
                         initialValues?.groupList?.map((group, index)=> {

@@ -529,6 +529,22 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         customLabel={ callbackURLsErrorLabel }
                                         isAllowEnabled={ false }
                                         addOriginByDefault={ addOriginByDefault }
+                                        popupHeaderPositive={ t("console:develop.features.URLInput.withLabel."
+                                            + "positive.header") }
+                                        popupHeaderNegative={ t("console:develop.features.URLInput.withLabel."
+                                            + "negative.header") }
+                                        popupContentPositive={ t("console:develop.features.URLInput.withLabel."
+                                            + "positive.content", { productName: config.ui.productName }) }
+                                        popupContentNegative={ t("console:develop.features.URLInput.withLabel."
+                                            + "negative.content", { productName: config.ui.productName }) }
+                                        popupDetailedContentPositive={ t("console:develop.features.URLInput."
+                                            + "withLabel.positive.detailedContent.0") }
+                                        popupDetailedContentNegative={ t("console:develop.features.URLInput."
+                                            + "withLabel.negative.detailedContent.0") }
+                                        insecureURLDescription={ t("console:common.validations.inSecureURL."
+                                            + "description") }
+                                        showLessContent={ t("common:showLess") }
+                                        showMoreContent={ t("common:showMore") }
                                     />
                                     {
                                         (callBackURLFromTemplate) && (

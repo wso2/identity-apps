@@ -1306,6 +1306,21 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     customLabel={ callbackURLsErrorLabel }
                                     productName={ config.ui.productName }
                                     isCustom={ CustomApplicationTemplate?.id === template?.id }
+                                    popupHeaderPositive={ t("console:develop.features.URLInput.withLabel."
+                                        + "positive.header") }
+                                    popupHeaderNegative={ t("console:develop.features.URLInput.withLabel."
+                                        + "negative.header") }
+                                    popupContentPositive={ t("console:develop.features.URLInput.withLabel."
+                                        + "positive.content", { productName: config.ui.productName }) }
+                                    popupContentNegative={ t("console:develop.features.URLInput.withLabel."
+                                        + "negative.content", { productName: config.ui.productName }) }
+                                    popupDetailedContentPositive={ t("console:develop.features.URLInput."
+                                        + "withLabel.positive.detailedContent.0") }
+                                    popupDetailedContentNegative={ t("console:develop.features.URLInput."
+                                        + "withLabel.negative.detailedContent.0") }
+                                    insecureURLDescription={ t("console:common.validations.inSecureURL.description") }
+                                    showLessContent={ t("common:showLess") }
+                                    showMoreContent={ t("common:showMore") }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -1359,6 +1374,21 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     } }
                                     showPredictions={ false }
                                     customLabel={ allowedOriginsErrorLabel }
+                                    popupHeaderPositive={ t("console:develop.features.URLInput.withLabel."
+                                        + "positive.header") }
+                                    popupHeaderNegative={ t("console:develop.features.URLInput.withLabel."
+                                        + "negative.header") }
+                                    popupContentPositive={ t("console:develop.features.URLInput.withLabel."
+                                        + "positive.content", { productName: config.ui.productName }) }
+                                    popupContentNegative={ t("console:develop.features.URLInput.withLabel."
+                                        + "negative.content", { productName: config.ui.productName }) }
+                                    popupDetailedContentPositive={ t("console:develop.features.URLInput."
+                                        + "withLabel.positive.detailedContent.0") }
+                                    popupDetailedContentNegative={ t("console:develop.features.URLInput."
+                                        + "withLabel.negative.detailedContent.0") }
+                                    insecureURLDescription={ t("console:common.validations.inSecureURL.description") }
+                                    showLessContent={ t("common:showLess") }
+                                    showMoreContent={ t("common:showMore") }
                                 />
                                 <Hint>
                                     The HTTP origins that host your web application. You can define multiple web
@@ -1851,6 +1881,21 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         } }
                         showPredictions={ false }
                         skipInternalValidation={ true }
+                        popupHeaderPositive={ t("console:develop.features.URLInput.withLabel."
+                            + "positive.header") }
+                        popupHeaderNegative={ t("console:develop.features.URLInput.withLabel."
+                            + "negative.header") }
+                        popupContentPositive={ t("console:develop.features.URLInput.withLabel."
+                            + "positive.content", { productName: config.ui.productName }) }
+                        popupContentNegative={ t("console:develop.features.URLInput.withLabel."
+                            + "negative.content", { productName: config.ui.productName }) }
+                        popupDetailedContentPositive={ t("console:develop.features.URLInput."
+                            + "withLabel.positive.detailedContent.0") }
+                        popupDetailedContentNegative={ t("console:develop.features.URLInput."
+                            + "withLabel.negative.detailedContent.0") }
+                        insecureURLDescription={ t("console:common.validations.inSecureURL.description") }
+                        showLessContent={ t("common:showLess") }
+                        showMoreContent={ t("common:showMore") }
                     />
                 </Grid.Column>
             </Grid.Row>

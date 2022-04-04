@@ -112,6 +112,42 @@ export interface URLInputPropsInterface extends IdentifiableComponentInterface, 
     skipInternalValidation?: boolean;
     isCustom?: boolean;
     addOriginByDefault?: boolean;
+    /**
+     * Resolve i18n tag for popupHeaderPositive content
+     */
+    popupHeaderPositive?: string;
+    /**
+     * Resolve i18n tag for popupHeaderNegative content
+     */
+    popupHeaderNegative?: string;
+    /**
+     * Resolve i18n tag for popupContentPositive content
+     */
+    popupContentPositive?: string;
+    /**
+     * Resolve i18n tag for popupContentNegative content
+     */
+    popupContentNegative?: string;
+    /**
+     * Resolve i18n tag for popupDetailedContentPositive content
+     */
+    popupDetailedContentPositive?: string;
+    /**
+     * Resolve i18n tag for popupDetailedContentNegative content
+     */
+    popupDetailedContentNegative?: string;
+    /**
+     * Resolve i18n tag for insecureURLDescription content
+     */
+    insecureURLDescription?: string;
+    /**
+     * Resolve i18n tag for showLessContent content
+     */
+    showLessContent?: string;
+    /**
+     * Resolve i18n tag for showMoreContent content
+     */
+    showMoreContent?: string;
 }
 
 /**
@@ -161,11 +197,18 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         skipInternalValidation,
         isCustom,
         addOriginByDefault,
+        popupHeaderPositive,
+        popupHeaderNegative,
+        popupContentPositive,
+        popupContentNegative,
+        popupDetailedContentPositive,
+        popupDetailedContentNegative,
+        insecureURLDescription,
+        showLessContent,
+        showMoreContent,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
-
-    const { t } = useTranslation();
 
     const [ changeUrl, setChangeUrl ] = useState<string>("");
     const [ predictValue, setPredictValue ] = useState<string[]>([]);
@@ -451,8 +494,13 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                         ) }
                         popupHeader={
                             positive ?
-                                t("console:develop.features.URLInput.withLabel.positive.header") :
-                                t("console:develop.features.URLInput.withLabel.negative.header")
+                                (popupHeaderPositive
+                                    ? popupHeaderPositive
+                                    : "CORS is Allowed for")
+                                :
+                                (popupHeaderNegative
+                                    ? popupHeaderNegative
+                                    : "CORS is not Allowed for")
                         }
                         popupSubHeader={ (
                             <React.Fragment>
@@ -463,28 +511,38 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                         popupContent={ (
                             <React.Fragment>
                                 {
-                                    positive ?
-                                        t("console:develop.features.URLInput.withLabel.positive.content", {
-                                            productName: productName
-                                        }) :
-                                        t("console:develop.features.URLInput.withLabel.negative.content", {
-                                            productName: productName, urlLink: origin
-                                        })
+                                    positive
+                                        ? (popupContentPositive
+                                            ? popupContentPositive
+                                            : "The origin of this URL is allowed to make requests to " +
+                                            `${productName} APIs from a browser.`)
+                                        : (popupContentNegative
+                                            ? popupContentNegative
+                                            : "You need to enable CORS for the origin of this URL to make requests" +
+                                            ` to ${productName} from a browser.`)
                                 }
                                 { !restrictSecondaryContent && (
                                     <>
                                         <a onClick={ () => setShowMore(!showMore) }>
-                                            &nbsp;{ showMore ? t("common:showLess") : t("common:showMore") }
+                                            &nbsp;{ showMore 
+                                                ? (showLessContent
+                                                    ? showLessContent
+                                                    : "Show less") 
+                                                : (showMoreContent
+                                                    ? showMoreContent
+                                                    : "Show more") }
                                         </a><br/>
                                         {
                                             showMore && (
                                                 <React.Fragment>
                                                     {
-                                                        positive ?
-                                                            t("console:develop.features.URLInput." +
-                                                                "withLabel.positive.detailedContent.0") :
-                                                            t("console:develop.features.URLInput." +
-                                                                "withLabel.negative.detailedContent.0")
+                                                        positive
+                                                            ? (popupDetailedContentPositive
+                                                                ? popupDetailedContentPositive
+                                                                : "")
+                                                            : (popupDetailedContentNegative
+                                                                ? popupDetailedContentNegative
+                                                                : "")
                                                     }
                                                     <br/>
                                                     <Trans
@@ -612,7 +670,10 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                         trigger={
                             <span style={ { color: "red", textDecoration: "line-through" } }>{ protocol }</span>
                         }
-                        content={ t("console:common.validations.inSecureURL.description") }
+                        content={ 
+                            insecureURLDescription
+                                ? insecureURLDescription
+                                : "The entered URL is a non-TLS URL. Please proceed with caution." }
                         position="top left"
                         size="mini"
                         hoverable

@@ -506,6 +506,8 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                         emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
                                 "emptyPlaceholders.roles.unselected", { type: "groups" }) }
                         data-testid="role-mgt-update-groups-modal-unselected-groups-select-all-checkbox"
+                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                            + "emptyPlaceholders.default") }
                     >
                         {
                             groupList?.map((group, index)=> {
@@ -539,6 +541,8 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                         emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
                                 "emptyPlaceholders.roles.selected", { type: "groups" }) }
                         data-testid="role-mgt-update-groups-modal-selected-groups-select-all-checkbox"
+                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                            + "emptyPlaceholders.default") }
                     >
                         {
                             tempGroupList?.map((group, index)=> {

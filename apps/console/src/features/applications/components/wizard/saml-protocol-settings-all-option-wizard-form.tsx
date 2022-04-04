@@ -24,9 +24,10 @@ import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Button, Grid, Icon, Message } from "semantic-ui-react";
 import { commonConfig } from "../../../../extensions";
-import { getCertificateIllustrations } from "../../../core";
+import { AppState, ConfigReducerStateInterface, getCertificateIllustrations } from "../../../core";
 import { SAMLConfigModes } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
 
@@ -117,6 +118,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
     const [ selectedMetadataFile, setSelectedMetadataFile ] = useState<File>(null);
     const [ pastedMetadataContent, setPastedMetadataContent ] = useState<string>(null);
     const [ emptyFileError, setEmptyFileError ] = useState(false);
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     useEffect(() => {
         setConfigureMode(SAMLConfigModes.MANUAL);
@@ -415,6 +417,21 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                     } }
                                     showPredictions={ false }
                                     customLabel={ assertionConsumerURLsErrorLabel }
+                                    popupHeaderPositive={ t("console:develop.features.URLInput.withLabel."
+                                        + "positive.header") }
+                                    popupHeaderNegative={ t("console:develop.features.URLInput.withLabel."
+                                        + "negative.header") }
+                                    popupContentPositive={ t("console:develop.features.URLInput.withLabel."
+                                        + "positive.content", { productName: config.ui.productName }) }
+                                    popupContentNegative={ t("console:develop.features.URLInput.withLabel."
+                                        + "negative.content", { productName: config.ui.productName }) }
+                                    popupDetailedContentPositive={ t("console:develop.features.URLInput."
+                                        + "withLabel.positive.detailedContent.0") }
+                                    popupDetailedContentNegative={ t("console:develop.features.URLInput."
+                                        + "withLabel.negative.detailedContent.0") }
+                                    insecureURLDescription={ t("console:common.validations.inSecureURL.description") }
+                                    showLessContent={ t("common:showLess") }
+                                    showMoreContent={ t("common:showMore") }
                                 />
                                 {
                                     (assertionConsumerURLFromTemplate) && (

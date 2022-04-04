@@ -268,6 +268,8 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
                         isHeaderCheckboxChecked={ isSelectUnassignedClaimsAllClaimsChecked }
                         data-testid={ `${ testId }-modal-content-unselected-list` }
+                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                            + "emptyPlaceholders.default") }
                     >
                         {
                             filterTempAvailableClaims?.map((claim: IdentityProviderClaimInterface) => {
@@ -295,6 +297,8 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                         handleHeaderCheckboxChange={ selectAllAssignedList }
                         isHeaderCheckboxChecked={ isSelectAssignedAllClaimsChecked }
                         data-testid={ `${ testId }-modal-content-selected-list` }
+                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                            + "emptyPlaceholders.default") }
                     >
                         {
                             filterTempSelectedClaims?.map((mapping) => {

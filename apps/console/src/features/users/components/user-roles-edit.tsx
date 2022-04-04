@@ -583,6 +583,8 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                         emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
                                             "emptyPlaceholders.users.roles.unselected", { type: "roles" }) }
                                         data-testid="user-mgt-update-roles-modal-unselected-roles-select-all-checkbox"
+                                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                                            + "emptyPlaceholders.default") }
                                     >
                                         {
                                             roleList?.map((role, index) => {

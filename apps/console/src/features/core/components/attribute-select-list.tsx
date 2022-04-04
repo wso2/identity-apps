@@ -187,6 +187,8 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
                 isListEmpty={ !(filterTempAvailableClaims.length > 0) }
                 listType="unselected"
                 data-testid={ `${testId}-unselected-transfer-list` }
+                emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                            + "emptyPlaceholders.default") }
             >
                 { filterTempAvailableClaims?.map((claim, index) => {
                     return (
