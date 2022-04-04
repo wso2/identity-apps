@@ -376,8 +376,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         featureConfig?.applications?.scopes?.delete, allowedScopes);
 
                     const isSuperTenant: boolean = (tenantDomain === AppConstants.getSuperTenant());
-                    const hasSystemAppName: boolean = (UIConfig.systemAppsIdentifiers.includes(app?.name));
-                    const isSystemApp: boolean = isSuperTenant && hasSystemAppName;
+                    const isSystemApp: boolean = isSuperTenant && (UIConfig.systemAppsIdentifiers.includes(app?.name));
 
                     return hasScopes ||
                             isSystemApp ||
