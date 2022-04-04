@@ -2839,6 +2839,14 @@ export interface ConsoleNS {
                     };
                     warning: string;
                 };
+                scopeMappings: {
+                    deletionConfirmationModal: {
+                        assertionHint: string;
+                        content: string;
+                        header: string;
+                        message: string;
+                    }
+                };
             };
             emailLocale: {
                 buttons: {

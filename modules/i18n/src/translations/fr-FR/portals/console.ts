@@ -4954,6 +4954,16 @@ export const console: ConsoleNS = {
                             userstore: "Annuaire"
                         }
                     }
+                },
+                scopeMappings: {
+                    deletionConfirmationModal: {
+                        assertionHint: "Veuillez confirmer votre action.",
+                        content: "Si vous supprimez cette revendication, la revendication ne sera pas " +
+                            "disponible dans le jeton. Veuillez procéder avec prudence.",
+                        header: "Êtes-vous sûr?",
+                        message: "Cette action est irréversible et supprimera définitivement le mappage " +
+                            "de revendication de champ d'application"
+                    }
                 }
             },
             emailLocale: {

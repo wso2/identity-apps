@@ -6236,6 +6236,15 @@ export const console: ConsoleNS = {
                             userstore: "Userstore"
                         }
                     }
+                },
+                scopeMappings: {
+                    deletionConfirmationModal: {
+                        assertionHint: "Please confirm your action.",
+                        content: "If you delete this claim, it will not be available in the token." + 
+                            " Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will permanently delete the scope claim mapping"
+                    }
                 }
             },
             emailLocale: {
