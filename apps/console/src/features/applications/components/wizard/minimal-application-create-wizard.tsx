@@ -572,6 +572,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     onSubmit={ (values): void => setProtocolFormValues(values) }
                     showCallbackURL={ true }
                     addOriginByDefault={ selectedTemplate.id === SinglePageApplicationTemplate.id }
+                    isAllowEnabled={ !(selectedTemplate.id === SinglePageApplicationTemplate.id) }
                     data-testid={ `${ testId }-oauth-protocol-settings-form` }
                 />
             );
