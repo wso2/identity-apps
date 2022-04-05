@@ -55,6 +55,7 @@
 @accentColor1        : #173163;
 @accentColor2        : #f5385b;
 @accentColor3        : #00b7e1;
+@accentColor4        : #92278F;
 
 @lightPrimaryColor   : lighten(@primaryColor, 40);
 

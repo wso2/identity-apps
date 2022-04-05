@@ -113,6 +113,7 @@ export const common: CommonNS = {
         heading: "Votre session a expiré",
         primaryActionText: "S'identifier"
     },
+    new: "Nouveau",
     next: "Suivant",
     okay: "d'accord",
     operatingSystem: "Système d'exploitation",

@@ -113,6 +113,7 @@ export const common: CommonNS = {
         heading: "உங்கள் அமர்வு காலாவதியாகி விட்டது",
         primaryActionText: "உள்நுழையவும்"
     },
+    new: "புதிய",
     next: "அடுத்தது",
     okay: "சரி",
     operatingSystem: "இயங்கு தளம்",

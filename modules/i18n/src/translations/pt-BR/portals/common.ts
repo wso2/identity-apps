@@ -112,6 +112,7 @@ export const common: CommonNS = {
         heading: "Sua sessão expirou",
         primaryActionText: "Entrar"
     },
+    new: "novo",
     next: "Próximo",
     okay: "OK",
     operatingSystem: "Sistema operacional",
