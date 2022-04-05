@@ -448,13 +448,18 @@
 
                 .feature-status-label {
                     font-size: .8em;
-                    padding: 4px;
+                    padding: 4px 8px;
                     font-weight: 500;
                     top: 7px;
-                    margin-left: 7px;
+                    margin-left: 12px;
                     position: absolute;
                     border: 1px solid @defaultBorderColor;
 
+                    &.new {
+                        text-transform: uppercase;
+                        color: @white;
+                        background-color: @accentColor4;
+                    }
                     &.coming-soon {
                         filter: grayscale(100%);
                     }
