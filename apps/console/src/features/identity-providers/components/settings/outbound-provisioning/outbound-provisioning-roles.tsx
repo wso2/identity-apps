@@ -36,6 +36,7 @@ interface OutboundProvisioningRolesPropsInterface extends TestableComponentInter
     idpId: string;
     idpRoles: IdentityProviderRolesInterface;
     isReadOnly?: boolean;
+    onUpdate: (id: string) => void;
 }
 
 export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRolesPropsInterface> = (
@@ -45,12 +46,13 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
         idpId,
         idpRoles,
         isReadOnly,
+        onUpdate,
         [ "data-testid" ]: testId
     } = props;
 
-    const [selectedRole, setSelectedRole] = useState<string>(undefined);
-    const [selectedRoles, setSelectedRoles] = useState<string[]>(undefined);
-    const [roleList, setRoleList] = useState<RolesInterface[]>(undefined);
+    const [ selectedRole, setSelectedRole ] = useState<string>(undefined);
+    const [ selectedRoles, setSelectedRoles ] = useState<string[]>(undefined);
+    const [ roleList, setRoleList ] = useState<RolesInterface[]>(undefined);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const dispatch = useDispatch();
@@ -63,7 +65,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
             return;
         }
         if (isEmpty(selectedRoles.find(role => role === selectedRole))) {
-            setSelectedRoles([...selectedRoles, selectedRole]);
+            setSelectedRoles([ ...selectedRoles, selectedRole ]);
         }
         setSelectedRole("");
     };
@@ -80,6 +82,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
             .then((response) => {
                 if (response.status === 200) {
                     const allRole: RoleListInterface = response.data;
+                    
                     setRoleList(allRole?.Resources?.filter((role) => {
                         return !(role.displayName
                             .includes("Application/") || role.displayName.includes("Internal/"));
@@ -97,9 +100,9 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
         setIsSubmitting(true);
 
         updateIDPRoleMappings(idpId, {
-                ...idpRoles,
-                outboundProvisioningRoles: outboundProvisioningRoles
-            }
+            ...idpRoles,
+            outboundProvisioningRoles: outboundProvisioningRoles
+        }
         ).then(() => {
             dispatch(addAlert(
                 {
@@ -111,12 +114,12 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                         "notifications.updateIDPRoleMappings.success.message")
                 }
             ));
+            onUpdate(idpId);
         }).catch(error => {
             handleUpdateIDPRoleMappingsError(error);
         }).finally(() => {
             setIsSubmitting(false);
-        })
-;
+        });
     };
 
     return (
