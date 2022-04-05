@@ -102,6 +102,7 @@ export interface CommonNS {
     more: string;
     myAccount: string;
     name: string;
+    new: string;
     next: string;
     operatingSystem: string;
     operations: string;

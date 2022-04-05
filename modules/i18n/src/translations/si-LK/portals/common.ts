@@ -112,6 +112,7 @@ export const common: CommonNS = {
         heading: "ඔබගේ සැසිය කල් ඉකුත් වී ඇත",
         primaryActionText: "පුරන්න"
     },
+    new: "නවතම",
     next: "ඊළඟ ",
     okay: "හරි",
     operatingSystem: "මෙහෙයුම් පද්ධතිය",
