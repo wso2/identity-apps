@@ -58,7 +58,7 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@asgardeo/auth-react": "^0.2.14",
+        "@asgardeo/auth-react": "~0.2.14",
         "@svgr/webpack": "4.3.2",
         "@testing-library/user-event": "^12.7.3",
         "@types/crypto-js": "^3.1.43",
