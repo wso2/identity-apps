@@ -31,7 +31,6 @@
 <%@ page import="java.util.Map" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
-<jsp:directive.include file="tenant-resolve.jsp"/>
 
 <!doctype html>
 <html>
