@@ -448,10 +448,10 @@
 
                 .feature-status-label {
                     font-size: .8em;
-                    padding: 4px 8px;
+                    padding: 4px 7px;
                     font-weight: 500;
                     top: 7px;
-                    margin-left: 12px;
+                    margin-left: 10px;
                     position: absolute;
                     border: 1px solid @defaultBorderColor;
 
