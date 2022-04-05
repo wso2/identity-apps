@@ -41,6 +41,7 @@
 
 <%!
     private static final String FIDO_AUTHENTICATOR = "FIDOAuthenticator";
+    private static final String MAGIC_LINK_AUTHENTICATOR = "MagicLinkAuthenticator";
     private static final String IWA_AUTHENTICATOR = "IwaNTLMAuthenticator";
     private static final String IS_SAAS_APP = "isSaaSApp";
     private static final String BASIC_AUTHENTICATOR = "BasicAuthenticator";
@@ -385,6 +386,26 @@
                                     <span>
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.authenticator" )%>
+                                    </span>
+                                </button>
+                            </div>
+                            <%
+                                        }
+                                        if (localAuthenticatorNames.contains(MAGIC_LINK_AUTHENTICATOR)) {
+                            %>
+                            <div class="field">
+                                <button class="ui grey labeled icon button fluid"
+                                    onclick="handleNoDomain(this,
+                                        '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
+                                        '<%=MAGIC_LINK_AUTHENTICATOR%>')"
+                                    id="icon-<%=iconId%>"
+                                    title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>">
+                                    <i class="email icon"></i>
+                                    <img src="libs/themes/default/assets/images/icons/email-icon.svg" alt="Magic Link Logo" />
+                                    <span>
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link" )%>
                                     </span>
                                 </button>
                             </div>
