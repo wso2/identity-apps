@@ -223,13 +223,16 @@ export class SignInMethodUtils {
             return false;
         }
 
+        const identifierFirst = authenticationSteps[ 0 ].options.find(
+            authenticator =>
+                authenticator.id === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID);
+
         // The first step should have the identifier first authenticator.
-        if (authenticationSteps.length > 1 &&
-            !authenticationSteps[ 0 ].options.find(
-                authenticator =>
-                    authenticator.id === IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID)) {
+        if (authenticationSteps.length > 1 && !identifierFirst) {
             return false;
         }
+
+        return true;
     }
 
     public static isConnectionsJITUPConflictWithMFA(
