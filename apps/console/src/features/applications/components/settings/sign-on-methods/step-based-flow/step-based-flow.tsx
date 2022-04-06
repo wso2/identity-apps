@@ -399,7 +399,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         steps[ stepIndex ].options.push({
             authenticator: defaultAuthenticator.name,
-            id: authenticator.id,
             idp: authenticator.idp
         });
 
