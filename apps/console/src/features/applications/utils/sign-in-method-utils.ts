@@ -19,7 +19,6 @@
 
 import flatten from "lodash-es/flatten";
 import {
-    AuthenticatorCategories,
     GenericAuthenticatorInterface,
     IdentityProviderManagementConstants,
     ProvisioningInterface
@@ -207,6 +206,30 @@ export class SignInMethodUtils {
 
         return this.hasSpecificFactorsInSteps(ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
             leftSideSteps);
+    }
+
+    /**
+     * This method decides if the magic-link authenticator can be added to the current step.
+     *
+     * @param {number} currentStep The current step.
+     * @param {AuthenticationStepInterface} authenticationSteps The authentication steps.
+     *
+     * @returns {boolean}
+     */
+    public static isMagicLinkAuthenticatorValid(currentStep: number,
+        authenticationSteps: AuthenticationStepInterface[]): boolean {
+        // The magic link authenticator can only be added to the second step.
+        if (currentStep !== 1) {
+            return false;
+        }
+
+        // The first step should have the identifier first authenticator.
+        if (authenticationSteps.length > 1 &&
+            !authenticationSteps[ 0 ].options.find(
+                authenticator =>
+                    authenticator.id === IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID)) {
+            return false;
+        }
     }
 
     public static isConnectionsJITUPConflictWithMFA(
