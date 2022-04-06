@@ -162,59 +162,45 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         if (authenticator.category === AuthenticatorCategories.SECOND_FACTOR) {
             return (
                 <>
-                    { authenticator.id === IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID &&
-                        !SignInMethodUtils.isMagicLinkAuthenticatorValid(currentStep, authenticationSteps) ? (
-                            <Fragment>
-                                { InfoLabel }
-                                <Text>
-                                    {
-                                        t(
-                                            "console:develop.features.applications.edit.sections" +
-                                            ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
-                                            ".magicLinkDisabled"
-                                        )
-                                    }
-                                </Text>
-                            </Fragment>
-                        ) : currentStep === 0 ? (
-                            <Fragment>
-                                { InfoLabel }
-                                <Text>
-                                    { applicationConfig.signInMethod.authenticatorSelection.messages
-                                        .secondFactorDisabledInFirstStep ??
+                    { currentStep === 0 ? (
+                        <Fragment>
+                            { InfoLabel }
+                            <Text>
+                                { applicationConfig.signInMethod.authenticatorSelection.messages
+                                    .secondFactorDisabledInFirstStep ??
                                     t(
                                         "console:develop.features.applications.edit.sections" +
                                         ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
                                         ".secondFactorDisabledInFirstStep"
                                     ) }
-                                </Text>
-                            </Fragment>
-                        ) : (
-                            <Fragment>
-                                { InfoLabel }
-                                <Text>
-                                    { applicationConfig.signInMethod.authenticatorSelection.messages
-                                        .secondFactorDisabled ?? (
-                                        <Trans
-                                            i18nKey={
-                                                "console:develop.features.applications.edit.sections" +
+                            </Text>
+                        </Fragment>
+                    ) : (
+                        <Fragment>
+                            { InfoLabel }
+                            <Text>
+                                { applicationConfig.signInMethod.authenticatorSelection.messages
+                                    .secondFactorDisabled ?? (
+                                    <Trans
+                                        i18nKey={
+                                            "console:develop.features.applications.edit.sections" +
                                                 ".signOnMethod.sections.authenticationFlow.sections" +
                                                 ".stepBased.secondFactorDisabled"
-                                            }
-                                        >
+                                        }
+                                    >
                                             The second-factor authenticators can only be used if{ " " }
-                                            <Code withBackground>Username & Password</Code>,{ " " }
-                                            <Code withBackground>Social Login</Code>,
-                                            <Code withBackground>Security Key/Biometrics</Code>
+                                        <Code withBackground>Username & Password</Code>,{ " " }
+                                        <Code withBackground>Social Login</Code>,
+                                        <Code withBackground>Security Key/Biometrics</Code>
                                             or any other handlers such as
-                                            <Code withBackground>Identifier First</Code>
+                                        <Code withBackground>Identifier First</Code>
                                                 that can handle these factors are
                                             present in a previous step.
-                                        </Trans>
-                                    ) }
-                                </Text>
-                            </Fragment>
-                        ) }
+                                    </Trans>
+                                ) }
+                            </Text>
+                        </Fragment>
+                    ) }
                 </>
             );
         } else if (authenticator.category === AuthenticatorCategories.SOCIAL) {
@@ -226,6 +212,22 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                             "console:develop.features.applications.edit.sections.signOnMethod.sections." +
                             "authenticationFlow.sections.stepBased.authenticatorDisabled"
                         ) }
+                    </Text>
+                </Fragment>
+            );
+        } else if (authenticator.id === IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID
+            && !SignInMethodUtils.isMagicLinkAuthenticatorValid(currentStep, authenticationSteps)) {
+            return (
+                <Fragment>
+                    { InfoLabel }
+                    <Text>
+                        {
+                            t(
+                                "console:develop.features.applications.edit.sections" +
+                                ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
+                                ".magicLinkDisabled"
+                            )
+                        }
                     </Text>
                 </Fragment>
             );
