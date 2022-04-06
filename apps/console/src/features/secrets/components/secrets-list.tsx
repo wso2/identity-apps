@@ -75,7 +75,7 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingSecret, setDeletingSecret ] = useState<SecretModel>(undefined);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const onSecretEditClick = (event: React.SyntheticEvent, item: SecretModel) => {
         event?.preventDefault();
@@ -89,6 +89,7 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
                 .get(FEATURE_EDIT_PATH)
                 .replace(":type", item?.type)
                 .replace(":name", item?.secretName);
+
             history.push({ pathname });
         }
     };
@@ -125,6 +126,7 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
                         level: AlertLevels.ERROR,
                         message: error.response.data.message
                     }));
+
                     return;
                 }
                 dispatch(addAlert({
@@ -134,6 +136,7 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
                 }));
             } finally {
                 const refreshSecretList = true;
+
                 whenSecretDeleted(deletingSecret, refreshSecretList);
                 setShowDeleteConfirmationModal(false);
                 setDeletingSecret(undefined);
