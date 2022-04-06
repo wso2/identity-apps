@@ -297,6 +297,7 @@ export class IdentityProviderManagementConstants {
     public static readonly IDENTIFIER_FIRST_AUTHENTICATOR = "IdentifierExecutor";
     public static readonly SMS_OTP_AUTHENTICATOR = "sms-otp";
     public static readonly BACKUP_CODE_AUTHENTICATOR = "backup-code-authenticator";
+    public static readonly MAGIC_LINK_AUTHENTICATOR = "MagicLinkAuthenticator";
 
     // Known Enterprise authenticator IDs
     public static readonly OIDC_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I";
