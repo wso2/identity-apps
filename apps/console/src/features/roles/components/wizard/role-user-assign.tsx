@@ -391,6 +391,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                         data-testid={ `${ testId }-unselected-users-select-all-checkbox` }
                         emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders." +
                             "roles.selected", { type: "users" }) }
+                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                            + "emptyPlaceholders.default") }
                     >
                         {
                             usersList?.map((user, index)=> {
@@ -422,6 +424,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                         data-testid={ `${ testId }-selected-users-select-all-checkbox` }
                         emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders." +
                             "roles.selected", { type: "users" }) }
+                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                            + "emptyPlaceholders.default") }
                     >
                         {
                             tempUserList?.map((user, index)=> {
@@ -609,6 +613,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                         data-testid={ `${ testId }-update-unselected-users-select-all-checkbox` }
                                         emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
                                         "emptyPlaceholders.roles.unselected", { type: "users" }) }
+                                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                                            + "emptyPlaceholders.default") }
                                     >
                                         {
                                             usersList?.map((user, index)=> {
@@ -641,6 +647,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                         data-testid={ `${ testId }-update-selected-users-select-all-checkbox` }
                                         emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
                                         "emptyPlaceholders.roles.unselected", { type: "users" }) }
+                                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                                            + "emptyPlaceholders.default") }
                                     >
                                         {
                                             tempUserList?.map((user, index)=> {

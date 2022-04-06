@@ -115,6 +115,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
         getUsersList(limit, offset, filter, attribute, userStore)
             .then((response) => {
                 const responseUsers = response.Resources;
+
                 responseUsers.sort((userObject, comparedUserObject) =>
                     userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
                 );
@@ -123,6 +124,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
 
                 if (assignedUsers && assignedUsers.length !== 0) {
                     const selectedUserList: UserBasicInterface[] = [];
+
                     if (responseUsers && responseUsers instanceof Array ) {
                         responseUsers.slice().reverse().forEach(user => {
                             assignedUsers.forEach(assignedUser => {
@@ -143,6 +145,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
 
                 if (initialValues && initialValues instanceof Array) {
                     const selectedUserList: UserBasicInterface[] = [];
+
                     if (responseUsers && responseUsers instanceof Array ) {
                         responseUsers.forEach(user => {
                             initialValues.forEach(assignedUser => {
@@ -168,14 +171,14 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
     useEffect(() => {
         setListItemLimit(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
         setUserListMetaContent(new Map<string, string>([
-            ["name", "name"],
-            ["emails", "emails"],
-            ["name", "name"],
-            ["userName", "userName"],
-            ["id", ""],
-            ["profileUrl", "profileUrl"],
-            ["meta.lastModified", "meta.lastModified"],
-            ["meta.created", ""]
+            [ "name", "name" ],
+            [ "emails", "emails" ],
+            [ "name", "name" ],
+            [ "userName", "userName" ],
+            [ "id", "" ],
+            [ "profileUrl", "profileUrl" ],
+            [ "meta.lastModified", "meta.lastModified" ],
+            [ "meta.created", "" ]
         ]));
     }, []);
 
@@ -201,6 +204,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
     useEffect(() => {
         if (userListMetaContent) {
             const attributes = generateAttributesString(userListMetaContent.values());
+
             getList(listItemLimit, listOffset, null, attributes, userStore);
 
         }
@@ -330,7 +334,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                 }
                 <Heading subHeading ellipsis as="h6">
                     {
-                       t("console:manage.features.roles.addRoleWizard.users.assignUserModal.subHeading",
+                        t("console:manage.features.roles.addRoleWizard.users.assignUserModal.subHeading",
                             { type: "group" })
                     }
                 </Heading>
@@ -357,6 +361,8 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                         data-testid={ `${ testId }-unselected-users-select-all-checkbox` }
                         emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
                             "emptyPlaceholders.groups.unselected", { type: "users" }) }
+                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                            + "emptyPlaceholders.default") }
                     >
                         {
                             usersList?.map((user, index)=> {
@@ -388,6 +394,8 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                         data-testid={ `${ testId }-selected-users-select-all-checkbox` }
                         emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
                             "emptyPlaceholders.groups.selected", { type: "users" }) }
+                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                            + "emptyPlaceholders.default") }
                     >
                         {
                             tempUserList?.map((user, index)=> {
@@ -432,7 +440,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
     return (
         <>
             { isEdit ?
-                <Grid>
+                (<Grid>
                     <Grid.Row>
                         <Grid.Column computer={ 8 }>
                             {
@@ -505,14 +513,14 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                                     "emptyPlaceholder.subtitles", { type: "group" })
                                             ] }
                                             action={
-                                                <PrimaryButton
+                                                (<PrimaryButton
                                                     data-testid={ `${ testId }-users-list-empty-assign-users-button` }
                                                     onClick={ handleOpenAddNewGroupModal }
                                                     icon="plus"
                                                 >
                                                     { t("console:manage.features.roles.edit.users.list." +
                                                         "emptyPlaceholder.action") }
-                                                </PrimaryButton>
+                                                </PrimaryButton>)
                                             }
                                             image={ getEmptyPlaceholderIllustrations().emptyList }
                                             imageSize="tiny"
@@ -523,9 +531,9 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                         </Grid.Column>
                     </Grid.Row>
                     { addNewUserModal() }
-                </Grid>
+                </Grid>)
                 :
-                <Forms
+                (<Forms
                     onSubmit={ () => {
                         onSubmit(tempUserList);
                     } }
@@ -555,6 +563,8 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                     data-testid={ `${ testId }-update-unselected-users-select-all-checkbox` }
                                     emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
                                         "emptyPlaceholders.groups.unselected", { type: "users" }) }
+                                    emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                                        + "emptyPlaceholders.default") }
                                 >
                                     {
                                         usersList?.map((user, index)=> {
@@ -587,6 +597,8 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                     data-testid={ `${ testId }-update-selected-users-select-all-checkbox` }
                                     emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
                                         "emptyPlaceholders.groups.selected", { type: "users" }) }
+                                    emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                                        + "emptyPlaceholders.default") }
                                 >
                                     {
                                         tempUserList?.map((user, index)=> {
@@ -610,7 +622,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                             </TransferComponent>
                         </Grid.Row>
                         { isEdit &&
-                        <Grid.Row columns={ 1 }>
+                        (<Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Button
                                     data-testid={ `${ testId }-update-user-list-button` }
@@ -622,10 +634,10 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                     { t("common.update") }
                                 </Button>
                             </Grid.Column>
-                        </Grid.Row>
+                        </Grid.Row>)
                         }
                     </Grid>
-                </Forms>
+                </Forms>)
             }
         </>
     );

@@ -127,54 +127,56 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
 
     return (
         <>
-        <Forms
-            onSubmit={ () => {
-                onSubmit({ roles: initialValues?.tempRoleList });
-            } }
-            submitState={ triggerSubmit }
-        >
-            <TransferComponent
-                selectionComponent
-                searchPlaceholder={ t("console:manage.features.transferList.searchPlaceholder",
-                    { type: "Roles" }) }
-                handleUnelectedListSearch={ handleUnselectedListSearch }
-                data-testid="user-mgt-add-user-wizard-modal"
+            <Forms
+                onSubmit={ () => {
+                    onSubmit({ roles: initialValues?.tempRoleList });
+                } }
+                submitState={ triggerSubmit }
             >
-                <TransferList
-                    isListEmpty={ !(initialValues?.roleList?.length > 0) }
-                    listType="unselected"
-                    listHeaders={ [
-                        t("console:manage.features.transferList.list.headers.0"),
-                        t("console:manage.features.transferList.list.headers.1"), ""
-                    ] }
-                    handleHeaderCheckboxChange={ selectAllUnAssignedList }
-                    isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
-                    emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders.users." +
-                        "roles.unselected", { type: "roles" }) }
-                    data-testid="user-mgt-add-user-wizard-modal-unselected-roles-select-all-checkbox"
+                <TransferComponent
+                    selectionComponent
+                    searchPlaceholder={ t("console:manage.features.transferList.searchPlaceholder",
+                        { type: "Roles" }) }
+                    handleUnelectedListSearch={ handleUnselectedListSearch }
+                    data-testid="user-mgt-add-user-wizard-modal"
                 >
-                    {
-                        initialValues?.roleList?.map((role, index)=> {
-                            const roleName = role?.displayName?.split("/");
-                            return (
-                                <TransferListItem
-                                    handleItemChange={ () => handleUnassignedItemCheckboxChange(role) }
-                                    key={ index }
-                                    listItem={ roleName?.length > 1 ? roleName[1] : role?.displayName }
-                                    listItemId={ role.id }
-                                    listItemIndex={ index }
-                                    listItemTypeLabel={ createItemLabel(role?.displayName) }
-                                    isItemChecked={ checkedUnassignedListItems.includes(role) }
-                                    showSecondaryActions={ true }
-                                    handleOpenPermissionModal={ () => handleSetRoleId(role.id) }
-                                    data-testid="user-mgt-add-user-wizard-modal-unselected-roles"
-                                />
-                            );
-                        })
-                    }
-                </TransferList>
-            </TransferComponent>
-        </Forms>
+                    <TransferList
+                        isListEmpty={ !(initialValues?.roleList?.length > 0) }
+                        listType="unselected"
+                        listHeaders={ [
+                            t("console:manage.features.transferList.list.headers.0"),
+                            t("console:manage.features.transferList.list.headers.1"), ""
+                        ] }
+                        handleHeaderCheckboxChange={ selectAllUnAssignedList }
+                        isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
+                        emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders.users." +
+                        "roles.unselected", { type: "roles" }) }
+                        data-testid="user-mgt-add-user-wizard-modal-unselected-roles-select-all-checkbox"
+                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                            + "emptyPlaceholders.default") }
+                    >
+                        {
+                            initialValues?.roleList?.map((role, index)=> {
+                                const roleName = role?.displayName?.split("/");
+                                return (
+                                    <TransferListItem
+                                        handleItemChange={ () => handleUnassignedItemCheckboxChange(role) }
+                                        key={ index }
+                                        listItem={ roleName?.length > 1 ? roleName[1] : role?.displayName }
+                                        listItemId={ role.id }
+                                        listItemIndex={ index }
+                                        listItemTypeLabel={ createItemLabel(role?.displayName) }
+                                        isItemChecked={ checkedUnassignedListItems.includes(role) }
+                                        showSecondaryActions={ true }
+                                        handleOpenPermissionModal={ () => handleSetRoleId(role.id) }
+                                        data-testid="user-mgt-add-user-wizard-modal-unselected-roles"
+                                    />
+                                );
+                            })
+                        }
+                    </TransferList>
+                </TransferComponent>
+            </Forms>
         </>
     );
 };

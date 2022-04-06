@@ -269,6 +269,8 @@ export const OIDCScopeAttributes: FunctionComponent<OIDCScopeAttributesPropsInte
                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
                         isHeaderCheckboxChecked={ isSelectUnassignedClaimsAllClaimsChecked }
                         data-testid={ `${ testId }-unselected-transfer-list` }
+                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                            + "emptyPlaceholders.default") }
                     >
                         {
                             filterTempUnselectedClaims?.map((claim, index) => {
@@ -299,6 +301,8 @@ export const OIDCScopeAttributes: FunctionComponent<OIDCScopeAttributesPropsInte
                         handleHeaderCheckboxChange={ selectAllAssignedList }
                         isHeaderCheckboxChecked={ isSelectAssignedAllClaimsChecked }
                         data-testid={ `${ testId }-selected-transfer-list` }
+                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                            + "emptyPlaceholders.default") }
                     >
                         {
                             filterTempSelectedClaims?.map((claim, index) => {

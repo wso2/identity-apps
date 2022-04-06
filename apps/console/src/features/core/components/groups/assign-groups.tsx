@@ -257,6 +257,8 @@ export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
                     emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
                     "emptyPlaceholders.roles.unselected", { type: "groups" }) }
                     data-testid="user-mgt-add-user-wizard-modal-unselected-groups-select-all-checkbox"
+                    emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                        + "emptyPlaceholders.default") }
                 >
                     {
                         initialValues?.groupList?.map((group, index)=> {
@@ -290,6 +292,8 @@ export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
                     emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
                     "emptyPlaceholders.roles.selected", { type: "groups" }) }
                     data-testid="user-mgt-add-user-wizard-modal-selected-groups-select-all-checkbox"
+                    emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                        + "emptyPlaceholders.default") }
                 >
                     {
                         initialValues?.tempGroupList?.map((group, index)=> {

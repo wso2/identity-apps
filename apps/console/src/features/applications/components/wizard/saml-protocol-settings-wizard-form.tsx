@@ -23,7 +23,9 @@ import { ContentLoader, Hint, LinkButton, URLInput } from "@wso2is/react-compone
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Grid, Icon, Message } from "semantic-ui-react";
+import { AppState, ConfigReducerStateInterface } from "../../../core";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.
@@ -85,6 +87,7 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
     const [ issuerFromTemplate, setIssuerLFromTemplate ] = useState("");
     const [ showAssertionConsumerUrlError, setAssertionConsumerUrlError ] = useState<boolean>(false);
     const [ assertionConsumerURLsErrorLabel, setAssertionConsumerURLsErrorLabel ] = useState<ReactElement>(null);
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     useEffect(() => {
         if (isEmpty(initialValues?.inboundProtocolConfiguration?.saml)) {
@@ -309,6 +312,22 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                                         } }
                                         showPredictions={ false }
                                         customLabel={ assertionConsumerURLsErrorLabel }
+                                        popupHeaderPositive={ t("console:develop.features.URLInput.withLabel."
+                                            + "positive.header") }
+                                        popupHeaderNegative={ t("console:develop.features.URLInput.withLabel."
+                                            + "negative.header") }
+                                        popupContentPositive={ t("console:develop.features.URLInput.withLabel."
+                                            + "positive.content", { productName: config.ui.productName }) }
+                                        popupContentNegative={ t("console:develop.features.URLInput.withLabel."
+                                            + "negative.content", { productName: config.ui.productName }) }
+                                        popupDetailedContentPositive={ t("console:develop.features.URLInput."
+                                            + "withLabel.positive.detailedContent.0") }
+                                        popupDetailedContentNegative={ t("console:develop.features.URLInput."
+                                            + "withLabel.negative.detailedContent.0") }
+                                        insecureURLDescription={ t("console:common.validations.inSecureURL."
+                                            + "description") }
+                                        showLessContent={ t("common:showLess") }
+                                        showMoreContent={ t("common:showMore") }
                                     />
                                     {
                                         (assertionConsumerURLFromTemplate) && (

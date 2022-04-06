@@ -62,6 +62,10 @@ export interface TechnologyCardPropsInterface extends Omit<CardProps, "image">, 
      * Should the card be formatted to raise above the page.
      */
     raised?: boolean;
+    /**
+     * Resolve i18n tag for feature available content
+     */
+    featureAvailable?: string;
 }
 
 /**
@@ -84,11 +88,10 @@ export const TechnologyCard: FunctionComponent<TechnologyCardPropsInterface> = (
         onClick,
         overlayOpacity,
         raised,
+        featureAvailable,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
-
-    const { t } = useTranslation();
 
     const classes = classNames(
         "tech-selection basic-card rounded mb-1",
@@ -130,7 +133,9 @@ export const TechnologyCard: FunctionComponent<TechnologyCardPropsInterface> = (
                 {
                     disabled && (
                         <Dimmer className="lighter" active={ dimmerState }>
-                            { t("common:featureAvailable") }
+                            { featureAvailable
+                                ? featureAvailable
+                                : "This feature will be available soon!" }
                         </Dimmer>
                     )
                 }

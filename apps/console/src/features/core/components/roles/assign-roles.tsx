@@ -236,6 +236,8 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
                         emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders." +
                             "groups.unselected", { type: "roles" }) }
                         data-testid="user-mgt-add-user-wizard-modal-unselected-roles-select-all-checkbox"
+                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                            + "emptyPlaceholders.default") }
                     >
                         {
                             initialValues?.roleList?.map((role, index)=> {
@@ -270,6 +272,8 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
                         emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders." +
                             "groups.selected", { type: "roles" }) }
                         data-testid="user-mgt-add-user-wizard-modal-selected-roles-select-all-checkbox"
+                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                            + "emptyPlaceholders.default") }
                     >
                         {
                             initialValues?.tempRoleList?.map((role, index)=> {
