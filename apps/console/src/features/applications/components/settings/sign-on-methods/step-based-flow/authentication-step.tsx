@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, GenericIcon, Heading, LinkButton } from "@wso2is/react-components";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, Checkbox, Form, Icon, Label, Popup, Radio } from "semantic-ui-react";
 import { getGeneralIcons } from "../../../../../core";
@@ -137,17 +137,22 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
 
     const classes = classNames("authentication-step-container timeline-body", className);
 
-    let isContainsOTPAuthenticator = false;
+    const [ showSubjectIdentifierCheckBox, setShowSubjectIdentifierCheckbox ] = useState<boolean>(false);
 
-    step.options.map(option => {
-        if([ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR, 
-            IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR, 
-            IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR ]
-            .includes(option.authenticator)) {
-            isContainsOTPAuthenticator = true;
+    useEffect(() => {
+        step.options.map(option => {
+            if ([ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
+                IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
+                IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
+                IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR ]
+                .includes(option.authenticator)) {
+                setShowSubjectIdentifierCheckbox(false);
+            } else {
+                setShowSubjectIdentifierCheckbox(true);
+            }
         }
-    }
-    );
+        );
+    }, [ JSON.stringify(step.options) ]);
 
     /**
      * Resolves the authenticator step option.
@@ -270,7 +275,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
             );
         }
     };
-    
+
     return (
         <div className="timeline-item">
             <div className="timeline-badge">
@@ -368,7 +373,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                     (!readOnly
                         && showStepMeta
                         && (step.options && step.options instanceof Array && step.options.length > 0))
-                        && !isContainsOTPAuthenticator && (
+                        && showSubjectIdentifierCheckBox && (
                         <div className="checkboxes-extension">
                             <Checkbox
                                 label={ t(
