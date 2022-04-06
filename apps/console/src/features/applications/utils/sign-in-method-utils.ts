@@ -225,7 +225,7 @@ export class SignInMethodUtils {
 
         const identifierFirst = authenticationSteps[ 0 ].options.find(
             authenticator =>
-                authenticator.id === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID);
+                authenticator.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR);
 
         // The first step should have the identifier first authenticator.
         if (authenticationSteps.length > 1 && !identifierFirst) {
