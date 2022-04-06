@@ -113,7 +113,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
     };
 
     const handleClaimMapping = (e) => {
-        const mappingValue = e.target.value;
+        const mappingValue = e.target.value.replace(/[^\w+$:/.]/g, '');
 
         setMappedAttribute(mappingValue);
         updateMapping(claimURI, mappingValue);
