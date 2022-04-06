@@ -628,6 +628,7 @@ export interface ConsoleNS {
                                             secondFactorDisabledDueToProxyMode: string;
                                             secondFactorDisabledInFirstStep: string;
                                             authenticatorDisabled: string;
+                                            magicLinkDisabled: string;
                                         };
                                     };
                                 };
@@ -755,7 +756,7 @@ export interface ConsoleNS {
                             isManagementApp: FormAttributes;
                         };
                         managementAppBanner: string;
-                        
+
                     };
                     inboundCustom: {
                         fields: {

@@ -1049,6 +1049,10 @@ export const console: ConsoleNS = {
                                             heading: "Configuration par étapes",
                                             hint: "Créez des étapes d'authentification en faisant glisser les " +
                                                 "authentificateurs locaux/fédérés vers les étapes correspondantes.",
+                                            magicLinkDisabled: "Vous pouvez ajouter l'authentificateur Magic Link " +
+                                                "uniquement à la deuxième étape, et uniquement " +
+                                                "lorsque l'authentificateur Identifier First est présent " +
+                                                "à la première étape.",
                                             secondFactorDisabled: "Les authentificateurs de second facteur ne " +
                                                 "peuvent être utilisés que si <1>Nom d’utilisateur et mot de passe" +
                                                 "</1> ou tout autre gestionnaire tel que <3>Identifiant d’abord " +

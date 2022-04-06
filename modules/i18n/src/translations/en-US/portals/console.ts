@@ -1032,11 +1032,14 @@ export const console: ConsoleNS = {
                                             heading: "Step-based configuration",
                                             hint: "Create a user login flow by dragging authenticators on to the " +
                                                 "relevant steps.",
-                                            secondFactorDisabled: "Les authentificateurs de deuxième facteur ne " +
-                                                "peuvent être utilisés que si <1>Nom d'utilisateur et mot de " +
-                                                "passe</1>, <3>Connexion sociale</3> ou tout autre gestionnaire " +
-                                                "tel que <5>Identifier First</5> qui peut gérer ces facteurs sont " +
-                                                "présents dans une étape précédente.",
+                                            magicLinkDisabled: "You can add the Magic Link authenticator only" +
+                                                " to the second step, and only when Identifier First " +
+                                                "authenticator is present in the first step.",
+                                            secondFactorDisabled: "Second factor authenticators " +
+                                                "can be used only if <1>User name and password " +
+                                                "password</1>, <3>Social Login</3> or any other handler" +
+                                                "such as <5>Identifier First</5> which can handle these factors are" +
+                                                "present in a previous step.",
                                             secondFactorDisabledDueToProxyMode: "To configure <1>{{auth}}</1>," +
                                                 " you should enable the Just-in-Time provisioning" +
                                                 " setting from the following Identity Providers.",
@@ -6266,7 +6269,7 @@ export const console: ConsoleNS = {
                 scopeMappings: {
                     deletionConfirmationModal: {
                         assertionHint: "Please confirm your action.",
-                        content: "If you delete this claim, it will not be available in the token." + 
+                        content: "If you delete this claim, it will not be available in the token." +
                             " Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action is irreversible and will permanently delete the scope claim mapping"
