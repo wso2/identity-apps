@@ -21,6 +21,12 @@
 
 <%@include file="includes/localize.jsp" %>
 
+<%
+    String errorCode = "";
+    if(request.getParameter("error")!=null){
+        errorCode = request.getParameter("error") ;
+    }
+%>
 <!doctype html>
 <html>
 <head>
@@ -54,6 +60,11 @@
                 </h3>
 
                 <div class="segment-form">
+                    <% if (errorCode != "") { %>
+                    <div class="ui visible negative message" lockedReasonid="error-msg" data-testid="login-page-error-message">
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, errorCode)%>
+                    </div>
+                <% } %>
                     <form class="ui large form" action="../oauth2/device" method="post" id="loginForm">
                         <div class="field">
                             <div class="ui fluid left icon input">
