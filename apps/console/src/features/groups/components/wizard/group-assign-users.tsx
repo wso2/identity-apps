@@ -67,8 +67,6 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
     const [ usersList, setUsersList ] = useState<UserBasicInterface[]>([]);
     const [ initialUserList, setInitialUserList ] = useState<UserBasicInterface[]>([]);
     const [ selectedUsers, setSelectedUsers ] = useState<UserBasicInterface[]>([]);
-    const [ initialSelectedUsers, setInitialSelectedUsers ] = useState<UserBasicInterface[]>([]);
-    const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
     const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
 
@@ -138,7 +136,6 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                             userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
                         );
                         setSelectedUsers(selectedUserList);
-                        setInitialSelectedUsers(selectedUserList);
                         setTempUserList(selectedUserList);
                     }
                 }
@@ -161,7 +158,6 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                             return selectedUserList.indexOf(user) == -1;
                         }));
                         setSelectedUsers(selectedUserList);
-                        setInitialSelectedUsers(selectedUserList);
                         setTempUserList(selectedUserList);
                     }
                 }
@@ -205,10 +201,10 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
         if (userListMetaContent) {
             const attributes = generateAttributesString(userListMetaContent.values());
 
-            getList(listItemLimit, listOffset, null, attributes, userStore);
+            getList(listItemLimit, 0, null, attributes, userStore);
 
         }
-    }, [ listOffset, listItemLimit ]);
+    }, [ listItemLimit ]);
 
     const handleUnassignedItemCheckboxChange = (role) => {
         const checkedGroups = [ ...checkedUnassignedListItems ];
@@ -439,13 +435,13 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
 
     return (
         <>
-            { isEdit ?
-                (<Grid>
+            { isEdit 
+                ? (<Grid>
                     <Grid.Row>
                         <Grid.Column computer={ 8 }>
                             {
-                                selectedUsers?.length > 0 ? (
-                                    <EmphasizedSegment className="user-role-edit-header-segment">
+                                selectedUsers?.length > 0 
+                                    ? (<EmphasizedSegment className="user-role-edit-header-segment">
                                         <Grid.Row>
                                             <Grid.Column>
                                                 <Input
@@ -502,9 +498,8 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                                 </Table.Body>
                                             </Table>
                                         </Grid.Row>
-                                    </EmphasizedSegment>
-                                ) : (
-                                    <EmphasizedSegment>
+                                    </EmphasizedSegment>) 
+                                    : (<EmphasizedSegment>
                                         <EmptyPlaceholder
                                             title={ t("console:manage.features.roles.edit.users.list." +
                                                 "emptyPlaceholder.title") }
@@ -525,15 +520,13 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                             image={ getEmptyPlaceholderIllustrations().emptyList }
                                             imageSize="tiny"
                                         />
-                                    </EmphasizedSegment>
-                                )
+                                    </EmphasizedSegment>)
                             }
                         </Grid.Column>
                     </Grid.Row>
                     { addNewUserModal() }
                 </Grid>)
-                :
-                (<Forms
+                : (<Forms
                     onSubmit={ () => {
                         onSubmit(tempUserList);
                     } }
@@ -622,19 +615,19 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                             </TransferComponent>
                         </Grid.Row>
                         { isEdit &&
-                        (<Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Button
-                                    data-testid={ `${ testId }-update-user-list-button` }
-                                    primary
-                                    type="submit"
-                                    size="small"
-                                    className="form-button"
-                                >
-                                    { t("common.update") }
-                                </Button>
-                            </Grid.Column>
-                        </Grid.Row>)
+                            (<Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                    <Button
+                                        data-testid={ `${ testId }-update-user-list-button` }
+                                        primary
+                                        type="submit"
+                                        size="small"
+                                        className="form-button"
+                                    >
+                                        { t("common.update") }
+                                    </Button>
+                                </Grid.Column>
+                            </Grid.Row>)
                         }
                     </Grid>
                 </Forms>)
