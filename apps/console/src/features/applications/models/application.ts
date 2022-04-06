@@ -216,7 +216,6 @@ export enum AuthenticationSequenceType {
 export interface AuthenticatorInterface {
     idp: string;
     authenticator: string;
-    id: string;
 }
 
 export interface AuthenticationStepInterface {
