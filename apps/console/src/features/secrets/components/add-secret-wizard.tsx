@@ -101,6 +101,7 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
             .then(async (response) => {
                 setSecretTypes(response);
                 const initialSecretType = response.length ? response[0].value : EMPTY_STRING;
+
                 setInitialFormValues({
                     secret_description: EMPTY_STRING,
                     secret_name: EMPTY_STRING,
@@ -129,6 +130,7 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                         message: error.response.data?.message
                     });
                     setRequestInProgress(false);
+
                     return;
                 }
                 setAlert({
@@ -166,6 +168,7 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
      */
     const onWizardSubmission = async (values): Promise<void> => {
         setRequestInProgress(true);
+
         try {
             await createSecret({
                 body: {
@@ -239,6 +242,7 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
     const fetchAllSecretsForSecretType = async (secretType: string): Promise<SecretModel[]> => {
         try {
             const response = await getSecretList({ params: { secretType } });
+
             return Promise.resolve(response.data);
         } catch (error) {
             if (error.response && error.response.data && error.response.data.description) {
@@ -256,6 +260,11 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
             dimmer="blurring"
             size="tiny"
             open={ showWizard }
+            onKeyPress={ (e: React.KeyboardEvent) => {
+                if (e.key === "Enter" && showWizard) {
+                    formRef?.current?.triggerSubmit();
+                }
+            } }
             onClose={ () => onClose(false) }
             data-componentid={ `${ testId }-view-certificate-modal` }>
             <Modal.Header className="wizard-header">
@@ -298,7 +307,9 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                         hint={ t("console:develop.features.secrets.wizards.addSecret.form.secretNameField.hint") }
                         validate={ (value): string | undefined => {
                             const error = secretNameValidator(value, listOfSecretNamesForSecretType);
+
                             setSecretNameInvalid(Boolean(error));
+
                             return error;
                         } }
                     />
@@ -322,7 +333,9 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                         }
                         validate={ (value): string | undefined => {
                             const error = secretValueValidator(value);
+
                             setSecretValueInvalid(Boolean(error));
+
                             return error;
                         } }
                     />
