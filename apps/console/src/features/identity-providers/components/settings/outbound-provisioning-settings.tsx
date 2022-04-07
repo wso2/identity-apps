@@ -536,6 +536,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                             idpId={ identityProvider?.id }
                             data-testid={ `${ testId }-roles` }
                             isReadOnly={ isReadOnly }
+                            onUpdate={ onUpdate }
                         />
                     )
                     : <ContentLoader/>
