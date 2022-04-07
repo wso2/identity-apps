@@ -28,7 +28,7 @@ import {
 } from "@wso2is/react-components";
 import omit from "lodash-es/omit";
 import React, { ClipboardEvent, FormEvent, KeyboardEvent, ReactElement } from "react";
-import { Checkbox, Form, Input, Popup, Select } from "semantic-ui-react";
+import { Checkbox, Form, Icon, Input, Popup, Select } from "semantic-ui-react";
 import { QueryParameters } from "../addons";
 import {
     CheckboxAdapterPropsInterface,
@@ -560,7 +560,11 @@ export const ColorPickerAdapter = (props: ColorPickerAdapterPropsInterface): Rea
                         }
                     >
                         <div className="color-swatch">
-                            <div className="color-swatch-inner" style={ { background: value } } />
+                            <div className="color-swatch-inner" style={ { background: value } }>
+                                { !value && (
+                                    <Icon name="question" />
+                                ) }
+                            </div>
                         </div>
                         <input readOnly={ !editableInput } />
                     </Input>
