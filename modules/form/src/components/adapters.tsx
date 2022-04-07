@@ -96,7 +96,7 @@ export const TextFieldAdapter = (props): ReactElement => {
                                 || event.key === "x")
                             && (event.ctrlKey === true
                                 || event.metaKey === true)
-                            )
+                        )
                             || (
                                 event.key === "ArrowRight"
                                 || event.key == "ArrowLeft")
@@ -161,8 +161,8 @@ export const CopyFieldAdapter = (props): ReactElement => {
 
     const { childFieldProps, parentFormProps } = props;
     const {
-       label,
-       ...filteredChildFieldProps
+        label,
+        ...filteredChildFieldProps
     } = childFieldProps;
 
     return (
@@ -573,11 +573,22 @@ export const ColorPickerAdapter = (props: ColorPickerAdapterPropsInterface): Rea
                     popup
                     color={ value }
                     onChangeComplete={ (color: ColorPickerResponseInterface) => {
+
+                        // Workaround for https://github.com/casesandberg/react-color/issues/655
+                        // TODO: Remove once the issue is resolved on the lib.
+                        const a = Math.round(color.rgb.a * 255);
+
+                        const moderatedHex: string = color.hex + (
+                            a === 255
+                                ? ""
+                                : Math.floor(a / 16).toString(16) + (a % 16).toString(16)
+                        );
+
                         if (childFieldProps.listen && typeof childFieldProps.listen === "function") {
-                            childFieldProps.listen(color.hex);
+                            childFieldProps.listen(moderatedHex);
                         }
 
-                        input.onChange(color.hex);
+                        input.onChange(moderatedHex);
                     } }
                     { ...filteredRest }
                 />
