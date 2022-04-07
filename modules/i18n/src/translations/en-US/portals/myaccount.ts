@@ -1376,7 +1376,7 @@ export const myAccount: MyAccountNS = {
     },
     pages: {
         applications: {
-            subTitle: "Manage and maintain your applications",
+            subTitle: "Discover and access your applications",
             title: "Applications"
         },
         overview: {

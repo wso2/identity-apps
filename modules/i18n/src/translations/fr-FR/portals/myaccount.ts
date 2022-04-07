@@ -1412,7 +1412,7 @@ export const myAccount: MyAccountNS = {
     },
     pages: {
         applications: {
-            subTitle: "Gérer et maintenir vos applications",
+            subTitle: "Découvrez et accédez à vos applications",
             title: "Applications"
         },
         overview: {

@@ -1368,8 +1368,8 @@ export const myAccount: MyAccountNS = {
     },
     pages: {
         applications: {
-            subTitle: "Manage and maintain your applications",
-            title: "Applications"
+            subTitle: "ඔබගේ යෙදුම් සොයාගෙන ප්‍රවේශ වන්න",
+            title: "අයදුම්පත්"
         },
         overview: {
             subTitle: "ඔබගේ පුද්ගලික තොරතුරු, ගිණුම් ආරක්ෂාව සහ රහස්‍යතා සැකසුම් කළමනාකරණය කරන්න",
