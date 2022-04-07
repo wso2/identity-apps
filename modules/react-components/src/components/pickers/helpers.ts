@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,5 +16,18 @@
  * under the License.
  */
 
-export * from "./helpers";
-export * from "./color-picker";
+import tinycolor from "tinycolor2";
+
+/**
+ * Converts a RGB | RGBA color to hex.
+ *
+ * @example
+ *  rgbToHex(65, 131, 196);
+ *  // Returns '4183c4'
+ * @param {string} value - The value to be converted.
+ * @returns {string} Returns a convered HEX value.
+ */
+export const rgbToHex = (value: string): string => {
+
+    return tinycolor(value).toHex8String();
+};

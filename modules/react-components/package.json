@@ -68,7 +68,8 @@
         "react-top-loading-bar": "^1.2.0",
         "react-transition-group": "^4.4.1",
         "semantic-ui-react": "^0.87.3",
-        "storybook": "^1.0.0"
+        "storybook": "^1.0.0",
+        "tinycolor": "0.0.1"
     },
     "peerDependencies": {
         "@types/react": "*",

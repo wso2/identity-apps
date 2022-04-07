@@ -28,7 +28,7 @@ import {
 } from "@wso2is/react-components";
 import omit from "lodash-es/omit";
 import React, { ClipboardEvent, FormEvent, KeyboardEvent, ReactElement } from "react";
-import { Checkbox, Form, Input, Popup, Select } from "semantic-ui-react";
+import { Checkbox, Form, Icon, Input, Popup, Select } from "semantic-ui-react";
 import { QueryParameters } from "../addons";
 import {
     CheckboxAdapterPropsInterface,
@@ -96,7 +96,7 @@ export const TextFieldAdapter = (props): ReactElement => {
                                 || event.key === "x")
                             && (event.ctrlKey === true
                                 || event.metaKey === true)
-                            )
+                        )
                             || (
                                 event.key === "ArrowRight"
                                 || event.key == "ArrowLeft")
@@ -161,8 +161,8 @@ export const CopyFieldAdapter = (props): ReactElement => {
 
     const { childFieldProps, parentFormProps } = props;
     const {
-       label,
-       ...filteredChildFieldProps
+        label,
+        ...filteredChildFieldProps
     } = childFieldProps;
 
     return (
@@ -560,7 +560,11 @@ export const ColorPickerAdapter = (props: ColorPickerAdapterPropsInterface): Rea
                         }
                     >
                         <div className="color-swatch">
-                            <div className="color-swatch-inner" style={ { background: value } } />
+                            <div className="color-swatch-inner" style={ { background: value } }>
+                                { !value && (
+                                    <Icon name="question" />
+                                ) }
+                            </div>
                         </div>
                         <input readOnly={ !editableInput } />
                     </Input>
@@ -573,11 +577,22 @@ export const ColorPickerAdapter = (props: ColorPickerAdapterPropsInterface): Rea
                     popup
                     color={ value }
                     onChangeComplete={ (color: ColorPickerResponseInterface) => {
+
+                        // Workaround for https://github.com/casesandberg/react-color/issues/655
+                        // TODO: Remove once the issue is resolved on the lib.
+                        const a = Math.round(color.rgb.a * 255);
+
+                        const moderatedHex: string = color.hex + (
+                            a === 255
+                                ? ""
+                                : Math.floor(a / 16).toString(16) + (a % 16).toString(16)
+                        );
+
                         if (childFieldProps.listen && typeof childFieldProps.listen === "function") {
-                            childFieldProps.listen(color.hex);
+                            childFieldProps.listen(moderatedHex);
                         }
 
-                        input.onChange(color.hex);
+                        input.onChange(moderatedHex);
                     } }
                     { ...filteredRest }
                 />
