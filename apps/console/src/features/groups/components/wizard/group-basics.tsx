@@ -119,7 +119,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
 
     useEffect(() => {
         if (userStore && initialValues?.basicDetails?.groupName) {
-            const input = groupName.current.children[0].children[1].children[0] as HTMLInputElement;
+            const input: HTMLInputElement = groupName.current.children[0].children[1].children[0] as HTMLInputElement;
 
             input.focus();
             input.blur();
