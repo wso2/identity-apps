@@ -1360,7 +1360,7 @@ export const myAccount: MyAccountNS = {
     },
     pages: {
         applications: {
-            subTitle: "Manage and maintain your applications",
+            subTitle: "Descubra e acesse seus aplicativos",
             title: "Applications"
         },
         overview: {
