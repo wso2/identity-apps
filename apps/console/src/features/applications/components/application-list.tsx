@@ -157,6 +157,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         (state: AppState) => state.application.templates);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
+    const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingApplication, setDeletingApplication ] = useState<ApplicationListItemInterface>(undefined);
@@ -374,8 +375,11 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     const hasScopes: boolean = !hasRequiredScopes(featureConfig?.applications,
                         featureConfig?.applications?.scopes?.delete, allowedScopes);
 
+                    const isSuperTenant: boolean = (tenantDomain === AppConstants.getSuperTenant());
+                    const isSystemApp: boolean = isSuperTenant && (UIConfig.systemAppsIdentifiers.includes(app?.name));
+
                     return hasScopes ||
-                            UIConfig.systemAppsIdentifiers.includes(app?.name) ||
+                            isSystemApp ||
                             (app?.access === ApplicationAccessTypes.READ);
                 },
                 icon: (): SemanticICONS => "trash alternate",
