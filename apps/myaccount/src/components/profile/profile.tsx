@@ -829,7 +829,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                             )
                                             : profileInfo.get(schema.name)
                                                 ? (
-                                                    schema.name === "emails" && isEmailPending
+                                                    schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY
+                                                        .get("EMAILS") && isEmailPending
                                                         ? (
                                                             <>
                                                                 <p>
