@@ -16,5 +16,18 @@
  * under the License.
  */
 
-export * from "./helpers";
-export * from "./color-picker";
+import tinycolor from "tinycolor2";
+
+/**
+ * Converts a RGB | RGBA color to hex.
+ *
+ * @example
+ *  rgbToHex(65, 131, 196);
+ *  // Returns '4183c4'
+ * @param {string} value - The value to be converted.
+ * @returns {string} Returns a convered HEX value.
+ */
+export const rgbToHex = (value: string): string => {
+
+    return tinycolor(value).toHex8String();
+};
