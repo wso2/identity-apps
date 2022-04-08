@@ -764,7 +764,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                 onPrimaryActionClick={ () => revokeAppConsent(revokingConsent) }
                 open={ isConsentRevokeModalVisible }
                 onClose={ handleConsentRevokeModalClose }
-                type="negative"
+                type="warning"
                 header={
                     t("myAccount:components.consentManagement.modals.consentRevokeModal.heading",
                         { appName: revokingConsent.spDisplayName })
