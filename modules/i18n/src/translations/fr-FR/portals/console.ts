@@ -1040,7 +1040,8 @@ export const console: ConsoleNS = {
                                                         placeholder: "Sélectionner une étape"
                                                     },
                                                     subjectIdentifierFrom: {
-                                                        label: "Utiliser l'identifiant du sujet de",
+                                                        label: "Choisissez l'identifiant de l'utilisateur à partir " +
+                                                            "de cette étape",
                                                         placeholder: "Sélectionner une étape"
                                                     }
                                                 }

@@ -1024,7 +1024,7 @@ export const console: ConsoleNS = {
                                                         placeholder: "Select step"
                                                     },
                                                     subjectIdentifierFrom: {
-                                                        label: "Pick subject identifier from this step",
+                                                        label: "Pick user identifier from this step",
                                                         placeholder: "Select step"
                                                     }
                                                 }

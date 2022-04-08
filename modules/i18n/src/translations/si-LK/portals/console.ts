@@ -1031,7 +1031,7 @@ export const console: ConsoleNS = {
                                                         placeholder: "පියවර තෝරන්න"
                                                     },
                                                     subjectIdentifierFrom: {
-                                                        label: "සිට විෂය හඳුනාගැනුම භාවිතා කරන්න",
+                                                        label: "මෙම පියවරෙන් පරිශීලක හැඳුනුම්කාරකය තෝරන්න",
                                                         placeholder: "පියවර තෝරන්න"
                                                     }
                                                 }
