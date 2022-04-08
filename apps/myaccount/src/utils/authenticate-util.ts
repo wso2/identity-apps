@@ -112,6 +112,9 @@ export const getAuthInitializeConfig = (): AuthReactConfig => {
         process.env.NODE_ENV === "production" ? ResponseMode.formPost : ResponseMode.query;
 
     return {
+        baseUrl:
+            window["AppUtils"].getConfig().idpConfigs?.serverOrigin ??
+            window[ "AppUtils" ].getConfig().idpConfigs.serverOrigin,
         checkSessionInterval: window["AppUtils"].getConfig()?.session?.checkSessionInterval,
         clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
         clientID: window["AppUtils"].getConfig().clientID,
@@ -125,20 +128,15 @@ export const getAuthInitializeConfig = (): AuthReactConfig => {
             endSessionEndpoint: window["AppUtils"].getConfig().idpConfigs?.logoutEndpointURL,
             jwksUri: window["AppUtils"].getConfig().idpConfigs?.jwksEndpointURL,
             revocationEndpoint: window["AppUtils"].getConfig().idpConfigs?.tokenRevocationEndpointURL,
-            tokenEndpoint: window["AppUtils"].getConfig().idpConfigs?.tokenEndpointURL,
-            wellKnownEndpoint: window["AppUtils"].getConfig().idpConfigs?.wellKnownEndpointURL
+            tokenEndpoint: window["AppUtils"].getConfig().idpConfigs?.tokenEndpointURL
         },
-        overrideWellEndpointConfig: true,
         resourceServerURLs: resolveBaseUrls(),
         responseMode: window["AppUtils"].getConfig().idpConfigs?.responseMode ?? responseModeFallback,
         scope: window["AppUtils"].getConfig().idpConfigs?.scope ?? [TokenConstants.SYSTEM_SCOPE],
         sendCookiesInRequests: true,
-        serverOrigin:
-            window["AppUtils"].getConfig().idpConfigs?.serverOrigin ??
-            window[ "AppUtils" ].getConfig().idpConfigs.serverOrigin,
         sessionRefreshInterval: window["AppUtils"].getConfig()?.session?.sessionRefreshTimeOut,
         signInRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
         signOutRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
-        storage: resolveStorage()
+        storage: resolveStorage() as Storage.WebWorker
     };
 };

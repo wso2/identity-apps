@@ -19,6 +19,7 @@
 
     String authCode = (String) session.getAttribute("authCode");
     String sessionState = (String) session.getAttribute("sessionState");
+    String state = (String) session.getAttribute("state");
 
     if(authCode == null) {
         authCode = "";
@@ -28,12 +29,17 @@
         sessionState = "";
     }
 
+    if(state == null) {
+        state = "";
+    }
+
     response.setHeader("Cache-Control", "no-store");
     
-    out.print("{\"authCode\": \""+authCode+"\", \"sessionState\": \""+sessionState+"\"}");
+    out.print("{\"authCode\": \""+authCode+"\", \"sessionState\": \""+sessionState+"\", \"state\": \""+state+"\"}");
 
     authCode = "";
     sessionState = "";
     session.setAttribute("authCode", "");
     session.setAttribute("sessionState", "");
+    session.setAttribute("state", "");
 %>

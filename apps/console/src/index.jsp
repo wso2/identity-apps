@@ -23,7 +23,7 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <script src="https://unpkg.com/@asgardeo/auth-spa@0.2.19/dist/asgardeo-spa.production.min.js"></script>
+        <script src="https://unpkg.com/@asgardeo/auth-spa@0.3.3/dist/asgardeo-spa.production.min.js"></script>
     </head>
     <body>
         <script>
@@ -52,12 +52,11 @@
                 signInRedirectURL: applicationDomain.replace(/\/+$/, '') + "/" + "<%= htmlWebpackPlugin.options.basename %>",
                 signOutRedirectURL: applicationDomain.replace(/\/+$/, ''),
                 clientID: "<%= htmlWebpackPlugin.options.clientID %>",
-                serverOrigin: getApiPath(),
+                baseUrl: getApiPath(),
                 responseMode: "form_post",
                 scope: ["openid SYSTEM"],
                 storage: "webWorker",
-                enablePKCE: true,
-                overrideWellEndpointConfig: true
+                enablePKCE: true
             }
 
             var isSilentSignInDisabled = userAccessedPath.includes("disable_silent_sign_in");
