@@ -47,14 +47,11 @@ const getAuthParams = (): Promise<AuthParams> => {
             ? `/${ window[ "AppUtils" ].getConfig().appBase }`
             : "";
 
-        return axios.get(contextPath + "/auth", {
-            headers: {
-                "Cache-Control": "no-store"
-            }
-        }).then((response) => {
+        return axios.get(contextPath + "/auth").then((response) => {
             return Promise.resolve({
                 authorizationCode: response?.data?.authCode,
-                sessionState: response?.data?.sessionState
+                sessionState: response?.data?.sessionState,
+                state: response?.data?.sessionState
             });
         });
     }
