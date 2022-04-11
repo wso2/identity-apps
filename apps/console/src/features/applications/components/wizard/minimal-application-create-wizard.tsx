@@ -371,8 +371,21 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 if (error.response && error.response.data && error.response.data.code &&
                     error.response.data.code === ApplicationManagementConstants.ERROR_CODE_ISSUER_EXISTS) {
                     if (protocolValuesChange) {
-                        handleError("issuer", true);
-                        scrollToInValidField("issuer");
+                        if (selectedTemplate.authenticationProtocol === SupportedAuthProtocolTypes.SAML && 
+                            samlConfigureMode !== SAMLConfigModes.MANUAL) {
+                            setAlert({
+                                description: error.response.data.description,
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "console:develop.features.applications.notifications." +
+                                    "addApplication.error.message"
+                                )
+                            });
+                            scrollToNotification();
+                        } else {
+                            handleError("issuer", true);
+                            scrollToInValidField("issuer");
+                        }
                     }
 
                     return;
