@@ -2038,6 +2038,22 @@ export interface ConsoleNS {
                 emptyPlaceholder: Placeholder;
             };
             secrets?: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: string;
+                            };
+                            filterCondition: {
+                                placeholder: string;
+                            };
+                            filterValue: {
+                                placeholder: string;
+                            };
+                        };
+                    };
+                    placeholder: string;
+                };
                 page?: {
                     title: string;
                     description: string;

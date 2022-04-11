@@ -60,6 +60,7 @@ const SecretsPage: FC<SecretsPageProps> = (props: SecretsPageProps): ReactElemen
     const [ isSecretListLoading, setIsSecretListLoading ] = useState<boolean>(true);
     const [ showAddSecretModal, setShowAddSecretModal ] = useState<boolean>(false);
     const [ selectedSecretType ] = useState<string>(ADAPTIVE_SCRIPT_SECRETS);
+    const [ isLoading, setLoading ] = useState<boolean>(true);
 
     useEffect(() => {
         loadSecretListForSecretType();
@@ -80,6 +81,7 @@ const SecretsPage: FC<SecretsPageProps> = (props: SecretsPageProps): ReactElemen
                     level: AlertLevels.ERROR,
                     message: error.response.data?.message
                 }));
+                
                 return;
             }
             dispatch(addAlert({
@@ -89,6 +91,7 @@ const SecretsPage: FC<SecretsPageProps> = (props: SecretsPageProps): ReactElemen
             }));
         }).finally(() => {
             setIsSecretListLoading(false);
+            setLoading(false);
         });
 
     };
@@ -129,11 +132,11 @@ const SecretsPage: FC<SecretsPageProps> = (props: SecretsPageProps): ReactElemen
     };
 
     return (
+        
         <PageLayout
-            isLoading={ isSecretListLoading }
-            title={ t("console:develop.features.secrets.page.title") }
-            description={ t("console:develop.features.secrets.page.description") }
-            action={ secretList?.length > 0 && (
+            action={
+                (!isLoading && !(secretList?.length <= 0))
+            && (
                 <Show when={ AccessControlConstants.SECRET_WRITE }>
                     <PrimaryButton
                         onClick={ onAddNewSecretButtonClick }
@@ -142,7 +145,14 @@ const SecretsPage: FC<SecretsPageProps> = (props: SecretsPageProps): ReactElemen
                         { t("console:develop.features.secrets.page.primaryActionButtonText") }
                     </PrimaryButton>
                 </Show>
-            ) }>
+            )
+            }
+            
+            isLoading={ isSecretListLoading }
+            title={ t("console:develop.features.secrets.page.title") }
+            description={ t("console:develop.features.secrets.page.description") }
+        >
+               
             <Show when={ AccessControlConstants.SECRET_READ }>
                 <SecretsList
                     whenSecretDeleted={ whenSecretDeleted }
@@ -150,6 +160,7 @@ const SecretsPage: FC<SecretsPageProps> = (props: SecretsPageProps): ReactElemen
                     secretList={ secretList }
                     selectedSecretType={ selectedSecretType }
                     onAddNewSecretButtonClick={ onAddNewSecretButtonClick }
+                    onSearchQueryClear={ loadSecretListForSecretType }
                 />
             </Show>
             { showAddSecretModal && (
