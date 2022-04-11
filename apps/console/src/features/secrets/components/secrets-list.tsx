@@ -19,31 +19,64 @@
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { I18n } from "@wso2is/i18n";
 import {
     AppAvatar,
     ConfirmationModal,
     DataTable,
+    EmptyPlaceholder,
     GenericIcon,
     GridLayout,
+    LinkButton,
+    ListLayout,
     TableActionsInterface,
     TableColumnInterface,
     Text
 } from "@wso2is/react-components";
-import React, { FC, Fragment, ReactElement, SyntheticEvent, useState } from "react";
+import find from "lodash-es/find";
+import React, { FC, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Message, SemanticICONS } from "semantic-ui-react";
+import { DropdownItemProps, DropdownProps, Header, Message, SemanticICONS } from "semantic-ui-react";
 import { EmptySecretListPlaceholder } from "./empty-secret-list-placeholder";
-import { AppConstants, AppState, FeatureConfigInterface, getSecretManagementIllustrations, history } from "../../core";
+import { AdvancedSearchWithBasicFilters, AppConstants, AppState, FeatureConfigInterface, 
+    getEmptyPlaceholderIllustrations, getSecretManagementIllustrations, history } from "../../core";
 import { deleteSecret } from "../api/secret";
 import { ADAPTIVE_SCRIPT_SECRETS, FEATURE_EDIT_PATH } from "../constants/secrets.common";
 import { SecretModel } from "../models/secret";
 import { formatDateString, humanizeDateString } from "../utils/secrets.date.utils";
 
+const SECRETS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
+    {
+        key: 1,
+        text: I18n.instance.t("common:name"),
+        value: "name"
+    },
+    {
+        key: 2,
+        text: I18n.instance.t("common:type"),
+        value: "type"
+    },
+    {
+        key: 3,
+        text: I18n.instance.t("common:createdOn"),
+        value: "createdDate"
+    },
+    {
+        key: 4,
+        text: I18n.instance.t("common:lastUpdatedOn"),
+        value: "lastUpdated"
+    }
+];
+
 /**
  * Props interface of {@link SecretsList}
  */
 export type SecretsListProps = {
+    onEmptyListPlaceholderActionClick?: () => void;
+    isRenderedOnPortal?: boolean;
+    onSearchQueryClear?: () => void;
+    advancedSearch?: ReactNode;
     whenSecretDeleted: (deletedSecret: SecretModel, shouldRefresh: boolean) => void;
     isSecretListLoading: boolean;
     selectedSecretType: string;
@@ -60,6 +93,8 @@ export type SecretsListProps = {
 const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElement => {
 
     const {
+        onSearchQueryClear,
+        advancedSearch,
         whenSecretDeleted,
         isSecretListLoading,
         secretList,
@@ -76,6 +111,11 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
     const [ deletingSecret, setDeletingSecret ] = useState<SecretModel>(undefined);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const [ filteredSecrets, setFilteredSecrets ] = useState([]);
+    const [ searchQuery, setSearchQuery ] = useState<string>("");
+    const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
+        SECRETS_LIST_SORTING_OPTIONS[ 0 ]
+    );
 
     const onSecretEditClick = (event: React.SyntheticEvent, item: SecretModel) => {
         event?.preventDefault();
@@ -93,6 +133,10 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
             history.push({ pathname });
         }
     };
+
+    useEffect(() => {
+        setFilteredSecrets([ ...secretList ].reverse());
+    }, [ secretList ]);
 
     /**
      * This will be only called when user gives their consent.
@@ -266,6 +310,94 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
         ];
     };
 
+    /**
+     * Resolve the relevant placeholder.
+     *
+     * @return {React.ReactElement}
+     */
+    const showPlaceholders = (): ReactElement => {
+        // When the search returns empty.
+        if (searchQuery && filteredSecrets?.length === 0) {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <LinkButton onClick={ onSearchQueryClear }>
+                            { t("console:develop.placeholders.emptySearchResult.action") }
+                        </LinkButton>
+                    ) }
+                    image={ getEmptyPlaceholderIllustrations().emptySearch }
+                    imageSize="tiny"
+                    title={ t("console:develop.placeholders.emptySearchResult.title") }
+                    subtitle={ [
+                        t("console:develop.placeholders.emptySearchResult.subtitles.0", { query: searchQuery }),
+                        t("console:develop.placeholders.emptySearchResult.subtitles.1")
+                    ] }
+                    data-testid={ `${ testId }-empty-search-placeholder` }
+                />
+            );
+        }
+
+        return null;
+    };
+
+    /**
+     * Handles the `onFilter` callback action from the
+     * secrets search component.
+     *
+     * @param {string} query - Search query.
+     */
+    const handleSecretsFilter = (query: string) => {
+
+        setSearchQuery(query);
+
+        if (!query) {
+            setFilteredSecrets(secretList.reverse());
+        }
+        
+        const records =  query?.split(" ");
+
+        if (!records) {
+            return;
+        }
+        
+        // const attribute  = records[0];
+        const operator = records[1];
+        const keyWords = records.splice(2).join("");
+        const filteredArray = [];
+
+        secretList.forEach((val) => {
+            if (operator === "co" && val?.secretName.includes(keyWords)) {
+                filteredArray.push(val);
+            }
+            if (operator === "sw" && val?.secretName.startsWith(keyWords)) {
+                filteredArray.push(val);
+            }
+            if (operator === "ew" && val?.secretName.endsWith(keyWords)) {
+                filteredArray.push(val);
+            }
+            if (operator === "eq" && val?.secretName == keyWords) {
+                filteredArray.push(val);
+            }
+        });
+        setFilteredSecrets(filteredArray.reverse());
+        
+    };
+
+    /**
+     * Sets the list sorting strategy.
+     *
+     * @param {React.SyntheticEvent<HTMLElement>} event - The event.
+     * @param {DropdownProps} data - Dropdown data.
+     */
+    const handleListSortingStrategyOnChange = (
+        event: SyntheticEvent<HTMLElement>,
+        data: DropdownProps
+    ): void => {
+        setListSortingStrategy(find(SECRETS_LIST_SORTING_OPTIONS, (option) => {
+            return data.value === option.value;
+        }));
+    };
+
     const SecretDeleteConfirmationModal: ReactElement = (
         <ConfirmationModal
             onClose={ (): void => {
@@ -318,16 +450,55 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
             }
             { secretList?.length > 0
                 ? (
-                    <Fragment>
+                    <ListLayout
+                        advancedSearch={ (
+                            <AdvancedSearchWithBasicFilters
+                                onFilter={ handleSecretsFilter }
+                                filterAttributeOptions={ [
+                                    {
+                                        key: 0,
+                                        text: t("common:name"),
+                                        value: "name"
+                                    }
+                                ] }
+                                filterAttributePlaceholder={
+                                    t("console:develop.features.secrets.advancedSearch.form" +
+                                        ".inputs.filterAttribute.placeholder")
+                                }
+                                filterConditionsPlaceholder={
+                                    t("console:develop.features.secrets.advancedSearch.form" +
+                                        ".inputs.filterCondition.placeholder")
+                                }
+                                filterValuePlaceholder={
+                                    t("console:develop.features.secrets.advancedSearch.form.inputs.filterValue" +
+                                    ".placeholder")
+                                }
+                                placeholder={ t("console:develop.features.secrets.advancedSearch.placeholder") }
+                                defaultSearchAttribute="name"
+                                defaultSearchOperator="co"
+                                data-testid={ `${ testId }-list-advanced-search` }
+                            />
+                        ) }
+                        currentListSize={ secretList.length }
+                        onPageChange={ () => void 0 }
+                        onSortStrategyChange={ handleListSortingStrategyOnChange }
+                        showPagination={ false }
+                        sortOptions={ SECRETS_LIST_SORTING_OPTIONS }
+                        sortStrategy={ listSortingStrategy }
+                        totalPages={ 1 }
+                        data-testid={ `${ testId }-list-layout` }
+                    >
                         <DataTable<SecretModel>
-                            data={ secretList }
+                            externalSearch={ advancedSearch }
+                            data={ filteredSecrets }
                             showHeader={ false }
                             onRowClick={ onSecretEditClick }
                             actions={ createDatatableActions() }
-                            columns={ createDatatableColumns() }>
+                            columns={ createDatatableColumns() }
+                            placeholders={ showPlaceholders() }>
                         </DataTable>
                         { showDeleteConfirmationModal && SecretDeleteConfirmationModal }
-                    </Fragment>
+                    </ListLayout>
                 )
                 : (
                     <EmptySecretListPlaceholder

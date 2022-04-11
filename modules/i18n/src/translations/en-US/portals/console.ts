@@ -5094,6 +5094,22 @@ export const console: ConsoleNS = {
                 }
             },
             secrets: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "E.g. Name, Description etc."
+                            },
+                            filterCondition: {
+                                placeholder: "E.g. Starts with etc."
+                            },
+                            filterValue: {
+                                placeholder: "Enter value to search"
+                            }
+                        }
+                    },
+                    placeholder: "Search by secret name"
+                },
                 alerts: {
                     createdSecret: {
                         description: "Successfully created the secret.",

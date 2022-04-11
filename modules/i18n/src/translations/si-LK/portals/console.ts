@@ -3717,6 +3717,22 @@ export const console: ConsoleNS = {
                 }
             },
             secrets: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "උදා. නම, විස්තරය ආදිය."
+                            },
+                            filterCondition: {
+                                placeholder: "උදා. ආදිය සමඟ ආරම්භ වේ."
+                            },
+                            filterValue: {
+                                placeholder: "සෙවීමට අගයක් ඇතුළත් කරන්න"
+                            }
+                        }
+                    },
+                    placeholder: "රහස් නාමයෙන් සොයන්න"
+                },
                 alerts: {
                     createdSecret: {
                         description: "නිර්මාණය සාර්ථකයි.",

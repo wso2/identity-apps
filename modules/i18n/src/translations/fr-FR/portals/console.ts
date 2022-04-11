@@ -3820,6 +3820,22 @@ export const console: ConsoleNS = {
                 }
             },
             secrets: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "Par exemple, nom, description, etc."
+                            },
+                            filterCondition: {
+                                placeholder: "Par exemple, commence par etc."
+                            },
+                            filterValue: {
+                                placeholder: "Saisir une valeur à rechercher"
+                            }
+                        }
+                    },
+                    placeholder: "Chercher par nom d'secret"
+                },
                 alerts: {
                     createdSecret: {
                         description: "Le secret a été créé avec succès.",
