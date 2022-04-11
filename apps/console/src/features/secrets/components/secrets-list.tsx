@@ -350,13 +350,13 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
 
         setSearchQuery(query);
 
-        if(!query){
+        if (!query) {
             setFilteredSecrets(secretList.reverse());
         }
         
         const records =  query?.split(" ");
 
-        if(!records){
+        if (!records) {
             return;
         }
         
@@ -389,8 +389,10 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
      * @param {React.SyntheticEvent<HTMLElement>} event - The event.
      * @param {DropdownProps} data - Dropdown data.
      */
-    const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>,
-        data: DropdownProps): void => {
+    const handleListSortingStrategyOnChange = (
+        event: SyntheticEvent<HTMLElement>,
+        data: DropdownProps
+    ): void => {
         setListSortingStrategy(find(SECRETS_LIST_SORTING_OPTIONS, (option) => {
             return data.value === option.value;
         }));
@@ -478,9 +480,7 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
                             />
                         ) }
                         currentListSize={ secretList.length }
-                        onPageChange={ () => 
-                            void 0
-                        }
+                        onPageChange={ () => void 0 }
                         onSortStrategyChange={ handleListSortingStrategyOnChange }
                         showPagination={ false }
                         sortOptions={ SECRETS_LIST_SORTING_OPTIONS }

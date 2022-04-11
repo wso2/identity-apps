@@ -81,7 +81,7 @@ const SecretsPage: FC<SecretsPageProps> = (props: SecretsPageProps): ReactElemen
                     level: AlertLevels.ERROR,
                     message: error.response.data?.message
                 }));
-                
+
                 return;
             }
             dispatch(addAlert({
@@ -145,8 +145,7 @@ const SecretsPage: FC<SecretsPageProps> = (props: SecretsPageProps): ReactElemen
                         { t("console:develop.features.secrets.page.primaryActionButtonText") }
                     </PrimaryButton>
                 </Show>
-            )
-            }
+            ) }
             
             isLoading={ isSecretListLoading }
             title={ t("console:develop.features.secrets.page.title") }
