@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Text } from "@wso2is/react-components";
+import { Text, LinkButton } from "@wso2is/react-components";
 import React, { Fragment, FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Popup } from "semantic-ui-react";
@@ -71,12 +71,12 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
                 <EmptyPlaceholder
                     data-testid={ `${testId}-empty-search-result-placeholder` }
                     action={ (
-                        <Button
+                        <LinkButton
                             className="link-button"
                             onClick={ onSearchQueryClear }
                         >
                             { t("myAccount:placeholders.emptySearchResult.action") }
-                        </Button>
+                        </LinkButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().search }
                     title={ t("myAccount:placeholders.emptySearchResult.title") }
@@ -93,12 +93,12 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
             <EmptyPlaceholder
                 data-testid={ `${testId}-empty-list-placeholder` }
                 action={ (
-                    <Button
+                    <LinkButton
                         className="link-button"
                         onClick={ onListRefresh }
                     >
                         { t("myAccount:components.applications.placeholders.emptyList.action") }
-                    </Button>
+                    </LinkButton>
                 ) }
                 image={ getEmptyPlaceholderIllustrations().emptyList }
                 imageSize="tiny"
