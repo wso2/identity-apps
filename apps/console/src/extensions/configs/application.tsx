@@ -67,6 +67,7 @@ export const applicationConfig: ApplicationConfig = {
         showProvisioningSettings: true
     },
     excludeIdentityClaims: false,
+    excludeSubjectClaim: false,
     inboundOIDCForm: {
         disabledGrantTypes: [],
         shouldValidateCertificate: true,

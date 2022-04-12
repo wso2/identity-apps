@@ -98,4 +98,5 @@ export interface ApplicationConfig {
         allowedProtocolTypes: string[];
     };
     excludeIdentityClaims: boolean;
+    excludeSubjectClaim: boolean;
 }
