@@ -375,6 +375,12 @@
             height: 3px;
             visibility: hidden;
         }
+        &.no-actions {
+            cursor: not-allowed !important;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
     }
 }
 
@@ -1164,4 +1170,179 @@
         clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
         -webkit-clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
     }
+}
+
+/*-----------------------------------------
+        Getting Started Card Tiles
+-------------------------------------------*/
+
+.application-tile {
+    position: relative;
+    align-content: space-between;
+    background-color: @galleryGray;
+    border-radius: 8px;
+    cursor: pointer;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 150px;
+    padding: 15px;
+    transition: @selectionCardTransition;
+    border: @selectionCardBorder;
+    box-shadow: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    display: flex !important;
+
+    &:hover {
+        transform: none;
+        text-decoration: none;
+        cursor: pointer;
+        box-shadow: @defaultCardHoverBoxShadow;
+    }
+    &.auto-vh-center {
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+        justify-items: center;
+    }
+    &.outlined {
+        background-color: unset !important;
+        box-shadow: unset !important;
+        border-style: dashed;
+        border-width: 2px;
+        border-color: lightgray;
+    }
+    &.cursor-not-allowed {
+        pointer-events: none !important;
+        cursor: not-allowed !important;
+    }
+    &.cursor-pointer {
+        cursor: pointer !important;
+    }
+    &.clipped {
+        overflow: clip;
+    }
+    &.grayscale {
+        filter: grayscale(100%);
+    }
+    &.opacity-50 {
+        opacity: 0.5;
+    }
+    &.white-bg {
+        background-color: white;
+    }
+
+    .header {
+        margin-top: 5px;
+        width: 100%;
+
+        > h1 {
+           margin: 0 !important;
+           padding: 0 !important;
+           font-size: 16px !important;
+           font-weight: 500;
+           text-overflow: ellipsis;
+        }
+
+        > h2 {
+           margin: 0 !important;
+           padding: 0 !important;
+           font-size: 12px !important;
+           text-overflow: ellipsis;
+        }
+    }
+
+    .body {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .content {
+            font-size: 11px;
+            max-height: 50px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            background: -webkit-linear-gradient(top, transparent 80%, @galleryGray);
+        }
+    }
+
+    .footer {
+        display: flex;
+        justify-content: space-between;
+
+        &.justify-end {
+            justify-content: end !important;
+        }
+        &.justify-start {
+            justify-content: start !important;
+        }
+    }
+}
+
+.ui.card {
+
+    &.context-card {
+        padding: 15px;
+    }
+    .no-borders {
+        border: none !important;
+    }
+}
+
+.card-expanded-navigation-button {
+    border: none !important;
+    border-radius: 4px;
+    width: 100%;
+    padding: 15px 0 0 0 !important;
+    margin-bottom: 0 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    background-color: @galleryGray;
+    text-decoration: none;
+    align-items: baseline;
+    text-overflow: ellipsis !important;
+    color: @primaryColor !important;
+    background-color: transparent !important;
+    box-shadow: unset !important;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.card-rich-navigation-button {
+    color: darken(@galleryGray, 50) !important;
+    justify-content: space-between !important;
+    background-color: darken(@galleryGray, 5) !important;
+    text-decoration: none !important;
+    color: darken(@galleryGray, 40) !important;
+    box-shadow: revert !important;
+    padding: 15px !important;
+
+    &:hover {
+        color: darken(@galleryGray, 80) !important;
+        background-color: darken(@galleryGray, 10) !important;
+    }
+}
+
+.coming-soon-ribbon {
+    top: 0;
+    width: fit-content;
+    min-width: 100px;
+    font-size: 0.8em;
+    height: 24px;
+    position: absolute;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+    justify-content: space-around;
+    font-weight: 500;
+    color: @white;
+    background: linear-gradient(270deg, lighten(@primaryColor, 15) 0%, @primaryColor 100%);
+    clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
+    -webkit-clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
 }
