@@ -775,7 +775,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             delete submitValue.claimConfiguration.role;
         }
         // Stop sending subject claim for OIDC applications.
-        if (applicationConfig.excludeClaimConfigurationSubject && onlyOIDCConfigured) {
+        if (applicationConfig.excludeSubjectClaim && onlyOIDCConfigured) {
             delete submitValue.claimConfiguration.subject;
         }
 
