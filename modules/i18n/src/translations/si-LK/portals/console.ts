@@ -1103,6 +1103,12 @@ export const console: ConsoleNS = {
                                             secondaryButton: "අවලංගු කරන්න"
                                         },
                                         heading: "ඔබේ පිවිසුම් ප්‍රවාහය ගොඩනැගීම ආරම්භ කරන්න",
+                                        headings: {
+                                            default: "පෙරනිමි පිවිසුම",
+                                            multiFactorLogin: "බහු සාධක පිවිසුම",
+                                            passwordlessLogin: "මුරපද රහිත පිවිසුම",
+                                            socialLogin: "සමාජ පිවිසුම"
+                                        },
                                         types: {
                                             defaultConfig: {
                                                 description: "පරිශීලක නාමය සහ මුරපද පිවිසුම සමඟ ආරම්භ වී ඔබේ " +
@@ -1121,6 +1127,11 @@ export const console: ConsoleNS = {
                                                 description: "ගූගල් සමඟ පුරනය වීමට පරිශීලකයින්ට ඉඩ දෙන්න.",
                                                 heading: "ගූගල් පිවිසුම එක් කරන්න"
                                             },
+                                            magicLink: {
+                                                description: "පරිශීලකයින්ට ඔවුන්ගේ විද්‍යුත් තැපෑලට යවන ලද මැජික් " +
+                                                    "සබැඳියක් භාවිතයෙන් පුරනය වීමට සබල කරන්න.",
+                                                heading: "Magic Link පිවිසුම එක් කරන්න"
+                                            },
                                             totp: {
                                                 description: "කාලය පදනම් කරගත් OTP සමඟ අතිරේක සත්‍යාපන ස්තරය " +
                                                     "සක්‍රීය කරන්න.",
@@ -1129,7 +1140,7 @@ export const console: ConsoleNS = {
                                             usernameless: {
                                                 description: "පරිශීලකයින්ට ඔවුන්ගේ FIDO2 ආරක්ෂක යතුරක් හෝ " +
                                                     "ජෛවමිතික භාවිතයෙන් පුරනය වීමට සබල කරන්න.",
-                                                heading: "මුරපද රහිත සත්‍යාපනය එක් කරන්න",
+                                                heading: "ආරක්ෂක යතුර/Biometrics පිවිසුම එක් කරන්න",
                                                 info: "මුරපද රහිත සත්‍යාපනය සමඟින් පුරනය වීමට, " +
                                                     "ඔබේ පරිශීලකයින්ට ඔවුන්ගේ FIDO2 ආරක්ෂක " +
                                                     "යතුරු හෝ මගේ ගිණුම හරහා ජෛවමිතික ලියාපදිංචි " +

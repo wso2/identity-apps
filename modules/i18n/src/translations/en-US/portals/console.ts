@@ -1096,10 +1096,16 @@ export const console: ConsoleNS = {
                                             secondaryButton: "Cancel"
                                         },
                                         heading: "Build your own login flow",
+                                        headings: {
+                                            default: "Default Login",
+                                            multiFactorLogin: "Multi-factor Login",
+                                            passwordlessLogin: "Passwordless Login",
+                                            socialLogin: "Social Login"
+                                        },
                                         types: {
                                             defaultConfig: {
-                                                description: "Build your login flow starting with Username & " +
-                                                    "Password login.",
+                                                description: "Build your login flow starting with Username & "
+                                                    + "Password login.",
                                                 heading: "Start with default configuration"
                                             },
                                             facebook: {
@@ -1114,18 +1120,23 @@ export const console: ConsoleNS = {
                                                 description: "Enable users to login with Google.",
                                                 heading: "Add Google login"
                                             },
+                                            magicLink: {
+                                                description: "Enable users to log in using a magic "
+                                                    + "link sent to their email.",
+                                                heading: "Add Magic Link login"
+                                            },
                                             totp: {
-                                                description: "Enable additional authentication layer with Time " +
-                                                    "based OTP.",
+                                                description: "Enable additional authentication layer with Time "
+                                                    + "based OTP.",
                                                 heading: "Add TOTP as a second factor"
                                             },
                                             usernameless: {
-                                                description: "Enable users to log in using a FIDO2 security key " +
-                                                    "or biometrics.",
-                                                heading: "Add passwordless login",
-                                                info: "To sign in with passwordless login, your users " +
-                                                    "should have their FIDO2 security keys or biometrics " +
-                                                    "registered via My Account."
+                                                description: "Enable users to log in using a FIDO2 security key "
+                                                    + "or biometrics.",
+                                                heading: "Add Security Key/Biometrics login",
+                                                info: "To sign in with passwordless login, your users "
+                                                    + "should have their FIDO2 security keys or biometrics "
+                                                    + "registered via My Account."
                                             }
                                         }
                                     }

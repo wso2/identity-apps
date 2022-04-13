@@ -1125,6 +1125,12 @@ export const console: ConsoleNS = {
                                             secondaryButton: "Annuler"
                                         },
                                         heading: "Commencez à créer votre flux de connexion",
+                                        headings: {
+                                            default: "Connexion par défaut",
+                                            multiFactorLogin: "Connexion multi-facteurs",
+                                            passwordlessLogin: "Connexion sans mot de passe",
+                                            socialLogin: "Connexion sociale"
+                                        },
                                         types: {
                                             defaultConfig: {
                                                 description: "Créez votre flux de connexion en commençant par la " +
@@ -1144,6 +1150,11 @@ export const console: ConsoleNS = {
                                                 description: "Permettre aux utilisateurs de se connecter avec Google.",
                                                 heading: "Ajouter une connexion Google"
                                             },
+                                            magicLink: {
+                                                description: "Permettre aux utilisateurs de se connecter " +
+                                                    "en utilisant un lien magique envoyé à leur adresse e-mail.",
+                                                heading: "Ajouter une connexion Magic Link"
+                                            },
                                             totp: {
                                                 description: "Activez une couche d'authentification supplémentaire " +
                                                     "avec OTP basé sur le temps.",
@@ -1153,7 +1164,7 @@ export const console: ConsoleNS = {
                                                 description: "Permettre aux utilisateurs de se connecter à " +
                                                     "l'aidAjouter une connexion sans nom d'utilisateuré " +
                                                     "FIDO2 ou de la biométrie.",
-                                                heading: "Ajouter une connexion sans mot de passe",
+                                                heading: "Ajouter une clé de sécurité/connexion biométrique",
                                                 info: "Pour vous connecter avec une authentification sans mot " +
                                                     "de passe, vos utilisateurs doivent avoir leurs clés de " +
                                                     "sécurité FIDO2 ou leurs données biométriques enregistrées " +
