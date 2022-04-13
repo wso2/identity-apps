@@ -651,6 +651,12 @@ export interface ConsoleNS {
                                         addMissingSocialAuthenticatorModal: ModalInterface;
                                         duplicateSocialAuthenticatorSelectionModal: ModalInterface;
                                         heading: string;
+                                        headings: {
+                                            default: string;
+                                            socialLogin: string;
+                                            multiFactorLogin: string;
+                                            passwordlessLogin: string;
+                                        }
                                         types: {
                                             defaultConfig: {
                                                 description: string;
@@ -676,6 +682,10 @@ export interface ConsoleNS {
                                                 description: string;
                                                 heading: string;
                                                 info: string;
+                                            },
+                                            magicLink: {
+                                                description: string;
+                                                heading: string;
                                             }
                                         }
                                     }
