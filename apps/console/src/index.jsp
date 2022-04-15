@@ -20,6 +20,15 @@
 <%= htmlWebpackPlugin.options.importUtil %>
 <%= htmlWebpackPlugin.options.importSuperTenantConstant %>
 
+<script>
+    var userAccessedPath = window.location.href;
+    sessionStorage.setItem("userAccessedPath", userAccessedPath.split(window.origin)[1]);
+</script>
+
+<jsp:scriptlet>
+    <%= htmlWebpackPlugin.options.requestForwardSnippet %>
+</jsp:scriptlet>
+
 <!DOCTYPE HTML>
 <html>
     <head>
@@ -38,43 +47,37 @@
                                         ? "<%= htmlWebpackPlugin.options.sessionState %>" 
                                         : null;
             
-            function getApiPath(path) {
-                if(path) {
-                    return serverOrigin + path;
+            if(!authorizationCode) {
+                function getApiPath(path) {
+                    if(path) {
+                        return serverOrigin + path;
+                    }
+
+                    return serverOrigin;
+                }
+                
+                var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
+
+                var authConfig = {
+                    signInRedirectURL: applicationDomain.replace(/\/+$/, '') + "/" + "<%= htmlWebpackPlugin.options.basename %>",
+                    signOutRedirectURL: applicationDomain.replace(/\/+$/, ''),
+                    clientID: "<%= htmlWebpackPlugin.options.clientID %>",
+                    baseUrl: getApiPath(),
+                    responseMode: "form_post",
+                    scope: ["openid SYSTEM"],
+                    storage: "webWorker",
+                    enablePKCE: true
                 }
 
-                return serverOrigin;
-            }
-            
-            var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
+                var isSilentSignInDisabled = userAccessedPath.includes("disable_silent_sign_in");
+                var isSignOutSuccess = userAccessedPath.includes("sign_out_success");
 
-            var authConfig = {
-                signInRedirectURL: applicationDomain.replace(/\/+$/, '') + "/" + "<%= htmlWebpackPlugin.options.basename %>",
-                signOutRedirectURL: applicationDomain.replace(/\/+$/, ''),
-                clientID: "<%= htmlWebpackPlugin.options.clientID %>",
-                baseUrl: getApiPath(),
-                responseMode: "form_post",
-                scope: ["openid SYSTEM"],
-                storage: "webWorker",
-                enablePKCE: true
-            }
-
-            var isSilentSignInDisabled = userAccessedPath.includes("disable_silent_sign_in");
-            var isSignOutSuccess = userAccessedPath.includes("sign_out_success");
-
-            if(isSignOutSuccess) {
-                window.location.href = applicationDomain + '/' + "<%= htmlWebpackPlugin.options.basename %>"
-            }
-            
-            if(isSilentSignInDisabled) {
-                window.location.href = applicationDomain + '/' + "<%= htmlWebpackPlugin.options.basename %>" + '/authenticate?disable_silent_sign_in=true&invite_user=true';
-            } else {
-
-                if(authorizationCode) {
-                    sessionStorage.setItem("userAccessedPath", userAccessedPath.split(window.origin)[1]);
-
-                    window.location.href = applicationDomain + '/' + "<%= htmlWebpackPlugin.options.basename %>" + '/authenticate?code=' + authorizationCode +
-                                '&session_state='+authSessionState;
+                if(isSignOutSuccess) {
+                    window.location.href = applicationDomain + '/' + "<%= htmlWebpackPlugin.options.basename %>"
+                }
+                
+                if(isSilentSignInDisabled) {
+                    window.location.href = applicationDomain + '/' + "<%= htmlWebpackPlugin.options.basename %>" + '/authenticate?disable_silent_sign_in=true&invite_user=true';
                 } else {
                     sessionStorage.setItem("auth_callback_url_console", 
                         userAccessedPath.split(window.origin)[1] 
