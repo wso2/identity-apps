@@ -51,7 +51,7 @@ const getAuthParams = (): Promise<AuthParams> => {
             return Promise.resolve({
                 authorizationCode: response?.data?.authCode,
                 sessionState: response?.data?.sessionState,
-                state: response?.data?.sessionState
+                state: response?.data?.state
             });
         });
     }
