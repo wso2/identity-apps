@@ -319,8 +319,15 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
             setFilterSelectedClaims(sortBy(union(displayNameFilterClaims, uriFilterClaims), "displayName"));
         } else {
-            setFilterSelectedExternalClaims(selectedExternalClaims.filter((item) =>
-                item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
+            const displayNameFilterClaims = selectedExternalClaims.filter((item) =>
+                item.localClaimDisplayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+            const uriFilterClaims = selectedExternalClaims.filter((item) =>
+                item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+
+            setFilterSelectedExternalClaims(sortBy(
+                union(displayNameFilterClaims, uriFilterClaims), 
+                "localClaimDisplayName"
+            ));
         }
     };
 
@@ -654,7 +661,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
      * Check if the claim has OIDC mapping
      * @return {boolean}
      */
-     const checkMapping = (claiminput): boolean => {
+    const checkMapping = (claiminput): boolean => {
         let isMapping = false;
 
         openIDConnectClaims?.map((claim) => {
