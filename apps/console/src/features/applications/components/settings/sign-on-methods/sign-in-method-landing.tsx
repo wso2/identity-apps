@@ -243,7 +243,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                 <InfoCard
                                     fluid
                                     data-testid="magic-link-flow-card"
-                                    image={ getAuthenticatorIcons().emailOTP }
+                                    image={ getAuthenticatorIcons().magicLink }
                                     imageSize="mini"
                                     header={ t(
                                         "console:develop.features.applications.edit.sections" +
