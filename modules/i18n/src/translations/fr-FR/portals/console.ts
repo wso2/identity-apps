@@ -2402,7 +2402,7 @@ export const console: ConsoleNS = {
                             message: "Impossible de supprimer cet authentificateur"
                         },
                         genericError: {
-                            description: "Il existe des authentificateurs de second facteur dans d'autres étapes " +
+                            description: "Il existe des authentificateurs dans d'autres étapes " +
                                 "qui dépendent de cet authentificateur.",
                             message: "Impossible de supprimer cet authentificateur"
                         },
