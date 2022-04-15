@@ -421,7 +421,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         ]: AuthenticationStepInterface[][] = SignInMethodUtils.getLeftAndRightSideSteps(stepIndex, steps);
 
         const containSecondFactorOnRight: boolean = SignInMethodUtils.hasSpecificFactorsInSteps(
-            ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS, rightSideSteps);
+            [ ...ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS,
+                IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR ], rightSideSteps);
 
         // If there are second factor authenticators on the right, evaluate further.
         if (containSecondFactorOnRight) {
@@ -431,7 +432,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             const noOfSecondFactorsOnRightRequiringHandlers: number = SignInMethodUtils.countSpecificFactorInSteps(
                 [
                     IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
-                    IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR
+                    IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
+                    IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR
                 ], rightSideSteps);
             const onlySecondFactorsRequiringHandlersOnRight: boolean = noOfSecondFactorsOnRight
                 === noOfSecondFactorsOnRightRequiringHandlers;
@@ -439,7 +441,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 .includes(deletingOption.authenticator);
             const isDeletingOptionSecondFactorHandler: boolean = [
                 ...ApplicationManagementConstants.TOTP_HANDLERS,
-                ...ApplicationManagementConstants.EMAIL_OTP_HANDLERS
+                ...ApplicationManagementConstants.EMAIL_OTP_HANDLERS,
+                IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR
             ].includes(deletingOption.authenticator);
             const immediateStepHavingSpecificFactors: number = SignInMethodUtils.getImmediateStepHavingSpecificFactors(
                 ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS, steps);
@@ -456,7 +459,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                     }
 
                     if ([ ...ApplicationManagementConstants.TOTP_HANDLERS,
-                        ...ApplicationManagementConstants.EMAIL_OTP_HANDLERS ].includes(option.authenticator)) {
+                        ...ApplicationManagementConstants.EMAIL_OTP_HANDLERS,
+                        IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR ].includes(option.authenticator)) {
                         secondFactorHandlersInTheStep++;
                     }
                 });
@@ -470,7 +474,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                     // Else check if there are first factors on the left.
                     const containProperHandlersOnLeft: boolean = onlySecondFactorsRequiringHandlersOnRight
                         ? SignInMethodUtils.hasSpecificFactorsInSteps([ ...ApplicationManagementConstants.TOTP_HANDLERS,
-                            ...ApplicationManagementConstants.EMAIL_OTP_HANDLERS ], leftSideSteps)
+                            ...ApplicationManagementConstants.EMAIL_OTP_HANDLERS,
+                            IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR ], leftSideSteps)
                         : SignInMethodUtils.hasSpecificFactorsInSteps(
                             ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, leftSideSteps);
 
@@ -488,7 +493,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                             ? SignInMethodUtils.countSpecificFactorInSteps(
                                 [
                                     ...ApplicationManagementConstants.TOTP_HANDLERS,
-                                    ...ApplicationManagementConstants.EMAIL_OTP_HANDLERS
+                                    ...ApplicationManagementConstants.EMAIL_OTP_HANDLERS,
+                                    IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR
                                 ], leftSideStepsFromImmediateSecondFactor)
                             : SignInMethodUtils.countSpecificFactorInSteps(
                                 ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
