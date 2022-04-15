@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/x509-certificate-authentication-portal",
-    "version": "1.2.884",
+    "version": "1.2.885",
     "description": "WSO2 Identity Server X509 Certificate Authentication Portal",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -8,6 +8,6 @@
         "build": "node scripts/build.js"
     },
     "dependencies": {
-        "@wso2is/theme": "^1.2.884"
+        "@wso2is/theme": "^1.2.885"
     }
 }
