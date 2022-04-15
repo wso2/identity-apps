@@ -402,7 +402,7 @@
                                     title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>">
                                     <i class="email icon"></i>
-                                    <img src="libs/themes/default/assets/images/icons/email-icon.svg" alt="Magic Link Logo" />
+                                    <img src="libs/themes/default/assets/images/icons/magic-link-icon.svg" alt="Magic Link Logo" />
                                     <span>
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link" )%>
