@@ -25,7 +25,7 @@ import CertificateColoredIcon from "../../../themes/default/assets/images/icons/
 import ClockColoredIcon from "../../../themes/default/assets/images/icons/clock-colored-icon.svg";
 import ConnectionIcon from "../../../themes/default/assets/images/icons/connection.svg";
 import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
-import MagicLinkLogo from "../../../themes/default/assets/images/icons/email-icon.svg";
+import MagicLinkLogo from "../../../themes/default/assets/images/icons/magic-link-icon.svg";
 import FIDOLogo from "../../../themes/default/assets/images/icons/fingerprint.svg";
 import { ReactComponent as GearsIcon } from "../../../themes/default/assets/images/icons/gears-icon.svg";
 import MagnifierColoredIcon from "../../../themes/default/assets/images/icons/magnifier-colored-icon.svg";
