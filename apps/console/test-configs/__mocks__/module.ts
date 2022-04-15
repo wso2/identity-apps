@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import * as crypto from "crypto";
+
 /**
  * @fileoverview Mocks of NPM Modules.
  *
@@ -34,3 +36,15 @@ jest.mock("react-i18next", () => ({
         t: key => key
     })
 }));
+
+Object.defineProperty(global.self, "crypto", {
+    value: {
+        getRandomValues: <T extends ArrayBufferView | null>(arr: T) => {
+            if (!arr) {
+                return arr;
+            }
+  
+            return crypto.randomBytes(arr.buffer.byteLength);
+        }
+    }
+});
