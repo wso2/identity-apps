@@ -47,7 +47,7 @@
                                         ? "<%= htmlWebpackPlugin.options.sessionState %>" 
                                         : null;
             
-            if(!authorizationCode) {
+            if (!authorizationCode) {
                 function getApiPath(path) {
                     if(path) {
                         return serverOrigin + path;
