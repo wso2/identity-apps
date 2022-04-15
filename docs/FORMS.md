@@ -84,7 +84,7 @@ forms.
     message={
       <Message
           info
-          content="Don’t have an app? Try out a sample app using https://localhost:5000 as the authorized redirect URL. 
+          content="Don’t have an app? Try out a sample app using https://localhost:3000 as the authorized redirect URL. 
           (You can download and run a sample at a later step.)"
       />
     }

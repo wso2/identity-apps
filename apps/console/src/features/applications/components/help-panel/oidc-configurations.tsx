@@ -78,8 +78,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                     logout: response?.endSessionEndpoint,
                     oidcSessionIFrame: response?.checkSessionIframe,
                     revoke: response?.revocationEndpoint,
-                    token: response?.tokenEndpoint,
-                    wellKnown: response?.wellKnownEndpoint
+                    token: response?.tokenEndpoint
                 });
             })
             .catch(() => {

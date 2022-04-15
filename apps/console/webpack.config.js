@@ -564,7 +564,7 @@ module.exports = (env) => {
                     requestForwardSnippet : "if(request.getParameter(\"code\") != null && "+
                         "!request.getParameter(\"code\").trim().isEmpty()) "+
                         "{request.getRequestDispatcher(\"/authenticate?code=\"+request.getParameter(\"code\")+"+
-                        "\"&state=sign-in-silently&AuthenticatedIdPs=\"+request.getParameter(\"AuthenticatedIdPs\")"+
+                        "\"&AuthenticatedIdPs=\"+request.getParameter(\"AuthenticatedIdPs\")"+
                         "+\"&session_state=\"+request.getParameter(\"session_state\")).forward(request, response);}"
                 })
                 : new HtmlWebpackPlugin({

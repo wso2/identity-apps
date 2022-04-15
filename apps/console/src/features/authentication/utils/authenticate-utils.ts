@@ -40,6 +40,9 @@ export class AuthenticateUtils {
     private constructor() {}
 
     public static initializeConfig: AuthReactConfig = {
+        baseUrl:
+            window["AppUtils"].getConfig().idpConfigs?.serverOrigin ??
+            window[ "AppUtils" ].getConfig().idpConfigs.serverOrigin,
         checkSessionInterval: window[ "AppUtils" ].getConfig()?.session?.checkSessionInterval,
         clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
         clientID: window["AppUtils"].getConfig().clientID,
@@ -53,21 +56,16 @@ export class AuthenticateUtils {
             endSessionEndpoint: window["AppUtils"].getConfig().idpConfigs?.logoutEndpointURL,
             jwksUri: window["AppUtils"].getConfig().idpConfigs?.jwksEndpointURL,
             revocationEndpoint: window["AppUtils"].getConfig().idpConfigs?.tokenRevocationEndpointURL,
-            tokenEndpoint: window["AppUtils"].getConfig().idpConfigs?.tokenEndpointURL,
-            wellKnownEndpoint: window["AppUtils"].getConfig().idpConfigs?.wellKnownEndpointURL
+            tokenEndpoint: window["AppUtils"].getConfig().idpConfigs?.tokenEndpointURL
         },
-        overrideWellEndpointConfig: true,
         resourceServerURLs: AuthenticateUtils.resolveBaseUrls(),
         responseMode: window["AppUtils"].getConfig().idpConfigs?.responseMode ?? responseModeFallback,
         scope: window["AppUtils"].getConfig().idpConfigs?.scope ?? [TokenConstants.SYSTEM_SCOPE],
         sendCookiesInRequests: true,
-        serverOrigin:
-            window["AppUtils"].getConfig().idpConfigs?.serverOrigin ??
-            window[ "AppUtils" ].getConfig().idpConfigs.serverOrigin,
         sessionRefreshInterval: window[ "AppUtils" ].getConfig()?.session?.sessionRefreshTimeOut,
         signInRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
         signOutRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
-        storage: AuthenticateUtils.resolveStorage()
+        storage: AuthenticateUtils.resolveStorage() as Storage.WebWorker
     };
 
     /**
@@ -107,7 +105,7 @@ export class AuthenticateUtils {
         if (baseUrls) {
             // If the server origin is not specified in the overridden config, append it.
             if (!baseUrls.includes(serverOrigin)) {
-                baseUrls = [...baseUrls, serverOrigin];
+                baseUrls = [ ...baseUrls, serverOrigin ];
             }
 
             return baseUrls;
