@@ -49,7 +49,7 @@
             
             if (!authorizationCode) {
                 function getApiPath(path) {
-                    if(path) {
+                    if (path) {
                         return serverOrigin + path;
                     }
 
