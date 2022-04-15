@@ -138,18 +138,22 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
     const classes = classNames("authentication-step-container timeline-body", className);
 
     const [ showSubjectIdentifierCheckBox, setShowSubjectIdentifierCheckbox ] = useState<boolean>(false);
+    const [ checkIdentifier, setCheckIdentifier ] = useState<boolean>(false);
 
     useEffect(() => {
         step.options.map(option => {
             if ([ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
                 IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
                 IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
-                IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR ]
+                IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR ]
                 .includes(option.authenticator)) {
                 setShowSubjectIdentifierCheckbox(false);
             } else {
                 setShowSubjectIdentifierCheckbox(true);
             }
+
+            option.authenticator === IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR
+                && setCheckIdentifier(true);
         }
         );
     }, [ JSON.stringify(step.options) ]);
@@ -381,7 +385,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                     ".signOnMethod.sections.authenticationFlow.sections" +
                                     ".stepBased.forms.fields.subjectIdentifierFrom.label"
                                 ) }
-                                checked={ subjectStepId === (stepIndex + 1) }
+                                checked={ subjectStepId === (stepIndex + 1) || checkIdentifier }
                                 onChange={ (): void => onSubjectCheckboxChange(stepIndex + 1) }
                             />
                             <Checkbox
@@ -390,7 +394,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                     ".signOnMethod.sections.authenticationFlow.sections" +
                                     ".stepBased.forms.fields.attributesFrom.label"
                                 ) }
-                                checked={ attributeStepId === (stepIndex + 1) }
+                                checked={ attributeStepId === (stepIndex + 1) || checkIdentifier }
                                 onChange={ (): void => onAttributeCheckboxChange(stepIndex + 1) }
                             />
                         </div>
