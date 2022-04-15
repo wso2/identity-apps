@@ -76,7 +76,7 @@
                     window.location.href = applicationDomain + '/' + "<%= htmlWebpackPlugin.options.basename %>"
                 }
                 
-                if(isSilentSignInDisabled) {
+                if (isSilentSignInDisabled) {
                     window.location.href = applicationDomain + '/' + "<%= htmlWebpackPlugin.options.basename %>" + '/authenticate?disable_silent_sign_in=true&invite_user=true';
                 } else {
                     sessionStorage.setItem("auth_callback_url_console", 
