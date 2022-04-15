@@ -984,6 +984,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             };
         }
 
+        // Add `scope validators` only if `scope validators` are visible
+        if (applicationConfig.inboundOIDCForm.showScopeValidators) {
+            inboundConfigFormValues = {
+                ...inboundConfigFormValues,
+                scopeValidators: values.get("scopeValidator")
+            };
+        }
+
         // If the app is newly created do not add `clientId` & `clientSecret`.
         if (!initialValues?.clientId || !initialValues?.clientSecret) {
             return inboundConfigFormValues;
