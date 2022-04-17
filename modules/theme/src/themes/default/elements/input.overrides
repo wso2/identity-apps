@@ -96,7 +96,7 @@ input[type=password]::-ms-reveal, input[type=password]::-ms-clear {
 
         > input {
             border: none;
-            max-width: calc(100% - 2.67142857em);
+            max-width: calc(100% - @inputAddonWrapperOffset);
         }
     }
 }
@@ -121,7 +121,7 @@ input[type=password]::-ms-reveal, input[type=password]::-ms-clear {
 
         > input {
             border: none;
-            max-width: calc(100% - 2.67142857em);
+            max-width: calc(100% - @inputAddonWrapperOffset);
         }
     }  
 }
