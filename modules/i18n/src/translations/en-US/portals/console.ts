@@ -1460,11 +1460,15 @@ export const console: ConsoleNS = {
                                         label: "(openid scope not allowed)"
                                     },
                                     implicit: {
-                                        hint: "Using the implicit grant with public applications is not recommended.",
+                                        hint: "Using the implicit grant with public applications is not recommended. " +
+                                            "{{sdkName}} adhere to security best practices, " + 
+                                            "and do not implement the implicit grant.",
                                         label: "{{grantType}} (Not recommended)"
                                     },
                                     password: {
-                                        hint: "Using the password grant with public applications is not recommended.",
+                                        hint: "Using the password grant with public applications is not recommended. " +
+                                            "{{sdkName}} adhere to security best practices, " + 
+                                            "and do not implement the password grant.",
                                         label: "{{grantType}} (Not recommended)"
                                     }
                                 },

@@ -66,6 +66,7 @@ export interface ApplicationConfig {
         showCertificates: boolean;
         showReturnAuthenticatedIdPList: boolean;
         disabledGrantTypes: string[];
+        sdkName: string;
     };
     inboundSAMLForm: {
         showApplicationQualifier: boolean;

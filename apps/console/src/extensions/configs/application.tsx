@@ -70,6 +70,7 @@ export const applicationConfig: ApplicationConfig = {
     excludeSubjectClaim: false,
     inboundOIDCForm: {
         disabledGrantTypes: [],
+        sdkName: "Our SDKs",
         shouldValidateCertificate: true,
         showBackChannelLogout: true,
         showCertificates: true,

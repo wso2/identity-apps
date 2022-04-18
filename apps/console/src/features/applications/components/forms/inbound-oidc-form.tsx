@@ -622,17 +622,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         switch (value) {
             case ApplicationManagementConstants.IMPLICIT_GRANT:
                 return t("console:develop.features.applications.forms.inboundOIDC.fields.grant.children." +
-                    "implicit.hint") + " " + "Asgardeo SDKs adhere to security best practices, and do not " +
-                    "implement the implicit grant.";
+                    "implicit.hint", { sdkName: applicationConfig.inboundOIDCForm.sdkName });
             case ApplicationManagementConstants.PASSWORD:
-                return t("console:develop.features.applications.forms.inboundOIDC.fields.grant.children." +
-                    "password.hint") + " " + "Asgardeo SDKs adhere to security best practices, and do not " +
-                    "implement the password grant.";
+                return t(
+                    "console:develop.features.applications.forms.inboundOIDC.fields.grant.children." +
+                    "password.hint", { sdkName: applicationConfig.inboundOIDCForm.sdkName });
             case ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT:
                 return t("console:develop.features.applications.forms.inboundOIDC.fields.grant.children." +
                         "client_credential.hint");
             case ApplicationManagementConstants.REFRESH_TOKEN_GRANT:
-                return "Refresh token grant type should only be selected along with the Code grant type.";
+                return t("console:develop.features.applications.forms.inboundOIDC.fields.grant.validation." + 
+                    "refreshToken");
             default:
                 return null;
         }
