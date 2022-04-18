@@ -4,7 +4,7 @@ name: PR Builder
 
 on:
   pull_request:
-    branches: [ master ]
+    branches: [ re-architecture-benchmark ]
     paths-ignore:
       - "docs/**"
       - "CONTRIBUTING.md"
@@ -34,23 +34,26 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: 🛠️ Bootstrap Dependencies
-        id: bootstrap-npm-and-lerna-dependencies
-        run:  npm run bootstrap
-
-      - name: ⏳ Lint
-        run: npm run lint:ci
-
-      - name: 🔆 Cache NPM directory
-        id: cache-npm-modules
+      - name: 🔆 Cache pnpm modules
         uses: actions/cache@v2
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
             ${{ runner.os }}-
+
+      - name: 🥡 Setup pnpm
+        uses: pnpm/action-setup@v2.1.0
+        with:
+          version: 6.0.2
+          run_install: true
+
+      - name: 🛠️ Bootstrap Dependencies
+        id: bootstrap-dependencies
+        run:  pnpm run bootstrap
+
+      - name: ⏳ Lint
+        run: pnpm run lint:ci
 
   typecheck:
     name: ʦ Typecheck (STATIC ANALYSIS)
@@ -69,23 +72,26 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: 🔆 Cache pnpm modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
+
+      - name: 🥡 Setup pnpm
+        uses: pnpm/action-setup@v2.1.0
+        with:
+          version: 6.0.2
+          run_install: true
+
       - name: 🛠️ Bootstrap Dependencies
-        id: bootstrap-npm-and-lerna-dependencies
-        run:  npm run bootstrap
+        id: bootstrap-dependencies
+        run:  pnpm run bootstrap
 
       - name: ☄️ Check Type Errors
         run: npm run typecheck
-
-      - name: 🔆 Cache NPM directory
-        id: cache-npm-modules
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
 
   test:
     name: 👾 Unit Test (TESTING)
@@ -105,35 +111,34 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: 🛠️ Bootstrap Dependencies
-        id: bootstrap-npm-and-lerna-dependencies
-        run:  npm run bootstrap
+      - name: 🔆 Cache pnpm modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
+
+      - name: 🥡 Setup pnpm
+        uses: pnpm/action-setup@v2.1.0
+        with:
+          version: 6.0.2
+          run_install: true
 
       - name: 👷 Build Re-usable Modules
         id: build-reusable-modules
-        run:  npm run build:modules
+        run:  pnpm run build:modules
 
       - name: 🃏 Run Jest & Collect Coverage
         id: run-jest-test-and-coverage
-        run: npm run test:unit:coverage
+        run: pnpm run test:unit:coverage
 
       - name: 🤖 Aggregate Test Coverage
         id: aggregate-coverage-reports
         run: |
-          npm run test:unit:coverage:aggregate
-          npm run nyc:text-summary-report
-          npm run nyc:text-report
-
-      - name: 🔆 Cache NPM directory
-        id: cache-npm-modules
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+          pnpm run test:unit:coverage:aggregate
+          pnpm run nyc:text-summary-report
+          pnpm run nyc:text-report
 
   build:
     name: 🚧 Build
@@ -167,24 +172,23 @@ jobs:
         with:
           maven-version: ${{ matrix.maven-version }}
 
-      - name: 🛠️ Bootstrap Dependencies
-        id: bootstrap-npm-and-lerna-dependencies
-        run:  npm run bootstrap
+      - name: 🔆 Cache pnpm modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
+
+      - name: 🥡 Setup pnpm
+        uses: pnpm/action-setup@v2.1.0
+        with:
+          version: 6.0.2
+          run_install: true
 
       - name: 🏗️ Maven Build
         id: build-with-maven
         run: mvn clean install -U -Dlint.exec.skip=true -Dbootstrap.exec.skip=true
-
-      - name: 🔆 Cache NPM directory
-        id: cache-npm-modules
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
 
       - name: 💾 Cache local Maven repository
         id: cache-maven-m2
