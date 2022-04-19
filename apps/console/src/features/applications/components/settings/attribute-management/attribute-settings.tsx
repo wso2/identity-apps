@@ -28,7 +28,6 @@ import {
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { useTrigger } from "@wso2is/forms";
 import { ConfirmationModal, ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import sortBy from "lodash-es/sortBy";
@@ -210,11 +209,10 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     //Advance Settings.
     const [ advanceSettingValues, setAdvanceSettingValues ] = useState<AdvanceSettingsSubmissionInterface>();
-    const [ triggerAdvanceSettingFormSubmission, setTriggerAdvanceSettingFormSubmission ] = useTrigger();
     const [ selectedSubjectValue, setSelectedSubjectValue ] = useState<string>();
 
     // Role Mapping.
-    const [ roleMapping, setRoleMapping ] = useState<RoleMappingInterface[]>([]);
+    const [ roleMapping, setRoleMapping ] = useState<RoleMappingInterface[]>(claimConfigurations?.role?.mappings ?? []);
 
     const [ isClaimLoading, setIsClaimLoading ] = useState<boolean>(true);
     const [ isUserAttributesLoading, setUserAttributesLoading ] = useState<boolean>(false);
@@ -613,7 +611,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
         if (!claimMappingOn || mappedValues.size === claimMapping.length) {
             submitAdvanceForm();
-            setTriggerAdvanceSettingFormSubmission();
         }
         else {
             dispatch(addAlert({
@@ -826,14 +823,14 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     useEffect(() => {
 
-        if (advanceSettingValues && triggerAdvanceSettingFormSubmission) {
+        if (advanceSettingValues) {
             const mappingList = getFinalMappingList();
 
             if (mappingList !== null) {
                 submitUpdateRequest(mappingList);
             }
         }
-    }, [ advanceSettingValues, triggerAdvanceSettingFormSubmission ]);
+    }, [ advanceSettingValues ]);
 
     /**
      * Util function to handle claim mapping.
@@ -974,8 +971,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                             </ConfirmationModal>
                             { applicationConfig.attributeSettings.roleMapping && (
                                 <RoleMapping
-                                    submitState={ triggerAdvanceSettingFormSubmission }
-                                    onSubmit={ setRoleMapping }
+                                    onChange={ setRoleMapping }
                                     initialMappings={ claimConfigurations?.role?.mappings }
                                     readOnly={
                                         readOnly
