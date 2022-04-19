@@ -338,13 +338,13 @@
     </servlet>
 
     <servlet>
-        <servlet-name>MagicLinkNotification.do</servlet-name>
-        <jsp-file>/MagicLinkNotification.jsp</jsp-file>
+        <servlet-name>magic_link_notification.do</servlet-name>
+        <jsp-file>/magicLinkNotification.jsp</jsp-file>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>MagicLinkNotification.do</servlet-name>
-        <url-pattern>/MagicLinkNotification.do</url-pattern>
+        <servlet-name>magic_link_notification.do</servlet-name>
+        <url-pattern>/magic_link_notification.do</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
