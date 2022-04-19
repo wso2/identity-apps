@@ -203,9 +203,46 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         }
 
         setAuthenticationSteps(authenticationSequence?.steps);
+
+        // Enforce subject and attribute to be obtained from magic link.
+        for (const option of authenticationSequence.steps[ 1 ]?.options) {
+            if (option.authenticator === IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR) {
+                setAttributeStepId(2);
+                setSubjectStepId(2);
+
+                return;
+            }
+        }
+
         setSubjectStepId(authenticationSequence?.subjectStepId);
         setAttributeStepId(authenticationSequence?.attributeStepId);
-    }, [ authenticationSequence ]);
+    }, [ JSON.stringify(authenticationSequence) ]);
+
+    // Enforce attribute id to be obtained from magic link.
+    useEffect(() => {
+        if (attributeStepId === 2) {
+            return;
+        }
+
+        authenticationSequence.steps[ 1 ]?.options?.forEach((option: AuthenticatorInterface) => {
+            if (option.authenticator === IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR) {
+                setAttributeStepId(2);
+            }
+        });
+    }, [ attributeStepId ]);
+
+    // Enforce subject id to be obtained from magic link.
+    useEffect(() => {
+        if (subjectStepId === 2) {
+            return;
+        }
+
+        authenticationSequence.steps[ 1 ]?.options?.forEach((option: AuthenticatorInterface) => {
+            if (option.authenticator === IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR) {
+                setSubjectStepId(2);
+            }
+        });
+    }, [ subjectStepId ]);
 
     /**
      * Called when update is triggered.
