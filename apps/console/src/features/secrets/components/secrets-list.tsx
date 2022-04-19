@@ -39,8 +39,15 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Header, Message, SemanticICONS } from "semantic-ui-react";
 import { EmptySecretListPlaceholder } from "./empty-secret-list-placeholder";
-import { AdvancedSearchWithBasicFilters, AppConstants, AppState, FeatureConfigInterface, 
-    getEmptyPlaceholderIllustrations, getSecretManagementIllustrations, history } from "../../core";
+import { 
+    AdvancedSearchWithBasicFilters, 
+    AppConstants, 
+    AppState, 
+    FeatureConfigInterface, 
+    getEmptyPlaceholderIllustrations, 
+    getSecretManagementIllustrations, 
+    history
+} from "../../core";
 import { deleteSecret } from "../api/secret";
 import { ADAPTIVE_SCRIPT_SECRETS, FEATURE_EDIT_PATH } from "../constants/secrets.common";
 import { SecretModel } from "../models/secret";
