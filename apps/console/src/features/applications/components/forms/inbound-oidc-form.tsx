@@ -622,11 +622,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         switch (value) {
             case ApplicationManagementConstants.IMPLICIT_GRANT:
                 return t("console:develop.features.applications.forms.inboundOIDC.fields.grant.children." +
-                    "implicit.hint", { sdkName: applicationConfig.inboundOIDCForm.sdkName });
+                    "implicit.hint", { productName: config.ui.productName });
             case ApplicationManagementConstants.PASSWORD:
-                return t(
-                    "console:develop.features.applications.forms.inboundOIDC.fields.grant.children." +
-                    "password.hint", { sdkName: applicationConfig.inboundOIDCForm.sdkName });
+                return t("console:develop.features.applications.forms.inboundOIDC.fields.grant.children." +
+                    "password.hint", { productName: config.ui.productName });
             case ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT:
                 return t("console:develop.features.applications.forms.inboundOIDC.fields.grant.children." +
                         "client_credential.hint");

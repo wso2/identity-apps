@@ -1493,14 +1493,15 @@ export const console: ConsoleNS = {
                                     },
                                     implicit: {
                                         hint: "L'utilisation de l'octroi implicite avec des applications publiques " +
-                                            "n'est pas recommandée. {{sdkName}} adhérer aux meilleures pratiques de " +
-                                            "sécurité et ne pas mettre en œuvre l'octroi implicite",
+                                            "n'est pas recommandée. {{productName}} adhérer aux meilleures " + 
+                                            "pratiques desécurité et ne pas mettre en œuvre l'octroi implicite",
                                         label: "{{grantType}} (non recommandé)"
                                     },
                                     password: {
                                         hint: "L'utilisation de l'octroi de mot de passe avec des applications " +
-                                            "publiques n'est pas recommandée. {{sdkName}} respectez les meilleures " + 
-                                            "pratiques de sécurité et n'implémentez pas l'octroi de mot de passe",
+                                            "publiques n'est pas recommandée. {{productName}} respectez les " + 
+                                            "meilleures pratiques de sécurité et n'implémentez pas l'octroi " + 
+                                            "de mot de passe",
                                         label: "{{grantType}} (non recommandé)"
                                     }
                                 },
