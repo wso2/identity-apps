@@ -19,7 +19,7 @@
 import { getRolesList } from "@wso2is/core/api";
 import { AlertLevels, RoleListInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { DynamicField, Heading } from "@wso2is/react-components";
+import { DynamicField, Heading, KeyValue } from "@wso2is/react-components";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -30,7 +30,7 @@ interface RoleMappingPropsInterface extends TestableComponentInterface {
     /**
      *  Trigger submission or not
      */
-    submitState: boolean;
+    submitState?: boolean;
     /**
      *  function to be called on submission
      * @param roleMappings
@@ -44,6 +44,11 @@ interface RoleMappingPropsInterface extends TestableComponentInterface {
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * function to be called on value changes.
+     * @param data
+     */
+    onChange?: (data: RoleMappingInterface[]) => void;
 }
 
 /**
@@ -58,10 +63,9 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
 ): React.ReactElement => {
 
     const {
-        onSubmit,
-        submitState,
         initialMappings,
         readOnly,
+        onChange,
         [ "data-testid" ]: testId
     } = props;
 
@@ -116,9 +120,11 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
                     <DynamicField
                         data={
                             initialMappings ?
-                                initialMappings.map(mapping => {
+                                initialMappings.map((mapping: RoleMappingInterface) => {
                                     return {
-                                        key: mapping.localRole,
+                                        key: mapping.localRole.includes("/") 
+                                            ? mapping.localRole.split("/")[1] 
+                                            : mapping.localRole,
                                         value: mapping.applicationRole
                                     };
                                 }) : []
@@ -145,23 +151,20 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
                             t("console:develop.features.applications.edit.sections.attributes.forms.fields.dynamic" +
                                 ".applicationRole.validations.duplicate")
                         }
-                        submit={ submitState }
-                        update={ (data) => {
-                            if (data.length > 0) {
-                                const finalData: RoleMappingInterface[] = data.map(mapping => {
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-dynamic-field` } 
+                        listen={ (data) => {
+                            if(onChange) {
+                                const finalData: RoleMappingInterface[] = data?.map((mapping: KeyValue) => {
                                     return {
                                         applicationRole: mapping.value,
                                         localRole: mapping.key.includes("/") ? mapping.key : "Internal/" + mapping.key
                                     };
-                                });
-
-                                onSubmit(finalData);
-                            } else {
-                                onSubmit([]);
+                                }) ?? [];
+    
+                                onChange(finalData);
                             }
                         } }
-                        readOnly={ readOnly }
-                        data-testid={ `${ testId }-dynamic-field` }
                     />
                 </Grid.Column>
             </Grid.Row>

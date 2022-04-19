@@ -60,7 +60,7 @@ export interface DynamicFieldPropsInterface extends TestableComponentInterface {
     /**
      * Triggers submit
      */
-    submit: boolean;
+    submit?: boolean;
     /**
      * The name of the key
      */
@@ -92,7 +92,7 @@ export interface DynamicFieldPropsInterface extends TestableComponentInterface {
     /**
      * Called to initiate an update
      */
-    update: (data: KeyValue[]) => void;
+    update?: (data: KeyValue[]) => void;
     /**
      * Make the form read only.
      */
@@ -167,6 +167,9 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
      * Prevent submit from being triggered during initial render
      */
     useEffect(() => {
+        if(!update) {
+            return;
+        }
         if (initRender.current) {
             initRender.current = false;
         } else if (fields) {
@@ -200,7 +203,7 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                                 onSubmit={
                                     (values: Map<string, FormValue>) => {
                                         if (!showAddErrorMsg) {
-                                            const tempFields = new Map<number, KeyValue>(fields);
+                                            const tempFields: Map<number, KeyValue> = new Map<number, KeyValue>(fields);
                                             const newIndex: number = tempFields.size > 0
                                                 ? Array.from(tempFields.keys())[tempFields.size - 1] + 1
                                                 : 0;
@@ -333,7 +336,7 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                             <Forms
                                 onSubmit={ (values: Map<string, FormValue>) => {
                                     if (!showEditErrorMsg) {
-                                        const tempFields = new Map(fields);
+                                        const tempFields: Map<number, KeyValue> = new Map(fields);
 
                                         tempFields.set(updateMapIndex, {
                                             key: values.get("editKey").toString(),
@@ -341,6 +344,9 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                                         });
 
                                         setFields(tempFields);
+                                        if (listen) {
+                                            listen(Array.from(tempFields.values()));
+                                        }
                                         setEditIndex(null);
                                         setUpdateMapIndex(null);
                                     }
@@ -522,10 +528,14 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                                                                 icon="trash"
                                                                 onClick={ () => {
                                                                     setEditIndex(null);
-                                                                    const tempFields = new Map(fields);
+                                                                    const tempFields: Map<number, KeyValue> 
+                                                                        = new Map(fields);
 
                                                                     tempFields.delete(mapIndex);
                                                                     setFields(tempFields);
+                                                                    if (listen) {
+                                                                        listen(Array.from(tempFields.values()));
+                                                                    }
                                                                 } }
                                                             />
                                                         ) }
