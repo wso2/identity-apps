@@ -32,8 +32,8 @@
         "test:headless:smoke": "npm run cy:headless:smoke",
         "test:interactive": "npm run cy:interactive",
         "tsc": "npx run-script-os",
-        "tsc:win32": ".\\node_modules\\.bin\\tsc -p tsconfig.json",
-        "tsc:default": "./node_modules/.bin/tsc -p tsconfig.json"
+        "tsc:win32": ".\\node_modules\\.bin\\tsc -p tsconfig.json --incremental",
+        "tsc:default": "./node_modules/.bin/tsc -p tsconfig.json --incremental"
     },
     "dependencies": {
         "@wso2/identity-cypress-test-base": "^0.2.3",

@@ -54,7 +54,7 @@ const DEV_SERVER_PORT = 9001;
 const ROOT_CONTEXT_DEV_SERVER_INITIAL_REDIRECT = "/login";
 
 const THEME_TO_USE = deploymentConfig.ui.theme.name || "default";
-const THEME_DIR = path.resolve(__dirname, "node_modules", "@wso2is", "theme", "dist", "lib", "themes", THEME_TO_USE);
+const THEME_DIR = path.resolve(__dirname, "..", "..", "node_modules", "@wso2is", "theme", "dist", "lib", "themes", THEME_TO_USE);
 let themeHash;
 const files = fs.readdirSync(THEME_DIR);
 
@@ -406,7 +406,7 @@ module.exports = (env) => {
             new CopyWebpackPlugin({
                 patterns: [
                     {
-                        context: path.join(__dirname, "node_modules", "@wso2is", "theme", "dist"),
+                        context: path.join(__dirname, "..", "..", "node_modules", "@wso2is", "theme", "dist"),
                         from: "lib",
                         // Only Copy the required resources to distribution.
                         // ATM, only the theme CSS files, fonts and branding images are required.
@@ -430,7 +430,7 @@ module.exports = (env) => {
                         to: "themes-less"
                     },
                     {
-                        context: path.join(__dirname, "node_modules", "@wso2is", "i18n"),
+                        context: path.join(__dirname, "..", "..", "node_modules", "@wso2is", "i18n"),
                         from: path.join("dist", "bundle"),
                         to: path.join("resources", "i18n")
                     },
