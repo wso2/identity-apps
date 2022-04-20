@@ -63,7 +63,10 @@ const loadRouteComponents = (routes: RouteInterface[]): RouteInterface[] => {
         // pass the component path. Therefore we have overcome this issue by assigning it to a
         // const.
         const routePath = route.component;
-        route.component = lazy(() => import(`${ routePath }`));
+
+        if (typeof route.component === "string") {
+            route.component = lazy(() => import(`${ routePath }`));
+        }
 
         if (route.children && route.children.length > 0) {
             route.children = loadRouteComponents(route.children);

@@ -17,6 +17,7 @@
  */
 
 export interface UserstoresConfig {
+    customerUserStoreId: string;
     userstoreEdit: {
         basicDetails: {
             showType: boolean;
@@ -29,6 +30,7 @@ export interface UserstoresConfig {
             showAdditionalProperties: boolean;
             showToggles: boolean;
         };
+        remoteUserStoreEditPath: string;
     };
     userstoreList: {
         allowAddingUserstores: boolean;
@@ -37,4 +39,5 @@ export interface UserstoresConfig {
         appendToUsername: boolean;
     };
     shouldShowUserstore: (typeName: string) => boolean;
+
 }

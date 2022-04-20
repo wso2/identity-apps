@@ -51,6 +51,8 @@ import { deleteUserStore } from "../api";
 import { getTableIcons } from "../configs";
 import { CONSUMER_USERSTORE, CONSUMER_USERSTORE_ID } from "../constants";
 import { UserStoreListItem } from "../models";
+import { userstoresConfig } from "../../../extensions";
+import isEmpty from "lodash-es/isEmpty";
 
 /**
  * Prop types of the `UserStoresList` component
@@ -285,7 +287,12 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
     };
 
     const handleUserstoreEdit = (userstoreId: string) => {
-        history.push(AppConstants.getPaths().get("USERSTORES_EDIT").replace(":id", userstoreId));
+        if (userstoreId === userstoresConfig.customerUserStoreId || isEmpty(userstoresConfig.customerUserStoreId)) {
+            history.push(AppConstants.getPaths().get("USERSTORES_EDIT").replace(":id", userstoreId));
+        } else {
+            history.push(AppConstants.getPaths().get("USERSTORES_EDIT").replace(":id", userstoreId).replace(
+                "edit-user-store", userstoresConfig.userstoreEdit.remoteUserStoreEditPath));
+        }
     };
 
     /**
