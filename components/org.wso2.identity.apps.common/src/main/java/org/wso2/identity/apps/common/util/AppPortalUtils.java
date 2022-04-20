@@ -18,6 +18,7 @@
 
 package org.wso2.identity.apps.common.util;
 
+import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkConstants;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
@@ -121,15 +122,39 @@ public class AppPortalUtils {
      * @param consumerKey    Consumer key.
      * @param consumerSecret Consumer secret.
      * @throws IdentityApplicationManagementException IdentityApplicationManagementException.
+     * @deprecated use {@link #createApplication(String, String, String, String, String, String, String)}} instead.
      */
+    @Deprecated
     public static void createApplication(String appName, String appOwner, String appDescription, String consumerKey,
             String consumerSecret, String tenantDomain) throws IdentityApplicationManagementException {
+
+        createApplication(appName, appOwner, appDescription,
+                consumerKey, consumerSecret, tenantDomain, StringUtils.EMPTY);
+    }
+
+    /**
+     * Create portal SaaS application.
+     *
+     * @param appName        Application name.
+     * @param appOwner       Application owner.
+     * @param appDescription Application description.
+     * @param consumerKey    Consumer key.
+     * @param consumerSecret Consumer secret.
+     * @param portalPath     Portal path.
+     * @throws IdentityApplicationManagementException IdentityApplicationManagementException.
+     */
+    public static void createApplication(String appName, String appOwner, String appDescription, String consumerKey,
+                                         String consumerSecret, String tenantDomain, String portalPath)
+            throws IdentityApplicationManagementException {
 
         ServiceProvider serviceProvider = new ServiceProvider();
         serviceProvider.setApplicationName(appName);
         serviceProvider.setDescription(appDescription);
         serviceProvider.setSaasApp(true);
         serviceProvider.setManagementApp(true);
+        if (StringUtils.isNotEmpty(portalPath)) {
+            serviceProvider.setAccessUrl(IdentityUtil.getServerURL(portalPath, true, true));
+        }
 
         InboundAuthenticationRequestConfig inboundAuthenticationRequestConfig
                 = new InboundAuthenticationRequestConfig();
@@ -227,7 +252,7 @@ public class AppPortalUtils {
                     throw e;
                 }
                 AppPortalUtils.createApplication(appPortal.getName(), adminUsername, appPortal.getDescription(),
-                        consumerKey, consumerSecret, tenantDomain);
+                        consumerKey, consumerSecret, tenantDomain, appPortal.getPath());
             }
         }
     }
