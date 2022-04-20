@@ -6668,7 +6668,7 @@ export const console: ConsoleNS = {
                         actions: "Actions",
                         lastModified: "Modified Time",
                         name: "Group",
-                        source: "User-store"
+                        source: "User store"
                     },
                     storeOptions: "Select User Store"
                 },
