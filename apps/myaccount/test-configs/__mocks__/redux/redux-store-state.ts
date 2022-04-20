@@ -212,7 +212,10 @@ const ReduxStoreStateMock = {
             theme: {
                 name: "default"
             },
-            disableMFAforSuperTenantUser: false
+            disableMFAforSuperTenantUser: false,
+            enableMFAUserWise: false,
+            disableMFAForFederatedUsers: false,
+            forceBackupCode: false
         }
     },
     global: {

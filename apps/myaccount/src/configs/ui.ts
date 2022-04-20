@@ -79,6 +79,10 @@ import {
     ReactComponent as SecurityQuestions
 } from "../themes/default/assets/images/illustrations/security-questions.svg";
 import {
+    ReactComponent as EmptyListResultsIllustration
+} from "../themes/default/assets/images/placeholder-illustrations/empty-list-illustration.svg";
+
+import {
     ReactComponent as EmptySearchResultsIllustration
 } from "../themes/default/assets/images/placeholder-illustrations/empty-search-illustration.svg";
 import DummyUser from "../themes/default/assets/images/user.png";
@@ -203,6 +207,7 @@ export const getEmptyPlaceholderIllustrations = (): {
     loginError: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     pageNotFound: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     search: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    newList: React.FunctionComponent<React.SVGProps<SVGElement>>;
  } => {
  
     return {
@@ -211,6 +216,7 @@ export const getEmptyPlaceholderIllustrations = (): {
         genericError: CloseIcon,
         loginError: ForbiddenIcon,
         pageNotFound: BlockedMagnifierIcon,
+        newList: EmptyListResultsIllustration,
         search: EmptySearchResultsIllustration
     };
 };
