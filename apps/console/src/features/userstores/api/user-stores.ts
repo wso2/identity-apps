@@ -66,37 +66,6 @@ export const getUserStores = (params: QueryParams): Promise<any> => {
 };
 
 /**
- * Fetches all userstores.
- *
- * @return {Promise<any>} response.
- */
-export const getUserStoresList = (): Promise<any> => {
-    const requestConfig = {
-        headers: {
-            Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: store.getState().config.endpoints.userStores
-    };
-
-    return httpClient(requestConfig)
-        .then((response) => {
-            if (response.status !== 200) {
-                return Promise.reject(`An error occurred. The server returned ${response.status}`);
-            }
-
-            return Promise.resolve(response.data);
-        })
-        .catch((error) => {
-            if (error?.response?.data?.message !== RESOURCE_NOT_FOUND_ERROR_MESSAGE) {
-                return Promise.reject(error?.response?.data);
-            }
-        });
-};
-
-/**
  * Fetch types of userstores.
  *
  * @return {Promise<any>} response.

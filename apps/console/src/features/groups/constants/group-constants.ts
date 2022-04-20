@@ -48,4 +48,11 @@ export class GroupConstants {
         .set("GROUP_UPDATE", "groups.update")
         .set("GROUP_DELETE", "groups.delete")
         .set("GROUP_READ", "groups.read")
+
+    /**
+     * Set all groups option
+     * @constant
+     * @type {string}
+     */
+    public static ALL_GROUPS: string = "all";
 }

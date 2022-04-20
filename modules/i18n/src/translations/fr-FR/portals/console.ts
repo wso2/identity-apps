@@ -5388,7 +5388,8 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "Actions",
                         lastModified: "Dernière modification",
-                        name: "Nom"
+                        name: "Nom",
+                        source: "Magasin d'utilisateurs"
                     },
                     storeOptions: "Sélectionner un annuaire"
                 },
