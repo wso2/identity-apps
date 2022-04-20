@@ -17,14 +17,15 @@
   --%>
 
 <%@ page import="java.io.File" %>
+<%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%@include file="includes/localize.jsp" %>
 
 <%
-    String errorCode = "";
-    if(request.getParameter("error")!=null){
-        errorCode = request.getParameter("error") ;
+    String errorCode = StringUtils.EMPTY;
+    if (request.getParameter("error") != null) {
+        errorCode = request.getParameter("error");
     }
 %>
 <!doctype html>
