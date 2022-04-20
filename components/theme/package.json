@@ -5,6 +5,6 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/theme": "^1.2.952"
+        "@wso2is/theme": "*"
     }
 }

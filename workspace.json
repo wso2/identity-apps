@@ -1,0 +1,154 @@
+{
+  "version": 2,
+  "projects": {
+    "authentication-portal": {
+      "root": "apps/authentication-portal",
+      "projectType": "application"
+    },
+    "console": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "apps/console",
+      "sourceRoot": "apps/console/src",
+      "prefix": "@wso2is",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/workspace:run-commands",
+          "outputs": [ "apps/build/console" ],
+          "options": {
+            "command": "npm run build",
+            "cwd": "apps/console"
+          }
+        }
+      },
+      "outputs": ["{options.outputPath}"]
+    },
+    "myaccount": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "apps/myaccount",
+      "sourceRoot": "apps/myaccount/src",
+      "prefix": "@wso2is",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/workspace:run-commands",
+          "outputs": [ "apps/build/myaccount" ],
+          "options": {
+            "command": "npm run build",
+            "cwd": "apps/myaccount"
+          }
+        }
+      },
+      "outputs": ["{options.outputPath}"]
+    },
+    "recovery-portal": {
+      "root": "apps/recovery-portal",
+      "projectType": "application"
+    },
+    "sms-otp-authentication-portal": {
+      "root": "apps/sms-otp-authentication-portal",
+      "projectType": "application"
+    },
+    "x509-certificate-authentication-portal": {
+      "root": "apps/x509-certificate-authentication-portal",
+      "projectType": "application"
+    },
+    "access-control": {
+      "root": "modules/access-control",
+      "projectType": "library"
+    },
+    "core": {
+      "projectType": "library",
+      "schematics": {},
+      "root": "modules/core",
+      "sourceRoot": "modules/core/src",
+      "prefix": "@wso2is",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/workspace:run-commands",
+          "outputs": [ "modules/core/dist" ],
+          "options": {
+            "tsconfig": "modules/core/tsconfig.json",
+            "command": "npm run compile",
+            "cwd": "modules/core"
+          }
+        }
+      },
+      "outputs": ["{options.outputPath}"]
+    },
+    "form": {
+      "projectType": "library",
+      "schematics": {},
+      "root": "modules/form",
+      "sourceRoot": "modules/form/src",
+      "prefix": "@wso2is",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/workspace:run-commands",
+          "outputs": [ "modules/form/dist" ],
+          "options": {
+            "command": "npm run build",
+            "cwd": "modules/form"
+          }
+        }
+      },
+      "outputs": ["{options.outputPath}"]
+    },
+    "forms": {
+      "projectType": "library",
+      "schematics": {},
+      "root": "modules/forms",
+      "sourceRoot": "modules/forms/src",
+      "prefix": "@wso2is",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/workspace:run-commands",
+          "outputs": [ "modules/forms/dist" ],
+          "options": {
+            "command": "npm run build",
+            "cwd": "modules/forms"
+          }
+        }
+      },
+      "outputs": ["{options.outputPath}"]
+    },
+    "i18n": {
+      "root": "modules/i18n",
+      "projectType": "library"
+    },
+    "react-components": {
+      "projectType": "library",
+      "schematics": {},
+      "root": "modules/react-components",
+      "sourceRoot": "modules/react-components/src",
+      "prefix": "@wso2is",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/workspace:run-commands",
+          "outputs": [ "modules/react-components/dist" ],
+          "options": {
+            "command": "npm run build",
+            "cwd": "modules/react-components"
+          }
+        }
+      },
+      "outputs": ["{options.outputPath}"]
+    },
+    "theme": {
+      "root": "modules/theme",
+      "projectType": "library"
+    },
+    "validation": {
+      "root": "modules/validation",
+      "projectType": "library"
+    },
+    "theme-component": {
+      "root": "components/theme-component",
+      "projectType": "library"
+    },
+    "tests": {
+      "root": "tests",
+      "projectType": "library"
+    }
+  }
+}
