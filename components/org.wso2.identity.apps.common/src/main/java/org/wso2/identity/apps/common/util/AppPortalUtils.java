@@ -18,6 +18,7 @@
 
 package org.wso2.identity.apps.common.util;
 
+import org.apache.commons.lang3.StringUtils;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkConstants;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
@@ -124,41 +125,8 @@ public class AppPortalUtils {
      */
     public static void createApplication(String appName, String appOwner, String appDescription, String consumerKey,
             String consumerSecret, String tenantDomain) throws IdentityApplicationManagementException {
-
-        ServiceProvider serviceProvider = new ServiceProvider();
-        serviceProvider.setApplicationName(appName);
-        serviceProvider.setDescription(appDescription);
-        serviceProvider.setSaasApp(true);
-        serviceProvider.setManagementApp(true);
-
-        InboundAuthenticationRequestConfig inboundAuthenticationRequestConfig
-                = new InboundAuthenticationRequestConfig();
-        inboundAuthenticationRequestConfig.setInboundAuthKey(consumerKey);
-        inboundAuthenticationRequestConfig.setInboundAuthType(INBOUND_AUTH2_TYPE);
-        inboundAuthenticationRequestConfig.setInboundConfigType(INBOUND_CONFIG_TYPE);
-        List<InboundAuthenticationRequestConfig> inboundAuthenticationRequestConfigs = Arrays
-                .asList(inboundAuthenticationRequestConfig);
-        InboundAuthenticationConfig inboundAuthenticationConfig = new InboundAuthenticationConfig();
-        inboundAuthenticationConfig.setInboundAuthenticationRequestConfigs(
-                inboundAuthenticationRequestConfigs.toArray(new InboundAuthenticationRequestConfig[0]));
-        serviceProvider.setInboundAuthenticationConfig(inboundAuthenticationConfig);
-
-        LocalAndOutboundAuthenticationConfig localAndOutboundAuthenticationConfig
-                = new LocalAndOutboundAuthenticationConfig();
-        localAndOutboundAuthenticationConfig.setUseUserstoreDomainInLocalSubjectIdentifier(true);
-        localAndOutboundAuthenticationConfig.setUseTenantDomainInLocalSubjectIdentifier(true);
-        localAndOutboundAuthenticationConfig.setSkipConsent(true);
-        localAndOutboundAuthenticationConfig.setSkipLogoutConsent(true);
-        serviceProvider.setLocalAndOutBoundAuthenticationConfig(localAndOutboundAuthenticationConfig);
-
-        // Set requested claim mappings for the SP.
-        ClaimConfig claimConfig = new ClaimConfig();
-        claimConfig.setClaimMappings(getRequestedClaimMappings());
-        claimConfig.setLocalClaimDialect(true);
-        serviceProvider.setClaimConfig(claimConfig);
-
-        AppsCommonDataHolder.getInstance().getApplicationManagementService()
-                .createApplication(serviceProvider, tenantDomain, appOwner);
+        createApplication(appName, appOwner, appDescription,
+                consumerKey, consumerSecret, tenantDomain, StringUtils.EMPTY);
     }
 
     /**
@@ -181,7 +149,9 @@ public class AppPortalUtils {
         serviceProvider.setDescription(appDescription);
         serviceProvider.setSaasApp(true);
         serviceProvider.setManagementApp(true);
-        serviceProvider.setAccessUrl(IdentityUtil.getServerURL(portalPath, true, true));
+        if (StringUtils.isNotEmpty(portalPath)) {
+            serviceProvider.setAccessUrl(IdentityUtil.getServerURL(portalPath, true, true));
+        }
 
         InboundAuthenticationRequestConfig inboundAuthenticationRequestConfig
                 = new InboundAuthenticationRequestConfig();
