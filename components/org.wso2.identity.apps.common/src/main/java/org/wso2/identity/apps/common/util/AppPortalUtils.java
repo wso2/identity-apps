@@ -122,7 +122,7 @@ public class AppPortalUtils {
      * @param consumerKey    Consumer key.
      * @param consumerSecret Consumer secret.
      * @throws IdentityApplicationManagementException IdentityApplicationManagementException.
-     * @deprecated use {@link #createApplication(String, String, String, String, String, String, String)}  } instead
+     * @deprecated use {@link #createApplication(String, String, String, String, String, String, String)}} instead.
      */
     @Deprecated
     public static void createApplication(String appName, String appOwner, String appDescription, String consumerKey,
