@@ -162,6 +162,58 @@ public class AppPortalUtils {
     }
 
     /**
+     * Create portal SaaS application.
+     *
+     * @param appName        Application name.
+     * @param appOwner       Application owner.
+     * @param appDescription Application description.
+     * @param consumerKey    Consumer key.
+     * @param consumerSecret Consumer secret.
+     * @param portalPath     Portal path.
+     * @throws IdentityApplicationManagementException IdentityApplicationManagementException.
+     */
+    public static void createApplication(String appName, String appOwner, String appDescription, String consumerKey,
+                                         String consumerSecret, String tenantDomain, String portalPath)
+            throws IdentityApplicationManagementException {
+
+        ServiceProvider serviceProvider = new ServiceProvider();
+        serviceProvider.setApplicationName(appName);
+        serviceProvider.setDescription(appDescription);
+        serviceProvider.setSaasApp(true);
+        serviceProvider.setManagementApp(true);
+        serviceProvider.setAccessUrl(IdentityUtil.getServerURL(portalPath, true, true));
+
+        InboundAuthenticationRequestConfig inboundAuthenticationRequestConfig
+                = new InboundAuthenticationRequestConfig();
+        inboundAuthenticationRequestConfig.setInboundAuthKey(consumerKey);
+        inboundAuthenticationRequestConfig.setInboundAuthType(INBOUND_AUTH2_TYPE);
+        inboundAuthenticationRequestConfig.setInboundConfigType(INBOUND_CONFIG_TYPE);
+        List<InboundAuthenticationRequestConfig> inboundAuthenticationRequestConfigs = Arrays
+                .asList(inboundAuthenticationRequestConfig);
+        InboundAuthenticationConfig inboundAuthenticationConfig = new InboundAuthenticationConfig();
+        inboundAuthenticationConfig.setInboundAuthenticationRequestConfigs(
+                inboundAuthenticationRequestConfigs.toArray(new InboundAuthenticationRequestConfig[0]));
+        serviceProvider.setInboundAuthenticationConfig(inboundAuthenticationConfig);
+
+        LocalAndOutboundAuthenticationConfig localAndOutboundAuthenticationConfig
+                = new LocalAndOutboundAuthenticationConfig();
+        localAndOutboundAuthenticationConfig.setUseUserstoreDomainInLocalSubjectIdentifier(true);
+        localAndOutboundAuthenticationConfig.setUseTenantDomainInLocalSubjectIdentifier(true);
+        localAndOutboundAuthenticationConfig.setSkipConsent(true);
+        localAndOutboundAuthenticationConfig.setSkipLogoutConsent(true);
+        serviceProvider.setLocalAndOutBoundAuthenticationConfig(localAndOutboundAuthenticationConfig);
+
+        // Set requested claim mappings for the SP.
+        ClaimConfig claimConfig = new ClaimConfig();
+        claimConfig.setClaimMappings(getRequestedClaimMappings());
+        claimConfig.setLocalClaimDialect(true);
+        serviceProvider.setClaimConfig(claimConfig);
+
+        AppsCommonDataHolder.getInstance().getApplicationManagementService()
+                .createApplication(serviceProvider, tenantDomain, appOwner);
+    }
+
+    /**
      * Get requested claim mappings.
      *
      * @return array of claim mappings.
@@ -227,7 +279,7 @@ public class AppPortalUtils {
                     throw e;
                 }
                 AppPortalUtils.createApplication(appPortal.getName(), adminUsername, appPortal.getDescription(),
-                        consumerKey, consumerSecret, tenantDomain);
+                        consumerKey, consumerSecret, tenantDomain, appPortal.getPath());
             }
         }
     }
