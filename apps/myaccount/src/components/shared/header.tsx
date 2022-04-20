@@ -329,6 +329,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             linkedAccounts={ linkedAccounts }
             onLinkedAccountSwitch={ handleLinkedAccountSwitch }
             userDropdownLinks={
+                // Hide the APPs for readonly users
                 compact([
                     showAppSwitchButton
                     && !commonConfig?.header?.renderAppSwitcherAsDropdown
