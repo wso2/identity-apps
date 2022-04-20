@@ -91,6 +91,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const [ showAppSwitchButton, setShowAppSwitchButton ] = useState<boolean> (true);
 
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>(undefined);
+    const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
 
     useEffect(() => {
         if (isEmpty(profileInfo)) {
@@ -329,7 +330,10 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             onLinkedAccountSwitch={ handleLinkedAccountSwitch }
             userDropdownLinks={
                 compact([
-                    showAppSwitchButton && !commonConfig?.header?.renderAppSwitcherAsDropdown && {
+                    showAppSwitchButton
+                    && !commonConfig?.header?.renderAppSwitcherAsDropdown
+                    && !(CommonUtils?.isProfileReadOnly(isReadOnlyUser))
+                    && {
                         category: "APPS",
                         categoryLabel: t("common:apps"),
                         links: getLinks()
