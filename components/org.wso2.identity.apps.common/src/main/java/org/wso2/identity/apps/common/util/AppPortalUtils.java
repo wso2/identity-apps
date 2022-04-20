@@ -125,6 +125,7 @@ public class AppPortalUtils {
      */
     public static void createApplication(String appName, String appOwner, String appDescription, String consumerKey,
             String consumerSecret, String tenantDomain) throws IdentityApplicationManagementException {
+
         createApplication(appName, appOwner, appDescription,
                 consumerKey, consumerSecret, tenantDomain, StringUtils.EMPTY);
     }
