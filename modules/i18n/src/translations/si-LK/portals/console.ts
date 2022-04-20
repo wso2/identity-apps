@@ -5268,7 +5268,8 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "ක්‍රියා",
                         lastModified: "අවසන් වරට වෙනස් කරන ලදි",
-                        name: "නම"
+                        name: "නම",
+                        source: "පරිශීලක ගබඩාව"
                     },
                     storeOptions: "පරිශීලක වෙළඳසැල තෝරන්න"
                 },
