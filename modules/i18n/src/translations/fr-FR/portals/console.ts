@@ -1493,24 +1493,27 @@ export const console: ConsoleNS = {
                                     },
                                     implicit: {
                                         hint: "L'utilisation de l'octroi implicite avec des applications publiques " +
-                                            "n'est pas recommandée.",
+                                            "n'est pas recommandée. {{productName}} adhérer aux meilleures " + 
+                                            "pratiques desécurité et ne pas mettre en œuvre l'octroi implicite",
                                         label: "{{grantType}} (non recommandé)"
                                     },
                                     password: {
                                         hint: "L'utilisation de l'octroi de mot de passe avec des applications " +
-                                            "publiques n'est pas recommandée.",
+                                            "publiques n'est pas recommandée. {{productName}} respectez les " + 
+                                            "meilleures pratiques de sécurité et n'implémentez pas l'octroi " + 
+                                            "de mot de passe",
                                         label: "{{grantType}} (non recommandé)"
                                     }
                                 },
                                 hint: "Cela déterminera la manière dont l'application communique avec le service " +
                                     "de jetons.",
                                 label: "Types de subvention autorisés",
-                                validations: {
-                                    empty: "Sélectionnez au moins un type de subvention"
-                                },
-                                vvalidation: {
+                                validation: {
                                     refreshToken:"Le type d'octroi Refresh token doit être sélectionné uniquement " +
                                     "avec les types d'octroi qui fournissent un jeton d'actualisation."
+                                },
+                                validations: {
+                                    empty: "Sélectionnez au moins un type de subvention"
                                 }
                             },
                             public: {
