@@ -580,25 +580,30 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                     <Divider hidden/>
                     <div className="authenticator-grid">
                         {
-                            authenticators.map((authenticator, index) => (
-                                <LabeledCard
-                                    key={ index }
-                                    multilineLabel
-                                    className="authenticator-card"
-                                    size="tiny"
-                                    selected={ selectedSocialAuthenticator?.id === authenticator.id }
-                                    image={ authenticator.image }
-                                    label={
-                                        AuthenticatorMeta.getAuthenticatorDisplayName(authenticator.name)
+                            authenticators
+                                .filter((authenticator) => {
+                                    authenticator.name !== IdentityProviderManagementConstants
+                                        .BACKUP_CODE_AUTHENTICATOR;
+                                })
+                                .map((authenticator, index) => (
+                                    <LabeledCard
+                                        key={ index }
+                                        multilineLabel
+                                        className="authenticator-card"
+                                        size="tiny"
+                                        selected={ selectedSocialAuthenticator?.id === authenticator.id }
+                                        image={ authenticator.image }
+                                        label={
+                                            AuthenticatorMeta.getAuthenticatorDisplayName(authenticator.name)
                                         || authenticator.displayName
-                                    }
-                                    labelEllipsis={ true }
-                                    data-testid={
-                                        `${ testId }-authenticator-${ authenticator.name }`
-                                    }
-                                    onClick={ () => setSelectedSocialAuthenticator(authenticator) }
-                                />
-                            ))
+                                        }
+                                        labelEllipsis={ true }
+                                        data-testid={
+                                            `${ testId }-authenticator-${ authenticator.name }`
+                                        }
+                                        onClick={ () => setSelectedSocialAuthenticator(authenticator) }
+                                    />
+                                ))
                         }
                     </div>
                 </ConfirmationModal.Content>
