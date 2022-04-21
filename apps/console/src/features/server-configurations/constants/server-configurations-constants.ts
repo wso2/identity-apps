@@ -164,7 +164,7 @@ export class ServerConfigurationsConstants {
 	 */
 	public static readonly PASSWORD_POLICY_CONNECTOR_ID: string = "cGFzc3dvcmRQb2xpY3k";
 
-	/**
+    /**
     * Multi Attribute Login Claim List pattern regex.
     * @constant
     * @type {RegExp}
