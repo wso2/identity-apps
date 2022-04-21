@@ -244,6 +244,22 @@ const validate = (values) => {
 
     }
 
+     if (
+         !(ServerConfigurationsConstants.MULTI_ATTRIBUTE_CLAIM_LIST_REGEX_PATTERN.test(
+            values[
+                GovernanceConnectorUtils.encodeConnectorPropertyName(
+                    ServerConfigurationsConstants.MULTI_ATTRIBUTE_CLAIM_LIST
+                )
+            ]
+         ))
+     ) {
+        errors[
+            GovernanceConnectorUtils.encodeConnectorPropertyName(
+                ServerConfigurationsConstants.MULTI_ATTRIBUTE_CLAIM_LIST
+            )
+        ] = I18n.instance.t("console:manage.features.governanceConnectors.form.errors.format");
+     }
+
     return errors;
 };
 

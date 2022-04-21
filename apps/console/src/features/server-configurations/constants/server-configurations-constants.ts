@@ -164,6 +164,14 @@ export class ServerConfigurationsConstants {
 	 */
 	public static readonly PASSWORD_POLICY_CONNECTOR_ID: string = "cGFzc3dvcmRQb2xpY3k";
 
+    /**
+    * Multi Attribute Login Claim List pattern regex.
+    * @constant
+    * @type {RegExp}
+    * @default
+    */
+    public static readonly MULTI_ATTRIBUTE_CLAIM_LIST_REGEX_PATTERN: RegExp = new RegExp("^(?:[a-zA-Z0-9:./]+,)+[a-zA-Z0-9:./]+$");
+
 	/**
 	 * UUID of the user on boarding connector.
 	 */
@@ -320,6 +328,10 @@ export class ServerConfigurationsConstants {
 	public static readonly OTP_PASSWORD_RESET: string = "Recovery.AdminPasswordReset.OTP";
 	public static readonly OFFLINE_PASSWORD_RESET: string = "Recovery.AdminPasswordReset.Offline";
 	public static readonly ADMIN_FORCED_PASSWORD_RESET_EXPIRY_TIME: string = "Recovery.AdminPasswordReset.ExpiryTime";
+
+    //multi attribute login set
+    public static readonly MULTI_ATTRIBUTE_CLAIM_LIST: string = "account-multiattributelogin-handler-allowedattributes";
+
 
 	/**
 	 * Extensions Constants.
