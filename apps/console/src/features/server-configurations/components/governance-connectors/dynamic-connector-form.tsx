@@ -245,7 +245,7 @@ const validate = (values) => {
     }
 
      if (
-            !RegExp(/^(?:[a-zA-Z0-9:\/.]+,)+[a-zA-Z0-9:\/.]+$/).test(
+            !RegExp(/^(?:[a-zA-Z0-9:\/\.]+,)+[a-zA-Z0-9:\/\.]+$/).test(
                 values[
                     GovernanceConnectorUtils.encodeConnectorPropertyName(
                         ServerConfigurationsConstants.MULTI_ATTRIBUTE_CLAIM_LIST
