@@ -165,6 +165,14 @@ export class ServerConfigurationsConstants {
 	public static readonly PASSWORD_POLICY_CONNECTOR_ID: string = "cGFzc3dvcmRQb2xpY3k";
 
 	/**
+    * Multi Attribute Login Claim List pattern regex.
+    * @constant
+    * @type {RegExp}
+    * @default
+    */
+    public static readonly MULTI_ATTRIBUTE_CLAIM_LIST_REGEX_PATTERN: RegExp = new RegExp("^(?:[a-zA-Z0-9:./]+,)+[a-zA-Z0-9:./]+$");
+
+	/**
 	 * UUID of the user on boarding connector.
 	 */
 	public static readonly USER_ONBOARDING_CONNECTOR_ID: string = "VXNlciBPbmJvYXJkaW5n";
@@ -323,6 +331,7 @@ export class ServerConfigurationsConstants {
 
     //multi attribute login set
     public static readonly MULTI_ATTRIBUTE_CLAIM_LIST: string = "account-multiattributelogin-handler-allowedattributes";
+
 
 	/**
 	 * Extensions Constants.
