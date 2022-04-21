@@ -244,6 +244,22 @@ const validate = (values) => {
 
     }
 
+     if (
+            !RegExp(/^(?:[a-zA-Z0-9:\/.]+,)+[a-zA-Z0-9:\/.]+$/).test(
+                values[
+                    GovernanceConnectorUtils.encodeConnectorPropertyName(
+                        ServerConfigurationsConstants.MULTI_ATTRIBUTE_CLAIM_LIST
+                    )
+                ]
+            )
+        ) {
+            errors[
+                GovernanceConnectorUtils.encodeConnectorPropertyName(
+                    ServerConfigurationsConstants.MULTI_ATTRIBUTE_CLAIM_LIST
+                )
+            ] = I18n.instance.t("console:manage.features.governanceConnectors.form.errors.format");
+        }
+
     return errors;
 };
 
