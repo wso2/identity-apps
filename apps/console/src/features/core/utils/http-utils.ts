@@ -112,7 +112,7 @@ export class HttpUtils {
         // NOTE: Axios is unable to handle 401 errors. `!error.response` will usually catch
         // the `401` error. Check the link in the doc comment.
         if (!error.response || error.response.status === 401) {
-            if (error?.error?.code === "AUTH_CORE-RAT2-NR03") {
+            if (error?.code === "SPA-WORKER_CORE-HR-SE01") {
                 dispatchEvent(new Event(AppConstantsCore.NETWORK_ERROR_EVENT));
             }
         }
