@@ -20,6 +20,7 @@ import { RolesMemberInterface, TestableComponentInterface } from "@wso2is/core/m
 import { Forms } from "@wso2is/forms";
 import {
     Button,
+    ContentLoader,
     EmphasizedSegment,
     EmptyPlaceholder,
     Heading,
@@ -166,11 +167,12 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                             userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
                         );
                         setSelectedUsers(selectedUserList);
-                        setIsSelectedUsersLoading(false);
                         setInitialSelectedUsers(selectedUserList);
                         setTempUserList(selectedUserList);
                     }
                 }
+
+                setIsSelectedUsersLoading(false);
 
                 if (initialValues && initialValues instanceof Array) {
                     const selectedUserList: UserBasicInterface[] = [];
@@ -579,7 +581,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                 imageSize="tiny"
                                             />
                                         </EmphasizedSegment>
-                                    ) : null
+                                    )
+                                    : <ContentLoader className="p-3" active />
                                 )
                             }
                         </Grid.Column>
