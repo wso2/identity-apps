@@ -41,6 +41,7 @@ jobs:
       - name: 🛠️ Bootstrap Dependencies
         id: bootstrap-dependencies-with-cache
         run: |
+          npm install -g npx
           npm install -g yarn
           yarn install --frozen-lockfile
 
