@@ -1274,6 +1274,13 @@
                 text-overflow: ellipsis;
                 background: -webkit-linear-gradient(top, transparent 80%, @galleryGray);
             }
+
+            .stacked-content {
+                display: flex;
+                flex-direction: column;
+                row-gap: 10px;
+                text-align: center;
+            }
         }
 
         .footer {
