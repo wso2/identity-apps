@@ -21,7 +21,7 @@ jobs:
     name: ⏲️ Benchmark
     strategy:
       matrix:
-        node-version: [ 12.x, 14.x, 16.x ]
+        node-version: [ 12.x, 14.x ]
         os: [ ubuntu-latest ]
     runs-on: ${{ matrix.os }}
     steps:
@@ -41,7 +41,6 @@ jobs:
       - name: 🛠️ Bootstrap Dependencies
         id: bootstrap-dependencies-with-cache
         run: |
-          npm install -g npx
           npm install -g yarn
           yarn install --frozen-lockfile
 
