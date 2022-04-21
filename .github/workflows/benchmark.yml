@@ -48,6 +48,10 @@ jobs:
         id: build-the-project
         run: npx nx run-many --target=build --all --with-deps
 
+      - name: 🌵 Build with Cache
+        id: build-the-project-with-cache
+        run: npx nx run-many --target=build --all --with-deps
+
       - name: 🐱 Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
