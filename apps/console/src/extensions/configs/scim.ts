@@ -23,6 +23,10 @@ import { SCIMConfigInterface } from "./models/scim";
  */
 export const SCIMConfigs: SCIMConfigInterface = {
 
+    custom: "",
+
+    hideCore1Schema: true,
+
     oidc: "http://wso2.org/oidc/claim",
 
     scim: {
@@ -30,7 +34,10 @@ export const SCIMConfigs: SCIMConfigInterface = {
         coreSchema: "urn:ietf:params:scim:schemas:core:2.0",
         enterpriseSchema: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User",
         userSchema: "urn:ietf:params:scim:schemas:core:2.0:User"
-
+    },
+    
+    scimDialectID: {
+        customEnterpriseSchema: "dXJuOmlldGY6cGFyYW1zOnNjaW06c2NoZW1hczpleHRlbnNpb246ZW50ZXJwcmlzZToyLjA6VXNlcg"
     },
 
     scimEnterpriseUserClaimUri: {
@@ -42,7 +49,10 @@ export const SCIMConfigs: SCIMConfigInterface = {
         profileUrl: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.profileUrl"
     },
 
-    scimDialectID: {
-        customEnterpriseSchema: "dXJuOmlldGY6cGFyYW1zOnNjaW06c2NoZW1hczpleHRlbnNpb246ZW50ZXJwcmlzZToyLjA6VXNlcg"
-    }
+
+    serverSupportedClaimsAvailable: [
+        "urn:scim:schemas:core:1.0",
+        "urn:ietf:params:scim:schemas:core:2.0",
+        "urn:ietf:params:scim:schemas:core:2.0:User"
+    ]
 };

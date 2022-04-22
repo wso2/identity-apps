@@ -25,7 +25,7 @@ import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useS
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { DropdownItemProps, DropdownOnSearchChangeData, Grid, Label, Message } from "semantic-ui-react";
-import { attributeConfig } from "../../../../extensions";
+import { SCIMConfigs, attributeConfig } from "../../../../extensions";
 import { AppConstants, history } from "../../../core";
 import { addExternalClaim, getServerSupportedClaimsForSchema } from "../../api";
 import { ClaimManagementConstants } from "../../constants";
@@ -141,13 +141,17 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
      * Handle the warning message to be shown.
      */
     useEffect(() => {
+        if (SCIMConfigs.serverSupportedClaimsAvailable.includes(claimDialectUri) && 
+            serverSupportedClaims?.length === 0) {
+            setEmptyServerSupportedClaims(true);
+        } else {
+            setEmptyServerSupportedClaims(false);
+        }
         if (attributeType !== "oidc"
             && claimDialectUri !== attributeConfig.localAttributes.customDialectURI) {
             if (!serverSupportedClaims || serverSupportedClaims.length === 0) {
-                setEmptyServerSupportedClaims(true);
                 setEmptyClaims(false);
             } else {
-                setEmptyServerSupportedClaims(false);
                 if (!filteredLocalClaims || filteredLocalClaims.length === 0) {
                     setEmptyClaims(true);
                 } else {
@@ -164,10 +168,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
     }, [ serverSupportedClaims, filteredLocalClaims ]);
 
     useEffect(() => {
-        if (
-            claimDialectUri === attributeConfig.localAttributes.customDialectURI ||
-            claimDialectUri === attributeConfig.localAttributes.oidcDialectURI
-        ) {
+        if (!SCIMConfigs.serverSupportedClaimsAvailable.includes(claimDialectUri)) {
             setServerSideClaimsLoading(false);
 
             return;
@@ -249,7 +250,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
         if (externalClaims && localClaims) {
             let tempLocalClaims: Claim[] = [ ...localClaims ];
 
-            mappedLocalClaims.forEach((externalClaim: string) => {
+            mappedLocalClaims?.forEach((externalClaim: string) => {
                 tempLocalClaims = [ ...removeMappedLocalClaim(externalClaim, tempLocalClaims) ];
             });
             setLocalClaimsSearchResults(tempLocalClaims);
@@ -333,9 +334,8 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                     <Grid>
                         <Grid.Row columns={ 2 }>
                             <Grid.Column width={ 8 }>
-                                { attributeType !== "oidc"
-                                    && claimDialectUri !== attributeConfig.localAttributes.customDialectURI
-                                    ? (
+                                { SCIMConfigs.serverSupportedClaimsAvailable.includes(claimDialectUri)
+                                    ?  (
                                         <Field
                                             name="claimURI"
                                             label={
@@ -392,8 +392,10 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                                 })
                                                 ?? []
                                             }
-                                        />
-                                    ) : (
+                                        /> 
+                                    ) 
+                                    : 
+                                    (
                                         <Field
                                             name="claimURI"
                                             label={ t("console:manage.features.claims.external.forms." +
@@ -436,7 +438,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                                 }
                                             } }
                                         />
-                                    )
+                                    ) 
                                 }
 
                             </Grid.Column>
@@ -490,7 +492,8 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                             </Grid.Column>
                             <Grid.Column width={ 16 }>
                                 {
-                                    attributeType !== ClaimManagementConstants.OIDC &&
+                                    (attributeType !== ClaimManagementConstants.OIDC && 
+                                        attributeType !== ClaimManagementConstants.OTHERS) &&
                                     (
                                         <Label className="mb-3 mt-2 ml-0">
                                             <em>Attribute URI</em>:&nbsp;{ claim ? `${claimDialectUri}:
@@ -573,5 +576,6 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
  */
 AddExternalClaims.defaultProps = {
     attributeType: ClaimManagementConstants.OTHERS,
+    claimDialectUri: ClaimManagementConstants.CUSTOM_MAPPING,
     "data-testid": "add-external-claims"
 };

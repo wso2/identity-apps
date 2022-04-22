@@ -18,6 +18,10 @@
 
 export interface SCIMConfigInterface {
 
+    custom: string;
+
+    hideCore1Schema: boolean;
+
     oidc: string;
 
     scim: {
@@ -39,4 +43,6 @@ export interface SCIMConfigInterface {
     scimDialectID: {
         customEnterpriseSchema: string
     };
+
+    serverSupportedClaimsAvailable: string[];
 }

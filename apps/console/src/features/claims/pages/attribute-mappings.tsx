@@ -34,7 +34,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteChildrenProps } from "react-router";
 import { Image, StrictTabProps } from "semantic-ui-react";
 import ExternalDialectEditPage from "./external-dialect-edit";
-import { attributeConfig } from "../../../extensions";
+import { SCIMConfigs, attributeConfig } from "../../../extensions";
 import { AppConstants, AppState, getTechnologyLogos, history } from "../../core";
 import { } from "../components";
 import { ClaimManagementConstants } from "../constants";
@@ -333,23 +333,25 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                 const panes: StrictTabProps[ "panes" ] = [];
 
                 ClaimManagementConstants.SCIM_TABS.forEach((tab: { name: string; uri: string }) => {
-                    const dialect = dialects?.find((dialect: ClaimDialect) => dialect.dialectURI === tab.uri);
+                    if (!SCIMConfigs.hideCore1Schema || SCIMConfigs.scim.core1Schema !== tab.uri) {
+                        const dialect = dialects?.find((dialect: ClaimDialect) => dialect.dialectURI === tab.uri);
 
-                    dialect &&
-                        panes.push({
-                            menuItem: tab.name,
-                            render: () => (
-                                <ResourceTab.Pane controlledSegmentation attached={ false }>
-                                    <ExternalDialectEditPage 
-                                        id={ dialect.id } 
-                                        attributeUri={ tab.uri } 
-                                        attributeType={ type }
-                                        mappedLocalClaims={ mappedLocalclaims }
-                                        updateMappedClaims={ setTriggerFetchMappedClaims } 
-                                    />
-                                </ResourceTab.Pane>
-                            )
-                        });
+                        dialect &&
+                            panes.push({
+                                menuItem: tab.name,
+                                render: () => (
+                                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                                        <ExternalDialectEditPage 
+                                            id={ dialect.id } 
+                                            attributeUri={ tab.uri } 
+                                            attributeType={ type }
+                                            mappedLocalClaims={ mappedLocalclaims }
+                                            updateMappedClaims={ setTriggerFetchMappedClaims } 
+                                        />
+                                    </ResourceTab.Pane>
+                                )
+                            });
+                    }
                 });
 
                 if (attributeConfig.showCustomDialectInSCIM) {
