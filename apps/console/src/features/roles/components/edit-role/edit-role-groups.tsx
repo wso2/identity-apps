@@ -98,7 +98,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     const [ isSelectAssignedAllRolesChecked, setIsSelectAssignedAllRolesChecked ] = useState(false);
     const [ assignedGroups, setAssignedGroups ] = useState<RolesMemberInterface[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [isLoadingAssignedGroups, setIsLoadingAssignedGroups] = useState<boolean>(true);
+    const [ isLoadingAssignedGroups, setIsLoadingAssignedGroups ] = useState<boolean>(true);
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
@@ -728,7 +728,8 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                     </Grid.Row>
                                 </EmphasizedSegment>
                             ) : (
-                                !isLoadingAssignedGroups ? (
+                                !isLoadingAssignedGroups
+                                ? (
                                     <EmphasizedSegment>
                                         <EmptyPlaceholder
                                             data-testid="role-mgt-empty-groups-list"

@@ -96,7 +96,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
 
     const [ showAddNewUserModal, setAddNewUserModalView ] = useState<boolean>(false);
 
-    const [isSelectedUsersLoading, setIsSelectedUsersLoading] = useState<boolean>(true);
+    const [ isSelectedUsersLoading, setIsSelectedUsersLoading ] = useState<boolean>(true);
 
     const initialRenderTempUsers = useRef(true);
 
@@ -555,7 +555,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                         </Grid.Row>
                                     </EmphasizedSegment>
                                 ) : (
-                                    !isSelectedUsersLoading ? (
+                                    !isSelectedUsersLoading
+                                    ? (
                                         <EmphasizedSegment>
                                             <EmptyPlaceholder
                                                 title={ t("console:manage.features.roles.edit.users.list." +
