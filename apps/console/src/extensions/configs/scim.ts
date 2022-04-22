@@ -22,24 +22,18 @@ import { SCIMConfigInterface } from "./models/scim";
  * SCIM dialect configurations.
  */
 export const SCIMConfigs: SCIMConfigInterface = {
-
     custom: "",
-
     hideCore1Schema: true,
-
     oidc: "http://wso2.org/oidc/claim",
-
     scim: {
         core1Schema: "urn:scim:schemas:core:1.0",
         coreSchema: "urn:ietf:params:scim:schemas:core:2.0",
         enterpriseSchema: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User",
         userSchema: "urn:ietf:params:scim:schemas:core:2.0:User"
     },
-    
     scimDialectID: {
         customEnterpriseSchema: "dXJuOmlldGY6cGFyYW1zOnNjaW06c2NoZW1hczpleHRlbnNpb246ZW50ZXJwcmlzZToyLjA6VXNlcg"
     },
-
     scimEnterpriseUserClaimUri: {
         accountDisabled: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.accountDisabled",
         accountLocked: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.accountLocked",
@@ -48,8 +42,6 @@ export const SCIMConfigs: SCIMConfigInterface = {
         oneTimePassword: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.oneTimePassword",
         profileUrl: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.profileUrl"
     },
-
-
     serverSupportedClaimsAvailable: [
         "urn:scim:schemas:core:1.0",
         "urn:ietf:params:scim:schemas:core:2.0",

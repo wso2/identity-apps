@@ -17,20 +17,15 @@
  */
 
 export interface SCIMConfigInterface {
-
     custom: string;
-
     hideCore1Schema: boolean;
-
     oidc: string;
-
     scim: {
         core1Schema: string,
         coreSchema: string,
         enterpriseSchema: string,
         userSchema: string
     };
-
     scimEnterpriseUserClaimUri: {
         accountDisabled: string,
         accountLocked: string,
@@ -39,10 +34,8 @@ export interface SCIMConfigInterface {
         oneTimePassword: string,
         profileUrl: string
     };
-
     scimDialectID: {
         customEnterpriseSchema: string
     };
-
     serverSupportedClaimsAvailable: string[];
 }
