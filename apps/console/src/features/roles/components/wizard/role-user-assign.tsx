@@ -556,35 +556,35 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                     </EmphasizedSegment>
                                 ) : (
                                     !isSelectedUsersLoading
-                                    ? (
-                                        <EmphasizedSegment>
-                                            <EmptyPlaceholder
-                                                title={ t("console:manage.features.roles.edit.users.list." +
-                                                    "emptyPlaceholder.title") }
-                                                subtitle={ [
-                                                    t("console:manage.features.roles.edit.users.list." +
-                                                        "emptyPlaceholder.subtitles", { type: "role" })
-                                                ] }
-                                                action={
-                                                    !isReadOnly && (
-                                                        <PrimaryButton
-                                                            data-testid={ `${ testId }-users-list-empty-assign-users-
-                                                            button` }
-                                                            onClick={ handleOpenAddNewGroupModal }
-                                                            icon="plus"
-                                                        >
-                                                            { t("console:manage.features.roles.edit.users.list." +
-                                                                "emptyPlaceholder.action") }
-                                                        </PrimaryButton>
-                                                    )
-                                                }
-                                                image={ getEmptyPlaceholderIllustrations().emptyList }
-                                                imageSize="tiny"
-                                            />
-                                        </EmphasizedSegment>
+                                        ? (
+                                            <EmphasizedSegment>
+                                                <EmptyPlaceholder
+                                                    title={ t("console:manage.features.roles.edit.users.list." +
+                                                        "emptyPlaceholder.title") }
+                                                    subtitle={ [
+                                                        t("console:manage.features.roles.edit.users.list." +
+                                                            "emptyPlaceholder.subtitles", { type: "role" })
+                                                    ] }
+                                                    action={
+                                                        !isReadOnly && (
+                                                            <PrimaryButton
+                                                                data-testid={ `${ testId }-users-list-empty-assign-
+                                                                users-button` }
+                                                                onClick={ handleOpenAddNewGroupModal }
+                                                                icon="plus"
+                                                            >
+                                                                { t("console:manage.features.roles.edit.users.list." +
+                                                                    "emptyPlaceholder.action") }
+                                                            </PrimaryButton>
+                                                        )
+                                                    }
+                                                    image={ getEmptyPlaceholderIllustrations().emptyList }
+                                                    imageSize="tiny"
+                                                />
+                                            </EmphasizedSegment>
+                                        )
+                                        : <ContentLoader className="p-3" active />
                                     )
-                                    : <ContentLoader className="p-3" active />
-                                )
                             }
                         </Grid.Column>
                     </Grid.Row>

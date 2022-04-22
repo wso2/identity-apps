@@ -729,35 +729,35 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                 </EmphasizedSegment>
                             ) : (
                                 !isLoadingAssignedGroups
-                                ? (
-                                    <EmphasizedSegment>
-                                        <EmptyPlaceholder
-                                            data-testid="role-mgt-empty-groups-list"
-                                            title={ t("console:manage.features.roles.edit.groups." +
-                                                    "emptyPlaceholder.title") }
-                                            subtitle={ [
-                                                t("console:manage.features.roles.edit.groups." +
-                                                        "emptyPlaceholder.subtitles")
-                                            ] }
-                                            action={
-                                                !isReadOnly && (
-                                                    <PrimaryButton
-                                                        data-testid="role-mgt-empty-groups-list-assign-group-button"
-                                                        icon="plus"
-                                                        onClick={ handleOpenAddNewGroupModal }
-                                                    >
-                                                        { t("console:manage.features.roles.edit.groups." +
-                                                                "emptyPlaceholder.action") }
-                                                    </PrimaryButton>
-                                                )
-                                            }
-                                            image={ getEmptyPlaceholderIllustrations().emptyList }
-                                            imageSize="tiny"
-                                        />
-                                    </EmphasizedSegment>
+                                    ? (
+                                        <EmphasizedSegment>
+                                            <EmptyPlaceholder
+                                                data-testid="role-mgt-empty-groups-list"
+                                                title={ t("console:manage.features.roles.edit.groups." +
+                                                        "emptyPlaceholder.title") }
+                                                subtitle={ [
+                                                    t("console:manage.features.roles.edit.groups." +
+                                                            "emptyPlaceholder.subtitles")
+                                                ] }
+                                                action={
+                                                    !isReadOnly && (
+                                                        <PrimaryButton
+                                                            data-testid="role-mgt-empty-groups-list-assign-group-button"
+                                                            icon="plus"
+                                                            onClick={ handleOpenAddNewGroupModal }
+                                                        >
+                                                            { t("console:manage.features.roles.edit.groups." +
+                                                                    "emptyPlaceholder.action") }
+                                                        </PrimaryButton>
+                                                    )
+                                                }
+                                                image={ getEmptyPlaceholderIllustrations().emptyList }
+                                                imageSize="tiny"
+                                            />
+                                        </EmphasizedSegment>
+                                    )
+                                    : <ContentLoader className="p-3" active />
                                 )
-                                : <ContentLoader className="p-3" active />
-                            )
                         }
                     </Grid.Column>
                 </Grid.Row>
