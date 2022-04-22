@@ -24,6 +24,7 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
+    ContentLoader,
     EmphasizedSegment,
     EmptyPlaceholder,
     Heading,
@@ -97,6 +98,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     const [ isSelectAssignedAllRolesChecked, setIsSelectAssignedAllRolesChecked ] = useState(false);
     const [ assignedGroups, setAssignedGroups ] = useState<RolesMemberInterface[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isLoadingAssignedGroups, setIsLoadingAssignedGroups ] = useState<boolean>(true);
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
@@ -141,6 +143,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             .then((response) => {
                 setPrimaryGroups(response.data.Resources);
             });
+        setIsLoadingAssignedGroups(false);
     }, []);
 
     const mapUserRoles = () => {
@@ -725,32 +728,36 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                     </Grid.Row>
                                 </EmphasizedSegment>
                             ) : (
-                                <EmphasizedSegment>
-                                    <EmptyPlaceholder
-                                        data-testid="role-mgt-empty-groups-list"
-                                        title={ t("console:manage.features.roles.edit.groups." +
-                                                "emptyPlaceholder.title") }
-                                        subtitle={ [
-                                            t("console:manage.features.roles.edit.groups." +
-                                                    "emptyPlaceholder.subtitles")
-                                        ] }
-                                        action={
-                                            !isReadOnly && (
-                                                <PrimaryButton
-                                                    data-testid="role-mgt-empty-groups-list-assign-group-button"
-                                                    icon="plus"
-                                                    onClick={ handleOpenAddNewGroupModal }
-                                                >
-                                                    { t("console:manage.features.roles.edit.groups." +
-                                                            "emptyPlaceholder.action") }
-                                                </PrimaryButton>
-                                            )
-                                        }
-                                        image={ getEmptyPlaceholderIllustrations().emptyList }
-                                        imageSize="tiny"
-                                    />
-                                </EmphasizedSegment>
-                            )
+                                !isLoadingAssignedGroups
+                                    ? (
+                                        <EmphasizedSegment>
+                                            <EmptyPlaceholder
+                                                data-testid="role-mgt-empty-groups-list"
+                                                title={ t("console:manage.features.roles.edit.groups." +
+                                                        "emptyPlaceholder.title") }
+                                                subtitle={ [
+                                                    t("console:manage.features.roles.edit.groups." +
+                                                            "emptyPlaceholder.subtitles")
+                                                ] }
+                                                action={
+                                                    !isReadOnly && (
+                                                        <PrimaryButton
+                                                            data-testid="role-mgt-empty-groups-list-assign-group-button"
+                                                            icon="plus"
+                                                            onClick={ handleOpenAddNewGroupModal }
+                                                        >
+                                                            { t("console:manage.features.roles.edit.groups." +
+                                                                    "emptyPlaceholder.action") }
+                                                        </PrimaryButton>
+                                                    )
+                                                }
+                                                image={ getEmptyPlaceholderIllustrations().emptyList }
+                                                imageSize="tiny"
+                                            />
+                                        </EmphasizedSegment>
+                                    )
+                                    : <ContentLoader className="p-3" active />
+                                )
                         }
                     </Grid.Column>
                 </Grid.Row>
