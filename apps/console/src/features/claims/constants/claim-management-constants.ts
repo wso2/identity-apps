@@ -113,16 +113,13 @@ export class ClaimManagementConstants {
         ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM_SCHEMAS_CORE")
     ]
 
+    public static readonly CUSTOM_MAPPING: string = SCIMConfigs.custom;
+
     public static readonly OIDC_MAPPING: string[] = [
         SCIMConfigs.oidc
     ];
 
-    public static readonly SCIM_MAPPING: string[] = [
-        "urn:ietf:params:scim:schemas:core:2.0:User",
-        "urn:scim:schemas:core:1.0",
-        "urn:ietf:params:scim:schemas:core:2.0",
-        "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
-    ]
+    public static readonly SCIM_MAPPING: string[] = Object.values(SCIMConfigs.scim);
 
     public static readonly OIDC: string = "oidc";
     public static readonly SCIM: string = "scim";

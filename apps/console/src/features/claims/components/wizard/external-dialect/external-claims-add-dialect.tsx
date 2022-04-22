@@ -114,7 +114,7 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
 
     const [ claims, setClaims ] = useState<AddExternalClaim[]>([]);
     const [ initialList, setInitialList ] = useState<AddExternalClaim[]>([]);
-    const [ tempMappedLocalClaims, setTempMappedLocalClaims ] = useState<string[]>();
+    const [ tempMappedLocalClaims, setTempMappedLocalClaims ] = useState<string[]>([]);
 
     const ref = useRef(true);
     const firstTimeValueChanges = useRef(true);
@@ -291,6 +291,7 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
 ExternalClaims.defaultProps = {
     attributeType: ClaimManagementConstants.OTHERS,
     "data-testid": "external-claims",
+    mappedLocalClaims: [],
     shouldShowInitialValues: true,
     wizard: true
 };
