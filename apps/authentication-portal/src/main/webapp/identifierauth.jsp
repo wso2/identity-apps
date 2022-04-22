@@ -222,6 +222,7 @@
                 onclick="submitIdentifier(event)"
                 class="ui primary large button"
                 role="button"
+                data-testid="identifier-auth-continue-button"
                 value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>" />
         </div>
     </div>
