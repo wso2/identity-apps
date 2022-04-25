@@ -118,7 +118,8 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                 filteredDialect.forEach((attributeMapping: ClaimDialect) => {
                     if (ClaimManagementConstants.OIDC_MAPPING.includes(attributeMapping.dialectURI)) {
                         oidc.push(attributeMapping);
-                    } else if (ClaimManagementConstants.SCIM_MAPPING.includes(attributeMapping.dialectURI)) {
+                    } else if (Object.values(ClaimManagementConstants.SCIM_TABS).map(
+                        (tab: { name: string; uri: string }) => tab.uri).includes(attributeMapping.dialectURI)) {
                         scim.push(attributeMapping);
                     } else {
                         if (attributeConfig.showCustomDialectInSCIM) {

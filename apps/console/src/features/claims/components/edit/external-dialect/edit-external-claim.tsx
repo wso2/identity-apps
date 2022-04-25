@@ -324,13 +324,15 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                                         key: index,
                                         text: (
                                             <div className="multiline">
-                                            { claim?.displayName }
-                                            <Code className="description" 
-                                                compact 
-                                                withBackground={ false }>
-                                                { claim.claimURI }
-                                            </Code>
-                                        </div>),
+                                                { claim?.displayName }
+                                                <Code 
+                                                    className="description" 
+                                                    compact 
+                                                    withBackground={ false }>
+                                                    { claim?.claimURI }
+                                                </Code>
+                                            </div>
+                                        ),
                                         value: claim?.claimURI
                                     };
                                 })
