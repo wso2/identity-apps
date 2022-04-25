@@ -331,7 +331,8 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                                                     withBackground={ false }>
                                                     { claim?.claimURI }
                                                 </Code>
-                                            </div>),
+                                            </div>
+                                        ),
                                         value: claim?.claimURI
                                     };
                                 })
