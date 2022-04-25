@@ -197,6 +197,8 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         case SupportedAuthProtocolTypes.WS_FEDERATION:
             return (
                 <InboundPassiveStsForm
+                    onUpdate={ onUpdate }
+                    application={ application }
                     isLoading={ isLoading }
                     certificate={ certificate }
                     initialValues={ initialValues }
