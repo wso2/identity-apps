@@ -20,12 +20,6 @@
 <%= htmlWebpackPlugin.options.importUtil %>
 <%= htmlWebpackPlugin.options.importSuperTenantConstant %>
 
-<script>
-    var userAccessedPath = window.location.href;
-    sessionStorage.setItem("auth_callback_url_my_account", userAccessedPath.split(window.origin)[1]);
-    sessionStorage.setItem("userAccessedPath", userAccessedPath.split(window.origin)[1]);
-</script>
-
 <jsp:scriptlet>
     <%= htmlWebpackPlugin.options.requestForwardSnippet %>
 </jsp:scriptlet>
