@@ -169,6 +169,7 @@
 ---------------*/
 
 @lightInputBackground : #fafafa;
+@inputAddonWrapperOffset: 2.67142857em;
 
 /*-------------------
     Focused Input
