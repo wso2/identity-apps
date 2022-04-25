@@ -119,13 +119,6 @@ export class ClaimManagementConstants {
         SCIMConfigs.oidc
     ];
 
-    public static readonly SCIM_MAPPING: string[] = [
-        "urn:ietf:params:scim:schemas:core:2.0:User",
-        "urn:scim:schemas:core:1.0",
-        "urn:ietf:params:scim:schemas:core:2.0",
-        "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
-    ];
-
     public static readonly OIDC: string = "oidc";
     public static readonly SCIM: string = "scim";
     public static readonly OTHERS: string = "others";
