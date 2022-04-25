@@ -909,6 +909,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             <List.Content floated="right">
                                 { !CommonUtils.isProfileReadOnly(isReadOnlyUser)
                                 && schema.mutability !== ProfileConstants.READONLY_SCHEMA
+                                && schema.name !== "userName"
                                 && !isEmpty(profileInfo.get(schema.name))
                                 && hasRequiredScopes(featureConfig?.personalInfo,
                                     featureConfig?.personalInfo?.scopes?.update, allowedScopes)
