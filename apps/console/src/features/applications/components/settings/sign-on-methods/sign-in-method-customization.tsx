@@ -29,6 +29,9 @@ import {
     Text,
     useDocumentation
 } from "@wso2is/react-components";
+import cloneDeep from "lodash-es/cloneDeep";
+import isEmpty from "lodash-es/isEmpty";
+import isEqual from "lodash-es/isEqual";
 import kebabCase from "lodash-es/kebabCase";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -120,7 +123,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
-    const [ sequence, setSequence ] = useState<AuthenticationSequenceInterface>(authenticationSequence);
+    const [ sequence, setSequence ] = useState<AuthenticationSequenceInterface>(cloneDeep(authenticationSequence));
     const [ updateTrigger, setUpdateTrigger ] = useState<boolean>(false);
     const [ adaptiveScript, setAdaptiveScript ] = useState<string | string[]>(undefined);
     const [ requestPathAuthenticators, setRequestPathAuthenticators ] = useState<any>(undefined);
@@ -461,13 +464,25 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             return null;
         }
 
+        let isDisabled: boolean = isButtonDisabled || isLoading;
+
+        // If the sequence hasn't changed, disable the update button to improve UX.
+        if (isEqual(authenticationSequence.steps, updatedSteps)
+            && (
+                isEmpty(authenticationSequence.script) && AdaptiveScriptUtils.isDefaultScript(adaptiveScript, steps)
+                || isEqual(authenticationSequence.script, adaptiveScript)
+            )
+        ) {
+            isDisabled = true;
+        }
+
         return (
             <>
                 <Divider hidden/>
                 <PrimaryButton
                     onClick={ handleUpdateClick }
                     data-testid={ `${ testId }-update-button` }
-                    disabled={ isButtonDisabled || isLoading }
+                    disabled={ isDisabled }
                     loading={ isLoading }
                 >
                     { t("common:update") }
