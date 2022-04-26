@@ -142,6 +142,12 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             return SignInMethodUtils.isMagicLinkAuthenticatorValid(currentStep, authenticationSteps);
         }
 
+        if ([
+            IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
+            IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ].includes(authenticator.id)) {
+            return SignInMethodUtils.isFirstFactorValid(currentStep, authenticationSteps);
+        }
+
         return true;
     };
 
@@ -192,9 +198,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                         <Code withBackground>Username & Password</Code>,{ " " }
                                         <Code withBackground>Social Login</Code>,
                                         <Code withBackground>Security Key/Biometrics</Code>
-                                            or any other handlers such as
-                                        <Code withBackground>Identifier First</Code>
-                                                that can handle these factors are
+                                            or any other handlers that can handle these factors are
                                             present in a previous step.
                                     </Trans>
                                 ) }
@@ -226,6 +230,23 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                 "console:develop.features.applications.edit.sections" +
                                 ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
                                 ".magicLinkDisabled"
+                            )
+                        }
+                    </Text>
+                </Fragment>
+            );
+        } else if ([
+            IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
+            IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ].includes(authenticator.id)) {
+            return (
+                <Fragment>
+                    { InfoLabel }
+                    <Text>
+                        {
+                            t(
+                                "console:develop.features.applications.edit.sections" +
+                                ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
+                                ".firstFactorDisabled"
                             )
                         }
                     </Text>
