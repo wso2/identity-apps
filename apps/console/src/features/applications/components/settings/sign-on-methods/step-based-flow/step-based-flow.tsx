@@ -425,7 +425,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
      * @param {number} optionIndex - Index of the option.
      */
     const handleStepOptionDelete = (stepIndex: number, optionIndex: number): void => {
-
         const steps: AuthenticationStepInterface[] = [ ...authenticationSteps ];
 
         const [
@@ -441,7 +440,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         if (containSecondFactorOnRight) {
             const deletingOption: AuthenticatorInterface = steps[ stepIndex ].options[ optionIndex ];
             const noOfSecondFactorsOnRight: number = SignInMethodUtils.countSpecificFactorInSteps(
-                ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS, rightSideSteps);
+                [ ...ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS,
+                    IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR ], rightSideSteps);
             const noOfSecondFactorsOnRightRequiringHandlers: number = SignInMethodUtils.countSpecificFactorInSteps(
                 [
                     IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
@@ -450,7 +450,10 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 ], rightSideSteps);
             const onlySecondFactorsRequiringHandlersOnRight: boolean = noOfSecondFactorsOnRight
                 === noOfSecondFactorsOnRightRequiringHandlers;
-            const isDeletingOptionFirstFactor: boolean = ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS
+            const isDeletingOptionFirstFactor: boolean = [
+                ...ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
+                IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
+            ]
                 .includes(deletingOption.authenticator);
             const isDeletingOptionSecondFactorHandler: boolean = [
                 ...ApplicationManagementConstants.TOTP_HANDLERS,
@@ -512,6 +515,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                             : SignInMethodUtils.countSpecificFactorInSteps(
                                 ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
                                 leftSideStepsFromImmediateSecondFactor);
+
 
                         // If there are no other handlers, Show a warning and abort option delete.
                         if (noOfProperHandlersOnLeft <= 1) {
@@ -695,6 +699,28 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                     level: AlertLevels.WARNING,
                     message: t(
                         "console:develop.features.applications.notifications.emptyAuthenticationStep.genericError" +
+                        ".message"
+                    )
+                })
+            );
+
+            return false;
+        }
+
+        // Don't allow identifier first being the only authenticator in the flow.
+        if ( steps.length === 1
+            && steps[ 0 ].options.length === 1
+            && steps[ 0 ].options[ 0 ].authenticator
+                === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR ) {
+            dispatch(
+                addAlert({
+                    description: t(
+                        "console:develop.features.applications.notifications.updateOnlyIdentifierFirstError" +
+                        ".description"
+                    ),
+                    level: AlertLevels.WARNING,
+                    message: t(
+                        "console:develop.features.applications.notifications.updateOnlyIdentifierFirstError" +
                         ".message"
                     )
                 })
