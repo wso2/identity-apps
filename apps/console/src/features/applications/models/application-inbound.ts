@@ -327,7 +327,6 @@ export interface WSTrustMetaDataInterface {
 export interface PassiveStsConfigurationInterface {
     realm: string;
     replyTo: string;
-    idToken?: IdTokenConfigurationInterface;
 }
 
 export enum CustomTypeEnum {

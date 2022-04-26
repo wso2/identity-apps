@@ -201,18 +201,8 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <ApplicationCertificateWrapper
                             protocol={ SupportedAuthProtocolTypes.WS_FEDERATION }
-                            deleteAllowed={ !(initialValues?.idToken?.encryption?.enabled) }
-                            reasonInsideTooltipWhyDeleteIsNotAllowed={ (
-                                <Fragment>
-                                    <Trans
-                                        i18nKey={ "console:develop.features.applications.forms" +
-                                        ".inboundOIDC.sections.certificates.disabledPopup" }
-                                    >
-                                        This certificate is used to encrypt the <Code>id_token</Code>. First, you need
-                                        to disable <Code>id_token</Code> encryption to proceed.
-                                    </Trans>
-                                </Fragment>
-                            ) }
+                            deleteAllowed={ true }
+                            reasonInsideTooltipWhyDeleteIsNotAllowed={ <Fragment /> }
                             onUpdate={ onUpdate }
                             application={ application }
                             updateCertFinalValue={ setFinalCertValue }
