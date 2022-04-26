@@ -96,27 +96,12 @@ const RolesPage = (): ReactElement => {
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(ROLES_SORTING_OPTIONS[ 0 ]);
 
     useEffect(() => {
-        if (searchQuery == "") {
-            getRoles();
-        }
-    },[ initialRolList?.Resources?.length != 0 ]);
-
-    useEffect(() => {
-        getRoles();
-        setListUpdated(false);
-    }, [ isListUpdated ]);
-
-    useEffect(() => {
         getUserStores();
     }, []);
 
     useEffect(() => {
         getRoles();
-    }, [ filterBy ]);
-
-    useEffect(() => {
-        getRoles();
-    }, [ userStore ]);
+    }, [ filterBy, userStore ]);
 
     const getRoles = () => {
         setRoleListFetchRequestLoading(true);
@@ -292,7 +277,7 @@ const RolesPage = (): ReactElement => {
                     "console:manage.features.roles.notifications.deleteRole.success.message"
                 )
             });
-            setListUpdated(true);
+            getRoles();
         });
     };
 

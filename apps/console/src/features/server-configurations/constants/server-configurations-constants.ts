@@ -329,9 +329,7 @@ export class ServerConfigurationsConstants {
 	public static readonly OFFLINE_PASSWORD_RESET: string = "Recovery.AdminPasswordReset.Offline";
 	public static readonly ADMIN_FORCED_PASSWORD_RESET_EXPIRY_TIME: string = "Recovery.AdminPasswordReset.ExpiryTime";
 
-    //multi attribute login set
     public static readonly MULTI_ATTRIBUTE_CLAIM_LIST: string = "account-multiattributelogin-handler-allowedattributes";
-
 
 	/**
 	 * Extensions Constants.
