@@ -235,6 +235,24 @@ export class SignInMethodUtils {
         return true;
     }
 
+    /**
+     * Checks if a identifier first or basic auth already exists. Returns false if it does or tru otherwise.
+     *
+     * @param {number} currentStep The current step.
+     * @param {AuthenticationStepInterface} authenticationSteps The authentication steps.
+     *
+     * @returns {boolean}
+     */
+    public static isFirstFactorValid(currentStep: number, authenticationSteps: AuthenticationStepInterface[]): boolean {
+        const firstFactor = authenticationSteps[currentStep].options.find(
+            (authenticator) =>
+                authenticator.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR ||
+                authenticator.authenticator === IdentityProviderManagementConstants.BASIC_AUTHENTICATOR
+        );
+
+        return !firstFactor;
+    }
+
     public static isConnectionsJITUPConflictWithMFA(
         args: ConnectionsJITUPConflictWithMFAArgs
     ): ConnectionsJITUPConflictWithMFAReturnValue {
