@@ -449,4 +449,6 @@ export class ApplicationManagementConstants {
      * Error code for invalid metadata URL.
      */
     public static readonly ERROR_CODE_INVALID_METADATA_URL: string = "SAML-60003";
+
+    public static readonly PLAYGROUND_TOUR_STATUS_STORAGE_KEY = "isPlaygroundTourViewed";
 }

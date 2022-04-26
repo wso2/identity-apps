@@ -19,14 +19,15 @@
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ConfirmationModal, ContentLoader, CopyInputField, ResourceTab } from "@wso2is/react-components";
+import { ConfirmationModal, ContentLoader, CopyInputField, Heading, ResourceTab, Text } from "@wso2is/react-components";
 import Axios from "axios";
 import inRange from "lodash-es/inRange";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Step } from "react-joyride";
 import { useDispatch, useSelector } from "react-redux";
-import { Form, Grid, TabProps } from "semantic-ui-react";
+import { Form, Grid, Menu, TabProps } from "semantic-ui-react";
 import { InboundProtocolsMeta } from "./meta";
 import {
     AccessConfiguration,
@@ -52,6 +53,7 @@ import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationInterface,
+    ApplicationTabTypes,
     ApplicationTemplateInterface,
     AuthProtocolMetaListItemInterface,
     OIDCApplicationConfigurationInterface,
@@ -735,62 +737,96 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_GENERAL_SETTINGS"))) {
 
-                panes.push({
-                    componentId: "general",
-                    menuItem: t("console:develop.features.applications.edit.sections.general.tabName"),
-                    render: GeneralApplicationSettingsTabPane
-                });
+                if (applicationConfig.editApplication.
+                    isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.GENERAL)) {
+                    panes.push({
+                        componentId: "general",
+                        menuItem: 
+                                <Menu.Item data-tourid="general">
+                                    { t("console:develop.features.applications.edit.sections.general.tabName") }
+                                </Menu.Item>,
+                        render: () => applicationConfig.editApplication.
+                            getOveriddenTab(
+                                inboundProtocolConfig?.oidc?.clientId, 
+                                ApplicationTabTypes.GENERAL,
+                                GeneralApplicationSettingsTabPane(),
+                                application.name,
+                                application.id
+                            ) 
+                    });
+                }
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG"))) {
 
-                panes.push({
-                    componentId: "protocol",
-                    menuItem: t("console:develop.features.applications.edit.sections.access.tabName"),
-                    render: ApplicationSettingsTabPane
-                });
+                applicationConfig.editApplication.
+                    isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.PROTOCOL) &&
+                 panes.push({
+                     componentId: "protocol",
+                     menuItem: t("console:develop.features.applications.edit.sections.access.tabName"),
+                     render: ApplicationSettingsTabPane
+                 });
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ATTRIBUTE_MAPPING"))) {
 
-                panes.push({
-                    componentId: "user-attributes",
-                    menuItem: t("console:develop.features.applications.edit.sections.attributes.tabName"),
-                    render: AttributeSettingTabPane
-                });
+                applicationConfig.editApplication.
+                    isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.USER_ATTRIBUTES) &&
+                 panes.push({
+                     componentId: "user-attributes",
+                     menuItem: 
+                        <Menu.Item data-tourid="attributes">
+                            { t("console:develop.features.applications.edit.sections.attributes.tabName") }
+                        </Menu.Item>,
+                     render: AttributeSettingTabPane
+                 });
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG"))) {
 
-                panes.push({
-                    componentId: "sign-in-method",
-                    menuItem: t("console:develop.features.applications.edit.sections.signOnMethod.tabName"),
-                    render: SignOnMethodsTabPane
-                });
+                applicationConfig.editApplication.
+                    isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.SIGN_IN_METHOD) &&
+                 panes.push({
+                     componentId: "sign-in-method",
+                     menuItem:  
+                        <Menu.Item data-tourid="sign-in-methods">
+                            { t("console:develop.features.applications.edit.sections.signOnMethod.tabName") }
+                        </Menu.Item> ,
+                     render: SignOnMethodsTabPane
+                 });
             }
 
             if (applicationConfig.editApplication.showProvisioningSettings
                 && isFeatureEnabled(featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))) {
 
-                panes.push({
-                    componentId: "provisioning",
-                    menuItem: t("console:develop.features.applications.edit.sections.provisioning.tabName"),
-                    render: ProvisioningSettingsTabPane
-                });
+                applicationConfig.editApplication.
+                    isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.PROVISIONING) &&
+                     panes.push({
+                         componentId: "provisioning",
+                         menuItem: t("console:develop.features.applications.edit.sections.provisioning.tabName"),
+                         render: ProvisioningSettingsTabPane
+                     });
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ADVANCED_SETTINGS"))) {
 
-                panes.push({
-                    componentId: "advanced",
-                    menuItem: t("console:develop.features.applications.edit.sections.advanced.tabName"),
-                    render: AdvancedSettingsTabPane
-                });
+                applicationConfig.editApplication.
+                    isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId , ApplicationTabTypes.ADVANCED) &&
+                 panes.push({
+                     componentId: "advanced",
+                     menuItem: (
+                         <Menu.Item data-tourid="advanced">
+                             { t("console:develop.features.applications.edit.sections.advanced.tabName") }
+                         </Menu.Item> ),
+                     render: AdvancedSettingsTabPane
+                 });
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))) {
 
+                applicationConfig.editApplication.
+                    isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.INFO) && 
                 panes.push({
                     componentId: "info",
                     menuItem: {
@@ -993,3 +1029,83 @@ EditApplication.defaultProps = {
     getConfiguredInboundProtocolConfigs: () => null,
     getConfiguredInboundProtocolsList: () => null
 };
+
+/**
+     * Steps for the Playground User tour.
+     *
+     * @type {Array<Step>}
+     */
+export const loginPlaygroundUserTourSteps: Array<Step> = [
+    {
+        content: (
+            <div className="tour-step">
+                <Heading bold as="h6">
+                    User Attributes
+                </Heading>
+                <Text>
+                    Update the User Attributes for your application
+                </Text>
+                <Text>
+                    Click on the Next button to learn about the process
+                </Text>
+            </div>
+        ),
+        disableBeacon: true,
+        placement: "bottom",
+        target: "[data-tourid=\"attributes\"]"
+    },
+    {
+        content: (
+            <div className="tour-step">
+                <Heading bold as="h6">
+                    Sign-on Methods
+                </Heading>
+                <Text>
+                    Select the sign-on method you wish to try out based on your application
+                </Text>
+                <Text>
+                    Click on the Next button to learn about the process
+                </Text>
+            </div>
+        ),
+        disableBeacon: true,
+        placement: "bottom",
+        target: "[data-tourid=\"sign-in-methods\"]"
+    },
+    {
+        content: (
+            <div className="tour-step">
+                <Heading bold as="h6">
+                    Advanced
+                </Heading>
+                <Text>
+                    Change the consent  of log in and log out of the application
+                </Text>
+                <Text>
+                    Click on the Next button to learn about the process
+                </Text>
+            </div>
+        ),
+        disableBeacon: true,
+        placement: "bottom",
+        target: "[data-tourid=\"advanced\"]"
+    },
+    {
+        content: (
+            <div className="tour-step">
+                <Heading bold as="h6">
+                    Try Out Login Flow
+                </Heading>
+                <Text>
+                    Click on Try Login button to try out the login flow at anytime
+                </Text>
+                <Text>
+                    Click on the Done button to End the tour
+                </Text>
+            </div>
+        ),
+        disableBeacon: true,
+        placement: "right",
+        target: "[data-tourid=\"button\"]"
+    }
+];

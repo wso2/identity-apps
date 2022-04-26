@@ -697,3 +697,16 @@ export enum URLFragmentTypes {
     TAB_INDEX = "tab=",
     VIEW = "view=",
 }
+
+/**
+ * Enum for customized tab types
+ */
+ export enum ApplicationTabTypes {
+    GENERAL = "General",
+    PROTOCOL ="protocol",
+    USER_ATTRIBUTES = "user-attributes",
+    SIGN_IN_METHOD = "sign-in-method",
+    PROVISIONING = "provisioning",
+    ADVANCED = "advanced",
+    INFO = "info"
+}

@@ -23,6 +23,7 @@ import { I18n } from "@wso2is/i18n";
 import camelCase from "lodash-es/camelCase";
 import intersectionBy from "lodash-es/intersectionBy";
 import unionBy from "lodash-es/unionBy";
+import { FunctionComponent, SVGProps } from "react";
 import { DocPanelUICardInterface, store } from "../../core";
 import {
     getAvailableInboundProtocols,
@@ -49,7 +50,6 @@ import {
     setOIDCApplicationConfigs,
     setSAMLApplicationConfigs
 } from "../store";
-import { FunctionComponent, SVGProps } from "react";
 
 /**
  * Utility class for application(service provider) operations.
@@ -399,4 +399,23 @@ export class ApplicationManagementUtils {
 
         return SAMLConfigurationDisplayNames[mode];
     }
+
+    /**
+     * Todo Remove this mapping and fix the backend.
+     */
+     public static mapProtocolTypeToName = ((type: string): string => {
+         let protocolName = type;
+
+         if (protocolName === "oauth2") {
+             protocolName = SupportedAuthProtocolTypes.OIDC;
+         } else if (protocolName === "passivests") {
+             protocolName = SupportedAuthProtocolTypes.WS_FEDERATION;
+         } else if (protocolName === "wstrust") {
+             protocolName = SupportedAuthProtocolTypes.WS_TRUST;
+         } else if (protocolName === "samlsso") {
+             protocolName = SupportedAuthProtocolTypes.SAML;
+         }
+
+         return protocolName;
+     });
 }
