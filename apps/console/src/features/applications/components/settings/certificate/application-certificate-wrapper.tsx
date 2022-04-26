@@ -202,6 +202,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
         switch (protocol) {
             case SupportedAuthProtocolTypes.OAUTH2_OIDC:
             case SupportedAuthProtocolTypes.OIDC:
+            case SupportedAuthProtocolTypes.WS_FEDERATION:
                 return (
                     <Trans
                         i18nKey={ "console:develop.features.applications.forms." +
