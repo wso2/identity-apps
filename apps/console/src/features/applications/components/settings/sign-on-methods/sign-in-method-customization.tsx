@@ -37,6 +37,7 @@ import { Divider, Grid, Icon, Message } from "semantic-ui-react";
 import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
+import { applicationConfig } from "../../../../../extensions";
 import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
 import { GenericAuthenticatorInterface, IdentityProviderManagementConstants } from "../../../../identity-providers";
 import { getRequestPathAuthenticators, updateAuthenticationSequence } from "../../../api";
@@ -46,7 +47,6 @@ import {
     AuthenticationStepInterface
 } from "../../../models";
 import { AdaptiveScriptUtils, ConnectionsJITUPConflictWithMFAReturnValue, SignInMethodUtils } from "../../../utils";
-import { applicationConfig } from "../../../../../extensions";
 
 /**
  * Proptypes for the sign in methods customization entry point component.
