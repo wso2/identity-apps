@@ -46,6 +46,7 @@ import {
     AuthenticationStepInterface
 } from "../../../models";
 import { AdaptiveScriptUtils, ConnectionsJITUPConflictWithMFAReturnValue, SignInMethodUtils } from "../../../utils";
+import { applicationConfig } from "../../../../../extensions";
 
 /**
  * Proptypes for the sign in methods customization entry point component.
@@ -613,6 +614,24 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                         >
                             { t("common:learnMore") }
                         </DocumentationLink>
+                    </Message>
+                )
+            }
+            {
+                authenticationSequence.steps[ 0 ].options.find(authenticator =>
+                    authenticator.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
+                && applicationConfig.signInMethod.identifierFirstWarning)
+                && (
+                    <Message warning>
+                        <Trans
+                            i18nKey={
+                                t("console:develop.features.applications.edit.sections" +
+                                    ".signOnMethod.sections.landing.flowBuilder." +
+                                    "types.magicLink.warning")
+                            }>
+                            You can only use Identifier First authenticator with the Magic Link authenticator.
+                            Using it with any other authenticator can lead to unexpected behavior.
+                        </Trans>
                     </Message>
                 )
             }
