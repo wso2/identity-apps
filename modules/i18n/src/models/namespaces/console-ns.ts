@@ -629,6 +629,7 @@ export interface ConsoleNS {
                                             secondFactorDisabledInFirstStep: string;
                                             authenticatorDisabled: string;
                                             magicLinkDisabled: string;
+                                            firstFactorDisabled: string;
                                         };
                                     };
                                 };
@@ -686,6 +687,7 @@ export interface ConsoleNS {
                                             magicLink: {
                                                 description: string;
                                                 heading: string;
+                                                warning: string;
                                             }
                                         }
                                     }
@@ -1029,6 +1031,7 @@ export interface ConsoleNS {
                     conditionalScriptLoopingError: NotificationItem;
                     deleteCertificateSuccess: NotificationItem;
                     deleteCertificateGenericError: NotificationItem;
+                    updateOnlyIdentifierFirstError: NotificationItem;
                 };
                 popups: {
                     appStatus: {
