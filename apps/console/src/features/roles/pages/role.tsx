@@ -96,12 +96,6 @@ const RolesPage = (): ReactElement => {
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(ROLES_SORTING_OPTIONS[ 0 ]);
 
     useEffect(() => {
-        if (searchQuery == "") {
-            getRoles();
-        }
-    },[ initialRolList?.Resources?.length != 0 ]);
-
-    useEffect(() => {
         getUserStores();
     }, []);
 
