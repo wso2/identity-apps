@@ -1033,6 +1033,9 @@ export const console: ConsoleNS = {
                                             authenticatorDisabled: "Vous devez configurer cet authentificateur en " +
                                                 "fournissant un identifiant et un secret client, à utiliser avec " +
                                                 "vos applications.",
+                                            firstFactorDisabled: "L'authentificateur Identifier First " +
+                                                "et l'authentificateur Nom d'utilisateur et mot de passe " +
+                                                "ne peuvent pas être ajoutés à la même étape.",
                                             forms: {
                                                 fields: {
                                                     attributesFrom: {
@@ -1153,7 +1156,12 @@ export const console: ConsoleNS = {
                                             magicLink: {
                                                 description: "Permettre aux utilisateurs de se connecter " +
                                                     "en utilisant un lien magique envoyé à leur adresse e-mail.",
-                                                heading: "Ajouter une connexion Magic Link"
+                                                heading: "Ajouter une connexion Magic Link",
+                                                warning: "Vous ne pouvez utiliser l'authentificateur Identifier " +
+                                                    "First qu'avec l'authentificateur Magic Link. L'utiliser avec " +
+                                                    "n'importe quel autre authentificateur peut entraîner un " +
+                                                    "comportement inattendu."
+
                                             },
                                             totp: {
                                                 description: "Activez une couche d'authentification supplémentaire " +
@@ -2733,6 +2741,11 @@ export const console: ConsoleNS = {
                             description: "Mise à jour réussie des configurations d'approvisionnement.",
                             message: "Mise à jour réussie"
                         }
+                    },
+                    updateOnlyIdentifierFirstError: {
+                        description: "Identifiant Le premier authentificateur ne peut pas être le seul " +
+                            "authentificateur. Il nécessite une étape supplémentaire.",
+                        message: "Erreur de mise à jour"
                     },
                     updateOutboundProvisioning: {
                         genericError: {

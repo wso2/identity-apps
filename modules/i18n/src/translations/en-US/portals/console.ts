@@ -1017,6 +1017,8 @@ export const console: ConsoleNS = {
                                             },
                                             authenticatorDisabled: "You need to configure this authenticator by " +
                                                 "providing client id & secret, to use with your applications.",
+                                            firstFactorDisabled: "Identifier First authenticator and Username & " +
+                                                "Password authenticator cannot be added to the same step.",
                                             forms: {
                                                 fields: {
                                                     attributesFrom: {
@@ -1032,13 +1034,13 @@ export const console: ConsoleNS = {
                                             heading: "Step-based configuration",
                                             hint: "Create a user login flow by dragging authenticators on to the " +
                                                 "relevant steps.",
-                                            magicLinkDisabled: "You can add the Magic Link authenticator only" +
-                                                " to the second step, and only when Identifier First " +
-                                                "authenticator is present in the first step.",
+                                            magicLinkDisabled: "You can only add the Magic Link authenticator " +
+                                                "as a second step and only when Identifier First authenticator " +
+                                                "is present in the first step.",
                                             secondFactorDisabled: "Second factor authenticators " +
                                                 "can be used only if <1>User name and password " +
                                                 "password</1>, <3>Social Login</3> or any other handler" +
-                                                "such as <5>Identifier First</5> which can handle these factors are" +
+                                                "which can handle these factors are" +
                                                 "present in a previous step.",
                                             secondFactorDisabledDueToProxyMode: "To configure <1>{{auth}}</1>," +
                                                 " you should enable the Just-in-Time provisioning" +
@@ -1123,7 +1125,10 @@ export const console: ConsoleNS = {
                                             magicLink: {
                                                 description: "Enable users to log in using a magic "
                                                     + "link sent to their email.",
-                                                heading: "Add Magic Link login"
+                                                heading: "Add Magic Link login",
+                                                warning: "You can only use Identifier First authenticator with the " +
+                                                    "Magic Link authenticator. Using it with any other authenticator " +
+                                                    "can lead to unexpected behavior."
                                             },
                                             totp: {
                                                 description: "Enable additional authentication layer with Time "
@@ -2316,8 +2321,8 @@ export const console: ConsoleNS = {
                     },
                     authenticationStepDeleteErrorDueToSecondFactors: {
                         genericError: {
-                            description: "Second factor authenticators require having a basic or identifier-first " +
-                                "authenticator in a prior step.",
+                            description: "Second factor authenticators require having a basic "
+                                + "authenticator in a prior step.",
                             message: "Step cannot be deleted"
                         }
                     },
@@ -2328,9 +2333,8 @@ export const console: ConsoleNS = {
                         }
                     },
                     conditionalScriptLoopingError: {
-                        description: "Looping constructs such as <1>for</1>, <3>while</3>, and" +
-                            " <5>forEach</5> are not allowed in the conditional authentication" +
-                            " script.",
+                        description: "Looping constructs such as <1>for</1>, <3>while</3>, and"
+                            + " <5>forEach</5> are not allowed in the conditional authentication" + " script.",
                         message: "Failed to update the script"
                     },
                     deleteApplication: {
@@ -2361,8 +2365,8 @@ export const console: ConsoleNS = {
                             message: "Cannot delete this authenticator"
                         },
                         genericError: {
-                            description: "There are authenticators in other steps that depend on " +
-                                "this authenticator.",
+                            description: "There are authenticators in other steps that depend on "
+                                + "this authenticator.",
                             message: "Cannot delete this authenticator"
                         },
                         success: {
@@ -2392,8 +2396,8 @@ export const console: ConsoleNS = {
                     },
                     emptyAuthenticationStep: {
                         genericError: {
-                            description: "There are empty authentication steps. Please remove them or add " +
-                                "authenticators to proceed.",
+                            description: "There are empty authentication steps. Please remove them or add "
+                                + "authenticators to proceed.",
                             message: "Update error"
                         }
                     },
@@ -2473,8 +2477,8 @@ export const console: ConsoleNS = {
                             message: "Retrieval error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving the IDP configurations for the OIDC " +
-                                "application.",
+                            description: "An error occurred while retrieving the IDP configurations for the OIDC "
+                                + "application.",
                             message: "Retrieval error"
                         },
                         success: {
@@ -2484,8 +2488,8 @@ export const console: ConsoleNS = {
                     },
                     fetchOIDCServiceEndpoints: {
                         genericError: {
-                            description: "An error occurred while retrieving the server endpoints for " +
-                                "OIDC applications.",
+                            description: "An error occurred while retrieving the server endpoints for "
+                                + "OIDC applications.",
                             message: "Something went wrong"
                         }
                     },
@@ -2509,8 +2513,8 @@ export const console: ConsoleNS = {
                             message: "Retrieval error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving the IDP configurations for the SAML" +
-                                " application.",
+                            description: "An error occurred while retrieving the IDP configurations for the SAML"
+                                + " application.",
                             message: "Retrieval error"
                         },
                         success: {
@@ -2596,8 +2600,8 @@ export const console: ConsoleNS = {
                     },
                     secondFactorAuthenticatorToFirstStep: {
                         genericError: {
-                            description: "Second factor authenticators require having a basic or identifier-first" +
-                                "authenticator in a prior step.",
+                            description: "Second factor authenticators require having a basic "
+                                + "authenticator in a prior step.",
                             message: "Cannot add to this step"
                         }
                     },
@@ -2684,6 +2688,11 @@ export const console: ConsoleNS = {
                             description: "Successfully updated the provisioning configurations.",
                             message: "Update successful"
                         }
+                    },
+                    updateOnlyIdentifierFirstError: {
+                        description: "Identifier First authenticator cannot be the only authenticator. "
+                            + "It needs an additional step.",
+                        message: "Update error"
                     },
                     updateOutboundProvisioning: {
                         genericError: {

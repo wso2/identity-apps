@@ -1024,6 +1024,8 @@ export const console: ConsoleNS = {
                                             },
                                             authenticatorDisabled: "ඔබේ යෙදුම් සමඟ භාවිතා කිරීම සඳහා ග්‍රාහක " +
                                                 "හැඳුනුම්පත සහ රහස ලබා දීමෙන් ඔබ මෙම සත්‍යාපකය වින්‍යාස කළ යුතුය.",
+                                            firstFactorDisabled: "Identifier First authenticator " +
+                                                "සහ Username & Password Authenticator එකම පියවරට එක් කළ නොහැක.",
                                             forms: {
                                                 fields: {
                                                     attributesFrom: {
@@ -1130,7 +1132,11 @@ export const console: ConsoleNS = {
                                             magicLink: {
                                                 description: "පරිශීලකයින්ට ඔවුන්ගේ විද්‍යුත් තැපෑලට යවන ලද මැජික් " +
                                                     "සබැඳියක් භාවිතයෙන් පුරනය වීමට සබල කරන්න.",
-                                                heading: "Magic Link පිවිසුම එක් කරන්න"
+                                                heading: "Magic Link පිවිසුම එක් කරන්න",
+                                                warning: "ඔබට භාවිතා කළ හැක්කේ මැජික් ලින්ක් සත්‍යාපනය සමඟ " +
+                                                    "පමණක් හඳුනාගැනීමේ පළමු සත්‍යාපනයයි. වෙනත් ඕනෑම " +
+                                                    "සත්‍යාපකයක් සමඟ එය භාවිතා කිරීම අනපේක්ෂිත හැසිරීමකට හේතු විය හැක."
+
                                             },
                                             totp: {
                                                 description: "කාලය පදනම් කරගත් OTP සමඟ අතිරේක සත්‍යාපන ස්තරය " +
@@ -2662,6 +2668,11 @@ export const console: ConsoleNS = {
                             description: "ප්‍රතිපාදන වින්‍යාසයන් සාර්ථකව යාවත්කාලීන කරන ලදි.",
                             message: "යාවත්කාලීන කිරීම සාර්ථකයි"
                         }
+                    },
+                    updateOnlyIdentifierFirstError: {
+                        description: "හඳුනාගැනීමේ පළමු සත්‍යාපකය එකම " +
+                            "සත්‍යාපකය විය නොහැක. එය අතිරේක පියවරක් අවශ්ය වේ.",
+                        message: "යාවත්කාලීන දෝෂයකි"
                     },
                     updateOutboundProvisioning: {
                         genericError: {
