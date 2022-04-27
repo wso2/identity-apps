@@ -48,6 +48,7 @@ import {
     DropdownProps,
     Grid,
     Icon,
+    Label,
     List,
     PaginationProps,
     Popup
@@ -305,10 +306,11 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         <Grid verticalAlign="middle">
                             <Grid.Column 
                                 floated="left"
-                                width={ 11 }
+                                width={ 10 }
                             >
                                 <GenericIcon
                                     icon={ getGeneralIcons().myAccountSolidIcon }
+                                    className="mt-1"
                                     floated="left"
                                     size="tiny"
                                     spaced="right"
@@ -318,10 +320,13 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     transparent
                                 />
                                 <List.Header
-                                    className="mb-1"
                                     data-componentid="application-consumer-account-link-title"
+                                    className="my-account-title mb-1"
                                 >
                                     { t("console:develop.features.applications.myaccount.title") }
+                                    <Label size="tiny" className="preview-label ml-2">
+                                        { t("common:preview") }
+                                    </Label>
                                 </List.Header>
                                 <List.Description
                                     data-componentid="application-consumer-account-link-description"
@@ -333,7 +338,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                 trigger={
                                     (<Grid.Column
                                         floated="right" 
-                                        width={ 5 }
+                                        width={ 6 }
                                     >
                                         <CopyInputField
                                             value={ consumerAccountURL }
