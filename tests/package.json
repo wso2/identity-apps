@@ -6,11 +6,11 @@
     "license": "Apache-2.0",
     "main": "index.js",
     "scripts": {
-        "build": "npm run tsc",
+        "build": "pnpm precypressbuild && npm run tsc",
         "clean": "npm run clean:node-modules && npm run clean:package-lock",
         "clean:package-lock": "rimraf ./package-lock.json",
         "clean:node-modules": "rimraf ./node_modules",
-        "cypress": "npx run-script-os",
+        "cypress": "pnpm precypress:run && npx run-script-os",
         "cypress:win32": ".\\node_modules\\.bin\\cypress",
         "cypress:default": "./node_modules/.bin/cypress",
         "cy:clean:results": "rimraf output/results",

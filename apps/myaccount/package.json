@@ -6,7 +6,7 @@
     "license": "Apache-2.0",
     "main": "index.js",
     "scripts": {
-        "build": "npm run build:prod",
+        "build": "pnpm prebuild && npm run build:prod",
         "build:analyze": "run-script-os",
         "build:analyze:win32": "..\\..\\node_modules\\.bin\\webpack --mode production --env NODE_ENV=production --env ENABLE_ANALYZER=true --env ANALYZER_PORT=8888",
         "build:analyze:default": "../../node_modules/.bin/webpack --mode production --env NODE_ENV=production --env ENABLE_ANALYZER=true --env ANALYZER_PORT=8888",
@@ -53,6 +53,7 @@
         "i18next-xhr-backend": "^3.2.2",
         "lodash-es": "^4.17.21",
         "moment": "2.24.0",
+        "postcss-loader": "^3.0.0",
         "qrcode.react": "^1.0.0",
         "react-dom": "^16.9.0",
         "react-helmet": "^5.2.1",
@@ -63,10 +64,12 @@
         "react-top-loading-bar": "^1.2.0",
         "redux": "^4.0.4",
         "redux-thunk": "^2.3.0",
+        "regenerator-runtime": "^0.13.9",
         "semantic-ui-react": "^0.87.3",
         "ua-parser-js": "0.7.28"
     },
     "devDependencies": {
+        "@nrwl/react": "^14.0.3",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
         "@svgr/webpack": "4.3.2",
         "@testing-library/jest-dom": "^5.11.9",

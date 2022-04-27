@@ -16,7 +16,7 @@
     "scripts": {
         "start:storybook": "NODE_PATH=src start-storybook -p 6006 -c .storybook -s ./dist",
         "build:storybook": "build-storybook",
-        "build": "npm run clean && npm run compile",
+        "build": "npm run clean && npm run compile && npm run transpile && pnpm postbuild",
         "clean": "rimraf ./dist",
         "clean:assets": "rimraf ./dist/assets",
         "compile": "npx run-script-os",
@@ -69,7 +69,8 @@
         "react-transition-group": "^4.4.1",
         "semantic-ui-react": "^0.87.3",
         "storybook": "^1.0.0",
-        "tinycolor": "0.0.1"
+        "tinycolor": "0.0.1",
+        "tinycolor2": "^1.4.2"
     },
     "peerDependencies": {
         "@types/react": "*",

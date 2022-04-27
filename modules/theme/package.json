@@ -12,7 +12,7 @@
     "main": "src/index.js",
     "scripts": {
         "prebuild": "npm run clean",
-        "build": "npm run compile -- --skipSample --skipManifest",
+        "build": "pnpm prebuild && npm run compile -- --skipSample --skipManifest",
         "build:dev": "npm run build -- --skipHashing",
         "clean": "rimraf ./dist && rimraf ./src/themes/sample",
         "compile": "node scripts/build.js",

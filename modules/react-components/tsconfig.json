@@ -9,15 +9,15 @@
         "rootDirs": [ "src", "stories" ],
         "paths": {
             "*": [ "types/*" ],
-            "@wso2is/core/api": [ "./../../node_modules/@wso2is/core/dist/types/api" ],
-            "@wso2is/core/configs": [ "./../../node_modules/@wso2is/core/dist/types/configs" ],
-            "@wso2is/core/constants": [ "./../../node_modules/@wso2is/core/dist/types/constants" ],
-            "@wso2is/core/exceptions": [ "./../../node_modules/@wso2is/core/dist/types/exceptions" ],
-            "@wso2is/core/helpers": [ "./../../node_modules/@wso2is/core/dist/types/helpers" ],
-            "@wso2is/core/hooks": [ "./../../node_modules/@wso2is/core/dist/types/hooks" ],
-            "@wso2is/core/models": [ "./../../node_modules/@wso2is/core/dist/types/models" ],
-            "@wso2is/core/store": [ "./../../node_modules/@wso2is/core/dist/types/store" ],
-            "@wso2is/core/utils": [ "./../../node_modules/@wso2is/core/dist/types/utils" ]
+            "@wso2is/core/api": [ "node_modules/@wso2is/core/dist/types/api" ],
+            "@wso2is/core/configs": [ "node_modules/@wso2is/core/dist/types/configs" ],
+            "@wso2is/core/constants": [ "node_modules/@wso2is/core/dist/types/constants" ],
+            "@wso2is/core/exceptions": [ "node_modules/@wso2is/core/dist/types/exceptions" ],
+            "@wso2is/core/helpers": [ "node_modules/@wso2is/core/dist/types/helpers" ],
+            "@wso2is/core/hooks": [ "node_modules/@wso2is/core/dist/types/hooks" ],
+            "@wso2is/core/models": [ "node_modules/@wso2is/core/dist/types/models" ],
+            "@wso2is/core/store": [ "node_modules/@wso2is/core/dist/types/store" ],
+            "@wso2is/core/utils": [ "node_modules/@wso2is/core/dist/types/utils" ]
         },
         "typeRoots": [ "./types/*", "node_modules/@types" ]
     },
