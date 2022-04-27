@@ -15,7 +15,7 @@
     "main": "dist/src/index.js",
     "types": "dist/types/index.d.ts",
     "scripts": {
-        "build": "npm run clean && npm run compile",
+        "build": "npm run clean && npm run compile && pnpm postbuild",
         "postbuild": "node scripts/post-build.js",
         "clean": "rimraf ./dist",
         "clean:bundle": "rimraf ./dist/bundle",

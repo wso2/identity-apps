@@ -1,40 +1,55 @@
 {
+    "consoleApp": {
+        "path": "/console/develop/getting-started"
+    },
     "appBaseName": "myaccount",
     "appBaseNameForHistoryAPI": "/",
     "clientID": "MY_ACCOUNT",
     "debug": false,
+    "extensions": {
+        "applicationInsightsEnabled": false,
+        "applicationInsightsCookieDomain": "",
+        "applicationInsightsCookiePostfix": "",
+        "applicationInsightsInstrumentationKey": "",
+        "applicationInsightsProxyEndpoint": ""
+    },
     "idpConfigs": {
         "enablePKCE": true,
         "clockTolerance": 300,
         "responseMode": "query",
         "scope": [ "SYSTEM" ],
-        "serverOrigin": "https://localhost:9443",
-        "storage": "webWorker"
+        "serverOrigin": "https://api.asg.io",
+        "storage": "webWorker",
+        "authorizeEndpointURL": "${serverOrigin}/${tenantPrefix}/${userTenantDomain}/common/oauth2/authorize",
+        "logoutEndpointURL": "${serverOrigin}/${tenantPrefix}/${userTenantDomain}/common/oidc/logout",
+        "oidcSessionIFrameEndpointURL": "${serverOrigin}/${tenantPrefix}/${userTenantDomain}/common/oidc/checksession"
     },
     "i18nResourcePath": "",
     "isSaas": true,
-    "loginCallbackPath": "",
+    "loginCallbackPath": "/login",
     "logoutCallbackPath": "",
-    "serverOrigin": "https://localhost:9443",
+    "serverOrigin": "https://api.asg.io",
     "routePaths": {
         "home": "/overview",
         "login": "",
         "logout": "/logout"
     },
     "session": {
-        "userIdleTimeOut": 600,
-        "userIdleWarningTimeOut": 580,
+        "userIdleWarningTimeOut": 1740,
         "sessionRefreshTimeOut": 300,
-        "checkSessionInterval": 3
+        "userIdleTimeOut": 1800,
+        "checkSessionInterval": 5
     },
+    "superTenantProxy" : "a",
     "tenantResolutionStrategy": "id_token",
     "ui": {
-        "appCopyright": "WSO2 Identity Server ${copyright} ${year}",
-        "appTitle": "My Account | WSO2 Identity Server",
-        "appName": "My Account",
+        "appCopyright": "${copyright} ${year} WSO2, Inc.",
+        "appTitle": "Asgardeo Account",
+        "appName": "Account",
         "appLogoPath": "/assets/images/branding/logo.svg",
         "authenticatorApp": [],
-        "disableMFAforSuperTenantUser": false,
+        "disableMFAforSuperTenantUser": true,
+        "showAppSwitchButton": true,
         "features": {
             "applications": {
                 "disabledFeatures": [],
@@ -42,6 +57,16 @@
                 "scopes": {
                     "create": [],
                     "read": [],
+                    "update": [],
+                    "delete": []
+                }
+            },
+            "operations": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [],
+                    "read": [ "internal_humantask_view" ],
                     "update": [],
                     "delete": []
                 }
@@ -57,7 +82,9 @@
                 }
             },
             "personalInfo": {
-                "disabledFeatures": ["profileInfo.mobileVerification"],
+                "disabledFeatures": [
+                    "profileInfo.mobileVerification", "profileInfo.exportProfile", "profileInfo.linkedAccounts"
+                ],
                 "enabled": true,
                 "scopes": {
                     "create": [],
@@ -67,7 +94,7 @@
                 }
             },
             "security": {
-                "disabledFeatures": ["security.loginVerifyData.typingDNA"],
+                "disabledFeatures": [ "security.mfa.sms", "security.loginVerifyData.typingDNA" ],
                 "enabled": true,
                 "scopes": {
                     "create": [],
@@ -78,21 +105,19 @@
             }
         },
         "i18nConfigs": {
-            "showLanguageSwitcher": true,
+            "showLanguageSwitcher": false,
             "langAutoDetectEnabled": false
         },
         "isCookieConsentBannerEnabled": true,
-        "isHeaderAvatarLabelAllowed": true,
+        "isHeaderAvatarLabelAllowed": false,
         "privacyPolicyConfigs": {
-            "visibleOnFooter": true
+            "visibleOnFooter": false
         },
-        "productName": "WSO2 Identity Server",
+        "productName": "Asgardeo",
         "productVersionConfig": {
-            "allowSnapshot": true,
-            "textCase": "uppercase",
-            "labelColor": "primary"
+            "productVersion": ""
         },
-        "isProfileUsernameReadonly": false,
+        "isProfileUsernameReadonly": true,
         "theme": {
             "name": "default"
         }

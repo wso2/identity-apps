@@ -41,13 +41,13 @@ const log = {
 
 const srcDir = path.join(__dirname, "..", "src");
 const distDir = path.join(__dirname, "..", "dist");
+const nodeModules = path.join(__dirname, "..", "node_modules");
 const themesDir = path.join(srcDir, "themes");
 const semanticUICorePath = path.join("src", "semantic-ui-core");
 const semanticUICoreDefinitions = path.join(semanticUICorePath, "definitions");
 
-const lessNpmModuleDir = path.dirname(require.resolve("less"));
-const semanticUICSSModuleDir = path.join(lessNpmModuleDir, "..", "semantic-ui-css");
-const semanticUILessModuleDir = path.join(lessNpmModuleDir, "..", "semantic-ui-less");
+const semanticUICSSModuleDir = path.join(nodeModules, "semantic-ui-css");
+const semanticUILessModuleDir = path.join(nodeModules, "semantic-ui-less");
 
 const SAMPLE_THEME_NAME = "sample";
 const DEFAULT_THEME_NAME = "default";

@@ -13,7 +13,7 @@
     "types": "dist/types/index.d.ts",
     "scripts": {
         "prebuild": "npm run clean",
-        "build": "npm run compile",
+        "build": "pnpm prebuild && npm run compile",
         "clean": "rimraf ./dist",
         "compile": "npx run-script-os",
         "compile:win32": "..\\..\\node_modules\\.bin\\tsc -p tsconfig.json --incremental",

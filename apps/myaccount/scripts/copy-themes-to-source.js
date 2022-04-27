@@ -39,7 +39,7 @@ const THEME_VARIABLES_FILE = "theme-variables.json";                         // 
 
 // Paths.
 const src = path.join(__dirname, "..", SOURCE_DIRECTORY);
-const themeModule = path.join(__dirname, "..", "..", "..", "node_modules", "@wso2is", "theme", "dist", "lib", "themes");
+const themeModule = path.join(__dirname, "..", "node_modules", "@wso2is", "theme", "dist", "lib", "themes");
 const target = path.join(src, THEMES_DIRECTORY);
 const imagesFolderRelPath = path.join(ASSETS_FOLDER_NAME, IMAGES_FOLDER_NAME);
 

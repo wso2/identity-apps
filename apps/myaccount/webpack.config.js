@@ -54,14 +54,14 @@ const DEV_SERVER_PORT = 9000;
 const ROOT_CONTEXT_DEV_SERVER_INITIAL_REDIRECT = "/login";
 
 const THEME_TO_USE = deploymentConfig.ui.theme.name || "default";
-const THEME_DIR = path.resolve(__dirname, "..", "..", "node_modules", "@wso2is", "theme", "dist", "lib", "themes", THEME_TO_USE);
+const THEME_DIR = path.resolve(__dirname, "node_modules", "@wso2is", "theme", "dist", "lib", "themes", THEME_TO_USE);
 let themeHash;
 const files = fs.readdirSync(THEME_DIR);
 
 const file = files ? files.filter(file => file.endsWith(".min.css"))[ 0 ] : null;
 themeHash = file ? file.split(".")[ 1 ] : null;
 
-const I18N_DIR = path.resolve(__dirname, "..", "..", "node_modules", "@wso2is", "i18n", "dist", "bundle");
+const I18N_DIR = path.resolve(__dirname, "node_modules", "@wso2is", "i18n", "dist", "bundle");
 const metaFiles = fs.readdirSync(I18N_DIR);
 
 const metaFile = metaFiles ? metaFiles.filter(file => file.startsWith("meta"))[ 0 ] : null;
@@ -178,7 +178,17 @@ module.exports = (env) => {
                 {
                     exclude: /node_modules/,
                     test: /\.css$/,
-                    use: [ "postcss-loader" ]
+                    use: [
+                        {
+                            loader: "postcss-loader",
+                            options: {
+                                plugins: () => [
+                                    require('autoprefixer')({
+                                    'browsers': ['> 1%', 'last 2 versions']
+                                })],
+                            }
+                        }
+                    ]
                 },
                 {
                     exclude: /node_modules/,
@@ -393,7 +403,7 @@ module.exports = (env) => {
             new CopyWebpackPlugin({
                 patterns: [
                     {
-                        context: path.join(__dirname, "..", "..", "node_modules", "@wso2is", "theme", "dist"),
+                        context: path.join(__dirname, "node_modules", "@wso2is", "theme", "dist"),
                         from: "lib",
                         // Only Copy the required resources to distribution.
                         // ATM, only the theme CSS files, fonts and branding images are required.
@@ -404,7 +414,7 @@ module.exports = (env) => {
                         to: "libs"
                     },
                     {
-                        context: path.join(__dirname, "..", "..", "node_modules", "@wso2is", "i18n"),
+                        context: path.join(__dirname, "node_modules", "@wso2is", "i18n"),
                         from: path.join("dist", "bundle"),
                         to: path.join("resources", "i18n")
                     },
