@@ -6430,6 +6430,8 @@ export const console: ConsoleNS = {
                     dangerZoneGroup: {
                         deleteUserZone: {
                             actionTitle: "Supprimer l'utilisateur",
+                            buttonDisableHint: "L'option de suppression est désactivée car cet utilisateur est " +
+                                "géré dans un magasin d'utilisateurs distant.",
                             header: "Supprimer l'utilisateur",
                             subheader: "Cette action supprimera définitivement l'utilisateur de l'organisation. " +
                                 "Veuillez être certain avant de continuer."

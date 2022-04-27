@@ -7843,6 +7843,8 @@ export const console: ConsoleNS = {
                     dangerZoneGroup: {
                         deleteUserZone: {
                             actionTitle: "Delete User",
+                            buttonDisableHint: "Delete option is disabled because this user is managed in a remote " +
+                                "user store.",
                             header: "Delete user",
                             subheader: "This action will permanently delete the user from the organization. Please " +
                                 "be certain before you proceed."
