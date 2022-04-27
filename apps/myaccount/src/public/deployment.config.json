@@ -36,7 +36,7 @@
         "authenticatorApp": [],
         "disableMFAforSuperTenantUser": false,
         "enableMFAUserWise": false,
-        "disableMFAForFederatedUsers": true,
+        "disableMFAForFederatedUsers": false,
         "forceBackupCode": false,
         "features": {
             "applications": {

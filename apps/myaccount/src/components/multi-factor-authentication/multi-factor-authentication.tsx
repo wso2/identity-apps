@@ -18,18 +18,18 @@
 
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
-import React, {useState, useEffect} from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { List } from "semantic-ui-react";
-import { FIDOAuthenticator, SMSOTPAuthenticator, TOTPAuthenticator } from "./authenticators";
+import { BackupCodeAuthenticator, FIDOAuthenticator, SMSOTPAuthenticator, TOTPAuthenticator } from "./authenticators";
+import { getBackupCodes, getEnabledAuthenticators, updateEnabledAuthenticators } from "../../api";
 import { AppConstants } from "../../constants";
-import { AlertLevels, AlertInterface, FeatureConfigInterface } from "../../models";
+import { AlertInterface, AlertLevels, FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
 import { CommonUtils } from "../../utils";
 import { SettingsSection } from "../shared";
-import {RenderBackupCodeWizard} from "./authenticators"
-import {getEnabledAuthenticators, updateEnabledAuthenticators} from "../../api"
+
 /**
  * Prop types for the basic details component.
  * Also see {@link MultiFactorAuthentication.defaultProps}
@@ -51,74 +51,112 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
     const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
     const forceBackupCode: boolean = useSelector((state: AppState) => state?.config?.ui?.forceBackupCode);
     const enableMFAUserWise: boolean = useSelector((state: AppState) => state?.config?.ui?.enableMFAUserWise);
-    const [isBackupCodeDisabled, setIsBackupCodeDisabled] = useState<boolean>(true);
-    const [showBackupWizard, setShowBackupWizard] = useState<boolean>(false)
-    const [openBackupWizard, setOpenBackupWizard] = useState<boolean>(false)
+    const [ isBackupCodeDisabled, setIsBackupCodeDisabled ] = useState<boolean>(true);
+    const [ showBackupWizard, setShowBackupWizard ] = useState<boolean>(false);
+    const [ openBackupWizard, setOpenBackupWizard ] = useState<boolean>(false);
+    const [ backupCodes, setBackupCodes ] = useState<Array<string>>();
 
-    const translateKey = "myAccount:components.mfa.backupCode.";
+    const translateKey: string = "myAccount:components.mfa.backupCode.";
+    const backupAuthenticatorName: string = "Backup Code Authenticator";
+
+    /**
+     * Load backup codes when opening the modal.
+     */
+    useEffect(()=> {
+        
+        if (enableMFAUserWise === true) {
+            getBackupCodes()
+                .then((response) => {
+                    setBackupCodes(response.backupCodes);
+                }).catch((errorMessage)=> {
+                    onAlertFired({
+                        description: t(
+                            translateKey +
+                            "notifications.retrieveError.error.description",
+                            {
+                                error: errorMessage
+                            }
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            translateKey + "notifications.retrieveError.error.message"
+                        )
+                    });
+                });
+        }
+        
+    }, []);
 
     /**
     * Get enabled authenticators and check if backup authenticator is enabled.
     */
     useEffect(() => {
-       getEnabledAuthenticators().then((response) => {
-           const authenticators = response;
-           let authenticatorList;
-           if (authenticators !== undefined) {
-               authenticatorList = authenticators.split(",");
-           } else {
-               authenticatorList = []
-           }
+        getEnabledAuthenticators().then((authenticators: string) => {
+            let authenticatorList: Array<string>;
 
-           if (authenticatorList.length <= 1 && authenticatorList.includes("Backup Code Authenticator")) {
-               authenticatorList.splice(authenticatorList.indexOf("Backup Code Authenticator"), 1)
-               const enabledAuthenticators = authenticatorList.join(",");
-               updateEnabledAuthenticators(enabledAuthenticators)
-               .catch((errorMessage)=> {
-                   onAlertFired({
-                       description: t(translateKey + "notifications.updateAuthenticatorError.error.description", {
-                           error: errorMessage
-                       }),
-                       level: AlertLevels.ERROR,
-                       message: t(translateKey + "notifications.updateAuthenticatorError.error.message")
-                   });
-               });
-           } else if (authenticatorList.length > 1) {
-               setIsBackupCodeDisabled(false);
-           }
+            if (authenticators !== undefined) {
+                authenticatorList = authenticators.split(",");
+            } else {
+                authenticatorList = [];
+            }
 
-       }).catch((errorMessage) => {
-           onAlertFired({
-               description: t(translateKey + "notifications.retrieveAuthenticatorError.error.description", {
-                   error: errorMessage
-               }),
-               level: AlertLevels.ERROR,
-               message: t(translateKey + "notifications.retrieveAuthenticatorError.error.message")
-           });
-       })
+            if (authenticatorList.length <= 1 && authenticatorList.includes(backupAuthenticatorName)) {
+                authenticatorList.splice(authenticatorList.indexOf(backupAuthenticatorName), 1);
+                const enabledAuthenticators = authenticatorList.join(",");
+
+                updateEnabledAuthenticators(enabledAuthenticators)
+                    .then(() => {
+                        setIsBackupCodeDisabled(true);
+                    })
+                    .catch((errorMessage)=> {
+                        onAlertFired({
+                            description: t(translateKey + "notifications.updateAuthenticatorError.error.description", {
+                                error: errorMessage
+                            }),
+                            level: AlertLevels.ERROR,
+                            message: t(translateKey + "notifications.updateAuthenticatorError.error.message")
+                        });
+                    });
+            } else if (authenticatorList.length > 1){
+                setIsBackupCodeDisabled(false);
+            } else {
+                setIsBackupCodeDisabled(true);
+            }
+
+        }).catch((errorMessage) => {
+            onAlertFired({
+                description: t(translateKey + "notifications.retrieveAuthenticatorError.error.description", {
+                    error: errorMessage
+                }),
+                level: AlertLevels.ERROR,
+                message: t(translateKey + "notifications.retrieveAuthenticatorError.error.message")
+            });
+        });
    
-    }, [isBackupCodeDisabled])
+    }, [ isBackupCodeDisabled ]);
 
     const backupWizard = (): JSX.Element => {
         
-       return (<RenderBackupCodeWizard
-           onAlertFired={onAlertFired}
-           isInit={false}
-           openWizard={openBackupWizard}
-           onOpenWizardToggle={ (isOpen : boolean) => {setOpenBackupWizard(isOpen) }}
-           onShowBackupCodeWizardToggle={ (show : boolean) => {setShowBackupWizard(show) }}
-           />)
-   }
+        return (<BackupCodeAuthenticator
+            onAlertFired={ onAlertFired }
+            isInit={ false }
+            openWizard={ openBackupWizard }
+            onOpenWizardToggle={ (isOpen : boolean) => {setOpenBackupWizard(isOpen); } }
+            onShowBackupCodeWizardToggle={ (show : boolean) => {setShowBackupWizard(show); } }
+            backupCodes= { backupCodes }
+            updateBackupCodes = { (backupCodesList) =>{setBackupCodes(backupCodesList);} }
+        />);
+    };
 
     return (
         <SettingsSection
             data-testid={ `${testId}-settings-section` }
             description={ t("myAccount:sections.mfa.description") }
             header={ t("myAccount:sections.mfa.heading") }
-            onPrimaryActionClick={ !isBackupCodeDisabled ? () => {setOpenBackupWizard(true)} : null}
+            onPrimaryActionClick={ !isBackupCodeDisabled ? () => {setOpenBackupWizard(true);} : null }
             primaryAction={ !isBackupCodeDisabled ? t(translateKey + "heading") : "" }
         >
-            {backupWizard()}
+            { backupWizard() }
             <List
                 divided={ true }
                 verticalAlign="middle"
@@ -157,9 +195,13 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                         <List.Item className="inner-list-item">
                             <TOTPAuthenticator
                                 onAlertFired={ onAlertFired }
-                                onBackupCodeAvailabilityToggle={ (isEnabled: boolean) => (setIsBackupCodeDisabled(!isEnabled)) }
-                                isBackupCodeForced={forceBackupCode && enableMFAUserWise}
+                                onBackupCodeAvailabilityToggle={ 
+                                    (isEnabled: boolean) => (setIsBackupCodeDisabled(!isEnabled)) 
+                                }
+                                isBackupCodeForced={ forceBackupCode && enableMFAUserWise }
                                 isSuperTenantLogin={ AppConstants.getTenant() === AppConstants.getSuperTenant() }
+                                backupCodes = { backupCodes }
+                                updateBackupCodes = { (backupCodeList) => {setBackupCodes(backupCodeList);} }
                             />
                         </List.Item>
                     ) : null }

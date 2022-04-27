@@ -1,29 +1,45 @@
-import { TestableComponentInterface } from "@wso2is/core/models";
-import { Heading, CopyInputField, EmptyPlaceholder } from "@wso2is/react-components";
+/**
+ * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
-import React, { PropsWithChildren, useEffect, useState } from "react";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { CopyInputField, EmptyPlaceholder, Heading } from "@wso2is/react-components";
+import React, { PropsWithChildren, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import {getEmptyPlaceholderIllustrations} from "../../../configs/ui"
 import {
-     Button,
-     Grid,
-     Icon,
-     Message,
-     Segment,
-     Modal,
-     GridColumn,
-     GridRow
-     
+    Button,
+    Grid,
+    GridColumn,
+    Icon,
+    Message,
+    Modal,
+    Segment    
 } from "semantic-ui-react";
 import {
-     refreshBackupCode,
-     getBackupCodes,
+    getBackupCodes, 
+    refreshBackupCode
 } from "../../../api";
+import { getEmptyPlaceholderIllustrations } from "../../../configs/ui";
 import {
     AlertInterface,
     AlertLevels,
     AuthStateInterface,
+    BackupCodeInterface
 } from "../../../models";
 import { AppState } from "../../../store";
 
@@ -31,106 +47,97 @@ import { AppState } from "../../../store";
  * Property types for the backup code component.
  * Also see {@link BackupCodeAuthenticator.defaultProps}
  */
-interface BackupCodePropss extends TestableComponentInterface {
+interface BackupCodeProps extends IdentifiableComponentInterface {
+
     onAlertFired: (alert: AlertInterface) => void;
     openWizard: boolean;
     isInit: boolean;
     onOpenWizardToggle(isOpen : boolean);
-    onShowBackupCodeWizardToggle(show : boolean)
-    
+    onShowBackupCodeWizardToggle(show : boolean);
+    backupCodes: Array<string>;
+    updateBackupCodes(backupCodeList: Array<string>);
 }
 
-export const RenderBackupCodeWizard : React.FunctionComponent<BackupCodePropss> = (
-    props: PropsWithChildren<BackupCodePropss>
+export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> = (
+    props: PropsWithChildren<BackupCodeProps>
 ): React.ReactElement => {
 
-    const { onAlertFired,openWizard, isInit, onOpenWizardToggle, onShowBackupCodeWizardToggle, ["data-testid"]: testId } = props;
-    const [ backupCodes, setBackupCodes ] = useState<Array<string>>();
-    const [ ListedbackupCodes, setListedBackupCodes ] = useState<Array<Array<string>>>();
-    const { t } = useTranslation();
-    const translateKey = "myAccount:components.mfa.backupCode.";
+    const { onAlertFired, 
+        openWizard, 
+        onOpenWizardToggle, 
+        onShowBackupCodeWizardToggle, 
+        backupCodes,
+        updateBackupCodes,
+        isInit,
+        ["data-componentid"]: componentid 
+    } = props;
 
+    const { t } = useTranslation();
+    const translateKey: string = "myAccount:components.mfa.backupCode.";
     const profileDetails: AuthStateInterface = useSelector(
         (state: AppState) => state.authenticationInformation
     );
-
-    const updateListedBackupCodes = (backupCodeSet) => {
-
-        const gridArr = []
-        if (backupCodeSet && backupCodeSet.length > 0) {
-            let arr = []
-            for (let index = 0; index < backupCodeSet.length; index++) {
-                arr.push(backupCodeSet[index])
-                if ((index + 1)%4 === 0){
-                    gridArr.push(arr)
-                    arr = []
-                }
-            }
-            if (arr.length > 0) {
-                gridArr.push(arr)
-            }
-        }
-        setListedBackupCodes(gridArr);
-    }
 
     /**
      * Load backup codes when opening the modal.
      */
     useEffect(()=> {
-        if (openWizard === true) {
-            getBackupCodes().then((response) => {
-                let backupCodes = response.data;
-                if (isInit && (backupCodes === undefined || backupCodes.length === 0) ) {
-                    refreshBackupCode().then((response) => {
-                        backupCodes = response.data.backupCodes
-                        setBackupCodes(backupCodes)
-                        updateListedBackupCodes(backupCodes)
-                    }).catch((errorMessage) => {
-                        onAlertFired({
-                            description: t(
-                                translateKey +
+        if (openWizard === true && isInit === true) {
+            getBackupCodes()
+                .then((response) => {
+                    let backupCodes: Array<string> = response.backupCodes;
+
+                    if (backupCodes === undefined || backupCodes.length === 0) {
+                        refreshBackupCode()
+                            .then((response: BackupCodeInterface) => {
+                                backupCodes = response.backupCodes;
+                                updateBackupCodes(backupCodes);
+                            })
+                            .catch((errorMessage) => {
+                                onAlertFired({
+                                    description: t(
+                                        translateKey +
                                     "notifications.refreshError.error.description",
-                                {
-                                    error: errorMessage,
-                                }
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                translateKey + "notifications.refreshError.error.message"
-                            ),
-                        });
-                    })
-                } else {
-                    setBackupCodes(backupCodes)
-                    updateListedBackupCodes(backupCodes)
-                }
-            }).catch((errorMessage)=> {
-                onAlertFired({
-                    description: t(
-                        translateKey +
+                                        {
+                                            error: errorMessage
+                                        }
+                                    ),
+                                    level: AlertLevels.ERROR,
+                                    message: t(
+                                        translateKey + "notifications.refreshError.error.message"
+                                    )
+                                });
+                            });
+                    } else {
+                        updateBackupCodes(backupCodes);
+                    }
+                })
+                .catch((errorMessage)=> {
+                    onAlertFired({
+                        description: t(
+                            translateKey +
                             "notifications.retrieveError.error.description",
-                        {
-                            error: errorMessage,
-                        }
-                    ),
-                    level: AlertLevels.ERROR,
-                    message: t(
-                        translateKey + "notifications.retrieveError.error.message"
-                    ),
+                            {
+                                error: errorMessage
+                            }
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            translateKey + "notifications.retrieveError.error.message"
+                        )
+                    });
                 });
-            });
         }
-    }, [openWizard])
+    }, [ openWizard ]);
     
     /**
      * Refreshes backup codes
      */
-    const refreshBackCodes = () => {
+    const refreshBackCodes = (): void => {
+
         refreshBackupCode()
-            .then((response) => {
-                const backupCodes = response.data.backupCodes;
-                setBackupCodes(backupCodes);
-                updateListedBackupCodes(backupCodes)
+            .then((response: BackupCodeInterface) => {
+                updateBackupCodes(response.backupCodes);
             })
             .catch((errorMessage) => {
                 onAlertFired({
@@ -138,36 +145,51 @@ export const RenderBackupCodeWizard : React.FunctionComponent<BackupCodePropss> 
                         translateKey +
                             "notifications.refreshError.error.description",
                         {
-                            error: errorMessage,
+                            error: errorMessage
                         }
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
                         translateKey + "notifications.refreshError.error.message"
-                    ),
+                    )
                 });
             });
     };
 
     /**
-     * Download backup codes
+     * Generate a file containing backup codes and let the user download the file.
+     * @example
+     * SAVE YOUR BACKUP CODES.
+     * Keep these backup codes somewhere safe but accessible.
+     * 
+     * 1. 123456	 2. 234567
+     * 3. 345678	 4. 456789
+     * 5. 567890	 6. 678901
+     * 7. 789012	 8. 890123
+     * 9. 901234	 10. 012345
+     * 
+     * (test@carbon.super)
+     * *You can only use each backup code once.
+     * *These codes were generated on: Mon Apr 18 2022 14:35:57 GMT+0530 (India Standard Time)
      */
-     const downloadBackupCodes = () => {
+    const downloadBackupCodes = (): void => {
+
         if (backupCodes) {
-            let backupCodeString = "";
+            let backupCodeString: string = "";
+
             for (let i = 0; i < backupCodes.length; i += 2) {
                 if (backupCodes[i + 1] !== undefined) {
                     backupCodeString +=
-                        [i + 1] +
+                        [ i + 1 ] +
                         ". " +
                         backupCodes[i] +
                         "\t " +
-                        [i + 2] +
+                        [ i + 2 ] +
                         ". " +
                         backupCodes[i + 1] +
                         "\n";
                 } else {
-                    backupCodeString += [i + 1] + ". " + backupCodes[i] + "\n";
+                    backupCodeString += [ i + 1 ] + ". " + backupCodes[i] + "\n";
                 }
             }
     
@@ -178,7 +200,7 @@ export const RenderBackupCodeWizard : React.FunctionComponent<BackupCodePropss> 
                     backupCodeString + "\n",
                     "(" + profileDetails.username + ")\n\n",
                     "*" + t(translateKey + "download.info1") + "\n",
-                    "*" + t(translateKey + "download.info2") + new Date(),
+                    "*" + t(translateKey + "download.info2") + new Date()
                 ],
     
                 { type: "application/json" }
@@ -186,6 +208,7 @@ export const RenderBackupCodeWizard : React.FunctionComponent<BackupCodePropss> 
     
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement("a");
+
             a.style.display = "none";
             a.href = url;
             a.download = "backup_codes.txt";
@@ -197,134 +220,141 @@ export const RenderBackupCodeWizard : React.FunctionComponent<BackupCodePropss> 
             onAlertFired({
                 description: t(translateKey + "notifications.downloadSuccess.genericMessage.description"),
                 level: AlertLevels.SUCCESS,
-                message: t(translateKey + "notifications.downloadSuccess.genericMessage.message"),
+                message: t(translateKey + "notifications.downloadSuccess.genericMessage.message")
             });
         } else {
             onAlertFired({
                 description: t(translateKey + "notifications.downloadError.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: t(translateKey + "notifications.downloadError.genericError.message"),
+                message: t(translateKey + "notifications.downloadError.genericError.message")
             });
         }
     };
 
-        return (
-            <Modal
-                data-testid={`${testId}-modal`}
-                size="small"
-                open={openWizard}
-                onClose={() => {
-                    onOpenWizardToggle(false);
-                }}
-                closeOnDimmerClick={ false }
-                dimmer="blurring"
-                className="wizard"
+    return (
+        <Modal
+            data-componentid={ `${componentid}-modal` }
+            size="small"
+            open={ openWizard }
+            onClose={ () => {
+                onOpenWizardToggle(false);
+            } }
+            closeOnDimmerClick={ false }
+            dimmer="blurring"
+            className="wizard"
+        >
+                
+            <Modal.Header className="wizard-header bold">
+                { t(translateKey + "modals.heading") }
+                <Heading as="h6">
+                    { t(translateKey + "modals.subHeading") }
+                </Heading>
+            </Modal.Header>
+                
+            <Modal.Content 
+                data-componentid={ `${componentid}-modal-content` }
+                scrolling
             >
-                
-                <Modal.Header className="wizard-header bold">
-                    {t(translateKey + "modals.heading")}
-                    <Heading as="h6">
-                    {t(translateKey + "modals.subHeading")}
-                    </Heading>
-                </Modal.Header>
-                
-                <Modal.Content 
-                    data-testid={`${testId}-modal-content`}
-                    scrolling
-
-                >
-                <Heading size={"tiny"}  >
-                {t(translateKey + "modals.description")}
+                <Heading size={ "tiny" }  >
+                    { t(translateKey + "modals.description") }
                 </Heading>
                 
-                {backupCodes && backupCodes.length > 0 ? (
-                <Modal.Actions
-                    data-testid={`${testId}-modal-actions`}
-                    className="actions"
-                >
+                { backupCodes && backupCodes.length > 0 ? (
+                    <Modal.Actions
+                        data-componentid={ `${componentid}-modal-actions` }
+                        className="actions"
+                    >
                         <Message className="display-flex" size="small" info>
                             <Icon name="info" color="teal" corner />
-                            <Message.Content className="tiny">{t(translateKey + "modals.info")}</Message.Content>
+                            <Message.Content className="tiny">{ t(translateKey + "modals.info") }</Message.Content>
                         </Message>
                     
-                </Modal.Actions>
+                    </Modal.Actions>
                 ): null }
-                <Segment attached={"top"} piled>
-                {backupCodes && backupCodes.length > 0 ? (
+                <Segment attached={ "top" } piled>
+                    { backupCodes && backupCodes.length > 0 ? (
                         <div>
-                            <Button attached="left" floated="right" className="ui basic primary left floated button link-button" onClick={downloadBackupCodes}>{t(translateKey + "modals.download.heading")}</Button>
-                            <Button attached="right" floated="right" className="ui basic primary right floated button link-button" onClick={refreshBackCodes}>{t(translateKey + "modals.refresh.heading")}</Button>
+                            <Button 
+                                attached="left" 
+                                floated="right" 
+                                className="ui basic primary left floated button link-button" 
+                                onClick={ downloadBackupCodes }>{ t(translateKey + "modals.download.heading") }
+                            </Button>
+                            <Button 
+                                attached="right" 
+                                floated="right" 
+                                className="ui basic primary right floated button link-button" 
+                                onClick={ refreshBackCodes }>{ t(translateKey + "modals.refresh.heading") }
+                            </Button>
                             
                         </div>
-                        ) : null
+                    ) : null
                     }
-                    {ListedbackupCodes && ListedbackupCodes.length > 0 ? (
+                    { backupCodes && backupCodes.length > 0 ? (
                 
-                <Grid  container>
-                    
-                      {
-                          ListedbackupCodes?.map((rowCodes, index)=> {
-                              return (
-                                  <GridRow stretched key={index}>
-                                    {
-                                        rowCodes?.map((code, index2)=> {
-                                            return (
-                                                <GridColumn  width={4} key={index2}>
-                                                    <CopyInputField value={code}/>
-                                                </GridColumn>
-                                            )
-                                        })
-                                    }
-                                  </GridRow>
-                              )
-                          })
-                      } 
-                </Grid>
-                ) : (
-                    <Grid centered>
+                        <Grid  container columns={ 4 }>
+                            {
+                                backupCodes?.map((code, index)=> {
+                                    return (
+                                        <GridColumn key={ index }> 
+                                            <CopyInputField 
+                                                value={ code } 
+                                                data-componentid={ `${ componentid }-copy-input-filed-${ index }` } />
+                                        </GridColumn>
+                                    );
+                                })
+                            }
+                        </Grid>
+                    ) : (
+                        <Grid centered>
                             <EmptyPlaceholder
-                                data-testid={ `${ testId }-empty-placeholder` }
+                                data-componentid={ `${ componentid }-empty-placeholder` }
                                 image={ getEmptyPlaceholderIllustrations().newList }
                                 subtitle={ [ t(translateKey + "modals.generate.description") ] }
-                                action={<Button  className="ui basic primary floated button link-button" onClick={refreshBackCodes}>{t(translateKey + "modals.generate.heading")}</Button>}
+                                action={ (<Button  
+                                    className="ui basic primary floated button link-button" 
+                                    onClick={ refreshBackCodes }>{ t(translateKey + "modals.generate.heading") }
+                                </Button>) }
                                 
                             />    
-                            </Grid>
-                        )
+                        </Grid>
+                    )
                     }
-            </Segment>
-                </Modal.Content>
-                <Modal.Actions
-                    
+                </Segment>
+            </Modal.Content>
+            <Modal.Actions>
+                <Button
+                    attached="top"
+                    floated="left"
+                    className="ui basic primary left floated button link-button"
+                    onClick= { () => {
+                        onOpenWizardToggle(false);
+                        onShowBackupCodeWizardToggle(false);
+                    } }
                 >
-                    <Button
-                        
-                        attached="top"
-                        floated="left"
-                        className="ui basic primary left floated button link-button"
-                        onClick= { () => {
-                            onOpenWizardToggle(false);
-                            onShowBackupCodeWizardToggle(false);
-                        } }
-                    >
-                        { t("common:cancel") }
-                    </Button>
-                   <Button
-                        compact
-                        floated="right"
-                        primary
-                        onClick= { () => {
-                            onOpenWizardToggle(false);
-                            onShowBackupCodeWizardToggle(false);
-                        } }
-                        >
-                        { t("common:done") }
-                    </Button>
+                    { t("common:cancel") }
+                </Button>
+                <Button
+                    compact
+                    floated="right"
+                    primary
+                    onClick= { () => {
+                        onOpenWizardToggle(false);
+                        onShowBackupCodeWizardToggle(false);
+                    } }
+                >
+                    { t("common:done") }
+                </Button>
                     
-                </Modal.Actions>
-            </Modal>
-        );  
-    
-}
+            </Modal.Actions>
+        </Modal>
+    );   
+};
 
-
+/**
+ * Default properties for {@link BackupCodeAuthenticator}
+ * See type definitions in {@link BackupCodeProps}
+ */
+BackupCodeAuthenticator.defaultProps = {
+    "data-componentid": "backup-code-authenticator"
+};

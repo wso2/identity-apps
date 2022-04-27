@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,12 +16,15 @@
  * under the License.
  */
 
-export * from "./app-constants";
-export * from "./common-constants";
-export * from "./token-constants";
-export * from "./ui-constants";
-export * from "./filter-constants";
-export * from "./i18n-constants";
-export * from "./profile-constants";
-export * from "./consent-constants";
-export * from "./mfa-constants";
+/**
+ * The action types of updating enable authenticators.
+ * 
+ * @readonly
+ * @enum {string}
+ */
+export enum EnabledAuthenticatorUpdateAction {
+    INIT_TOTP,
+    DELETE_TOTP,
+    TOTP_TOGGLE_DISABLE,
+    TOTP_TOGGLE_ENABLE
+}

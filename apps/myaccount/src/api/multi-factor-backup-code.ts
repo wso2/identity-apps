@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,8 +17,11 @@
  */
 
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
-import { AxiosRequestConfig, AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
+import { MultiFactorAuthenticationConstants } from "../constants/mfa-constants";
+import { BackupCodeInterface, PostBackupCodeActions } from "../models";
 import { store } from "../store";
  
 /**
@@ -29,17 +32,9 @@ import { store } from "../store";
 const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
  
 /**
- * The action types of the backu code post endpoint
+ * Refresh backup codes of the authenticated user.
  */
-enum PostBackupCodeActions {
-INIT = "INIT",
-REFRESH = "REFRESH"
-}
- 
-/**
- * Refresh backup codes of the authenticated user
- */
-export const refreshBackupCode = (): Promise<any> => {
+export const refreshBackupCode = (): Promise<BackupCodeInterface> => {
     const requestConfig = {
         data: {
             action: PostBackupCodeActions.REFRESH
@@ -53,22 +48,28 @@ export const refreshBackupCode = (): Promise<any> => {
     };
  
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             } else {
-                return Promise.resolve(response);
+                return Promise.resolve(response.data as BackupCodeInterface);
             }
         })
-        .catch((error) => {
-            return Promise.reject(error);
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                MultiFactorAuthenticationConstants.MFA_BACKUP_CODE_REFRESH_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };
  
 /**
- * Generate backup codes the authenticated user
+ * Generate backup codes the authenticated user.
  */
-export const initBackupCode = (): Promise<any> => {
+export const initBackupCode = (): Promise<BackupCodeInterface> => {
      
     const requestConfig = {
         data: {
@@ -83,14 +84,21 @@ export const initBackupCode = (): Promise<any> => {
     };
  
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
-            return Promise.resolve(response);
+
+            return Promise.resolve(response.data as BackupCodeInterface);
         })
-        .catch((error) => {
-            return Promise.reject(error);
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                MultiFactorAuthenticationConstants.MFA_BACKUP_CODE_INIT_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };
  
@@ -108,24 +116,30 @@ export const deleteBackupCode = (): Promise<any> => {
     };
  
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
  
             return Promise.resolve(response);
         })
-        .catch((error) => {
-            return Promise.reject(error);
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                MultiFactorAuthenticationConstants.MFA_BACKUP_CODE_DELETE_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };
  
 /**
  * This API is used to retrieve backup codes of the authenticated user.
  */
-export const getBackupCodes = (): Promise<any> => {
+export const getBackupCodes = (): Promise<BackupCodeInterface> => {
     const requestConfig = {
-       headers: {
+        headers: {
             "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
@@ -134,13 +148,20 @@ export const getBackupCodes = (): Promise<any> => {
     };
  
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
-            return Promise.resolve(response);
+
+            return Promise.resolve(response.data as BackupCodeInterface);
         })
-        .catch((error) => {
-            return Promise.reject(error);
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                MultiFactorAuthenticationConstants.MFA_BACKUP_CODE_RETRIEVE_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };
