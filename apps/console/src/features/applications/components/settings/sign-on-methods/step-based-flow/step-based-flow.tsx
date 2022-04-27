@@ -516,7 +516,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                 ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
                                 leftSideStepsFromImmediateSecondFactor);
 
-
                         // If there are no other handlers, Show a warning and abort option delete.
                         if (noOfProperHandlersOnLeft <= 1) {
                             dispatch(
