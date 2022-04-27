@@ -150,8 +150,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
             } else {
                 setShowSubjectIdentifierCheckbox(true);
             }
-        }
-        );
+        });
     }, [ JSON.stringify(step.options) ]);
 
     /**

@@ -390,8 +390,8 @@
                                 </button>
                             </div>
                             <%
-                                        }
-                                        if (localAuthenticatorNames.contains(MAGIC_LINK_AUTHENTICATOR)) {
+                                }
+                                if (localAuthenticatorNames.contains(MAGIC_LINK_AUTHENTICATOR)) {
                             %>
                             <div class="field">
                                 <button class="ui grey labeled icon button fluid"
@@ -410,7 +410,7 @@
                                 </button>
                             </div>
                             <%
-                                        }
+                                }
                                 if (localAuthenticatorNames.contains("totp")) {
                             %>
                             <div class="field">
