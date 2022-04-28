@@ -39,5 +39,4 @@ export interface UserstoresConfig {
         appendToUsername: boolean;
     };
     shouldShowUserstore: (typeName: string) => boolean;
-
 }

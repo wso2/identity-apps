@@ -19,7 +19,14 @@
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
 import { store } from "../../core";
-import { PatchData, QueryParams, TestConnection, UserStoreAttributes, UserStorePostData } from "../models";
+import {
+    AttributeMapping,
+    PatchData,
+    QueryParams,
+    TestConnection,
+    UserStoreAttributes,
+    UserStorePostData
+} from "../models";
 
 /**
  * The error code that is returned when there is no item in the list.
@@ -323,6 +330,37 @@ export const getUserStoreAttributes = (id: string, params: QueryParams): Promise
         method: HttpMethods.GET,
         params,
         url: `${store.getState().config.endpoints.userStores}/meta/types/${id}/attributes`
+    };
+    return httpClient(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(`An error occurred. The server returned ${response.status}`);
+            }
+            return Promise.resolve(response.data);
+        })
+        .catch((error) => {
+            return Promise.reject(error?.response?.data);
+        });
+};
+
+/**
+ * Update the secondary user store attribute mappings by it's domain id.
+ *
+ * @param {string} userstoreId userstore ID.
+ * @param {AttributeMapping[]} data attribute mappings.
+ *
+ * @return {Promise<any>} Response.
+ */
+export const updateUserStoreAttributeMappings = (userstoreId: string, data: AttributeMapping[]): Promise<any> => {
+    const requestConfig = {
+        data,
+        headers: {
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: `${store.getState().config.endpoints.userStores}/${userstoreId}/attribute-mappings`
     };
     return httpClient(requestConfig)
         .then((response) => {
