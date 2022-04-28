@@ -121,6 +121,7 @@ export const common: CommonNS = {
     personalInfo: "Personal Info",
     pin: "Pin",
     pinned: "Pinned",
+    preview: "Preview",
     previous: "Previous",
     priority: "Priority",
     privacy: "Privacy",
