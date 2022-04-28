@@ -55,11 +55,6 @@
             
             if(isInviteUserFlow) {
                 window.location.href = window.location.origin;
-            } 
-            else {
-                if(!isSilentSignInDisabled && !isApplicationsPath){
-                    window.history.pushState({}, '', userAccessedPath);
-                }
             }
         </script>
 
