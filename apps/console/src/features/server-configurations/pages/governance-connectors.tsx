@@ -81,10 +81,9 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
         loadCategoryConnectors();
     }, []);
 
-    const path: string[] = history.location.pathname.split("/");
-    const categoryId: string = path[ path.length - 1 ];
-
     const loadCategoryConnectors = () => {
+        const path = history.location.pathname.split("/");
+        const categoryId = path[ path.length - 1 ];
 
         getConnectorCategory(categoryId)
             .then((response: GovernanceConnectorCategoryInterface) => {
@@ -141,12 +140,8 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                     ? connectorCategory.description
                     : connectorCategory?.name
                     && t("console:manage.features.governanceConnectors.connectorSubHeading", {
-                        name: 
-                        categoryId === ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID 
-                            ? connectorCategory.name.split(" ")[0] 
-                            : connectorCategory.name 
-                    })
-                )
+                        name: connectorCategory.name
+                    }))
             }
             data-testid={ `${testId}-page-layout` }
         >
