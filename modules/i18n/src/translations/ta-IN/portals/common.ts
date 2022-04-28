@@ -122,6 +122,7 @@ export const common: CommonNS = {
     personalInfo: "பயனர் விபரம்",
     pin: "பொருத்து",
     pinned: "பொருத்தப்பட்டுள்ளது",
+    preview: "முன்னோட்ட",
     previous: "பின் செல்",
     priority: "முன்னுரிமை",
     privacy: "தனியுரிமை",
