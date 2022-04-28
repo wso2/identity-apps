@@ -71,7 +71,6 @@ export const ProtectedRoute: FunctionComponent<ProtectedRoutePropsInterface> = (
         );
     }
 
-
     /**
      * Checks if the users have the required scope and direct them to the relevant
      *
