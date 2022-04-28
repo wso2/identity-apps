@@ -113,8 +113,16 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ selectedRoleId,  setSelectedRoleId ] = useState<string>();
     const [ isRoleSelected, setRoleSelection ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ viewNextButton, setViewNextButton ] = useState<boolean>(true);
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
+
+    useEffect(() => {
+        if (currentWizardStep != 3) {
+            setViewRolePermissions(false);
+        }
+        setViewNextButton(true);
+    }, [currentWizardStep]);
 
     useEffect(() => {
         if (!selectedRoleId) {
@@ -168,6 +176,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         setViewRolePermissions(!viewRolePermissions);
         setRoleSelection(false);
     };
+
+    const handleViewNextButton = (show: boolean) => {
+        setViewNextButton(show)
+    }
 
     const handleRoleIdSet = (roleId) => {
         setSelectedRoleId(roleId);
@@ -577,6 +589,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 ? <RolePermissions
                         data-testid={ `${ testId }-role-permission` }
                         handleNavigateBack={ handleViewRolePermission }
+                        handleViewNextButton = { handleViewNextButton }
                         roleId={ selectedRoleId }
                     />
                 : <AddUserRole
@@ -664,7 +677,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                             </LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            { currentWizardStep < STEPS.length - 1 && (
+                            { currentWizardStep < STEPS.length - 1 && viewNextButton && (
                                 <PrimaryButton
                                     data-testid={ `${ testId }-next-button` }
                                     floated="right"
