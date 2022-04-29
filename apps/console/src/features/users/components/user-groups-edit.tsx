@@ -95,7 +95,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     const [ assignedGroups, setAssignedGroups ] = useState<RolesMemberInterface[]>([]);
     const [ isPrimaryGroupsLoading, setPrimaryGroupsLoading ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ oldGroupLis, setOldGroupList ] = useState([]);
+    const [ oldGroupList, setOldGroupList ] = useState([]);
 
     useEffect(() => {
         if (!(user)) {
@@ -306,7 +306,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
 
         if (groupIds && groupIds?.length > 0) {
             groupIds.map((id) => {
-                if (!oldGroupLis.find(oldGroup => oldGroup.id === id)) {
+                if (!oldGroupList.find(oldGroup => oldGroup.id === id)) {
                     addOperation = {
                         ...addOperation,
                         ...{ path: "/Groups/" + id }
