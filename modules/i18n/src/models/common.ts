@@ -25,6 +25,7 @@ export interface DangerZone {
     subheader: string;
     subheader2?: string;
     buttonHint?: string;
+    buttonDisableHint?: string;
 }
 
 /**
