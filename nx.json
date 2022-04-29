@@ -46,5 +46,24 @@
     "@nrwl/js": {
       "analyzeSourceFiles": false
     }
+  },
+  "generators": {
+    "@nrwl/react": {
+      "application": {
+        "style": "css",
+        "linter": "eslint",
+        "babel": true
+      },
+      "component": {
+        "style": "css"
+      },
+      "library": {
+        "style": "css",
+        "linter": "eslint"
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/react"
   }
 }

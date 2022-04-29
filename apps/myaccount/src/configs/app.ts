@@ -43,23 +43,23 @@ export class Config {
      */
     public static getDeploymentConfig(): DeploymentConfigInterface {
         return {
-            appBaseName: window["AppUtils"].getConfig().appBaseWithTenant,
-            appBaseNameWithoutTenant: window["AppUtils"].getConfig().appBase,
-            appHomePath: window["AppUtils"].getConfig().routes.home,
-            appLoginPath: window["AppUtils"].getConfig().routes.login,
-            appLogoutPath: window["AppUtils"].getConfig().routes.logout,
-            clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
-            clientID: window["AppUtils"].getConfig().clientID,
-            clientOrigin: window["AppUtils"].getConfig().clientOrigin,
-            consoleApp: window["AppUtils"].getConfig().consoleApp,
-            idpConfigs: window["AppUtils"].getConfig().idpConfigs,
-            loginCallbackUrl: window["AppUtils"].getConfig().loginCallbackURL,
-            serverHost: window["AppUtils"].getConfig().serverOriginWithTenant,
-            serverOrigin: window["AppUtils"].getConfig().serverOrigin,
-            superTenant: window["AppUtils"].getConfig().superTenant,
-            tenant: window["AppUtils"].getConfig().tenant,
-            tenantPath: window["AppUtils"].getConfig().tenantPath,
-            tenantPrefix: window["AppUtils"].getConfig().tenantPrefix
+            appBaseName: window["AppUtils"]?.getConfig().appBaseWithTenant,
+            appBaseNameWithoutTenant: window["AppUtils"]?.getConfig().appBase,
+            appHomePath: window["AppUtils"]?.getConfig().routes.home,
+            appLoginPath: window["AppUtils"]?.getConfig().routes.login,
+            appLogoutPath: window["AppUtils"]?.getConfig().routes.logout,
+            clientHost: window["AppUtils"]?.getConfig().clientOriginWithTenant,
+            clientID: window["AppUtils"]?.getConfig().clientID,
+            clientOrigin: window["AppUtils"]?.getConfig().clientOrigin,
+            consoleApp: window["AppUtils"]?.getConfig().consoleApp,
+            idpConfigs: window["AppUtils"]?.getConfig().idpConfigs,
+            loginCallbackUrl: window["AppUtils"]?.getConfig().loginCallbackURL,
+            serverHost: window["AppUtils"]?.getConfig().serverOriginWithTenant,
+            serverOrigin: window["AppUtils"]?.getConfig().serverOrigin,
+            superTenant: window["AppUtils"]?.getConfig().superTenant,
+            tenant: window["AppUtils"]?.getConfig().tenant,
+            tenantPath: window["AppUtils"]?.getConfig().tenantPath,
+            tenantPrefix: window["AppUtils"]?.getConfig().tenantPrefix
         };
     }
 
@@ -133,28 +133,27 @@ export class Config {
      */
     public static getUIConfig(): UIConfigInterface {
         return {
-            announcements: window["AppUtils"].getConfig().ui.announcements,
-            appName: window["AppUtils"].getConfig().ui.appName,
-            appTitle: window["AppUtils"].getConfig().ui.appTitle,
-            authenticatorApp: window["AppUtils"].getConfig().ui.authenticatorApp,
-            copyrightText: window["AppUtils"]
-                .getConfig()
+            announcements: window["AppUtils"]?.getConfig().ui.announcements,
+            appName: window["AppUtils"]?.getConfig().ui.appName,
+            appTitle: window["AppUtils"]?.getConfig().ui.appTitle,
+            authenticatorApp: window["AppUtils"]?.getConfig().ui.authenticatorApp,
+            copyrightText: window["AppUtils"]?.getConfig()
                 .ui.appCopyright.replace("${copyright}", "\u00A9")
                 .replace("${year}", new Date().getFullYear()),
-            disableMFAforSuperTenantUser: window["AppUtils"].getConfig().ui.disableMFAforSuperTenantUser,
-            enableMFAUserWise: window["AppUtils"].getConfig().ui.enableMFAUserWise,
-            disableMFAForFederatedUsers: window["AppUtils"].getConfig().ui.disableMFAForFederatedUsers,
-            forceBackupCode: window["AppUtils"].getConfig().ui.forceBackupCode,
-            features: window["AppUtils"].getConfig().ui.features,
-            i18nConfigs: window["AppUtils"].getConfig().ui.i18nConfigs,
-            isCookieConsentBannerEnabled: window["AppUtils"].getConfig().ui.isCookieConsentBannerEnabled,
-            isHeaderAvatarLabelAllowed: window["AppUtils"].getConfig().ui.isHeaderAvatarLabelAllowed,
-            isProfileUsernameReadonly: window["AppUtils"].getConfig().ui.isProfileUsernameReadonly,
-            privacyPolicyConfigs: window["AppUtils"].getConfig().ui.privacyPolicyConfigs,
-            productName: window["AppUtils"].getConfig().ui.productName,
-            productVersionConfig: window["AppUtils"].getConfig().ui.productVersionConfig,
-            showAppSwitchButton: window["AppUtils"].getConfig().ui.showAppSwitchButton,
-            theme: window["AppUtils"].getConfig().ui.theme
+            disableMFAforSuperTenantUser: window["AppUtils"]?.getConfig()?.ui.disableMFAforSuperTenantUser,
+            enableMFAUserWise: window["AppUtils"]?.getConfig()?.ui.enableMFAUserWise,
+            disableMFAForFederatedUsers: window["AppUtils"]?.getConfig()?.ui.disableMFAForFederatedUsers,
+            forceBackupCode: window["AppUtils"]?.getConfig()?.ui.forceBackupCode,
+            features: window["AppUtils"]?.getConfig().ui.features,
+            i18nConfigs: window["AppUtils"]?.getConfig().ui.i18nConfigs,
+            isCookieConsentBannerEnabled: window["AppUtils"]?.getConfig().ui.isCookieConsentBannerEnabled,
+            isHeaderAvatarLabelAllowed: window["AppUtils"]?.getConfig().ui.isHeaderAvatarLabelAllowed,
+            isProfileUsernameReadonly: window["AppUtils"]?.getConfig().ui.isProfileUsernameReadonly,
+            privacyPolicyConfigs: window["AppUtils"]?.getConfig().ui.privacyPolicyConfigs,
+            productName: window["AppUtils"]?.getConfig().ui.productName,
+            productVersionConfig: window["AppUtils"]?.getConfig().ui.productVersionConfig,
+            showAppSwitchButton: window["AppUtils"]?.getConfig().ui.showAppSwitchButton,
+            theme: window["AppUtils"]?.getConfig().ui.theme
         };
     }
 
@@ -178,7 +177,7 @@ export class Config {
                     generateBackendPaths(
                         language,
                         namespace,
-                        window["AppUtils"].getConfig().appBase,
+                        window["AppUtils"]?.getConfig().appBase,
                         store.getState().config.i18n ?? {
                             langAutoDetectEnabled: I18nConstants.LANG_AUTO_DETECT_ENABLED,
                             namespaceDirectories: I18nConstants.BUNDLE_NAMESPACE_DIRECTORIES,
@@ -204,7 +203,7 @@ export class Config {
     public static getI18nConfig(metaFile?: MetaI18N): I18nModuleOptionsInterface {
         return {
             initOptions: this.generateModuleInitOptions(metaFile),
-            langAutoDetectEnabled: window["AppUtils"].getConfig().ui.i18nConfigs.langAutoDetectEnabled
+            langAutoDetectEnabled: window["AppUtils"]?.getConfig().ui.i18nConfigs.langAutoDetectEnabled
                 ?? I18nConstants.LANG_AUTO_DETECT_ENABLED,
             namespaceDirectories: I18nConstants.BUNDLE_NAMESPACE_DIRECTORIES,
             overrideOptions: I18nConstants.INIT_OPTIONS_OVERRIDE,

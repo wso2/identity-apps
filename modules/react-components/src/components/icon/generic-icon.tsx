@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { SVGRLoadedInterface, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, SVGRLoadedInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { CSSProperties, PropsWithChildren, ReactElement, useEffect, useState } from "react";
+import React, { CSSProperties, PropsWithChildren, ReactElement, isValidElement, useEffect, useState } from "react";
 import { SemanticVERTICALALIGNMENTS } from "semantic-ui-react";
 
 /**
@@ -362,9 +362,15 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
                 return;
             }
 
+            if (isValidElement(Icon)) {
+                setRenderedIcon(Icon);
+
+                return;
+            }
+
             // Check is icon is a component.
             if (typeof Icon === "object") {
-                setRenderedIcon(Icon);
+                setRenderedIcon(<Icon />);
 
                 return;
             }

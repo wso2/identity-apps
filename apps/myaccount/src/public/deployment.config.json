@@ -2,7 +2,7 @@
     "consoleApp": {
         "path": "/console/develop/getting-started"
     },
-    "appBaseName": "myaccount",
+    "appBaseName": "",
     "appBaseNameForHistoryAPI": "/",
     "clientID": "MY_ACCOUNT",
     "debug": false,
