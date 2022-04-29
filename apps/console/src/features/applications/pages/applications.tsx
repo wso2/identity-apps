@@ -332,6 +332,11 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     data-componentid="application-consumer-account-link-description"
                                 >
                                     { t("console:develop.features.applications.myaccount.description") }
+                                    <DocumentationLink
+                                        link={ getLink("develop.applications.myaccount.learnMore") }
+                                    >
+                                        { t("common:learnMore") }
+                                    </DocumentationLink>
                                 </List.Description>
                             </Grid.Column>
                             <Popup
