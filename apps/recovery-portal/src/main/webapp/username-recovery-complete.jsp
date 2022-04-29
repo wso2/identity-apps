@@ -43,7 +43,7 @@
         }
     } catch (IdentityRecoveryException e) {
         request.setAttribute("error", true);
-        request.setAttribute("errorMsg", "Callback URL validation failed. " + e);
+        request.setAttribute("errorMsg", "Callback URL validation failed. " + e.getMessage());
         if (!StringUtils.isBlank(username)) {
             request.setAttribute("username", username);
         }
