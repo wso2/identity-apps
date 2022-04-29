@@ -39,6 +39,7 @@
         "typecheck": "npm run compile"
     },
     "dependencies": {
+        "@babel/polyfill": "^7.0.0",
         "@wso2is/access-control": "*",
         "@wso2is/core": "*",
         "@wso2is/forms": "*",
@@ -53,8 +54,10 @@
         "i18next-xhr-backend": "^3.2.2",
         "lodash-es": "^4.17.21",
         "moment": "2.24.0",
+        "path-browserify": "^1.0.1",
         "postcss-loader": "^3.0.0",
         "qrcode.react": "^1.0.0",
+        "react": "^16.9.0",
         "react-dom": "^16.9.0",
         "react-helmet": "^5.2.1",
         "react-i18next": "^10.11.5",
@@ -70,8 +73,6 @@
     },
     "devDependencies": {
         "@nrwl/react": "^14.0.3",
-        "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
-        "@svgr/webpack": "4.3.2",
         "@testing-library/jest-dom": "^5.11.9",
         "@types/history": "^4.7.3",
         "@types/jest": "^26.0.14",
@@ -94,7 +95,6 @@
         "eslint-plugin-react-hooks": "^4.0.0",
         "eslint-plugin-testing-library": "^5.0.5",
         "eslint-webpack-plugin": "^2.5.3",
-        "fork-ts-checker-webpack-plugin": "^6.1.0",
         "jest": "^26.4.2",
         "jest-environment-jsdom": "^26.3.0",
         "jest-environment-jsdom-global": "^2.0.4",
@@ -109,10 +109,6 @@
         "ts-jest": "^26.4.0",
         "ts-node": "^10.5.0",
         "typescript": "^4.2.2"
-    },
-    "peerDependencies": {
-        "@types/react": "*",
-        "react": "*"
     },
     "browserslist": [
         "> 0.2%"

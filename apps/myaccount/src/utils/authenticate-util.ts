@@ -69,8 +69,8 @@ export const hasScope = (scope: string): boolean => {
  * @return {string[]}
  */
 const resolveBaseUrls = (): string[] => {
-    let baseUrls = window["AppUtils"].getConfig().idpConfigs?.baseUrls;
-    const serverOrigin = window["AppUtils"].getConfig().serverOrigin;
+    let baseUrls = window["AppUtils"]?.getConfig().idpConfigs?.baseUrls;
+    const serverOrigin = window["AppUtils"]?.getConfig().serverOrigin;
 
     if (baseUrls) {
         // If the server origin is not specified in the overridden config, append it.
@@ -88,15 +88,15 @@ const resolveStorage = (): Storage => {
     const storageFallback: Storage =
         new UAParser().getBrowser().name === "IE" ? Storage.SessionStorage : Storage.WebWorker;
 
-    if (window["AppUtils"].getConfig().idpConfigs?.storage) {
+    if (window["AppUtils"]?.getConfig().idpConfigs?.storage) {
         if (
-            window["AppUtils"].getConfig().idpConfigs?.storage === Storage.WebWorker &&
+            window["AppUtils"]?.getConfig().idpConfigs?.storage === Storage.WebWorker &&
             new UAParser().getBrowser().name === "IE"
         ) {
             return Storage.SessionStorage;
         }
 
-        return window["AppUtils"].getConfig().idpConfigs?.storage;
+        return window["AppUtils"]?.getConfig().idpConfigs?.storage;
     }
 
     return storageFallback;
@@ -113,30 +113,30 @@ export const getAuthInitializeConfig = (): AuthReactConfig => {
 
     return {
         baseUrl:
-            window["AppUtils"].getConfig().idpConfigs?.serverOrigin ??
-            window[ "AppUtils" ].getConfig().idpConfigs.serverOrigin,
-        checkSessionInterval: window["AppUtils"].getConfig()?.session?.checkSessionInterval,
-        clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
-        clientID: window["AppUtils"].getConfig().clientID,
-        clockTolerance: window["AppUtils"].getConfig().idpConfigs?.clockTolerance,
+            window["AppUtils"]?.getConfig().idpConfigs?.serverOrigin ??
+            window[ "AppUtils"]?.getConfig().idpConfigs.serverOrigin,
+        checkSessionInterval: window["AppUtils"]?.getConfig()?.session?.checkSessionInterval,
+        clientHost: window["AppUtils"]?.getConfig().clientOriginWithTenant,
+        clientID: window["AppUtils"]?.getConfig().clientID,
+        clockTolerance: window["AppUtils"]?.getConfig().idpConfigs?.clockTolerance,
         disableTrySignInSilently: new URL(location.href).searchParams.get("disable_silent_sign_in") === "true",
         enableOIDCSessionManagement: true,
-        enablePKCE: window["AppUtils"].getConfig().idpConfigs?.enablePKCE ?? true,
+        enablePKCE: window["AppUtils"]?.getConfig().idpConfigs?.enablePKCE ?? true,
         endpoints: {
-            authorizationEndpoint: window["AppUtils"].getConfig().idpConfigs?.authorizeEndpointURL,
-            checkSessionIframe: window["AppUtils"].getConfig().idpConfigs?.oidcSessionIFrameEndpointURL,
-            endSessionEndpoint: window["AppUtils"].getConfig().idpConfigs?.logoutEndpointURL,
-            jwksUri: window["AppUtils"].getConfig().idpConfigs?.jwksEndpointURL,
-            revocationEndpoint: window["AppUtils"].getConfig().idpConfigs?.tokenRevocationEndpointURL,
-            tokenEndpoint: window["AppUtils"].getConfig().idpConfigs?.tokenEndpointURL
+            authorizationEndpoint: window["AppUtils"]?.getConfig().idpConfigs?.authorizeEndpointURL,
+            checkSessionIframe: window["AppUtils"]?.getConfig().idpConfigs?.oidcSessionIFrameEndpointURL,
+            endSessionEndpoint: window["AppUtils"]?.getConfig().idpConfigs?.logoutEndpointURL,
+            jwksUri: window["AppUtils"]?.getConfig().idpConfigs?.jwksEndpointURL,
+            revocationEndpoint: window["AppUtils"]?.getConfig().idpConfigs?.tokenRevocationEndpointURL,
+            tokenEndpoint: window["AppUtils"]?.getConfig().idpConfigs?.tokenEndpointURL
         },
         resourceServerURLs: resolveBaseUrls(),
-        responseMode: window["AppUtils"].getConfig().idpConfigs?.responseMode ?? responseModeFallback,
-        scope: window["AppUtils"].getConfig().idpConfigs?.scope ?? [TokenConstants.SYSTEM_SCOPE],
+        responseMode: window["AppUtils"]?.getConfig().idpConfigs?.responseMode ?? responseModeFallback,
+        scope: window["AppUtils"]?.getConfig().idpConfigs?.scope ?? [TokenConstants.SYSTEM_SCOPE],
         sendCookiesInRequests: true,
-        sessionRefreshInterval: window["AppUtils"].getConfig()?.session?.sessionRefreshTimeOut,
-        signInRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
-        signOutRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
+        sessionRefreshInterval: window["AppUtils"]?.getConfig()?.session?.sessionRefreshTimeOut,
+        signInRedirectURL: window["AppUtils"]?.getConfig().loginCallbackURL,
+        signOutRedirectURL: window["AppUtils"]?.getConfig().loginCallbackURL,
         storage: resolveStorage() as Storage.WebWorker
     };
 };

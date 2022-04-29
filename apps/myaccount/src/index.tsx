@@ -18,14 +18,11 @@
 
 import { AuthParams, AuthProvider, SPAUtils } from "@asgardeo/auth-react";
 import { ContextUtils } from "@wso2is/core/utils";
-import { ContentLoader } from "@wso2is/react-components";
 import axios from "axios";
 import * as React from "react";
-// tslint:disable:no-submodule-imports
 import "react-app-polyfill/ie11";
 import "react-app-polyfill/ie9";
 import "react-app-polyfill/stable";
-// tslint:enable
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
@@ -59,12 +56,31 @@ const getAuthParams = (): Promise<AuthParams> => {
     return;
 };
 
-ReactDOM.render(
-    (
+const RootWithConfig = () => {
+
+    const [ ready, setReady ] = React.useState(false);
+
+    React.useEffect(() => {
+        if (window["AppUtils"]) {
+            setReady(true);
+
+            return;
+        }
+
+        setReady(false);
+    }, [ window["AppUtils"] ]);
+
+    if (!ready) {
+        return <PreLoader />;
+    }
+
+    return (
         <Provider store={ store }>
             <BrowserRouter>
                 <AuthProvider
-                    config={ getAuthInitializeConfig() }
+                    config={
+                        getAuthInitializeConfig()
+                    }
                     fallback={ <PreLoader /> }
                     getAuthParams={ getAuthParams }
                 >
@@ -72,11 +88,7 @@ ReactDOM.render(
                 </AuthProvider>
             </BrowserRouter>
         </Provider>
-    ),
-    document.getElementById("root")
-);
+    );
+};
 
-// Accept HMR for updated modules
-if (import.meta.webpackHot) {
-    import.meta.webpackHot.accept();
-}
+ReactDOM.render(<RootWithConfig />, document.getElementById("root"));

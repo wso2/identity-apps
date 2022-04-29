@@ -103,26 +103,114 @@
       "projectType": "library"
     },
     "myaccount": {
-      "projectType": "application",
-      "generators": {},
       "root": "apps/myaccount",
       "sourceRoot": "apps/myaccount/src",
-      "prefix": "@wso2is",
+      "projectType": "application",
       "targets": {
         "build": {
-          "executor": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/web:webpack",
           "outputs": [
-            "apps/build/myaccount"
+            "{options.outputPath}"
+          ],
+          "defaultConfiguration": "production",
+          "options": {
+            "compiler": "babel",
+            "outputPath": "apps/myaccount/build/myaccount",
+            "index": "apps/myaccount/src/index.html",
+            "baseHref": "",
+            "main": "apps/myaccount/src/index.tsx",
+            "polyfills": "",
+            "tsConfig": "apps/myaccount/tsconfig.json",
+            "assets": [
+              {
+                "glob": "**/*.!(less)",
+                "input": "modules/theme/dist/lib",
+                "output": "libs"
+              },
+              {
+                "glob": "**/*",
+                "input": "apps/myaccount/src/public",
+                "output": "."
+              },
+              {
+                "glob": "**/*",
+                "input": "modules/i18n/dist/bundle",
+                "output": "resources/i18n"
+              },
+              {
+                "glob": "**/assets/images/(branding|flags.png)/**",
+                "input": "modules/theme/dist/lib",
+                "output": "libs"
+              }
+            ],
+            "styles": [],
+            "scripts": [],
+            "generateIndexHtml": false,
+            "webpackConfig": "apps/myaccount/nx-webpack.ts"
+          },
+          "configurations": {
+            "development": {
+              "extractLicenses": false,
+              "optimization": false,
+              "sourceMap": true,
+              "vendorChunk": true
+            },
+            "production": {
+              "fileReplacements": [],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/web:dev-server",
+          "defaultConfiguration": "development",
+          "options": {
+            "buildTarget": "myaccount:build",
+            "port": 9000,
+            "baseHref": "",
+            "open": true,
+            "hmr": true,
+            "ssl": true
+          },
+          "configurations": {
+            "development": {
+              "buildTarget": "myaccount:build:development"
+            },
+            "production": {
+              "buildTarget": "myaccount:build:production",
+              "hmr": false
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": [
+            "{options.outputFile}"
           ],
           "options": {
-            "command": "npm run build",
-            "cwd": "apps/myaccount"
+            "lintFilePatterns": [
+              "apps/myaccount/**/*.{ts,tsx,js,jsx}"
+            ],
+            "eslintConfig": "apps/myaccount/.eslintrc.js"
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/apps/myaccount"
+          ],
+          "options": {
+            "jestConfig": "apps/myaccount/jest.config.ts",
+            "passWithNoTests": true
           }
         }
       },
-      "outputs": [
-        "{options.outputPath}"
-      ]
+      "tags": []
     },
     "react-components": {
       "projectType": "library",
