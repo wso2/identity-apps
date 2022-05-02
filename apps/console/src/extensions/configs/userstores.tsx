@@ -19,7 +19,7 @@
 import { UserstoresConfig } from "./models";
 
 export const userstoresConfig: UserstoresConfig = {
-    customerUserStoreId: "Q1VTVE9NRVItREVGQVVMVA",
+    onUserstoreEdit: () => true,
     shouldShowUserstore: () => {
         return false;
     },

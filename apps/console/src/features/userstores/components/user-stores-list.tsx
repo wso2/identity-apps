@@ -287,7 +287,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
     };
 
     const handleUserstoreEdit = (userstoreId: string) => {
-        if (userstoreId === userstoresConfig.customerUserStoreId || isEmpty(userstoresConfig.customerUserStoreId)) {
+        if (userstoresConfig.onUserstoreEdit(userstoreId)) {
             history.push(AppConstants.getPaths().get("USERSTORES_EDIT").replace(":id", userstoreId));
         } else {
             history.push(AppConstants.getPaths().get("USERSTORES_EDIT").replace(":id", userstoreId).replace(

@@ -17,7 +17,6 @@
  */
 
 export interface UserstoresConfig {
-    customerUserStoreId: string;
     userstoreEdit: {
         basicDetails: {
             showType: boolean;
@@ -38,5 +37,6 @@ export interface UserstoresConfig {
     userstoreDomain: {
         appendToUsername: boolean;
     };
+    onUserstoreEdit: (userstoreId: string) => boolean;
     shouldShowUserstore: (typeName: string) => boolean;
 }
