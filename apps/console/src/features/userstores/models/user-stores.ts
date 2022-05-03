@@ -53,7 +53,6 @@ export interface UserStorePostData {
     description: string;
     name: string;
     properties: UserStoreProperty[];
-    claimAttributeMappings?: AttributeMapping[];
 }
 
 /**
@@ -162,32 +161,4 @@ export enum UserstorePropertiesCategories {
     USER = "user",
     GROUP = "group",
     BASIC = "basic"
-}
-
-/**
- * The type of object returned by the user store attributes endpoint.
- */
-export interface UserStoreAttributes {
-    typeName: string;
-    typeId: string;
-    isLocal: boolean;
-    attributeMappings: AttributeMappings[];
-}
-
-/**
- * The type of attribute mappings.
- */
-export interface AttributeMappings {
-    claimId: string;
-    claimURI: string;
-    mappedAttribute: string;
-    displayName: string;
-}
-
-/**
- * The type of a attribute mapping.
- */
-export interface AttributeMapping {
-    claimURI: string;
-    mappedAttribute: string;
 }
