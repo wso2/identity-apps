@@ -2565,6 +2565,15 @@ export const console: ConsoleNS = {
                             message: "මෙම පියවරට එකතු කළ නොහැක"
                         }
                     },
+                    tierLimitReachedError: {
+                        emptyPlaceholder: {
+                            action: "සැලසුම් බලන්න",
+                            subtitles: "අවසර ලත් සීමාව වැඩි කිරීමට ඔබට ඔබේ දායකත්වය උත්ශ්‍රේණි කිරීමට " +
+                                "හෝ අනවශ්‍ය යෙදුම් මකා දැමීමෙන් පසු නැවත උත්සාහ කිරීමට හැකිය.",
+                            title: "ඔබ මෙම සංවිධානය සඳහා අවසර දී ඇති උපරිම යෙදුම් ගණනට ළඟා වී ඇති බව පෙනේ."
+                        },
+                        heading: "ඔබ යෙදුම් සඳහා උපරිම සීමාවට ළඟා වී ඇත"
+                    },
                     updateAdvancedConfig: {
                         error: {
                             description: "{{description}}",

@@ -1004,6 +1004,10 @@ export interface ConsoleNS {
                     getInboundProtocolConfig: Notification;
                     regenerateSecret: Notification;
                     revokeApplication: Notification;
+                    tierLimitReachedError: {
+                        emptyPlaceholder: Placeholder;
+                        heading: string;
+                    };
                     updateAdvancedConfig: Notification;
                     updateApplication: Notification;
                     updateAuthenticationFlow: Notification;
