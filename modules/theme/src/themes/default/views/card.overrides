@@ -1239,7 +1239,7 @@
         }
 
         .header {
-            margin-top: 5px;
+            margin-top: 0 !important;
             width: 100%;
 
             > h1 {
@@ -1266,13 +1266,22 @@
             display: flex;
 
             > h1 {
+               position: relative;
                margin: 0 !important;
                padding: 0 !important;
                font-size: 16px !important;
                font-weight: 500;
                white-space: normal;
+               word-break: break-all;
+               word-wrap: break-word;
                width: 90%;
-               text-align: center;
+               text-align: left;
+               overflow: clip; /* Faster than hidden */
+               text-overflow: ellipsis; /* Required for line-clamp */
+               display: -webkit-box; /* Required for line-clamp */
+               line-clamp: 2; /* Number of lines to show */
+               -webkit-line-clamp: 2; /* Chrome */
+               -webkit-box-orient: vertical; /* Chrome */
             }
 
             &.center {
@@ -1357,17 +1366,16 @@
     }
 
     .card-rich-navigation-button {
-        color: darken(@galleryGray, 50) !important;
+        color: darken(@galleryGray, 95) !important;
         justify-content: space-between !important;
-        background-color: darken(@galleryGray, 5) !important;
+        background-color: darken(@galleryGray, 3) !important;
         text-decoration: none !important;
-        color: darken(@galleryGray, 40) !important;
         box-shadow: revert !important;
         padding: 15px !important;
 
         &:hover {
-            color: darken(@galleryGray, 80) !important;
-            background-color: darken(@galleryGray, 10) !important;
+            color: darken(@galleryGray, 100) !important;
+            background-color: darken(@galleryGray, 8) !important;
         }
     }
 }
