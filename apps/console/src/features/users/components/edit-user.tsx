@@ -175,7 +175,6 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         "genericError.message"
                     )
                 }));
-
             })
             .finally(() => {
                 setIsSuperAdminIdentifierFetchRequestLoading(false);
