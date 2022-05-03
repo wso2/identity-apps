@@ -96,12 +96,10 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const [ user, setUser ] = useState<ProfileInfoInterface>(selectedUser);
 
     useEffect(() => {
-    /**
-    Since the parent component is refreshing twice we are doing a deep equals operation on the user object to 
-    see if they are the same values. If they are the same values we do not do anything. 
-    This makes sure the child components or side effects depending on the user object won't re-render or re-trigger.
-    */
-        if(!selectedUser || isEqual(user, selectedUser)) {
+    //Since the parent component is refreshing twice we are doing a deep equals operation on the user object to 
+    //see if they are the same values. If they are the same values we do not do anything. 
+    //This makes sure the child components or side effects depending on the user object won't re-render or re-trigger.
+        if (!selectedUser || isEqual(user, selectedUser)) {
             return;
         }
         setUser(selectedUser);
@@ -133,11 +131,10 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     /**
     * Util function to check if current user and selected user is a super admin.
     */
-    const checkIsSuperAdmin = () => {
+    const checkIsSuperAdmin = (): void => {
         setIsSuperAdminIdentifierFetchRequestLoading(true);
 
         getServerConfigs()
-
             .then((response) => {
                 const loggedUserName: string = store.getState().profile.profileInfo.userName;
                 const adminUser: string = response?.realmConfig.adminUser;
@@ -145,10 +142,9 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 if (loggedUserName === adminUser) {
                     setIsSuperAdmin(true);
                 }
-                if (user?.userName === adminUser){
+                if (user?.userName === adminUser) {
                     setIsSelectedSuperAdmin(true);
                 }
-            
             })
             .catch((error: AxiosError) => {
 
@@ -179,7 +175,6 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         "genericError.message"
                     )
                 }));
-
 
             })
             .finally(() => {
