@@ -110,6 +110,7 @@ export interface CommonNS {
     personalInfo: string;
     pin: string;
     pinned: string;
+    preview: string;
     previous: string;
     priority: string;
     privacy: string;

@@ -2274,7 +2274,7 @@ export const console: ConsoleNS = {
                     }
                 },
                 myaccount: {
-                    description: "Self-service portal for your users",
+                    description: "Self-service portal for your users.",
                     popup: "Share this link with your users to allow access to My Account" +
                     " and to manage their accounts.",
                     title: "My Account"
@@ -7853,6 +7853,8 @@ export const console: ConsoleNS = {
                     dangerZoneGroup: {
                         deleteUserZone: {
                             actionTitle: "Delete User",
+                            buttonDisableHint: "Delete option is disabled because this user is managed in a remote " +
+                                "user store.",
                             header: "Delete user",
                             subheader: "This action will permanently delete the user from the organization. Please " +
                                 "be certain before you proceed."

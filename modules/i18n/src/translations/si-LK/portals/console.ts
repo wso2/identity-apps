@@ -6298,6 +6298,8 @@ export const console: ConsoleNS = {
                     dangerZoneGroup: {
                         deleteUserZone: {
                             actionTitle: "පරිශීලකයා මකන්න",
+                            buttonDisableHint: "මෙම පරිශීලකයා දුරස්ථ පරිශීලක ගබඩාවක කළමනාකරණය කර ඇති නිසා මකන්න " +
+                                "විකල්පය අබල කර ඇත.",
                             header: "පරිශීලකයා මකන්න",
                             subheader: "මෙම ක්‍රියාව මඟින් පරිශීලකයා ආයතනයෙන් ස්ථිරවම මකනු ඇත. ඉදිරියට " +
                                 "යාමට පෙර කරුණාකර සහතික වන්න."

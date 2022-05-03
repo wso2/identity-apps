@@ -108,3 +108,16 @@
         }
     }
 }
+
+/*******************************
+        Preview Label
+*******************************/
+
+.ui.label {
+    &.preview-label {
+        color: #01698a;
+        font-weight: 500;
+        background-color: #c3e6f6;
+        text-transform: uppercase;
+    }
+}
