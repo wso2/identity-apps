@@ -96,9 +96,9 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const [ user, setUser ] = useState<ProfileInfoInterface>(selectedUser);
 
     useEffect(() => {
-    //Since the parent component is refreshing twice we are doing a deep equals operation on the user object to 
-    //see if they are the same values. If they are the same values we do not do anything. 
-    //This makes sure the child components or side effects depending on the user object won't re-render or re-trigger.
+        //Since the parent component is refreshing twice we are doing a deep equals operation on the user object to 
+        //see if they are the same values. If they are the same values we do not do anything. 
+        //This makes sure the child components or side effects depending on the user object won't re-render or re-trigger.
         if (!selectedUser || isEqual(user, selectedUser)) {
             return;
         }
