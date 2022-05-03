@@ -99,6 +99,7 @@ export const ProductBrand: FunctionComponent<PropsWithChildren<ProductBrandProps
     const versionLabelClasses = classNames(
         "version-label",
         {
+            "preview-label": versionUISettings?.productVersion === "PREVIEW",
             "primary" : !versionUISettings.labelColor,
             [ versionUISettings.labelColor ]: (versionUISettings.labelColor === "primary"
                 || versionUISettings.labelColor === "secondary")
