@@ -203,19 +203,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         }
 
         setAuthenticationSteps(authenticationSequence?.steps);
-
-        if (authenticationSequence.steps[ 1 ]?.options) {
-            // Enforce subject and attribute to be obtained from magic link.
-            for (const option of authenticationSequence.steps[ 1 ]?.options) {
-                if (option.authenticator === IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR) {
-                    setAttributeStepId(2);
-                    setSubjectStepId(2);
-
-                    return;
-                }
-            }
-        }
-
         setSubjectStepId(authenticationSequence?.subjectStepId);
         setAttributeStepId(authenticationSequence?.attributeStepId);
     }, [ JSON.stringify(authenticationSequence) ]);
