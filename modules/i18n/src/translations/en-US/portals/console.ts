@@ -8619,6 +8619,16 @@ export const console: ConsoleNS = {
                         }
                     },
                     notifications: {
+                        getAdminUser: {
+                            error: {
+                                description: "{{ description }}",
+                                message: "Retrieval Error"
+                            },
+                            genericError: {
+                                description: "An error occurred while retrieving the current user type.",
+                                message: "Retrieval Error"
+                            }
+                        },
                         getUserSessions: {
                             error: {
                                 description: "{{ description }}",

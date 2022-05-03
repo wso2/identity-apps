@@ -7243,6 +7243,17 @@ export const console: ConsoleNS = {
                         }
                     },
                     notifications: {
+                        getAdminUser: {
+                            error: {
+                                description: "{{ description }}",
+                                message: "Erreur de récupération"
+                            },
+                            genericError: {
+                                description: "Une erreur s'est produite lors de la récupération du type" + 
+                                    "d'utilisateur actuel.",
+                                message: "Erreur de récupération"
+                            }
+                        },
                         getUserSessions: {
                             error: {
                                 description: "{{ description }}",

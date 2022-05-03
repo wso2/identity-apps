@@ -7071,6 +7071,16 @@ export const console: ConsoleNS = {
                         }
                     },
                     notifications: {
+                        getAdminUser: {
+                            error: {
+                                description: "{{ description }}",
+                                message: "ලබා ගැනීමේ දෝෂය"
+                            },
+                            genericError: {
+                                description: "වත්මන් පරිශීලක වර්ගය ලබා ගැනීමේදී දෝෂයක් ඇති විය.",
+                                message: "ලබා ගැනීමේ දෝෂය"
+                            }
+                        },
                         getUserSessions: {
                             error: {
                                 description: "{{ description }}",

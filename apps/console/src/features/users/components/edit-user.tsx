@@ -18,9 +18,11 @@
 
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertInterface, ProfileInfoInterface, SBACInterface } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, ProfileInfoInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ResourceTab } from "@wso2is/react-components";
+import { AxiosError } from "axios";
+import isEqual from "lodash-es/isEqual";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,8 +31,9 @@ import { UserProfile } from "./user-profile";
 import { UserRolesList } from "./user-roles-edit";
 import { UserSessions } from "./user-sessions";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
+import { getServerConfigs } from "../../../features/server-configurations";
 import { FeatureConfigInterface } from "../../core/models";
-import { AppState } from "../../core/store";
+import { AppState, store } from "../../core/store";
 import { ConnectorPropertyInterface } from "../../server-configurations/models";
 import { UserManagementConstants } from "../constants";
 
@@ -67,7 +70,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
 ): JSX.Element => {
 
     const {
-        user,
+        user: selectedUser,
         handleUserUpdate,
         featureConfig,
         readOnlyUserStores,
@@ -83,12 +86,28 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         (state: AppState) => state?.config?.ui?.isGroupAndRoleSeparationEnabled);
 
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
+    const [ isSuperAdmin, setIsSuperAdmin ] = useState<boolean>(false); 
+    const [ isSelectedSuperAdmin, setIsSelectedSuperAdmin ] = useState<boolean>(false); 
+    const [ 
+        isSuperAdminIdentifierFetchRequestLoading, 
+        setIsSuperAdminIdentifierFetchRequestLoading 
+    ] = useState<boolean>(false);
+    const [ hideTermination, setHideTermination ] = useState<boolean>(false);
+    const [ user, setUser ] = useState<ProfileInfoInterface>(selectedUser);
 
     useEffect(() => {
-        if(!user) {
+    /**
+    Since the parent component is refreshing twice we are doing a deep equals operation on the user object to 
+    see if they are the same values. If they are the same values we do not do anything. 
+    This makes sure the child components or side effects depending on the user object won't re-render or re-trigger.
+    */
+        if(!selectedUser || isEqual(user, selectedUser)) {
             return;
         }
+        setUser(selectedUser);
+    }, [ selectedUser ]);
 
+    useEffect(() => {
         const userStore = user?.userName?.split("/").length > 1
             ? user?.userName?.split("/")[0]
             : UserstoreConstants.PRIMARY_USER_STORE;
@@ -100,10 +119,72 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         ) {
             setReadOnly(true);
         }
+        
     }, [ user, readOnlyUserStores ]);
+
+    useEffect(() => {
+        checkIsSuperAdmin();
+    }, [ user ]);
 
     const handleAlerts = (alert: AlertInterface) => {
         dispatch(addAlert<AlertInterface>(alert));
+    };
+
+    /**
+    * Util function to check if current user and selected user is a super admin.
+    */
+    const checkIsSuperAdmin = () => {
+        setIsSuperAdminIdentifierFetchRequestLoading(true);
+
+        getServerConfigs()
+
+            .then((response) => {
+                const loggedUserName: string = store.getState().profile.profileInfo.userName;
+                const adminUser: string = response?.realmConfig.adminUser;
+
+                if (loggedUserName === adminUser) {
+                    setIsSuperAdmin(true);
+                }
+                if (user?.userName === adminUser){
+                    setIsSelectedSuperAdmin(true);
+                }
+            
+            })
+            .catch((error: AxiosError) => {
+
+                setHideTermination(true);
+
+                if (error.response
+                && error.response.data
+                && (error.response.data.description || error.response.data.detail)) {
+
+                    dispatch(addAlert<AlertInterface>({
+                        description: error.response.data.description || error.response.data.detail,
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "console:manage.features.users.userSessions.notifications.getAdminUser." +
+                            "error.message"
+                        )
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert<AlertInterface>({
+                    description: t("console:manage.features.users.userSessions.notifications.getAdminUser." +
+                        "genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "console:manage.features.users.userSessions.notifications.getAdminUser." +
+                        "genericError.message"
+                    )
+                }));
+
+
+            })
+            .finally(() => {
+                setIsSuperAdminIdentifierFetchRequestLoading(false);
+            });
     };
 
     const panes = () => ([
@@ -153,7 +234,13 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             menuItem: t("console:manage.features.users.editUser.tab.menuItems.3"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <UserSessions user={ user } />
+                    <UserSessions 
+                        user={ user } 
+                        showSessionTerminationButton={ (!isSuperAdminIdentifierFetchRequestLoading && !hideTermination) 
+                        && ((isSelectedSuperAdmin && isSuperAdmin) 
+                            || (!isSelectedSuperAdmin && isSuperAdmin) 
+                            || (!isSelectedSuperAdmin && !isSuperAdmin))
+                        } />
                 </ResourceTab.Pane>
             )
         }
