@@ -54,6 +54,7 @@ import {
     history,
     store
 } from "../../../core";
+import { TierLimitReachErrorModal } from "../../../core/components/tier-limit-reach-error-modal";
 import { createApplication, getApplicationList, getApplicationTemplateData } from "../../api";
 import { getInboundProtocolLogos } from "../../configs";
 import { ApplicationManagementConstants } from "../../constants";
@@ -146,6 +147,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const [ issuerError, setIssuerError ] = useState<boolean>(false);
     const [ metaUrlError, setMetaUrlError ] = useState<boolean>(false);
     const [ protocolValuesChange, setProtocolValuesChange ] = useState<boolean>(false);
+    const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
     const nameRef = useRef<HTMLDivElement>();
     const issuerRef = useRef<HTMLDivElement>();
     const metaUrlRef = useRef<HTMLDivElement>();
@@ -352,6 +354,15 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             })
             .catch((error) => {
 
+                if (
+                    error.response.status === 400 &&
+                    error?.response?.data?.code === "RLS-10001"
+                ) {
+                    setOpenLimitReachedModal(true);
+
+                    return;
+                }
+
                 if (error.response.status === 403 &&
                     error?.response?.data?.code ===
                     ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
@@ -440,6 +451,14 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
      */
     const handleWizardClose = (): void => {
         closeWizard();
+    };
+
+    /**
+     * Close the limit reached modal.
+     */
+    const handleLimitReachedModalClose = (): void => {
+        setOpenLimitReachedModal(false);
+        handleWizardClose();
     };
 
     /**
@@ -1008,58 +1027,84 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     };
 
     return (
-        <ModalWithSidePanel
-            open={ true }
-            className="wizard minimal-application-create-wizard"
-            dimmer="blurring"
-            onClose={ handleWizardClose }
-            closeOnDimmerClick={ false }
-            closeOnEscape
-            data-testid={ `${ testId }-modal` }
-        >
-            <ModalWithSidePanel.MainPanel>
-                <ModalWithSidePanel.Header className="wizard-header">
-                    { title }
-                    { subTitle && (
-                        <Heading as="h6">
-                            { subTitle }
-                            <DocumentationLink
-                                link={ resolveDocumentationLink() }
-                            >
-                                { t("common:learnMore") }
-                            </DocumentationLink>
-                        </Heading>
+        <>
+            { openLimitReachedModal && (
+                <TierLimitReachErrorModal
+                    actionLabel={ t(
+                        "console:develop.features.applications.notifications." +
+                        "tierLimitReachedError.emptyPlaceholder.action"
                     ) }
-                </ModalWithSidePanel.Header>
-                <ModalWithSidePanel.Content>{ resolveContent() }</ModalWithSidePanel.Content>
-                <ModalWithSidePanel.Actions>
-                    <Grid>
-                        <Grid.Row column={ 1 }>
-                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                <LinkButton floated="left" onClick={ handleWizardClose }>
-                                    { t("common:cancel") }
-                                </LinkButton>
-                            </Grid.Column>
-                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                <PrimaryButton
-                                    floated="right"
-                                    onClick={ () => {
-                                        setIssuerError(false);
-                                        setSubmit();
-                                    } }
-                                    data-testid={ `${ testId }-next-button` }
-                                    loading={ isSubmitting }
-                                    disabled={ isSubmitting }
+                    handleModalClose={ handleLimitReachedModalClose }
+                    header={ t(
+                        "console:develop.features.applications.notifications.tierLimitReachedError.heading"
+                    ) }
+                    description={ t(
+                        "console:develop.features.applications.notifications." +
+                        "tierLimitReachedError.emptyPlaceholder.subtitles"
+                    ) }
+                    message={ t(
+                        "console:develop.features.applications.notifications." + 
+                        "tierLimitReachedError.emptyPlaceholder.title"
+                    ) }
+                    openModal={ openLimitReachedModal }
+                />
+            ) }
+            <ModalWithSidePanel
+                open={ !openLimitReachedModal }
+                className="wizard minimal-application-create-wizard"
+                dimmer="blurring"
+                onClose={ handleWizardClose }
+                closeOnDimmerClick={ false }
+                closeOnEscape
+                data-testid={ `${ testId }-modal` }
+            >
+                <ModalWithSidePanel.MainPanel>
+                    <ModalWithSidePanel.Header className="wizard-header">
+                        { title }
+                        { subTitle && (
+                            <Heading as="h6">
+                                { subTitle }
+                                <DocumentationLink
+                                    link={ resolveDocumentationLink() }
                                 >
-                                    { t("common:register") }
-                                </PrimaryButton>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                </ModalWithSidePanel.Actions>
-            </ModalWithSidePanel.MainPanel>
-            { renderHelpPanel() }
-        </ModalWithSidePanel>
+                                    { t("common:learnMore") }
+                                </DocumentationLink>
+                            </Heading>
+                        ) }
+                    </ModalWithSidePanel.Header>
+                    <ModalWithSidePanel.Content>{ resolveContent() }</ModalWithSidePanel.Content>
+                    <ModalWithSidePanel.Actions>
+                        <Grid>
+                            <Grid.Row column={ 1 }>
+                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                    <LinkButton
+                                        floated="left"
+                                        onClick={ handleWizardClose }
+                                    >
+                                        { t("common:cancel") }
+                                    </LinkButton>
+                                </Grid.Column>
+                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                    <PrimaryButton
+                                        floated="right"
+                                        onClick={ () => {
+                                            setIssuerError(false);
+                                            setSubmit();
+                                        } }
+                                        data-testid={ `${ testId }-next-button` }
+                                        loading={ isSubmitting }
+                                        disabled={ isSubmitting }
+                                    >
+                                        { t("common:register") }
+                                    </PrimaryButton>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                    </ModalWithSidePanel.Actions>
+                </ModalWithSidePanel.MainPanel>
+                { renderHelpPanel() }
+            </ModalWithSidePanel>
+        </>
     );
 };
 
