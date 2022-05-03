@@ -2296,6 +2296,7 @@ export interface ConsoleNS {
                         getUserSessions: Notification;
                         terminateAllUserSessions: Notification;
                         terminateUserSession: Notification;
+                        getAdminUser: Notification;
                     };
                     placeholders: {
                         emptyListPlaceholder: Placeholder;
