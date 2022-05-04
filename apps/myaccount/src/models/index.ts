@@ -34,3 +34,5 @@ export * from "./loaders";
 export * from "./app-config";
 export * from "./reducer-state";
 export * from "./preference";
+export * from "./backup-code-authenticator";
+export * from "./enabled-authenticator";

@@ -586,6 +586,7 @@ export const myAccount: MyAccountNS = {
                     "Authenticator para usar senhas de uso único baseadas " +
                     "em tempo (também conhecidas como TOTP) como um segundo " +
                     "fator ao fazer login em aplicativos.",
+                enableHint: "Ativar/desativar o autenticador TOTP",
                 heading: "App autenticador",
                 hint: "Mostrar o QR Code",
                 modals: {
@@ -644,6 +645,105 @@ export const myAccount: MyAccountNS = {
                         },
                         genericError: {
                             description: "Erro ao tentar obter um novo código QR",
+                            message: "Algo deu errado"
+                        }
+                    }
+                }
+            },
+            backupCode: {
+                download: {
+                    heading: "SALVE SEUS CÓDIGOS DE BACKUP.",
+                    info1: "Você só pode usar cada código de backup uma vez.",
+                    info2: "Esses códigos foram gerados em: ",
+                    subHeading: "Mantenha esses códigos de backup em algum lugar seguro, mas acessível"
+                },
+                heading: "Códigos de backup",
+                modals: {
+                    description: "Use os códigos de backup para fazer login quando estiver longe do telefone. " + 
+                        "Você pode gerar mais quando todos são usados",
+                    download: {
+                        heading: "Códigos de download"
+                    },
+                    generate: {
+                        description: "Todos os seus códigos de backup são usados. " + 
+                            "Permite gerar um novo conjunto de códigos de backup",
+                        heading: "Gerar"
+                    },
+                    heading: "Códigos de backup",
+                    info: "Cada código só pode ser usado uma vez",
+                    refresh: {
+                        heading: "Atualizar"
+                    },
+                    subHeading: "Senhas de uso único que você pode usar para fazer login"
+                },
+                notifications: {
+                    deleteError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Algo deu errado"
+                        },
+                        genericError: {
+                            description: "Ocorreu um erro ao excluir códigos de backup",
+                            message: "Algo deu errado"
+                        }
+                    },
+                    downloadError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Algo deu errado"
+                        },
+                        genericError: {
+                            description: "Ocorreu um erro ao tentar baixar os códigos de backup",
+                            message: "Algo deu errado"
+                        }
+                    },
+                    downloadSuccess: {
+                        genericMessage: {
+                            description: "Os códigos de backup foram baixados com sucesso.",
+                            message: "Códigos de backup baixados com sucesso."
+                        },
+                        message: {
+                            description: "{{message}}",
+                            message: "Códigos de backup baixados com sucesso."
+                        }
+                    },
+                    refreshError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Algo deu errado"
+                        },
+                        genericError: {
+                            description: "Ocorreu um erro ao tentar gerar novos códigos de backup",
+                            message: "Algo deu errado"
+                        }
+                    },
+                    retrieveAuthenticatorError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Algo deu errado"
+                        },
+                        genericError: {
+                            description: "Ocorreu um erro ao tentar obter a lista de autenticadores habilitados",
+                            message: "Algo deu errado"
+                        }
+                    },
+                    retrieveError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Algo deu errado"
+                        },
+                        genericError: {
+                            description: "Ocorreu um erro ao recuperar os códigos de backup",
+                            message: "Algo deu errado"
+                        }
+                    },
+                    updateAuthenticatorError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Algo deu errado"
+                        },
+                        genericError: {
+                            description: "Ocorreu um erro ao tentar atualizar a lista de autenticadores habilitados",
                             message: "Algo deu errado"
                         }
                     }

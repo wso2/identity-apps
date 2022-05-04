@@ -19,3 +19,4 @@
 export * from "./fido-authenticator";
 export * from "./smsotp-authenticator";
 export * from "./totp-authenticator";
+export * from "./backup-code-display";

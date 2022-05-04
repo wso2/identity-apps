@@ -587,6 +587,7 @@ export const myAccount: MyAccountNS = {
                 description: " Scan the QR code using an Authenticator App to use " +
                     "time-based , one-time passcodes (also known as TOTP) as a " +
                     "second factor when logging in to applications.",
+                enableHint: "Enable/Disable TOTP Authenticator",
                 heading: "Authenticator App",
                 hint: "Show the QR Code",
                 modals: {
@@ -644,6 +645,104 @@ export const myAccount: MyAccountNS = {
                         },
                         genericError: {
                             description: "An error occurred while trying to get a new QR code",
+                            message: "Something went wrong"
+                        }
+                    }
+                }
+            },
+            backupCode: {
+                download: {
+                    heading: "SAVE YOUR BACKUP CODES.",
+                    info1: "You can only use each backup code once.",
+                    info2: "These codes were generated on: ",
+                    subHeading: "Keep these backup codes somewhere safe but accessible" 
+                },
+                heading: "Backup Codes",
+                modals: {
+                    description: "Use the backup codes to sign in when you are away from your phone. " + 
+                        "You can genarate more when they are all used",
+                    download: {
+                        heading: "Download Codes"
+                    },
+                    generate: {
+                        description: "All of your backup codes are used. Lets generate a new set of backup codes",
+                        heading: "Generate"
+                    },
+                    heading: "Backup Codes",
+                    info: "Each code can only be used once",
+                    refresh: {
+                        heading: "Refresh"
+                    },
+                    subHeading: "One time passcodes that you can use to sign in"    
+                },
+                notifications: {
+                    deleteError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Something went wrong"
+                        },
+                        genericError: {
+                            description: "Error occurred while deleting backup codes",
+                            message: "Something went wrong"
+                        }
+                    },
+                    downloadError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Something went wrong"
+                        },
+                        genericError: {
+                            description: "An error occurred while trying to download backup codes",
+                            message: "Something went wrong"
+                        }
+                    },
+                    downloadSuccess: {
+                        genericMessage: {
+                            description: "The backup codes are successfully downloaded.",
+                            message: "Backup codes downloaded successfully."
+                        },
+                        message: {
+                            description: "{{message}}",
+                            message: "Backup codes downloaded successfully."
+                        }
+                    },
+                    refreshError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Something went wrong"
+                        },
+                        genericError: {
+                            description: "An error occurred while trying to genetare new backup codes",
+                            message: "Something went wrong"
+                        }
+                    },
+                    retrieveAuthenticatorError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Something went wrong"
+                        },
+                        genericError: {
+                            description: "An error occurred while trying to get the enabled authenticator list",
+                            message: "Something went wrong"
+                        }
+                    },
+                    retrieveError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Something went wrong"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving backup codes",
+                            message: "Something went wrong"
+                        }
+                    },
+                    updateAuthenticatorError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Something went wrong"
+                        },
+                        genericError: {
+                            description: "An error occurred while trying to update the enabled authenticator list",
                             message: "Something went wrong"
                         }
                     }

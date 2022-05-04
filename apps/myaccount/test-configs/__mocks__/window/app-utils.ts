@@ -91,6 +91,9 @@ interface CustomWindow extends Window {
                 appLogoPath: "/assets/images/branding/logo.svg",
                 authenticatorApp: [],
                 disableMFAforSuperTenantUser: false,
+                enableMFAUserWise: false,
+                disableMFAForFederatedUsers: false,
+                forceBackupCode: false,
                 features: {
                     applications: {
                         disabledFeatures: [],

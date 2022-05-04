@@ -85,6 +85,7 @@ export interface ServiceResourceEndpointsInterface {
     token: string;
     totp: string;
     totpSecret: string;
+    backupCode: string;
     typingDNAMe: string;
     typingDNAServer: string;
     user: string;
@@ -150,6 +151,18 @@ export interface UIConfigInterface extends CommonUIConfigInterface {
      * Config for Remove MFA for Super Tenant User.
      */
     disableMFAforSuperTenantUser?: boolean;
+    /**
+     * Config for enable MFA user wise.
+     */
+    enableMFAUserWise?: boolean;
+     /**
+     * Config for disable MFA for federated users.
+     */
+    disableMFAForFederatedUsers?: boolean;
+    /**
+     * Config for force backup code authentication.
+     */
+    forceBackupCode?: boolean;
     /**
      * Show App Switch button in the Header for Super Tenant User.
      */

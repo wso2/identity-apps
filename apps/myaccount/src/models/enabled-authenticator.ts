@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,17 +16,15 @@
  * under the License.
  */
 
-export * from "./applications";
-export * from "./change-password";
-export * from "./linked-accounts";
-export * from "./profile";
-export * from "./security-questions";
-export * from "./multi-factor-fido";
-export * from "./user-sessions";
-export * from "./multi-factor-totp";
-export * from "./verify-mobile-smsotp";
-export * from "./configs";
-export * from "./preference";
-export * from "./typingdna-data";
-export * from "./multi-factor-backup-code";
-export * from "./multi-factor-common";
+/**
+ * The action types of updating enable authenticators.
+ * 
+ * @readonly
+ * @enum {string}
+ */
+export enum EnabledAuthenticatorUpdateAction {
+    INIT_TOTP,
+    DELETE_TOTP,
+    TOTP_TOGGLE_DISABLE,
+    TOTP_TOGGLE_ENABLE
+}
