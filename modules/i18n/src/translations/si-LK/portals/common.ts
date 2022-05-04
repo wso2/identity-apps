@@ -32,6 +32,7 @@ export const common: CommonNS = {
     approvalStatus: "අනුමත කිරීමේ තත්වය",
     approve: "අනුමත කරන්න",
     apps: "ඇප්ස්",
+    assignee: "පැවරුම්කරු",
     assignees: "පැවරුම්කරුවන්",
     authentication: "සත්‍යාපනය",
     authenticator: "සත්‍යාපකය",

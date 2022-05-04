@@ -175,19 +175,20 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
             <Table.Body>
                 {
                     properties.map((property, i) => (
-                            property.key && property.value
-                                ? (
-                                    <Table.Row key={ i }>
-                                        <Table.Cell className="key-cell">
-                                            { property.key }
-                                        </Table.Cell>
-                                        <Table.Cell className="values-cell">
-                                            { cleanupPropertyValues(property.key, property.value) }
-                                        </Table.Cell>
-                                    </Table.Row>
-                                )
-                                : null
-                        )
+                        property.key && property.value
+                            ? (
+                                <Table.Row key={ i }>
+                                    <Table.Cell className="key-cell">
+                                        { t("console:manage.features.approvals.modals.approvalProperties." +
+                                        `${ property.key }`) }
+                                    </Table.Cell>
+                                    <Table.Cell className="values-cell">
+                                        { cleanupPropertyValues(property.key, property.value) }
+                                    </Table.Cell>
+                                </Table.Row>
+                            )
+                            : null
+                    )
                     )
                 }
             </Table.Body>
@@ -314,8 +315,9 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                                         <List.Description>
                                             {
                                                 approval?.description
-                                                ? approval?.description
-                                                : t("console:manage.features.approvals.modals.taskDetails.description")
+                                                    ? approval?.description
+                                                    : t("console:manage.features.approvals.modals." +
+                                                    "taskDetails.description")
                                             }
                                         </List.Description>
                                     </Grid.Column>

@@ -4138,6 +4138,13 @@ export const console: ConsoleNS = {
                     }
                 },
                 modals: {
+                    approvalProperties: {
+                        "Claims": "Réclamations",
+                        "REQUEST ID": "Identifiant de la demande",
+                        "Roles": "Rôles",
+                        "User Store Domain": "Domaine du magasin d'utilisateurs",
+                        "Username": "Nom d'utilisateur"
+                    },
                     taskDetails: {
                         description: "Vous avez une demande d'approbation d'une action opérationnelle " +
                             "d'un utilisateur.",
