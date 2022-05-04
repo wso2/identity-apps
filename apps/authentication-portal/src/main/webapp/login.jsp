@@ -53,6 +53,7 @@
 %>
 
 <%
+    boolean isBackupCodeAuthAvailable = false;
     request.getSession().invalidate();
     String queryString = request.getQueryString();
     Map<String, String> idpAuthenticatorMapping = null;
@@ -402,15 +403,30 @@
                                 </button>
                             </div>
                             <%
-                                        }
-                                    }
-
+                                if (localAuthenticatorNames.contains("backup-code-authenticator")) {
+                                    isBackupCodeAuthAvailable = true;
                                 }
+                            }
+                            }
+                            }
                             } %>
                             </div>
                         </div>
                     <% } %>
                 </div>
+                <br>
+                <% if(isBackupCodeAuthAvailable) { %>
+                    <div class="social-login blurring social-dimmer">
+                        <div class="field">
+                            <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "lose.auth.details")%></label>
+                            <a onclick="window.location.href='<%=commonauthURL%>?idp=LOCAL&authenticator=backup-code-authenticator&sessionDataKey=<%=Encode.forUriComponent(request.getParameter("sessionDataKey"))+multiOptionURIParam%>';"
+                                target="_blank" class="clickable-link" rel="noopener noreferrer"
+                                data-testid="login-page-backup-code-link" style="cursor:pointer;display:block">
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "use.backup.code")%>
+                            </a>
+                        </div>
+                    </div>
+                <% } %>
             </div>
         </div>
     </main>
