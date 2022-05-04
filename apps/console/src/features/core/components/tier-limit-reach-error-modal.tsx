@@ -65,7 +65,7 @@ export const TierLimitReachErrorModal: FunctionComponent<TierLimitReachErrorModa
                             { actionLabel }
                         </PrimaryButton>
                     ) }
-                    image={ getEmptyPlaceholderIllustrations().brokenPage }
+                    image={ getEmptyPlaceholderIllustrations().createError }
                     imageSize="tiny"
                     subtitle={ [ description ] }
                     title={ message }

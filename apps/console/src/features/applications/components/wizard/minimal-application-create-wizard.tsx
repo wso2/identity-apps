@@ -354,27 +354,10 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             })
             .catch((error) => {
 
-                if (
-                    error.response.status === 400 &&
-                    error?.response?.data?.code === "RLS-10001"
-                ) {
-                    setOpenLimitReachedModal(true);
-
-                    return;
-                }
-
                 if (error.response.status === 403 &&
                     error?.response?.data?.code ===
                     ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
-
-                    setAlert({
-                        code: ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode(),
-                        description: t(ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorDescription()),
-                        level: AlertLevels.ERROR,
-                        message: t(ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorMessage()),
-                        traceId: ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorTraceId()
-                    });
-                    scrollToNotification();
+                    setOpenLimitReachedModal(true);
 
                     return;
                 }
