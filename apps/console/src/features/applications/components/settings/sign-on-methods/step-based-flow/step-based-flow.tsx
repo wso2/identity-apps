@@ -167,7 +167,10 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         const secondFactorAuth: GenericAuthenticatorInterface[] = [];
 
         localAuthenticators.forEach((authenticator: GenericAuthenticatorInterface) => {
-            if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticator.id)) {
+            if (authenticator.name === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
+                // Backup code authenticator is not available for customer users at the moment.
+                return;
+            } else if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticator.id)) {
                 secondFactorAuth.push(authenticator);
             } else {
                 moderatedLocalAuthenticators.push(authenticator);
