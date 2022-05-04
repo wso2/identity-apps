@@ -99,8 +99,8 @@ export const ProductBrand: FunctionComponent<PropsWithChildren<ProductBrandProps
     const versionLabelClasses = classNames(
         "version-label",
         {
-            "preview-label": versionUISettings?.productVersion === "PREVIEW",
-            "primary" : !versionUISettings.labelColor,
+            "preview-label": version === "PREVIEW",
+            "primary" : (version !== "PREVIEW" && !versionUISettings.labelColor),
             [ versionUISettings.labelColor ]: (versionUISettings.labelColor === "primary"
                 || versionUISettings.labelColor === "secondary")
         }
@@ -112,6 +112,11 @@ export const ProductBrand: FunctionComponent<PropsWithChildren<ProductBrandProps
      * @return {SemanticCOLORS} Resolved color.
      */
     const resolveVersionLabelColor = (releaseType: ProductReleaseTypes): SemanticCOLORS => {
+        // The label color will be resolved via label class applied.
+        if (version === "PREVIEW") {
+            return null;
+        }
+
         if (versionUISettings?.labelColor
             && !(versionUISettings.labelColor === "auto"
                 || versionUISettings.labelColor === "primary"
