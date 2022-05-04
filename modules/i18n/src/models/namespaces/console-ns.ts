@@ -2407,6 +2407,13 @@ export interface ConsoleNS {
                     };
                 };
                 modals: {
+                    approvalProperties: {
+                        "Claims": string,
+                        "REQUEST ID": string,
+                        "Roles": string,
+                        "User Store Domain": string,
+                        "Username": string,
+                    },
                     taskDetails: {
                         header: string;
                         description: string;

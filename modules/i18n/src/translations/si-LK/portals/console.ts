@@ -4035,6 +4035,13 @@ export const console: ConsoleNS = {
                     }
                 },
                 modals: {
+                    approvalProperties: {
+                        "Claims": "හිමිකම්",
+                        "REQUEST ID": "ඉල්ලීම් හැඳුනුම්පත",
+                        "Roles": "භූමිකාවන්",
+                        "User Store Domain": "පරිශීලක ගබඩා වසම",
+                        "Username": "පරිශීලක නාමය"
+                    },
                     taskDetails: {
                         description: "පරිශීලකයෙකුගේ මෙහෙයුම් ක්‍රියාවක් අනුමත කිරීමට ඔබට ඉල්ලීමක් තිබේ.",
                         header: "අනුමත කිරීමේ කාර්යය"
