@@ -419,21 +419,32 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             rightSideSteps
         ]: AuthenticationStepInterface[][] = SignInMethodUtils.getLeftAndRightSideSteps(stepIndex, steps);
 
+        // Checks if identifier first can be deleted.
+        if (
+            stepIndex === 0 &&
+            steps[0].options[optionIndex].authenticator ===
+                IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR &&
+            steps[1].options.find(
+                (option) => option.authenticator === IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR
+            )
+        ) {
+            dispatchDeleteErrorNotification();
+
+            return;
+        }
+
         const containSecondFactorOnRight: boolean = SignInMethodUtils.hasSpecificFactorsInSteps(
-            [ ...ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS,
-                IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR ], rightSideSteps);
+            [ ...ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS ], rightSideSteps);
 
         // If there are second factor authenticators on the right, evaluate further.
         if (containSecondFactorOnRight) {
             const deletingOption: AuthenticatorInterface = steps[ stepIndex ].options[ optionIndex ];
             const noOfSecondFactorsOnRight: number = SignInMethodUtils.countSpecificFactorInSteps(
-                [ ...ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS,
-                    IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR ], rightSideSteps);
+                [ ...ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS ], rightSideSteps);
             const noOfSecondFactorsOnRightRequiringHandlers: number = SignInMethodUtils.countSpecificFactorInSteps(
                 [
                     IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
-                    IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
-                    IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR
+                    IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR
                 ], rightSideSteps);
             const onlySecondFactorsRequiringHandlersOnRight: boolean = noOfSecondFactorsOnRight
                 === noOfSecondFactorsOnRightRequiringHandlers;
@@ -444,8 +455,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 .includes(deletingOption.authenticator);
             const isDeletingOptionSecondFactorHandler: boolean = [
                 ...ApplicationManagementConstants.TOTP_HANDLERS,
-                ...ApplicationManagementConstants.EMAIL_OTP_HANDLERS,
-                IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR
+                ...ApplicationManagementConstants.EMAIL_OTP_HANDLERS
             ].includes(deletingOption.authenticator);
             const immediateStepHavingSpecificFactors: number = SignInMethodUtils.getImmediateStepHavingSpecificFactors(
                 ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS, steps);
@@ -462,8 +472,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                     }
 
                     if ([ ...ApplicationManagementConstants.TOTP_HANDLERS,
-                        ...ApplicationManagementConstants.EMAIL_OTP_HANDLERS,
-                        IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR ].includes(option.authenticator)) {
+                        ...ApplicationManagementConstants.EMAIL_OTP_HANDLERS ].includes(option.authenticator)) {
                         secondFactorHandlersInTheStep++;
                     }
                 });
@@ -477,8 +486,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                     // Else check if there are first factors on the left.
                     const containProperHandlersOnLeft: boolean = onlySecondFactorsRequiringHandlersOnRight
                         ? SignInMethodUtils.hasSpecificFactorsInSteps([ ...ApplicationManagementConstants.TOTP_HANDLERS,
-                            ...ApplicationManagementConstants.EMAIL_OTP_HANDLERS,
-                            IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR ], leftSideSteps)
+                            ...ApplicationManagementConstants.EMAIL_OTP_HANDLERS ], leftSideSteps)
                         : SignInMethodUtils.hasSpecificFactorsInSteps(
                             ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, leftSideSteps);
 
@@ -496,8 +504,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                             ? SignInMethodUtils.countSpecificFactorInSteps(
                                 [
                                     ...ApplicationManagementConstants.TOTP_HANDLERS,
-                                    ...ApplicationManagementConstants.EMAIL_OTP_HANDLERS,
-                                    IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR
+                                    ...ApplicationManagementConstants.EMAIL_OTP_HANDLERS
                                 ], leftSideStepsFromImmediateSecondFactor)
                             : SignInMethodUtils.countSpecificFactorInSteps(
                                 ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
@@ -505,19 +512,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
                         // If there are no other handlers, Show a warning and abort option delete.
                         if (noOfProperHandlersOnLeft <= 1) {
-                            dispatch(
-                                addAlert({
-                                    description: t(
-                                        "console:develop.features.applications.notifications." +
-                                        "deleteOptionErrorDueToSecondFactorsOnRight.genericError.description"
-                                    ),
-                                    level: AlertLevels.WARNING,
-                                    message: t(
-                                        "console:develop.features.applications.notifications." +
-                                        "deleteOptionErrorDueToSecondFactorsOnRight.genericError.message"
-                                    )
-                                })
-                            );
+                            dispatchDeleteErrorNotification();
 
                             return;
                         }
@@ -528,6 +523,25 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         steps[ stepIndex ].options.splice(optionIndex, 1);
         setAuthenticationSteps(steps);
+    };
+
+    /**
+     * This method dispatches a notification when there is an error during validating a delete action.
+     */
+    const dispatchDeleteErrorNotification = (): void => {
+        dispatch(
+            addAlert({
+                description: t(
+                    "console:develop.features.applications.notifications." +
+                    "deleteOptionErrorDueToSecondFactorsOnRight.genericError.description"
+                ),
+                level: AlertLevels.WARNING,
+                message: t(
+                    "console:develop.features.applications.notifications." +
+                    "deleteOptionErrorDueToSecondFactorsOnRight.genericError.message"
+                )
+            })
+        );
     };
 
     /**
