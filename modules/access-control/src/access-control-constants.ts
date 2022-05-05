@@ -257,4 +257,29 @@ export class AccessControlConstants {
      */
     public static readonly SECRET_DELETE: string = "internal_secret_mgt_delete";
 
+    /**
+     * User stores feature permission
+     */
+    public static readonly USER_STORE: string = "userStores";
+
+    /**
+     * User stores read permission
+     */
+    public static readonly USER_STORE_READ: string = "userStores:read";
+
+    /**
+     * User stores write permission
+     */
+    public static readonly USER_STORE_WRITE: string = "userStores:write";
+
+    /**
+     * User stores edit permission
+     */
+    public static readonly USER_STORE_EDIT: string = "userStores:edit";
+
+    /**
+     * User stores delete permission
+     */
+    public static readonly USER_STORE_DELETE: string = "userStores:delete";
+
 }
