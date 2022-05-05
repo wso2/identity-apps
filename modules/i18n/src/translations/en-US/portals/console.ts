@@ -2590,7 +2590,7 @@ export const console: ConsoleNS = {
                     tierLimitReachedError: {
                         emptyPlaceholder: {
                             action: "View Plans",
-                            subtitles: "You can contact the organization administrator or (if you are the" +
+                            subtitles: "You can contact the organization administrator or (if you are the " +
                                 "administrator) upgrade your subscription to increase the allowed limit.",
                             title: "You have reached the maximum number of apps allowed " + 
                                 "for this organization."
