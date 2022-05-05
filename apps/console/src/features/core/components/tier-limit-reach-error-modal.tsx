@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { EmptyPlaceholder, LinkButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Modal, ModalProps } from "semantic-ui-react";
@@ -45,7 +45,7 @@ interface TierLimitReachErrorModalPropsInterface extends ModalProps, TestableCom
 export const TierLimitReachErrorModal: FunctionComponent<TierLimitReachErrorModalPropsInterface> = (
     props: TierLimitReachErrorModalPropsInterface
 ): ReactElement => {
-    const { actionLabel, description, header, message, openModal, handleModalClose } = props;
+    const { description, message, openModal, handleModalClose } = props;
 
     const { t } = useTranslation();
 
@@ -57,14 +57,8 @@ export const TierLimitReachErrorModal: FunctionComponent<TierLimitReachErrorModa
             closeOnDimmerClick={ false }
             closeOnEscape
         >
-            <Modal.Header className="wizard-header">{ header }</Modal.Header>
             <Modal.Content>
                 <EmptyPlaceholder
-                    action={ (
-                        <PrimaryButton onClick={ () => window.open("", "_blank").focus() }>
-                            { actionLabel }
-                        </PrimaryButton>
-                    ) }
                     image={ getEmptyPlaceholderIllustrations().createError }
                     imageSize="tiny"
                     subtitle={ [ description ] }
