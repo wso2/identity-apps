@@ -20,10 +20,6 @@
 <%= htmlWebpackPlugin.options.importTenantPrefix %>
 <%= htmlWebpackPlugin.options.importSuperTenantConstant %>
 
-<script>
-    window.history.pushState({}, '', sessionStorage.getItem("userAccessedPath"));
-</script>
-
 <jsp:scriptlet>
     session.setAttribute("authCode",request.getParameter("code"));
     session.setAttribute("sessionState", request.getParameter("session_state"));

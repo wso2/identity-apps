@@ -49,6 +49,7 @@ import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorMeta } from "../meta";
 import {
     AuthenticatorInterface,
+    AuthenticatorLabels,
     AuthenticatorTypes,
     IdentityProviderInterface,
     IdentityProviderListResponseInterface
@@ -168,6 +169,10 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
                         authenticator.tags = [ ...identityProviderConfig.filterFidoTags(authenticator?.tags) ];
                     }
 
+                    if (authenticator.id === IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID) {
+                        authenticator.tags = [ AuthenticatorLabels.PASSWORDLESS ];
+                    }
+
                     const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(
                         identityProviderConfig.authenticators,
                         authenticator.id
@@ -248,6 +253,10 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
 
                         if (authenticator.id === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID) {
                             authenticator.tags = [ ...identityProviderConfig.filterFidoTags(authenticator?.tags) ];
+                        }
+
+                        if (authenticator.id === IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID) {
+                            authenticator.tags = [ AuthenticatorLabels.PASSWORDLESS ];
                         }
 
                         // Filter out authenticators whose tags weren't in the filter query.

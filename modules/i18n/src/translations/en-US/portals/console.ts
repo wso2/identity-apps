@@ -1017,6 +1017,8 @@ export const console: ConsoleNS = {
                                             },
                                             authenticatorDisabled: "You need to configure this authenticator by " +
                                                 "providing client id & secret, to use with your applications.",
+                                            firstFactorDisabled: "Identifier First authenticator and Username & " +
+                                                "Password authenticator cannot be added to the same step.",
                                             forms: {
                                                 fields: {
                                                     attributesFrom: {
@@ -1032,11 +1034,14 @@ export const console: ConsoleNS = {
                                             heading: "Step-based configuration",
                                             hint: "Create a user login flow by dragging authenticators on to the " +
                                                 "relevant steps.",
-                                            secondFactorDisabled: "Les authentificateurs de deuxième facteur ne " +
-                                                "peuvent être utilisés que si <1>Nom d'utilisateur et mot de " +
-                                                "passe</1>, <3>Connexion sociale</3> ou tout autre gestionnaire " +
-                                                "tel que <5>Identifier First</5> qui peut gérer ces facteurs sont " +
-                                                "présents dans une étape précédente.",
+                                            magicLinkDisabled: "You can only add the Magic Link authenticator " +
+                                                "as a second step and only when Identifier First authenticator " +
+                                                "is present in the first step.",
+                                            secondFactorDisabled: "Second factor authenticators " +
+                                                "can be used only if <1>User name and password " +
+                                                "password</1>, <3>Social Login</3> or any other handler" +
+                                                "which can handle these factors are" +
+                                                "present in a previous step.",
                                             secondFactorDisabledDueToProxyMode: "To configure <1>{{auth}}</1>," +
                                                 " you should enable the Just-in-Time provisioning" +
                                                 " setting from the following Identity Providers.",
@@ -1093,10 +1098,16 @@ export const console: ConsoleNS = {
                                             secondaryButton: "Cancel"
                                         },
                                         heading: "Build your own login flow",
+                                        headings: {
+                                            default: "Default Login",
+                                            multiFactorLogin: "Multi-factor Login",
+                                            passwordlessLogin: "Passwordless Login",
+                                            socialLogin: "Social Login"
+                                        },
                                         types: {
                                             defaultConfig: {
-                                                description: "Build your login flow starting with Username & " +
-                                                    "Password login.",
+                                                description: "Build your login flow starting with Username & "
+                                                    + "Password login.",
                                                 heading: "Start with default configuration"
                                             },
                                             facebook: {
@@ -1111,18 +1122,26 @@ export const console: ConsoleNS = {
                                                 description: "Enable users to login with Google.",
                                                 heading: "Add Google login"
                                             },
+                                            magicLink: {
+                                                description: "Enable users to log in using a magic "
+                                                    + "link sent to their email.",
+                                                heading: "Add Magic Link login",
+                                                warning: "You can only use Identifier First authenticator with the " +
+                                                    "Magic Link authenticator. Using it with any other authenticator " +
+                                                    "can lead to unexpected behavior."
+                                            },
                                             totp: {
-                                                description: "Enable additional authentication layer with Time " +
-                                                    "based OTP.",
+                                                description: "Enable additional authentication layer with Time "
+                                                    + "based OTP.",
                                                 heading: "Add TOTP as a second factor"
                                             },
                                             usernameless: {
-                                                description: "Enable users to log in using a FIDO2 security key " +
-                                                    "or biometrics.",
-                                                heading: "Add passwordless login",
-                                                info: "To sign in with passwordless login, your users " +
-                                                    "should have their FIDO2 security keys or biometrics " +
-                                                    "registered via My Account."
+                                                description: "Enable users to log in using a FIDO2 security key "
+                                                    + "or biometrics.",
+                                                heading: "Add Security Key/Biometrics login",
+                                                info: "To sign in with passwordless login, your users "
+                                                    + "should have their FIDO2 security keys or biometrics "
+                                                    + "registered via My Account."
                                             }
                                         }
                                     }
@@ -2274,7 +2293,7 @@ export const console: ConsoleNS = {
                     }
                 },
                 myaccount: {
-                    description: "Self-service portal for your users",
+                    description: "Self-service portal for your users.",
                     popup: "Share this link with your users to allow access to My Account" +
                     " and to manage their accounts.",
                     title: "My Account"
@@ -2302,8 +2321,8 @@ export const console: ConsoleNS = {
                     },
                     authenticationStepDeleteErrorDueToSecondFactors: {
                         genericError: {
-                            description: "Second factor authenticators require having a basic or identifier-first " +
-                                "authenticator in a prior step.",
+                            description: "Second factor authenticators require having a Username & "
+                                + "Password authenticator in a prior step.",
                             message: "Step cannot be deleted"
                         }
                     },
@@ -2314,9 +2333,8 @@ export const console: ConsoleNS = {
                         }
                     },
                     conditionalScriptLoopingError: {
-                        description: "Looping constructs such as <1>for</1>, <3>while</3>, and" +
-                            " <5>forEach</5> are not allowed in the conditional authentication" +
-                            " script.",
+                        description: "Looping constructs such as <1>for</1>, <3>while</3>, and"
+                            + " <5>forEach</5> are not allowed in the conditional authentication" + " script.",
                         message: "Failed to update the script"
                     },
                     deleteApplication: {
@@ -2347,8 +2365,8 @@ export const console: ConsoleNS = {
                             message: "Cannot delete this authenticator"
                         },
                         genericError: {
-                            description: "There are second-factor authenticators in other steps that depend on " +
-                                "this authenticator.",
+                            description: "There are authenticators in other steps that depend on "
+                                + "this authenticator.",
                             message: "Cannot delete this authenticator"
                         },
                         success: {
@@ -2378,8 +2396,8 @@ export const console: ConsoleNS = {
                     },
                     emptyAuthenticationStep: {
                         genericError: {
-                            description: "There are empty authentication steps. Please remove them or add " +
-                                "authenticators to proceed.",
+                            description: "There are empty authentication steps. Please remove them or add "
+                                + "authenticators to proceed.",
                             message: "Update error"
                         }
                     },
@@ -2459,8 +2477,8 @@ export const console: ConsoleNS = {
                             message: "Retrieval error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving the IDP configurations for the OIDC " +
-                                "application.",
+                            description: "An error occurred while retrieving the IDP configurations for the OIDC "
+                                + "application.",
                             message: "Retrieval error"
                         },
                         success: {
@@ -2470,8 +2488,8 @@ export const console: ConsoleNS = {
                     },
                     fetchOIDCServiceEndpoints: {
                         genericError: {
-                            description: "An error occurred while retrieving the server endpoints for " +
-                                "OIDC applications.",
+                            description: "An error occurred while retrieving the server endpoints for "
+                                + "OIDC applications.",
                             message: "Something went wrong"
                         }
                     },
@@ -2495,8 +2513,8 @@ export const console: ConsoleNS = {
                             message: "Retrieval error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving the IDP configurations for the SAML" +
-                                " application.",
+                            description: "An error occurred while retrieving the IDP configurations for the SAML"
+                                + " application.",
                             message: "Retrieval error"
                         },
                         success: {
@@ -2582,10 +2600,20 @@ export const console: ConsoleNS = {
                     },
                     secondFactorAuthenticatorToFirstStep: {
                         genericError: {
-                            description: "Second factor authenticators require having a basic or identifier-first" +
-                                "authenticator in a prior step.",
+                            description: "Second factor authenticators require having a basic "
+                                + "authenticator in a prior step.",
                             message: "Cannot add to this step"
                         }
+                    },
+                    tierLimitReachedError: {
+                        emptyPlaceholder: {
+                            action: "View Plans",
+                            subtitles: "You can contact the organization administrator or (if you are the " +
+                                "administrator) upgrade your subscription to increase the allowed limit.",
+                            title: "You have reached the maximum number of apps allowed " + 
+                                "for this organization."
+                        },
+                        heading: "You’ve reached the maximum limit for apps"
                     },
                     updateAdvancedConfig: {
                         error: {
@@ -2670,6 +2698,11 @@ export const console: ConsoleNS = {
                             description: "Successfully updated the provisioning configurations.",
                             message: "Update successful"
                         }
+                    },
+                    updateOnlyIdentifierFirstError: {
+                        description: "Identifier First authenticator cannot be the only authenticator. "
+                            + "It needs an additional step.",
+                        message: "Update error"
                     },
                     updateOutboundProvisioning: {
                         genericError: {
@@ -5431,6 +5464,13 @@ export const console: ConsoleNS = {
                     }
                 },
                 modals: {
+                    approvalProperties: {
+                        "Claims": "Claims",
+                        "REQUEST ID": "Request ID",
+                        "Roles": "Roles",
+                        "User Store Domain": "User Store Domain",
+                        "Username": "Username"
+                    },
                     taskDetails: {
                         description: "You have a request to approve an operational action of a user.",
                         header: "Approval Task"
@@ -6259,7 +6299,7 @@ export const console: ConsoleNS = {
                 scopeMappings: {
                     deletionConfirmationModal: {
                         assertionHint: "Please confirm your action.",
-                        content: "If you delete this claim, it will not be available in the token." + 
+                        content: "If you delete this claim, it will not be available in the token." +
                             " Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action is irreversible and will permanently delete the scope claim mapping"
@@ -7843,6 +7883,8 @@ export const console: ConsoleNS = {
                     dangerZoneGroup: {
                         deleteUserZone: {
                             actionTitle: "Delete User",
+                            buttonDisableHint: "Delete option is disabled because this user is managed in a remote " +
+                                "user store.",
                             header: "Delete user",
                             subheader: "This action will permanently delete the user from the organization. Please " +
                                 "be certain before you proceed."
@@ -8617,6 +8659,16 @@ export const console: ConsoleNS = {
                         }
                     },
                     notifications: {
+                        getAdminUser: {
+                            error: {
+                                description: "{{ description }}",
+                                message: "Retrieval Error"
+                            },
+                            genericError: {
+                                description: "An error occurred while retrieving the current user type.",
+                                message: "Retrieval Error"
+                            }
+                        },
                         getUserSessions: {
                             error: {
                                 description: "{{ description }}",

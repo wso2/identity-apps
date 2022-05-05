@@ -73,6 +73,7 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const disableMFAforSuperTenantUser: boolean = useSelector((state: AppState) => state?.config?.ui?.disableMFAforSuperTenantUser);
+    const disableMFAForFederatedUsers: boolean = useSelector((state: AppState) => state?.config?.ui?.disableMFAForFederatedUsers);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
     const [ isNonLocalCredentialUser, setIsNonLocalCredentialUser ] = useState<boolean>(false);
@@ -201,7 +202,8 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
                         </Grid.Row>
                     ) : null }
 
-                { hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
+                { hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) && 
+                  ((isNonLocalCredentialUser && !disableMFAForFederatedUsers) || !isNonLocalCredentialUser) &&
                     isFeatureEnabled(
                         accessConfig?.security,
                         AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA")

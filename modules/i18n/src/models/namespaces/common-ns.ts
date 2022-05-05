@@ -33,6 +33,7 @@ export interface CommonNS {
     approvalStatus: string;
     approve: string;
     apps: string;
+    assignee: string;
     assignees: string;
     authenticator: string;
     authentication: string;
@@ -110,6 +111,7 @@ export interface CommonNS {
     personalInfo: string;
     pin: string;
     pinned: string;
+    preview: string;
     previous: string;
     priority: string;
     privacy: string;

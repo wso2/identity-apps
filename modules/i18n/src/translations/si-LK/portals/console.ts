@@ -1024,6 +1024,8 @@ export const console: ConsoleNS = {
                                             },
                                             authenticatorDisabled: "ඔබේ යෙදුම් සමඟ භාවිතා කිරීම සඳහා ග්‍රාහක " +
                                                 "හැඳුනුම්පත සහ රහස ලබා දීමෙන් ඔබ මෙම සත්‍යාපකය වින්‍යාස කළ යුතුය.",
+                                            firstFactorDisabled: "Identifier First authenticator " +
+                                                "සහ Username & Password Authenticator එකම පියවරට එක් කළ නොහැක.",
                                             forms: {
                                                 fields: {
                                                     attributesFrom: {
@@ -1039,6 +1041,9 @@ export const console: ConsoleNS = {
                                             heading: "පියවර පදනම් කරගත් වින්‍යාසය",
                                             hint: "දේශීය / ෆෙඩරල් සත්‍යාපනය කරන්නන් අදාළ පියවර වෙත ඇදගෙන " +
                                                 "යාමෙන් සත්‍යාපන පියවර සාදන්න.",
+                                            magicLinkDisabled: "ඔබට මැජික් ලින්ක් සත්‍යාපකය එක් " +
+                                                "කළ හැක්කේ දෙවන පියවරට " +
+                                                "පමණක් වන අතර පළමු පියවරේදී හඳුනාගැනීමේ පළමු සත්‍යාපකය ඇති විට පමණි.",
                                             secondFactorDisabled: "දෙවන සාධක සත්‍යාපනය භාවිතා කළ හැක්කේ " +
                                                 "<1>පරිශීලක නාමය සහ මුරපදය</1>, <3>සමාජ පිවිසුම</3> හෝ මෙම " +
                                                 "සාධක හැසිරවිය හැකි <5>හැඳුනුම්පත පළමුව</5> වැනි වෙනත් ඕනෑම " +
@@ -1100,6 +1105,12 @@ export const console: ConsoleNS = {
                                             secondaryButton: "අවලංගු කරන්න"
                                         },
                                         heading: "ඔබේ පිවිසුම් ප්‍රවාහය ගොඩනැගීම ආරම්භ කරන්න",
+                                        headings: {
+                                            default: "පෙරනිමි පිවිසුම",
+                                            multiFactorLogin: "බහු සාධක පිවිසුම",
+                                            passwordlessLogin: "මුරපද රහිත පිවිසුම",
+                                            socialLogin: "සමාජ පිවිසුම"
+                                        },
                                         types: {
                                             defaultConfig: {
                                                 description: "පරිශීලක නාමය සහ මුරපද පිවිසුම සමඟ ආරම්භ වී ඔබේ " +
@@ -1118,6 +1129,15 @@ export const console: ConsoleNS = {
                                                 description: "ගූගල් සමඟ පුරනය වීමට පරිශීලකයින්ට ඉඩ දෙන්න.",
                                                 heading: "ගූගල් පිවිසුම එක් කරන්න"
                                             },
+                                            magicLink: {
+                                                description: "පරිශීලකයින්ට ඔවුන්ගේ විද්‍යුත් තැපෑලට යවන ලද මැජික් " +
+                                                    "සබැඳියක් භාවිතයෙන් පුරනය වීමට සබල කරන්න.",
+                                                heading: "Magic Link පිවිසුම එක් කරන්න",
+                                                warning: "ඔබට භාවිතා කළ හැක්කේ මැජික් ලින්ක් සත්‍යාපනය සමඟ " +
+                                                    "පමණක් හඳුනාගැනීමේ පළමු සත්‍යාපනයයි. වෙනත් ඕනෑම " +
+                                                    "සත්‍යාපකයක් සමඟ එය භාවිතා කිරීම අනපේක්ෂිත හැසිරීමකට හේතු විය හැක."
+
+                                            },
                                             totp: {
                                                 description: "කාලය පදනම් කරගත් OTP සමඟ අතිරේක සත්‍යාපන ස්තරය " +
                                                     "සක්‍රීය කරන්න.",
@@ -1126,7 +1146,7 @@ export const console: ConsoleNS = {
                                             usernameless: {
                                                 description: "පරිශීලකයින්ට ඔවුන්ගේ FIDO2 ආරක්ෂක යතුරක් හෝ " +
                                                     "ජෛවමිතික භාවිතයෙන් පුරනය වීමට සබල කරන්න.",
-                                                heading: "මුරපද රහිත සත්‍යාපනය එක් කරන්න",
+                                                heading: "ආරක්ෂක යතුර/Biometrics පිවිසුම එක් කරන්න",
                                                 info: "මුරපද රහිත සත්‍යාපනය සමඟින් පුරනය වීමට, " +
                                                     "ඔබේ පරිශීලකයින්ට ඔවුන්ගේ FIDO2 ආරක්ෂක " +
                                                     "යතුරු හෝ මගේ ගිණුම හරහා ජෛවමිතික ලියාපදිංචි " +
@@ -2329,7 +2349,7 @@ export const console: ConsoleNS = {
                             message: "මෙම සත්‍යාපකය මකා දැමිය නොහැක"
                         },
                         genericError: {
-                            description: "මෙම සත්‍යාපකය මත රඳා පවතින වෙනත් සාධක වල දෙවන සාධක සත්‍යාපකයන් ඇත.",
+                            description: "මෙම සත්‍යාපකය මත රඳා පවතින වෙනත් සාධක වල සත්‍යාපකයන් ඇත.",
                             message: "මෙම සත්‍යාපකය මකා දැමිය නොහැක"
                         },
                         success: {
@@ -2565,6 +2585,15 @@ export const console: ConsoleNS = {
                             message: "මෙම පියවරට එකතු කළ නොහැක"
                         }
                     },
+                    tierLimitReachedError: {
+                        emptyPlaceholder: {
+                            action: "සැලසුම් බලන්න",
+                            subtitles: "ඔබට සංවිධානයේ administrator සම්බන්ධ කර ගැනීමට හෝ (ඔබ administrator " +
+                                "නම්) අවසර ලත් සීමාව වැඩි කිරීමට ඔබගේ දායකත්වය උත්ශ්‍රේණි කිරීමට හැකිය.",
+                            title: "ඔබ මෙම සංවිධානය සඳහා අවසර දී ඇති උපරිම යෙදුම් ගණනට ළඟා වී ඇති බව පෙනේ."
+                        },
+                        heading: "ඔබ යෙදුම් සඳහා උපරිම සීමාවට ළඟා වී ඇත"
+                    },
                     updateAdvancedConfig: {
                         error: {
                             description: "{{description}}",
@@ -2648,6 +2677,11 @@ export const console: ConsoleNS = {
                             description: "ප්‍රතිපාදන වින්‍යාසයන් සාර්ථකව යාවත්කාලීන කරන ලදි.",
                             message: "යාවත්කාලීන කිරීම සාර්ථකයි"
                         }
+                    },
+                    updateOnlyIdentifierFirstError: {
+                        description: "හඳුනාගැනීමේ පළමු සත්‍යාපකය එකම " +
+                            "සත්‍යාපකය විය නොහැක. එය අතිරේක පියවරක් අවශ්ය වේ.",
+                        message: "යාවත්කාලීන දෝෂයකි"
                     },
                     updateOutboundProvisioning: {
                         genericError: {
@@ -4035,6 +4069,13 @@ export const console: ConsoleNS = {
                     }
                 },
                 modals: {
+                    approvalProperties: {
+                        "Claims": "හිමිකම්",
+                        "REQUEST ID": "ඉල්ලීම් හැඳුනුම්පත",
+                        "Roles": "භූමිකාවන්",
+                        "User Store Domain": "පරිශීලක ගබඩා වසම",
+                        "Username": "පරිශීලක නාමය"
+                    },
                     taskDetails: {
                         description: "පරිශීලකයෙකුගේ මෙහෙයුම් ක්‍රියාවක් අනුමත කිරීමට ඔබට ඉල්ලීමක් තිබේ.",
                         header: "අනුමත කිරීමේ කාර්යය"
@@ -6289,6 +6330,8 @@ export const console: ConsoleNS = {
                     dangerZoneGroup: {
                         deleteUserZone: {
                             actionTitle: "පරිශීලකයා මකන්න",
+                            buttonDisableHint: "මෙම පරිශීලකයා දුරස්ථ පරිශීලක ගබඩාවක කළමනාකරණය කර ඇති නිසා මකන්න " +
+                                "විකල්පය අබල කර ඇත.",
                             header: "පරිශීලකයා මකන්න",
                             subheader: "මෙම ක්‍රියාව මඟින් පරිශීලකයා ආයතනයෙන් ස්ථිරවම මකනු ඇත. ඉදිරියට " +
                                 "යාමට පෙර කරුණාකර සහතික වන්න."
@@ -7069,6 +7112,16 @@ export const console: ConsoleNS = {
                         }
                     },
                     notifications: {
+                        getAdminUser: {
+                            error: {
+                                description: "{{ description }}",
+                                message: "ලබා ගැනීමේ දෝෂය"
+                            },
+                            genericError: {
+                                description: "වත්මන් පරිශීලක වර්ගය ලබා ගැනීමේදී දෝෂයක් ඇති විය.",
+                                message: "ලබා ගැනීමේ දෝෂය"
+                            }
+                        },
                         getUserSessions: {
                             error: {
                                 description: "{{ description }}",

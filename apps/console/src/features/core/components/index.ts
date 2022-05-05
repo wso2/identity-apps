@@ -28,3 +28,4 @@ export * from "./roles";
 export * from "./attribute-select-list";
 export * from "./pre-loader";
 export * from "./protocol-card";
+export * from "./tier-limit-reach-error-modal";

@@ -233,11 +233,12 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
             panes.push(...tabPaneExtensions);
         }
 
-        // If the MFA is TOTP/FIDO skip the settings tab.
+        // If the MFA is TOTP/FIDO/Magic Link skip the settings tab.
         if (
             ![
                 IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID,
-                IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID
+                IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID,
+                IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID
             ].includes(authenticator.id)
         ) {
             panes.push({
@@ -277,7 +278,8 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
 
         if (![
             IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID,
-            IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID
+            IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID,
+            IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID
         ].includes(authenticator.id)) {
             return activeIndex;
         }

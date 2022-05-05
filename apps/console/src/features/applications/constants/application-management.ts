@@ -352,7 +352,6 @@ export class ApplicationManagementConstants {
     // First factor authenticators.
     public static readonly FIRST_FACTOR_AUTHENTICATORS = [
         IdentityProviderManagementConstants.BASIC_AUTHENTICATOR,
-        IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR,
         IdentityProviderManagementConstants.FIDO_AUTHENTICATOR
     ];
 

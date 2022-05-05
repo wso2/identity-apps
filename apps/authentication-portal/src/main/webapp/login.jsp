@@ -41,6 +41,7 @@
 
 <%!
     private static final String FIDO_AUTHENTICATOR = "FIDOAuthenticator";
+    private static final String MAGIC_LINK_AUTHENTICATOR = "MagicLinkAuthenticator";
     private static final String IWA_AUTHENTICATOR = "IwaNTLMAuthenticator";
     private static final String IS_SAAS_APP = "isSaaSApp";
     private static final String BASIC_AUTHENTICATOR = "BasicAuthenticator";
@@ -53,6 +54,7 @@
 %>
 
 <%
+    boolean isBackupCodeAuthAvailable = false;
     request.getSession().invalidate();
     String queryString = request.getQueryString();
     Map<String, String> idpAuthenticatorMapping = null;
@@ -388,7 +390,27 @@
                                 </button>
                             </div>
                             <%
-                                        }
+                                }
+                                if (localAuthenticatorNames.contains(MAGIC_LINK_AUTHENTICATOR)) {
+                            %>
+                            <div class="field">
+                                <button class="ui grey labeled icon button fluid"
+                                    onclick="handleNoDomain(this,
+                                        '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
+                                        '<%=MAGIC_LINK_AUTHENTICATOR%>')"
+                                    id="icon-<%=iconId%>"
+                                    title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>">
+                                    <i class="email icon"></i>
+                                    <img src="libs/themes/default/assets/images/icons/magic-link-icon.svg" alt="Magic Link Logo" />
+                                    <span>
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link" )%>
+                                    </span>
+                                </button>
+                            </div>
+                            <%
+                                }
                                 if (localAuthenticatorNames.contains("totp")) {
                             %>
                             <div class="field">
@@ -402,15 +424,30 @@
                                 </button>
                             </div>
                             <%
-                                        }
-                                    }
-
+                                if (localAuthenticatorNames.contains("backup-code-authenticator")) {
+                                    isBackupCodeAuthAvailable = true;
                                 }
+                            }
+                            }
+                            }
                             } %>
                             </div>
                         </div>
                     <% } %>
                 </div>
+                <br>
+                <% if(isBackupCodeAuthAvailable) { %>
+                    <div class="social-login blurring social-dimmer">
+                        <div class="field">
+                            <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "lose.auth.details")%></label>
+                            <a onclick="window.location.href='<%=commonauthURL%>?idp=LOCAL&authenticator=backup-code-authenticator&sessionDataKey=<%=Encode.forUriComponent(request.getParameter("sessionDataKey"))+multiOptionURIParam%>';"
+                                target="_blank" class="clickable-link" rel="noopener noreferrer"
+                                data-testid="login-page-backup-code-link" style="cursor:pointer;display:block">
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "use.backup.code")%>
+                            </a>
+                        </div>
+                    </div>
+                <% } %>
             </div>
         </div>
     </main>

@@ -601,6 +601,7 @@ export const myAccount: MyAccountNS = {
                     "d'authentification pour utiliser des codes d'accès " +
                     "à usage unique basés sur le temps (également appelés TOTP) " +
                     "comme deuxième facteur lors de la connexion aux applications.",
+                enableHint: "Activer/désactiver l'authentificateur TOTP",
                 heading: "Application d'authentification",
                 hint: "Afficher le code QR",
                 modals: {
@@ -662,6 +663,109 @@ export const myAccount: MyAccountNS = {
                         },
                         genericError: {
                             description: "Une erreur s'est produite lors de la récupération d'un nouveau code QR",
+                            message: "Quelque chose s'est mal passé"
+                        }
+                    }
+                }
+            },
+            backupCode: {
+                download: {
+                    heading: "ENREGISTREZ VOS CODES DE SECOURS.",
+                    info1: "Vous ne pouvez utiliser chaque code de secours qu'une seule fois.",
+                    info2: "Ces codes ont été générés sur : ",
+                    subHeading: "Conservez ces codes de secours dans un endroit sûr mais accessible"
+                },
+                heading: "Codes de sauvegarde",
+                modals: {
+                    description: "Utilisez les codes de secours pour vous connecter lorsque vous êtes " + 
+                        "loin de votre téléphone. Vous pouvez en générer plus lorsqu'ils sont tous utilisés",
+                    download: {
+                        heading: "Codes de téléchargement"
+                    },
+                    generate: {
+                        description: "Tous vos codes de secours sont utilisés. " + 
+                            "Permet de générer un nouvel ensemble de codes de secours",
+                        heading: "Générer"  
+                    },
+                    heading: "Codes de sauvegarde",
+                    info: "Chaque code ne peut être utilisé qu'une seule fois",
+                    refresh: {
+                        heading: "Rafraîchir"
+                    },
+                    subHeading: "Codes d'accès à usage unique que vous pouvez utiliser pour vous connecter" 
+                },
+                notifications: {
+                    deleteError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la suppression des codes de secours",
+                            message: "Quelque chose s'est mal passé"
+                        }
+                    },
+                    downloadError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la tentative de " + 
+                                "téléchargement des codes de secours",
+                            message: "Quelque chose s'est mal passé"
+                        }
+                    },
+                    downloadSuccess: {
+                        genericMessage: {
+                            description: "Les codes de sauvegarde sont téléchargés avec succès.",
+                            message: "Les codes de sauvegarde ont été téléchargés avec succès."
+                        },
+                        message: {
+                            description: "{{message}}",
+                            message: "Les codes de sauvegarde ont été téléchargés avec succès."
+                        }
+                    },
+                    refreshError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la tentative de " + 
+                                "génération de nouveaux codes de secours",
+                            message: "Quelque chose s'est mal passé"
+                        }
+                    },
+                    retrieveAuthenticatorError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la tentative d'obtention " + 
+                                "de la liste des authentificateurs activés",
+                            message: "Quelque chose s'est mal passé"
+                        }
+                    },
+                    retrieveError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération des codes de secours",
+                            message: "Quelque chose s'est mal passé"
+                        }
+                    },
+                    updateAuthenticatorError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la tentative de mise " + 
+                                "à jour de la liste des authentificateurs activés",
                             message: "Quelque chose s'est mal passé"
                         }
                     }

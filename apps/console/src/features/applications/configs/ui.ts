@@ -40,6 +40,7 @@ import { ReactComponent as IntrospectIcon } from "../../../themes/default/assets
 import { ReactComponent as IssuerIcon } from "../../../themes/default/assets/images/icons/issuer.svg";
 import { ReactComponent as JWKSIcon } from "../../../themes/default/assets/images/icons/jwks.svg";
 import { ReactComponent as LockShieldIcon } from "../../../themes/default/assets/images/icons/lock-shield.svg";
+import { ReactComponent as MagicLinkLogo } from "../../../themes/default/assets/images/icons/magic-link-icon.svg";
 import {
     ReactComponent as MagnifierColoredIcon
 } from "../../../themes/default/assets/images/icons/magnifier-colored-icon.svg";
@@ -213,6 +214,7 @@ export const getAuthenticatorIcons = (): {
     google: FunctionComponent<SVGProps<SVGSVGElement>>;
     identifierFirst: FunctionComponent<SVGProps<SVGSVGElement>>;
     jwtBasic: FunctionComponent<SVGProps<SVGSVGElement>>;
+    magicLink: FunctionComponent<SVGProps<SVGSVGElement>>;
     microsoft: FunctionComponent<SVGProps<SVGSVGElement>>;
     office365: FunctionComponent<SVGProps<SVGSVGElement>>;
     sessionExecutor: FunctionComponent<SVGProps<SVGSVGElement>>;
@@ -233,6 +235,7 @@ export const getAuthenticatorIcons = (): {
         google: GoogleLogo,
         identifierFirst: MagnifierColoredIcon,
         jwtBasic: JWTLogo,
+        magicLink: MagicLinkLogo,
         microsoft: MicrosoftLogo,
         office365: Office365Logo,
         sessionExecutor: ClockColoredIcon,
