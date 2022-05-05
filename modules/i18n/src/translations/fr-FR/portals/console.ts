@@ -2656,6 +2656,16 @@ export const console: ConsoleNS = {
                             message: "Impossible d'ajouter à cette étape"
                         }
                     },
+                    tierLimitReachedError: {
+                        emptyPlaceholder: {
+                            action: "Voir les forfaits",
+                            subtitles: "Vous pouvez contacter l'administrateur de l'organisation ou (si vous êtes l'" +
+                                "administrateur) mettre à niveau votre abonnement pour augmenter la limite autorisée.",
+                            title: "Il semble que vous ayez atteint le nombre maximal d'applications " +
+                                "autorisées pour cette organisation."
+                        },
+                        heading: "Vous avez atteint la limite maximale d'applications"
+                    },
                     updateAdvancedConfig: {
                         error: {
                             description: "{{description}}",

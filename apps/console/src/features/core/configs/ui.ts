@@ -104,6 +104,9 @@ import {
     ReactComponent as BrokenPageIllustration
 } from "../../../themes/default/assets/images/placeholder-illustrations/broken-page-illustration.svg";
 import {
+    ReactComponent as CreateErrorIllustration
+} from "../../../themes/default/assets/images/placeholder-illustrations/create-error-illustration.svg";
+import {
     ReactComponent as EmptyListIllustration
 } from "../../../themes/default/assets/images/placeholder-illustrations/empty-list-illustration.svg";
 import {
@@ -299,6 +302,7 @@ export const getAdvancedSearchIcons = (): GetAdvancedSearchIconsInterface  => {
 export type GetEmptyPlaceholderIllustrationsInterface = {
     alert: FunctionComponent,
     brokenPage: FunctionComponent,
+    createError: FunctionComponent,
     emptyList: FunctionComponent,
     emptySearch: FunctionComponent,
     fileUpload: FunctionComponent,
@@ -319,6 +323,7 @@ export const getEmptyPlaceholderIllustrations = (): GetEmptyPlaceholderIllustrat
     return {
         alert: AlertIcon,
         brokenPage: BrokenPageIllustration,
+        createError: CreateErrorIllustration,
         emptyList: EmptyListIllustration,
         emptySearch: EmptySearchResultsIllustration,
         fileUpload: FileUploadIllustration,

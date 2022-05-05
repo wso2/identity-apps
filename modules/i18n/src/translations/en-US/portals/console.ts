@@ -2605,6 +2605,16 @@ export const console: ConsoleNS = {
                             message: "Cannot add to this step"
                         }
                     },
+                    tierLimitReachedError: {
+                        emptyPlaceholder: {
+                            action: "View Plans",
+                            subtitles: "You can contact the organization administrator or (if you are the " +
+                                "administrator) upgrade your subscription to increase the allowed limit.",
+                            title: "You have reached the maximum number of apps allowed " + 
+                                "for this organization."
+                        },
+                        heading: "You’ve reached the maximum limit for apps"
+                    },
                     updateAdvancedConfig: {
                         error: {
                             description: "{{description}}",
