@@ -2636,8 +2636,8 @@ export const console: ConsoleNS = {
                     tierLimitReachedError: {
                         emptyPlaceholder: {
                             action: "Voir les forfaits",
-                            subtitles: "Vous pouvez mettre à niveau votre abonnement pour augmenter la limite " +
-                                "autorisée ou réessayer après avoir supprimé toutes les applications indésirables.",
+                            subtitles: "Vous pouvez contacter l'administrateur de l'organisation ou (si vous êtes l'" +
+                                "administrateur) mettre à niveau votre abonnement pour augmenter la limite autorisée.",
                             title: "Il semble que vous ayez atteint le nombre maximal d'applications " +
                                 "autorisées pour cette organisation."
                         },
