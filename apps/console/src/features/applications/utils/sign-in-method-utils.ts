@@ -19,7 +19,6 @@
 
 import flatten from "lodash-es/flatten";
 import {
-    AuthenticatorCategories,
     GenericAuthenticatorInterface,
     IdentityProviderManagementConstants,
     ProvisioningInterface
@@ -207,6 +206,51 @@ export class SignInMethodUtils {
 
         return this.hasSpecificFactorsInSteps(ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
             leftSideSteps);
+    }
+
+    /**
+     * This method decides if the magic-link authenticator can be added to the current step.
+     *
+     * @param {number} currentStep The current step.
+     * @param {AuthenticationStepInterface} authenticationSteps The authentication steps.
+     *
+     * @returns {boolean}
+     */
+    public static isMagicLinkAuthenticatorValid(currentStep: number,
+        authenticationSteps: AuthenticationStepInterface[]): boolean {
+        // The magic link authenticator can only be added to the second step.
+        if (currentStep !== 1) {
+            return false;
+        }
+
+        const identifierFirst = authenticationSteps[ 0 ].options.find(
+            authenticator =>
+                authenticator.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR);
+
+        // The first step should have the identifier first authenticator.
+        if (authenticationSteps.length > 1 && !identifierFirst) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks if a identifier first or basic auth already exists. Returns false if it does or tru otherwise.
+     *
+     * @param {number} currentStep The current step.
+     * @param {AuthenticationStepInterface} authenticationSteps The authentication steps.
+     *
+     * @returns {boolean}
+     */
+    public static isFirstFactorValid(currentStep: number, authenticationSteps: AuthenticationStepInterface[]): boolean {
+        const firstFactor = authenticationSteps[currentStep].options.find(
+            (authenticator) =>
+                authenticator.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR ||
+                authenticator.authenticator === IdentityProviderManagementConstants.BASIC_AUTHENTICATOR
+        );
+
+        return !firstFactor;
     }
 
     public static isConnectionsJITUPConflictWithMFA(

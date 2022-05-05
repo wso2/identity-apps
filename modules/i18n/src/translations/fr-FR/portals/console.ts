@@ -1033,6 +1033,9 @@ export const console: ConsoleNS = {
                                             authenticatorDisabled: "Vous devez configurer cet authentificateur en " +
                                                 "fournissant un identifiant et un secret client, à utiliser avec " +
                                                 "vos applications.",
+                                            firstFactorDisabled: "L'authentificateur Identifier First " +
+                                                "et l'authentificateur Nom d'utilisateur et mot de passe " +
+                                                "ne peuvent pas être ajoutés à la même étape.",
                                             forms: {
                                                 fields: {
                                                     attributesFrom: {
@@ -1049,6 +1052,10 @@ export const console: ConsoleNS = {
                                             heading: "Configuration par étapes",
                                             hint: "Créez des étapes d'authentification en faisant glisser les " +
                                                 "authentificateurs locaux/fédérés vers les étapes correspondantes.",
+                                            magicLinkDisabled: "Vous pouvez ajouter l'authentificateur Magic Link " +
+                                                "uniquement à la deuxième étape, et uniquement " +
+                                                "lorsque l'authentificateur Identifier First est présent " +
+                                                "à la première étape.",
                                             secondFactorDisabled: "Les authentificateurs de second facteur ne " +
                                                 "peuvent être utilisés que si <1>Nom d’utilisateur et mot de passe" +
                                                 "</1> ou tout autre gestionnaire tel que <3>Identifiant d’abord " +
@@ -1121,6 +1128,12 @@ export const console: ConsoleNS = {
                                             secondaryButton: "Annuler"
                                         },
                                         heading: "Commencez à créer votre flux de connexion",
+                                        headings: {
+                                            default: "Connexion par défaut",
+                                            multiFactorLogin: "Connexion multi-facteurs",
+                                            passwordlessLogin: "Connexion sans mot de passe",
+                                            socialLogin: "Connexion sociale"
+                                        },
                                         types: {
                                             defaultConfig: {
                                                 description: "Créez votre flux de connexion en commençant par la " +
@@ -1140,6 +1153,16 @@ export const console: ConsoleNS = {
                                                 description: "Permettre aux utilisateurs de se connecter avec Google.",
                                                 heading: "Ajouter une connexion Google"
                                             },
+                                            magicLink: {
+                                                description: "Permettre aux utilisateurs de se connecter " +
+                                                    "en utilisant un lien magique envoyé à leur adresse e-mail.",
+                                                heading: "Ajouter une connexion Magic Link",
+                                                warning: "Vous ne pouvez utiliser l'authentificateur Identifier " +
+                                                    "First qu'avec l'authentificateur Magic Link. L'utiliser avec " +
+                                                    "n'importe quel autre authentificateur peut entraîner un " +
+                                                    "comportement inattendu."
+
+                                            },
                                             totp: {
                                                 description: "Activez une couche d'authentification supplémentaire " +
                                                     "avec OTP basé sur le temps.",
@@ -1149,7 +1172,7 @@ export const console: ConsoleNS = {
                                                 description: "Permettre aux utilisateurs de se connecter à " +
                                                     "l'aidAjouter une connexion sans nom d'utilisateuré " +
                                                     "FIDO2 ou de la biométrie.",
-                                                heading: "Ajouter une connexion sans mot de passe",
+                                                heading: "Ajouter une clé de sécurité/connexion biométrique",
                                                 info: "Pour vous connecter avec une authentification sans mot " +
                                                     "de passe, vos utilisateurs doivent avoir leurs clés de " +
                                                     "sécurité FIDO2 ou leurs données biométriques enregistrées " +
@@ -2387,7 +2410,7 @@ export const console: ConsoleNS = {
                             message: "Impossible de supprimer cet authentificateur"
                         },
                         genericError: {
-                            description: "Il existe des authentificateurs de second facteur dans d'autres étapes " +
+                            description: "Il existe des authentificateurs dans d'autres étapes " +
                                 "qui dépendent de cet authentificateur.",
                             message: "Impossible de supprimer cet authentificateur"
                         },
@@ -2718,6 +2741,11 @@ export const console: ConsoleNS = {
                             description: "Mise à jour réussie des configurations d'approvisionnement.",
                             message: "Mise à jour réussie"
                         }
+                    },
+                    updateOnlyIdentifierFirstError: {
+                        description: "Identifiant Le premier authentificateur ne peut pas être le seul " +
+                            "authentificateur. Il nécessite une étape supplémentaire.",
+                        message: "Erreur de mise à jour"
                     },
                     updateOutboundProvisioning: {
                         genericError: {
