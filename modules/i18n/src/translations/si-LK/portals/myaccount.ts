@@ -585,6 +585,7 @@ export const myAccount: MyAccountNS = {
                 description: "යෙදුම් වලට ප්‍රවේශවීමේදී දෙවන සාධකය ලෙස කාලය " +
                     "මත පදනම් වූ, එක් වරක් මුර කේත (TOTP ලෙසද හැඳින්වේ) භාවිතා " +
                     "කිරීමට Authenticator යෙදුමක් භාවිතයෙන් QR කේතය පරිලෝකනය කරන්න.",
+                enableHint: "TOTP සබල/අබල කරන්න",
                 heading: "සත්‍යාපන යෙදුම",
                 hint: "QR කේතය පෙන්වන්න",
                 modals: {
@@ -643,6 +644,104 @@ export const myAccount: MyAccountNS = {
                         },
                         genericError: {
                             description: "නව QR කේතයක් ලබා ගැනීමට උත්සාහ කිරීමේදී දෝෂයකි",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        }
+                    }
+                }
+            },
+            backupCode: {
+                download: {
+                    heading: "ඔබගේ උපස්ථ කේත සුරකින්න.",
+                    info1: "ඔබට එක් එක් උපස්ථ කේතය භාවිතා කළ හැක්කේ එක් වරක් පමණි.",
+                    info2: "මෙම කේත ජනනය කරන ලදී: ",
+                    subHeading: "මෙම උපස්ථ කේත ආරක්ෂිත නමුත් ප්‍රවේශ විය හැකි ස්ථානයක තබා ගන්න"
+                },
+                heading: "උපස්ථ කේත",
+                modals: {
+                    description: "ඔබ ඔබගේ දුරකථනයෙන් බැහැරව සිටින විට පුරනය වීමට උපස්ථ කේත භාවිතා කරන්න. " + 
+                        "ඒවා සියල්ලම භාවිතා කරන විට ඔබට තවත් උත්පාදනය කළ හැකිය",
+                    download: {
+                        heading: "කේත බාගන්න"
+                    },
+                    generate: {
+                        description: "ඔබගේ උපස්ථ කේත සියල්ලම භාවිතා වේ. නව උපස්ථ කේත කට්ටලයක් ජනනය කරමු",
+                        heading: "උත්පාදනය කරන්න"
+                    },
+                    heading: "උපස්ථ කේත",
+                    info: "සෑම කේතයක්ම භාවිතා කළ හැක්කේ එක් වරක් පමණි",
+                    refresh: {
+                        heading: "නැවුම් කරන්න"
+                    },
+                    subHeading: "ඔබට පුරනය වීමට භාවිතා කළ හැකි එක් වරක් මුරකේත"
+                },
+                notifications: {
+                    deleteError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        genericError: {
+                            description: "උපස්ථ කේත මකා දැමීමේදී දෝෂයක් සිදු විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        }
+                    },
+                    downloadError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        genericError: {
+                            description: "නව උපස්ථ කේත බාගැනීමට උත්සාහ කිරීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        }
+                    },
+                    downloadSuccess: {
+                        genericMessage: {
+                            description: "උපස්ථ කේත සාර්ථකව බාගත කර ඇත.",
+                            message: "උපස්ථ කේත සාර්ථකව බාගන්නා ලදී."
+                        },
+                        message: {
+                            description: "{{message}}",
+                            message: "උපස්ථ කේත සාර්ථකව බාගන්නා ලදී."
+                        }
+                    },
+                    refreshError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        genericError: {
+                            description: "නව උපස්ථ කේත උත්පාදනය කිරීමට උත්සාහ කිරීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        }
+                    },
+                    retrieveAuthenticatorError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        genericError: {
+                            description: "සක්‍රීය සත්‍යාපන ලැයිස්තුව ලබා ගැනීමට උත්සාහ කිරීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        }
+                    },
+                    retrieveError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        genericError: {
+                            description: "උපස්ථ කේත ලබා ගැනීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        }
+                    },
+                    updateAuthenticatorError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        genericError: {
+                            description: "සබල කළ සත්‍යාපන ලැයිස්තුව යාවත්කාලීන කිරීමට උත්සාහ කිරීමේදී දෝෂයක් ඇති විය",
                             message: "මොකක්හරි වැරැද්දක් වෙලා"
                         }
                     }

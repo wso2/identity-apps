@@ -37,6 +37,7 @@ import { Divider, Grid, Icon, Message } from "semantic-ui-react";
 import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
+import { applicationConfig } from "../../../../../extensions";
 import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
 import { GenericAuthenticatorInterface, IdentityProviderManagementConstants } from "../../../../identity-providers";
 import { getRequestPathAuthenticators, updateAuthenticationSequence } from "../../../api";
@@ -613,6 +614,24 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                         >
                             { t("common:learnMore") }
                         </DocumentationLink>
+                    </Message>
+                )
+            }
+            {
+                authenticationSequence.steps[ 0 ].options.find(authenticator =>
+                    authenticator.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
+                && applicationConfig.signInMethod.identifierFirstWarning)
+                && (
+                    <Message warning>
+                        <Trans
+                            i18nKey={
+                                t("console:develop.features.applications.edit.sections" +
+                                    ".signOnMethod.sections.landing.flowBuilder." +
+                                    "types.magicLink.warning")
+                            }>
+                            You can only use Identifier First authenticator with the Magic Link authenticator.
+                            Using it with any other authenticator can lead to unexpected behavior.
+                        </Trans>
                     </Message>
                 )
             }

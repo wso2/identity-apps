@@ -28,7 +28,7 @@ import {
     AuthenticatorMeta,
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface,
-    ProvisioningInterface
+    IdentityProviderManagementConstants
 } from "../../../../../identity-providers";
 import { AuthenticationStepInterface } from "../../../../models";
 import { SignInMethodUtils } from "../../../../utils";
@@ -37,7 +37,6 @@ import { SignInMethodUtils } from "../../../../utils";
  * Proptypes for the authenticators component.
  */
 interface AuthenticatorsPropsInterface extends TestableComponentInterface {
-
     /**
      * List of authenticators.
      */
@@ -92,7 +91,6 @@ interface AuthenticatorsPropsInterface extends TestableComponentInterface {
 export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     props: AuthenticatorsPropsInterface
 ): ReactElement => {
-
     const {
         authenticators,
         authenticationSteps,
@@ -118,7 +116,6 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
      * Updates the internal selected authenticators state when the prop changes.
      */
     useEffect(() => {
-
         if (!selected) {
             return;
         }
@@ -127,9 +124,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     }, [ selected ]);
 
     const isFactorEnabled = (authenticator: GenericAuthenticatorInterface): boolean => {
-
         if (authenticator.category === AuthenticatorCategories.SECOND_FACTOR) {
-
             // If there is only one step in the flow, second factor authenticators shouldn't be allowed.
             if (currentStep === 0) {
                 return false;
@@ -140,6 +135,17 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                 currentStep,
                 authenticationSteps
             );
+        }
+
+        // Check if the authenticator is a magic link authenticator
+        if (authenticator.id === IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID) {
+            return SignInMethodUtils.isMagicLinkAuthenticatorValid(currentStep, authenticationSteps);
+        }
+
+        if ([
+            IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
+            IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ].includes(authenticator.id)) {
+            return SignInMethodUtils.isFirstFactorValid(currentStep, authenticationSteps);
         }
 
         return true;
@@ -153,62 +159,52 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
      * @return {React.ReactElement}
      */
     const resolvePopupContent = (authenticator: GenericAuthenticatorInterface): ReactElement => {
-
         const InfoLabel = (
             <Label attached="top">
-                <Icon name="info circle"/> Info
+                <Icon name="info circle" /> Info
             </Label>
         );
 
         if (authenticator.category === AuthenticatorCategories.SECOND_FACTOR) {
-
             return (
                 <>
-                    {
-                        (currentStep === 0)
-                            ? (
-                                <Fragment>
-                                    { InfoLabel }
-                                    <Text>
-                                        {
-                                            applicationConfig.signInMethod.authenticatorSelection.messages
-                                                .secondFactorDisabledInFirstStep
-                                            ?? t("console:develop.features.applications.edit.sections" +
-                                                ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
-                                                ".secondFactorDisabledInFirstStep")
+                    { currentStep === 0 ? (
+                        <Fragment>
+                            { InfoLabel }
+                            <Text>
+                                { applicationConfig.signInMethod.authenticatorSelection.messages
+                                    .secondFactorDisabledInFirstStep ??
+                                    t(
+                                        "console:develop.features.applications.edit.sections" +
+                                        ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
+                                        ".secondFactorDisabledInFirstStep"
+                                    ) }
+                            </Text>
+                        </Fragment>
+                    ) : (
+                        <Fragment>
+                            { InfoLabel }
+                            <Text>
+                                { applicationConfig.signInMethod.authenticatorSelection.messages
+                                    .secondFactorDisabled ?? (
+                                    <Trans
+                                        i18nKey={
+                                            "console:develop.features.applications.edit.sections" +
+                                                ".signOnMethod.sections.authenticationFlow.sections" +
+                                                ".stepBased.secondFactorDisabled"
                                         }
-                                    </Text>
-                                </Fragment>
-                            )
-                            : (
-                                <Fragment>
-                                    { InfoLabel }
-                                    <Text>
-                                        {
-                                            applicationConfig.signInMethod.authenticatorSelection.messages
-                                                .secondFactorDisabled
-                                            ?? (
-                                                <Trans
-                                                    i18nKey={
-                                                        "console:develop.features.applications.edit.sections" +
-                                                        ".signOnMethod.sections.authenticationFlow.sections" +
-                                                        ".stepBased.secondFactorDisabled"
-                                                    }
-                                                >
-                                                    The second-factor authenticators can only be used if <Code
-                                                        withBackground>Username & Password</Code>, <Code withBackground>
-                                                    Social Login</Code>,
-                                                    <Code withBackground>Security Key/Biometrics</Code>
-                                                    or any other handlers such as
-                                                    <Code withBackground>Identifier First</Code> that can handle these
-                                                    factors are present in a previous step.
-                                                </Trans>
-                                            )
-                                        }
-                                    </Text>
-                                </Fragment>
-                            )
-                    }
+                                    >
+                                            The second-factor authenticators can only be used if{ " " }
+                                        <Code withBackground>Username & Password</Code>,{ " " }
+                                        <Code withBackground>Social Login</Code>,
+                                        <Code withBackground>Security Key/Biometrics</Code>
+                                            or any other handlers that can handle these factors are
+                                            present in a previous step.
+                                    </Trans>
+                                ) }
+                            </Text>
+                        </Fragment>
+                    ) }
                 </>
             );
         } else if (authenticator.category === AuthenticatorCategories.SOCIAL) {
@@ -216,9 +212,42 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                 <Fragment>
                     { InfoLabel }
                     <Text>
+                        { t(
+                            "console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                            "authenticationFlow.sections.stepBased.authenticatorDisabled"
+                        ) }
+                    </Text>
+                </Fragment>
+            );
+        } else if (authenticator.id === IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID
+            && !SignInMethodUtils.isMagicLinkAuthenticatorValid(currentStep, authenticationSteps)) {
+            return (
+                <Fragment>
+                    { InfoLabel }
+                    <Text>
                         {
-                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                                "authenticationFlow.sections.stepBased.authenticatorDisabled")
+                            t(
+                                "console:develop.features.applications.edit.sections" +
+                                ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
+                                ".magicLinkDisabled"
+                            )
+                        }
+                    </Text>
+                </Fragment>
+            );
+        } else if ([
+            IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
+            IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ].includes(authenticator.id)) {
+            return (
+                <Fragment>
+                    { InfoLabel }
+                    <Text>
+                        {
+                            t(
+                                "console:develop.features.applications.edit.sections" +
+                                ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
+                                ".firstFactorDisabled"
+                            )
                         }
                     </Text>
                 </Fragment>
@@ -232,13 +261,11 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
      * @param {GenericAuthenticatorInterface} selectedAuthenticator - Selected Authenticator.
      */
     const handleAuthenticatorSelect = (selectedAuthenticator: GenericAuthenticatorInterface): void => {
-
         if (!selectedAuthenticator.isEnabled) {
             return;
         }
 
         if (selectedAuthenticators.some((authenticator) => authenticator.id === selectedAuthenticator.id)) {
-
             const filtered = selectedAuthenticators.filter((authenticator) => {
                 return authenticator.id !== selectedAuthenticator.id;
             });
@@ -261,7 +288,6 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
      * @return {any[] | string[]}
      */
     const resolveAuthenticatorLabels = (authenticator: FederatedAuthenticatorInterface): string[] => {
-
         if (!authenticator) {
             return [];
         }
@@ -272,51 +298,51 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     return (
         <Fragment data-testid={ testId }>
             { heading && <Heading as="h6">{ heading }</Heading> }
-            {
-                authenticators.map((authenticator: GenericAuthenticatorInterface, index) => (
-                    <Popup
-                        hoverable
-                        hideOnScroll
-                        position="top center"
-                        key={ index }
-                        on="hover"
-                        disabled={ isFactorEnabled(authenticator) }
-                        content={ resolvePopupContent(authenticator) }
-                        trigger={ (
-                            <InfoCard
-                                showTooltips
-                                imageSize="micro"
-                                className={ authenticatorCardClasses }
-                                header={
-                                    AuthenticatorMeta.getAuthenticatorDisplayName(
-                                        authenticator.defaultAuthenticator.authenticatorId)
-                                    || authenticator.displayName
-                                    || defaultName
-                                }
-                                disabled={ !isFactorEnabled(authenticator) }
-                                selected={
-                                    isFactorEnabled(authenticator) && Array.isArray(selectedAuthenticators)
-                                    && selectedAuthenticators.some((evalAuthenticator) => {
-                                        return evalAuthenticator.id === authenticator.id;
-                                    })
-                                }
-                                subHeader={ authenticator.categoryDisplayName }
-                                description={ authenticator.description }
-                                image={ authenticator.image }
-                                tags={ showLabels && resolveAuthenticatorLabels((authenticator?.defaultAuthenticator)) }
-                                onClick={ () => {
-                                    isFactorEnabled(authenticator) && handleAuthenticatorSelect(authenticator);
-                                } }
-                                imageOptions={ {
-                                    floated: false,
-                                    inline: true
-                                } }
-                                data-testid={ `${ testId }-authenticator-${ authenticator.name }` }
-                            />
-                        ) }
-                    />
-                ))
-            }
+            { authenticators.map((authenticator: GenericAuthenticatorInterface, index) => (
+                <Popup
+                    hoverable
+                    hideOnScroll
+                    position="top center"
+                    key={ index }
+                    on="hover"
+                    disabled={ isFactorEnabled(authenticator) }
+                    content={ resolvePopupContent(authenticator) }
+                    trigger={
+                        (<InfoCard
+                            showTooltips
+                            imageSize="micro"
+                            className={ authenticatorCardClasses }
+                            header={
+                                AuthenticatorMeta.getAuthenticatorDisplayName(
+                                    authenticator.defaultAuthenticator.authenticatorId
+                                ) ||
+                                authenticator.displayName ||
+                                defaultName
+                            }
+                            disabled={ !isFactorEnabled(authenticator) }
+                            selected={
+                                isFactorEnabled(authenticator) &&
+                                Array.isArray(selectedAuthenticators) &&
+                                selectedAuthenticators.some((evalAuthenticator) => {
+                                    return evalAuthenticator.id === authenticator.id;
+                                })
+                            }
+                            subHeader={ authenticator.categoryDisplayName }
+                            description={ authenticator.description }
+                            image={ authenticator.image }
+                            tags={ showLabels && resolveAuthenticatorLabels(authenticator?.defaultAuthenticator) }
+                            onClick={ () => {
+                                isFactorEnabled(authenticator) && handleAuthenticatorSelect(authenticator);
+                            } }
+                            imageOptions={ {
+                                floated: false,
+                                inline: true
+                            } }
+                            data-testid={ `${ testId }-authenticator-${ authenticator.name }` }
+                        />)
+                    }
+                />
+            )) }
         </Fragment>
     );
 };

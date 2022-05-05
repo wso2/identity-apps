@@ -99,6 +99,15 @@
         {% if myaccount.disable_mfa_for_super_tenant_user is defined %}
         "disableMFAforSuperTenantUser": "{{ myaccount.disable_mfa_for_super_tenant_user }}",
         {% endif %}
+        {% if myaccount.enable_mfa_user_wise is defined %}
+        "enableMFAUserWise": {{ myaccount.enable_mfa_user_wise }},
+        {% endif %}
+        {% if myaccount.disable_mfa_for_federated_users is defined %}
+        "disableMFAForFederatedUsers": {{ myaccount.disable_mfa_for_federated_users }},
+        {% endif %}
+        {% if myaccount.force_backup_code is defined %}
+        "forceBackupCode": {{ myaccount.force_backup_code }},
+        {% endif %}
         {% if myaccount.ui.show_app_switch_button is defined %}
         "showAppSwitchButton": "{{ myaccount.ui.show_app_switch_button }}",
         {% endif %}

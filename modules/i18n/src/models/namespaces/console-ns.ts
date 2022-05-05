@@ -628,6 +628,8 @@ export interface ConsoleNS {
                                             secondFactorDisabledDueToProxyMode: string;
                                             secondFactorDisabledInFirstStep: string;
                                             authenticatorDisabled: string;
+                                            magicLinkDisabled: string;
+                                            firstFactorDisabled: string;
                                         };
                                     };
                                 };
@@ -650,6 +652,12 @@ export interface ConsoleNS {
                                         addMissingSocialAuthenticatorModal: ModalInterface;
                                         duplicateSocialAuthenticatorSelectionModal: ModalInterface;
                                         heading: string;
+                                        headings: {
+                                            default: string;
+                                            socialLogin: string;
+                                            multiFactorLogin: string;
+                                            passwordlessLogin: string;
+                                        }
                                         types: {
                                             defaultConfig: {
                                                 description: string;
@@ -675,6 +683,11 @@ export interface ConsoleNS {
                                                 description: string;
                                                 heading: string;
                                                 info: string;
+                                            },
+                                            magicLink: {
+                                                description: string;
+                                                heading: string;
+                                                warning: string;
                                             }
                                         }
                                     }
@@ -755,7 +768,7 @@ export interface ConsoleNS {
                             isManagementApp: FormAttributes;
                         };
                         managementAppBanner: string;
-                        
+
                     };
                     inboundCustom: {
                         fields: {
@@ -1022,6 +1035,7 @@ export interface ConsoleNS {
                     conditionalScriptLoopingError: NotificationItem;
                     deleteCertificateSuccess: NotificationItem;
                     deleteCertificateGenericError: NotificationItem;
+                    updateOnlyIdentifierFirstError: NotificationItem;
                 };
                 popups: {
                     appStatus: {
@@ -2411,6 +2425,13 @@ export interface ConsoleNS {
                     };
                 };
                 modals: {
+                    approvalProperties: {
+                        "Claims": string,
+                        "REQUEST ID": string,
+                        "Roles": string,
+                        "User Store Domain": string,
+                        "Username": string,
+                    },
                     taskDetails: {
                         header: string;
                         description: string;

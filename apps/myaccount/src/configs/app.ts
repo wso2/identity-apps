@@ -116,6 +116,7 @@ export class Config {
             token: `${this.getDeploymentConfig().serverHost}/oauth2/token`,
             totp: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/totp`,
             totpSecret: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/totp/secret`,
+            backupCode: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/backup-code`,
             typingDNAMe: `${this.getDeploymentConfig().serverHost}/api/identity/typingdna/v1.0/me/typingpatterns`,
             typingDNAServer: `${
                 this.getDeploymentConfig().serverHost
@@ -141,6 +142,9 @@ export class Config {
                 .ui.appCopyright.replace("${copyright}", "\u00A9")
                 .replace("${year}", new Date().getFullYear()),
             disableMFAforSuperTenantUser: window["AppUtils"].getConfig().ui.disableMFAforSuperTenantUser,
+            enableMFAUserWise: window["AppUtils"].getConfig().ui.enableMFAUserWise,
+            disableMFAForFederatedUsers: window["AppUtils"].getConfig().ui.disableMFAForFederatedUsers,
+            forceBackupCode: window["AppUtils"].getConfig().ui.forceBackupCode,
             features: window["AppUtils"].getConfig().ui.features,
             i18nConfigs: window["AppUtils"].getConfig().ui.i18nConfigs,
             isCookieConsentBannerEnabled: window["AppUtils"].getConfig().ui.isCookieConsentBannerEnabled,

@@ -30,6 +30,7 @@ import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequen
 import FacebookLoginSequenceTemplate from "./templates/facebook-login-sequence.json";
 import GitHubLoginSequenceTemplate from "./templates/github-login-sequence.json";
 import GoogleLoginSequenceTemplate from "./templates/google-login-sequence.json";
+import MagicLinkSequenceTemplate from "./templates/magic-link-sequence.json";
 import SecondFactorTOTPSequenceTemplate from "./templates/second-factor-totp-sequence.json";
 import UsernamelessSequenceTemplate from "./templates/usernameless-login-sequence.json";
 import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "../../../../core";
@@ -274,7 +275,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 ...authenticationSequence,
                 ...cloneDeep(SecondFactorTOTPSequenceTemplate)
             });
-        } else if (loginFlow === LoginFlowTypes.PASSWORDLESS_LOGIN) {
+        } else if (loginFlow === LoginFlowTypes.FIDO_LOGIN) {
             eventPublisher.publish("application-sign-in-method-click-add", {
                 type: "first-factor-fido"
             });
@@ -374,6 +375,15 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                         LoginFlowTypes.FACEBOOK_LOGIN)
                 });
             }
+        } else if (loginFlow === LoginFlowTypes.MAGIC_LINK) {
+            eventPublisher.publish("application-sign-in-method-click-add", {
+                type: "magic-link-login"
+            });
+
+            setModeratedAuthenticationSequence({
+                ...authenticationSequence,
+                ...cloneDeep(MagicLinkSequenceTemplate)
+            });
         }
 
         setLoginFlow(loginFlow);
@@ -580,25 +590,30 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                     <Divider hidden/>
                     <div className="authenticator-grid">
                         {
-                            authenticators.map((authenticator, index) => (
-                                <LabeledCard
-                                    key={ index }
-                                    multilineLabel
-                                    className="authenticator-card"
-                                    size="tiny"
-                                    selected={ selectedSocialAuthenticator?.id === authenticator.id }
-                                    image={ authenticator.image }
-                                    label={
-                                        AuthenticatorMeta.getAuthenticatorDisplayName(authenticator.name)
+                            authenticators
+                                .filter((authenticator) => {
+                                    authenticator.name !== IdentityProviderManagementConstants
+                                        .BACKUP_CODE_AUTHENTICATOR;
+                                })
+                                .map((authenticator, index) => (
+                                    <LabeledCard
+                                        key={ index }
+                                        multilineLabel
+                                        className="authenticator-card"
+                                        size="tiny"
+                                        selected={ selectedSocialAuthenticator?.id === authenticator.id }
+                                        image={ authenticator.image }
+                                        label={
+                                            AuthenticatorMeta.getAuthenticatorDisplayName(authenticator.name)
                                         || authenticator.displayName
-                                    }
-                                    labelEllipsis={ true }
-                                    data-testid={
-                                        `${ testId }-authenticator-${ authenticator.name }`
-                                    }
-                                    onClick={ () => setSelectedSocialAuthenticator(authenticator) }
-                                />
-                            ))
+                                        }
+                                        labelEllipsis={ true }
+                                        data-testid={
+                                            `${ testId }-authenticator-${ authenticator.name }`
+                                        }
+                                        onClick={ () => setSelectedSocialAuthenticator(authenticator) }
+                                    />
+                                ))
                         }
                     </div>
                 </ConfirmationModal.Content>

@@ -85,6 +85,7 @@ export interface ApplicationConfig {
                 dispatch: Dispatch
             ): boolean;
         };
+        identifierFirstWarning: boolean;
     };
     templates: {
         android: boolean;
