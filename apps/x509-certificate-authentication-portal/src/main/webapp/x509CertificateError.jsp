@@ -53,6 +53,8 @@
                     errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"userNamesConflict.error.message");
                 } else if (errorCode.equalsIgnoreCase("17001")) {
                     errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"userNotFoundInUserStore.error.message");
+                } else if (errorCode.equalsIgnoreCase("17002")) {
+                    errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"user.account.locked");
                 } else if (errorCode.equalsIgnoreCase("18015")) {
                     errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"not.valid.certificate");
                 } else if (errorCode.equalsIgnoreCase("17003")) {
@@ -72,6 +74,8 @@
                 } else if (errorCode.equalsIgnoreCase("17008")) {
                     errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                             "x509certificateauthenticator.alternativenames.notfound.code.17008.error.message");
+                } else if (errorCode.equalsIgnoreCase("17010")) {
+                    errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"user.account.disabled");
                 }
             }
         }
