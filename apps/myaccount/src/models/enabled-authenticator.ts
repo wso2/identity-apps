@@ -28,3 +28,10 @@ export enum EnabledAuthenticatorUpdateAction {
     TOTP_TOGGLE_DISABLE,
     TOTP_TOGGLE_ENABLE
 }
+
+/**
+ * Interface of enabled authenticators.
+ */
+export interface EnabledAuthenticatorsInterface {
+    enabledAuthenticators: string;
+}
