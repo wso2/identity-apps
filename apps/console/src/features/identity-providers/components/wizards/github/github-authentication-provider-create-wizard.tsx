@@ -46,6 +46,7 @@ import {
     EventPublisher,
     ModalWithSidePanel
 } from "../../../../../features/core";
+import { TierLimitReachErrorModal } from "../../../../core/components/tier-limit-reach-error-modal";
 import { createIdentityProvider } from "../../../api";
 import { getIdPIcons } from "../../../configs";
 import { IdentityProviderManagementConstants } from "../../../constants";
@@ -112,256 +113,240 @@ export interface GithubAuthenticationProviderCreateWizardFormErrorValidationsInt
 export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
     GitHubAuthenticationProviderCreateWizardPropsInterface
     > = (
-    props: GitHubAuthenticationProviderCreateWizardPropsInterface
-): ReactElement => {
+        props: GitHubAuthenticationProviderCreateWizardPropsInterface
+    ): ReactElement => {
 
-    const {
-        onWizardClose,
-        onIDPCreate,
-        currentStep,
-        title,
-        subTitle,
-        template,
-        [ "data-testid" ]: testId,
-        [ "data-componentid" ]: componentId
-    } = props;
+        const {
+            onWizardClose,
+            onIDPCreate,
+            currentStep,
+            title,
+            subTitle,
+            template,
+            [ "data-testid" ]: testId,
+            [ "data-componentid" ]: componentId
+        } = props;
 
-    const dispatch = useDispatch();
+        const dispatch = useDispatch();
 
-    const { t } = useTranslation();
-    const { getLink } = useDocumentation();
+        const { t } = useTranslation();
+        const { getLink } = useDocumentation();
 
-    const [ alert, setAlert, alertComponent ] = useWizardAlert();
+        const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+        const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
-    const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
-    const [ wizStep, setWizStep ] = useState<number>(0);
-    const [ totalStep, setTotalStep ] = useState<number>(0);
-    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+        const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
+        const [ wizStep, setWizStep ] = useState<number>(0);
+        const [ totalStep, setTotalStep ] = useState<number>(0);
+        const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+        const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
 
+        const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const eventPublisher: EventPublisher = EventPublisher.getInstance();
+        /**
+        * Track wizard steps from wizard component.
+        */
+        useEffect(() => {
+            setCurrentWizardStep(wizStep + 1);
+        }, [ wizStep ]);
 
-    /**
-     * Track wizard steps from wizard component.
-     */
-    useEffect(() => {
-        setCurrentWizardStep(wizStep + 1);
-    }, [ wizStep ]);
+        /**
+        * Creates a new identity provider.
+        *
+        * @param identityProvider Identity provider object.
+        */
+        const createNewIdentityProvider = (identityProvider: IdentityProviderInterface): void => {
 
-    /**
-     * Creates a new identity provider.
-     *
-     * @param identityProvider Identity provider object.
-     */
-    const createNewIdentityProvider = (identityProvider: IdentityProviderInterface): void => {
+            // TODO Uncomment below once template id is supported from IDP REST API
+            // Tracked Here - https://github.com/wso2/product-is/issues/11023
+            // identityProvider.templateId = template.id;
 
-        // TODO Uncomment below once template id is supported from IDP REST API
-        // Tracked Here - https://github.com/wso2/product-is/issues/11023
-        // identityProvider.templateId = template.id;
+            setIsSubmitting(true);
 
-        setIsSubmitting(true);
+            createIdentityProvider(identityProvider)
+                .then((response) => {
+                    eventPublisher.publish("connections-finish-adding-connection", {
+                        type: componentId
+                    });
 
-        createIdentityProvider(identityProvider)
-            .then((response) => {
-                eventPublisher.publish("connections-finish-adding-connection", {
-                    type: componentId
-                });
-
-                dispatch(addAlert({
-                    description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
+                    dispatch(addAlert({
+                        description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
                         "success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
+                        level: AlertLevels.SUCCESS,
+                        message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
                         "success.message")
-                }));
+                    }));
 
-                // The created resource's id is sent as a location header.
-                // If that's available, navigate to the edit page.
-                if (!isEmpty(response.headers.location)) {
-                    const location = response.headers.location;
-                    const createdIdpID = location.substring(location.lastIndexOf("/") + 1);
+                    // The created resource's id is sent as a location header.
+                    // If that's available, navigate to the edit page.
+                    if (!isEmpty(response.headers.location)) {
+                        const location = response.headers.location;
+                        const createdIdpID = location.substring(location.lastIndexOf("/") + 1);
 
-                    onIDPCreate(createdIdpID);
+                        onIDPCreate(createdIdpID);
 
-                    return;
-                }
+                        return;
+                    }
 
-                // Since the location header is not present, trigger callback without the id.
-                onIDPCreate();
-            })
-            .catch((error) => {
+                    // Since the location header is not present, trigger callback without the id.
+                    onIDPCreate();
+                })
+                .catch((error) => {
 
-                const identityAppsError: IdentityAppsError = identityProviderConfig.useNewConnectionsView
-                ? IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED
-                : IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED_IDP;
+                    const identityAppsError: IdentityAppsError = identityProviderConfig.useNewConnectionsView
+                        ? IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED
+                        : IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED_IDP;
 
-                if (error.response.status === 403 &&
+                    if (error.response.status === 403 &&
                     error?.response?.data?.code ===
                     identityAppsError.getErrorCode()) {
+                        setOpenLimitReachedModal(true);
+        
+                        return;
+                    }
 
-                    setAlert({
-                        code: identityAppsError.getErrorCode(),
-                        description: t(
-                            identityAppsError.getErrorDescription()
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            identityAppsError.getErrorMessage()
-                        ),
-                        traceId: identityAppsError.getErrorTraceId()
-                    });
-
-                    return;
-                }
-
-                if (error.response && error.response.data && error.response.data.description) {
-                    setAlert({
-                        description: t("console:develop.features.authenticationProvider.notifications." +
+                    if (error.response && error.response.data && error.response.data.description) {
+                        setAlert({
+                            description: t("console:develop.features.authenticationProvider.notifications." +
                             "addIDP.error.description",
                             { description: error.response.data.description }),
-                        level: AlertLevels.ERROR,
-                        message: t("console:develop.features.authenticationProvider.notifications." +
+                            level: AlertLevels.ERROR,
+                            message: t("console:develop.features.authenticationProvider.notifications." +
                             "addIDP.error.message")
-                    });
+                        });
 
-                    return;
-                }
+                        return;
+                    }
 
-                setAlert({
-                    description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
+                    setAlert({
+                        description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
                         "genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
+                        level: AlertLevels.ERROR,
+                        message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
                         "genericError.message")
+                    });
+                })
+                .finally(() => {
+                    setIsSubmitting(false);
                 });
-            })
-            .finally(() => {
-                setIsSubmitting(false);
-            });
-    };
+        };
 
-    /**
-     * Handles the final wizard submission.
-     *
-     * @param identityProvider - Identity provider data.
-     */
-    const handleWizardFormFinish = (identityProvider: IdentityProviderInterface): void => {
+        /**
+        * Handles the final wizard submission.
+        *
+        * @param identityProvider - Identity provider data.
+        */
+        const handleWizardFormFinish = (identityProvider: IdentityProviderInterface): void => {
 
-        const connector: OutboundProvisioningConnectorInterface =
+            const connector: OutboundProvisioningConnectorInterface =
             identityProvider?.provisioning?.outboundConnectors?.connectors[ 0 ];
 
-        const isGoogleConnector: boolean = get(connector,
-            IdentityProviderManagementConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME) ===
+            const isGoogleConnector: boolean = get(connector,
+                IdentityProviderManagementConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME) ===
             IdentityProviderManagementConstants.PROVISIONING_CONNECTOR_GOOGLE;
 
-        // If the outbound connector is Google, remove the displayName from the connector.
-        if (connector && isGoogleConnector) {
-            delete connector[
-                IdentityProviderManagementConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME
+            // If the outbound connector is Google, remove the displayName from the connector.
+            if (connector && isGoogleConnector) {
+                delete connector[
+                    IdentityProviderManagementConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME
                 ];
-        }
-
-        // Use description from template.
-        identityProvider.description = template.description;
-
-        createNewIdentityProvider(identityProvider);
-    };
-
-    /**
-     * Called when modal close event is triggered.
-     */
-    const handleWizardClose = (): void => {
-
-        // Trigger the close method from props.
-        onWizardClose();
-    };
-
-    /**
-     * Callback triggered when the form is submitted.
-     *
-     * @param {GitHubAuthenticationProviderCreateWizardFormValuesInterface} values - Form values.
-     */
-    const onSubmitWizard = (values: GitHubAuthenticationProviderCreateWizardFormValuesInterface): void => {
-
-        const identityProvider: IdentityProviderInterface = { ...template.idp };
-
-        identityProvider.name = values.name.toString();
-
-        identityProvider.federatedAuthenticators.authenticators[ 0 ].properties = [
-            {
-                "key": "ClientId",
-                "value": values.clientId.toString()
-            },
-            {
-                "key": "ClientSecret",
-                "value": values.clientSecret.toString()
-            },
-            {
-                "key": "callbackUrl",
-                "value": config.deployment.serverHost + "/commonauth"
-            },
-            {
-                "key": "scope",
-                "value": IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_REQUESTED_SCOPES.join(" ")
-            },
-            {
-                "key": "UsePrimaryEmail",
-                "value": "true"
             }
-        ];
 
-        // TODO: Refactor the usage of absolute image paths once Media Service is available.
-        // Tracked here - https://github.com/wso2/product-is/issues/12396
-        if (AppConstants.getClientOrigin()) {
-            if (AppConstants.getAppBasename()) {
-                identityProvider.image = AppConstants.getClientOrigin() +
+            // Use description from template.
+            identityProvider.description = template.description;
+
+            createNewIdentityProvider(identityProvider);
+        };
+
+        /**
+        * Called when modal close event is triggered.
+        */
+        const handleWizardClose = (): void => {
+
+            // Trigger the close method from props.
+            onWizardClose();
+        };
+
+        /**
+        * Close the limit reached modal.
+        */
+        const handleLimitReachedModalClose = (): void => {
+            setOpenLimitReachedModal(false);
+            handleWizardClose();
+        };
+
+        /**
+        * Callback triggered when the form is submitted.
+        *
+        * @param {GitHubAuthenticationProviderCreateWizardFormValuesInterface} values - Form values.
+        */
+        const onSubmitWizard = (values: GitHubAuthenticationProviderCreateWizardFormValuesInterface): void => {
+
+            const identityProvider: IdentityProviderInterface = { ...template.idp };
+
+            identityProvider.name = values.name.toString();
+
+            identityProvider.federatedAuthenticators.authenticators[ 0 ].properties = [
+                {
+                    "key": "ClientId",
+                    "value": values.clientId.toString()
+                },
+                {
+                    "key": "ClientSecret",
+                    "value": values.clientSecret.toString()
+                },
+                {
+                    "key": "callbackUrl",
+                    "value": config.deployment.serverHost + "/commonauth"
+                },
+                {
+                    "key": "scope",
+                    "value": IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_REQUESTED_SCOPES.join(" ")
+                },
+                {
+                    "key": "UsePrimaryEmail",
+                    "value": "true"
+                }
+            ];
+
+            // TODO: Refactor the usage of absolute image paths once Media Service is available.
+            // Tracked here - https://github.com/wso2/product-is/issues/12396
+            if (AppConstants.getClientOrigin()) {
+                if (AppConstants.getAppBasename()) {
+                    identityProvider.image = AppConstants.getClientOrigin() +
                     "/" + AppConstants.getAppBasename() +
                     "/libs/themes/default/assets/images/identity-providers/github-idp-illustration.svg";
-            } else {
-                identityProvider.image = AppConstants.getClientOrigin() +
+                } else {
+                    identityProvider.image = AppConstants.getClientOrigin() +
                     "/libs/themes/default/assets/images/identity-providers/github-idp-illustration.svg";
+                }
             }
-        }
 
-        handleWizardFormFinish(identityProvider);
-    };
+            handleWizardFormFinish(identityProvider);
+        };
 
-    /**
-     * Resolve the step wizard actions.
-     *
-     * @return {React.ReactElement}
-     */
-    const resolveStepActions = (): ReactElement => {
+        /**
+        * Resolve the step wizard actions.
+        *
+        * @return {React.ReactElement}
+        */
+        const resolveStepActions = (): ReactElement => {
 
-        return (
-            <Grid>
-                <Grid.Row column={ 1 }>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                        <LinkButton
-                            floated="left"
-                            onClick={ handleWizardClose }
-                            data-testid={ `${ testId }-modal-cancel-button` }
-                        >
-                            { t("common:cancel") }
-                        </LinkButton>
-                    </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                        { currentWizardStep !== totalStep ? (
-                            <PrimaryButton
-                                floated="right"
-                                onClick={ () => {
-                                    submitForm();
-                                } }
-                                data-testid={ `${ testId }-modal-finish-button` }
-                                loading={ isSubmitting }
-                                disabled={ isSubmitting }
+            return (
+                <Grid>
+                    <Grid.Row column={ 1 }>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                            <LinkButton
+                                floated="left"
+                                onClick={ handleWizardClose }
+                                data-testid={ `${ testId }-modal-cancel-button` }
                             >
-                                { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
-                            </PrimaryButton>
-                        ) : (
-                            <>
+                                { t("common:cancel") }
+                            </LinkButton>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                            { currentWizardStep !== totalStep ? (
                                 <PrimaryButton
                                     floated="right"
                                     onClick={ () => {
@@ -371,13 +356,26 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
                                     loading={ isSubmitting }
                                     disabled={ isSubmitting }
                                 >
-                                    { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
+                                    { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
                                 </PrimaryButton>
-                            </>
-                        ) }
-                        {
-                            currentWizardStep > 1 &&
-                            <LinkButton
+                            ) : (
+                                <>
+                                    <PrimaryButton
+                                        floated="right"
+                                        onClick={ () => {
+                                            submitForm();
+                                        } }
+                                        data-testid={ `${ testId }-modal-finish-button` }
+                                        loading={ isSubmitting }
+                                        disabled={ isSubmitting }
+                                    >
+                                        { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
+                                    </PrimaryButton>
+                                </>
+                            ) }
+                            {
+                                currentWizardStep > 1 &&
+                            (<LinkButton
                                 floated="right"
                                 onClick={ () => {
                                     triggerPreviousForm();
@@ -385,120 +383,142 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
                                 data-testid={ `${ testId }-modal-previous-button` }
                             >
                                 { t("console:develop.features.authenticationProvider.wizards.buttons.previous") }
-                            </LinkButton>
-                        }
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        );
-    };
+                            </LinkButton>)
+                            }
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            );
+        };
 
-    /**
-     * Renders the help panel containing wizard help.
-     *
-     * @return {React.ReactElement}
-     */
-    const renderHelpPanel = (): ReactElement => {
+        /**
+        * Renders the help panel containing wizard help.
+        *
+        * @return {React.ReactElement}
+        */
+        const renderHelpPanel = (): ReactElement => {
 
-        // Return null when `showHelpPanel` is false or `wizardHelp` is not defined in `selectedTemplate` object.
-        if (!template?.content?.wizardHelp || currentWizardStep === 0) {
-            return null;
-        }
+            // Return null when `showHelpPanel` is false or `wizardHelp` is not defined in `selectedTemplate` object.
+            if (!template?.content?.wizardHelp || currentWizardStep === 0) {
+                return null;
+            }
 
-        const {
-            wizardHelp: WizardHelp
-        } = template?.content;
+            const {
+                wizardHelp: WizardHelp
+            } = template?.content;
+
+            return (
+                <ModalWithSidePanel.SidePanel>
+                    <ModalWithSidePanel.Header className="wizard-header help-panel-header muted">
+                        <div className="help-panel-header-text">
+                            { t("console:develop.features.authenticationProvider.templates.github.wizardHelp.heading") }
+                        </div>
+                    </ModalWithSidePanel.Header>
+                    <ModalWithSidePanel.Content>
+                        <Suspense fallback={ <ContentLoader/> }>
+                            <WizardHelp/>
+                        </Suspense>
+                    </ModalWithSidePanel.Content>
+                </ModalWithSidePanel.SidePanel>
+            );
+        };
+
+        /**
+        * Closure to submit form.
+        */
+        let submitForm: () => void;
+
+        /**
+        * Closure to trigger previous form.
+        */
+        let triggerPreviousForm: () => void;
 
         return (
-            <ModalWithSidePanel.SidePanel>
-                <ModalWithSidePanel.Header className="wizard-header help-panel-header muted">
-                    <div className="help-panel-header-text">
-                        { t("console:develop.features.authenticationProvider.templates.github.wizardHelp.heading") }
-                    </div>
-                </ModalWithSidePanel.Header>
-                <ModalWithSidePanel.Content>
-                    <Suspense fallback={ <ContentLoader/> }>
-                        <WizardHelp/>
-                    </Suspense>
-                </ModalWithSidePanel.Content>
-            </ModalWithSidePanel.SidePanel>
-        );
-    };
-
-    /**
-     * Closure to submit form.
-     */
-    let submitForm: () => void;
-
-    /**
-     * Closure to trigger previous form.
-     */
-    let triggerPreviousForm: () => void;
-
-    return (
-        <ModalWithSidePanel
-            open={ true }
-            className="wizard identity-provider-create-wizard"
-            dimmer="blurring"
-            onClose={ handleWizardClose }
-            closeOnDimmerClick={ false }
-            closeOnEscape
-            data-testid={ `${ testId }-modal` }
-        >
-            <ModalWithSidePanel.MainPanel>
-                <ModalWithSidePanel.Header
-                    className="wizard-header"
-                    data-testid={ `${ testId }-modal-header` }
+            <>
+                { openLimitReachedModal &&
+                    (<TierLimitReachErrorModal
+                        actionLabel={ t(
+                            "console:develop.features.idp.notifications." +
+                        "tierLimitReachedError.emptyPlaceholder.action"
+                        ) }
+                        handleModalClose={ handleLimitReachedModalClose }
+                        header={ t(
+                            "console:develop.features.idp.notifications.tierLimitReachedError.heading"
+                        ) }
+                        description={ t(
+                            "console:develop.features.idp.notifications." +
+                        "tierLimitReachedError.emptyPlaceholder.subtitles"
+                        ) }
+                        message={ t(
+                            "console:develop.features.idp.notifications." + 
+                        "tierLimitReachedError.emptyPlaceholder.title"
+                        ) }
+                        openModal={ openLimitReachedModal }
+                    />) }
+                <ModalWithSidePanel
+                    open={ !openLimitReachedModal }
+                    className="wizard identity-provider-create-wizard"
+                    dimmer="blurring"
+                    onClose={ handleWizardClose }
+                    closeOnDimmerClick={ false }
+                    closeOnEscape
+                    data-testid={ `${ testId }-modal` }
                 >
-                    <div className="display-flex">
-                        <GenericIcon
-                            icon={ getIdPIcons().github }
-                            size="mini"
-                            transparent
-                            spaced="right"
-                            data-testid={ `${ testId }-image` }
-                        />
-                        <div className="ml-1">
-                            { title }
-                            { subTitle &&
-                                <Heading as="h6">
+                    <ModalWithSidePanel.MainPanel>
+                        <ModalWithSidePanel.Header
+                            className="wizard-header"
+                            data-testid={ `${ testId }-modal-header` }
+                        >
+                            <div className="display-flex">
+                                <GenericIcon
+                                    icon={ getIdPIcons().github }
+                                    size="mini"
+                                    transparent
+                                    spaced="right"
+                                    data-testid={ `${ testId }-image` }
+                                />
+                                <div className="ml-1">
+                                    { title }
+                                    { subTitle &&
+                                (<Heading as="h6">
                                     { subTitle }
                                     <DocumentationLink
                                         link={ getLink("develop.connections.newConnection.github.learnMore") }
                                     >
                                         { t("common:learnMore") }
                                     </DocumentationLink>
-                                </Heading>
-                            }
-                        </div>
-                    </div>
-                </ModalWithSidePanel.Header>
-                <ModalWithSidePanel.Content
-                    className="content-container"
-                    data-testid={ `${ testId }-modal-content` }
-                >
-                    { alert && alertComponent }
-                    <GitHubAuthenticationProviderCreateWizardContent
-                        onSubmit={ onSubmitWizard }
-                        triggerSubmission={ (submitFunctionCb: () => void) => {
-                            submitForm = submitFunctionCb;
-                        } }
-                        triggerPrevious={ (previousFunctionCb: () => void) => {
-                            triggerPreviousForm = previousFunctionCb;
-                        } }
-                        changePageNumber={ (step: number) => setWizStep(step) }
-                        setTotalPage={ (pageNumber: number) => setTotalStep(pageNumber) }
-                        template={ template }
-                    />
-                </ModalWithSidePanel.Content>
-                <ModalWithSidePanel.Actions data-testid={ `${ testId }-modal-actions` }>
-                    { resolveStepActions() }
-                </ModalWithSidePanel.Actions>
-            </ModalWithSidePanel.MainPanel>
-            { renderHelpPanel() }
-        </ModalWithSidePanel>
-    );
-};
+                                </Heading>)
+                                    }
+                                </div>
+                            </div>
+                        </ModalWithSidePanel.Header>
+                        <ModalWithSidePanel.Content
+                            className="content-container"
+                            data-testid={ `${ testId }-modal-content` }
+                        >
+                            { alert && alertComponent }
+                            <GitHubAuthenticationProviderCreateWizardContent
+                                onSubmit={ onSubmitWizard }
+                                triggerSubmission={ (submitFunctionCb: () => void) => {
+                                    submitForm = submitFunctionCb;
+                                } }
+                                triggerPrevious={ (previousFunctionCb: () => void) => {
+                                    triggerPreviousForm = previousFunctionCb;
+                                } }
+                                changePageNumber={ (step: number) => setWizStep(step) }
+                                setTotalPage={ (pageNumber: number) => setTotalStep(pageNumber) }
+                                template={ template }
+                            />
+                        </ModalWithSidePanel.Content>
+                        <ModalWithSidePanel.Actions data-testid={ `${ testId }-modal-actions` }>
+                            { resolveStepActions() }
+                        </ModalWithSidePanel.Actions>
+                    </ModalWithSidePanel.MainPanel>
+                    { renderHelpPanel() }
+                </ModalWithSidePanel>
+            </>
+        );
+    };
 
 /**
  * Default props for the GitHub Authentication Provider Create Wizard.

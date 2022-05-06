@@ -3480,6 +3480,15 @@ export const console: ConsoleNS = {
                             message: ""
                         }
                     },
+                    tierLimitReachedError: {
+                        emptyPlaceholder: {
+                            action: "සැලසුම් බලන්න",
+                            subtitles: "ඔබට සංවිධානයේ administrator සම්බන්ධ කර ගැනීමට හෝ (ඔබ administrator " +
+                                "නම්) අවසර ලත් සීමාව වැඩි කිරීමට ඔබගේ දායකත්වය උත්ශ්‍රේණි කිරීමට හැකිය.",
+                            title: "ඔබ මෙම සංවිධානය සඳහා අවසර දී ඇති උපරිම IdP සංඛ්‍යාවට ළඟා වී ඇත."
+                        },
+                        heading: "ඔබ IdPs සඳහා උපරිම සීමාවට ළඟා වී ඇත"
+                    },
                     updateClaimsConfigs: {
                         error: {
                             description: "{{ description }}",
