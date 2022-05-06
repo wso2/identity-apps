@@ -146,6 +146,7 @@
         } else {
             String redirectURL = "error.do";
             response.sendRedirect(redirectURL);
+            return;
         }
     }
 
@@ -259,6 +260,7 @@
                                     String redirectURL = "error.do?" + STATUS + "=" + CONFIGURATION_ERROR + "&" +
                                             STATUS_MSG + "=" + AUTHENTICATION_MECHANISM_NOT_CONFIGURED;
                                     response.sendRedirect(redirectURL);
+                                    return;
                                 }
                             } else if (localAuthenticatorNames.contains(BASIC_AUTHENTICATOR)) {
                                 isBackChannelBasicAuth = false;
