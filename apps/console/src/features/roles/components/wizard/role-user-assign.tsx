@@ -344,7 +344,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                 }
             });
         } else {
-            setSelectedUsers(initialUserList);
+            setSelectedUsers(tempUserList);
         }
     };
 
@@ -584,7 +584,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                             </EmphasizedSegment>
                                         )
                                         : <ContentLoader className="p-3" active />
-                                    )
+                                )
                             }
                         </Grid.Column>
                     </Grid.Row>

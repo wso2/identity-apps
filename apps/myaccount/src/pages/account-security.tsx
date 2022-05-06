@@ -86,25 +86,25 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
     useEffect(() => {
         setTimeout(() => {
             switch (props.location.hash) {
-            case `#${ CommonConstants.CONSENTS_CONTROL }`:
-                consentControl.current.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center"
-                });
-                break;
-            case `#${ CommonConstants.ACCOUNT_ACTIVITY }`:
-                accountActivity.current.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center"
-                });
-                break;
-            case `#${ CommonConstants.ACCOUNT_SECURITY }`:
-                accountSecurity.current.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center"
-                });
-                break;
-        }
+                case `#${ CommonConstants.CONSENTS_CONTROL }`:
+                    consentControl.current.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+                    break;
+                case `#${ CommonConstants.ACCOUNT_ACTIVITY }`:
+                    accountActivity.current.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+                    break;
+                case `#${ CommonConstants.ACCOUNT_SECURITY }`:
+                    accountSecurity.current.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+                    break;
+            }
         }, 100);
 
     }, [ props.location ]);
@@ -145,6 +145,15 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
         dispatch(addAlert(alert));
     };
 
+    /**
+     * Check if the login tenant is super tenant or not?
+     * 
+     * @returns True if login tenant is super tenant.
+     */
+    const isSuperTenantLogin = (): boolean => {
+        return AppConstants.getTenant() === AppConstants.getSuperTenant();
+    };
+    
     return (
         <InnerPageLayout
             pageTitle={ t("myAccount:pages.security.title") }
@@ -203,12 +212,13 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
                     ) : null }
 
                 { hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) && 
-                  ((isNonLocalCredentialUser && !disableMFAForFederatedUsers) || !isNonLocalCredentialUser) &&
-                    isFeatureEnabled(
-                        accessConfig?.security,
-                        AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA")
-                    ) && !(disableMFAforSuperTenantUser && (AppConstants.getTenant() === AppConstants.getSuperTenant())
-                    ) ? (
+                  ((isNonLocalCredentialUser && (!disableMFAForFederatedUsers || !isSuperTenantLogin())) || 
+                    !isNonLocalCredentialUser) &&
+                  isFeatureEnabled(
+                      accessConfig?.security,
+                      AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA")
+                  ) && !(disableMFAforSuperTenantUser && (isSuperTenantLogin())
+                ) ? (
                         <Grid.Row>
                             <Grid.Column width={ 16 }>
                                 <MultiFactorAuthentication

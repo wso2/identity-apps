@@ -991,78 +991,69 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                 </List.Description>
                             </List.Content>
                         </Grid.Column>
-                        {   isSuperTenantLogin && enableMFAUserWise? (
-                            
+                        { (isSuperTenantLogin && enableMFAUserWise) ? (
                             <Grid.Column width={ 1 } floated="right">
-                                <List floated="right" relaxed>
-                                    <List.Content floated="right" verticalAlign="bottom">
-                                        <Popup 
-                                        
-                                            trigger={
-                                                (
-                                                    <Checkbox
-                                                        toggle
-                                                        data-tourid="conditional-auth"
-                                                        onChange={ toggleTOTP }
-                                                        checked={ totpToggle }
-                                                        className="conditional-auth-accordion-toggle"
-                                                    />
-                                                )
-                                            }
-                                            inverted
-                                            content={ t(translateKey + "enableHint") }
-                                        />
-                                    </List.Content>
-                                </List>
+                                <List.Content floated="right">
+                                    <Popup
+                                        trigger={
+                                            (
+                                                <Checkbox
+                                                    toggle
+                                                    data-tourid="conditional-auth"
+                                                    onChange={ toggleTOTP }
+                                                    checked={ totpToggle }
+                                                    className="conditional-auth-accordion-toggle"
+                                                />
+                                            )
+                                        }
+                                        inverted
+                                        content={ t(translateKey + "enableHint") }
+                                    />
+                                </List.Content>
                             </Grid.Column>
                         ): null } 
                         <Grid.Column 
-                            stretched
-                            width={ isSuperTenantLogin && enableMFAUserWise ? 2 : 3 } 
+                            width={ (isSuperTenantLogin && enableMFAUserWise) ? 2 : 3 } 
                             className="last-column" 
-                            
+                            floated="right"
                         >
-                            <List relaxed="very" >
-                                <List.Content verticalAlign="top">
-                                    <Popup
-                                        trigger={
-                                            (
-                                                <Icon
-                                                
-                                                    link={ true }
-                                                    onClick={ () => {
-                                                        handleRevokeTOTPAuthnClick();
-                                                    } }
-                                                    className="list-icon padded-icon"
-                                                    size="small"
-                                                    color="grey"
-                                                    name="trash alternate"
-                                                
-                                                />
-                                            )
-                                        }
-                                        inverted
-                                        content={ t(translateKey + "deleteHint") }
-                                    />
-                                    <Popup
-                                        trigger={
-                                            (
-                                                <Icon
-                                                    link={ true }
-                                                    onClick={ () => { initTOTPFlow(false); } }
-                                                    className="list-icon padded-icon"
-                                                    size="small"
-                                                    color="grey"
-                                                    name="eye"
-                                                    data-testid={ `${testId}-view-button` }
-                                                />
-                                            )
-                                        }
-                                        content={ t(translateKey + "hint") }
-                                        inverted
-                                    />
-                                </List.Content>
-                            </List>
+                            <List.Content floated="right">
+                                <Popup
+                                    trigger={
+                                        (
+                                            <Icon
+                                                link={ true }
+                                                onClick={ () => {
+                                                    handleRevokeTOTPAuthnClick();
+                                                } }
+                                                className="list-icon padded-icon"
+                                                size="small"
+                                                color="grey"
+                                                name="trash alternate"          
+                                            />
+                                        )
+                                    }
+                                    inverted
+                                    content={ t(translateKey + "deleteHint") }
+                                />
+                                <Popup
+                                    trigger={
+                                        (
+                                            <Icon
+                                                link={ true }
+                                                onClick={ () => { initTOTPFlow(false); } }
+                                                className="list-icon padded-icon"
+                                                size="small"
+                                                color="grey"
+                                                name="eye"
+                                                data-testid={ `${testId}-view-button` }
+                                            />
+                                        )
+                                    }
+                                    content={ t(translateKey + "hint") }
+                                    inverted
+                                />
+                            </List.Content>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
