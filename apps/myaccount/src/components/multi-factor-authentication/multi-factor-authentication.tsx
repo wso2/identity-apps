@@ -64,7 +64,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
      */
     useEffect(()=> {
         
-        if (enableMFAUserWise === true) {
+        if (enableMFAUserWise === true && isSuperTenantLogin()) {
             getBackupCodes()
                 .then((response) => {
                     setBackupCodes(response.backupCodes);
@@ -91,49 +91,61 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
     * Get enabled authenticators and check if backup authenticator is enabled.
     */
     useEffect(() => {
-        getEnabledAuthenticators().then((authenticators: string) => {
-            let authenticatorList: Array<string>;
+        if (enableMFAUserWise === true && isSuperTenantLogin()) {
+            getEnabledAuthenticators().then((authenticators: string) => {
+                let authenticatorList: Array<string>;
 
-            if (authenticators !== undefined) {
-                authenticatorList = authenticators.split(",");
-            } else {
-                authenticatorList = [];
-            }
+                if (authenticators !== undefined) {
+                    authenticatorList = authenticators.split(",");
+                } else {
+                    authenticatorList = [];
+                }
 
-            if (authenticatorList.length <= 1 && authenticatorList.includes(backupAuthenticatorName)) {
-                authenticatorList.splice(authenticatorList.indexOf(backupAuthenticatorName), 1);
-                const enabledAuthenticators = authenticatorList.join(",");
+                if (authenticatorList.length <= 1 && authenticatorList.includes(backupAuthenticatorName)) {
+                    authenticatorList.splice(authenticatorList.indexOf(backupAuthenticatorName), 1);
+                    const enabledAuthenticators = authenticatorList.join(",");
 
-                updateEnabledAuthenticators(enabledAuthenticators)
-                    .then(() => {
-                        setIsBackupCodeDisabled(true);
-                    })
-                    .catch((errorMessage)=> {
-                        onAlertFired({
-                            description: t(translateKey + "notifications.updateAuthenticatorError.error.description", {
-                                error: errorMessage
-                            }),
-                            level: AlertLevels.ERROR,
-                            message: t(translateKey + "notifications.updateAuthenticatorError.error.message")
+                    updateEnabledAuthenticators(enabledAuthenticators)
+                        .then(() => {
+                            setIsBackupCodeDisabled(true);
+                        })
+                        .catch((errorMessage)=> {
+                            onAlertFired({
+                                description: t(translateKey + 
+                                    "notifications.updateAuthenticatorError.error.description", {
+                                    error: errorMessage
+                                }),
+                                level: AlertLevels.ERROR,
+                                message: t(translateKey + "notifications.updateAuthenticatorError.error.message")
+                            });
                         });
-                    });
-            } else if (authenticatorList.length > 1){
-                setIsBackupCodeDisabled(false);
-            } else {
-                setIsBackupCodeDisabled(true);
-            }
+                } else if (authenticatorList.length > 1){
+                    setIsBackupCodeDisabled(false);
+                } else {
+                    setIsBackupCodeDisabled(true);
+                }
 
-        }).catch((errorMessage) => {
-            onAlertFired({
-                description: t(translateKey + "notifications.retrieveAuthenticatorError.error.description", {
-                    error: errorMessage
-                }),
-                level: AlertLevels.ERROR,
-                message: t(translateKey + "notifications.retrieveAuthenticatorError.error.message")
+            }).catch((errorMessage) => {
+                onAlertFired({
+                    description: t(translateKey + "notifications.retrieveAuthenticatorError.error.description", {
+                        error: errorMessage
+                    }),
+                    level: AlertLevels.ERROR,
+                    message: t(translateKey + "notifications.retrieveAuthenticatorError.error.message")
+                });
             });
-        });
+        }
    
     }, [ isBackupCodeDisabled ]);
+
+    /**
+     * Check if the login tenant is super tenant or not?
+     * 
+     * @returns True if login tenant is super tenant.
+     */
+    const isSuperTenantLogin = (): boolean => {
+        return AppConstants.getTenant() === AppConstants.getSuperTenant();
+    };
 
     const backupWizard = (): JSX.Element => {
         
@@ -153,8 +165,12 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
             data-testid={ `${testId}-settings-section` }
             description={ t("myAccount:sections.mfa.description") }
             header={ t("myAccount:sections.mfa.heading") }
-            onPrimaryActionClick={ !isBackupCodeDisabled ? () => {setOpenBackupWizard(true);} : null }
-            primaryAction={ !isBackupCodeDisabled ? t(translateKey + "heading") : "" }
+            onPrimaryActionClick={ 
+                (isSuperTenantLogin() && !isBackupCodeDisabled) ? 
+                    () => { setOpenBackupWizard(true); } : 
+                    null 
+            }
+            primaryAction={ (isSuperTenantLogin() && !isBackupCodeDisabled) ? t(translateKey + "heading") : "" }
         >
             { backupWizard() }
             <List
@@ -199,7 +215,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                                     (isEnabled: boolean) => (setIsBackupCodeDisabled(!isEnabled)) 
                                 }
                                 isBackupCodeForced={ forceBackupCode && enableMFAUserWise }
-                                isSuperTenantLogin={ AppConstants.getTenant() === AppConstants.getSuperTenant() }
+                                isSuperTenantLogin={ isSuperTenantLogin() }
                                 backupCodes = { backupCodes }
                                 updateBackupCodes = { (backupCodeList) => {setBackupCodes(backupCodeList);} }
                             />
