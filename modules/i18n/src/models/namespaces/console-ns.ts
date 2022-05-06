@@ -1915,6 +1915,10 @@ export interface ConsoleNS {
                     getAllLocalClaims: Notification;
                     getRolesList: Notification;
                     submitAttributeSettings: Notification;
+                    tierLimitReachedError: {
+                        emptyPlaceholder: Placeholder;
+                        heading: string;
+                    };
                     deleteDefaultAuthenticator: Notification;
                     deleteDefaultConnector: Notification;
                     updateClaimsConfigs: Notification;

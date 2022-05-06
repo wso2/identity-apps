@@ -3575,6 +3575,16 @@ export const console: ConsoleNS = {
                             message: ""
                         }
                     },
+                    tierLimitReachedError: {
+                        emptyPlaceholder: {
+                            action: "Voir les forfaits",
+                            subtitles: "Vous pouvez contacter l'administrateur de l'organisation ou (si vous êtes l'" +
+                                "administrateur) mettre à niveau votre abonnement pour augmenter la limite autorisée.",
+                            title: "Vous avez atteint le nombre maximum de fournisseurs IdPs " +
+                                "autorisés pour cette organisation."
+                        },
+                        heading: "Vous avez atteint la limite maximale d'IdP"
+                    },
                     updateClaimsConfigs: {
                         error: {
                             description: "{{ description }}",

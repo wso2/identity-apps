@@ -4855,6 +4855,16 @@ export const console: ConsoleNS = {
                             message: ""
                         }
                     },
+                    tierLimitReachedError: {
+                        emptyPlaceholder: {
+                            action: "View Plans",
+                            subtitles: "You can contact the organization administrator or (if you are the " +
+                                "administrator) upgrade your subscription to increase the allowed limit.",
+                            title: "You have reached the maximum number of IdPs allowed " + 
+                                "for this organization."
+                        },
+                        heading: "You’ve reached the maximum limit for IdPs"
+                    },
                     updateClaimsConfigs: {
                         error: {
                             description: "{{ description }}",
