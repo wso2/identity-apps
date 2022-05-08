@@ -37,6 +37,7 @@ import {
     ApplicationTemplateListItemInterface
 } from "../../models";
 import { GeneralDetailsForm } from "../forms";
+import { applicationConfig } from "../../../../extensions";
 
 /**
  * Proptypes for the applications general details component.
@@ -234,6 +235,10 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         }
 
         if (UIConfig.systemAppsIdentifiers.includes(name)) {
+            return null;
+        }
+
+        if (!applicationConfig.editApplication.showDangerZone(name)) {
             return null;
         }
 

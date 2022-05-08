@@ -64,7 +64,16 @@ export const applicationConfig: ApplicationConfig = {
         renderHelpPanelItems: (): ReactNode => {
             return null;
         },
-        showProvisioningSettings: true
+        showProvisioningSettings: true,
+        showDangerZone: (applicationName: string): boolean => {
+            return true;
+        },
+        showDeleteButton: (applicationName: string): boolean => {
+            return true;
+        },
+        getTabPanelReadOnlyStatus: (tabPanelName: string, applicationName: string): boolean => {
+            return false;
+        }
     },
     excludeIdentityClaims: false,
     excludeSubjectClaim: false,

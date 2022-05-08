@@ -591,7 +591,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onUpdate={ handleApplicationUpdate }
                 featureConfig={ featureConfig }
                 template={ template }
-                readOnly={ readOnly }
+                readOnly={ readOnly || applicationConfig.editApplication.getTabPanelReadOnlyStatus(
+                                "APPLICATION_EDIT_GENERAL_SETTINGS", application.name) }
                 data-testid={ `${ testId }-general-settings` }
                 isManagementApp={ application.isManagementApp }
             />
@@ -620,7 +621,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 inboundProtocols={ inboundProtocolList }
                 featureConfig={ featureConfig }
                 template={ template }
-                readOnly={ readOnly }
+                readOnly={ readOnly || applicationConfig.editApplication.getTabPanelReadOnlyStatus(
+                                "APPLICATION_EDIT_ACCESS_CONFIG", application.name) }
                 data-testid={ `${ testId }-access-settings` }
             />
         </ResourceTab.Pane>
