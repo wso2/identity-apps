@@ -227,7 +227,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                     idpEntityIdAlias: values.get("idpEntityIdAlias"),
                     issuer: values.get("issuer") || initialValues?.issuer,
                     requestValidation: {
-                        enableSignatureValidation: values.get("requestSignatureValidation")
+                        enableSignatureValidation: isCertAvailableForEncrypt && values.get("requestSignatureValidation")
                             .includes("enableSignatureValidation"),
                         signatureValidationCertAlias: values.get("signatureValidationCertAlias")
                     },
@@ -770,8 +770,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         }
                                     }
                                     value={
-                                        (isCertAvailableForEncrypt && 
-                                        initialValues?.requestValidation.enableSignatureValidation)
+                                        (initialValues?.requestValidation.enableSignatureValidation)
                                             ? [ "enableSignatureValidation" ] 
                                             : []
                                     }
@@ -1236,8 +1235,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             ".encryption.fields.assertionEncryption.validations.empty")
                                     }
                                     value={
-                                        (isCertAvailableForEncrypt && 
-                                            initialValues?.singleSignOnProfile.assertion.encryption.enabled)
+                                        (initialValues?.singleSignOnProfile.assertion.encryption.enabled)
                                             ? [ "enableAssertionEncryption" ] 
                                             : []
                                     }
