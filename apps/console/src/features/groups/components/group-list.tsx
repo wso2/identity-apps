@@ -316,12 +316,12 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                         ? group?.displayName?.split("/")[0]
                         : "PRIMARY";
 
-                    return !isFeatureEnabled(featureConfig?.groups,
+                    return !isFeatureEnabled(featureConfig?.groups, 
                         GroupConstants.FEATURE_DICTIONARY.get("GROUP_UPDATE"))
-                        || hasRequiredScopes(featureConfig?.groups, featureConfig?.groups?.scopes?.read, allowedScopes)
-                        || readOnlyUserStores?.includes(userStore.toString())
-                            ? "eye"
-                            : "pencil alternate";
+                    || !hasRequiredScopes(featureConfig?.groups, featureConfig?.groups?.scopes?.update, allowedScopes)
+                    || readOnlyUserStores?.includes(userStore.toString())
+                        ? "eye"
+                        : "pencil alternate";
                 },
                 onClick: (e: SyntheticEvent, group: GroupsInterface): void =>
                     handleGroupEdit(group.id),
@@ -332,10 +332,10 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
 
                     return !isFeatureEnabled(featureConfig?.groups,
                         GroupConstants.FEATURE_DICTIONARY.get("GROUP_UPDATE"))
-                        || hasRequiredScopes(featureConfig?.groups, featureConfig?.groups?.scopes?.read, allowedScopes)
-                        || readOnlyUserStores?.includes(userStore.toString())
-                            ? t("common:view")
-                            : t("common:edit");
+                    || !hasRequiredScopes(featureConfig?.groups, featureConfig?.groups?.scopes?.update, allowedScopes)
+                    || readOnlyUserStores?.includes(userStore.toString())
+                        ? t("common:view")
+                        : t("common:edit");
                 },
                 renderer: "semantic-icon"
             }
@@ -389,34 +389,34 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
             />
             {
                 showGroupDeleteConfirmation &&
-                <ConfirmationModal
-                    data-testid={ `${ testId }-delete-item-confirmation-modal` }
-                    onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                    type="warning"
-                    open={ showGroupDeleteConfirmation }
-                    assertionHint={ t("console:manage.features.roles.list.confirmations.deleteItem.assertionHint") }
-                    assertionType="checkbox"
-                    primaryAction="Confirm"
-                    secondaryAction="Cancel"
-                    onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
-                    onPrimaryActionClick={ (): void => {
-                        handleGroupDelete(currentDeletedGroup);
-                        setShowDeleteConfirmationModal(false);
-                    } }
-                    closeOnDimmerClick={ false }
-                >
-                    <ConfirmationModal.Header>
-                        { t("console:manage.features.roles.list.confirmations.deleteItem.header") }
-                    </ConfirmationModal.Header>
-                    <ConfirmationModal.Message attached warning>
-                        { t("console:manage.features.roles.list.confirmations.deleteItem.message",
-                            { type: "group" }) }
-                    </ConfirmationModal.Message>
-                    <ConfirmationModal.Content>
-                        { t("console:manage.features.roles.list.confirmations.deleteItem.content",
-                            { type: "group" }) }
-                    </ConfirmationModal.Content>
-                </ConfirmationModal>
+                    <ConfirmationModal
+                        data-testid={ `${ testId }-delete-item-confirmation-modal` }
+                        onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                        type="warning"
+                        open={ showGroupDeleteConfirmation }
+                        assertionHint={ t("console:manage.features.roles.list.confirmations.deleteItem.assertionHint") }
+                        assertionType="checkbox"
+                        primaryAction="Confirm"
+                        secondaryAction="Cancel"
+                        onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
+                        onPrimaryActionClick={ (): void => {
+                            handleGroupDelete(currentDeletedGroup);
+                            setShowDeleteConfirmationModal(false);
+                        } }
+                        closeOnDimmerClick={ false }
+                    >
+                        <ConfirmationModal.Header>
+                            { t("console:manage.features.roles.list.confirmations.deleteItem.header") }
+                        </ConfirmationModal.Header>
+                        <ConfirmationModal.Message attached warning>
+                            { t("console:manage.features.roles.list.confirmations.deleteItem.message",
+                                { type: "group" }) }
+                        </ConfirmationModal.Message>
+                        <ConfirmationModal.Content>
+                            { t("console:manage.features.roles.list.confirmations.deleteItem.content",
+                                { type: "group" }) }
+                        </ConfirmationModal.Content>
+                    </ConfirmationModal>
             }
         </>
     );
