@@ -161,6 +161,9 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
         handleCertificateTypeChange(selectedCertType);
         if (CertificateTypeInterface.PEM === selectedCertType) {
             setJWKSValue("");
+            if(PEMValue){
+                updateCertFinalValue(PEMValue);
+            }
         } else if (CertificateTypeInterface.JWKS === selectedCertType) {
             setPEMValue("");
         } else {
@@ -323,7 +326,9 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                         }
                                         onUpdate={ onUpdate }
                                         application={ application }
-                                        updatePEMValue={ setPEMValue }
+                                        updatePEMValue={ (val) => { 
+                                            setPEMValue(val);
+                                        } }
                                         applicationCertificate={ PEMValue }
                                     />
                                 )

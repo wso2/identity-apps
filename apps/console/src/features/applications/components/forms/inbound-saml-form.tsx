@@ -538,7 +538,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     <Trans
                                         i18nKey={
                                             "console:develop.features.applications.forms.inboundSAML.fields." +
-                                               "issuer.hint"
+                                            "issuer.hint"
                                         }
                                     >
                                         This specifies the unique identifier of the application. This is also the
@@ -726,7 +726,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         } }
                                         i18nKey={
                                             "console:develop.features.applications.forms.inboundSAML.fields" +
-                                               ".idpEntityIdAlias.hint"
+                                            ".idpEntityIdAlias.hint"
                                         }
                                     >
                                         This value can override the default Identity Provider (IdP) entity ID
@@ -770,8 +770,10 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         }
                                     }
                                     value={
-                                        initialValues?.requestValidation.enableSignatureValidation ?
-                                            [ "enableSignatureValidation" ] : []
+                                        (isCertAvailableForEncrypt && 
+                                        initialValues?.requestValidation.enableSignatureValidation)
+                                            ? [ "enableSignatureValidation" ] 
+                                            : []
                                     }
                                     children={ [
                                         {
@@ -1234,8 +1236,10 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             ".encryption.fields.assertionEncryption.validations.empty")
                                     }
                                     value={
-                                        initialValues?.singleSignOnProfile.assertion.encryption.enabled ?
-                                            [ "enableAssertionEncryption" ] : []
+                                        (isCertAvailableForEncrypt && 
+                                            initialValues?.singleSignOnProfile.assertion.encryption.enabled)
+                                            ? [ "enableAssertionEncryption" ] 
+                                            : []
                                     }
                                     type="checkbox"
                                     listen={

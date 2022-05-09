@@ -280,10 +280,10 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
      * @param values - Form values.
      * @param {SupportedAuthProtocolTypes} protocol - The protocol to be updated.
      */
-    const handleInboundConfigFormSubmit = (values: any, protocol: string): void => {
+    const handleInboundConfigFormSubmit = async (values: any, protocol: string): Promise<void> => {
         let updateError: boolean = false;
 
-        updateAuthProtocolConfig<OIDCDataInterface | SAML2ConfigurationInterface>(appId, values, protocol)
+        return updateAuthProtocolConfig<OIDCDataInterface | SAML2ConfigurationInterface>(appId, values, protocol)
             .then(() => {
                 dispatch(addAlert({
                     description: t("console:develop.features.applications.notifications.updateInboundProtocolConfig" +
@@ -338,8 +338,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const handleSubmit = (values: any): void => {
         setIsLoading(true);
         updateApplicationDetails({ id: appId, ...values.general })
-            .then(() => {
-                handleInboundConfigFormSubmit(values.inbound, selectedProtocol);
+            .then(async () => {
+                await handleInboundConfigFormSubmit(values.inbound, selectedProtocol);
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
