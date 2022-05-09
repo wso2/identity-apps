@@ -468,7 +468,6 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
             (
                 <Forms
                     onSubmit={ (values) => {
-                        console.log(values)
                         setTriggerCertSubmit();
                         if (selectedCertType !== CertificateTypeInterface.NONE && isEmpty(finalCertValue)) {
                             return;
