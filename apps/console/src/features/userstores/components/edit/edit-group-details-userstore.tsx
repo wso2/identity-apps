@@ -295,8 +295,8 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                                                                         name: property.description.split("#")[ 0 ]
                                                                     })
                                                                 }
-                                                                data-testid={ `${ testId }` + "-form-toggle-master-" + 
-                                                                    `${ property.name }` }
+                                                                data-testid={ `${ testId }-form-toggle-master-${ 
+                                                                    property.name }` }
                                                             />
                                                         )
                                                         : (
@@ -323,8 +323,8 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                                                                         name: property.description.split("#")[ 0 ]
                                                                     })
                                                                 }
-                                                                data-testid={ `${ testId }` + "-form-toggle-" +
-                                                                    `${ property.name }` }
+                                                                data-testid={ `${ testId }-form-toggle-${ 
+                                                                    property.name }` }
                                                             />
                                                         )
                                                 )
@@ -427,8 +427,8 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                                                                 name: property.description.split("#")[ 0 ]
                                                             })
                                                         }
-                                                        data-testid={ `${ testId }` + "-form-non-sql-password-input-" +
-                                                            `${ property.name }` }
+                                                        data-testid={ `${ testId }-form-non-sql-password-input-${ 
+                                                            property.name }` }
                                                     />
                                                 )
                                                 : toggle
@@ -456,8 +456,8 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                                                                     name: property.description.split("#")[ 0 ]
                                                                 })
                                                             }
-                                                            data-testid={ `${ testId }` + "-form-non-sql-toggle-" + 
-                                                                `${ property.name }` }
+                                                            data-testid={ `${ testId }-form-non-sql-toggle-${ 
+                                                                property.name }` }
                                                         />
                                                     ) :
                                                     (
@@ -483,8 +483,8 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                                                                     name: property.description.split("#")[ 0 ]
                                                                 })
                                                             }
-                                                            data-testid={ `${ testId }` + "-form-non-sql-text-input-" +
-                                                                `${ property.name }` }
+                                                            data-testid={ `${ testId }-form-non-sql-text-input-${ 
+                                                                property.name }` }
                                                         />
                                                     )
                                         );
