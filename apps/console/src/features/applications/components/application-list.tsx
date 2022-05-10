@@ -38,10 +38,10 @@ import {
     TableColumnInterface,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
+import { Header, Icon, Label, Popup, SemanticICONS } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
@@ -317,7 +317,20 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                             </Label>
                                         )
                                     }
-                                    { app.description }
+                                    {
+                                        app.description?.length > 80
+                                            ? (
+                                                <Popup
+                                                    content={ app.description }
+                                                    trigger={ (
+                                                        <span>{
+                                                            app.description
+                                                        }</span>
+                                                    ) }
+                                                />
+                                            )
+                                            : app.description
+                                    }
                                 </Header.Subheader>
                             </Header.Content>
                         </Header>

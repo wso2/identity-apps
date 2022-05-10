@@ -28,11 +28,11 @@ import {
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { Label } from "semantic-ui-react";
+import { Label, Popup } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
@@ -86,6 +86,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     const dispatch = useDispatch();
 
+    const appDescElement = useRef<HTMLDivElement>(null);
+
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const helpPanelDocStructure: PortalDocumentationStructureInterface = useSelector(
         (state: AppState) => state.helpPanel.docStructure);
@@ -98,6 +100,17 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ isApplicationRequestLoading, setApplicationRequestLoading ] = useState<boolean>(false);
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>(undefined);
     const [ inboundProtocolConfigs, setInboundProtocolConfigs ] = useState<Record<string, any>>(undefined);
+    const [ isDescTruncated, setIsDescTruncated ] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (appDescElement) {
+            const ne = appDescElement.current;
+
+            if (ne && (ne.offsetWidth < ne.scrollWidth)) {
+                setIsDescTruncated(true);
+            }
+        }
+    }, [ appDescElement, isApplicationRequestLoading ]);
 
     /**
      * Get whether to show the help panel
@@ -359,9 +372,17 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             ) }
             contentTopMargin={ true }
             description={ (
-                <div className="with-label ellipsis">
-                    { applicationTemplate?.name && <Label size="small">{ applicationTemplate.name }</Label> }
-                    { application.description }
+                <div className="with-label ellipsis" ref={ appDescElement }>
+                    { applicationTemplate?.name && (
+                        <Label size="small">{ applicationTemplate.name }</Label>
+                    ) }
+                    <Popup
+                        disabled={ !isDescTruncated }
+                        content={ application?.description }
+                        trigger={ (
+                            <span>{ application?.description }</span>
+                        ) }
+                    />
                 </div>
             ) }
             image={
