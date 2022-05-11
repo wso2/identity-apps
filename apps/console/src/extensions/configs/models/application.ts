@@ -53,6 +53,9 @@ export interface ApplicationConfig {
         extendTabs: boolean; //should be true for cloud
         showProvisioningSettings: boolean;
         renderHelpPanelItems: () => ReactNode;
+        showDangerZone: (applicationName: string) => boolean;
+        showDeleteButton: (applicationName: string) => boolean;
+        getTabPanelReadOnlyStatus: (tabPanelName: string, applicationName: string) => boolean;
     };
     inboundOIDCForm: {
         shouldValidateCertificate: boolean;

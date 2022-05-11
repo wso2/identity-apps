@@ -61,6 +61,7 @@ import {
     ApplicationTemplateListItemInterface
 } from "../models";
 import { ApplicationTemplateManagementUtils } from "../utils";
+import { applicationConfig } from "../../../extensions";
 
 /**
  *
@@ -380,7 +381,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
 
                     return hasScopes ||
                             isSystemApp ||
-                            (app?.access === ApplicationAccessTypes.READ);
+                            (app?.access === ApplicationAccessTypes.READ) ||
+                            !applicationConfig.editApplication.showDeleteButton(app.name);
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void => {
