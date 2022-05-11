@@ -118,6 +118,13 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     ), [ featureConfig, allowedScopes ]);
 
     useEffect(() => {
+        /**
+         * What's the goal of this effect?
+         * To figure out the application's description is truncated or not.
+         *
+         * A comprehensive explanation is added in {@link ApplicationEditPage}
+         * in a similar {@link useEffect}.
+         */
         if (idpDescElement || isConnectorDetailsFetchRequestLoading) {
             const nativeElement = idpDescElement.current;
 
