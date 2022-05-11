@@ -118,7 +118,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     ), [ featureConfig, allowedScopes ]);
 
     useEffect(() => {
-        if (idpDescElement) {
+        if (idpDescElement || isConnectorDetailsFetchRequestLoading) {
             const nativeElement = idpDescElement.current;
 
             if (nativeElement && (nativeElement.offsetWidth < nativeElement.scrollWidth)) {

@@ -19,12 +19,7 @@
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, StorageIdentityAppsSettingsInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import {
-    AnimatedAvatar,
-    AppAvatar,
-    LabelWithPopup,
-    PageLayout
-} from "@wso2is/react-components";
+import { AnimatedAvatar, AppAvatar, LabelWithPopup, PageLayout } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
@@ -103,7 +98,45 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ isDescTruncated, setIsDescTruncated ] = useState<boolean>(false);
 
     useEffect(() => {
-        if (appDescElement) {
+        /**
+         * What's the goal of this effect?
+         * To figure out the application's description is truncated or not.
+         *
+         * Even though {@link useRef} calls twice, the PageLayout component doesn't render
+         * the passed children immediately (it will use a placeholder when it's loading),
+         * when that happens the relative element always returns 0 as the offset height
+         * and width. So, I'm relying on this boolean variable {@link isApplicationRequestLoading}
+         * to re-render it for the third time, so it returns correct values for figuring out
+         * whether the element's content is truncated or not.
+         *
+         * Please refer implementation details of {@link PageHeader}, if you check its
+         * heading content, you can see that it conditionally renders first. So, for us
+         * to correctly figure out the offset width and scroll width of the target
+         * element we need it to be persistently mounted inside the {@link Header}
+         * element.
+         *
+         * What exactly happens inside this effect?
+         *
+         * 1st Call -
+         *  React calls this with a {@code null} value for {@link appDescElement}
+         *  (This is expected in useRef())
+         *
+         * 2nd Call -
+         *  React updates the {@link appDescElement} with the target element.
+         *  But {@link PageHeader} will immediately unmount it (because there's a request is ongoing).
+         *  When that happens, for "some reason" we always get { offsetWidth, scrollWidth
+         *  and all the related attributes } as zero or null.
+         *
+         * 3rd Call -
+         *  So, whenever there's some changes to {@link isApplicationRequestLoading}
+         *  we want React to re-update to reference so that we can accurately read the
+         *  element's measurements (once after a successful load the {@link PageHeader}
+         *  will try to render the component we actually pass down the tree)
+         *
+         *  For more additional context please refer comment:
+         *  {@see https://github.com/wso2/identity-apps/pull/3028#issuecomment-1123847668}
+         */
+        if (appDescElement || isApplicationRequestLoading) {
             const nativeElement = appDescElement.current;
 
             if (nativeElement && (nativeElement.offsetWidth < nativeElement.scrollWidth)) {
