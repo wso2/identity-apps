@@ -126,7 +126,7 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
                             { userStore.map((store: UserStoreListItem, index: number) => {
                                 return (
                                     <Grid.Row columns={ 2 } key={ index }>
-                                        <Grid.Column width={ 4 }>
+                                        <Grid.Column className="centered-text" width={ 4 }>
                                             { store.name }
                                         </Grid.Column>
                                         <Grid.Column width={ 12 }>
