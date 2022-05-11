@@ -20,6 +20,10 @@ Welcome to the WSO2 Identity Apps developer guide. If you would like to contribu
 
    > Follow this guide to learn about our testing strategies.
 
-5. [Troubleshooting](./TROUBLESHOOTING.md)
+5. [Maintenance](./MAINTENANCE.md)
+
+   > Follow this guide to learn about the maintainance tasks of the repository, such as, what to do with dependacy updatest, etc.
+
+6. [Troubleshooting](./TROUBLESHOOTING.md)
 
    > Look through here if you come across any issue.
