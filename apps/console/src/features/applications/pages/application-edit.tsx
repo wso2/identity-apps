@@ -104,9 +104,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     useEffect(() => {
         if (appDescElement) {
-            const ne = appDescElement.current;
+            const nativeElement = appDescElement.current;
 
-            if (ne && (ne.offsetWidth < ne.scrollWidth)) {
+            if (nativeElement && (nativeElement.offsetWidth < nativeElement.scrollWidth)) {
                 setIsDescTruncated(true);
             }
         }

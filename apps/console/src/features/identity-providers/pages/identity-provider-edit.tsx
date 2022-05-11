@@ -118,9 +118,9 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
 
     useEffect(() => {
         if (idpDescElement) {
-            const ne = idpDescElement.current;
+            const nativeElement = idpDescElement.current;
 
-            if (ne && (ne.offsetWidth < ne.scrollWidth)) {
+            if (nativeElement && (nativeElement.offsetWidth < nativeElement.scrollWidth)) {
                 setIsDescTruncated(true);
             }
         }
