@@ -6613,8 +6613,9 @@ export const console: ConsoleNS = {
                 lockUser: {
                     confirmationModal: {
                         assertionHint: "Veuillez confirmer votre action.",
-                        content: "Si vous verrouillez ce compte, l'utilisateur ne pourra pas se connecter à " +
-                            "Mon compte ou à l'une des applications commerciales. Veuillez procéder avec prudence.",
+                        content: "Si vous verrouillez ce compte, l'utilisateur ne pourra se" +
+                          " connecter à aucune des applications métier. Veuillez" +
+                          " procéder avec prudence.",
                         header: "Êtes-vous sûr?",
                         message: "Cette action verrouille le compte utilisateur."
                     }
