@@ -8018,7 +8018,7 @@ export const console: ConsoleNS = {
                     confirmationModal: {
                         assertionHint: "Please confirm your action.",
                         content: "If you lock this account, the user will not be able to sign in to " +
-                            "My Account or any of the business applications. Please proceed with caution.",
+                            "any of the business applications. Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action locks the user account."
                     }
