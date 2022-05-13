@@ -26,12 +26,12 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.bean.UserDTO" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="javax.ws.rs.core.Response" %>
-<%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isSelfSignUpEPAvailable" %>
-<%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isRecoveryEPAvailable" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isEmailUsernameEnabled" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL" %>
 <%@ page import="org.wso2.carbon.identity.core.URLBuilderException" %>
 <%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 
 <jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
 
@@ -142,28 +142,27 @@
         (request.getParameter("sessionDataKey"))%>'/>
 
     <%
-        String recoveryEPAvailable = application.getInitParameter("EnableRecoveryEndpoint");
-        String enableSelfSignUpEndpoint = application.getInitParameter("EnableSelfSignUpEndpoint");
-        Boolean isRecoveryEPAvailable = false;
-        Boolean isSelfSignUpEPAvailable = false;
+        Boolean isUsernameRecoveryEnabledInTenant = false;
+        Boolean isSelfSignUpEnabledInTenant = false;
+
         String identityMgtEndpointContext = "";
         String accountRegistrationEndpointURL = "";
         String urlEncodedURL = "";
         String urlParameters = "";
 
-        if (StringUtils.isNotBlank(recoveryEPAvailable)) {
-            isRecoveryEPAvailable = Boolean.valueOf(recoveryEPAvailable);
-        } else {
-            isRecoveryEPAvailable = isRecoveryEPAvailable();
+        try {
+            PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+            isSelfSignUpEnabledInTenant = preferenceRetrievalClient.checkSelfRegistration(tenantDomain);
+            isUsernameRecoveryEnabledInTenant = preferenceRetrievalClient.checkUsernameRecovery(tenantDomain);
+        } catch (PreferenceRetrievalClientException e) {
+            request.setAttribute("error", true);
+            request.setAttribute("errorMsg", AuthenticationEndpointUtil.i18n(resourceBundle, "something.went.wrong.contact.admin"));
+            IdentityManagementEndpointUtil.addErrorInformation(request, e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
 
-        if (StringUtils.isNotBlank(enableSelfSignUpEndpoint)) {
-            isSelfSignUpEPAvailable = Boolean.valueOf(enableSelfSignUpEndpoint);
-        } else {
-            isSelfSignUpEPAvailable = isSelfSignUpEPAvailable();
-        }
-
-        if (isRecoveryEPAvailable || isSelfSignUpEPAvailable) {
+        if (isUsernameRecoveryEnabledInTenant || isSelfSignUpEnabledInTenant) {
             String scheme = request.getScheme();
             String serverName = request.getServerName();
             int serverPort = request.getServerPort();
@@ -195,7 +194,7 @@
         }
     %>
 
-    <% if (isSelfSignUpEPAvailable) { %>
+    <% if (isUsernameRecoveryEnabledInTenant) { %>
         <div class="field">
             <a id="usernameRecoverLink" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true, urlParameters)%>">
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%>
@@ -206,7 +205,7 @@
 
     <div class="ui two column stackable grid">
         <div class="column align-left buttons">
-            <% if (isRecoveryEPAvailable) { %>
+            <% if (isSelfSignUpEnabledInTenant) { %>
             <input
                 type="button"
                 onclick="window.location.href='<%=getRegistrationUrl(accountRegistrationEndpointURL, urlEncodedURL, urlParameters)%>';"
