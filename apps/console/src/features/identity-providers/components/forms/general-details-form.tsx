@@ -24,6 +24,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
 import { identityProviderConfig } from "../../../../extensions";
+import { IdentityProviderManagementConstants } from "../../constants";
 import { IdentityProviderInterface, IdentityProviderListResponseInterface } from "../../models";
 import { IdpCertificates } from "../settings";
 
@@ -100,7 +101,6 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
 
 const IDP_NAME_MAX_LENGTH: number = 50;
 const IDP_DESCRIPTION_MAX_LENGTH: number = 300;
-const IDP_IMAGE_URL_MAX_LENGTH: number = 200;
 
 /**
  * Form to edit general details of the identity provider.
@@ -255,8 +255,14 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                 "placeholder") }
                             value={ imageUrl }
                             data-testid={ `${ testId }-idp-image` }
-                            maxLength={ IDP_IMAGE_URL_MAX_LENGTH }
-                            minLength={ 3 }
+                            maxLength={ 
+                                IdentityProviderManagementConstants
+                                    .GENERAL_FORM_CONSTRAINTS.IMAGE_URL_MAX_LENGTH as number
+                            }
+                            minLength={ 
+                                IdentityProviderManagementConstants
+                                    .GENERAL_FORM_CONSTRAINTS.IMAGE_URL_MIN_LENGTH as number
+                            }
                             hint={ t("console:develop.features.authenticationProvider.forms." +
                                 "generalDetails.image.hint") }
                             readOnly={ isReadOnly }
