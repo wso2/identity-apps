@@ -27,9 +27,9 @@ import { AppConstants, AppState, FeatureConfigInterface, UIConfigInterface, hist
 import { deleteApplication } from "../api";
    
 /**
-    * Prop types of the `LoginPlaygroundWizard` component.
-    */ 
-    interface DangerZonePropsInterface extends SBACInterface<FeatureConfigInterface>, IdentifiableComponentInterface {
+ * Prop types of the `LoginPlaygroundWizard` component.
+ */ 
+interface DangerZonePropsInterface extends SBACInterface<FeatureConfigInterface>, IdentifiableComponentInterface {
      /**
       * Currently editing application id.
       */
@@ -45,10 +45,10 @@ import { deleteApplication } from "../api";
     }
     
 /**
-  * Danger Zone component
-  *
-  * @return {JSX.Element}
-  */
+ * Danger Zone component
+ *
+ * @return {JSX.Element}
+ */
 export const DangerZoneComponent: FunctionComponent<DangerZonePropsInterface> = (
     props: DangerZonePropsInterface
 ): ReactElement => {
@@ -65,8 +65,7 @@ export const DangerZoneComponent: FunctionComponent<DangerZonePropsInterface> = 
  
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ isDeletionInProgress, setIsDeletionInProgress ] = useState<boolean>(false);
- 
- 
+
     const { t } = useTranslation();
     const dispatch = useDispatch();
  
