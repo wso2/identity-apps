@@ -25,26 +25,30 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { AppConstants, AppState, FeatureConfigInterface, UIConfigInterface, history } from "../../core";
 import { deleteApplication } from "../api";
-  
-/**
- * Prop types of the `LoginPlaygroundWizard` component.
- */ 
-interface DangerZonePropsInterface extends SBACInterface<FeatureConfigInterface>, IdentifiableComponentInterface {
-    /**
-     * Currently editing application id.
-     */
-    appId?: string;
-    /**
-     * Name of the application.
-     */
-    name: string;
-   }
    
 /**
- * Danger Zone component
- *
- * @return {JSX.Element}
- */
+    * Prop types of the `LoginPlaygroundWizard` component.
+    */ 
+    interface DangerZonePropsInterface extends SBACInterface<FeatureConfigInterface>, IdentifiableComponentInterface {
+     /**
+      * Currently editing application id.
+      */
+     appId?: string;
+     /**
+      * Name of the application.
+      */
+     name: string;
+     /**
+      * Customized content.
+      */
+     content: string;
+    }
+    
+/**
+  * Danger Zone component
+  *
+  * @return {JSX.Element}
+  */
 export const DangerZoneComponent: FunctionComponent<DangerZonePropsInterface> = (
     props: DangerZonePropsInterface
 ): ReactElement => {
@@ -52,21 +56,23 @@ export const DangerZoneComponent: FunctionComponent<DangerZonePropsInterface> = 
         featureConfig,
         appId,
         name,
+        content,
         [ "data-componentid" ]: testId
     } = props;
-    
+     
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
-
+ 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ isDeletionInProgress, setIsDeletionInProgress ] = useState<boolean>(false);
-
+ 
+ 
     const { t } = useTranslation();
     const dispatch = useDispatch();
-
+ 
     /**
-     * Deletes an application.
-     */
+      * Deletes an application.
+      */
     const handleApplicationDelete = (): void => {
         setIsDeletionInProgress(true);
         deleteApplication(appId)
@@ -74,11 +80,11 @@ export const DangerZoneComponent: FunctionComponent<DangerZonePropsInterface> = 
                 setIsDeletionInProgress(false);
                 dispatch(addAlert({
                     description: t("console:develop.features.applications.notifications.deleteApplication.success" +
-                        ".description"),
+                         ".description"),
                     level: AlertLevels.SUCCESS,
                     message: t("console:develop.features.applications.notifications.deleteApplication.success.message")
                 }));
-
+ 
                 setShowDeleteConfirmationModal(false);
                 onDelete();
             })
@@ -89,44 +95,44 @@ export const DangerZoneComponent: FunctionComponent<DangerZonePropsInterface> = 
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
                         message: t("console:develop.features.applications.notifications.deleteApplication.error" +
-                            ".message")
+                             ".message")
                     }));
-
+ 
                     return;
                 }
-
+ 
                 dispatch(addAlert({
                     description: t("console:develop.features.applications.notifications.deleteApplication" +
-                        ".genericError.description"),
+                         ".genericError.description"),
                     level: AlertLevels.ERROR,
                     message: t("console:develop.features.applications.notifications.deleteApplication.genericError" +
-                        ".message")
+                         ".message")
                 }));
             });
     };
-
+ 
     /**
-     * Called when an application is deleted.
-     */
+      * Called when an application is deleted.
+      */
     const onDelete = (): void => {
         history.push(AppConstants.getPaths().get("APPLICATIONS"));
     };
-
+ 
     /**
-     * Resolves the danger actions.
-     *
-     * @return {React.ReactElement} DangerZoneGroup element.
-     */
+      * Resolves the danger actions.
+      *
+      * @return {React.ReactElement} DangerZoneGroup element.
+      */
     const resolveDangerActions = (): ReactElement => {
         if (!hasRequiredScopes(
             featureConfig?.applications, featureConfig?.applications?.scopes?.update, allowedScopes)) {
             return null;
         }
-
+ 
         if (UIConfig.systemAppsIdentifiers.includes(name)) {
             return null;
         }
-
+ 
         if (hasRequiredScopes(
             featureConfig?.applications, featureConfig?.applications?.scopes?.delete, allowedScopes)) {
             return (
@@ -134,31 +140,33 @@ export const DangerZoneComponent: FunctionComponent<DangerZonePropsInterface> = 
                     {
                         hasRequiredScopes(
                             featureConfig?.applications, featureConfig?.applications?.scopes?.delete, allowedScopes) &&
-                        (
-                            <DangerZone
-                                actionTitle={
-                                    t("console:develop.features.applications.dangerZoneGroup.deleteApplication" +
-                                        ".actionTitle")
-                                }
-                                header={
-                                    t("console:develop.features.applications.dangerZoneGroup.deleteApplication.header")
-                                }
-                                subheader={
-                                    t("console:develop.features.applications.dangerZoneGroup.deleteApplication" +
-                                        ".subheader")
-                                }
-                                onActionClick={ (): void => setShowDeleteConfirmationModal(true) }
-                                data-testid={ `${ testId }-danger-zone` }
-                            />
-                        )
+                         (
+                             <DangerZone
+                                 actionTitle={
+                                     t("console:develop.features.applications.dangerZoneGroup.deleteApplication" +
+                                         ".actionTitle")
+                                 }
+                                 header={
+                                     t("console:develop.features.applications.dangerZoneGroup.deleteApplication.header")
+                                 }
+                                 subheader={
+                                     !content ?
+                                         t("console:develop.features.applications.dangerZoneGroup.deleteApplication" +
+                                         ".subheader")
+                                         : content
+                                 }
+                                 onActionClick={ (): void => setShowDeleteConfirmationModal(true) }
+                                 data-testid={ `${ testId }-danger-zone` }
+                             />
+                         )
                     }
                 </DangerZoneGroup>
             );
         }
-
+ 
         return null;
     };
-    
+     
     return (
         <>
             { resolveDangerActions() }
@@ -167,7 +175,7 @@ export const DangerZoneComponent: FunctionComponent<DangerZonePropsInterface> = 
                 type="warning"
                 open={ showDeleteConfirmationModal }
                 assertionHint={ t("console:develop.features.applications.confirmations.deleteApplication." +
-                            "assertionHint") }
+                             "assertionHint") }
                 assertionType="checkbox"
                 primaryAction={ t("common:confirm") }
                 secondaryAction={ t("common:cancel") }
@@ -191,11 +199,10 @@ export const DangerZoneComponent: FunctionComponent<DangerZonePropsInterface> = 
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content
                     data-testid={ `${ testId }-application-delete-confirmation-modal-content` }
-                >
+                >   
                     { t("console:develop.features.applications.confirmations.deleteApplication.content") }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         </>
-       
     );
 };
