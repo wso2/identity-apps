@@ -23,14 +23,13 @@ import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-co
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { AppConstants, AppState, FeatureConfigInterface, UIConfigInterface } from "../../core";
-import { history } from "../../core";
+import { AppConstants, AppState, FeatureConfigInterface, UIConfigInterface, history } from "../../core";
 import { deleteApplication } from "../api";
   
 /**
-   * Prop types of the `LoginPlaygroundWizard` component.
-   */ 
-   interface DangerZonePropsInterface extends SBACInterface<FeatureConfigInterface>, IdentifiableComponentInterface {
+ * Prop types of the `LoginPlaygroundWizard` component.
+ */ 
+interface DangerZonePropsInterface extends SBACInterface<FeatureConfigInterface>, IdentifiableComponentInterface {
     /**
      * Currently editing application id.
      */
@@ -42,10 +41,10 @@ import { deleteApplication } from "../api";
    }
    
 /**
-    * Danger Zone component
-    *
-    * @return {JSX.Element}
-    */
+ * Danger Zone component
+ *
+ * @return {JSX.Element}
+ */
 export const DangerZoneComponent: FunctionComponent<DangerZonePropsInterface> = (
     props: DangerZonePropsInterface
 ): ReactElement => {
@@ -62,10 +61,8 @@ export const DangerZoneComponent: FunctionComponent<DangerZonePropsInterface> = 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ isDeletionInProgress, setIsDeletionInProgress ] = useState<boolean>(false);
 
-
     const { t } = useTranslation();
     const dispatch = useDispatch();
-
 
     /**
      * Deletes an application.
@@ -202,4 +199,3 @@ export const DangerZoneComponent: FunctionComponent<DangerZonePropsInterface> = 
        
     );
 };
- 

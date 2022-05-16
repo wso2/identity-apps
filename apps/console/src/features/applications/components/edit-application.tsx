@@ -651,7 +651,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         </ResourceTab.Pane>
     );
 
-
     const SignOnMethodsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <SignOnMethods

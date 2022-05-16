@@ -39,9 +39,10 @@
     "isSaas": true,
     "loginCallbackPath": "",
     "logoutCallbackPath": "",
+    "productVersion": "",
     "serverOrigin": "https://localhost:9443",
     "routePaths": {
-        "home": "/develop/applications",
+        "home": "/getting-started",
         "login": "",
         "logout": "/logout"
     },
@@ -362,6 +363,30 @@
                     ],
                     "delete": [
                         "internal_user_mgt_delete"
+                    ]
+                }
+            },
+            "tryIt": {
+                "enabled": true,
+                "tryittourenabled": false,
+                "disabledfeatures": [],
+                "scopes": {
+                    "create": [
+                        "internal_application_mgt_create"
+                    ],
+                    "read": [
+                        "internal_cors_origins_view",
+                        "internal_application_mgt_view",
+                        "internal_claim_meta_view",
+                        "internal_role_mgt_view",
+                        "internal_userstore_view",
+                        "internal_idp_view"
+                    ],
+                    "update": [
+                        "internal_application_mgt_update"
+                    ],
+                    "delete": [
+                        "internal_application_mgt_delete"
                     ]
                 }
             }
