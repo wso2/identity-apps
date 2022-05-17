@@ -70,8 +70,8 @@ export const DangerZoneComponent: FunctionComponent<DangerZonePropsInterface> = 
     const dispatch = useDispatch();
  
     /**
-      * Deletes an application.
-      */
+     * Deletes an application.
+     */
     const handleApplicationDelete = (): void => {
         setIsDeletionInProgress(true);
         deleteApplication(appId)
@@ -111,17 +111,17 @@ export const DangerZoneComponent: FunctionComponent<DangerZonePropsInterface> = 
     };
  
     /**
-      * Called when an application is deleted.
-      */
+     * Called when an application is deleted.
+     */
     const onDelete = (): void => {
         history.push(AppConstants.getPaths().get("APPLICATIONS"));
     };
  
     /**
-      * Resolves the danger actions.
-      *
-      * @return {React.ReactElement} DangerZoneGroup element.
-      */
+     * Resolves the danger actions.
+     *
+     * @return {React.ReactElement} DangerZoneGroup element.
+     */
     const resolveDangerActions = (): ReactElement => {
         if (!hasRequiredScopes(
             featureConfig?.applications, featureConfig?.applications?.scopes?.update, allowedScopes)) {
