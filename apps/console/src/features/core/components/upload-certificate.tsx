@@ -18,7 +18,7 @@
 
 import { Certificate, TestableComponentInterface } from "@wso2is/core/models";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
-import { GenericIcon, Message } from "@wso2is/react-components";
+import { GenericIcon, MessageWithIcon } from "@wso2is/react-components";
 import { KJUR, X509 } from "jsrsasign";
 import * as forge from "node-forge";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
@@ -613,15 +613,14 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
 
             {
                 (fileError || certEmpty) && (
-                    <Message
-                        negative
+                    <MessageWithIcon
+                        type="error"
                         data-testid={ `${ testId }-error-message` }
-                        content =
-                            {
-                                fileError
-                                    ? t("console:manage.features.certificates.keystore.errorCertificate")
-                                    : t("console:manage.features.certificates.keystore.errorEmpty")
-                            }
+                        content={
+                            fileError
+                                ? t("console:manage.features.certificates.keystore.errorCertificate")
+                                : t("console:manage.features.certificates.keystore.errorEmpty")
+                        }
                     />
                 )
             }

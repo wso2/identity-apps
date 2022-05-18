@@ -19,12 +19,12 @@
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
-import { Code, DocumentationLink, Hint, Text, useDocumentation } from "@wso2is/react-components";
+import { Code, DocumentationLink, Hint, MessageWithIcon, useDocumentation } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Button, Grid, Icon, Message } from "semantic-ui-react";
+import { Button, Grid } from "semantic-ui-react";
 import { identityProviderConfig } from "../../../../extensions";
 import { SimpleUserStoreListItemInterface } from "../../../applications";
 import { AppState, ConfigReducerStateInterface } from "../../../core";
@@ -151,36 +151,24 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                 "hidden animating out": isJITProvisioningEnabled,
                 "visible animating in": !isJITProvisioningEnabled
             }) }>
-            <Message
+            <MessageWithIcon
                 data-componentid="proxy-mode-conflict-warning-message"
                 data-testid="proxy-mode-conflict-warning-message"
-                warning
+                type="warning"
                 // Semantic hides warning messages inside <form> by default
                 // Overriding the behaviour here to make sure it renders properly.
-                className="warning visible"
-                header={
-                    (
-                        <Fragment>
-                            <Icon name="exclamation triangle" className="mr-2"/>
-                            Warning
-                        </Fragment>
-                    )
-                }
+                header="Warning"
                 content={
                     (
-                        <div className="mt-3 mb-2">
-                            <Text>
-                                JIT user provisioning should be enabled for external identity providers
-                                (connections) when there are MFA mechanisms
-                                such as <Code>TOTP</Code> and <Code>Email OTP</Code> configured
-                                in an application&apos;s login flow.
-                            </Text>
-                            <Text className="mt-3 mb-0">
-                                <DocumentationLink link={ getLink("develop.connections.edit.advancedSettings.jit") }>
-                                    Learn More
-                                </DocumentationLink>
-                            </Text>
-                        </div>
+                        <>
+                            JIT user provisioning should be enabled for external identity providers
+                            (connections) when there are MFA mechanisms
+                            such as <Code>TOTP</Code> and <Code>Email OTP</Code> configured
+                            in an application&apos;s login flow.
+                            <DocumentationLink link={ getLink("develop.connections.edit.advancedSettings.jit") }>
+                                Learn More
+                            </DocumentationLink>
+                        </>
                     )
                 }
             />

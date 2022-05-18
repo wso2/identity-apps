@@ -18,17 +18,22 @@
 
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { LocalStorageUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
-import { ContentLoader, Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
+import {
+    ContentLoader,
+    Heading,
+    LinkButton,
+    MessageWithIcon,
+    PrimaryButton,
+    useWizardAlert
+} from "@wso2is/react-components";
 import React, { FC, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Grid, Message, Modal } from "semantic-ui-react";
+import { Grid, Modal } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface } from "../../core";
 import { createSecret, getSecretList } from "../api/secret";
-import { EMPTY_JSON_OBJECT_STRING, EMPTY_STRING, FEATURE_LOCAL_STORAGE_KEY } from "../constants/secrets.common";
-import { EditSecretLocalStorage } from "../models/common";
+import { EMPTY_STRING } from "../constants/secrets.common";
 import { SecretModel } from "../models/secret";
 import {
     SECRET_DESCRIPTION_LENGTH,
@@ -341,19 +346,14 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                     />
                     {
                         showInfoMessage && (
-                            <Message
+                            <MessageWithIcon
                                 data-componentid={ `${ testId }-page-message` }
-                                info
-                            >
-                                <Message.Content
-                                    className="mr-2"
-                                    data-componentid={ `${ testId }-page-message-content` }>
-                                    { t(
-                                        "console:develop.features.secrets.banners.secretIsHidden.content",
-                                        { productName: config.ui?.productName }
-                                    ) }
-                                </Message.Content>
-                            </Message>
+                                type="info"
+                                content={
+                                    t("console:develop.features.secrets.banners.secretIsHidden.content",
+                                    { productName: config.ui?.productName }
+                                ) }
+                            />
                         )
                     }
                     <Field.Textarea

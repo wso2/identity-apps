@@ -17,10 +17,10 @@
 */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { AnimatedAvatar } from "@wso2is/react-components";
+import { AnimatedAvatar, MessageWithIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid, Image, Message, Table } from "semantic-ui-react";
+import { Grid, Image, Table } from "semantic-ui-react";
 import { ClaimManagementConstants } from "../../../constants";
 import { AddExternalClaim } from "../../../models";
 import { resolveType } from "../../../utils";
@@ -130,9 +130,13 @@ export const SummaryAddDialect: FunctionComponent<SummaryAddDialectPropsInterfac
                                 claims.length === 0 && (
                                     <Table.Row>
                                         <Table.Cell colSpan={ 3 } textAlign="center">
-                                            <Message warning>
-                                                { t("console:manage.features.claims.dialects.wizard.summary.notFound") }
-                                            </Message>
+                                            <MessageWithIcon
+                                                type="warning"
+                                                content={
+                                                    t("console:manage.features.claims.dialects.wizard." +
+                                                        "summary.notFound")
+                                                }
+                                            />
                                         </Table.Cell>
                                     </Table.Row>
                                 )

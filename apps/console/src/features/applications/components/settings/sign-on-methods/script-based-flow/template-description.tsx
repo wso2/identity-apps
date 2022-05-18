@@ -16,14 +16,20 @@
  * under the License.
  */
 
-import { CodeEditor, DocumentationLink, LinkButton, useDocumentation } from "@wso2is/react-components";
+import {
+    CodeEditor,
+    DocumentationLink,
+    LinkButton,
+    MessageWithIcon,
+    useDocumentation
+} from "@wso2is/react-components";
 import isObject from "lodash-es/isObject";
 import React, {
     FunctionComponent,
     ReactElement
 } from "react";
 import { useTranslation } from "react-i18next";
-import { Icon, List, Message, Modal, Table } from "semantic-ui-react";
+import { List, Modal, Table } from "semantic-ui-react";
 import { AdaptiveAuthTemplateInterface, AdaptiveAuthTemplateTypes } from "../../../../models";
 
 /**
@@ -208,15 +214,14 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
                                         "templateDescription.description.helpReference")
                                 }
                             </h4>
-                            <Message icon info>
-                                <Icon name="help circle"/>
-                                <Message.Content>
-                                    <a
-                                        target="_blank"
-                                        href={ template.helpLink }
-                                        rel="noreferrer">{ template.helpLink }</a>
-                                </Message.Content>
-                            </Message>
+                            <MessageWithIcon
+                                type="info"
+                                content={
+                                    <a target="_blank" href={ template.helpLink } rel="noreferrer">
+                                        { template.helpLink }
+                                    </a>
+                                }
+                            />
                         </>
                     )
                 }

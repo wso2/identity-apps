@@ -20,11 +20,11 @@ import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import {
-    Divider,
     Header,
     Icon,
     Message,
     MessageHeaderProps,
+    MessageProps,
     SemanticShorthandContent,
     SemanticShorthandItem
 } from "semantic-ui-react";
@@ -32,7 +32,7 @@ import {
 /**
  * Proptypes for the message with icon component.
  */
-export interface MessageWithIconProps extends IdentifiableComponentInterface, TestableComponentInterface {
+export interface MessageWithIconProps extends MessageProps, IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Type of the message.
      */
@@ -72,167 +72,67 @@ export const MessageWithIcon: FunctionComponent<MessageWithIconProps> = (props: 
         content,
         visible,
         [ "data-componentid" ]: componentId,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        ...rest
     } = props;
 
     const classes = classNames(
-        "info-message-with-icon",
+        `${ type }-message-with-icon`,
         className
     );
 
-    const generateContent = () => {
-        return (
-            <>
-                <Divider
-                    hidden
-                    className={ "message-info-text" }/>
-                <div>
-                    { (content) }
-                </div>
-            </>
-        );
-    };
-
-    const resolveMessage = () => {
+    const resolveMessageIcon = () => {
         switch (type) {
             case "info":
-                return (
-                    <Message
-                        className={ classes }
-                        info
-                        visible={ visible }
-                        header={
-                            header
-                                ? (
-                                    <Header as="h4">
-                                        <Header.Content>
-                                            <Icon name="info circle"/>
-                                            { (header) }
-                                        </Header.Content>
-                                    </Header>
-                                ) : undefined
-                        }
-                        content={
-                            header
-                                ? generateContent()
-                                : (
-                                    <div>
-                                        <Icon name="info circle"/>
-                                        { content }
-                                    </div>
-                                )
-                        }
-                        data-componentid={ componentId }
-                        data-testid={ testId }
-                    />
-                );
-            case "error":
-                return (
-                    <Message
-                        error
-                        visible={ visible }
-                        header={
-                            header
-                                ? (
-                                    <Header as="h4">
-                                        <Header.Content>
-                                            <Icon name="times circle"/>
-                                            { (header) }
-                                        </Header.Content>
-                                    </Header>
-                                ) : undefined
-                        }
-                        content={
-                            header
-                                ? generateContent()
-                                : (
-                                    <div>
-                                        <Icon name="times circle"/>
-                                        { content }
-                                    </div>
-                                )
-                        }
-                        data-componentid={ componentId }
-                        data-testid={ testId }
-                    />
-                );
-            case "success":
-                return (
-                    <Message
-                        success
-                        visible={ visible }
-                        header={
-                            header
-                                ? (
-                                    <Header as="h4">
-                                        <Header.Content>
-                                            <Icon name="check circle"/>
-                                            { (header) }
-                                        </Header.Content>
-                                    </Header>
-                                ) : undefined
-                        }
-                        content={
-                            header
-                                ? generateContent()
-                                : (
-                                    <div>
-                                        <Icon name="check circle"/>
-                                        { content }
-                                    </div>
-                                )
-                        }
-                        data-componentid={ componentId }
-                        data-testid={ testId }
-                    />
-                );
+                return (<Icon className="info-icon" name="info circle"/>);
             case "warning":
-                return (
-                    <Message
-                        warning
-                        visible={ visible }
-                        header={
-                            header
-                                ? (
-                                    <Header as="h4">
-                                        <Header.Content>
-                                            <Icon name="warning circle"/>
-                                            { (header) }
-                                        </Header.Content>
-                                    </Header>
-                                ) : undefined
-                        }
-                        content={
-                            header
-                                ? generateContent()
-                                : (
-                                    <div>
-                                        <Icon name="warning circle"/>
-                                        { content }
-                                    </div>
-                                )
-                        }
-                        data-componentid={ componentId }
-                        data-testid={ testId }
-                    />
-                );
+                return (<Icon className="warn-icon"  name="warning circle"/>);
+            case "success":
+                return (<Icon className="success-icon"  name="check circle"/>);
+            case "error":
+                return (<Icon className="error-icon"  name="times circle"/>);
             default:
-                return (
-                    <Message
-                        visible={ visible }
-                        content={ generateContent() }
-                        header={ header }
-                        data-componentid={ componentId }
-                        data-testid={ testId }
-                    />
-                );
+                return (<Icon className="info-icon"  name="info circle"/>);
         }
     };
 
     return (
-        <>
-            { resolveMessage() }
-        </>
+        <Message
+            className={ classes }
+            visible={ visible }
+            header={
+                header
+                    ? (
+                        <Header as="h5" className="mb-3">
+                            <Header.Content>
+                                { resolveMessageIcon() }
+                                { (header) }
+                            </Header.Content>
+                        </Header>
+                    ) : undefined
+            }
+            content={
+                header
+                    ? (
+                        <div>
+                            { content }
+                        </div>
+                    )
+                    : (
+                        <div>
+                            { resolveMessageIcon() }
+                            { content }
+                        </div>
+                    )
+            }
+            data-componentid={ componentId }
+            data-testid={ testId }
+            info={ type === "info" }
+            warning={ type === "warning" }
+            error={ type === "error" }
+            success={ type === "success" }
+            { ...rest }
+        />
     );
 };
 

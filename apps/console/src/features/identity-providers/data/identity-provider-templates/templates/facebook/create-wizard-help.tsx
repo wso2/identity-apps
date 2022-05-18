@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Code, CopyInputField, Heading } from "@wso2is/react-components";
+import { Code, CopyInputField, Heading, MessageWithIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -90,7 +90,7 @@ const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
                         </Trans>
                     </p>
                     <p>
-            
+
                         <Trans
                             i18nKey={
                                 "console:develop.features.authenticationProvider.templates.facebook.wizardHelp" +
@@ -99,38 +99,75 @@ const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
                         >
                             Use the following as the <strong>Site URL</strong>.
                         </Trans>
+    return (
+        <div data-testid={ testId }>
+            <MessageWithIcon
+                type="info"
+                header={
+                    t("console:develop.features.authenticationProvider.templates.facebook." +
+                    "wizardHelp.preRequisites.heading")
+                }
+                content={
+                    (<>
+                        <p>
+                            <Trans
+                                i18nKey={
+                                    "console:develop.features.authenticationProvider.templates.facebook.wizardHelp." +
+                                "preRequisites.getCredentials"
+                                }
+                            >
+                            Before you begin, create an <strong>application</strong> <a
+                                    href="https://developers.facebook.com/"
+                                    target="_blank"
+                                    rel="noopener noreferrer">
+                            on Facebook Developer Console
+                                </a>, and obtain a <strong>App ID & secret</strong>.
+                            </Trans>
+                        </p>
+                        <p>
 
-                        <CopyInputField
-                            className="copy-input-dark spaced"
-                            value={ config?.deployment?.customServerHost }
-                        />
-                    </p>
-                    <p>
-                        <Trans
-                            i18nKey={
-                                "console:develop.features.authenticationProvider.templates.facebook.wizardHelp" +
+                            <Trans
+                                i18nKey={
+                                    "console:develop.features.authenticationProvider.templates.facebook.wizardHelp" +
+                                ".preRequisites.configureSiteURL"
+                                }
+                            >
+                            Use the following as the <strong>Site URL</strong>.
+                            </Trans>
+
+                            <CopyInputField
+                                className="copy-input-dark spaced"
+                                value={ config?.deployment?.customServerHost }
+                            />
+                        </p>
+                        <p>
+                            <Trans
+                                i18nKey={
+                                    "console:develop.features.authenticationProvider.templates.facebook.wizardHelp" +
                                 ".preRequisites.configureRedirectURL"
-                            }
-                        >
+                                }
+                            >
                             Add the following URL as a <strong>Valid OAuth Redirect URI</strong>.
-                        </Trans>
+                            </Trans>
 
-                        <CopyInputField
-                            className="copy-input-dark spaced"
-                            value={ config?.deployment?.customServerHost + "/commonauth" }
-                        />
+                            <CopyInputField
+                                className="copy-input-dark spaced"
+                                value={ config?.deployment?.customServerHost + "/commonauth" }
+                            />
 
-                        <a
-                            href="https://developers.facebook.com/docs/development/create-an-app"
-                            target="_blank"
-                            rel="noopener noreferrer">
-                            {
-                                t("console:develop.features.authenticationProvider.templates.facebook" +
+                            <a
+                                href="https://developers.facebook.com/docs/development/create-an-app"
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                {
+                                    t("console:develop.features.authenticationProvider.templates.facebook" +
                                     ".wizardHelp.preRequisites.configureOAuthApps")
-                            }
-                        </a>
-                    </p>
-                </Message>
+                                }
+                            </a>
+                        </p>
+                    </>)
+                }
+            />
 
                 <Heading as="h5">
                     {
@@ -151,7 +188,7 @@ const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
                 <Divider/>
 
                 <Heading as="h5">
-                    { t("console:develop.features.authenticationProvider." + 
+                    { t("console:develop.features.authenticationProvider." +
                         "templates.facebook.wizardHelp.clientId.heading") }
                 </Heading>
                 <p>

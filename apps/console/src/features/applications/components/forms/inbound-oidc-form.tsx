@@ -27,6 +27,7 @@ import {
     GenericIcon,
     Heading,
     Hint,
+    MessageWithIcon,
     Text,
     URLInput
 } from "@wso2is/react-components";
@@ -2719,20 +2720,18 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             (initialValues?.state === State.REVOKED) && (
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                        <Message warning visible>
-                                            <Message.Header>
-                                                {
-                                                    t("console:develop.features.applications.forms.inboundOIDC." +
-                                                        "messages.revokeDisclaimer.heading")
-                                                }
-                                            </Message.Header>
-                                            <p>
-                                                {
-                                                    t("console:develop.features.applications.forms.inboundOIDC." +
-                                                        "messages.revokeDisclaimer.content")
-                                                }
-                                            </p>
-                                        </Message>
+                                        <MessageWithIcon
+                                            type="warning"
+                                            visible
+                                            header={
+                                                t("console:develop.features.applications.forms.inboundOIDC." +
+                                                    "messages.revokeDisclaimer.heading")
+                                            }
+                                            content={
+                                                t("console:develop.features.applications.forms.inboundOIDC." +
+                                                    "messages.revokeDisclaimer.content")
+                                            }
+                                        />
                                     </Grid.Column>
                                 </Grid.Row>
                             )
@@ -2768,20 +2767,23 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 ) && isSPAApplication
                                             )
                                                 ? (
-                                                    <Message info={ true }>
-                                                        <Trans
-                                                            i18nKey={
-                                                                "console:develop.features.applications." +
-                                                                "forms.inboundOIDC.fields.clientSecret.message"
-                                                            }
-                                                            values={ { productName: config.ui.productName } }
-                                                        >
-                                                            productName does not issue a&nbsp;
-                                                            <Code withBackground>client_secret</Code> to native
-                                                            applications or web browser-based applications for 
-                                                            the purpose of client authentication.
-                                                        </Trans>
-                                                    </Message>
+                                                    <MessageWithIcon
+                                                        type="info"
+                                                        content={
+                                                            <Trans
+                                                                i18nKey={
+                                                                    "console:develop.features.applications." +
+                                                                    "forms.inboundOIDC.fields.clientSecret.message"
+                                                                }
+                                                                values={ { productName: config.ui.productName } }
+                                                            >
+                                                                productName does not issue a&nbsp;
+                                                                <Code withBackground>client_secret</Code> to native
+                                                                applications or web browser-based applications for
+                                                                the purpose of client authentication.
+                                                            </Trans>
+                                                        }
+                                                    />
                                                 )
                                                 : null
                                         }
@@ -2804,12 +2806,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             {
                                                 isClientSecretHashEnabled
                                                     ? (
-                                                        <Message info visible>
-                                                            {
+                                                        <MessageWithIcon
+                                                            visible
+                                                            type="info"
+                                                            content={
                                                                 t("console:develop.features.applications.forms." +
                                                                     "inboundOIDC.fields.clientSecret.hashedDisclaimer")
                                                             }
-                                                        </Message>
+                                                        />
                                                     )
                                                     : (
                                                         <div className="display-flex">

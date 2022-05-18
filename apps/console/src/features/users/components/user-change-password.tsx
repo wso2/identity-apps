@@ -19,10 +19,10 @@
 import { ProfileConstants } from "@wso2is/core/constants";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
-import { EditSection, Hint, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { EditSection, Hint, LinkButton, MessageWithIcon, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid, Icon, List, Message, Modal } from "semantic-ui-react";
+import { Grid, Icon, List, Modal } from "semantic-ui-react";
 import { SharedUserStoreUtils } from "../../core";
 import { ConnectorPropertyInterface, ServerConfigurationsConstants } from "../../server-configurations";
 import { PRIMARY_USERSTORE_PROPERTY_VALUES, USERSTORE_REGEX_PROPERTIES } from "../../userstores";
@@ -477,11 +477,10 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                     { handlePasswordResetOptionChange() }
                     <Grid.Row>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                            <Message visible warning>
-                                <Hint warning>
-                                    { t("console:manage.features.user.modals.changePasswordModal.message") }
-                                </Hint>
-                            </Message>
+                            <MessageWithIcon
+                                type="warning"
+                                content={ t("console:manage.features.user.modals.changePasswordModal.message") }
+                            />
                         </Grid.Column>
                     </Grid.Row>
                 </>
@@ -561,11 +560,10 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                    </Grid.Row>
                    <Grid.Row>
                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                           <Message visible warning>
-                               <Hint warning>
-                                   { t("console:manage.features.user.modals.changePasswordModal.message") }
-                               </Hint>
-                           </Message>
+                           <MessageWithIcon
+                               type="warning"
+                               content={ t("console:manage.features.user.modals.changePasswordModal.message") }
+                           />
                        </Grid.Column>
                    </Grid.Row>
                </>

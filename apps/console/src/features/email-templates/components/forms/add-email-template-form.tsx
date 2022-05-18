@@ -19,12 +19,13 @@
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
+import { MessageWithIcon } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import * as CountryLanguage from "country-language";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button, DropdownItemProps, Form, Grid, Message } from "semantic-ui-react";
+import { Button, DropdownItemProps, Form, Grid } from "semantic-ui-react";
 import { AppConstants, history } from "../../../core";
 import { createLocaleTemplate, getTemplateDetails, replaceLocaleTemplateContent } from "../../api";
 import { EmailTemplate, EmailTemplateFormModes, EmailTemplateType } from "../../models";
@@ -332,10 +333,14 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                             />
                             {
                                 isSubmitting && bodyError && (
-                                    <Message attached error>
-                                        { t("console:manage.features.emailLocale.forms.addLocale.fields." +
-                                            "bodyEditor.validations.empty") }
-                                    </Message>
+                                    <MessageWithIcon
+                                        attached
+                                        type="error"
+                                        content={
+                                            t("console:manage.features.emailLocale.forms.addLocale.fields." +
+                                            "bodyEditor.validations.empty")
+                                        }
+                                    />
                                 )
                             }
                         </Form.Field>
@@ -362,10 +367,14 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                             />
                             {
                                 isSubmitting && footerError && (
-                                    <Message attached error>
-                                        { t("console:manage.features.emailLocale.forms.addLocale.fields." +
-                                            "signatureEditor.validations.empty") }
-                                    </Message>
+                                    <MessageWithIcon
+                                        attached
+                                        type="error"
+                                        content={
+                                            t("console:manage.features.emailLocale.forms.addLocale.fields." +
+                                            "signatureEditor.validations.empty")
+                                        }
+                                    />
                                 )
                             }
                         </Form.Field>

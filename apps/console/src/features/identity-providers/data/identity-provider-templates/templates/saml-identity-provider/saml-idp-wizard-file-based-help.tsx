@@ -17,11 +17,18 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Code, CopyInputField, DocumentationLink, Heading, useDocumentation } from "@wso2is/react-components";
+import {
+    Code,
+    CopyInputField,
+    DocumentationLink,
+    Heading,
+    MessageWithIcon,
+    useDocumentation
+} from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Divider, Icon, Message } from "semantic-ui-react";
+import { Divider, Icon } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface } from "../../../../../core";
 
 /**
@@ -38,7 +45,7 @@ type Props = TestableComponentInterface;
 const SAMLIdPWizardFileBasedHelp: FunctionComponent<Props> = (props: Props): ReactElement => {
 
     const { [ "data-testid" ]: testId } = props;
-    
+
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const { t } = useTranslation();
@@ -46,41 +53,44 @@ const SAMLIdPWizardFileBasedHelp: FunctionComponent<Props> = (props: Props): Rea
 
     return (
         <div data-testid={ testId }>
-            <Message info>
-                <p>
-                    <Trans
-                        i18nKey={
-                            "console:develop.features.authenticationProvider.templates.enterprise.saml." +
-                            "preRequisites.configureRedirectURL"
-                        }
-                    >
-                        Use the following URL as the <strong>Authorized Redirect URI</strong>.
-                    </Trans>
-                    <CopyInputField
-                        className="copy-input-dark spaced"
-                        value={ config?.deployment?.customServerHost + "/commonauth" }
-                    />
-                    <Icon name="info circle" />
-                    {
-                        t("console:develop.features.authenticationProvider.templates.enterprise.saml." +
-                            "preRequisites.hint", {
-                            productName: config.ui.productName
-                        })
-                    }
-                    { getLink("develop.connections.newConnection.enterprise.samlLearnMore") === undefined
-                        ? null
-                        : <Divider hidden/>
-                    }
-                    <DocumentationLink
-                        link={ getLink("develop.connections.newConnection.enterprise.samlLearnMore") }
-                    >
+            <MessageWithIcon
+                type="info"
+                content={
+                    <>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.authenticationProvider.templates.enterprise.saml." +
+                                "preRequisites.configureRedirectURL"
+                            }
+                        >
+                            Use the following URL as the <strong>Authorized Redirect URI</strong>.
+                        </Trans>
+                        <CopyInputField
+                            className="copy-input-dark spaced"
+                            value={ config?.deployment?.customServerHost + "/commonauth" }
+                        />
+                        <Icon name="info circle" />
                         {
                             t("console:develop.features.authenticationProvider.templates.enterprise.saml." +
-                                "preRequisites.configureIdp")
+                                "preRequisites.hint", {
+                                productName: config.ui.productName
+                            })
                         }
-                    </DocumentationLink>
-                </p>
-            </Message>
+                        { getLink("develop.connections.newConnection.enterprise.samlLearnMore") === undefined
+                            ? null
+                            : <Divider hidden/>
+                        }
+                        <DocumentationLink
+                            link={ getLink("develop.connections.newConnection.enterprise.samlLearnMore") }
+                        >
+                            {
+                                t("console:develop.features.authenticationProvider.templates.enterprise.saml." +
+                                    "preRequisites.configureIdp")
+                            }
+                        </DocumentationLink>
+                    </>
+                }
+            />
             <Heading as="h5">Service provider entity ID</Heading>
             <p>
                 This value will be used as the <Code>&lt;saml2:Issuer&gt;</Code> in the SAML requests initiated from

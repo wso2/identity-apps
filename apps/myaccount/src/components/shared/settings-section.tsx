@@ -17,11 +17,11 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { GenericIcon } from "@wso2is/react-components";
+import { GenericIcon, MessageWithIcon } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, MouseEvent, PropsWithChildren, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Card, Dimmer, Grid, Header, Icon, List, Menu, Message, Responsive, SemanticICONS } from "semantic-ui-react";
+import { Card, Dimmer, Grid, Header, Icon, List, Menu, Responsive, SemanticICONS } from "semantic-ui-react";
 import { ThemeIconSizes } from "./icon";
 
 /**
@@ -281,9 +281,7 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
                                         placeholder
                                             ? (
                                                 <List.Header className="action-button-text">
-                                                    <Message info>
-                                                        <Icon name="info circle" />{ placeholder }
-                                                    </Message>
+                                                    <MessageWithIcon type="info" content={ placeholder } />
                                                 </List.Header>
                                             )
                                             : (

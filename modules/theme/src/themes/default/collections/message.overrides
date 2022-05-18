@@ -71,3 +71,57 @@
         }
     }
 }
+
+/*---------------------------
+    Message Box Overrides
+---------------------------*/
+
+.ui.message {
+    box-shadow: none !important;
+    color: black !important;
+
+    h5.ui.header {
+        font-weight: 550 !important;
+        color: black !important;
+    }
+}
+
+.ui.info.message {
+    background-color: #eff7fd !important;
+
+    i.icon {
+        &.info-icon {
+            color: #0095ff !important;
+        }
+    }
+}
+
+.ui.error.message {
+    background-color: #ffd8d8 !important;
+
+    i.icon {
+        &.error-icon {
+            color: #ff0f0f !important;
+        }
+    }
+}
+
+.ui.success.message {
+    background-color: #dffee3 !important;
+
+    i.icon {
+        &.success-icon {
+            color: #1ebc30 !important;
+        }
+    }
+}
+
+.ui.warning.message {
+    background-color: #fff6e7 !important;
+
+    i.icon {
+        &.warn-icon {
+            color: #ffa500 !important;
+        }
+    }
+}

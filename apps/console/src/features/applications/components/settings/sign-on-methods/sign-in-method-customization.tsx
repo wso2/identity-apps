@@ -25,15 +25,16 @@ import {
     Heading,
     Hint,
     LinkButton,
+    MessageWithIcon,
     PrimaryButton,
-    Text,
-    useDocumentation
+    useDocumentation,
+    CopyInputField
 } from "@wso2is/react-components";
 import kebabCase from "lodash-es/kebabCase";
-import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid, Icon, Message } from "semantic-ui-react";
+import {Divider, Grid, Icon, Message} from "semantic-ui-react";
 import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
@@ -485,26 +486,19 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         const moreThan1IdP = idpList.length > 1;
 
         return (
-            <Message
-                size="large"
+            <MessageWithIcon
                 data-componentid="jit-provisioning-mfa-in-sequence-warning-message"
                 data-testid="jit-provisioning-mfa-in-sequence-warning-message"
-                warning
+                type="warning"
                 // Semantic hides warning messages inside <form> by default.
                 // Overriding the behaviour here to make sure it renders properly.
-                className="warning visible"
-                header={ (
-                    <Fragment>
-                        <Icon name="exclamation triangle" className="mr-2"/>
-                        Warning
-                    </Fragment>
-                ) }
+                header="Warning"
                 content={ (
-                    <div className="mt-3 mb-2">
+                    <>
                         {
                             moreThan1IdP
                                 ? (
-                                    <Text>
+                                    <>
                                         Currently, Just-in-Time (JIT) user provisioning
                                         is <strong>disabled</strong> for the following connections:
                                         <ul className="mb-3">
@@ -514,38 +508,36 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                                 </li>
                                             )) }
                                         </ul>
-                                    </Text>
+                                    </>
                                 )
                                 : (
-                                    <Text>
+                                    <>
                                         Currently, Just-in-Time(JIT) user provisioning is disabled
                                         for the <strong>{ idpList[FIRST_ENTRY].name }</strong> connection.
-                                    </Text>
+                                    </>
                                 )
                         }
                         {
                             moreThan1IdP
                                 ? (
-                                    <Text>
+                                    <>
                                         To use MFA with these connections, <em>enable JIT provisioning</em> or
                                         use an <em>authentication script</em> to skip the MFA options for
                                         these connections during user login.
-                                    </Text>
+                                    </>
                                 )
                                 : (
-                                    <Text>
+                                    <>
                                         To use MFA with this connection, <em>enable JIT provisioning</em> or
                                         use an <em>authentication script</em> to skip the MFA options for this
                                         connection during user login.
-                                    </Text>
+                                    </>
                                 )
                         }
-                        <Text className="mt-3 mb-0">
-                            <DocumentationLink link={ getLink("develop.connections.edit.advancedSettings.jit") }>
-                                Learn More
-                            </DocumentationLink>
-                        </Text>
-                    </div>
+                        <DocumentationLink link={ getLink("develop.connections.edit.advancedSettings.jit") }>
+                            Learn More
+                        </DocumentationLink>
+                    </>
                 ) }
             />
         );
@@ -597,24 +589,30 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 authenticationSequence.steps[ 0 ].options.find(authenticator =>
                     authenticator.authenticator === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR)
                 && (
-                    <Message warning>
-                        <Trans
-                            i18nKey={
-                                t("console:develop.features.applications.edit.sections" +
-                                ".signOnMethod.sections.landing.flowBuilder." +
-                                "types.usernameless.info")
-                            }>
-                            To sign in with passwordless login, your users
-                            should have their FIDO2 security keys or biometrics
-                            registered via My Account.
-                        </Trans>
-                        <DocumentationLink
-                            link={ getLink("develop.applications.editApplication.signInMethod.fido") }
-                            showEmptyLink={ false }
-                        >
-                            { t("common:learnMore") }
-                        </DocumentationLink>
-                    </Message>
+                    <MessageWithIcon
+                        type="warning"
+                        content={
+                            <>
+                                <Trans
+                                    i18nKey={
+                                        t("console:develop.features.applications.edit.sections" +
+                                            ".signOnMethod.sections.landing.flowBuilder." +
+                                            "types.usernameless.info")
+                                    }
+                                >
+                                    To sign in with passwordless login, your users
+                                    should have their FIDO2 security keys or biometrics
+                                    registered via My Account.
+                                </Trans>
+                                <DocumentationLink
+                                    link={ getLink("develop.applications.editApplication.signInMethod.fido") }
+                                    showEmptyLink={ false }
+                                >
+                                    { t("common:learnMore") }
+                                </DocumentationLink>
+                            </>
+                        }
+                    />
                 )
             }
             {

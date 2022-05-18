@@ -17,11 +17,11 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Code, CopyInputField, Heading } from "@wso2is/react-components";
+import { Code, CopyInputField, Heading, MessageWithIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Divider, Message } from "semantic-ui-react";
+import { Divider } from "semantic-ui-react";
 import { identityProviderConfig } from "../../../../../../extensions/configs";
 import { ConfigReducerStateInterface } from "../../../../../core/models";
 import { AppState } from "../../../../../core/store";
@@ -65,72 +65,75 @@ const GithubIdentityProviderCreateWizardHelp: FunctionComponent<
             setUseNewConnectionsView(identityProviderConfig.useNewConnectionsView);
         }, [ identityProviderConfig ]);
 
-        return (
-            <div data-testid={ testId }>
-                <Message info>
-                    <Heading as="h5" className="mb-3">
-                        {
-                            t("console:develop.features.authenticationProvider.templates.github.wizardHelp." +
-                                "preRequisites.heading")
-                        }
-                    </Heading>
-                    <p>
-                        <Trans
-                            i18nKey={
-                                "console:develop.features.authenticationProvider.templates.github.wizardHelp." +
-                                "preRequisites.getCredentials"
-                            }
-                        >
-                            Before you begin, create an <strong>OAuth application</strong> <a
+    return (
+        <div data-testid={ testId }>
+            <MessageWithIcon
+                type="info"
+                header={
+                    t("console:develop.features.authenticationProvider.templates.github.wizardHelp." +
+                        "preRequisites.heading")
+                }
+                content={
+                    <>
+                        <p>
+                            <Trans
+                                i18nKey={
+                                    "console:develop.features.authenticationProvider.templates.github.wizardHelp." +
+                                    "preRequisites.getCredentials"
+                                }
+                            >
+                                Before you begin, create an <strong>OAuth application</strong> <a
                                 href="https://github.com/"
                                 target="_blank"
                                 rel="noopener noreferrer">
-                            on GitHub
+                                on GitHub
                             </a>, and obtain a <strong>client ID & secret</strong>.
-                        </Trans>
-                    </p>
-                    <p>
+                            </Trans>
+                        </p>
+                        <p>
 
-                        <Trans
-                            i18nKey={
-                                "console:develop.features.authenticationProvider.templates.github.wizardHelp" +
-                                ".preRequisites.configureHomePageURL"
-                            }
-                        >
-                            Use the following URL as the <strong>Homepage URL</strong>.
-                        </Trans>
+                            <Trans
+                                i18nKey={
+                                    "console:develop.features.authenticationProvider.templates.github.wizardHelp" +
+                                    ".preRequisites.configureHomePageURL"
+                                }
+                            >
+                                Use the following URL as the <strong>Homepage URL</strong>.
+                            </Trans>
 
-                        <CopyInputField
-                            className="copy-input-dark spaced"
-                            value={ config?.deployment?.customServerHost }
-                        />
-                    </p>
-                    <p>
-                        <Trans
-                            i18nKey={
-                                "console:develop.features.authenticationProvider.templates.github.wizardHelp" +
-                                ".preRequisites.configureRedirectURL"
-                            }
-                        >
-                            Add the following URL as the <strong>Authorization callback URL</strong>.
-                        </Trans>
+                            <CopyInputField
+                                className="copy-input-dark spaced"
+                                value={ config?.deployment?.customServerHost }
+                            />
+                        </p>
+                        <p>
+                            <Trans
+                                i18nKey={
+                                    "console:develop.features.authenticationProvider.templates.github.wizardHelp" +
+                                    ".preRequisites.configureRedirectURL"
+                                }
+                            >
+                                Add the following URL as the <strong>Authorization callback URL</strong>.
+                            </Trans>
 
-                        <CopyInputField
-                            className="copy-input-dark spaced"
-                            value={ config?.deployment?.customServerHost + "/commonauth" }
-                        />
+                            <CopyInputField
+                                className="copy-input-dark spaced"
+                                value={ config?.deployment?.customServerHost + "/commonauth" }
+                            />
 
-                        <a
-                            href="https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app"
-                            target="_blank"
-                            rel="noopener noreferrer">
-                            {
-                                t("console:develop.features.authenticationProvider.templates.github.wizardHelp." +
-                                    "preRequisites.configureOAuthApps")
-                            }
-                        </a>
-                    </p>
-                </Message>
+                            <a
+                                href="https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app"
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                {
+                                    t("console:develop.features.authenticationProvider.templates.github.wizardHelp." +
+                                        "preRequisites.configureOAuthApps")
+                                }
+                            </a>
+                        </p>
+                    </>
+                }
+            />
 
                 <Heading as="h5">
                     {
@@ -151,7 +154,7 @@ const GithubIdentityProviderCreateWizardHelp: FunctionComponent<
                 <Divider/>
 
                 <Heading as="h5">
-                    { t("console:develop.features.authenticationProvider." + 
+                    { t("console:develop.features.authenticationProvider." +
                         "templates.github.wizardHelp.clientId.heading") }
                 </Heading>
                 <p>

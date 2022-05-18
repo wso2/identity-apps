@@ -18,10 +18,10 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import { GenericIcon, Hint, InlineEditInput } from "@wso2is/react-components";
+import { GenericIcon, Hint, InlineEditInput, MessageWithIcon } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Card, Grid, Icon, Label, Message, Popup } from "semantic-ui-react";
+import { Card, Grid, Icon, Label, Popup } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
 import { getTechnologyLogos } from "../../../../core";
 
@@ -304,24 +304,26 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                 {
                                                     // TODO : Need to move ti i18n files
                                                     showSCIMMappingError && (
-                                                        <Message className="mb-4" size="tiny" negative>
-                                                            <p>
-                                                                The SCIM mapping value entered contains illegal
-                                                                characters. Only alphabets, numbers, `_` are allowed.
-                                                            </p>
-                                                        </Message>
+                                                        <MessageWithIcon
+                                                            className="mb-4"
+                                                            size="tiny"
+                                                            type="error"
+                                                            content="The SCIM mapping value entered contains illegal
+                                                                characters. Only alphabets, numbers, `_` are allowed."
+                                                        />
                                                     )
                                                 }
                                                 {
                                                     // TODO : Need to move ti i18n files
                                                     showOIDCMappingError && (
-                                                        <Message className="mb-4" size="tiny" negative>
-                                                            <p>
-                                                                The OpenID Connect mapping value entered contains
+                                                        <MessageWithIcon
+                                                            className="mb-4"
+                                                            size="tiny"
+                                                            type="error"
+                                                            content="The OpenID Connect mapping value entered contains
                                                                 illegal characters. Only alphabets, numbers, `#`, and
-                                                                `_` are allowed.
-                                                            </p>
-                                                        </Message>
+                                                                `_` are allowed."
+                                                        />
                                                     )
                                                 }
                                                 <Grid verticalAlign="middle">
