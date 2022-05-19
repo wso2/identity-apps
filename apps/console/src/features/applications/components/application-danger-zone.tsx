@@ -31,24 +31,26 @@ import { deleteApplication } from "../api";
  */ 
 interface ApplicationDangerZonePropsInterface extends 
     SBACInterface<FeatureConfigInterface>, IdentifiableComponentInterface {
-     /**
-      * Currently editing application id.
-      */
-     appId?: string;
-     /**
-      * Name of the application.
-      */
-     name: string;
-     /**
-      * Customized content.
-      */
-     content?: string;
+        /**
+         * Currently editing application id.
+         */
+        appId?: string;
+        /**
+         * Name of the application.
+         */
+        name: string;
+        /**
+         * Customized content.
+         */
+        content?: string;
     }
     
 /**
  * Application Danger Zone component
- *
- * @return {JSX.Element}
+ * 
+ * @param { ApplicationDangerZonePropsInterface } props - Props injected to the component.
+ * 
+ * @return {React.ReactElement}
  */
 export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDangerZonePropsInterface> = (
     props: ApplicationDangerZonePropsInterface
@@ -60,20 +62,19 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
         content,
         [ "data-componentid" ]: testId
     } = props;
-     
+
+    const { t } = useTranslation();
+    const dispatch = useDispatch();
+
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
  
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ isDeletionInProgress, setIsDeletionInProgress ] = useState<boolean>(false);
  
- 
-    const { t } = useTranslation();
-    const dispatch = useDispatch();
- 
     /**
-      * Deletes an application.
-      */
+     * Deletes an application.
+     */
     const handleApplicationDelete = (): void => {
         setIsDeletionInProgress(true);
         deleteApplication(appId)
@@ -113,17 +114,17 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
     };
  
     /**
-      * Called when an application is deleted.
-      */
+     * Called when an application is deleted.
+     */
     const onDelete = (): void => {
         history.push(AppConstants.getPaths().get("APPLICATIONS"));
     };
  
     /**
-      * Resolves the danger actions.
-      *
-      * @return {React.ReactElement} DangerZoneGroup element.
-      */
+     * Resolves the danger actions.
+     *
+     * @return {React.ReactElement} DangerZoneGroup element.
+     */
     const resolveDangerActions = (): ReactElement => {
         if (!hasRequiredScopes(
             featureConfig?.applications, featureConfig?.applications?.scopes?.update, allowedScopes)) {

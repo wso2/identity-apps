@@ -776,7 +776,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                          <Menu.Item data-tourid="attributes">
                              { t("console:develop.features.applications.edit.sections.attributes.tabName") }
                          </Menu.Item>,
-                      render:() => 
+                      render: () => 
                           applicationConfig.editApplication.
                               getOveriddenTab(
                                   inboundProtocolConfig?.oidc?.clientId, 
