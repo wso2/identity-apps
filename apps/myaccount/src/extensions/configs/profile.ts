@@ -21,7 +21,7 @@ import { ProfileConfig } from "./models";
 export const profileConfig: ProfileConfig = {
     attributes: {
         getRegExpValidationError: (attribute: string) => {
-            if(attribute === "phoneNumbers"){
+            if (attribute === "phoneNumbers") {
                 return "myAccount:components.profile.forms.generic.inputs.validations.invalidFormat";
             }
         }
