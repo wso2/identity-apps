@@ -561,10 +561,10 @@ module.exports = (env) => {
                         ? "<%=TENANT_AWARE_URL_PREFIX%>"
                         : "",
                     themeHash: themeHash,
-                    requestForwardSnippet : "if(request.getParameter(\"code\") != null && "+
-                        "!request.getParameter(\"code\").trim().isEmpty()) "+
-                        "{request.getRequestDispatcher(\"/authenticate?code=\"+request.getParameter(\"code\")+"+
-                        "\"&AuthenticatedIdPs=\"+request.getParameter(\"AuthenticatedIdPs\")"+
+                    requestForwardSnippet: "if(request.getParameter(\"code\") != null && " +
+                        "!request.getParameter(\"code\").trim().isEmpty()) " +
+                        "{request.getRequestDispatcher(\"/authenticate?code=\"+request.getParameter(\"code\")+" +
+                        "\"&AuthenticatedIdPs=\"+request.getParameter(\"AuthenticatedIdPs\")" +
                         "+\"&session_state=\"+request.getParameter(\"session_state\")).forward(request, response);}"
                 })
                 : new HtmlWebpackPlugin({
