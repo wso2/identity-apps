@@ -18,7 +18,7 @@
 
 import { ProfileConfig } from "./models";
 
-export const profileConfig:  ProfileConfig = {
+export const profileConfig: ProfileConfig = {
     attributes: {
         getRegExpValidationError: (attribute: string) => {
             if(attribute === "phoneNumbers"){
