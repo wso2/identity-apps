@@ -26,7 +26,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Form, Grid, TabProps } from "semantic-ui-react";
+import { Form, Grid, Menu, TabProps } from "semantic-ui-react";
 import { InboundProtocolsMeta } from "./meta";
 import {
     AccessConfiguration,
@@ -52,6 +52,7 @@ import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationInterface,
+    ApplicationTabTypes,
     ApplicationTemplateInterface,
     AuthProtocolMetaListItemInterface,
     OIDCApplicationConfigurationInterface,
@@ -310,7 +311,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         }
         setSAMLConfigsLoading(true);
 
-
         ApplicationManagementUtils.getSAMLApplicationMeta()
             .finally(() => {
                 setSAMLConfigsLoading(false);
@@ -529,7 +529,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
                     // Mutate the saml: NameIDFormat property according to the specification.
                     normalizeSAMLNameIDFormat(protocolConfigs);
-
                     setIsApplicationUpdated(true);
                     setInboundProtocolList(selectedProtocolList);
                     setInboundProtocolConfig(protocolConfigs);
@@ -736,72 +735,113 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         if (featureConfig) {
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_GENERAL_SETTINGS"))) {
-
-                panes.push({
-                    componentId: "general",
-                    menuItem: t("console:develop.features.applications.edit.sections.general.tabName"),
-                    render: GeneralApplicationSettingsTabPane
-                });
+                if (applicationConfig.editApplication.
+                    isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.GENERAL)) {
+                    panes.push({
+                        componentId: "general",
+                        menuItem: 
+                                 <Menu.Item data-tourid="general">
+                                     { t("console:develop.features.applications.edit.sections.general.tabName") }
+                                 </Menu.Item>,
+                        render: () => 
+                            applicationConfig.editApplication.
+                                getOveriddenTab(
+                                    inboundProtocolConfig?.oidc?.clientId, 
+                                    ApplicationTabTypes.GENERAL,
+                                    GeneralApplicationSettingsTabPane(),
+                                    application.name,
+                                    application.id
+                                ) 
+                    });
+                }
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG"))) {
-
-                panes.push({
-                    componentId: "protocol",
-                    menuItem: t("console:develop.features.applications.edit.sections.access.tabName"),
-                    render: ApplicationSettingsTabPane
-                });
+ 
+                applicationConfig.editApplication.
+                    isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.PROTOCOL) &&
+                  panes.push({
+                      componentId: "protocol",
+                      menuItem: t("console:develop.features.applications.edit.sections.access.tabName"),
+                      render: ApplicationSettingsTabPane
+                  });
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ATTRIBUTE_MAPPING"))) {
 
-                panes.push({
-                    componentId: "user-attributes",
-                    menuItem: t("console:develop.features.applications.edit.sections.attributes.tabName"),
-                    render: AttributeSettingTabPane
-                });
+                applicationConfig.editApplication.
+                    isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.USER_ATTRIBUTES) &&
+                  panes.push({
+                      componentId: "user-attributes",
+                      menuItem: 
+                         <Menu.Item data-tourid="attributes">
+                             { t("console:develop.features.applications.edit.sections.attributes.tabName") }
+                         </Menu.Item>,
+                      render:() => 
+                          applicationConfig.editApplication.
+                              getOveriddenTab(
+                                  inboundProtocolConfig?.oidc?.clientId, 
+                                  ApplicationTabTypes.USER_ATTRIBUTES,
+                                  AttributeSettingTabPane(),
+                                  application.name,
+                                  application.id
+                              ) 
+                  });
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG"))) {
 
-                panes.push({
-                    componentId: "sign-in-method",
-                    menuItem: t("console:develop.features.applications.edit.sections.signOnMethod.tabName"),
-                    render: SignOnMethodsTabPane
-                });
+                applicationConfig.editApplication.
+                    isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.SIGN_IN_METHOD) &&
+                  panes.push({
+                      componentId: "sign-in-method",
+                      menuItem:  
+                         <Menu.Item data-tourid="sign-in-methods">
+                             { t("console:develop.features.applications.edit.sections.signOnMethod.tabName") }
+                         </Menu.Item> ,
+                      render: SignOnMethodsTabPane
+                  });
             }
-
             if (applicationConfig.editApplication.showProvisioningSettings
-                && isFeatureEnabled(featureConfig?.applications,
-                    ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))) {
+                 && isFeatureEnabled(featureConfig?.applications,
+                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))) {
 
-                panes.push({
-                    componentId: "provisioning",
-                    menuItem: t("console:develop.features.applications.edit.sections.provisioning.tabName"),
-                    render: ProvisioningSettingsTabPane
-                });
+                applicationConfig.editApplication.
+                    isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.PROVISIONING) &&
+                      panes.push({
+                          componentId: "provisioning",
+                          menuItem: t("console:develop.features.applications.edit.sections.provisioning.tabName"),
+                          render: ProvisioningSettingsTabPane
+                      });
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ADVANCED_SETTINGS"))) {
 
-                panes.push({
-                    componentId: "advanced",
-                    menuItem: t("console:develop.features.applications.edit.sections.advanced.tabName"),
-                    render: AdvancedSettingsTabPane
-                });
+                applicationConfig.editApplication.
+                    isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId , ApplicationTabTypes.ADVANCED) &&
+                  panes.push({
+                      componentId: "advanced",
+                      menuItem: (
+                          <Menu.Item data-tourid="advanced">
+                              { t("console:develop.features.applications.edit.sections.advanced.tabName") }
+                          </Menu.Item> ),
+                      render: AdvancedSettingsTabPane
+                  });
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO")) 
-                && application?.templateId != ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
+                 && application?.templateId != ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
 
-                panes.push({
-                    componentId: "info",
-                    menuItem: {
-                        content: t("console:develop.features.applications.edit.sections.info.tabName"),
-                        icon: "info circle grey"
-                    },
-                    render: InfoTabPane
-                });
+                applicationConfig.editApplication.
+                    isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.INFO) && 
+                 panes.push({
+                     componentId: "info",
+                     menuItem: {
+                         content: t("console:develop.features.applications.edit.sections.info.tabName"),
+                         icon: "info circle grey"
+                     },
+                     render: InfoTabPane
+                 });
             }
 
             return panes;
@@ -964,7 +1004,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     };
 
     return (
-        application && !isInboundProtocolsRequestLoading
+        application && !isInboundProtocolsRequestLoading && inboundProtocolList != undefined
         && (tabPaneExtensions || !applicationConfig.editApplication.extendTabs
             || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
             || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
