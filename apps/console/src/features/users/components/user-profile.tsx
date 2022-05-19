@@ -977,7 +977,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                 <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
                                                     <Form.Field>
                                                         <label>
-                                                            { t("console:manage.features.user.profile.fields."+
+                                                            { t("console:manage.features.user.profile.fields." +
                                                                 "createdDate") }
                                                         </label>
                                                         <Input
@@ -998,7 +998,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                 <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
                                                     <Form.Field>
                                                         <label>
-                                                            { t("console:manage.features.user.profile.fields."+
+                                                            { t("console:manage.features.user.profile.fields." +
                                                                     "modifiedDate") }
                                                         </label>
                                                         <Input
