@@ -29,6 +29,7 @@ import { Form, Grid, Icon, List } from "semantic-ui-react";
 import { updateProfileInfo } from "../../../api";
 import { getMFAIcons } from "../../../configs";
 import { AppConstants, CommonConstants } from "../../../constants";
+import { profileConfig } from "../../../extensions";
 import { AlertInterface, AlertLevels, BasicProfileInterface, FeatureConfigInterface } from "../../../models";
 import { AppState } from "../../../store";
 import { getProfileInformation, setActiveForm } from "../../../store/actions";
@@ -342,8 +343,11 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                                                     if (!FormValidation.mobileNumber(value)) {
                                                         validation.isValid = false;
                                                         validation.errorMessages.push(t(
-                                                            "myAccount:components.profile.forms.mobileChangeForm." +
-                                                            "inputs.mobile.validations.invalidFormat"
+                                                            profileConfig?.attributes?.
+                                                                getRegExpValidationError("phoneNumbers"), 
+                                                            {
+                                                                fieldName: "Mobile"
+                                                            }
                                                         ));
                                                     }
                                                 } }

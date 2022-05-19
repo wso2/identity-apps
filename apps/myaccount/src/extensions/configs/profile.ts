@@ -16,7 +16,14 @@
  * under the License.
  */
 
-export * from "./common";
-export * from "./account-recovery";
-export * from "./profile";
+import { ProfileConfig } from "./models";
 
+export const profileConfig:  ProfileConfig = {
+    attributes: {
+        getRegExpValidationError: (attribute: string) => {
+            if(attribute === "phoneNumbers"){
+                return "myAccount:components.profile.forms.generic.inputs.validations.invalidFormat";
+            }
+        }
+    }
+};  

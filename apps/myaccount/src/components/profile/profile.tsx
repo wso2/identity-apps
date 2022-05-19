@@ -39,7 +39,7 @@ import { DropdownItemProps, Form, Grid, Icon, List, Placeholder, Popup, Responsi
 import { updateProfileInfo } from "../../api";
 import { AppConstants, CommonConstants } from "../../constants";
 import * as UIConstants from "../../constants/ui-constants";
-import { commonConfig } from "../../extensions";
+import { commonConfig, profileConfig } from "../../extensions";
 import { AlertInterface, AlertLevels, AuthStateInterface, FeatureConfigInterface, ProfileSchema } from "../../models";
 import { AppState } from "../../store";
 import { getProfileInformation, setActiveForm } from "../../store/actions";
@@ -733,9 +733,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                 ));
                                                             } else if (checkSchemaType(schema.name, "phoneNumbers")) {
                                                                 validation.errorMessages.push(t(
-                                                                    "myAccount:components.profile.forms.mobileChangeForm." +
-                                                                "inputs.mobile.validations.invalidFormat"
-                                                                ));
+                                                                    profileConfig?.attributes?.
+                                                                        getRegExpValidationError("phoneNumbers"), 
+                                                                    {
+                                                                        fieldName
+                                                                    }
+                                                                )
+                                                                );
                                                             } else if (checkSchemaType(schema.name,
                                                                 ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB"))) {
                                                                 validation.errorMessages.push(t(

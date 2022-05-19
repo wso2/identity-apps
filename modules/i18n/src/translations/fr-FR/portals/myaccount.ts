@@ -1238,7 +1238,7 @@ export const myAccount: MyAccountNS = {
                         },
                         validations: {
                             empty: "L'attribut {{fieldName}} est obligatoire",
-                            invalidFormat: "Le format de l'attribut {{fieldName}} saisi est invalide"
+                            invalidFormat: "Le format du {{fieldName}} saisi est incorrect"
                         }
                     }
                 },
