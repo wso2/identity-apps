@@ -146,7 +146,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         state.config.ui.isClientSecretHashEnabled);
 
     const [ isInboundProtocolConfigRequestLoading, setIsInboundProtocolConfigRequestLoading ] = useState<boolean>(true);
-    const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>([]);
+    const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>(undefined);
     const [ inboundProtocolConfig, setInboundProtocolConfig ] = useState<any>(undefined);
     const [ isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading ] = useState<boolean>(false);
     const [ tabPaneExtensions, setTabPaneExtensions ] = useState<any>(undefined);
@@ -526,7 +526,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     }));
                 })
                 .finally(() => {
-
                     // Mutate the saml: NameIDFormat property according to the specification.
                     normalizeSAMLNameIDFormat(protocolConfigs);
                     setIsApplicationUpdated(true);
