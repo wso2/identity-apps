@@ -224,6 +224,18 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             return;
         }
 
+        /**
+         * If there's no application templateId in the application model,
+         * then we manually bind a templateId. You may ask why templateId is
+         * null at this point? Well, one reason is that, if you create an
+         * application via the API, the templateId is an optional property
+         * in the model. So, if someone creates one without it, we don't have
+         * a template to bootstrap the model.
+         */
+        if (!application?.templateId) {
+            application.templateId = ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC;
+        }
+
         let template = applicationTemplates.find((template) => template.id === application.templateId);
 
         if (application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
