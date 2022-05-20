@@ -1,9 +1,10 @@
 {
     "compilerOptions": {
         "experimentalDecorators": true,
+        "jsx": "react",
         "module": "commonjs",
         "rootDir": ".",
         "outDir": "dist/src"
     },
-    "extends": "../../../../../configs/common.tsconfig.json"
+    "extends": "../../../../../tsconfig.base.json"
 }

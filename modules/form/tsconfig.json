@@ -1,9 +1,11 @@
 {
+    "extends": "../../tsconfig.base.react.json",
     "compilerOptions": {
         "esModuleInterop": true,
         "experimentalDecorators": true,
         "declaration": true,
         "declarationDir": "dist/types",
+        "jsx": "react",
         "outDir": "dist/src",
         "rootDir": "src",
         "types": [ "node", "jest", "@testing-library/jest-dom" ]
@@ -26,6 +28,5 @@
         "**/*.spec.jsx",
         "**/*.spec.ts",
         "**/*.spec.tsx"
-    ],
-    "extends": "../../configs/common.tsconfig.json"
+    ]
 }
