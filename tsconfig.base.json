@@ -1,3 +1,31 @@
 {
-  "compilerOptions": {}
+    "compilerOptions": {
+        "declaration": false,
+        "emitDecoratorMetadata": true,
+        "esModuleInterop": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "lib": [
+            "ESNext"
+        ],
+        "module": "esnext",
+        "moduleResolution": "node",
+        "rootDir": ".",
+        "skipLibCheck": true,
+        "skipDefaultLibCheck": true,
+        "sourceMap": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "target": "es2015",
+        "baseUrl": ".",
+        "paths": {
+            "@wso2is/react-components": [
+                "modules/react-components/src/index.ts"
+            ]
+        }
+    },
+    "compileOnSave": false,
+    "exclude": [
+        "node_modules",
+        "tmp"
+    ]
 }
