@@ -72,7 +72,6 @@
         "ua-parser-js": "0.7.28"
     },
     "devDependencies": {
-        "@nrwl/react": "^14.0.3",
         "@testing-library/jest-dom": "^5.11.9",
         "@types/history": "^4.7.3",
         "@types/jest": "^26.0.14",
@@ -98,6 +97,7 @@
         "jest": "^26.4.2",
         "jest-environment-jsdom": "^26.3.0",
         "jest-environment-jsdom-global": "^2.0.4",
+        "json-minimizer-webpack-plugin": "^4.0.0",
         "msw": "^0.36.8",
         "process": "^0.11.10",
         "react-refresh": "^0.9.0",
