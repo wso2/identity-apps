@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ProfileConstants } from "@wso2is/core/constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms, Validation } from "@wso2is/forms";
@@ -344,7 +345,8 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                                                         validation.isValid = false;
                                                         validation.errorMessages.push(t(
                                                             profileConfig?.attributes?.
-                                                                getRegExpValidationError("phoneNumbers"), 
+                                                                getRegExpValidationError(ProfileConstants.SCIM2_SCHEMA_DICTIONARY
+                                                                    .get("PHONE_NUMBERS")), 
                                                             {
                                                                 fieldName: "Mobile"
                                                             }

@@ -731,10 +731,14 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                     "myAccount:components.profile.forms.emailChangeForm." +
                                                                 "inputs.email.validations.invalidFormat"
                                                                 ));
-                                                            } else if (checkSchemaType(schema.name, "phoneNumbers")) {
+                                                            } else if (checkSchemaType(schema.name, ProfileConstants.
+                                                                SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))) {
                                                                 validation.errorMessages.push(t(
                                                                     profileConfig?.attributes?.
-                                                                        getRegExpValidationError("phoneNumbers"), 
+                                                                        getRegExpValidationError(
+                                                                            ProfileConstants.SCIM2_SCHEMA_DICTIONARY
+                                                                                .get("PHONE_NUMBERS")
+                                                                        ), 
                                                                     {
                                                                         fieldName
                                                                     }

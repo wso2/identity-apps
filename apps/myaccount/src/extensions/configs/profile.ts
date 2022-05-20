@@ -16,12 +16,14 @@
  * under the License.
  */
 
+import { ProfileConstants } from "@wso2is/core/constants";
 import { ProfileConfig } from "./models";
 
 export const profileConfig: ProfileConfig = {
     attributes: {
         getRegExpValidationError: (attribute: string) => {
-            if (attribute === "phoneNumbers") {
+            if(attribute === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")
+            ){
                 return "myAccount:components.profile.forms.generic.inputs.validations.invalidFormat";
             }
         }
