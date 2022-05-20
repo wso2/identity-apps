@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,16 @@
  * under the License.
  */
 
-export * from "./common";
-export * from "./account-recovery";
-export * from "./profile";
+import { ProfileConstants } from "@wso2is/core/constants";
+import { ProfileConfig } from "./models";
+
+export const profileConfig: ProfileConfig = {
+    attributes: {
+        getRegExpValidationError: (attribute: string) => {
+            if(attribute === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")
+            ){
+                return "myAccount:components.profile.forms.generic.inputs.validations.invalidFormat";
+            }
+        }
+    }
+};  

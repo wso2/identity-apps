@@ -1195,7 +1195,7 @@ export const myAccount: MyAccountNS = {
                         },
                         validations: {
                             empty: "{{fieldName}} අත්\u200Dයවශ්\u200Dය ක්ෂේත්\u200Dරයකි",
-                            invalidFormat: "{{fieldName}} නිවැරදි ආකෘතියෙන් නොවේ"
+                            invalidFormat: "ඇතුළත් කළ {{fieldName}} ආකෘතිය වැරදිය"
                         }
                     }
                 },

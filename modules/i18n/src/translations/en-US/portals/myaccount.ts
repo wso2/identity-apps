@@ -1204,7 +1204,7 @@ export const myAccount: MyAccountNS = {
                         },
                         validations: {
                             empty: "{{fieldName}} is a required field",
-                            invalidFormat: "The {{fieldName}} is not of the correct format"
+                            invalidFormat: "The format of the {{fieldName}} entered is incorrect"   
                         }
                     }
                 },
