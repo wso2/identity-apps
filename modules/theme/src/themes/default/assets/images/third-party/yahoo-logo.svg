@@ -18,7 +18,7 @@
  * under the License.
 -->
 
-<svg xmlns:svg="http://www.w3.org/2000/svg" version="1.1" id="yahoo-logo" class="icon" width="14" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264.58333 73.375368">
+<svg version="1.1" id="yahoo-logo" class="icon" width="14" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264.58333 73.375368">
     <g id="layer1" transform="translate(260.95542,41.213839)">
         <path style="opacity:1;fill:#5f01d1;fill-opacity:1;stroke:none;stroke-width:0.08756009;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:2.61310005;stroke-dasharray:none;stroke-opacity:1"
               d="m -260.95542,-23.351576 h 15.74097 l 9.16577,23.44971543 9.28475,-23.44971543 h 15.32641 l -23.07818,55.513102 h -15.42354 l 6.31728,-14.710096 z"
