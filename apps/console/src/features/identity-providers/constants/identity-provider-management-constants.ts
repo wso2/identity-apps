@@ -302,11 +302,11 @@ export class IdentityProviderManagementConstants {
     public static readonly TOTP_AUTHENTICATOR: string = "totp";
     public static readonly EMAIL_OTP_AUTHENTICATOR: string = "email-otp-authenticator";
     public static readonly FIDO_AUTHENTICATOR: string = "FIDOAuthenticator";
-    public static readonly BASIC_AUTHENTICATOR = "BasicAuthenticator";
-    public static readonly IDENTIFIER_FIRST_AUTHENTICATOR = "IdentifierExecutor";
-    public static readonly SMS_OTP_AUTHENTICATOR = "sms-otp";
-    public static readonly BACKUP_CODE_AUTHENTICATOR = "backup-code-authenticator";
-    public static readonly MAGIC_LINK_AUTHENTICATOR = "MagicLinkAuthenticator";
+    public static readonly BASIC_AUTHENTICATOR: string = "BasicAuthenticator";
+    public static readonly IDENTIFIER_FIRST_AUTHENTICATOR: string = "IdentifierExecutor";
+    public static readonly SMS_OTP_AUTHENTICATOR: string = "sms-otp";
+    public static readonly BACKUP_CODE_AUTHENTICATOR: string = "backup-code-authenticator";
+    public static readonly MAGIC_LINK_AUTHENTICATOR: string = "MagicLinkAuthenticator";
 
     // Known Enterprise authenticator IDs
     public static readonly OIDC_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I";
