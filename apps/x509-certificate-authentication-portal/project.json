@@ -1,0 +1,4 @@
+{
+    "root": "apps/x509-certificate-authentication-portal",
+    "projectType": "application"
+}

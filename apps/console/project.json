@@ -1,0 +1,118 @@
+{
+    "root": "apps/console",
+    "sourceRoot": "apps/console/src",
+    "projectType": "application",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/web:webpack",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "defaultConfiguration": "production",
+            "options": {
+                "compiler": "babel",
+                "outputPath": "apps/console/build/console",
+                "index": "apps/console/src/index.html",
+                "baseHref": "/console/",
+                "main": "apps/console/src/index.tsx",
+                "polyfills": "",
+                "tsConfig": "apps/console/tsconfig.json",
+                "assets": [
+                    {
+                        "glob": "**/*.!(less)",
+                        "input": "modules/theme/dist/lib",
+                        "output": "libs"
+                    },
+                    {
+                        "glob": "**/*",
+                        "input": "apps/console/src/public",
+                        "output": "."
+                    },
+                    {
+                        "glob": "**/*",
+                        "input": "modules/i18n/dist/bundle",
+                        "output": "resources/i18n"
+                    },
+                    {
+                        "glob": "meta.*.json",
+                        "input": "apps/console/src/extensions/i18n/tmp",
+                        "output": "resources/i18n"
+                    },
+                    {
+                        "glob": "**/assets/images/(branding|flags.png)/**",
+                        "input": "modules/theme/dist/lib",
+                        "output": "libs"
+                    }
+                ],
+                "styles": [],
+                "scripts": [],
+                "generateIndexHtml": false,
+                "postcssConfig": "apps/console/postcss.config.js",
+                "webpackConfig": "apps/console/nx-webpack.ts"
+            },
+            "configurations": {
+                "development": {
+                    "index": "apps/console/src/index.html",
+                    "extractLicenses": false,
+                    "optimization": false,
+                    "sourceMap": true,
+                    "vendorChunk": true
+                },
+                "production": {
+                    "index": "apps/console/src/home.jsp",
+                    "fileReplacements": [],
+                    "optimization": true,
+                    "outputHashing": "all",
+                    "sourceMap": false,
+                    "namedChunks": false,
+                    "extractLicenses": true,
+                    "vendorChunk": false
+                }
+            }
+        },
+        "serve": {
+            "executor": "@nrwl/web:dev-server",
+            "defaultConfiguration": "development",
+            "options": {
+                "buildTarget": "console:build",
+                "port": 9001,
+                "baseHref": "/console/",
+                "open": true,
+                "hmr": true,
+                "ssl": true
+            },
+            "configurations": {
+                "development": {
+                    "buildTarget": "console:build:development"
+                },
+                "production": {
+                    "buildTarget": "console:build:production",
+                    "hmr": false
+                }
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": [
+                "{options.outputFile}"
+            ],
+            "options": {
+                "lintFilePatterns": [
+                    "apps/console/**/*.{ts,tsx,js,jsx}"
+                ],
+                "eslintConfig": "apps/console/.eslintrc.js"
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": [
+                "coverage/apps/console"
+            ],
+            "options": {
+                "jestConfig": "apps/console/jest.config.ts",
+                "passWithNoTests": true
+            }
+        }
+    },
+    "tags": []
+}

@@ -1,0 +1,4 @@
+{
+    "root": "apps/sms-otp-authentication-portal",
+    "projectType": "application"
+}

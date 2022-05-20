@@ -1,0 +1,23 @@
+{
+  "projectType": "library",
+  "generators": {},
+  "root": "modules/access-control",
+  "sourceRoot": "modules/access-control/src",
+  "prefix": "@wso2is",
+  "targets": {
+      "build": {
+          "executor": "@nrwl/workspace:run-commands",
+          "outputs": [
+              "modules/access-control/dist"
+          ],
+          "options": {
+              "tsconfig": "modules/access-control/tsconfig.json",
+              "command": "npm run build",
+              "cwd": "modules/access-control"
+          }
+      }
+  },
+  "outputs": [
+      "{options.outputPath}"
+  ]
+}

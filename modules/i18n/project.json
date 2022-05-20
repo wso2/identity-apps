@@ -1,0 +1,23 @@
+{
+    "projectType": "library",
+    "generators": {},
+    "root": "modules/i18n",
+    "sourceRoot": "modules/i18n/src",
+    "prefix": "@wso2is",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/workspace:run-commands",
+            "outputs": [
+                "modules/i18n/dist"
+            ],
+            "options": {
+                "tsconfig": "modules/i18n/tsconfig.json",
+                "command": "npm run build",
+                "cwd": "modules/i18n"
+            }
+        }
+    },
+    "outputs": [
+        "{options.outputPath}"
+    ]
+}

@@ -1,0 +1,23 @@
+{
+    "projectType": "library",
+    "generators": {},
+    "root": "modules/core",
+    "sourceRoot": "modules/core/src",
+    "prefix": "@wso2is",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/workspace:run-commands",
+            "outputs": [
+                "modules/core/dist"
+            ],
+            "options": {
+                "tsconfig": "modules/core/tsconfig.json",
+                "command": "npm run build",
+                "cwd": "modules/core"
+            }
+        }
+    },
+    "outputs": [
+        "{options.outputPath}"
+    ]
+}

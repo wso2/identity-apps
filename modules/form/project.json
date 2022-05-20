@@ -1,0 +1,23 @@
+{
+    "projectType": "library",
+    "generators": {},
+    "root": "modules/form",
+    "sourceRoot": "modules/form/src",
+    "prefix": "@wso2is",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/workspace:run-commands",
+            "outputs": [
+                "modules/form/dist"
+            ],
+            "options": {
+                "tsconfig": "modules/form/tsconfig.json",
+                "command": "npm run build",
+                "cwd": "modules/form"
+            }
+        }
+    },
+    "outputs": [
+        "{options.outputPath}"
+    ]
+}

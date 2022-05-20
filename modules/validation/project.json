@@ -1,0 +1,23 @@
+{
+    "projectType": "library",
+    "generators": {},
+    "root": "modules/validation",
+    "sourceRoot": "modules/validation/src",
+    "prefix": "@wso2is",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/workspace:run-commands",
+            "outputs": [
+                "modules/validation/dist"
+            ],
+            "options": {
+                "tsconfig": "modules/validation/tsconfig.json",
+                "command": "npm run build",
+                "cwd": "modules/validation"
+            }
+        }
+    },
+    "outputs": [
+        "{options.outputPath}"
+    ]
+}
