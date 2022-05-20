@@ -11,8 +11,8 @@
         "react-components",
         "component-library"
     ],
-    "main": "dist/src/index.js",
-    "types": "dist/types/index.d.ts",
+    "main": "dist/index.esm.js",
+    "types": "dist/index.d.ts",
     "scripts": {
         "start:storybook": "NODE_PATH=src start-storybook -p 6006 -c .storybook -s ./dist",
         "build:storybook": "build-storybook",
@@ -78,6 +78,8 @@
     },
     "devDependencies": {
         "@babel/core": "^7.11.4",
+        "@rollup/plugin-url": "^7.0.0",
+        "@svgr/rollup": "^6.2.1",
         "@svgr/webpack": "4.3.2",
         "@types/i18next": "8.4.3",
         "@types/jest": "^26.0.14",
