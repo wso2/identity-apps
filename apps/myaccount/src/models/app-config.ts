@@ -65,6 +65,7 @@ export interface ServiceResourceEndpointsInterface {
     applications: string;
     associations: string;
     authorize: string;
+    backupCode: string;
     challenges: string;
     challengeAnswers: string;
     federatedAssociations: string;
@@ -77,6 +78,7 @@ export interface ServiceResourceEndpointsInterface {
     jwks: string;
     logout: string;
     me: string;
+    mfaEnabledAuthenticators: string
     preference: string;
     profileSchemas: string;
     sessions: string;
@@ -85,7 +87,6 @@ export interface ServiceResourceEndpointsInterface {
     token: string;
     totp: string;
     totpSecret: string;
-    backupCode: string;
     typingDNAMe: string;
     typingDNAServer: string;
     user: string;
