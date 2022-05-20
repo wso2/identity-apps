@@ -40,10 +40,10 @@ import {
     TableDataInterface
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
-import { ApplicationManagementConstants } from "../../applications";
+import { ApplicationManagementConstants } from "../../applications/constants";
 import {
     AppConstants,
     AppState,
@@ -287,7 +287,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
         actions.push({
             hidden: (item: TableDataInterface<OIDCScopesListInterface>): boolean => {
                 return !hasRequiredScopes(
-                featureConfig?.applications,
+                    featureConfig?.applications,
                     featureConfig?.applications?.scopes?.delete, allowedScopes)
                     || item.name === OIDCScopesManagementConstants.OPEN_ID_SCOPE;
             },

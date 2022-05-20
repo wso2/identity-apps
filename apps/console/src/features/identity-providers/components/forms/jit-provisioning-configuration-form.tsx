@@ -26,7 +26,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Grid, Icon, Message } from "semantic-ui-react";
 import { identityProviderConfig } from "../../../../extensions";
-import { SimpleUserStoreListItemInterface } from "../../../applications";
+import { SimpleUserStoreListItemInterface } from "../../../applications/models";
 import { AppState, ConfigReducerStateInterface } from "../../../core";
 import {
     IdentityProviderInterface,
