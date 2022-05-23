@@ -16,30 +16,11 @@
  * under the License.
  */
 
-import { addParameters, addDecorator } from "@storybook/react";
-import "../stories/styles.css";
-import { DocsContainer, DocsPage } from "@storybook/addon-docs/blocks";
-import centered from "@storybook/addon-centered/react";
+import "../storybook-helpers/styles.css";
+import { LightTheme } from "./theme";
 
-// Custom center decorator that supports docs extensions
-addDecorator((...args) => {
-    const params = (new URL(document.location)).searchParams;
-    const isInDockView = params.get("viewMode") === "docs";
-
-    if (isInDockView) {
-        return args[0]();
-    }
-
-    return centered(...args);
-});
-
-// Params
-addParameters({
-    options: {
-        showRoots: true
-    },
+export const parameters = {
     docs: {
-        container: DocsContainer,
-        page: DocsPage,
+        theme: LightTheme,
     }
-});
+};

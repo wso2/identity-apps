@@ -18,10 +18,16 @@
  */
 
 import { action } from "@storybook/addon-actions";
-import { SettigsSectionIconSet } from "@wso2is/theme";
 import React, { ReactElement } from "react";
 import { meta } from "./section.stories.meta";
-import { Section, UserAvatar } from "../../../src";
+import {
+    ReactComponent as ProfileExportMiniIllustration
+} from "../../../storybook-helpers/assets/images/illustrations/profile-export-mini.svg";
+import {
+    ReactComponent as ProfileExportIllustration
+} from "../../../storybook-helpers/assets/images/illustrations/profile-export.svg";
+import { UserAvatar } from "../avatar";
+import { Section } from "../section";
 
 export default {
     parameters: {
@@ -75,8 +81,8 @@ export const SectionWithAction = (): ReactElement => (
         description="Download all your profile data including personal data, security questions, and consents."
         header="Export profile"
         contentPadding={ false }
-        icon={ SettigsSectionIconSet.profileExport }
-        iconMini={ SettigsSectionIconSet.profileExportMini }
+        icon={ ProfileExportIllustration }
+        iconMini={ ProfileExportMiniIllustration }
         iconSize="auto"
         iconStyle="colored"
         iconFloated="right"

@@ -21,8 +21,8 @@ import { action } from "@storybook/addon-actions";
 import { boolean, radios, select, text } from "@storybook/addon-knobs";
 import { UIConstants } from "@wso2is/core/constants";
 import React, { ReactElement } from "react";
+import { UserAvatar } from "./user-avatar";
 import { meta } from "./user-avatar.stories.meta";
-import { UserAvatar } from "../../../src";
 
 export default {
     parameters: {

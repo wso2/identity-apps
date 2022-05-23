@@ -22,16 +22,11 @@ import cloneDeep from "lodash-es/cloneDeep";
 import orderBy from "lodash-es/orderBy";
 import React, { ReactElement, SyntheticEvent, useState } from "react";
 import { Divider, Form, Grid, Header, Label, SemanticICONS } from "semantic-ui-react";
+import { DataTable, DataTableSortOrder, TableColumnInterface } from "./data-table";
 import { DEMO_DATA_LIST, DataTableDemoDataInterface, meta } from "./data-table.stories.meta";
-import {
-    AdvancedSearch,
-    AppAvatar,
-    DataTable,
-    DataTableSortOrder,
-    LinkButton,
-    PrimaryButton,
-    TableColumnInterface
-} from "../../../src";
+import { AppAvatar } from "../../avatar";
+import { LinkButton, PrimaryButton } from "../../button";
+import { AdvancedSearch } from "../../input";
 
 export default {
     parameters: {

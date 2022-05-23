@@ -20,8 +20,9 @@
 import { action } from "@storybook/addon-actions";
 import React, { ReactElement, useState } from "react";
 import { Button } from "semantic-ui-react";
+import { ConfirmationModal } from "./confirmation-modal";
 import { meta } from "./confirmation-modal.stories.meta";
-import { ConfirmationModal, Heading } from "../../../src";
+import { Heading } from "../../typography";
 
 export default {
     parameters: {

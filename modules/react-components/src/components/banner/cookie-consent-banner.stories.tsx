@@ -18,15 +18,15 @@
  */
 
 import React, { ReactElement } from "react";
+import { CookieConsentBanner } from "./cookie-consent-banner";
 import { meta } from "./cookie-consent-banner.stories.meta";
-import { CookieConsentBanner } from "../../../src";
 
 export default {
     parameters: {
         component: CookieConsentBanner,
         componentSubtitle: meta.description
     },
-    title: "Components API/Components/Banners/Cookie Consent"
+    title: "Components API/Components/Cookie Consent"
 };
 
 /**

@@ -20,8 +20,9 @@
 import { action } from "@storybook/addon-actions";
 import { text } from "@storybook/addon-knobs";
 import React, { ReactElement } from "react";
+import { DangerZone } from "./danger-zone";
+import { DangerZoneGroup } from "./danger-zone-group";
 import { meta } from "./danger-zone.stories.meta";
-import { DangerZone, DangerZoneGroup } from "../../../src";
 
 export default {
     parameters: {

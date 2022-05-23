@@ -17,10 +17,10 @@
  *
  */
 
-import { DocumentIcon, GearsIcon, SpinWheelIcon } from "@wso2is/theme";
 import React, { ReactElement } from "react";
+import { Icon } from "semantic-ui-react";
 import { meta } from "./step.stories.meta";
-import { Steps } from "../../../src";
+import { Steps } from "../../index";
 
 export default {
     parameters: {
@@ -37,9 +37,9 @@ export default {
  */
 export const DefaultSteps = (): ReactElement => (
     <Steps.Group header="Fill the basic information about your application." current={ 1 }>
-        <Steps.Step icon={ DocumentIcon } title="General settings" />
-        <Steps.Step icon={ SpinWheelIcon } title="Protocol Selection" />
-        <Steps.Step icon={ GearsIcon } title="Protocol Configuration" />
+        <Steps.Step icon={ <Icon name="document" /> } title="General settings" />
+        <Steps.Step icon={ <Icon name="wheel" /> } title="Protocol Selection" />
+        <Steps.Step icon={ <Icon name="gears" /> } title="Protocol Configuration" />
     </Steps.Group>
 );
 

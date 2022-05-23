@@ -18,9 +18,10 @@
  */
 
 import { action } from "@storybook/addon-actions";
-import React, { ReactElement } from "react";
+import React, { ReactElement, SyntheticEvent } from "react";
+import { PaginationProps } from "semantic-ui-react";
 import { meta } from "./pagination.stories.meta";
-import { Pagination } from "../../../src";
+import { Pagination } from "../pagination";
 
 export default {
     parameters: {
@@ -37,7 +38,9 @@ export default {
  */
 export const DefaultPagination = (): ReactElement => (
     <Pagination
-        onPageChange={ ({ activePage }: { activePage: number }) => action("Active Page - " + activePage) }
+        onPageChange={ (event: SyntheticEvent, data: PaginationProps) => {
+            action("Active Page - " + data.activePage);
+        } }
         totalPages={ 5 }
     />
 );
@@ -58,7 +61,9 @@ DefaultPagination.story = {
 export const PaginationWithItemsPerPage = (): ReactElement => (
     <Pagination
         showItemsPerPageDropdown
-        onPageChange={ ({ activePage }: { activePage: number }) => action("Active Page - " + activePage) }
+        onPageChange={ (event: SyntheticEvent, data: PaginationProps) => {
+            action("Active Page - " + data.activePage);
+        } }
         totalPages={ 5 }
     />
 );
@@ -80,7 +85,9 @@ export const Minimal = (): ReactElement => (
     <Pagination
         minimal
         totalPages={ 5 }
-        onPageChange={ ({ activePage }: { activePage: number }) => action("Active Page - " + activePage) }
+        onPageChange={ (event: SyntheticEvent, data: PaginationProps) => {
+            action("Active Page - " + data.activePage);
+        } }
     />
 );
 

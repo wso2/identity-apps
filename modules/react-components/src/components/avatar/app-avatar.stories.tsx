@@ -19,8 +19,8 @@
 
 import { boolean, radios, select, text } from "@storybook/addon-knobs";
 import React, { ReactElement } from "react";
+import { AppAvatar } from "./app-avatar";
 import { meta } from "./app-avatar.stories.meta";
-import { AppAvatar } from "../../../src";
 
 export default {
     parameters: {

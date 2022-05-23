@@ -20,8 +20,8 @@
 import { select } from "@storybook/addon-knobs";
 import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
 import React, { ReactElement, useState } from "react";
-import { ROUTES, ROUTES_WITH_CHILDREN, SidePanelIcons, meta } from "./side-panel.stories.meta";
-import { SidePanel } from "../../../src";
+import { ROUTES, ROUTES_WITH_CHILDREN, meta } from "./side-panel.stories.meta";
+import { SidePanel } from "../side-panel";
 
 export default {
     parameters: {
@@ -60,7 +60,6 @@ export const DefaultSidePanel = (): ReactElement => {
                         "highlighted"
                     )
                 }
-                icons={ SidePanelIcons }
                 routes={ ROUTES }
                 selected={ selectedRoute }
                 footerHeight={ 0 }
@@ -110,7 +109,6 @@ export const WithChildren = (): ReactElement => {
                         "highlighted"
                     )
                 }
-                icons={ SidePanelIcons }
                 routes={ ROUTES_WITH_CHILDREN }
                 selected={ selectedRoute }
                 footerHeight={ 0 }
@@ -161,7 +159,6 @@ export const Categorized = (): ReactElement => {
                     )
                 }
                 onSidePanelItemClick={ handleSidePanelItemClick }
-                icons={ SidePanelIcons }
                 routes={ ROUTES_WITH_CHILDREN }
                 selected={ selectedRoute }
                 footerHeight={ 0 }

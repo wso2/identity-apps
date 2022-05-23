@@ -18,15 +18,15 @@
  */
 
 import { RouteInterface } from "@wso2is/core/models";
-import { ReactComponent as AppIcon } from "../../assets/images/icons/app-icon.svg";
-import { ReactComponent as ArrowRight } from "../../assets/images/icons/arrow-right-icon.svg";
-import { ReactComponent as ControlsIcon } from "../../assets/images/icons/controls-icon.svg";
-import { ReactComponent as DashboardIcon } from "../../assets/images/icons/dashboard-icon.svg";
-import { ReactComponent as LockIcon } from "../../assets/images/icons/lock-icon.svg";
-import { ReactComponent as ToolsIcon } from "../../assets/images/icons/tools-icon.svg";
-import { ReactComponent as UserIcon } from "../../assets/images/icons/user-icon.svg";
-import { StoryCategories } from "../../hierarchy";
-import { StoryMetaInterface } from "../../models";
+import { ReactComponent as AppIcon } from "../../../storybook-helpers/assets/images/icons/app-icon.svg";
+import { ReactComponent as ArrowRight } from "../../../storybook-helpers/assets/images/icons/arrow-right-icon.svg";
+import { ReactComponent as ControlsIcon } from "../../../storybook-helpers/assets/images/icons/controls-icon.svg";
+import { ReactComponent as DashboardIcon } from "../../../storybook-helpers/assets/images/icons/dashboard-icon.svg";
+import { ReactComponent as LockIcon } from "../../../storybook-helpers/assets/images/icons/lock-icon.svg";
+import { ReactComponent as ToolsIcon } from "../../../storybook-helpers/assets/images/icons/tools-icon.svg";
+import { ReactComponent as UserIcon } from "../../../storybook-helpers/assets/images/icons/user-icon.svg";
+import { StoryCategories } from "../../../storybook-helpers/hierarchy";
+import { StoryMetaInterface } from "../../../storybook-helpers/models";
 
 export const meta: StoryMetaInterface = {
     components: [ "SidePanel" ],
@@ -62,7 +62,7 @@ export const ROUTES: RouteInterface[] = [
     {
         category: "Overview",
         component: null,
-        featureStatus: "alpha",
+        featureStatus: "ALPHA",
         icon: "apps",
         id: "applications",
         name: "Applications",
@@ -83,7 +83,7 @@ export const ROUTES: RouteInterface[] = [
     {
         category: "Security",
         component: null,
-        featureStatus: "new",
+        featureStatus: "NEW",
         icon: "security",
         id: "security",
         name: "Security",
@@ -137,7 +137,7 @@ export const ROUTES_WITH_CHILDREN: RouteInterface[] = [
             }
         ],
         component: null,
-        featureStatus: "alpha",
+        featureStatus: "ALPHA",
         icon: "apps",
         id: "applications",
         name: "Applications",
@@ -159,7 +159,7 @@ export const ROUTES_WITH_CHILDREN: RouteInterface[] = [
             },
             {
                 component: null,
-                featureStatus: "beta",
+                featureStatus: "BETA",
                 icon: "childIcon",
                 id: "preferences",
                 name: "Preferences",
@@ -188,7 +188,7 @@ export const ROUTES_WITH_CHILDREN: RouteInterface[] = [
     {
         category: "Security",
         component: null,
-        featureStatus: "new",
+        featureStatus: "NEW",
         icon: "security",
         id: "security",
         name: "Security",

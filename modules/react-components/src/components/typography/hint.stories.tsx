@@ -19,7 +19,7 @@
 
 import * as React from "react";
 import { meta } from "./hint.stories.meta";
-import { Hint } from "../../../src";
+import { Hint } from "../typography";
 
 export default {
     parameters: {

@@ -19,7 +19,7 @@
 
 import React, { ReactElement } from "react";
 import { meta } from "./resource-tab.stories.meta";
-import { ResourceTab } from "../../../src";
+import { ResourceTab } from "../../tab";
 
 export default {
     parameters: {

@@ -19,8 +19,8 @@
 
 import { boolean, number } from "@storybook/addon-knobs";
 import React, { ReactElement, useEffect, useState } from "react";
+import { TopLoadingBar } from "./top-loading-bar";
 import { meta } from "./top-loading-bar.stories.meta";
-import { TopLoadingBar } from "../../../src";
 
 export default {
     parameters: {

@@ -17,8 +17,8 @@
  *
  */
 
-import { StoryCategories } from "../../hierarchy";
-import { StoryMetaInterface } from "../../models";
+import { StoryCategories } from "../../../../storybook-helpers/hierarchy";
+import { StoryMetaInterface } from "../../../../storybook-helpers/models";
 
 export const meta: StoryMetaInterface = {
     components: [ "ResourceList" ],

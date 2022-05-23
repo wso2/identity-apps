@@ -16,69 +16,36 @@
  * under the License.
  */
 
+const webpack = require("webpack");
+const path = require("path");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 
 module.exports = {
-    stories: [ "../stories/**/*.stories.(tsx|mdx)" ],
-    addons: [
-        "@storybook/addon-knobs",
-        "@storybook/addon-actions",
-        {
-            name: "@storybook/addon-docs",
-            options: {
-                configureJSX: true,
-                sourceLoaderOptions: {
-                    parser: "typescript"
-                },
-            },
-        }
-    ],
-    webpackFinal: async config => {
-        // Prevent SVG from loading via `file-loader`.
-        config.module.rules = config.module.rules.map(rule => {
-            if (rule.test.toString().includes("svg")) {
-                const test = rule.test.toString().replace("svg|", "").replace(/\//g, "");
-                return { ...rule, test: new RegExp(test) };
-            } else {
-                return rule;
-            }
-        });
-        config.module.rules.push(
-            {
-                test: /\.(ts|tsx)$/,
-                use: [
-                    {
-                        loader: require.resolve("awesome-typescript-loader"),
-                    },
-                    {
-                        loader: require.resolve("react-docgen-typescript-loader"),
-                    }
-                ]
-            },
-            {
-                test: /\.svg$/,
-                use: [
-                    {
-                        loader: "@svgr/webpack",
-                        options: {
-                            svgoConfig: {
-                                plugins: [{prefixIds: false}]
-                            }
-                        }
-                    },
-                    {
-                        loader: "url-loader"
-                    }
-                ]
-            }
-        );
-        config.node = {
-            fs: "empty"
-        };
-        config.resolve.extensions.push(".ts", ".tsx");
-        config.resolve.plugins = config.resolve.plugins
-            ? [ ...config.resolve.plugins, new TsconfigPathsPlugin({configFile: __dirname + "/../tsconfig.json"}) ]
-            : [ new TsconfigPathsPlugin() ];
-        return config;
-    },
+  
+  core: { builder: "webpack5" },
+  
+  stories: [
+    "../src/**/*.stories.mdx",
+    "../src/**/*.stories.@(js|jsx|ts|tsx)"
+  ],
+  addons: [
+    "@storybook/addon-essentials",
+    "@storybook/addon-knobs",
+    "@nrwl/react/plugins/storybook"
+  ],
+  webpackFinal: async (config, { configType }) => {
+    config.resolve.plugins = [
+      ...(config.resolve.plugins || []),
+      new TsconfigPathsPlugin({
+        configFile: path.resolve(__dirname, "tsconfig.json"),
+        extensions: config.resolve.extensions,
+       })
+    ];
+    config.resolve.fallback = {
+      crypto: false,
+      path: require.resolve("path-browserify")
+    }
+    return config;
+  },
+
 };

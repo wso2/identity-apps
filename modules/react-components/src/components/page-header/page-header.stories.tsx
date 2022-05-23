@@ -19,7 +19,8 @@
 
 import React, { ReactElement } from "react";
 import { meta } from "./page-header.stories.meta";
-import { AppAvatar, PageHeader } from "../../../src";
+import { AppAvatar } from "../avatar";
+import { PageHeader } from "../page-header";
 
 export default {
     parameters: {

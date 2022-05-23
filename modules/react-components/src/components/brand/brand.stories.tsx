@@ -19,7 +19,8 @@
 import { text, withKnobs } from "@storybook/addon-knobs";
 import * as React from "react";
 import { meta } from "./brand.stories.meta";
-import { Logo, ProductBrand } from "../../../src";
+import { Logo } from "./logo";
+import { ProductBrand } from "./product-brand";
 
 export default {
     decorators: [ withKnobs ],
@@ -36,17 +37,27 @@ export default {
  * @return {React.ReactElement}
  */
 export const DefaultProductBrand = (): React.ReactElement => (
-    <ProductBrand
-        appName={ text("App Name", "Developer") }
-        logo={ (
-            <Logo
-                image={
-                    text("Logo URL", "https://wso2.cachefly.net/wso2/sites/all/2020-theme/images/wso2-logo.svg")
-                }/>
-        ) }
-        productName={ text("Product Name", "Identity Server") }
-        version={ text("version", "5.11.0-M24-SNAPSHOT") }
-    />
+    <div
+        style={ {
+            alignContent: "center",
+            alignItems: "center",
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "nowrap"
+        } }
+    >
+        <ProductBrand
+            appName={ text("App Name", "Developer") }
+            logo={ (
+                <Logo
+                    image={
+                        text("Logo URL", "https://wso2.cachefly.net/wso2/sites/all/2020-theme/images/wso2-logo.svg")
+                    }/>
+            ) }
+            productName={ text("Product Name", "Identity Server") }
+            version={ text("version", "5.11.0-M24-SNAPSHOT") }
+        />
+    </div>
 );
 
 DefaultProductBrand.story = {

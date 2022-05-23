@@ -117,8 +117,8 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
         "ui",
         "iframe",
         {
-            responsive,
-            [ "loading" ]: isLoading
+            [ "loading" ]: isLoading,
+            responsive
         },
         className
     );

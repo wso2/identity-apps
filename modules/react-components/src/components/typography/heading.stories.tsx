@@ -19,7 +19,7 @@
 
 import React, { ReactElement } from "react";
 import { meta } from "./heading.stories.meta";
-import { Heading } from "../../../src";
+import { Heading } from "../typography";
 
 export default {
     parameters: {

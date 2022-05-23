@@ -17,10 +17,14 @@
  */
 
 import { withKnobs } from "@storybook/addon-knobs";
-import { UserIcon } from "@wso2is/theme";
 import React, { ReactElement } from "react";
 import { meta } from "./button.stories.meta";
-import { Button, DangerButton, IconButton, LinkButton, PrimaryButton, SecondaryButton } from "../../../src";
+import { DangerButton } from "./danger-button";
+import { Button } from "./default-button";
+import { IconButton } from "./icon-button";
+import { LinkButton } from "./link-button";
+import { PrimaryButton } from "./primary-button";
+import { SecondaryButton } from "./secondary-button";
 
 export default {
     decorators: [ withKnobs ],
@@ -121,9 +125,34 @@ DangerButtonVariation.story = {
  *
  * @return {React.ReactElement}
  */
-export const IconButtonVariation = (): ReactElement => (
-    <IconButton customIcon={ UserIcon }>Icon Button</IconButton>
-);
+export const IconButtonVariation = (): ReactElement => {
+
+    /* eslint-disable max-len */
+    const UserIcon = (
+        <svg
+            version="1.1"
+            id="user-icon"
+            className="icon"
+            xmlns="http://www.w3.org/2000/svg"
+            x="0px"
+            y="0px"
+            width={ 14 }
+            height={ 14 }
+            viewBox="0 0 13.965 14"
+        >
+            <path
+                className="path fill primary"
+                fill="#fff"
+                d="M.6,14H0A7.027,7.027,0,0,1,5.412,7.679a4,4,0,1,1,3.14,0A7.029,7.029,0,0,1,13.964,14h-.6A6.4,6.4,0,0,0,.6,14h0ZM3.582,4A3.4,3.4,0,1,0,6.982.6,3.4,3.4,0,0,0,3.582,4Z"
+            />
+        </svg>
+    );
+    /* eslint-enable max-len */
+
+    return (
+        <IconButton customIcon={ UserIcon }>Icon Button</IconButton>
+    );
+};
 
 IconButtonVariation.story = {
     parameters: {

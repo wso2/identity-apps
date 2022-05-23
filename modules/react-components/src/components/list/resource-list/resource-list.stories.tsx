@@ -20,8 +20,9 @@
 import { action } from "@storybook/addon-actions";
 import React, { ReactElement } from "react";
 import { Label } from "semantic-ui-react";
+import { ResourceList } from "./resource-list";
 import { APPLICATIONS_LIST, meta } from "./resource-list.stories.meta";
-import { AppAvatar, ResourceList } from "../../../src";
+import { AppAvatar } from "../../avatar";
 
 export default {
     parameters: {

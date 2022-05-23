@@ -19,8 +19,8 @@
 
 import { select, withKnobs } from "@storybook/addon-knobs";
 import React, { ReactElement } from "react";
+import { CodeEditor } from "./code-editor";
 import { SampleJSCodeSnippet, SampleJSONSnippet, SampleTSCodeSnippet, meta } from "./code-editor.stories.meta";
-import { CodeEditor } from "../../../src";
 
 export default {
     decorators: [ withKnobs ],

@@ -19,8 +19,8 @@
 
 import { boolean, text } from "@storybook/addon-knobs";
 import React, { ReactElement, useEffect, useState } from "react";
+import { ContentLoader } from "./content-loader";
 import { meta } from "./top-loading-bar.stories.meta";
-import { ContentLoader } from "../../../src";
 
 export default {
     parameters: {

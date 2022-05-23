@@ -14,20 +14,15 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-import { StoryCategories } from "../../../../storybook-helpers/hierarchy";
-import { StoryMetaInterface } from "../../../../storybook-helpers/models";
+import { create } from '@storybook/theming';
+import { version } from "../package.json";
 
-export const meta: StoryMetaInterface = {
-    components: [ "ResourceTab" ],
-    description: "Component to render tabs.",
-    stories: [
-        {
-            description: "Default tab appearance.",
-            title: "Default"
-        }
-    ],
-    title: `${ StoryCategories.COMPONENTS }/Tab`
-};
+export const LightTheme = create({
+  base: "light",
+  colorSecondary: "#ff5000",
+  brandTitle: `IDENTITY SERVER REACT ${ version }`,
+  brandUrl: "https://wso2.com/identity-server/",
+  brandTarget: '_blank',
+});
