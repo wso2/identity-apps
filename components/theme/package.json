@@ -1,10 +1,10 @@
 {
     "name": "@wso2is/theme-component",
-    "version": "1.2.960",
+    "version": "1.2.961",
     "description": "WSO2 Identity Server Theme Component",
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/theme": "^1.2.960"
+        "@wso2is/theme": "^1.2.961"
     }
 }
