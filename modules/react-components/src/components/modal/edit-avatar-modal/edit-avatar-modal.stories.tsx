@@ -19,7 +19,7 @@
 
 import { resolveUserDisplayName } from "@wso2is/core/helpers";
 import React, { ReactElement, useState } from "react";
-import { meta } from "./confirmation-modal.stories.meta";
+import { meta } from "../../../src/components/modal/confirmation-modal/confirmation-modal.stories.meta";
 import { EditAvatarModal, PrimaryButton } from "../../../src";
 import { getSampleProfileInfo } from "../../meta";
 
