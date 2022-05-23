@@ -4391,7 +4391,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     pageLayout: {
-                        description: "Créer et gérer des certificats dans le magasin de clés",
+                        description: "Gérer les certificats dans le keystore",
                         primaryAction: "Importer un certificat",
                         title: "Certificats"
                     },

@@ -4281,7 +4281,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     pageLayout: {
-                        description: "යතුරු ගබඩාවේ සහතික සාදන්න සහ කළමනාකරණය කරන්න",
+                        description: "යතුරු ගබඩාවේ සහතික කළමනාකරණය කරන්න.",
                         primaryAction: "ආනයන සහතිකය",
                         title: "සහතික"
                     },

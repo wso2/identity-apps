@@ -5678,7 +5678,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     pageLayout: {
-                        description: "Create and manage certificates in the keystore.",
+                        description: "Manage certificates in the keystore.",
                         primaryAction: "Import Certificate",
                         title: "Certificates"
                     },
