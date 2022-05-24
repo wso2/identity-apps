@@ -17,8 +17,8 @@
  *
  */
 
-import { StoryCategories } from "../../../../storybook-helpers/hierarchy";
-import { StoryMetaInterface } from "../../../../storybook-helpers/models";
+import { StoryCategories } from "../../../storybook-helpers/hierarchy";
+import { StoryMetaInterface } from "../../../storybook-helpers/models";
 
 export const meta: StoryMetaInterface = {
     components: [ "ConfirmationModal" ],

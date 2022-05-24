@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import "../storybook-helpers/styles.css";
+import "../src/storybook-helpers/styles.css";
 import { LightTheme } from "./theme";
 
 export const parameters = {

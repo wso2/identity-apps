@@ -25,8 +25,8 @@ import { ReactComponent as DashboardIcon } from "../../../storybook-helpers/asse
 import { ReactComponent as LockIcon } from "../../../storybook-helpers/assets/images/icons/lock-icon.svg";
 import { ReactComponent as ToolsIcon } from "../../../storybook-helpers/assets/images/icons/tools-icon.svg";
 import { ReactComponent as UserIcon } from "../../../storybook-helpers/assets/images/icons/user-icon.svg";
-import { StoryCategories } from "../../../storybook-helpers/hierarchy";
-import { StoryMetaInterface } from "../../../storybook-helpers/models";
+import { StoryCategories } from "../../storybook-helpers/hierarchy";
+import { StoryMetaInterface } from "../../storybook-helpers/models";
 
 export const meta: StoryMetaInterface = {
     components: [ "SidePanel" ],

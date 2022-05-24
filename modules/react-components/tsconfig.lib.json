@@ -20,9 +20,11 @@
         "**/*.spec.jsx",
         "**/*.test.jsx",
         "**/*.stories.ts",
+        "**/*.stories.meta.ts",
         "**/*.stories.js",
         "**/*.stories.jsx",
-        "**/*.stories.tsx"
+        "**/*.stories.tsx",
+        "**/storybook-helpers/**/*"
     ],
     "include": [
         "**/*.js",
