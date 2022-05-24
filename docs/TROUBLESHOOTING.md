@@ -5,9 +5,9 @@ Look through here if you come across any issue.
 ✨ If your issues isn't here and you were able to figure a solution, please consider contribute to the guide.
 
 * [Node](#node)
-  * [Dev Server Failures](#dev-server-failures)
+    * [Dev Server Failures](#dev-server-failures)
 * [Maven](#maven)
-  * [Build Failures](#build-failures)
+    * [Build Failures](#build-failures)
 
 ## Node
 
