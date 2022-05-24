@@ -75,7 +75,7 @@
             ],
             "options": {
                 "uiFramework": "@storybook/react",
-                "outputPath": "dist/storybook/react-components",
+                "outputPath": "modules/react-components/dist/storybook",
                 "config": {
                     "configFolder": "modules/react-components/.storybook"
                 }

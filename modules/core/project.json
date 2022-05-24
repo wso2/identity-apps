@@ -8,9 +8,10 @@
         "build": {
             "executor": "@nrwl/workspace:run-commands",
             "outputs": [
-                "modules/core/dist"
+                "{options.outputPath}"
             ],
             "options": {
+                "outputPath": "modules/core/dist",
                 "tsconfig": "modules/core/tsconfig.json",
                 "command": "npm run build",
                 "cwd": "modules/core"

@@ -19,9 +19,14 @@
                 "tsConfig": "apps/console/tsconfig.json",
                 "assets": [
                     {
-                        "glob": "**/*.!(less)",
+                        "glob": "**/*",
                         "input": "modules/theme/dist/lib",
-                        "output": "libs"
+                        "output": "libs",
+                        "ignore": [
+                            "**/**.js",
+                            "**/**.json",
+                            "**/assets/images/!(branding|identity-providers|flags.png)/**"
+                        ]
                     },
                     {
                         "glob": "**/*",
@@ -37,11 +42,6 @@
                         "glob": "meta.*.json",
                         "input": "apps/console/src/extensions/i18n/tmp",
                         "output": "resources/i18n"
-                    },
-                    {
-                        "glob": "**/assets/images/(branding|flags.png)/**",
-                        "input": "modules/theme/dist/lib",
-                        "output": "libs"
                     }
                 ],
                 "styles": [],

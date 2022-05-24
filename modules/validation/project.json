@@ -8,16 +8,14 @@
         "build": {
             "executor": "@nrwl/workspace:run-commands",
             "outputs": [
-                "modules/validation/dist"
+                "{options.outputPath}"
             ],
             "options": {
+                "outputPath": "modules/validation/dist",
                 "tsconfig": "modules/validation/tsconfig.json",
                 "command": "npm run build",
                 "cwd": "modules/validation"
             }
         }
-    },
-    "outputs": [
-        "{options.outputPath}"
-    ]
+    }
 }

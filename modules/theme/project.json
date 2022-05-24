@@ -8,16 +8,14 @@
         "build": {
             "executor": "@nrwl/workspace:run-commands",
             "outputs": [
-                "modules/theme/dist"
+                "{options.outputPath}"
             ],
             "options": {
+                "outputPath": "modules/theme/dist",
                 "tsconfig": "modules/theme/tsconfig.json",
                 "command": "npm run build",
                 "cwd": "modules/theme"
             }
         }
-    },
-    "outputs": [
-        "{options.outputPath}"
-    ]
+    }
 }
