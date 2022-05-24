@@ -100,6 +100,7 @@ export interface ApplicationConfig {
     };
     customApplication: {
         allowedProtocolTypes: string[];
+        defaultTabIndex: number;
     };
     excludeIdentityClaims: boolean;
     excludeSubjectClaim: boolean;

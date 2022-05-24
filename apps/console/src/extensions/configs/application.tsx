@@ -57,7 +57,8 @@ export const applicationConfig: ApplicationConfig = {
         roleMapping: true
     },
     customApplication: {
-        allowedProtocolTypes: []
+        allowedProtocolTypes: [],
+        defaultTabIndex: 0
     },
     editApplication: {
         extendTabs: false,
