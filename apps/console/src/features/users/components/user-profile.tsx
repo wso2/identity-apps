@@ -240,47 +240,57 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     
                     if (schemaNames.length === 1) {
                         if (schemaNames[0] === "emails") {
-                            if(ProfileUtils.isStringArray(userInfo[schemaNames[0]])) {
-                                const emails: any[] = userInfo[schemaNames[0]];
+                            const emailSchema:string = schemaNames[0];
+
+                            if(ProfileUtils.isStringArray(userInfo[emailSchema])) {
+                                const emails: any[] = userInfo[emailSchema];
                                 const primaryEmail = emails.find((subAttribute) => typeof subAttribute === "string");
     
                                 // Set the primary email value.
                                 tempProfileInfo.set(schema.name, primaryEmail);
                             }
                         } else {
+                            const schemaName:string = schemaNames[0];
+
                             if (schema.extended && userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA]) {
                                 tempProfileInfo.set(
-                                    schema.name, userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA][schemaNames[0]]
+                                    schema.name, userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA][schemaName]
                                 );
     
                                 return;
                             }
-                            tempProfileInfo.set(schema.name, userInfo[schemaNames[0]]);
+                            tempProfileInfo.set(schema.name, userInfo[schemaName]);
                         }
                     } else {
                         if (schemaNames[0] === "name") {
-                            const name = schemaNames[1] && userInfo[schemaNames[0]] &&
-                                userInfo[schemaNames[0]][schemaNames[1]] && (
-                                tempProfileInfo.set(schema.name, userInfo[schemaNames[0]][schemaNames[1]])
+                            const nameSchema = schemaNames[0];
+                            const givenNameSchema = schemaNames[1];
+
+                            givenNameSchema && userInfo[nameSchema] && 
+                                userInfo[nameSchema][givenNameSchema] && (
+                                tempProfileInfo.set(schema.name, userInfo[nameSchema][givenNameSchema])
                             );
                         } else {
+                            const schemaName = schemaNames[0];
+                            const schemaSecondaryProperty = schemaNames[1];
+
                             if (schema.extended && userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA]) {
-                                const complexEnterprise = schemaNames[0] && schemaNames[1] &&
+                                schemaName && schemaSecondaryProperty &&
                                     userInfo[ProfileConstants
-                                        .SCIM2_WSO2_USER_SCHEMA][schemaNames[0]] &&
+                                        .SCIM2_WSO2_USER_SCHEMA][schemaName] &&
                                     userInfo[ProfileConstants
-                                        .SCIM2_WSO2_USER_SCHEMA][schemaNames[0]][schemaNames[1]] && (
+                                        .SCIM2_WSO2_USER_SCHEMA][schemaName][schemaSecondaryProperty] && (
                                     tempProfileInfo.set(schema.name,
                                         userInfo[ProfileConstants
-                                            .SCIM2_WSO2_USER_SCHEMA][schemaNames[0]][schemaNames[1]])
+                                            .SCIM2_WSO2_USER_SCHEMA][schemaName][schemaSecondaryProperty])
                                 );
                             } else {
-                                const subValue = userInfo[schemaNames[0]] &&
-                                    Array.isArray(userInfo[schemaNames[0]]) &&
-                                    userInfo[schemaNames[0]]
-                                        .find((subAttribute) => subAttribute.type === schemaNames[1]);
+                                const subValue = userInfo[schemaName] &&
+                                    Array.isArray(userInfo[schemaName]) &&
+                                    userInfo[schemaName]
+                                        .find((subAttribute) => subAttribute.type === schemaSecondaryProperty);
                                 
-                                if (schemaNames[0] === "addresses") {
+                                if (schemaName === "addresses") {
                                     tempProfileInfo.set(
                                         schema.name,
                                         subValue ? subValue.formatted : ""
@@ -301,46 +311,56 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     
                     if (schemaNames.length === 1) {
                         if (schemaNames[0] === "emails") {
-                            if(ProfileUtils.isStringArray(userInfo[schemaNames[0]])) {
-                                const emails: any[] = userInfo[schemaNames[0]];
+                            const emailSchema:string = schemaNames[0];
+
+                            if(ProfileUtils.isStringArray(userInfo[emailSchema])) {
+                                const emails: any[] = userInfo[emailSchema];
                                 const primaryEmail = emails.find((subAttribute) => typeof subAttribute === "string");
     
                                 // Set the primary email value.
                                 tempProfileInfo.set(schema.name, primaryEmail);
                             }
                         } else {
+                            const schemaName:string = schemaNames[0];
+
                             if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]) {
                                 tempProfileInfo.set(
-                                    schema.name, userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]
+                                    schema.name, userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaName]
                                 );
     
                                 return;
                             }
-                            tempProfileInfo.set(schema.name, userInfo[schemaNames[0]]);
+                            tempProfileInfo.set(schema.name, userInfo[schemaName]);
                         }
                     } else {
                         if (schemaNames[0] === "name") {
-                            const name = schemaNames[1] && userInfo[schemaNames[0]] &&
-                                userInfo[schemaNames[0]][schemaNames[1]] && (
-                                tempProfileInfo.set(schema.name, userInfo[schemaNames[0]][schemaNames[1]])
+                            const nameSchema = schemaNames[0];
+                            const givenNameSchema = schemaNames[1];
+
+                            givenNameSchema && userInfo[nameSchema] &&
+                                userInfo[nameSchema][givenNameSchema] && (
+                                tempProfileInfo.set(schema.name, userInfo[nameSchema][givenNameSchema])
                             );
                         } else {
+                            const schemaName = schemaNames[0];
+                            const schemaSecondaryProperty = schemaNames[1];
+
                             if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]) {
-                                const complexEnterprise = schemaNames[0] && schemaNames[1] &&
-                                    userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]] &&
+                                schemaName && schemaSecondaryProperty &&
+                                    userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaName] &&
                                     userInfo[ProfileConstants
-                                        .SCIM2_ENT_USER_SCHEMA][schemaNames[0]][schemaNames[1]] && (
+                                        .SCIM2_ENT_USER_SCHEMA][schemaName][schemaSecondaryProperty] && (
                                     tempProfileInfo.set(schema.name,
                                         userInfo[ProfileConstants
-                                            .SCIM2_ENT_USER_SCHEMA][schemaNames[0]][schemaNames[1]])
+                                            .SCIM2_ENT_USER_SCHEMA][schemaName][schemaSecondaryProperty])
                                 );
                             } else {
-                                const subValue = userInfo[schemaNames[0]] &&
-                                    Array.isArray(userInfo[schemaNames[0]]) &&
-                                    userInfo[schemaNames[0]]
-                                        .find((subAttribute) => subAttribute.type === schemaNames[1]);
+                                const subValue = userInfo[schemaName] &&
+                                    Array.isArray(userInfo[schemaName]) &&
+                                    userInfo[schemaName]
+                                        .find((subAttribute) => subAttribute.type === schemaSecondaryProperty);
                                 
-                                if (schemaNames[0] === "addresses") {
+                                if (schemaName === "addresses") {
                                     tempProfileInfo.set(
                                         schema.name,
                                         subValue ? subValue.formatted : ""
@@ -518,7 +538,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     };
                                 } else if (schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
                                     .get("NAME")) {
-                                    const name = values.get(schema.name) && (
+                                    values.get(schema.name) && (
                                         opValue = {
                                             name: { [schemaNames[1]]: values.get(schema.name) }
                                         }
@@ -642,7 +662,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     };
                                 } else if (schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
                                     .get("NAME")) {
-                                    const name = values.get(schema.name) && (
+                                    values.get(schema.name) && (
                                         opValue = {
                                             name: { [schemaNames[1]]: values.get(schema.name) }
                                         }
