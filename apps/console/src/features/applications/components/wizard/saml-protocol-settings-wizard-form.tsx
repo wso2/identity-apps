@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms } from "@wso2is/forms";
-import { ContentLoader, Hint, LinkButton, MessageWithIcon, URLInput } from "@wso2is/react-components";
+import { ContentLoader, Hint, LinkButton, Message, URLInput } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -331,7 +331,7 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                                     />
                                     {
                                         (assertionConsumerURLFromTemplate) && (
-                                            <MessageWithIcon
+                                            <Message
                                                 type="info"
                                                 content={
                                                     <>

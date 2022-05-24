@@ -87,41 +87,33 @@
 }
 
 .ui.info.message {
-    background-color: #eff7fd !important;
+    background-color: @infoMessageBackgroundColor !important;
 
-    i.icon {
-        &.info-icon {
-            color: #0095ff !important;
-        }
+    i.info.circle.icon {
+        color: @infoMessageIconColor !important;
     }
 }
 
 .ui.error.message {
-    background-color: #ffd8d8 !important;
+    background-color: @errorMessageBackgroundColor !important;
 
-    i.icon {
-        &.error-icon {
-            color: #ff0f0f !important;
-        }
+    i.times.circle.icon {
+        color: @errorMessageIconColor !important;
     }
 }
 
 .ui.success.message {
-    background-color: #dffee3 !important;
+    background-color: @successMessageBackgroundColor !important;
 
-    i.icon {
-        &.success-icon {
-            color: #1ebc30 !important;
-        }
+    i.check.circle.icon {
+        color: @successMessageIconColor !important;
     }
 }
 
 .ui.warning.message {
-    background-color: #fff6e7 !important;
+    background-color: @warningMessageBackgroundColor !important;
 
-    i.icon {
-        &.warn-icon {
-            color: #ffa500 !important;
-        }
+    i.warning.circle.icon {
+        color: @warningMessageIconColor !important;
     }
 }

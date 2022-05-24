@@ -24,7 +24,7 @@ import {
     FilePicker,
     Hint,
     LinkButton,
-    MessageWithIcon,
+    Message,
     URLInput,
     XMLFileStrategy
 } from "@wso2is/react-components";
@@ -472,7 +472,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                 />
                                 {
                                     (assertionConsumerURLFromTemplate) && (
-                                        <MessageWithIcon
+                                        <Message
                                             visible
                                             type="info"
                                             content={

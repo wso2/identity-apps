@@ -20,7 +20,7 @@ import {
     CodeEditor,
     DocumentationLink,
     LinkButton,
-    MessageWithIcon,
+    Message,
     useDocumentation
 } from "@wso2is/react-components";
 import isObject from "lodash-es/isObject";
@@ -214,7 +214,7 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
                                         "templateDescription.description.helpReference")
                                 }
                             </h4>
-                            <MessageWithIcon
+                            <Message
                                 type="info"
                                 content={
                                     <a target="_blank" href={ template.helpLink } rel="noreferrer">

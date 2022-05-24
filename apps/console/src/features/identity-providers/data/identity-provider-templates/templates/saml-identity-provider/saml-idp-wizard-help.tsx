@@ -22,7 +22,7 @@ import {
     CopyInputField,
     DocumentationLink,
     Heading,
-    MessageWithIcon,
+    Message,
     useDocumentation
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
@@ -49,7 +49,7 @@ const SamlIDPWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement
 
     return (
         <div data-testid={ testId }>
-            <MessageWithIcon
+            <Message
                 type="info"
                 content={
                     <>

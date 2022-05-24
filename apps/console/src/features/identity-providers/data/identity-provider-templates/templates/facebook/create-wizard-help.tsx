@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Code, CopyInputField, Heading, MessageWithIcon } from "@wso2is/react-components";
+import { Code, CopyInputField, Heading, Message } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -101,7 +101,7 @@ const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
                         </Trans>
     return (
         <div data-testid={ testId }>
-            <MessageWithIcon
+            <Message
                 type="info"
                 header={
                     t("console:develop.features.authenticationProvider.templates.facebook." +

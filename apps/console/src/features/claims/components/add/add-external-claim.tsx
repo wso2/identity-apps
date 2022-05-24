@@ -20,7 +20,7 @@ import { getAllLocalClaims } from "@wso2is/core/api";
 import { AlertLevels, Claim, ClaimsGetParams, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
-import { Code, ContentLoader, Hint, Link, MessageWithIcon, PrimaryButton } from "@wso2is/react-components";
+import { Code, ContentLoader, Hint, Link, Message, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -507,7 +507,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                             (isEmptyClaims || isEmptyServerSupportedClaims) && (
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column width={ 16 } textAlign="left" verticalAlign="top">
-                                        <MessageWithIcon
+                                        <Message
                                             visible
                                             type="warning"
                                             content={

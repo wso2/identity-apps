@@ -25,16 +25,15 @@ import {
     Heading,
     Hint,
     LinkButton,
-    MessageWithIcon,
+    Message,
     PrimaryButton,
     useDocumentation,
-    CopyInputField
 } from "@wso2is/react-components";
 import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import {Divider, Grid, Icon, Message} from "semantic-ui-react";
+import { Divider, Grid, Icon } from "semantic-ui-react";
 import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
@@ -486,7 +485,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         const moreThan1IdP = idpList.length > 1;
 
         return (
-            <MessageWithIcon
+            <Message
                 data-componentid="jit-provisioning-mfa-in-sequence-warning-message"
                 data-testid="jit-provisioning-mfa-in-sequence-warning-message"
                 type="warning"
@@ -589,7 +588,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 authenticationSequence.steps[ 0 ].options.find(authenticator =>
                     authenticator.authenticator === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR)
                 && (
-                    <MessageWithIcon
+                    <Message
                         type="warning"
                         content={
                             <>

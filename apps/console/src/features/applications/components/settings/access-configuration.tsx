@@ -26,7 +26,7 @@ import {
     DocumentationLink,
     EmphasizedSegment,
     GenericIcon,
-    MessageWithIcon,
+    Message,
     useDocumentation
 } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
@@ -566,7 +566,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
 
             return (
                 <Fragment>
-                    <MessageWithIcon
+                    <Message
                         visible
                         type="info"
                         content={

@@ -27,7 +27,7 @@ import {
     GenericIcon,
     Heading,
     Hint,
-    MessageWithIcon,
+    Message,
     Text,
     URLInput
 } from "@wso2is/react-components";
@@ -39,7 +39,7 @@ import union from "lodash-es/union";
 import React, { Fragment, FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Button, Container, Divider, Form, Grid, Label, List, Message } from "semantic-ui-react";
+import { Button, Container, Divider, Form, Grid, Label, List } from "semantic-ui-react";
 import { applicationConfig } from "../../../../extensions";
 import { AppState, ConfigReducerStateInterface } from "../../../core";
 import { getGeneralIcons } from "../../configs";
@@ -2720,7 +2720,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             (initialValues?.state === State.REVOKED) && (
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                        <MessageWithIcon
+                                        <Message
                                             type="warning"
                                             visible
                                             header={
@@ -2767,7 +2767,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 ) && isSPAApplication
                                             )
                                                 ? (
-                                                    <MessageWithIcon
+                                                    <Message
                                                         type="info"
                                                         content={
                                                             <Trans
@@ -2806,7 +2806,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             {
                                                 isClientSecretHashEnabled
                                                     ? (
-                                                        <MessageWithIcon
+                                                        <Message
                                                             visible
                                                             type="info"
                                                             content={

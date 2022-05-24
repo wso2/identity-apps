@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { CopyInputField, Heading, MessageWithIcon } from "@wso2is/react-components";
+import { CopyInputField, Heading, Message } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { Divider, Icon } from "semantic-ui-react";
@@ -44,10 +44,9 @@ const CustomIdentityProviderCreateWizardHelp: FunctionComponent<CustomIdentityPr
 
         const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
-
         return (
             <div data-testid={ testId }>
-                <MessageWithIcon
+                <Message
                     type="info"
                     header="Prerequisite"
                     content={

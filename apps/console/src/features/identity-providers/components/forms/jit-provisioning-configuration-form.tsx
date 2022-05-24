@@ -19,7 +19,7 @@
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
-import { Code, DocumentationLink, Hint, MessageWithIcon, useDocumentation } from "@wso2is/react-components";
+import { Code, DocumentationLink, Hint, Message, useDocumentation } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -151,7 +151,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                 "hidden animating out": isJITProvisioningEnabled,
                 "visible animating in": !isJITProvisioningEnabled
             }) }>
-            <MessageWithIcon
+            <Message
                 data-componentid="proxy-mode-conflict-warning-message"
                 data-testid="proxy-mode-conflict-warning-message"
                 type="warning"

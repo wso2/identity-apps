@@ -17,7 +17,7 @@
 */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { AnimatedAvatar, MessageWithIcon } from "@wso2is/react-components";
+import { AnimatedAvatar, Message } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Image, Table } from "semantic-ui-react";
@@ -130,7 +130,7 @@ export const SummaryAddDialect: FunctionComponent<SummaryAddDialectPropsInterfac
                                 claims.length === 0 && (
                                     <Table.Row>
                                         <Table.Cell colSpan={ 3 } textAlign="center">
-                                            <MessageWithIcon
+                                            <Message
                                                 type="warning"
                                                 content={
                                                     t("console:manage.features.claims.dialects.wizard." +

@@ -19,7 +19,7 @@
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
-import { MessageWithIcon } from "@wso2is/react-components";
+import { Message } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import * as CountryLanguage from "country-language";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -333,7 +333,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                             />
                             {
                                 isSubmitting && bodyError && (
-                                    <MessageWithIcon
+                                    <Message
                                         attached
                                         type="error"
                                         content={
@@ -367,7 +367,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                             />
                             {
                                 isSubmitting && footerError && (
-                                    <MessageWithIcon
+                                    <Message
                                         attached
                                         type="error"
                                         content={

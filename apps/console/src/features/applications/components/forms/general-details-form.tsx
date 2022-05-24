@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
-import { DocumentationLink, MessageWithIcon, useDocumentation } from "@wso2is/react-components";
+import { DocumentationLink, Message, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -219,7 +219,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 : <Divider hidden/>
             }
             { isManagementApp && (
-                <MessageWithIcon
+                <Message
                     type="info"
                     content={
                         <>

@@ -23,7 +23,7 @@ import {
     ContentLoader,
     Heading,
     LinkButton,
-    MessageWithIcon,
+    Message,
     PrimaryButton,
     useWizardAlert
 } from "@wso2is/react-components";
@@ -346,7 +346,7 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                     />
                     {
                         showInfoMessage && (
-                            <MessageWithIcon
+                            <Message
                                 data-componentid={ `${ testId }-page-message` }
                                 type="info"
                                 content={

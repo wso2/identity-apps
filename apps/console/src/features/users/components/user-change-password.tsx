@@ -19,7 +19,7 @@
 import { ProfileConstants } from "@wso2is/core/constants";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
-import { EditSection, Hint, LinkButton, MessageWithIcon, PrimaryButton } from "@wso2is/react-components";
+import { EditSection, Hint, LinkButton, Message, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, List, Modal } from "semantic-ui-react";
@@ -477,7 +477,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                     { handlePasswordResetOptionChange() }
                     <Grid.Row>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                            <MessageWithIcon
+                            <Message
                                 type="warning"
                                 content={ t("console:manage.features.user.modals.changePasswordModal.message") }
                             />
@@ -560,7 +560,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                    </Grid.Row>
                    <Grid.Row>
                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                           <MessageWithIcon
+                           <Message
                                type="warning"
                                content={ t("console:manage.features.user.modals.changePasswordModal.message") }
                            />

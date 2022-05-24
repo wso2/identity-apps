@@ -27,7 +27,7 @@ import {
     EmptyPlaceholder,
     GenericIcon,
     GridLayout,
-    MessageWithIcon,
+    Message,
     LinkButton,
     ListLayout,
     TableActionsInterface,
@@ -37,7 +37,7 @@ import find from "lodash-es/find";
 import React, { FC, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { DropdownItemProps, DropdownProps, Header, Message, SemanticICONS } from "semantic-ui-react";
+import { DropdownItemProps, DropdownProps, Header, SemanticICONS } from "semantic-ui-react";
 import { EmptySecretListPlaceholder } from "./empty-secret-list-placeholder";
 import {
     AdvancedSearchWithBasicFilters,
@@ -443,7 +443,7 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
         <GridLayout isLoading={ isSecretListLoading } showTopActionPanel={ false }>
             {
                 showAdaptiveAuthSecretBanner && selectedSecretType === ADAPTIVE_SCRIPT_SECRETS && (
-                    <MessageWithIcon
+                    <Message
                         type="info"
                         data-componentid={ `${ testId }-page-message` }
                         header={ t("console:develop.features.secrets.banners.adaptiveAuthSecretType.title") }

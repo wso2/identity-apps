@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { GenericIcon, MessageWithIcon } from "@wso2is/react-components";
+import { GenericIcon, Message } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, MouseEvent, PropsWithChildren, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -281,7 +281,7 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
                                         placeholder
                                             ? (
                                                 <List.Header className="action-button-text">
-                                                    <MessageWithIcon type="info" content={ placeholder } />
+                                                    <Message type="info" content={ placeholder } />
                                                 </List.Header>
                                             )
                                             : (

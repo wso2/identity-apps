@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import { GenericIcon, Hint, InlineEditInput, MessageWithIcon } from "@wso2is/react-components";
+import { GenericIcon, Hint, InlineEditInput, Message } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, Grid, Icon, Label, Popup } from "semantic-ui-react";
@@ -304,7 +304,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                 {
                                                     // TODO : Need to move ti i18n files
                                                     showSCIMMappingError && (
-                                                        <MessageWithIcon
+                                                        <Message
                                                             className="mb-4"
                                                             size="tiny"
                                                             type="error"
@@ -316,7 +316,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                 {
                                                     // TODO : Need to move ti i18n files
                                                     showOIDCMappingError && (
-                                                        <MessageWithIcon
+                                                        <Message
                                                             className="mb-4"
                                                             size="tiny"
                                                             type="error"
