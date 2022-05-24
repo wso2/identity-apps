@@ -337,7 +337,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     }
 
                     if (selectedTemplate.id === CustomApplicationTemplate.id) {
-                        defaultTabIndex = 1;
+                        defaultTabIndex = applicationConfig.customApplication.defaultTabIndex;
                     }
 
                     history.push({
