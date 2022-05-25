@@ -13,6 +13,57 @@
     ],
     "main": "dist/src/index.js",
     "types": "dist/types/index.d.ts",
+    "exports": {
+        ".": "./dist/src/index.js",
+        "./api": "./dist/src/api/index.js",
+        "./configs": "./dist/src/configs/index.js",
+        "./constants": "./dist/src/constants/index.js",
+        "./errors": "./dist/src/errors/index.js",
+        "./exceptions": "./dist/src/exceptions/index.js",
+        "./helpers": "./dist/src/helpers/index.js",
+        "./hooks": "./dist/src/hooks/index.js",
+        "./models": "./dist/src/models/index.js",
+        "./store": "./dist/src/store/index.js",
+        "./utils": "./dist/src/utils/index.js",
+        "./workers/timer.worker": "./dist/src/workers/timer.worker.js"
+    },
+    "typesVersions": {
+        "*": {
+            "api": [
+                "./dist/types/api/index.d.ts"
+            ],
+            "configs": [
+                "./dist/types/configs/index.d.ts"
+            ],
+            "constants": [
+                "./dist/types/constants/index.d.ts"
+            ],
+            "errors": [
+                "./dist/types/errors/index.d.ts"
+            ],
+            "exceptions": [
+                "./dist/types/exceptions/index.d.ts"
+            ],
+            "helpers": [
+                "./dist/types/helpers/index.d.ts"
+            ],
+            "hooks": [
+                "./dist/types/hooks/index.d.ts"
+            ],
+            "models": [
+                "./dist/types/models/index.d.ts"
+            ],
+            "store": [
+                "./dist/types/store/index.d.ts"
+            ],
+            "utils": [
+                "./dist/types/utils/index.d.ts"
+            ],
+            "workers/timer.worker": [
+                "./dist/types/workers/timer.worker.d.ts"
+            ]
+        }
+    },
     "scripts": {
         "prebuild": "npm run clean",
         "build": "pnpm prebuild && npm run compile",
