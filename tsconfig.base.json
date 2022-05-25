@@ -20,6 +20,9 @@
         "paths": {
             "@wso2is/react-components": [
                 "modules/react-components/src/index.ts"
+            ],
+            "@wso2is/form": [
+                "modules/form/src/index.ts"
             ]
         }
     },

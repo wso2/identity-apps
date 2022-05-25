@@ -14,7 +14,8 @@
           "test",
           "lint",
           "package",
-          "prepare"
+          "prepare",
+          "build-storybook"
         ]
       }
     }

@@ -89,6 +89,7 @@ tsconfig.tsbuildinfo
 .next
 
 # project build folders & files
+dist
 target/
 npm/
 modules/*/dist
