@@ -25,6 +25,7 @@
                         "ignore": [
                             "**/**.js",
                             "**/**.json",
+                            "**/**.less",
                             "**/assets/images/!(branding|identity-providers|flags.png)/**"
                         ]
                     },
@@ -48,7 +49,7 @@
                 "scripts": [],
                 "generateIndexHtml": false,
                 "postcssConfig": "apps/console/postcss.config.js",
-                "webpackConfig": "apps/console/nx-webpack.ts"
+                "webpackConfig": "apps/console/webpack.config.ts"
             },
             "configurations": {
                 "development": {

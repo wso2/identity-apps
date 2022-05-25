@@ -13,15 +13,21 @@
                 "compiler": "babel",
                 "outputPath": "apps/myaccount/build/myaccount",
                 "index": "apps/myaccount/src/index.html",
-                "baseHref": "",
+                "baseHref": "/myaccount/",
                 "main": "apps/myaccount/src/index.tsx",
                 "polyfills": "",
                 "tsConfig": "apps/myaccount/tsconfig.json",
                 "assets": [
                     {
-                        "glob": "**/*.!(less)",
+                        "glob": "**/*",
                         "input": "modules/theme/dist/lib",
-                        "output": "libs"
+                        "output": "libs",
+                        "ignore": [
+                            "**/**.js",
+                            "**/**.json",
+                            "**/**.less",
+                            "**/assets/images/!(branding|identity-providers|flags.png)/**"
+                        ]
                     },
                     {
                         "glob": "**/*",
@@ -32,26 +38,24 @@
                         "glob": "**/*",
                         "input": "modules/i18n/dist/bundle",
                         "output": "resources/i18n"
-                    },
-                    {
-                        "glob": "**/assets/images/(branding|flags.png)/**",
-                        "input": "modules/theme/dist/lib",
-                        "output": "libs"
                     }
                 ],
                 "styles": [],
                 "scripts": [],
                 "generateIndexHtml": false,
-                "webpackConfig": "apps/myaccount/nx-webpack.ts"
+                "postcssConfig": "apps/myaccount/postcss.config.js",
+                "webpackConfig": "apps/myaccount/webpack.config.ts"
             },
             "configurations": {
                 "development": {
+                    "index": "apps/myaccount/src/index.html",
                     "extractLicenses": false,
                     "optimization": false,
                     "sourceMap": true,
                     "vendorChunk": true
                 },
                 "production": {
+                    "index": "apps/myaccount/src/home.jsp",
                     "fileReplacements": [],
                     "optimization": true,
                     "outputHashing": "all",
@@ -67,8 +71,8 @@
             "defaultConfiguration": "development",
             "options": {
                 "buildTarget": "myaccount:build",
-                "port": 9000,
-                "baseHref": "",
+                "port": 9001,
+                "baseHref": "/myaccount/",
                 "open": true,
                 "hmr": true,
                 "ssl": true
