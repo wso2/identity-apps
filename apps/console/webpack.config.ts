@@ -219,26 +219,30 @@ module.exports = (config: WebpackOptionsNormalized, context: {
         })
     );
 
-    isProduction && new CompressionPlugin({
-        algorithm: "gzip",
-        filename: "[path][base].gz",
-        minRatio: 0.8,
-        test: /\.js$|\.css$|\.html$|\.png$|\.svg$|\.jpeg$|\.jpg$/,
-        threshold: 10240
-    });
+    isProduction && config.plugins.push(
+        new CompressionPlugin({
+            algorithm: "gzip",
+            filename: "[path][base].gz",
+            minRatio: 0.8,
+            test: /\.js$|\.css$|\.html$|\.png$|\.svg$|\.jpeg$|\.jpg$/,
+            threshold: 10240
+        })
+    );
 
-    isProduction && new CompressionPlugin({
-        algorithm: "brotliCompress",
-        compressionOptions: {
-            params: {
-                [ zlib.constants.BROTLI_PARAM_QUALITY ]: 11
-            }
-        } as BrotliOptions,
-        filename: "[path][base].br",
-        minRatio: 0.8,
-        test: /\.(js|css|html|png|svg|jpeg|jpg)$/,
-        threshold: 10240
-    });
+    isProduction && config.plugins.push(
+        new CompressionPlugin({
+            algorithm: "brotliCompress",
+            compressionOptions: {
+                params: {
+                    [ zlib.constants.BROTLI_PARAM_QUALITY ]: 11
+                }
+            } as BrotliOptions,
+            filename: "[path][base].br",
+            minRatio: 0.8,
+            test: /\.(js|css|html|png|svg|jpeg|jpg)$/,
+            threshold: 10240
+        })
+    );
 
     !isESLintPluginDisabled && config.plugins.push(
         new ESLintPlugin({
