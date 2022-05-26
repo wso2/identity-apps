@@ -3,7 +3,20 @@
     "sourceRoot": "apps/console/src",
     "projectType": "application",
     "targets": {
-        "build": {
+        "build-prepare": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    {
+                        "command": "pnpm prebuild",
+                        "description": "Preparing the build copying necessary assets, etc."
+                    }
+                ],
+                "cwd": "apps/console",
+                "parallel": true
+            }
+        },
+        "build-base": {
             "executor": "@nrwl/web:webpack",
             "outputs": [
                 "{options.outputPath}"
@@ -69,6 +82,31 @@
                     "extractLicenses": true,
                     "vendorChunk": false
                 }
+            }
+        },
+        "build-windup": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    {
+                        "command": "pnpm postbuild",
+                        "description": "Clearing up the redundant files after the build."
+                    }
+                ],
+                "cwd": "apps/console",
+                "parallel": true
+            }
+        },
+        "build": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    "pnpm nx run console:build-prepare",
+                    "pnpm nx run console:build-base",
+                    "pnpm nx run console:build-windup"
+                ],
+                "cwd": ".",
+                "parallel": false
             }
         },
         "serve": {
