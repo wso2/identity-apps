@@ -68,6 +68,13 @@
                     "vendorChunk": true
                 },
                 "production": {
+                    "assets": [
+                        {
+                            "glob": "**/auth.jsp",
+                            "input": "apps/console/src",
+                            "output": "."
+                        }
+                    ],
                     "index": "apps/myaccount/src/home.jsp",
                     "fileReplacements": [],
                     "optimization": true,
