@@ -365,8 +365,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 if (error.response && error.response.data && error.response.data.code &&
                     error.response.data.code === ApplicationManagementConstants.ERROR_CODE_ISSUER_EXISTS) {
                     if (protocolValuesChange) {
-                        if (selectedTemplate.authenticationProtocol === SupportedAuthProtocolTypes.SAML && 
-                            samlConfigureMode !== SAMLConfigModes.MANUAL) {
+                        if (samlConfigureMode !== SAMLConfigModes.MANUAL) {
                             setAlert({
                                 description: error.response.data.description,
                                 level: AlertLevels.ERROR,
