@@ -17,7 +17,7 @@
         "prebuild": "npm run clean",
         "build": "pnpm prebuild && npm run compile",
         "clean": "rimraf ./dist",
-        "compile": "npx run-script-os",
+        "compile": "run-script-os",
         "compile:win32": "..\\..\\node_modules\\.bin\\tsc -p tsconfig.json --incremental",
         "compile:default": "../../node_modules/.bin/tsc -p tsconfig.json --incremental",
         "lint": "npm run lint:all -- --max-warnings=0",
@@ -26,7 +26,7 @@
         "lint:ci": "npm run lint -- --format=compact",
         "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to .",
         "test": "npm run jest -- -- --passWithNoTests",
-        "jest": "npx run-script-os",
+        "jest": "run-script-os",
         "jest:win32": ".\\node_modules\\.bin\\jest",
         "jest:default": "./node_modules/.bin/jest",
         "typecheck": "npm run compile"

@@ -226,7 +226,7 @@ module.exports = (config: WebpackOptionsNormalized, context: {
             minRatio: 0.8,
             test: /\.js$|\.css$|\.html$|\.png$|\.svg$|\.jpeg$|\.jpg$/,
             threshold: 10240
-        })
+        }) as unknown as WebpackPluginInstance
     );
 
     isProduction && config.plugins.push(
@@ -241,7 +241,7 @@ module.exports = (config: WebpackOptionsNormalized, context: {
             minRatio: 0.8,
             test: /\.(js|css|html|png|svg|jpeg|jpg)$/,
             threshold: 10240
-        })
+        }) as unknown as WebpackPluginInstance
     );
 
     !isESLintPluginDisabled && config.plugins.push(
@@ -253,13 +253,13 @@ module.exports = (config: WebpackOptionsNormalized, context: {
             extensions: [ "js", "jsx", "ts", "tsx" ],
             lintDirtyModulesOnly: true,
             overrideConfigFile: ABSOLUTE_PATHS.eslintrc
-        })
+        }) as unknown as WebpackPluginInstance
     );
 
     config.plugins.push(
         new webpack.ProvidePlugin({
             process: "process/browser"
-        })
+        }) as unknown as WebpackPluginInstance
     );
 
     // Remove `IndexHtmlWebpackPlugin` plugin added by NX and add `HtmlWebpackPlugin` instead.
@@ -317,7 +317,7 @@ module.exports = (config: WebpackOptionsNormalized, context: {
 
     config.optimization.minimizer = [
         ...config.optimization.minimizer,
-        new JsonMinimizerPlugin()
+        new JsonMinimizerPlugin() as unknown as WebpackPluginInstance
     ];
 
     config.module.rules.unshift({

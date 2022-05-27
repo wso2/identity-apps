@@ -7,7 +7,7 @@
         "jsx": "react",
         "outDir": "dist/src",
         "rootDir": "src",
-        "types": [ "node", "jest", "@testing-library/jest-dom" ]
+        "types": [ "node", "jest", "@types/testing-library__jest-dom" ]
     },
     "exclude": [
         "coverage",

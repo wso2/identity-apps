@@ -51,6 +51,11 @@
                         "glob": "**/*",
                         "input": "modules/i18n/dist/bundle",
                         "output": "resources/i18n"
+                    },
+                    {
+                        "glob": "**/auth.jsp",
+                        "input": "apps/console/src",
+                        "output": "."
                     }
                 ],
                 "styles": [],
@@ -68,13 +73,6 @@
                     "vendorChunk": true
                 },
                 "production": {
-                    "assets": [
-                        {
-                            "glob": "**/auth.jsp",
-                            "input": "apps/console/src",
-                            "output": "."
-                        }
-                    ],
                     "index": "apps/myaccount/src/home.jsp",
                     "fileReplacements": [],
                     "optimization": true,

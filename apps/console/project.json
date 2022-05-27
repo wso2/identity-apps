@@ -56,6 +56,11 @@
                         "glob": "meta.*.json",
                         "input": "apps/console/src/extensions/i18n/tmp",
                         "output": "resources/i18n"
+                    },
+                    {
+                        "glob": "**/auth.jsp",
+                        "input": "apps/console/src",
+                        "output": "."
                     }
                 ],
                 "styles": [],
@@ -73,13 +78,6 @@
                     "vendorChunk": true
                 },
                 "production": {
-                    "assets": [
-                        {
-                            "glob": "**/auth.jsp",
-                            "input": "apps/console/src",
-                            "output": "."
-                        }
-                    ],
                     "index": "apps/console/src/home.jsp",
                     "fileReplacements": [],
                     "optimization": true,

@@ -10,7 +10,7 @@
         "clean": "npm run clean:node-modules && npm run clean:package-lock",
         "clean:package-lock": "rimraf ./package-lock.json",
         "clean:node-modules": "rimraf ./node_modules",
-        "cypress": "pnpm precypress:run && npx run-script-os",
+        "cypress": "pnpm precypress:run && run-script-os",
         "cypress:win32": ".\\node_modules\\.bin\\cypress",
         "cypress:default": "./node_modules/.bin/cypress",
         "cy:clean:results": "rimraf output/results",
@@ -31,7 +31,7 @@
         "test:headless": "npm run cy:headless",
         "test:headless:smoke": "npm run cy:headless:smoke",
         "test:interactive": "npm run cy:interactive",
-        "tsc": "npx run-script-os",
+        "tsc": "run-script-os",
         "tsc:win32": ".\\node_modules\\.bin\\tsc -p tsconfig.json --incremental",
         "tsc:default": "./node_modules/.bin/tsc -p tsconfig.json --incremental"
     },
