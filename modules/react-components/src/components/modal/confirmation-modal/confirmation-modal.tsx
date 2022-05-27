@@ -136,12 +136,19 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
             primaryActionLoading,
             [ "data-componentid" ]: componentId,
             [ "data-testid" ]: testId,
+            open,
             ...rest
         } = props;
 
         const [ assertionInput, setAssertionInput ] = useState<string>("");
         const [ confirmed, setConfirmed ] = useState<boolean>(false);
         const [ assertionDisabled, setAssertionDisabled ] = useState<boolean>(false);
+
+        useEffect(() => {
+            if (open) {
+                setAssertionDisabled(false);
+            }
+        }, [ open ]);
 
         /**
      * Called when the assertion input changes.
@@ -347,6 +354,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
             <Modal
                 data-componentid={ componentId }
                 data-testid={ testId }
+                open={ open }
                 { ...rest }
                 className={ classes }
             >
