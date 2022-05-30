@@ -118,7 +118,7 @@
             "executor": "@nrwl/web:dev-server",
             "defaultConfiguration": "development",
             "options": {
-                "buildTarget": "console:build",
+                "buildTarget": "console:build-base",
                 "port": 9001,
                 "baseHref": "/console/",
                 "open": true,
@@ -127,10 +127,10 @@
             },
             "configurations": {
                 "development": {
-                    "buildTarget": "console:build:development"
+                    "buildTarget": "console:build-base:development"
                 },
                 "production": {
-                    "buildTarget": "console:build:production",
+                    "buildTarget": "console:build-base:production",
                     "hmr": false
                 }
             }

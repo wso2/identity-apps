@@ -99,7 +99,7 @@
             "executor": "@nrwl/web:dev-server",
             "defaultConfiguration": "development",
             "options": {
-                "buildTarget": "myaccount:build",
+                "buildTarget": "myaccount:build-base",
                 "port": 9001,
                 "baseHref": "/myaccount/",
                 "open": true,
@@ -108,10 +108,10 @@
             },
             "configurations": {
                 "development": {
-                    "buildTarget": "myaccount:build:development"
+                    "buildTarget": "myaccount:build-base:development"
                 },
                 "production": {
-                    "buildTarget": "myaccount:build:production",
+                    "buildTarget": "myaccount:build-base:production",
                     "hmr": false
                 }
             }
