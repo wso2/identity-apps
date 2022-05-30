@@ -18,13 +18,13 @@
  */
 
 import { RouteInterface } from "@wso2is/core/models";
-import { ReactComponent as AppIcon } from "../../../storybook-helpers/assets/images/icons/app-icon.svg";
-import { ReactComponent as ArrowRight } from "../../../storybook-helpers/assets/images/icons/arrow-right-icon.svg";
-import { ReactComponent as ControlsIcon } from "../../../storybook-helpers/assets/images/icons/controls-icon.svg";
-import { ReactComponent as DashboardIcon } from "../../../storybook-helpers/assets/images/icons/dashboard-icon.svg";
-import { ReactComponent as LockIcon } from "../../../storybook-helpers/assets/images/icons/lock-icon.svg";
-import { ReactComponent as ToolsIcon } from "../../../storybook-helpers/assets/images/icons/tools-icon.svg";
-import { ReactComponent as UserIcon } from "../../../storybook-helpers/assets/images/icons/user-icon.svg";
+import { ReactComponent as AppIcon } from "../../storybook-helpers/assets/images/icons/app-icon.svg";
+import { ReactComponent as ArrowRight } from "../../storybook-helpers/assets/images/icons/arrow-right-icon.svg";
+import { ReactComponent as ControlsIcon } from "../../storybook-helpers/assets/images/icons/controls-icon.svg";
+import { ReactComponent as DashboardIcon } from "../../storybook-helpers/assets/images/icons/dashboard-icon.svg";
+import { ReactComponent as LockIcon } from "../../storybook-helpers/assets/images/icons/lock-icon.svg";
+import { ReactComponent as ToolsIcon } from "../../storybook-helpers/assets/images/icons/tools-icon.svg";
+import { ReactComponent as UserIcon } from "../../storybook-helpers/assets/images/icons/user-icon.svg";
 import { StoryCategories } from "../../storybook-helpers/hierarchy";
 import { StoryMetaInterface } from "../../storybook-helpers/models";
 

@@ -22,10 +22,10 @@ import React, { ReactElement } from "react";
 import { meta } from "./section.stories.meta";
 import {
     ReactComponent as ProfileExportMiniIllustration
-} from "../../../storybook-helpers/assets/images/illustrations/profile-export-mini.svg";
+} from "../../storybook-helpers/assets/images/illustrations/profile-export-mini.svg";
 import {
     ReactComponent as ProfileExportIllustration
-} from "../../../storybook-helpers/assets/images/illustrations/profile-export.svg";
+} from "../../storybook-helpers/assets/images/illustrations/profile-export.svg";
 import { UserAvatar } from "../avatar";
 import { Section } from "../section";
 
