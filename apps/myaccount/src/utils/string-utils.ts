@@ -32,6 +32,7 @@ export const toSentenceCase = (raw: string): string => {
 
         if (index === 0) {
             newStr = part;
+
             return; // forEach doesn't support `continue`.
         }
 
@@ -39,4 +40,27 @@ export const toSentenceCase = (raw: string): string => {
     });
 
     return newStr;
+};
+
+/**
+ * Parses a string valued boolean into a boolean.
+ * Casting strings like "true" / "false" to absolute boolean
+ * values case-insensitive. If no matches are found then value
+ * itself is cast to a truthy/falsy boolean.
+ *
+ * @param value {string | boolean | any} parsing value.
+ */
+export const toBoolean = (value: string | boolean | any): boolean => {
+
+    if (typeof value === "boolean")
+        return value;
+
+    if (typeof value === "string")
+        if (/false/gi.test(value))
+            return false;
+        else if (/true/gi.test(value))
+            return true;
+
+    return Boolean(value);
+
 };
