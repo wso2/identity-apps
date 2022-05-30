@@ -386,6 +386,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      */
     useEffect(() => {
         const sortedSchemas = ProfileUtils.flattenSchemas([ ...profileSchemas ])
+            .filter(item => item.name !== "meta.version")
             .sort((a: ProfileSchemaInterface, b: ProfileSchemaInterface) => {
                 if (!a.displayOrder) {
                     return -1;
