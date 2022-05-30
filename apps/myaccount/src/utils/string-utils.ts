@@ -44,9 +44,10 @@ export const toSentenceCase = (raw: string): string => {
 
 /**
  * Parses a string valued boolean into a boolean.
- * Casting strings like "true" / "false" to absolute boolean
- * values case-insensitive. If no matches are found then value
- * itself is cast to a truthy/falsy boolean.
+ *
+ * Casting strings like "true" / "false" to a absolute boolean
+ * value (case-insensitive). If no matches are found then, value
+ * itself is cast-ed to a truthy/falsy boolean.
  *
  * @param value {string | boolean | any} parsing value.
  */
