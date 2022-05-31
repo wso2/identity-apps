@@ -34,7 +34,7 @@ import webpack, {
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import DeploymentConfig from "./src/public/deployment.config.json";
 
-module.exports = (config: WebpackOptionsNormalized, context: {
+interface NxWebpackContextInterface {
     buildOptions:{
         index: string;
         baseHref: string;
@@ -42,18 +42,20 @@ module.exports = (config: WebpackOptionsNormalized, context: {
     options: {
         index: string;
         baseHref: string;
+        port: string;
     };
-}) => {
+}
+
+module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInterface) => {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     nxReactWebpackConfig(config);
 
-    const ABSOLUTE_PATHS = getAbsolutePaths(config.mode);
-    const RELATIVE_PATHS = getRelativePaths(config.mode);
+    const ABSOLUTE_PATHS = getAbsolutePaths(config.mode, context);
+    const RELATIVE_PATHS = getRelativePaths(config.mode, context);
 
     const isProduction = config.mode === "production";
-    const template = context.buildOptions?.index ?? context.options.index;
 
     // Flag to determine if the app is intended to be deployed on an external tomcat server
     // outside of the Identity Server runtime. If true, references & usage of internally provided
@@ -69,6 +71,7 @@ module.exports = (config: WebpackOptionsNormalized, context: {
     const analyzerPort = parseInt(process.env.ANALYZER_PORT, 10) || 8889;
 
     // Dev Server Options.
+    const devServerPort = process.env.DEV_SERVER_PORT || config.devServer?.port;
     const isDevServerHostCheckDisabled = process.env.DISABLE_DEV_SERVER_HOST_CHECK === "true";
     const isESLintPluginDisabled = process.env.DISABLE_ESLINT_PLUGIN === "true";
 
@@ -387,7 +390,8 @@ module.exports = (config: WebpackOptionsNormalized, context: {
             ...config.devServer?.devMiddleware,
             writeToDisk: true
         },
-        open: context.buildOptions?.baseHref ?? context.options.baseHref
+        open: context.buildOptions?.baseHref ?? context.options.baseHref,
+        port: devServerPort
     };
 
     return config;
@@ -415,7 +419,7 @@ const getI18nConfigs = () => {
     };
 };
 
-const getRelativePaths = (env: Configuration["mode"]) => {
+const getRelativePaths = (env: Configuration["mode"], context: NxWebpackContextInterface) => {
 
     // TODO: Remove supression once `isProduction` is actively used.
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -424,17 +428,17 @@ const getRelativePaths = (env: Configuration["mode"]) => {
     return {
         distribution: path.join("build", "console"),
         homeTemplate: "home.jsp",
-        indexTemplate: isProduction ? "index.jsp" : "index.html",
+        indexTemplate: context.buildOptions?.index ?? context.options.index,
         source: "src",
         staticJs: path.join("static", "js"),
         staticMedia: path.join("static", "media")
     };
 };
 
-const getAbsolutePaths = (env: Configuration["mode"]) => {
+const getAbsolutePaths = (env: Configuration["mode"], context: NxWebpackContextInterface) => {
 
     const isProduction: boolean = env === "production";
-    const RELATIVE_PATHS = getRelativePaths(env);
+    const RELATIVE_PATHS = getRelativePaths(env, context);
 
     return {
         appNodeModules: path.resolve(__dirname, "node_modules"),
