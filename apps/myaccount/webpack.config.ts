@@ -21,6 +21,7 @@ import path from "path";
 import zlib, { BrotliOptions } from "zlib";
 import nxReactWebpackConfig from "@nrwl/react/plugins/webpack.js";
 import CompressionPlugin from "compression-webpack-plugin";
+import CopyWebpackPlugin from "copy-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import JsonMinimizerPlugin from "json-minimizer-webpack-plugin";
@@ -213,7 +214,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     isProfilingMode && config.plugins.push(
         new webpack.ProgressPlugin({
             profile: true
-        }) as unknown as WebpackPluginInstance
+        })
     );
 
     isProduction && config.plugins.push(
@@ -259,23 +260,69 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
         }) as unknown as WebpackPluginInstance
     );
 
-    // Remove `IndexHtmlWebpackPlugin` plugin added by NX and add `HtmlWebpackPlugin` instead.
-    const existingDefinePluginWebpackPlugin = config.plugins.find((plugin) => {
+    // Update the existing `DefinePlugin` plugin added by NX.
+    const existingDefinePlugin = config.plugins.find((plugin) => {
         return plugin.constructor.name === "DefinePlugin";
     });
 
-    if (config.plugins.indexOf(existingDefinePluginWebpackPlugin) !== -1) {
-        config.plugins.splice(config.plugins.indexOf(existingDefinePluginWebpackPlugin), 1);
+    if (config.plugins.indexOf(existingDefinePlugin) !== -1) {
+        config.plugins.splice(config.plugins.indexOf(existingDefinePlugin), 1);
 
         config.plugins.push(
             new webpack.DefinePlugin({
-                ...existingDefinePluginWebpackPlugin["definitions"],
+                ...existingDefinePlugin["definitions"],
                 "process.env": {
-                    ...existingDefinePluginWebpackPlugin["definitions"]["process.env"],
+                    ...existingDefinePlugin["definitions"]["process.env"],
                     NODE_ENV: JSON.stringify("development"),
                     metaHash: JSON.stringify(getI18nConfigs().metaFileHash)
                 },
                 "typeof window": JSON.stringify("object")
+            })
+        );
+    }
+
+    // Update the existing `DefinePlugin` plugin added by NX.
+    const existingCopyPlugin = config.plugins.find((plugin) => {
+        return plugin.constructor.name === "CopyPlugin";
+    });
+
+    if (config.plugins.indexOf(existingCopyPlugin) !== -1) {
+        config.plugins.splice(config.plugins.indexOf(existingCopyPlugin), 1);
+
+        config.plugins.push(
+            new CopyWebpackPlugin({
+                ...existingCopyPlugin,
+                patterns: [
+                    ...existingCopyPlugin[ "patterns" ]
+                        .map((pattern) => {
+                            if (isDeployedOnExternalStaticServer) {
+                                // For deployments on static servers, we don't require `auth.jsp`
+                                // since we can't use `form_post` response mode.
+                                if (pattern.from.match(/auth.jsp/)) {
+                                    return false;
+                                }
+                                //
+                                if (pattern.context.match(/public/)) {
+                                    return {
+                                        ...pattern,
+                                        force: true,
+                                        globOptions: {
+                                            ...pattern.globOptions,
+                                            ignore: [
+                                                ...pattern.globOptions.ignore,
+                                                // For deployments on static servers, we don't require the Java EE
+                                                // specific folders like `WEB_INF` etc.
+                                                ...RELATIVE_PATHS.javaEEFolders
+                                            ]
+                                        }
+                                    };
+                                }
+                            }
+
+                            return pattern;
+                        })
+                        .filter(Boolean)
+                ]
             })
         );
     }
@@ -423,6 +470,7 @@ const getRelativePaths = (env: Configuration["mode"], context: NxWebpackContextI
         distribution: path.join("build", "myaccount"),
         homeTemplate: "home.jsp",
         indexTemplate: context.buildOptions?.index ?? context.options.index,
+        javaEEFolders: [ "**/WEB-INF/**/*" ],
         source: "src",
         staticJs: path.join("static", "js"),
         staticMedia: path.join("static", "media")
