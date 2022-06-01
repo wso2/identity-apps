@@ -327,7 +327,7 @@ export const AppUtils = (function() {
             return (((this.getTenantPrefix() !== "") && (this.getTenantName() !== "")) ?
                 _config.accountAppOrigin +
                 "/" + this.getTenantPrefix() +
-                "/" + this.getTenantName() : "") + append;
+                "/" + this.getTenantName() : "") + append; //When skipTenant is false, the argument will get appended 
         },
 
         /**
