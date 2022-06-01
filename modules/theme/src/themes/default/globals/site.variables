@@ -26,7 +26,7 @@
 @importGoogleFonts : false;
 
 @iconFont          : "font-awesome";
-@primaryFont       : "";
+@primaryFont       : "''";
 @fontFallbacks     : -apple-system, BlinkMacSystemFont, Segoe UI, HelveticaNeue-Light, Ubuntu, Droid Sans, sans-serif, @iconFont;
 @fontName          : @primaryFont, @fontFallbacks;
 @googleFontName    : 'Lato';
