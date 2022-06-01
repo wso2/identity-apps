@@ -264,23 +264,27 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
         }
 
         if (list?.length === 0) {
-            return (
-                <EmptyPlaceholder
-                    action={ (
-                        <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
-                            <Icon name="add" />
-                            { t("console:manage.features.userstores.placeholders.emptyList.action") }
-                        </PrimaryButton>
-                    ) }
-                    image={ getEmptyPlaceholderIllustrations().newList }
-                    imageSize="tiny"
-                    title={ t("console:manage.features.userstores.placeholders.emptyList.title") }
-                    subtitle={ [
-                        t("console:manage.features.userstores.placeholders.emptyList.subtitles")
-                    ] }
-                    data-testid={ `${ testId }-empty-placeholder` }
-                />
-            );
+            if (!userstoresConfig.userstoreList.renderEmptyPlaceholder(onEmptyListPlaceholderActionClick)) {
+                return (
+                    <EmptyPlaceholder
+                        action={ (
+                            <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
+                                <Icon name="add" />
+                                { t("console:manage.features.userstores.placeholders.emptyList.action") }
+                            </PrimaryButton>
+                        ) }
+                        image={ getEmptyPlaceholderIllustrations().newList }
+                        imageSize="tiny"
+                        title={ t("console:manage.features.userstores.placeholders.emptyList.title") }
+                        subtitle={ [
+                            t("console:manage.features.userstores.placeholders.emptyList.subtitles")
+                        ] }
+                        data-testid={ `${ testId }-empty-placeholder` }
+                    />
+                );
+            } else {
+                return userstoresConfig.userstoreList.renderEmptyPlaceholder(onEmptyListPlaceholderActionClick);
+            }
         }
 
         return null;
