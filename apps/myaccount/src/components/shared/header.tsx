@@ -300,8 +300,14 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                 resolveAppLogoFilePath(window[ "AppUtils" ].getConfig().ui.appLogoPath,
                                     `${ window[ "AppUtils" ].getConfig().clientOrigin }/` +
                                     `${
-                                        StringUtils.removeSlashesFromPath(window[ "AppUtils" ].getConfig().appBase)
-                                    }/libs/themes/` +
+                                        StringUtils.removeSlashesFromPath(
+                                            window[ "AppUtils" ].getConfig().appBase
+                                        ) !== ""
+                                            ? StringUtils.removeSlashesFromPath(
+                                                window[ "AppUtils" ].getConfig().appBase
+                                            ) + "/"
+                                            : ""
+                                    }libs/themes/` +
                                     config.ui.theme.name)
                             }
                         />
