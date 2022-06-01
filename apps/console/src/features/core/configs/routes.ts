@@ -432,6 +432,19 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         showOnSidePanel: true
                     },
                     {
+                        category: "console:manage.features.sidePanel.categories.organizations",
+                        component: lazy(() => import("../../organizations/pages/organizations")),
+                        icon: {
+                            icon: getSidePanelIcons().organization
+                        },
+                        id: "organizations",
+                        name: "console:manage.features.sidePanel.organizations",
+                        order: 8,
+                        path: AppConstants.getPaths().get("ORGANIZATIONS"),
+                        protected: true,
+                        showOnSidePanel: true
+                    },
+                    {
                         category: "console:manage.features.sidePanel.categories.configurations",
                         children: [
                             {
