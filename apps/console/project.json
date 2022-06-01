@@ -25,7 +25,7 @@
             "options": {
                 "compiler": "babel",
                 "outputPath": "apps/console/build/console",
-                "index": "apps/console/src/index.html",
+                "index": "index.html",
                 "baseHref": "/console/",
                 "main": "apps/console/src/index.tsx",
                 "polyfills": "",
@@ -71,14 +71,14 @@
             },
             "configurations": {
                 "development": {
-                    "index": "apps/console/src/index.html",
+                    "index": "index.html",
                     "extractLicenses": false,
                     "optimization": false,
                     "sourceMap": true,
                     "vendorChunk": true
                 },
                 "production": {
-                    "index": "apps/console/src/home.jsp",
+                    "index": "index.jsp",
                     "fileReplacements": [],
                     "optimization": true,
                     "outputHashing": "all",
@@ -114,7 +114,20 @@
                 "parallel": false
             }
         },
-        "serve": {
+        "serve-prepare": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    {
+                        "command": "pnpm prebuild",
+                        "description": "Preparing for the serve copying necessary assets, etc."
+                    }
+                ],
+                "cwd": "apps/console",
+                "parallel": true
+            }
+        },
+        "serve-base": {
             "executor": "@nrwl/web:dev-server",
             "defaultConfiguration": "development",
             "options": {
@@ -133,6 +146,17 @@
                     "buildTarget": "console:build-base:production",
                     "hmr": false
                 }
+            }
+        },
+        "serve": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    "pnpm nx run console:serve-prepare",
+                    "pnpm nx run console:serve-base"
+                ],
+                "cwd": ".",
+                "parallel": false
             }
         },
         "lint": {

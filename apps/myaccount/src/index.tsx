@@ -18,7 +18,7 @@
 
 import { AuthParams, AuthProvider, SPAUtils } from "@asgardeo/auth-react";
 import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
-import { AuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
+import { AuthenticateUtils, ContextUtils, StringUtils } from "@wso2is/core/utils";
 import axios from "axios";
 import * as React from "react";
 import "react-app-polyfill/ie11";
@@ -51,7 +51,7 @@ const getAuthParams = (): Promise<AuthParams> => {
     if (!SPAUtils.hasAuthSearchParamsInURL() && process.env.NODE_ENV === "production") {
 
         const contextPath: string = window[ "AppUtils" ].getConfig().appBase
-            ? `/${ window[ "AppUtils" ].getConfig().appBase }`
+            ? `/${ StringUtils.removeSlashesFromPath(window[ "AppUtils" ].getConfig().appBase) }`
             : "";
 
         return axios.get(contextPath + "/auth").then((response) => {

@@ -17,6 +17,7 @@
  */
 
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
+import { StringUtils } from "@wso2is/core/utils";
 import { Logo, ProductBrand } from "@wso2is/react-components";
 import React from "react";
 import { useSelector } from "react-redux";
@@ -74,7 +75,9 @@ export const SidePanelMobile: React.FunctionComponent<SidePanelMobileProps> = (
                                 image={
                                     resolveAppLogoFilePath(window[ "AppUtils" ].getConfig().ui.appLogoPath,
                                         `${ window[ "AppUtils" ].getConfig().clientOrigin }/` +
-                                        `${ window[ "AppUtils" ].getConfig().appBase }/libs/themes/` +
+                                        `${
+                                            StringUtils.removeSlashesFromPath(window[ "AppUtils" ].getConfig().appBase)
+                                        }/libs/themes/` +
                                         config.ui.theme.name)
                                 }
                             />

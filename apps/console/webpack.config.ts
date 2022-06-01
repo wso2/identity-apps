@@ -279,7 +279,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 ...existingDefinePlugin["definitions"],
                 "process.env": {
                     ...existingDefinePlugin["definitions"]["process.env"],
-                    NODE_ENV: JSON.stringify("development"),
+                    NODE_ENV: JSON.stringify(process.env.NODE_ENV),
                     metaHash: JSON.stringify(getI18nConfigs().metaFileHash)
                 },
                 "typeof window": JSON.stringify("object")
@@ -433,10 +433,14 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
         // https://github.com/webpack/webpack-dev-server/issues/887
         // This has resulted in issues such as development in cloud environment or subdomains impossible.
         allowedHosts: isDevServerHostCheckDisabled ? "all" : "auto",
+        client: {
+            overlay: false
+        },
         devMiddleware: {
             ...config.devServer?.devMiddleware,
             writeToDisk: true
         },
+        host: "localhost",
         open: context.buildOptions?.baseHref ?? context.options.baseHref,
         port: devServerPort
     };
@@ -457,7 +461,7 @@ const getThemeConfigs = () => {
 };
 
 const getI18nConfigs = () => {
-    const I18N_DIR = path.resolve(__dirname, "node_modules", "@wso2is", "i18n", "dist", "bundle");
+    const I18N_DIR = path.resolve(__dirname, "src", "extensions", "i18n", "tmp");
     const metaFiles = fs.readdirSync(I18N_DIR);
     const metaFile = metaFiles ? metaFiles.filter(file => file.startsWith("meta"))[ 0 ] : null;
 

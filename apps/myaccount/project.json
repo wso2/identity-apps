@@ -25,7 +25,7 @@
             "options": {
                 "compiler": "babel",
                 "outputPath": "apps/myaccount/build/myaccount",
-                "index": "apps/myaccount/src/index.html",
+                "index": "index.html",
                 "baseHref": "/myaccount/",
                 "main": "apps/myaccount/src/index.tsx",
                 "polyfills": "",
@@ -66,14 +66,14 @@
             },
             "configurations": {
                 "development": {
-                    "index": "apps/myaccount/src/index.html",
+                    "index": "index.html",
                     "extractLicenses": false,
                     "optimization": false,
                     "sourceMap": true,
                     "vendorChunk": true
                 },
                 "production": {
-                    "index": "apps/myaccount/src/home.jsp",
+                    "index": "index.jsp",
                     "fileReplacements": [],
                     "optimization": true,
                     "outputHashing": "all",
@@ -95,12 +95,25 @@
                 "parallel": false
             }
         },
-        "serve": {
+        "serve-prepare": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    {
+                        "command": "pnpm prebuild",
+                        "description": "Preparing for the serve copying necessary assets, etc."
+                    }
+                ],
+                "cwd": "apps/myaccount",
+                "parallel": true
+            }
+        },
+        "serve-base": {
             "executor": "@nrwl/web:dev-server",
             "defaultConfiguration": "development",
             "options": {
                 "buildTarget": "myaccount:build-base",
-                "port": 9001,
+                "port": 9000,
                 "baseHref": "/myaccount/",
                 "open": true,
                 "hmr": true,
@@ -114,6 +127,17 @@
                     "buildTarget": "myaccount:build-base:production",
                     "hmr": false
                 }
+            }
+        },
+        "serve": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    "pnpm nx run myaccount:serve-prepare",
+                    "pnpm nx run myaccount:serve-base"
+                ],
+                "cwd": ".",
+                "parallel": false
             }
         },
         "lint": {

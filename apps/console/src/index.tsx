@@ -20,7 +20,7 @@ import "core-js/stable";
 import "regenerator-runtime/runtime";
 import { AuthParams, AuthProvider, SPAUtils } from "@asgardeo/auth-react";
 import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
-import { AuthenticateUtils as CommonAuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
+import { AuthenticateUtils as CommonAuthenticateUtils, ContextUtils, StringUtils } from "@wso2is/core/utils";
 import axios from "axios";
 import * as React from "react";
 import { ReactElement } from "react";
@@ -46,7 +46,7 @@ const getAuthParams = (): Promise<AuthParams> => {
     if (!SPAUtils.hasAuthSearchParamsInURL() && process.env.NODE_ENV === "production") {
 
         const contextPath: string = window[ "AppUtils" ].getConfig().appBase
-            ? `/${ window[ "AppUtils" ].getConfig().appBase }`
+            ? `/${ StringUtils.removeSlashesFromPath(window[ "AppUtils" ].getConfig().appBase) }`
             : "";
 
         return axios.get(contextPath + "/auth").then((response) => {
