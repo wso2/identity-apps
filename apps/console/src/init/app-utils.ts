@@ -320,14 +320,19 @@ export const AppUtils = (function() {
 
         /**
          * Get the URL for the tenanted Myaccount.
-         *
+         * 
+         * We append any given path to a qualified path.
+         * when skipTenant is false in tenantQualifiedPath, 
+         * the argument _config.accountApp.path will get appended. 
+         * This is because through extensions we can control the MyAccount path for different deployments.
+         * 
          * @return {string}
          */
         getTenantQualifiedAccountAppPath: function(append) {
             return (((this.getTenantPrefix() !== "") && (this.getTenantName() !== "")) ?
                 _config.accountAppOrigin +
                 "/" + this.getTenantPrefix() +
-                "/" + this.getTenantName() : "") + append; //When skipTenant is false, the argument will get appended 
+                "/" + this.getTenantName() : "") + append; 
         },
 
         /**
