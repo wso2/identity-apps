@@ -7186,6 +7186,7 @@ export const console: ConsoleNS = {
                     validation: {
                         dateFormatError: "Le format du {{field}} saisi est incorrect. Le format valide est YYYY-MM-DD.",
                         formatError: "Le format du {{field}} saisi est incorrect.",
+                        futureDateError: "La date que vous avez saisie pour le champ {{field}} n'est pas valide.",
                         mobileFormatError: "Le format du {{field}} saisi est incorrect. Le format valide est [+]"+
                             "[indicatif du pays][indicatif régional][numéro de téléphone local]."
                     }

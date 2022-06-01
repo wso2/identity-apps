@@ -8556,6 +8556,7 @@ export const console: ConsoleNS = {
                         dateFormatError: "The format of the {{field}} entered is incorrect. Valid format is " +
                             "YYYY-MM-DD.",
                         formatError: "The format of the {{field}} entered is incorrect.",
+                        futureDateError: "The date you entered for the {{field}} field is invalid.",
                         mobileFormatError: "The format of the {{field}} entered is incorrect.  Valid format is " +
                             "[+][country code][area code][local phone number]."
                     }
