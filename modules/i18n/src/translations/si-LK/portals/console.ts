@@ -7008,6 +7008,7 @@ export const console: ConsoleNS = {
                     validation: {
                         dateFormatError: "ඇතුළත් කළ {{field}} ආකෘතිය වැරදිය. වලංගු ආකෘතිය YYYY-MM-DD වේ.",
                         formatError: "ඇතුළත් කළ {{field}} ආකෘතිය වැරදිය.",
+                        futureDateError: "ඔබ {{field}} ක්ෂේත්‍රය සඳහා ඇතුළත් කළ දිනය වලංගු නැත.",
                         mobileFormatError: "ඇතුළත් කළ {{field}} ආකෘතිය වැරදිය. වලංගු ආකෘතිය " +
                             "[+][රට කේතය][ප්‍රදේශ කේතය][දේශීය දුරකථන අංකය] වේ."
                     }

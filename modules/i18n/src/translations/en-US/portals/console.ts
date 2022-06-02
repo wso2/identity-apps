@@ -6790,7 +6790,7 @@ export const console: ConsoleNS = {
                     groupsError: {
                         subtitles: [
                             "An error occurred while trying to fetch groups from the userstore.",
-                            "Please make sure that teh connection details of the userstore are accurate."
+                            "Please make sure that the connection details of the userstore are accurate."
                         ],
                         title:"Couldn't fetch groups from the userstore"
                     }
@@ -8556,6 +8556,7 @@ export const console: ConsoleNS = {
                         dateFormatError: "The format of the {{field}} entered is incorrect. Valid format is " +
                             "YYYY-MM-DD.",
                         formatError: "The format of the {{field}} entered is incorrect.",
+                        futureDateError: "The date you entered for the {{field}} field is invalid.",
                         mobileFormatError: "The format of the {{field}} entered is incorrect.  Valid format is " +
                             "[+][country code][area code][local phone number]."
                     }
