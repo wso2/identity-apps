@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { CodeEditor, GenericIcon, Heading, LinkButton, PrimaryButton, Tooltip } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Accordion, Icon, Menu, Popup, Segment, Sidebar } from "semantic-ui-react";
+import {Accordion, Grid, Icon, Menu, Popup, Segment, Sidebar} from "semantic-ui-react";
 import { getOperationIcons } from "../../core/configs";
 import { RequiredBinary } from "../models";
 
@@ -54,6 +54,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
     const [ propertyDefaultValue, setPropertyDefaultValue ] = useState("");
     const [ propertyValue, setPropertyValue ] = useState("");
     const [ isEditorDarkMode, setIsEditorDarkMode ] = useState(true);
+    const [ isResetButtonEnabled, setIsResetButtonEnabled ] = useState(false);
 
     const sidebar = useRef(null);
     const editor = useRef(null);
@@ -341,6 +342,11 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                 showLineNumbers={ false }
                                 onChange={ (editor, data, value) => {
                                     setPropertyValue(value);
+                                    if (propertyValue !== propertyDefaultValue) {
+                                        setIsResetButtonEnabled(true);
+                                    } else {
+                                        setIsResetButtonEnabled(false);
+                                    }
                                 } }
                                 theme={ isEditorDarkMode ? "dark" : "light" }
                                 data-testid={ `${ testId }-code-editor` }
@@ -348,20 +354,29 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                         </div>
                         <Menu attached="bottom" className="action-panel" secondary>
                             <Menu.Item position="right">
-                                <LinkButton
-                                    type="button"
-                                    onClick={ () => {
-                                        setPropertyValue(propertyDefaultValue);
-                                        const defaultValue = propertyDefaultValue;
-                                        setPropertyDefaultValue("");
-                                        setTimeout(() => {
-                                            setPropertyDefaultValue(defaultValue);
-                                        }, 1);
-                                    } }
-                                    data-testid={ `${ testId }-reset-button` }
-                                >
-                                    { t("console:manage.features.userstores.sqlEditor.reset") }
-                                </LinkButton>
+                                <Popup
+                                    trigger={
+                                        (<LinkButton
+                                            type="button"
+                                            disabled= {!isResetButtonEnabled}
+                                            onClick={ () => {
+                                                setPropertyValue(propertyDefaultValue);
+                                                const defaultValue = propertyDefaultValue;
+                                                setPropertyDefaultValue("");
+                                                setTimeout(() => {
+                                                    setPropertyDefaultValue(defaultValue);
+                                                    setIsResetButtonEnabled(false);
+                                                }, 1);
+                                            } }
+                                            data-testid={ `${ testId }-reset-button` }
+                                        >
+                                            { t("console:manage.features.userstores.sqlEditor.reset") }
+                                        </LinkButton>)
+                                    }
+                                    content={ "Reset query to initial state." }
+                                    size="mini"
+                                    hideOnScroll
+                                />
                                 <PrimaryButton
                                     type="button"
                                     onClick={ () => {
