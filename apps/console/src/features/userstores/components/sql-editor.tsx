@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { CodeEditor, GenericIcon, Heading, LinkButton, PrimaryButton, Tooltip } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {Accordion, Grid, Icon, Menu, Popup, Segment, Sidebar} from "semantic-ui-react";
+import { Accordion, Icon, Menu, Popup, Segment, Sidebar} from "semantic-ui-react";
 import { getOperationIcons } from "../../core/configs";
 import { RequiredBinary } from "../models";
 
