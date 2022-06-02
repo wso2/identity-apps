@@ -18,6 +18,7 @@
 
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 
 <%@include file="includes/localize.jsp" %>
 <%@include file="includes/init-url.jsp" %>
@@ -100,9 +101,15 @@
                                     "approve.always")%>"/>
                         <input type="hidden" id="hasApprovedAlways" name="hasApprovedAlways"
                                 value="false"/>
-                        <input class="ui large button" type="reset"
-                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"cancel")%>"
-                                onclick="javascript:document.location.href='<%=Encode.forJavaScript(openidreturnto)%>'"/>
+                        <%
+                            if (AuthenticationEndpointUtil.isValidURL(openidreturnto)) {
+                        %>
+                            <input class="ui large button" type="reset"
+                                    value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"cancel")%>"
+                                    onclick="javascript:document.location.href='<%=Encode.forJavaScript(openidreturnto)%>'"/>
+                        <%
+                            }
+                        %>
                     </div>
                 </form>
             </div>
