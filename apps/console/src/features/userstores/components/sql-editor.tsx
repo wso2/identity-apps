@@ -342,7 +342,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                 showLineNumbers={ false }
                                 onChange={ (editor, data, value) => {
                                     setPropertyValue(value);
-                                    if (propertyValue !== propertyDefaultValue) {
+                                    if (value !== propertyDefaultValue) {
                                         setIsResetButtonEnabled(true);
                                     } else {
                                         setIsResetButtonEnabled(false);
@@ -354,29 +354,22 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                         </div>
                         <Menu attached="bottom" className="action-panel" secondary>
                             <Menu.Item position="right">
-                                <Popup
-                                    trigger={
-                                        (<LinkButton
-                                            type="button"
-                                            disabled= {!isResetButtonEnabled}
-                                            onClick={ () => {
-                                                setPropertyValue(propertyDefaultValue);
-                                                const defaultValue = propertyDefaultValue;
-                                                setPropertyDefaultValue("");
-                                                setTimeout(() => {
-                                                    setPropertyDefaultValue(defaultValue);
-                                                    setIsResetButtonEnabled(false);
-                                                }, 1);
-                                            } }
-                                            data-testid={ `${ testId }-reset-button` }
-                                        >
-                                            { t("console:manage.features.userstores.sqlEditor.reset") }
-                                        </LinkButton>)
-                                    }
-                                    content={ "Reset query to initial state." }
-                                    size="mini"
-                                    hideOnScroll
-                                />
+                                <LinkButton
+                                    type="button"
+                                    disabled= {!isResetButtonEnabled}
+                                    onClick={ () => {
+                                        setPropertyValue(propertyDefaultValue);
+                                        const defaultValue = propertyDefaultValue;
+                                        setPropertyDefaultValue("");
+                                        setTimeout(() => {
+                                            setPropertyDefaultValue(defaultValue);
+                                            setIsResetButtonEnabled(false);
+                                        }, 1);
+                                    } }
+                                    data-testid={ `${ testId }-reset-button` }
+                                >
+                                    { t("console:manage.features.userstores.sqlEditor.reset") }
+                                </LinkButton>
                                 <PrimaryButton
                                     type="button"
                                     onClick={ () => {

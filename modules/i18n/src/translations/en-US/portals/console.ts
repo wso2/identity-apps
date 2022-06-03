@@ -8969,7 +8969,7 @@ export const console: ConsoleNS = {
                     darkMode: "Dark Mode",
                     delete: "Delete",
                     read: "Read",
-                    reset: "Reset",
+                    reset: "Reset Changes",
                     title: "SQL Query Types",
                     update: "Update"
                 },
