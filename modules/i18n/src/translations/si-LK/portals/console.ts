@@ -7422,7 +7422,7 @@ export const console: ConsoleNS = {
                     darkMode: "අඳුරු ප්‍රකාරය",
                     delete: "මකන්න",
                     read: "කියවන්න",
-                    reset: "නැවත සකසන්න",
+                    reset: "වෙනස්කම් යළි පිහිටුවන්න",
                     title: "SQL විමසුම් වර්ග",
                     update: "යාවත්කාලීන කරන්න"
                 },

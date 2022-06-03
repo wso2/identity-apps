@@ -7601,7 +7601,7 @@ export const console: ConsoleNS = {
                     darkMode: "Mode sombre",
                     delete: "Suppression",
                     read: "Lecture",
-                    reset: "Réinitialiser",
+                    reset: "Réinitialiser les modifications",
                     title: "Types de requêtes SQL",
                     update: "Mise à jour"
                 },
