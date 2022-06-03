@@ -356,7 +356,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                             <Menu.Item position="right">
                                 <LinkButton
                                     type="button"
-                                    disabled= {!isResetButtonEnabled}
+                                    disabled={ !isResetButtonEnabled }
                                     onClick={ () => {
                                         setPropertyValue(propertyDefaultValue);
                                         const defaultValue = propertyDefaultValue;
