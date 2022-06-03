@@ -27,7 +27,8 @@
 
 <%
 
-    String fidp = request.getParameter("fidp");
+    String idp = request.getParameter("idp");
+    String authenticator = request.getParameter("authenticator");
     String sessionDataKey = request.getParameter(Constants.SESSION_DATA_KEY);
     
     String errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
@@ -106,7 +107,8 @@
                             <div class="ui segment">
                                 <p>Name of the Organization:</p>
                                 <input type="text" id='ORG_NAME' name="org" size='30'/>
-                                <input id="fidp" name="fidp" type="hidden" value="<%=Encode.forHtmlAttribute(fidp)%>"/>
+                                <input id="idp" name="idp" type="hidden" value="<%=Encode.forHtmlAttribute(idp)%>"/>
+                                <input id="authenticator" name="authenticator" type="hidden" value="<%=Encode.forHtmlAttribute(authenticator)%>"/>
 				                <input id="sessionDataKey" name="sessionDataKey" type="hidden" value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
                                 <div class="ui divider hidden"></div>
                                 <div class="align-right buttons">
