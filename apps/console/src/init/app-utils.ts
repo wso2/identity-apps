@@ -204,6 +204,7 @@ export const AppUtils = (function() {
                     : _config.clientID + "_" + this.getTenantName(),
                 clientOrigin: _config.clientOrigin,
                 clientOriginWithTenant: _config.clientOrigin + this.getTenantPath(true),
+                customServerHost: _config.customServerHost,
                 debug: _config.debug,
                 developerApp: {
                     basePath: this.constructAppPaths(_config.developerApp.basePath),
@@ -495,6 +496,15 @@ export const AppUtils = (function() {
                                 ? this.getTenantName()
                                 : "")
             };
+        },
+
+        /**
+         * Updates the custom server host.
+         *
+         * @param customServerHost - server host.
+         */
+        updateCustomServerHost: function(customServerHost) {
+            _config.customServerHost = customServerHost;
         },
 
         /**

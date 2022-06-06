@@ -270,7 +270,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 { "key": "ClientSecret", "value": values?.clientSecret?.toString() },
                 { "key": "OAuth2AuthzEPUrl", "value": values?.authorizationEndpointUrl?.toString() },
                 { "key": "OAuth2TokenEPUrl", "value": values?.tokenEndpointUrl?.toString() },
-                { "key": "callbackUrl", "value": store.getState().config.deployment.serverHost + "/commonauth" }
+                { "key": "callbackUrl", "value": config?.deployment?.customServerHost + "/commonauth" }
             ];
             // Certificates: bind the JWKS URL if exists otherwise pem
             identityProvider[ "certificate" ][ "jwksUri" ] = values.jwks_endpoint ?? EMPTY_STRING;

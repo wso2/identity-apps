@@ -116,7 +116,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
     const [ isUserIdInClaims, setIsUserIdInClaims ] = useState<boolean>(false);
     const [ isLogoutEnabled, setIsLogoutEnabled ] = useState<boolean>(false);
 
-    const authorizedRedirectURL: string = config?.deployment?.serverHost + "/commonauth" ;
+    const authorizedRedirectURL: string = config?.deployment?.customServerHost + "/commonauth" ;
 
     /**
      * ISAuthnReqSigned, IsLogoutReqSigned these two fields states will be used by other

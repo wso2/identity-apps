@@ -19,8 +19,9 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { CopyInputField, Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
+import { useSelector } from "react-redux";
 import { Divider, Icon, Message } from "semantic-ui-react";
-import { store } from "../../../../../core";
+import { AppState, ConfigReducerStateInterface } from "../../../../../core";
 
 /**
  * Prop types of the component.
@@ -40,6 +41,8 @@ const CustomIdentityProviderCreateWizardHelp: FunctionComponent<CustomIdentityPr
         [ "data-testid" ]: testId
     } = props;
 
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+
     return (
         <div data-testid={ testId }>
             <Message info>
@@ -51,7 +54,7 @@ const CustomIdentityProviderCreateWizardHelp: FunctionComponent<CustomIdentityPr
                     <br />
                     <CopyInputField
                         className="copy-input-dark"
-                        value={ store.getState().config.deployment.serverHost + "/commonauth" }
+                        value={ config?.deployment?.customServerHost + "/commonauth" }
                     />
                     <br />
                     <Icon name="info circle" />

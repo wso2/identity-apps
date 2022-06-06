@@ -102,7 +102,7 @@ const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
 
                     <CopyInputField
                         className="copy-input-dark spaced"
-                        value={ config.deployment.serverHost }
+                        value={ config?.deployment?.customServerHost }
                     />
                 </p>
                 <p>
@@ -117,7 +117,7 @@ const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
 
                     <CopyInputField
                         className="copy-input-dark spaced"
-                        value={ config.deployment.serverHost + "/commonauth" }
+                        value={ config?.deployment?.customServerHost + "/commonauth" }
                     />
 
                     <a

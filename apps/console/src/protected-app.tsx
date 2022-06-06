@@ -27,7 +27,7 @@ import {
 } from "@asgardeo/auth-react";
 import { AppConstants as CommonAppConstants, CommonConstants as CommonConstantsCore } from "@wso2is/core/constants";
 import { IdentifiableComponentInterface, TenantListInterface } from "@wso2is/core/models";
-import { setSignIn, setSupportedI18nLanguages } from "@wso2is/core/store";
+import { setDeploymentConfigs, setSignIn, setSupportedI18nLanguages } from "@wso2is/core/store";
 import { AuthenticateUtils as CommonAuthenticateUtils, ContextUtils, StringUtils } from "@wso2is/core/utils";
 import {
     I18n,
@@ -36,14 +36,14 @@ import {
     LanguageChangeException,
     isLanguageSupported
 } from "@wso2is/i18n";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import has from "lodash-es/has";
 import React, { FunctionComponent, ReactElement, lazy, useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { commonConfig } from "./extensions";
 import { AuthenticateUtils, getProfileInformation } from "./features/authentication";
-import { Config, HttpUtils, PreLoader, store } from "./features/core";
+import { Config, DeploymentConfigInterface, HttpUtils, PreLoader, store } from "./features/core";
 import { AppConstants, CommonConstants } from "./features/core/constants";
 import { history } from "./features/core/helpers";
 
@@ -107,9 +107,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 }
             }
 
-            // Update the context with new config once the basename is changed.
-            ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
-
             // Update post_logout_redirect_uri of logout_url with tenant qualified url
             if (sessionStorage.getItem(LOGOUT_URL)) {
                 logoutUrl = sessionStorage.getItem(LOGOUT_URL);
@@ -148,6 +145,25 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
                 sessionStorage.setItem(LOGOUT_URL, logoutUrl);
             }
+
+            // Set configurations related to hostname branding.
+            axios
+                .get(Config.getServiceResourceEndpoints().wellKnown)
+                .then((response: AxiosResponse) => {
+                    // Use token endpoint to extract the host url.
+                    const splitted: string[] = response.data.token_endpoint?.split("/") ?? [];
+                    const serverHost: string = splitted.slice(0, -2).join("/");
+                    
+                    window[ "AppUtils" ].updateCustomServerHost(serverHost);
+                    // Update store with custom server host.
+                    dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
+
+                    // Update runtime configurations.
+                    ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
+                })
+                .catch((error) => {
+                    throw error;
+                });
 
             getDecodedIDToken()
                 .then((idToken) => {

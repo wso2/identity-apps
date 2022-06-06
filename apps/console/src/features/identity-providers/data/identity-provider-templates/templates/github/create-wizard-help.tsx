@@ -101,7 +101,7 @@ const GithubIdentityProviderCreateWizardHelp: FunctionComponent<GithubIdentityPr
 
                     <CopyInputField
                         className="copy-input-dark spaced"
-                        value={ config.deployment.serverHost }
+                        value={ config?.deployment?.customServerHost }
                     />
                 </p>
                 <p>
@@ -116,7 +116,7 @@ const GithubIdentityProviderCreateWizardHelp: FunctionComponent<GithubIdentityPr
 
                     <CopyInputField
                         className="copy-input-dark spaced"
-                        value={ config.deployment.serverHost + "/commonauth" }
+                        value={ config?.deployment?.customServerHost + "/commonauth" }
                     />
 
                     <a
