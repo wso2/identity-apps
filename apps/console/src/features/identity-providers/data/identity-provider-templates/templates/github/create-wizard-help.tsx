@@ -22,9 +22,9 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Message } from "semantic-ui-react";
+import { identityProviderConfig } from "../../../../../../extensions/configs";
 import { ConfigReducerStateInterface } from "../../../../../core/models";
 import { AppState } from "../../../../../core/store";
-import { identityProviderConfig } from "../../../../../../extensions/configs";
 
 /**
  * Prop types of the component.
@@ -38,152 +38,154 @@ type GithubIdentityProviderCreateWizardHelpPropsInterface = TestableComponentInt
  *
  * @return {React.ReactElement}
  */
-const GithubIdentityProviderCreateWizardHelp: FunctionComponent<GithubIdentityProviderCreateWizardHelpPropsInterface> = (
-    props: GithubIdentityProviderCreateWizardHelpPropsInterface
-): ReactElement => {
+const GithubIdentityProviderCreateWizardHelp: FunctionComponent<
+    GithubIdentityProviderCreateWizardHelpPropsInterface> = (
+        props: GithubIdentityProviderCreateWizardHelpPropsInterface
+    ): ReactElement => {
 
-    const {
-        [ "data-testid" ]: testId
-    } = props;
+        const {
+            [ "data-testid" ]: testId
+        } = props;
 
-    const { t } = useTranslation();
+        const { t } = useTranslation();
 
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+        const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
-    const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
+        const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
 
-    /**
-     * Checks if the listing view defined in the config is the new connections view.
-     */
-    useEffect(() => {
+        /**
+         * Checks if the listing view defined in the config is the new connections view.
+         */
+        useEffect(() => {
 
-        if (useNewConnectionsView !== undefined) {
-            return;
-        }
+            if (useNewConnectionsView !== undefined) {
+                return;
+            }
 
-        setUseNewConnectionsView(identityProviderConfig.useNewConnectionsView);
-    }, [ identityProviderConfig ]);
+            setUseNewConnectionsView(identityProviderConfig.useNewConnectionsView);
+        }, [ identityProviderConfig ]);
 
-    return (
-        <div data-testid={ testId }>
-            <Message info>
-                <Heading as="h5" className="mb-3">
+        return (
+            <div data-testid={ testId }>
+                <Message info>
+                    <Heading as="h5" className="mb-3">
+                        {
+                            t("console:develop.features.authenticationProvider.templates.github.wizardHelp." +
+                                "preRequisites.heading")
+                        }
+                    </Heading>
+                    <p>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.authenticationProvider.templates.github.wizardHelp." +
+                                "preRequisites.getCredentials"
+                            }
+                        >
+                            Before you begin, create an <strong>OAuth application</strong> <a
+                                href="https://github.com/"
+                                target="_blank"
+                                rel="noopener noreferrer">
+                            on GitHub
+                            </a>, and obtain a <strong>client ID & secret</strong>.
+                        </Trans>
+                    </p>
+                    <p>
+
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.authenticationProvider.templates.github.wizardHelp" +
+                                ".preRequisites.configureHomePageURL"
+                            }
+                        >
+                            Use the following URL as the <strong>Homepage URL</strong>.
+                        </Trans>
+
+                        <CopyInputField
+                            className="copy-input-dark spaced"
+                            value={ config?.deployment?.customServerHost }
+                        />
+                    </p>
+                    <p>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.authenticationProvider.templates.github.wizardHelp" +
+                                ".preRequisites.configureRedirectURL"
+                            }
+                        >
+                            Add the following URL as the <strong>Authorization callback URL</strong>.
+                        </Trans>
+
+                        <CopyInputField
+                            className="copy-input-dark spaced"
+                            value={ config?.deployment?.customServerHost + "/commonauth" }
+                        />
+
+                        <a
+                            href="https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app"
+                            target="_blank"
+                            rel="noopener noreferrer">
+                            {
+                                t("console:develop.features.authenticationProvider.templates.github.wizardHelp." +
+                                    "preRequisites.configureOAuthApps")
+                            }
+                        </a>
+                    </p>
+                </Message>
+
+                <Heading as="h5">
                     {
-                        t("console:develop.features.authenticationProvider.templates.github.wizardHelp." +
-                            "preRequisites.heading")
+                        t("console:develop.features.authenticationProvider.templates.github" +
+                            ".wizardHelp.name.heading")
+                    }
+                </Heading>
+                <p>
+                    {
+                        useNewConnectionsView
+                            ? t("console:develop.features.authenticationProvider.templates.github." +
+                                "wizardHelp.name.connectionDescription")
+                            : t("console:develop.features.authenticationProvider.templates.github." +
+                                "wizardHelp.name.idpDescription")
+                    }
+                </p>
+
+                <Divider/>
+
+                <Heading as="h5">
+                    { t("console:develop.features.authenticationProvider." + 
+                        "templates.github.wizardHelp.clientId.heading") }
+                </Heading>
+                <p>
+                    <Trans
+                        i18nKey={
+                            "console:develop.features.authenticationProvider.templates.github" +
+                            ".wizardHelp.clientId.description"
+                        }
+                    >
+                        Provide the <Code>Client ID</Code> obtained from GitHub.
+                    </Trans>
+                </p>
+
+                <Divider/>
+
+                <Heading as="h5">
+                    {
+                        t("console:develop.features.authenticationProvider.templates.github" +
+                            ".wizardHelp.clientSecret.heading")
                     }
                 </Heading>
                 <p>
                     <Trans
                         i18nKey={
-                            "console:develop.features.authenticationProvider.templates.github.wizardHelp." +
-                            "preRequisites.getCredentials"
+                            "console:develop.features.authenticationProvider.templates.github" +
+                            ".wizardHelp.clientSecret.description"
                         }
                     >
-                        Before you begin, create an <strong>OAuth application</strong> <a
-                            href="https://github.com/"
-                            target="_blank"
-                            rel="noopener noreferrer">
-                        on GitHub
-                        </a>, and obtain a <strong>client ID & secret</strong>.
+                        Provide the <Code>Client Secret</Code> obtained from GitHub.
                     </Trans>
                 </p>
-                <p>
-
-                    <Trans
-                        i18nKey={
-                            "console:develop.features.authenticationProvider.templates.github.wizardHelp" +
-                            ".preRequisites.configureHomePageURL"
-                        }
-                    >
-                        Use the following URL as the <strong>Homepage URL</strong>.
-                    </Trans>
-
-                    <CopyInputField
-                        className="copy-input-dark spaced"
-                        value={ config?.deployment?.customServerHost }
-                    />
-                </p>
-                <p>
-                    <Trans
-                        i18nKey={
-                            "console:develop.features.authenticationProvider.templates.github.wizardHelp" +
-                            ".preRequisites.configureRedirectURL"
-                        }
-                    >
-                        Add the following URL as the <strong>Authorization callback URL</strong>.
-                    </Trans>
-
-                    <CopyInputField
-                        className="copy-input-dark spaced"
-                        value={ config?.deployment?.customServerHost + "/commonauth" }
-                    />
-
-                    <a
-                        href="https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app"
-                        target="_blank"
-                        rel="noopener noreferrer">
-                        {
-                            t("console:develop.features.authenticationProvider.templates.github.wizardHelp." +
-                                "preRequisites.configureOAuthApps")
-                        }
-                    </a>
-                </p>
-            </Message>
-
-            <Heading as="h5">
-                {
-                    t("console:develop.features.authenticationProvider.templates.github" +
-                        ".wizardHelp.name.heading")
-                }
-            </Heading>
-            <p>
-                {
-                    useNewConnectionsView
-                        ? t("console:develop.features.authenticationProvider.templates.github." +
-                            "wizardHelp.name.connectionDescription")
-                        : t("console:develop.features.authenticationProvider.templates.github." +
-                            "wizardHelp.name.idpDescription")
-                }
-            </p>
-
-            <Divider/>
-
-            <Heading as="h5">
-                { t("console:develop.features.authenticationProvider.templates.github.wizardHelp.clientId.heading") }
-            </Heading>
-            <p>
-                <Trans
-                    i18nKey={
-                        "console:develop.features.authenticationProvider.templates.github" +
-                        ".wizardHelp.clientId.description"
-                    }
-                >
-                    Provide the <Code>Client ID</Code> obtained from GitHub.
-                </Trans>
-            </p>
-
-            <Divider/>
-
-            <Heading as="h5">
-                {
-                    t("console:develop.features.authenticationProvider.templates.github" +
-                        ".wizardHelp.clientSecret.heading")
-                }
-            </Heading>
-            <p>
-                <Trans
-                    i18nKey={
-                        "console:develop.features.authenticationProvider.templates.github" +
-                        ".wizardHelp.clientSecret.description"
-                    }
-                >
-                    Provide the <Code>Client Secret</Code> obtained from GitHub.
-                </Trans>
-            </p>
-        </div>
-    );
-};
+            </div>
+        );
+    };
 
 /**
  * Default props for the component
