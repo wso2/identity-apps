@@ -140,4 +140,19 @@ export class ProfileUtils {
      public static isStringArray = (attribute: string[] | MultiValueAttributeInterface[]): attribute is string[] => {
         return attribute?.length !== undefined;
     };
+
+    /**
+     * Checks whether a given schema name falls in to a possible
+     * BOOLEAN attribute. Note that not all attributes are present
+     * we can add them as we go.
+     *
+     * @param attributeName {string}
+     * @return whether this is a boolean attribute or not
+     */
+     public static isPossibleBooleanAttribute = (attributeName: string): boolean => {
+         return new Set([
+             "active"
+         ]).has(attributeName);
+     }
+
 }
