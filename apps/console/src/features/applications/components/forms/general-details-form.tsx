@@ -378,8 +378,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 disabled={ isSubmitting }
                 loading={ isSubmitting }
                 label={ t("common:update") }
-                hidden={ readOnly && applicationConfig.generalSettings.getFieldReadOnlyStatus(
-                     name, "ACCESS_URL")}
+                hidden={ !hasRequiredScope || ( readOnly && applicationConfig.generalSettings.getFieldReadOnlyStatus(
+                    name, "ACCESS_URL"))}
             />
         </Form>
     );
