@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { DocumentationLink, Message, useDocumentation } from "@wso2is/react-components";
@@ -75,6 +76,10 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
      * Specifies a Management Application
      */
     isManagementApp?: boolean;
+    /**
+     * Specifies whether having edit-permissions
+     */
+    hasRequiredScope?: boolean;
 }
 
 /**
@@ -108,6 +113,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         accessUrl,
         onSubmit,
         readOnly,
+        hasRequiredScope,
         isSubmitting,
         isManagementApp,
         [ "data-testid" ]: testId
@@ -355,8 +361,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         ".placeholder")
                 }
                 value={ accessUrl }
-                readOnly={ readOnly && applicationConfig.generalSettings.getFieldReadOnlyStatus(
-                     name, "ACCESS_URL")}
+                readOnly={ !hasRequiredScope || ( readOnly && applicationConfig.generalSettings.getFieldReadOnlyStatus(
+                     name, "ACCESS_URL"))}
                 maxLength={ 200 }
                 minLength={ 3 }
                 data-testid={ `${ testId }-application-access-url-input` }
