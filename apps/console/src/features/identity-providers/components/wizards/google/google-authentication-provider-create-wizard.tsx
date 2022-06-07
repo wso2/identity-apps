@@ -278,7 +278,8 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
         let triggerPreviousForm: () => void;
 
 
-        const onSubmitWizard = (values): void => {
+        const onSubmitWizard = async (values): Promise<void> => {
+            await identityProviderConfig.overrideTemplate(template);
             const identityProvider: IdentityProviderInterface = template.idp;
 
             identityProvider.name = values?.name.toString();
