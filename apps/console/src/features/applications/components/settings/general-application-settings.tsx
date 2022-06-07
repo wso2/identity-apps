@@ -97,10 +97,6 @@ interface GeneralApplicationSettingsInterface extends SBACInterface<FeatureConfi
      * Specifies a Management Application
      */
     isManagementApp?: boolean;
-    /**
-     * Specifies whether having edit-permissions
-     */
-    hasRequiredScope?: boolean;
 }
 
 /**
@@ -127,7 +123,6 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         onDelete,
         onUpdate,
         readOnly,
-        hasRequiredScope,
         isManagementApp,
         [ "data-testid" ]: testId
     } = props;

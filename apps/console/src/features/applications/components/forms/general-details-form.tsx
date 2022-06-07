@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { DocumentationLink, Message, useDocumentation } from "@wso2is/react-components";
