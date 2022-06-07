@@ -22,8 +22,8 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Message } from "semantic-ui-react";
-import { AppState, ConfigReducerStateInterface } from "../../../../../core";
 import { identityProviderConfig } from "../../../../../../extensions/configs";
+import { AppState, ConfigReducerStateInterface } from "../../../../../core";
 
 /**
  * Prop types of the component.
@@ -98,7 +98,7 @@ const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpProp
 
                     <CopyInputField
                         className="copy-input-dark spaced"
-                        value={ config.deployment.serverHost + "/commonauth" }
+                        value={ config?.deployment?.customServerHost + "/commonauth" }
                     />
 
                     <a

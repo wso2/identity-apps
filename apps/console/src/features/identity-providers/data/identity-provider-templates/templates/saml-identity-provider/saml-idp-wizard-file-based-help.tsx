@@ -38,6 +38,7 @@ type Props = TestableComponentInterface;
 const SAMLIdPWizardFileBasedHelp: FunctionComponent<Props> = (props: Props): ReactElement => {
 
     const { [ "data-testid" ]: testId } = props;
+    
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const { t } = useTranslation();
@@ -57,7 +58,7 @@ const SAMLIdPWizardFileBasedHelp: FunctionComponent<Props> = (props: Props): Rea
                     </Trans>
                     <CopyInputField
                         className="copy-input-dark spaced"
-                        value={ config?.deployment?.serverHost + "/commonauth" }
+                        value={ config?.deployment?.customServerHost + "/commonauth" }
                     />
                     <Icon name="info circle" />
                     {

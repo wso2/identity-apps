@@ -54,7 +54,7 @@ const SamlIDPWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement
                     </Trans>
                     <CopyInputField
                         className="copy-input-dark spaced"
-                        value={ config?.deployment?.serverHost + "/commonauth" }
+                        value={ config?.deployment?.customServerHost + "/commonauth" }
                     />
                     <Icon name="info circle" />
                     {

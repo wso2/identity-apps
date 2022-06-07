@@ -19,8 +19,9 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { CopyInputField, Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
+import { useSelector } from "react-redux";
 import { Divider, Icon, Message } from "semantic-ui-react";
-import { store } from "../../../../../core";
+import { AppState, ConfigReducerStateInterface } from "../../../../../core";
 
 /**
  * Prop types of the component.
@@ -36,46 +37,48 @@ type CustomIdentityProviderCreateWizardHelpPropsInterface = TestableComponentInt
 const CustomIdentityProviderCreateWizardHelp: FunctionComponent<CustomIdentityProviderCreateWizardHelpPropsInterface>
     = ( props: CustomIdentityProviderCreateWizardHelpPropsInterface ): ReactElement => {
 
-    const {
-        [ "data-testid" ]: testId
-    } = props;
+        const {
+            [ "data-testid" ]: testId
+        } = props;
 
-    return (
-        <div data-testid={ testId }>
-            <Message info>
-                <Heading as="h5" className="mb-3">Prerequisite</Heading>
-                <p>Before you begin, register an application in the Identity Provider, and obtain a
-                    <strong> client ID & secret</strong>. Use the following URL as the <strong>
-                    Authorized Redirect URL</strong>.
-                    <br />
-                    <br />
-                    <CopyInputField
-                        className="copy-input-dark"
-                        value={ store.getState().config.deployment.serverHost + "/commonauth" }
-                    />
-                    <br />
-                    <Icon name="info circle" />
-                    The URL to which the authorization code is sent upon authentication and where the
-                    user is redirected to upon logout.
-                </p>
-            </Message>
-            <Heading as="h5">Client ID</Heading>
-            <p>Provide the client ID obtained from the identity provider.</p>
-            <Divider />
-            <Heading as="h5">Client secret</Heading>
-            <p>Provide the client secret obtained from the identity provider.</p>
-            <Divider />
-            <Heading as="h5">Authorization endpoint URL</Heading>
-            <p>Provide the standard authorization endpoint URL of the identity provider.</p>
-            <p>E.g., https://enterprise_domain/authorize</p>
-            <Divider />
-            <Heading as="h5">Token endpoint URL</Heading>
-            <p>Provide the standard token endpoint URL of the identity provider.</p>
-            <p>E.g., https://enterprise_domain/token</p>
+        const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
-        </div>
-    );
-};
+        return (
+            <div data-testid={ testId }>
+                <Message info>
+                    <Heading as="h5" className="mb-3">Prerequisite</Heading>
+                    <p>Before you begin, register an application in the Identity Provider, and obtain a
+                        <strong> client ID & secret</strong>. Use the following URL as the <strong>
+                        Authorized Redirect URL</strong>.
+                        <br />
+                        <br />
+                        <CopyInputField
+                            className="copy-input-dark"
+                            value={ config?.deployment?.customServerHost + "/commonauth" }
+                        />
+                        <br />
+                        <Icon name="info circle" />
+                        The URL to which the authorization code is sent upon authentication and where the
+                        user is redirected to upon logout.
+                    </p>
+                </Message>
+                <Heading as="h5">Client ID</Heading>
+                <p>Provide the client ID obtained from the identity provider.</p>
+                <Divider />
+                <Heading as="h5">Client secret</Heading>
+                <p>Provide the client secret obtained from the identity provider.</p>
+                <Divider />
+                <Heading as="h5">Authorization endpoint URL</Heading>
+                <p>Provide the standard authorization endpoint URL of the identity provider.</p>
+                <p>E.g., https://enterprise_domain/authorize</p>
+                <Divider />
+                <Heading as="h5">Token endpoint URL</Heading>
+                <p>Provide the standard token endpoint URL of the identity provider.</p>
+                <p>E.g., https://enterprise_domain/token</p>
+
+            </div>
+        );
+    };
 
 /**
  * Default props for the component
