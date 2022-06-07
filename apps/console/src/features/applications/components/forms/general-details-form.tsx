@@ -25,7 +25,7 @@ import { useSelector } from "react-redux";
 import { Divider, Icon } from "semantic-ui-react";
 import { AppState, UIConfigInterface } from "../../../core";
 import { ApplicationManagementConstants } from "../../constants";
-import {applicationConfig} from "../../../../extensions";
+import { applicationConfig } from "../../../../extensions";
 
 /**
  * Proptypes for the applications general details form component.
@@ -356,7 +356,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 }
                 value={ accessUrl }
                 readOnly={ readOnly && applicationConfig.generalSettings.getFieldReadOnlyStatus(
-                    "ACCESS_URL", name)}
+                     name, "ACCESS_URL")}
                 maxLength={ 200 }
                 minLength={ 3 }
                 data-testid={ `${ testId }-application-access-url-input` }
@@ -373,7 +373,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 loading={ isSubmitting }
                 label={ t("common:update") }
                 hidden={ readOnly && applicationConfig.generalSettings.getFieldReadOnlyStatus(
-                    "ACCESS_URL", name)}
+                     name, "ACCESS_URL")}
             />
         </Form>
     );
