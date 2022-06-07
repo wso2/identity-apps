@@ -134,7 +134,7 @@ export const DISABLED = "Disabled";
  * @constant
  * @type {string}
  */
-export const CONSUMER_USERSTORE = "CUSTOMER-DEFAULT";
+export const CONSUMER_USERSTORE = "DEFAULT";
 
 /**
  * Name of the primary userstore.
