@@ -181,21 +181,25 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 setDeletingUser(undefined);
                 onUserDelete();
             }).catch((error) => {
-            if (error.response && error.response.data && error.response.data.description) {
+                setDeletingUser(undefined);
+                setShowDeleteConfirmationModal(false);
+                if (error.response && error.response.data && error.response.data.description) {
+                    setAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.features.users." +
+                            "notifications.deleteUser.error.message")
+                    });
+                    return;
+                }
                 setAlert({
-                    description: error.response.data.description,
+                    description: t("console:manage.features.users." +
+                        "notifications.deleteUser.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.users.notifications.deleteUser.error.message")
+                    message: t("console:manage.features.users." +
+                        "notifications.deleteUser.genericError.message")
                 });
-                return;
-            }
-            setAlert({
-                description: t("console:manage.features.users.notifications.deleteUser.genericError.description"),
-                level: AlertLevels.ERROR,
-                message: t("console:manage.features.users.notifications.deleteUser.genericError" +
-                    ".message")
             });
-        });
     };
 
     /**
