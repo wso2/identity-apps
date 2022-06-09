@@ -764,8 +764,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                         // Validate date format and the date is before the current date
                                                         } else if(checkSchemaType(schema.name,
                                                             ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB"))){
-                                                            if (!moment(value, "YYYY-MM-DD",true).isValid() 
-                                                            || moment().isBefore(value)) {
+                                                            if (!moment(value, "YYYY-MM-DD",true).isValid()) {
                                                                 validation.isValid = false;
                                                                 validation.errorMessages
                                                                     .push(t("myAccount:components.profile.forms."
@@ -773,6 +772,16 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                     + "invalidFormat", {
                                                                         field: fieldName
                                                                     }));
+                                                            } else {
+                                                                if (moment().isBefore(value)) {
+                                                                    validation.isValid = false;
+                                                                    validation.errorMessages
+                                                                        .push(t("myAccount:components.profile.forms."
+                                                                        + "dateChangeForm.inputs.date.validations."
+                                                                        + "futureDateError", {
+                                                                            field: fieldName
+                                                                        }))
+                                                                }
                                                             }
                                                         }
                                                     } }
