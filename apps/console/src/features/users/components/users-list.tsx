@@ -167,9 +167,8 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         history.push(AppConstants.getPaths().get("USER_EDIT").replace(":id", userId));
     };
 
-    const handleUserDelete = (userId: string): void => {
-        setLoading(true);
-        deleteUser(userId)
+    const handleUserDelete = (userId: string): Promise<void> => {
+        return deleteUser(userId)
             .then(() => {
                 setAlert({
                     description: t(
@@ -199,11 +198,6 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     message: t("console:manage.features.users." +
                     "notifications.deleteUser.genericError.message")
                 });
-            })
-            .finally(() => {
-                setLoading(false);
-                setDeletingUser(undefined);
-                setShowDeleteConfirmationModal(false);
             });
     };
 
@@ -486,7 +480,14 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     setShowDeleteConfirmationModal(false);
                     setAlert(null);
                 } }
-                onPrimaryActionClick={ (): void => handleUserDelete(deletingUser?.id) }
+                onPrimaryActionClick={ (): void => {
+                    setLoading(true);
+                    handleUserDelete(deletingUser?.id).finally(() => {
+                        setLoading(false);
+                        setDeletingUser(undefined);
+                        setShowDeleteConfirmationModal(false);
+                    });
+                } }
                 closeOnDimmerClick={ false }
             >
                 <ConfirmationModal.Header data-testid={ `${testId}-confirmation-modal-header` }>
