@@ -6165,7 +6165,9 @@ export const console: ConsoleNS = {
                             actionTitle: "Supprimer {{type}}",
                             header: "Supprimer {{type}}",
                             subheader: "Une fois que vous avez supprimé le {{type}}, il n'y a plus de retour " +
-                                "en arrière. Veuillez en être certain."
+                                "en arrière. Veuillez en être certain.",
+                            buttonDisableHint: "L'option de suppression est désactivée car ce {{type}} est géré " +
+                                "dans un magasin d'utilisateurs distant."
                         },
                         fields: {
                             roleName: {

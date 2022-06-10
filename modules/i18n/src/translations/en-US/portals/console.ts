@@ -7581,7 +7581,9 @@ export const console: ConsoleNS = {
                         dangerZone: {
                             actionTitle: "Delete {{type}}",
                             header: "Delete {{type}}",
-                            subheader: "Once you delete the {{type}}, it cannot be recovered."
+                            subheader: "Once you delete the {{type}}, it cannot be recovered.",
+                            buttonDisableHint: "Delete option is disabled because this {{type}} is managed in a remote " +
+                                "user store."
                         },
                         fields: {
                             roleName: {
