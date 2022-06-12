@@ -84,14 +84,6 @@ export const ComponentExtensionPlaceholder = (args: ComponentExtensionInterface)
                                     title={ I18n.instance.t("console:common.placeholders.genericError.title") }
                                 />
                             ) }
-                            handleError={ (error: Error, errorInfo: ErrorInfo) => {
-                                eventPublisher.publish("error-captured-error-boundary", {
-                                    error: error?.name,
-                                    errorInfo: errorInfo?.componentStack,
-                                    stack: error?.stack,
-                                    type: "component-extension"
-                                });
-                            } }
                         >
                             <Suspense
                                 fallback={ (
