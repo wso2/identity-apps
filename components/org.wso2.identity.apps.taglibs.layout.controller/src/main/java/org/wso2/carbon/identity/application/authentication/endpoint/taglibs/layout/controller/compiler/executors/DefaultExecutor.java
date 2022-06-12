@@ -1,0 +1,266 @@
+package org.wso2.carbon.identity.application.authentication.endpoint.taglibs.layout.controller.compiler.executors;
+
+import org.owasp.encoder.Encode;
+import org.wso2.carbon.identity.application.authentication.endpoint.taglibs.layout.controller.compiler.CompilerException;
+import org.wso2.carbon.identity.application.authentication.endpoint.taglibs.layout.controller.compiler.identifiers.ComponentIdentifier;
+import org.wso2.carbon.identity.application.authentication.endpoint.taglibs.layout.controller.compiler.identifiers.ConditionIdentifier;
+import org.wso2.carbon.identity.application.authentication.endpoint.taglibs.layout.controller.compiler.identifiers.DataIdentifier;
+import org.wso2.carbon.identity.application.authentication.endpoint.taglibs.layout.controller.compiler.identifiers.DefaultIdentifier;
+import org.wso2.carbon.identity.application.authentication.endpoint.taglibs.layout.controller.compiler.identifiers.NoIdentifier;
+import org.wso2.carbon.identity.application.authentication.endpoint.taglibs.layout.controller.compiler.identifiers.NotConditionIdentifier;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Map;
+
+/**
+ * Implementation of the executor interface
+ * Execute the compiled layout file
+ */
+public class DefaultExecutor implements Executor {
+
+    private Writer out;
+    private Map<String, Object> data;
+    private ArrayList<Integer> deepIterationPath;
+    private int iterationLevel;
+    private String componentName;
+    private boolean activeComponentExecution;
+
+    /**
+     * Constructor
+     *
+     * @param out  Writer to write the output content
+     * @param data All data required to execute the layout file
+     */
+    public DefaultExecutor(Writer out, Map<String, Object> data) {
+        this.out = out;
+        this.data = data;
+        deepIterationPath = new ArrayList<Integer>();
+        iterationLevel = -1;
+        componentName = null;
+        activeComponentExecution = false;
+    }
+
+    /**
+     * Start the next iteration level (Block level)
+     */
+    private void nextIterationLevel() {
+        if (deepIterationPath.size() == iterationLevel + 1) {
+            deepIterationPath.add(0);
+        }
+        iterationLevel++;
+    }
+
+    /**
+     * Remove the completed iteration level (Block level)
+     */
+    private void removeIteration() {
+        deepIterationPath.remove(iterationLevel);
+        iterationLevel--;
+    }
+
+    /**
+     * Move into next identifier
+     */
+    private void next() {
+        deepIterationPath.set(iterationLevel, deepIterationPath.get(iterationLevel) + 1);
+    }
+
+    /**
+     * Set the current running component
+     *
+     * @param name Name of the component
+     */
+    private void setComponent(String name) {
+        componentName = name;
+        activeComponentExecution = true;
+    }
+
+    /**
+     * Remove the component which was executed
+     */
+    public void deactivateComponent() {
+        activeComponentExecution = false;
+        componentName = null;
+        iterationLevel = -1;
+    }
+
+    /**
+     * Getter to get the component name
+     *
+     * @return Component name
+     */
+    public String getComponentName() {
+        return componentName;
+    }
+
+    /**
+     * Check whether the component execution enabled or not
+     *
+     * @return Component execution enabled or not
+     */
+    public boolean componentExecutionEnabled() {
+        return activeComponentExecution;
+    }
+
+    /**
+     * Check whether the compiled layout execution can continue or not
+     *
+     * @return Whether the compiled layout execution can continue or not
+     */
+    @Override
+    public boolean continueExecution() {
+        return !activeComponentExecution;
+    }
+
+    /**
+     * Get the current executing index of the compiled layout
+     *
+     * @return current executing index
+     */
+    @Override
+    public int getCurrentExecutionIndex() {
+        return deepIterationPath.get(iterationLevel);
+    }
+
+    /**
+     * Execute the provided default identifier
+     *
+     * @param identifier Default identifier (Set of identifiers)
+     */
+    @Override
+    public void execute(DefaultIdentifier identifier) {
+        nextIterationLevel();
+    }
+
+    /**
+     * Execute the provided component identifier
+     *
+     * @param identifier Component identifier
+     */
+    @Override
+    public void execute(ComponentIdentifier identifier) {
+        write(identifier.getText());
+
+        setComponent(identifier.getIdentifierName());
+        next();
+    }
+
+    /**
+     * Execute the provided data identifier
+     *
+     * @param identifier Data identifier
+     */
+    @Override
+    public void execute(DataIdentifier identifier) {
+        write(identifier.getText());
+        Object value = data.get(identifier.getIdentifierName());
+
+        if (value != null) {
+            write(value.toString(), true);
+        }
+        next();
+    }
+
+    /**
+     * Execute the provided condition identifier
+     *
+     * @param identifier Condition identifier
+     */
+    @Override
+    public void execute(ConditionIdentifier identifier) {
+        if (iterationLevel == deepIterationPath.size() - 1) {
+            write(identifier.getText());
+        }
+        Object value = data.get(identifier.getIdentifierName());
+
+        boolean executeContent = false;
+        if (value instanceof Boolean) {
+            if ((Boolean) value) {
+                executeContent = true;
+            }
+        }
+
+        if (executeContent) {
+            identifier.acceptChild(this);
+            if (!activeComponentExecution) {
+                removeIteration();
+            }
+        }
+
+        if (!activeComponentExecution) {
+            next();
+        }
+    }
+
+    /**
+     * Execute the provided not condition identifier
+     *
+     * @param identifier Not condition identifier
+     */
+    @Override
+    public void execute(NotConditionIdentifier identifier) {
+        if (iterationLevel == deepIterationPath.size() - 1) {
+            write(identifier.getText());
+        }
+        Object value = data.get(identifier.getIdentifierName());
+
+        boolean executeContent = false;
+        if (value instanceof Boolean) {
+            if (!((Boolean) value)) {
+                executeContent = true;
+            }
+        } else if (value == null) {
+            executeContent = true;
+        }
+
+        if (executeContent) {
+            identifier.acceptChild(this);
+            if (!activeComponentExecution) {
+                removeIteration();
+            }
+        }
+
+        if (!activeComponentExecution) {
+            next();
+        }
+    }
+
+    /**
+     * Execute the provided no identifier
+     *
+     * @param identifier No identifier
+     */
+    @Override
+    public void execute(NoIdentifier identifier) {
+        write(identifier.getText());
+        next();
+    }
+
+    /**
+     * Write text content to the output writer
+     *
+     * @param content Output text
+     * @param encode  Text encode enable or not
+     */
+    private void write(String content, boolean encode) {
+        try {
+            if (encode) {
+                out.write(Encode.forHtml(content));
+            } else {
+                out.write(content);
+            }
+        } catch (IOException e) {
+            throw new CompilerException("Failed to write", e);
+        }
+    }
+
+    /**
+     * Method overloading -> Refer to the above method
+     */
+    private void write(String content) {
+        write(content, false);
+    }
+
+}
