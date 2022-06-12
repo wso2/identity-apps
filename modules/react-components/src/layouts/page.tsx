@@ -21,6 +21,7 @@ import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { Divider } from "semantic-ui-react";
 import { PageHeader, PageHeaderPropsInterface } from "../components";
+import {Helmet} from "react-helmet"
 
 /**
  * Page layout component Prop types.
@@ -40,6 +41,10 @@ export interface PageLayoutPropsInterface extends PageHeaderPropsInterface, Test
      * Flag to enable/disable padding.
      */
     padded?: boolean;
+    /**
+     * page name to display in the browser tab
+     */
+    pageTitle?: string;
     /**
      * Flag to enable/disable help panel visibility.
      */
@@ -69,6 +74,7 @@ export const PageLayout: FunctionComponent<PropsWithChildren<PageLayoutPropsInte
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         padded,
+        pageTitle,
         ...rest
     } = props;
 
@@ -86,6 +92,11 @@ export const PageLayout: FunctionComponent<PropsWithChildren<PageLayoutPropsInte
     );
 
     return (
+        <>
+        <Helmet>
+            <meta charSet="utf-8" />
+            <title>{pageTitle}</title>
+        </Helmet>
         <div className={ layoutClasses } data-testid={ testId } data-componentid={ componentId }>
             <div className={ layoutContentClasses }>
                 <PageHeader
@@ -98,6 +109,7 @@ export const PageLayout: FunctionComponent<PropsWithChildren<PageLayoutPropsInte
                 { children }
             </div>
         </div>
+        </>
     );
 };
 

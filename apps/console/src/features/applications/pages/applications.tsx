@@ -366,6 +366,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
 
     return (
         <PageLayout
+            pageTitle="Applications"
             action={
                 (!isLoading && !(!searchQuery && appList?.totalResults <= 0))
                 && (

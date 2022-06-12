@@ -433,6 +433,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     return (
         <PageLayout
+            pageTitle="Edit Application"
             title={ (
                 <>
                     <span>{ application.name }</span>
