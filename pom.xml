@@ -44,6 +44,7 @@
     </scm>
 
     <modules>
+        <module>components/org.wso2.identity.apps.taglibs.layout.controller</module>
         <module>apps/myaccount</module>
         <module>apps/console</module>
         <module>apps/authentication-portal</module>
@@ -531,6 +532,11 @@
                 <artifactId>org.wso2.identity.apps.recovery.portal.server.feature</artifactId>
                 <version>${project.version}</version>
                 <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.identity.apps</groupId>
+                <artifactId>org.wso2.identity.apps.taglibs.layout.controller</artifactId>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

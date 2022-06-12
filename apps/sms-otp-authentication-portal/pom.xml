@@ -107,6 +107,10 @@
             <artifactId>encoder</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.wso2.identity.apps</groupId>
+            <artifactId>org.wso2.identity.apps.taglibs.layout.controller</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
