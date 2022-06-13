@@ -5685,6 +5685,7 @@ export const console: ConsoleNS = {
                     },
                     placeholder: "නම අනුව සොයන්න"
                 },
+                backButton: "අාපසු යන්න{{parent}}",
                 confirmations: {
                     deleteOrganization: {
                         assertionHint: "කරුණාකර ඔබගේ ක්‍රියාව තහවුරු කරන්න.",

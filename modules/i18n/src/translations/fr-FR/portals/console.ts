@@ -5815,6 +5815,7 @@ export const console: ConsoleNS = {
                     },
                     placeholder: "Rechercher par nom"
                 },
+                backButton: "Revenir à {{parent}}",
                 confirmations: {
                     deleteOrganization: {
                         assertionHint: "Veuillez confirmer votre action.",
