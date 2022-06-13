@@ -7243,7 +7243,6 @@ export const console: ConsoleNS = {
                     },
                     placeholder: "Search by Name"
                 },
-                backButton: "Go back to {{parent}}",
                 confirmations: {
                     deleteOrganization: {
                         assertionHint: "Please confirm your action.",
