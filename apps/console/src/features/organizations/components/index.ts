@@ -17,3 +17,4 @@
 */
 
 export * from "./organization-list";
+export * from "./add-organization-modal";
