@@ -38,7 +38,7 @@ export interface AddOrganizationInterface {
     type: string;
     domain: string;
     parentId: string;
-    attributes: OrganizationAttributes[];
+    attributes?: OrganizationAttributes[];
 }
 
 export interface OrganizationAttributes {
