@@ -6163,11 +6163,11 @@ export const console: ConsoleNS = {
                         },
                         dangerZone: {
                             actionTitle: "Supprimer {{type}}",
+                            buttonDisableHint: "L'option de suppression est désactivée car ce {{type}} est géré " +
+                                "dans un magasin d'utilisateurs distant.",
                             header: "Supprimer {{type}}",
                             subheader: "Une fois que vous avez supprimé le {{type}}, il n'y a plus de retour " +
-                                "en arrière. Veuillez en être certain.",
-                            buttonDisableHint: "L'option de suppression est désactivée car ce {{type}} est géré " +
-                                "dans un magasin d'utilisateurs distant."
+                                "en arrière. Veuillez en être certain."
                         },
                         fields: {
                             roleName: {
