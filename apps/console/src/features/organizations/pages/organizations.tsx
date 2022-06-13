@@ -20,19 +20,13 @@ import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
-import {
-    DocumentationLink,
-    GridLayout,
-    ListLayout,
-    PageLayout,
-    PrimaryButton,
-    useDocumentation
-} from "@wso2is/react-components";
+import { GridLayout, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import find from "lodash-es/find";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { Breadcrumb, DropdownItemProps, DropdownProps, Icon, PaginationProps, Segment } from "semantic-ui-react";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
@@ -40,9 +34,9 @@ import {
     FeatureConfigInterface,
     UIConstants
 } from "../../core";
-import { getOrganizations } from "../api";
-import { OrganizationList } from "../components";
-import { OrganizationListInterface } from "../models";
+import { getOrganization, getOrganizations } from "../api";
+import { AddOrganizationModal, OrganizationList } from "../components";
+import { OrganizationInterface, OrganizationListInterface, OrganizationResponseInterface } from "../models";
 
 const ORGANIZATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -85,7 +79,6 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     const { [ "data-testid" ]: testId } = props;
 
     const { t } = useTranslation();
-    const { getLink } = useDocumentation();
 
     const dispatch = useDispatch();
 
@@ -103,19 +96,41 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ isOrganizationsNextPageAvailable, setIsOrganizationsNextPageAvailable ] = useState<boolean>(undefined);
+    const [ parent, setParent ] = useState<OrganizationInterface>(null);
+    const [ organizations, setOrganizations ] = useState<OrganizationInterface[]>([]);
+    const [ organization, setOrganization ] = useState<OrganizationResponseInterface>(null);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    /**
-     * Called on every `listOffset` & `listItemLimit` change.
-     */
     useEffect(() => {
-        if (searchQuery) {
-            getOrganizationLists(listItemLimit, listOffset, searchQuery);
+        if (!parent || isEmpty(parent)) {
+            if (searchQuery) {
+                getOrganizationLists(listItemLimit, listOffset, searchQuery);
+            } else {
+                getOrganizationLists(listItemLimit, listOffset, null);
+            }
         } else {
-            getOrganizationLists(listItemLimit, listOffset, null);
+            if (searchQuery) {
+                getOrganizationLists(listItemLimit, listOffset, searchQuery);
+            } else {
+                getOrganizationLists(listItemLimit, listOffset, `parentId eq ${ parent.id }`);
+            }
         }
-    }, [ listOffset, listItemLimit ]);
+    }, [ parent, listOffset, listItemLimit ]);
+
+    useEffect(() => {
+        if (!parent || isEmpty(parent)) {
+            return;
+        }
+
+        getOrganization(parent.id)
+            .then((organization: OrganizationResponseInterface) => {
+                setOrganization(organization);
+            })
+            .catch((error) => {
+                // TODO: Handle error
+            });
+    }, [ parent ]);
 
     /**
      * Retrieves the list of organizations.
@@ -128,7 +143,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         setOrganizationListRequestLoading(true);
 
         getOrganizations(filter, limit, null, null)
-            .then((response) => {
+            .then((response: OrganizationListInterface) => {
                 handleNextButtonVisibility(response);
                 setOrganizationList(response);
             })
@@ -139,7 +154,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                             description: error.description,
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:develop.features.organizations.notifications." +
+                                "console:manage.features.organizations.notifications." +
                                 "fetchOrganizations.error.message"
                             )
                         })
@@ -151,12 +166,12 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:develop.features.organizations.notifications.fetchOrganizations" +
+                            "console:manage.features.organizations.notifications.fetchOrganizations" +
                             ".genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:develop.features.organizations.notifications." +
+                            "console:manage.features.organizations.notifications." +
                             "fetchOrganizations.genericError.message"
                         )
                     })
@@ -243,88 +258,86 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         setTriggerClearQuery(!triggerClearQuery);
     };
 
+    const handleBreadCrumbClick = (organization: OrganizationInterface, index: number): void => {
+        const newOrganizations = [ ...organizations ];
+
+        newOrganizations.splice(index + 1);
+        setOrganizations(newOrganizations);
+
+        setParent(organization);
+
+        if (!organization) {
+            setOrganization(null);
+        }
+    };
+
     return (
-        <PageLayout
-            action={
-                !isLoading &&
-                !(!searchQuery /* && appList?.totalResults <= 0 */) && (
-                    <Show when={ AccessControlConstants.ORGANIZATION_WRITE }>
-                        <PrimaryButton
-                            disabled={ isOrganizationListRequestLoading }
-                            loading={ isOrganizationListRequestLoading }
-                            onClick={ (): void => {
-                                eventPublisher.publish("application-click-new-application-button");
+        <>
+            { parent && organizations.length > 0 && (
+                <Segment basic>
+                    <Breadcrumb>
+                        <Breadcrumb.Section
+                            onClick={ () => {
+                                handleBreadCrumbClick(null, -1);
                             } }
-                            data-testid={ `${ testId }-list-layout-add-button` }
                         >
-                            <Icon name="add" />
-                            { t("console:develop.features.organizations.list.actions.add") }
-                        </PrimaryButton>
-                    </Show>
-                )
-            }
-            title={ t("console:develop.pages.organizations.title") }
-            description={
-                (<p>
-                    { t("console:develop.pages.organizations.subTitle") }
-                    <DocumentationLink link={ getLink("develop.organizations.learnMore") }>
-                        { t("common:learnMore") }
-                    </DocumentationLink>
-                </p>)
-            }
-            data-testid={ `${ testId }-page-layout` }
-        >
-            { !isLoading ? (
-                <>
-                    <ListLayout
-                        advancedSearch={
-                            (<AdvancedSearchWithBasicFilters
-                                onFilter={ handleOrganizationFilter }
-                                filterAttributeOptions={ [
-                                    {
-                                        key: 0,
-                                        text: t("common:name"),
-                                        value: "name"
-                                    }
-                                ] }
-                                filterAttributePlaceholder={ t(
-                                    "console:develop.features.organizations.advancedSearch.form" +
-                                    ".inputs.filterAttribute.placeholder"
-                                ) }
-                                filterConditionsPlaceholder={ t(
-                                    "console:develop.features.organizations.advancedSearch.form" +
-                                    ".inputs.filterCondition.placeholder"
-                                ) }
-                                filterValuePlaceholder={ t(
-                                    "console:develop.features.organizations.advancedSearch.form.inputs.filterValue" +
-                                    ".placeholder"
-                                ) }
-                                placeholder={ t("console:develop.features.organizations.advancedSearch.placeholder") }
-                                defaultSearchAttribute="name"
-                                defaultSearchOperator="co"
-                                triggerClearQuery={ triggerClearQuery }
-                                data-testid={ `${ testId }-list-advanced-search` }
-                            />)
+                            Home
+                        </Breadcrumb.Section>
+                        { organizations?.map((organization: OrganizationInterface, index: number) => {
+                            if (index === organizations.length - 1) {
+                                return;
+                            }
+
+                            return (
+                                <React.Fragment key={ index }>
+                                    <Breadcrumb.Divider />
+                                    <Breadcrumb.Section
+                                        active={ index === organizations.length - 2 }
+                                        onClick={ () => handleBreadCrumbClick(organization, index) }
+                                    >
+                                        { organization.name }
+                                    </Breadcrumb.Section>
+                                </React.Fragment>
+                            );
+                        }) }
+                    </Breadcrumb>
+                </Segment>
+            ) }
+            <PageLayout
+                action={
+                    !isLoading &&
+                    !(!searchQuery && (isEmpty(organizationList) || organizationList?.organizations?.length <= 0)) && (
+                        <Show when={ AccessControlConstants.ORGANIZATION_WRITE }>
+                            <PrimaryButton
+                                disabled={ isOrganizationListRequestLoading }
+                                loading={ isOrganizationListRequestLoading }
+                                onClick={ (): void => {
+                                    eventPublisher.publish("application-click-new-application-button");
+                                    setShowWizard(true);
+                                } }
+                                data-testid={ `${ testId }-list-layout-add-button` }
+                            >
+                                <Icon name="add" />
+                                { t("console:manage.features.organizations.list.actions.add") }
+                            </PrimaryButton>
+                        </Show>
+                    )
+                }
+                title={ organization ? organization.name : t("console:manage.pages.organizations.title") }
+                description={
+                    (<p>
+                        {
+                            organization
+                                ? organization.description
+                                : t("console:manage.pages.organizations.subTitle")
                         }
-                        currentListSize={ organizationList?.organizations.length }
-                        listItemLimit={ listItemLimit }
-                        onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                        onPageChange={ handlePaginationChange }
-                        onSortStrategyChange={ handleListSortingStrategyOnChange }
-                        showPagination={ true }
-                        showTopActionPanel={
-                            isOrganizationListRequestLoading || !(!searchQuery /* && appList?.totalResults <= 0 */)
-                        }
-                        sortOptions={ ORGANIZATIONS_LIST_SORTING_OPTIONS }
-                        sortStrategy={ listSortingStrategy }
-                        totalPages={ Math.ceil(organizationList?.organizations.length / listItemLimit) }
-                        totalListSize={ organizationList?.organizations.length }
-                        paginationOptions={ {
-                            disableNextButton: !isOrganizationsNextPageAvailable
-                        } }
-                        data-testid={ `${ testId }-list-layout` }
-                    >
-                        <OrganizationList
+                    </p>)
+                }
+                data-testid={ `${ testId }-page-layout` }
+            >
+                { !isLoading ? (
+                    <>
+                        <ListLayout
                             advancedSearch={
                                 (<AdvancedSearchWithBasicFilters
                                     onFilter={ handleOrganizationFilter }
@@ -336,60 +349,117 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                         }
                                     ] }
                                     filterAttributePlaceholder={ t(
-                                        "console:develop.features.organizations.advancedSearch." +
-                                        "form.inputs.filterAttribute.placeholder"
+                                        "console:manage.features.organizations.advancedSearch.form" +
+                                        ".inputs.filterAttribute.placeholder"
                                     ) }
                                     filterConditionsPlaceholder={ t(
-                                        "console:develop.features.organizations.advancedSearch." +
-                                        "form.inputs.filterCondition.placeholder"
+                                        "console:manage.features.organizations.advancedSearch.form" +
+                                        ".inputs.filterCondition.placeholder"
                                     ) }
                                     filterValuePlaceholder={ t(
-                                        "console:develop.features.organizations.advancedSearch." +
-                                        "form.inputs.filterValue.placeholder"
+                                        "console:manage.features.organizations.advancedSearch.form.inputs.filterValue" +
+                                        ".placeholder"
                                     ) }
-                                    placeholder={
-                                        t("console:develop.features.organizations.advancedSearch.placeholder") }
+                                    placeholder={ t(
+                                        "console:manage.features.organizations." + "advancedSearch.placeholder"
+                                    ) }
                                     defaultSearchAttribute="name"
                                     defaultSearchOperator="co"
                                     triggerClearQuery={ triggerClearQuery }
                                     data-testid={ `${ testId }-list-advanced-search` }
                                 />)
                             }
-                            featureConfig={ featureConfig }
-                            isLoading={ isOrganizationListRequestLoading }
-                            list={ organizationList }
-                            onOrganizationDelete={ handleOrganizationDelete }
-                            onEmptyListPlaceholderActionClick={ () => {
-                                console.log();
+                            currentListSize={ organizationList?.organizations?.length }
+                            listItemLimit={ listItemLimit }
+                            onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                            onPageChange={ handlePaginationChange }
+                            onSortStrategyChange={ handleListSortingStrategyOnChange }
+                            showPagination={ true }
+                            showTopActionPanel={
+                                isOrganizationListRequestLoading ||
+                                !(!searchQuery && organizationList?.organizations?.length <= 0)
+                            }
+                            sortOptions={ ORGANIZATIONS_LIST_SORTING_OPTIONS }
+                            sortStrategy={ listSortingStrategy }
+                            totalPages={ Math.ceil(organizationList?.organizations?.length / listItemLimit) }
+                            totalListSize={ organizationList?.organizations?.length }
+                            paginationOptions={ {
+                                disableNextButton: !isOrganizationsNextPageAvailable
                             } }
-                            onSearchQueryClear={ handleSearchQueryClear }
-                            searchQuery={ searchQuery }
-                            data-testid={ `${ testId }-list` }
-                            data-componentid="application"
-                        />
-                    </ListLayout>
-                    { showWizard &&
-                    {
-                        /* <MinimalOrganizationCreateWizard
-                        title={ CustomOrganizationTemplate?.name }
-                        subTitle={ CustomOrganizationTemplate?.description }
-                        closeWizard={ (): void => setShowWizard(false) }
-                        template={ CustomOrganizationTemplate }
-                        showHelpPanel={ true }
-                        subTemplates={ CustomOrganizationTemplate?.subTemplates }
-                        subTemplatesSectionTitle={ CustomOrganizationTemplate?.subTemplatesSectionTitle }
-                        addProtocol={ false }
-                        templateLoadingStrategy={
-                            config.ui.applicationTemplateLoadingStrategy
-                        ?? OrganizationManagementConstants.DEFAULT_APP_TEMPLATE_LOADING_STRATEGY
-                        }
-                    /> */
-                    } }
-                </>
-            ) : (
-                <GridLayout isLoading={ isLoading } />
-            ) }
-        </PageLayout>
+                            data-testid={ `${ testId }-list-layout` }
+                        >
+                            <OrganizationList
+                                advancedSearch={
+                                    (<AdvancedSearchWithBasicFilters
+                                        onFilter={ handleOrganizationFilter }
+                                        filterAttributeOptions={ [
+                                            {
+                                                key: 0,
+                                                text: t("common:name"),
+                                                value: "name"
+                                            }
+                                        ] }
+                                        filterAttributePlaceholder={ t(
+                                            "console:manage.features.organizations.advancedSearch." +
+                                            "form.inputs.filterAttribute.placeholder"
+                                        ) }
+                                        filterConditionsPlaceholder={ t(
+                                            "console:manage.features.organizations.advancedSearch." +
+                                            "form.inputs.filterCondition.placeholder"
+                                        ) }
+                                        filterValuePlaceholder={ t(
+                                            "console:manage.features.organizations.advancedSearch." +
+                                            "form.inputs.filterValue.placeholder"
+                                        ) }
+                                        placeholder={ t(
+                                            "console:manage.features.organizations.advancedSearch.placeholder"
+                                        ) }
+                                        defaultSearchAttribute="name"
+                                        defaultSearchOperator="co"
+                                        triggerClearQuery={ triggerClearQuery }
+                                        data-testid={ `${ testId }-list-advanced-search` }
+                                    />)
+                                }
+                                featureConfig={ featureConfig }
+                                isLoading={ isOrganizationListRequestLoading }
+                                list={ organizationList }
+                                onOrganizationDelete={ handleOrganizationDelete }
+                                onEmptyListPlaceholderActionClick={ () => {
+                                    setShowWizard(true);
+                                } }
+                                onSearchQueryClear={ handleSearchQueryClear }
+                                searchQuery={ searchQuery }
+                                data-testid={ `${ testId }-list` }
+                                data-componentid="application"
+                                onListItemClick={ (_e, organization: OrganizationInterface): void => {
+                                    if (
+                                        organizations.find((org: OrganizationInterface) => org.id === organization.id)
+                                    ) {
+                                        return;
+                                    }
+
+                                    setParent(organization);
+
+                                    const newOrganizations = [ ...organizations ];
+
+                                    newOrganizations.push(organization);
+                                    setOrganizations(newOrganizations);
+                                } }
+                            />
+                        </ListLayout>
+                        { showWizard && (
+                            <AddOrganizationModal
+                                onUpdate={ () => null }
+                                closeWizard={ () => setShowWizard(false) }
+                                parentID={ parent.id }
+                            />
+                        ) }
+                    </>
+                ) : (
+                    <GridLayout isLoading={ isLoading } />
+                ) }
+            </PageLayout>
+        </>
     );
 };
 
