@@ -25,6 +25,7 @@ import { useDispatch } from "react-redux";
 import { Form, Grid, Modal } from "semantic-ui-react";
 import { EventPublisher } from "../../core";
 import { addOrganization } from "../api";
+import { ORGANIZATION_TYPE } from "../constants";
 import { AddOrganizationInterface } from "../models";
 
 /**
@@ -57,6 +58,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
     const [ description, setDescription ] = useState<string>("");
     const [ domain, setDomain ] = useState<string>("");
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ type, setType ] = useState<ORGANIZATION_TYPE>(ORGANIZATION_TYPE.STRUCTURAL);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -66,7 +68,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
             domain: domain,
             name: organizationName,
             parentId: parentID,
-            type: "TENANT"
+            type: type
         };
 
         setIsSubmitting(true);
@@ -152,6 +154,21 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                             onChange={ (e) => setDomain(e.target.value) }
                                         />
                                     </Form.Field>
+                                    <Form.Group grouped>
+                                        <label>Type</label>
+                                        <Form.Radio
+                                            label="Structural"
+                                            value={ ORGANIZATION_TYPE.STRUCTURAL }
+                                            checked={ type === ORGANIZATION_TYPE.STRUCTURAL }
+                                            onChange={ () => setType(ORGANIZATION_TYPE.STRUCTURAL) }
+                                        />
+                                        <Form.Radio
+                                            label="Tenant"
+                                            value={ ORGANIZATION_TYPE.TENANT }
+                                            checked={ type === ORGANIZATION_TYPE.TENANT }
+                                            onChange={ () => setType(ORGANIZATION_TYPE.TENANT) }
+                                        />
+                                    </Form.Group>
                                 </Form>
                             </Grid.Column>
                         </Grid.Row>
