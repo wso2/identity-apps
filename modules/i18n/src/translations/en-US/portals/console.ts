@@ -7584,7 +7584,6 @@ export const console: ConsoleNS = {
                                 " remote user store.",
                             header: "Delete {{type}}",
                             subheader: "Once you delete the {{type}}, it cannot be recovered."
-                            
                         },
                         fields: {
                             roleName: {
