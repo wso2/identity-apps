@@ -743,6 +743,7 @@
 
             var agreementChk = $(".agreement-checkbox input");
             var registrationBtn = $("#registrationSubmit");
+            var countryDropdown = $("#country-dropdown");
 
             if (agreementChk.length > 0) {
                 registrationBtn.prop("disabled", true).addClass("disabled");
@@ -755,8 +756,9 @@
                 }
             });
 
-            $("#country-dropdown").dropdown('hide');
-
+            countryDropdown.dropdown('hide');
+            $("> input.search", countryDropdown).attr("role", "presentation");
+            
             $("#date_picker").calendar({
                 type: 'date',
                 formatter: {
