@@ -112,7 +112,7 @@ export const addOrganization = (organization: AddOrganizationInterface): Promise
  * Get the organization with the given id.
  *
  * @param {string} id The organization id.
- * @param {boolean} showChildren Specifies if teh child organizations should be returned.
+ * @param {boolean} showChildren Specifies if the child organizations should be returned.
  *
  * @returns {Promise<OrganizationResponseInterface>}
  */
@@ -123,8 +123,10 @@ export const getOrganization = (id: string, showChildren?: boolean): Promise<Org
             "Content-Type": "application/json"
         },
         method: "GET",
-        url: `${ store.getState().config.endpoints.organizations }/organizations/${ id }${ showChildren &&
-            "?showChildren=true" }`
+        params: {
+            showChildren
+        },
+        url: `${store.getState().config.endpoints.organizations}/organizations/${id}`
     };
 
     return httpClient(config)
