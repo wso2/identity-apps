@@ -1080,7 +1080,7 @@ export interface ConsoleNS {
                         }
                     }
                 };
-            };
+            }
             authenticationProvider?: {
                 advancedSearch?: {
                     form: {
@@ -2246,6 +2246,51 @@ export interface ConsoleNS {
             businessGroups: {
                 fields: {
                     groupName: FormAttributes;
+                };
+            };
+            organizations: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: string;
+                            };
+                            filterCondition: {
+                                placeholder: string;
+                            };
+                            filterValue: {
+                                placeholder: string;
+                            };
+                        };
+                    };
+                    placeholder: string;
+                };
+                list: {
+                    actions: {
+                        add: string;
+                    };
+                    columns: {
+                        name: string;
+                        actions: string;
+                    };
+                };
+                title: string;
+                subTitle: string;
+                notifications: {
+                    fetchOrganization: Notification;
+                    deleteOrganization: Notification;
+
+                };
+                confirmations: {
+                    deleteOrganization: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    };
+                };
+                placeholders: {
+                    emptyList: Placeholder;
                 };
             };
             users: {
@@ -3494,6 +3539,7 @@ export interface ConsoleNS {
                     general: string;
                     users: string;
                     userstores: string;
+                    organizations: string;
                 };
                 certificates: string;
                 configurations: string;
@@ -3509,6 +3555,7 @@ export interface ConsoleNS {
                 generalConfigurations: string;
                 groups: string;
                 localDialect: string;
+                organizations: string;
                 overview: string;
                 roles: string;
                 users: string;
@@ -4080,6 +4127,7 @@ export interface ConsoleNS {
             emailTemplates: EditPage;
             emailTemplatesWithDisplayName: EditPage;
             groups: Page;
+            organizations: Page;
             overview: Page;
             oidcScopes: Page;
             oidcScopesEdit: EditPage;

@@ -1480,13 +1480,13 @@ export const console: ConsoleNS = {
                                     },
                                     implicit: {
                                         hint: "Using the implicit grant with public applications is not recommended. " +
-                                            "{{productName}} adhere to security best practices, " + 
+                                            "{{productName}} adhere to security best practices, " +
                                             "and do not implement the implicit grant.",
                                         label: "{{grantType}} (Not recommended)"
                                     },
                                     password: {
                                         hint: "Using the password grant with public applications is not recommended. " +
-                                            "{{productName}} adhere to security best practices, " + 
+                                            "{{productName}} adhere to security best practices, " +
                                             "and do not implement the password grant.",
                                         label: "{{grantType}} (Not recommended)"
                                     }
@@ -2610,7 +2610,7 @@ export const console: ConsoleNS = {
                             action: "View Plans",
                             subtitles: "You can contact the organization administrator or (if you are the " +
                                 "administrator) upgrade your subscription to increase the allowed limit.",
-                            title: "You have reached the maximum number of apps allowed " + 
+                            title: "You have reached the maximum number of apps allowed " +
                                 "for this organization."
                         },
                         heading: "You’ve reached the maximum limit for apps"
@@ -4860,7 +4860,7 @@ export const console: ConsoleNS = {
                             action: "View Plans",
                             subtitles: "You can contact the organization administrator or (if you are the " +
                                 "administrator) upgrade your subscription to increase the allowed limit.",
-                            title: "You have reached the maximum number of IdPs allowed " + 
+                            title: "You have reached the maximum number of IdPs allowed " +
                                 "for this organization."
                         },
                         heading: "You’ve reached the maximum limit for IdPs"
@@ -7226,6 +7226,85 @@ export const console: ConsoleNS = {
                     }
                 }
             },
+            organizations: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "E.g. Name etc."
+                            },
+                            filterCondition: {
+                                placeholder: "E.g. Starts With etc."
+                            },
+                            filterValue: {
+                                placeholder: "Enter value to search"
+                            }
+                        }
+                    },
+                    placeholder: "Search by Name"
+                },
+                confirmations: {
+                    deleteOrganization: {
+                        assertionHint: "Please confirm your action.",
+                        content: "If you remove this organization, all the data associated with this" +
+                            " organization will be removed. Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will remove the organization entirely."
+                    }
+                },
+                list: {
+                    actions: {
+                        add: "Add Organization"
+                    },
+                    columns: {
+                        actions: "Actions",
+                        name: "Name"
+                    }
+                },
+                notifications: {
+                    deleteOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while deleting the organization"
+                        },
+                        genericError: {
+                            description: "An error occurred while deleting the organization",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully deleted the organization",
+                            message: "Organization deleted successfully"
+                        }
+                    },
+                    fetchOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while fetching the organization"
+                        },
+                        genericError: {
+                            description: "An error occurred while fetching the organization",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully fetched the organization",
+                            message: "Organization fetched successfully"
+                        }
+                    }
+                },
+                placeholders: {
+                    emptyList: {
+                        action: "Add Organization",
+                        subtitles: {
+                            0: "There are no organizations at the moment.",
+                            1: "You can add a new organization easily by",
+                            2: "clicking on the button below."
+                        },
+                        title: "Add a new Organization"
+                    }
+                },
+                subTitle: "Create and manage organizations.",
+                title: "Organizations"
+            },
             overview: {
                 widgets: {
                     insights: {
@@ -7814,6 +7893,7 @@ export const console: ConsoleNS = {
                     certificates: "Certificates",
                     configurations: "Configurations",
                     general: "General",
+                    organizations: "Organizations",
                     users: "Users",
                     userstores: "Userstores"
                 },
@@ -7831,6 +7911,7 @@ export const console: ConsoleNS = {
                 generalConfigurations: "General",
                 groups: "Groups",
                 localDialect: "Attributes",
+                organizations: "Organizations",
                 overview: "Overview",
                 roles: "Roles",
                 users: "Users",
@@ -9082,6 +9163,10 @@ export const console: ConsoleNS = {
                 backButton: "Go back to Scopes",
                 subTitle: "Add or remove OIDC attributes of the scope",
                 title: "Edit scope: {{ name }}"
+            },
+            organizations: {
+                subTitle: "Create and manage organizations.",
+                title: "Organizations"
             },
             overview: {
                 subTitle: "Configure and  manage users, roles, attribute dialects, server configurations etc." +
