@@ -27,16 +27,17 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
-    AppAvatar,
     ConfirmationModal,
     DataTable,
     EmptyPlaceholder,
+    GenericIcon,
     LinkButton,
     PrimaryButton,
     TableActionsInterface,
     TableColumnInterface,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -51,6 +52,7 @@ import {
     history
 } from "../../core";
 import { deleteOrganization } from "../api";
+import { OrganizationIcon } from "../configs/ui";
 import { OrganizationManagementConstants } from "../constants";
 import { OrganizationInterface, OrganizationListInterface } from "../models";
 
@@ -187,12 +189,12 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:develop.features.organizations.notifications.deleteOrganization.success" +
+                            "console:manage.features.organizations.notifications.deleteOrganization.success" +
                             ".description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:develop.features.organizations.notifications.deleteOrganization.success.message"
+                            "console:manage.features.organizations.notifications.deleteOrganization.success.message"
                         )
                     })
                 );
@@ -207,7 +209,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                             description: error.response.data.description,
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:develop.features.organizations.notifications.deleteOrganization.error" +
+                                "console:manage.features.organizations.notifications.deleteOrganization.error" +
                                 ".message"
                             )
                         })
@@ -219,12 +221,12 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 dispatch(
                     setAlert({
                         description: t(
-                            "console:develop.features.organizations.notifications.deleteOrganization" +
+                            "console:manage.features.organizations.notifications.deleteOrganization" +
                             ".genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:develop.features.organizations.notifications.deleteOrganization.genericError" +
+                            "console:manage.features.organizations.notifications.deleteOrganization.genericError" +
                             ".message"
                         )
                     })
@@ -247,15 +249,17 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 render: (organization: OrganizationInterface): ReactNode => {
                     return (
                         <Header image as="h6" className="header-with-icon" data-testid={ `${ testId }-item-heading` }>
-                            {
-                                <AppAvatar
-                                    size="mini"
-                                    name={ organization.name }
-                                    image={ null }
-                                    spaced="right"
-                                    data-testid={ `${ testId }-item-image` }
-                                />
-                            }
+                            <GenericIcon
+                                bordered
+                                defaultIcon
+                                relaxed="very"
+                                size="micro"
+                                shape="rounded"
+                                spaced="right"
+                                hoverable={ false }
+                                icon={ OrganizationIcon }
+                            />
+
                             <Header.Content>
                                 { organization.name }
                                 <Header.Subheader
@@ -275,7 +279,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                         </Header>
                     );
                 },
-                title: t("console:develop.features.organizations.list.columns.name")
+                title: t("console:manage.features.organizations.list.columns.name")
             },
             {
                 allowToggleVisibility: false,
@@ -283,7 +287,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("console:develop.features.organizations.list.columns.actions")
+                title: t("console:manage.features.organizations.list.columns.actions")
             }
         ];
     };
@@ -355,27 +359,27 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
      */
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
-        if (searchQuery && list?.organizations.length === 0) {
+        if (searchQuery && (isEmpty(list) || list?.organizations?.length === 0)) {
             return (
                 <EmptyPlaceholder
                     action={
                         (<LinkButton onClick={ onSearchQueryClear }>
-                            { t("console:develop.placeholders.emptySearchResult.action") }
+                            { t("console:manage.placeholders.emptySearchResult.action") }
                         </LinkButton>)
                     }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("console:develop.placeholders.emptySearchResult.title") }
+                    title={ t("console:manage.placeholders.emptySearchResult.title") }
                     subtitle={ [
-                        t("console:develop.placeholders.emptySearchResult.subtitles.0", { query: searchQuery }),
-                        t("console:develop.placeholders.emptySearchResult.subtitles.1")
+                        t("console:manage.placeholders.emptySearchResult.subtitles.0", { query: searchQuery }),
+                        t("console:manage.placeholders.emptySearchResult.subtitles.1")
                     ] }
                     data-testid={ `${ testId }-empty-search-placeholder` }
                 />
             );
         }
 
-        if (list?.organizations?.length === 0) {
+        if (isEmpty(list) || list?.organizations?.length === 0) {
             return (
                 <EmptyPlaceholder
                     className={ !isRenderedOnPortal ? "list-placeholder" : "" }
@@ -389,14 +393,14 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                                     } }
                                 >
                                     <Icon name="add" />
-                                    { t("console:develop.features.organizations.placeholders.emptyList.action") }
+                                    { t("console:manage.features.organizations.placeholders.emptyList.action") }
                                 </PrimaryButton>
                             </Show>
                         )
                     }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    subtitle={ [ t("console:develop.features.organizations.placeholders.emptyList.subtitles.0") ] }
+                    subtitle={ [ t("console:manage.features.organizations.placeholders.emptyList.subtitles.0") ] }
                     data-testid={ `${ testId }-empty-placeholder` }
                 />
             );
@@ -419,7 +423,6 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 columns={ resolveTableColumns() }
                 data={ list?.organizations }
                 onRowClick={ (e: SyntheticEvent, organization: OrganizationInterface): void => {
-                    handleOrganizationEdit(organization.id);
                     onListItemClick && onListItemClick(e, organization);
                 } }
                 placeholders={ showPlaceholders() }
@@ -434,7 +437,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                     type="warning"
                     open={ showDeleteConfirmationModal }
                     assertionHint={ t(
-                        "console:develop.features.organizations.confirmations.deleteOrganization." + "assertionHint"
+                        "console:manage.features.organizations.confirmations.deleteOrganization." + "assertionHint"
                     ) }
                     assertionType="checkbox"
                     primaryAction={ t("common:confirm") }
@@ -448,18 +451,18 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                     closeOnDimmerClick={ false }
                 >
                     <ConfirmationModal.Header data-testid={ `${ testId }-delete-confirmation-modal-header` }>
-                        { t("console:develop.features.organizations.confirmations.deleteOrganization.header") }
+                        { t("console:manage.features.organizations.confirmations.deleteOrganization.header") }
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message
                         attached
                         warning
                         data-testid={ `${ testId }-delete-confirmation-modal-message` }
                     >
-                        { t("console:develop.features.organizations.confirmations.deleteOrganization.message") }
+                        { t("console:manage.features.organizations.confirmations.deleteOrganization.message") }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content data-testid={ `${ testId }-delete-confirmation-modal-content` }>
-                        <div className="modal-alert-wrorganizationer"> { alert && alertComponent }</div>
-                        { t("console:develop.features.organizations.confirmations.deleteOrganization.content") }
+                        <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
+                        { t("console:manage.features.organizations.confirmations.deleteOrganization.content") }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             ) }
