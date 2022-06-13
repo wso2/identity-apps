@@ -28,4 +28,10 @@ export class OrganizationManagementConstants {
         .set("ORGANIZATION_UPDATE", "organizations.update")
         .set("ORGANIZATION_DELETE", "organizations.delete")
         .set("ORGANIZATION_READ", "organizations.read");
+
+}
+
+export enum ORGANIZATION_TYPE {
+    STRUCTURAL = "STRUCTURAL",
+    TENANT = "TENANT"
 }
