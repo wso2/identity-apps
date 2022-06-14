@@ -30,6 +30,11 @@ export const applicationConfig: ApplicationConfig = {
         showReturnAuthenticatedIdPs: true,
         showSaaS: true
     },
+    generalSettings: {
+        getFieldReadOnlyStatus: (applicationName: string, fieldName: string): boolean => {
+            return false;
+        }
+    },
     attributeSettings: {
         advancedAttributeSettings: {
             showIncludeTenantDomain: true,
@@ -57,7 +62,8 @@ export const applicationConfig: ApplicationConfig = {
         roleMapping: true
     },
     customApplication: {
-        allowedProtocolTypes: []
+        allowedProtocolTypes: [],
+        defaultTabIndex: 0
     },
     editApplication: {
         extendTabs: false,

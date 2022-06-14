@@ -195,8 +195,8 @@ const DynamicConnectorForm = (props: DynamicConnectorFormPropsInterface) => {
                         computer={ 14 }
                         className={ !serverConfigurationConfig.intendSettings && "pl-0" }
                     >
-                        { !isReadOnly &&
-                            (<PrimaryButton
+                        { !isReadOnly && (
+                            <PrimaryButton
                                 data-testid={ `${ testId }-update-button` }
                                 type="submit"
                                 loading={ isSubmitting }

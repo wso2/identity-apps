@@ -4391,7 +4391,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     pageLayout: {
-                        description: "Créer et gérer des certificats dans le magasin de clés",
+                        description: "Gérer les certificats dans le keystore",
                         primaryAction: "Importer un certificat",
                         title: "Certificats"
                     },
@@ -6163,6 +6163,8 @@ export const console: ConsoleNS = {
                         },
                         dangerZone: {
                             actionTitle: "Supprimer {{type}}",
+                            buttonDisableHint: "L'option de suppression est désactivée car ce {{type}} est géré " +
+                                "dans un magasin d'utilisateurs distant.",
                             header: "Supprimer {{type}}",
                             subheader: "Une fois que vous avez supprimé le {{type}}, il n'y a plus de retour " +
                                 "en arrière. Veuillez en être certain."
@@ -7186,6 +7188,7 @@ export const console: ConsoleNS = {
                     validation: {
                         dateFormatError: "Le format du {{field}} saisi est incorrect. Le format valide est YYYY-MM-DD.",
                         formatError: "Le format du {{field}} saisi est incorrect.",
+                        futureDateError: "La date que vous avez saisie pour le champ {{field}} n'est pas valide.",
                         mobileFormatError: "Le format du {{field}} saisi est incorrect. Le format valide est [+]"+
                             "[indicatif du pays][indicatif régional][numéro de téléphone local]."
                     }
@@ -7600,7 +7603,7 @@ export const console: ConsoleNS = {
                     darkMode: "Mode sombre",
                     delete: "Suppression",
                     read: "Lecture",
-                    reset: "Réinitialiser",
+                    reset: "Réinitialiser les modifications",
                     title: "Types de requêtes SQL",
                     update: "Mise à jour"
                 },

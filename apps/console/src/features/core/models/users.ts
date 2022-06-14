@@ -16,7 +16,20 @@
  * under the License.
  */
 
-import { LinkInterface, MultiValueAttributeInterface, NameInterface } from "@wso2is/core/models";
+import { 
+    LinkInterface,
+    MultiValueAttributeInterface,
+    NameInterface
+} from "@wso2is/core/models";
+
+/**
+ * Captures role details of the user.
+ */
+interface UserRoleInterface {
+    $ref: string,
+    display: string,
+    value: string
+}
 
 /**
  * Captures meta details of the user.
@@ -38,6 +51,7 @@ export interface UserBasicInterface {
     name: NameInterface;
     meta: UserMetaInterface;
     profileUrl: string;
+    roles?: UserRoleInterface[];
 }
 
 /**

@@ -19,41 +19,38 @@
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { MultiFactorAuthenticationConstants } from "..//constants/mfa-constants";
-import { SCIMConfigs } from "../extensions/configs/scim";
+import { AxiosError, AxiosResponse } from "axios";
+import { MultiFactorAuthenticationConstants } from "../constants/mfa-constants";
+import { EnabledAuthenticatorsInterface } from "../models";
 import { store } from "../store";
- 
-/**
+
+/*
  * Get an axios instance.
  *
  * @type {AxiosHttpClientInstance}
  */
 const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
-/**
+/*
  * This API is used to get enabled second factor authenticators of the user.
  */
-export const getEnabledAuthenticators = (): Promise<string> => {
+export const getEnabledAuthenticators = (): Promise<EnabledAuthenticatorsInterface> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        params: {
-            attributes: SCIMConfigs.scim.customEnterpriseSchema + ".enabledAuthenticators"
-        },
-        url: store.getState().config.endpoints.me
+        url: store.getState().config.endpoints.mfaEnabledAuthenticators
     };
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
+            } else {
+                return Promise.resolve(response.data as EnabledAuthenticatorsInterface);
             }
-
-            return response?.["data"]?.[SCIMConfigs.scim.customEnterpriseSchema]?.["enabledAuthenticators"];
         })
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
@@ -66,42 +63,30 @@ export const getEnabledAuthenticators = (): Promise<string> => {
         });
 };
 
-/**
+/*
  * This API is used to update enabled second factor authenticators of the user.
  * @param enabledAuthenticators string of enabled authenticator list.
  */
 export const updateEnabledAuthenticators = (enabledAuthenticators: string): Promise<AxiosResponse> => {
-
-    const scimUri = SCIMConfigs.scim.customEnterpriseSchema;
-    const requestConfig: AxiosRequestConfig = {
+    const requestConfig = {
         data: {
-            Operations: [
-                {
-                    op: "replace",
-                    value: {
-                        [scimUri]: { enabledAuthenticators: enabledAuthenticators }
-                    }
-                }  
-            ],
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+            enabledAuthenticators: enabledAuthenticators
         },
         headers: {
             "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
-        method: HttpMethods.PATCH,
-        url: store.getState().config.endpoints.me
+        method: HttpMethods.POST,
+        url: store.getState().config.endpoints.mfaEnabledAuthenticators
     };
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
-                return Promise.reject(
-                    new Error(`Failed to update enabled authenticators: ${store.getState().config.endpoints.me}`)
-                );
+                return Promise.reject(`An error occurred. The server returned ${response.status}`);
+            } else {
+                return Promise.resolve(response);
             }
-
-            return Promise.resolve(response);
         })
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
@@ -111,6 +96,5 @@ export const updateEnabledAuthenticators = (enabledAuthenticators: string): Prom
                 error.request,
                 error.response,
                 error.config);
-        });        
+        });
 };
-

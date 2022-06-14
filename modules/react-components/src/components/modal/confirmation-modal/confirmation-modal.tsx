@@ -136,11 +136,19 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
             primaryActionLoading,
             [ "data-componentid" ]: componentId,
             [ "data-testid" ]: testId,
+            open,
             ...rest
         } = props;
 
         const [ assertionInput, setAssertionInput ] = useState<string>("");
         const [ confirmed, setConfirmed ] = useState<boolean>(false);
+        const [ assertionDisabled, setAssertionDisabled ] = useState<boolean>(false);
+
+        useEffect(() => {
+            if (open) {
+                setAssertionDisabled(false);
+            }
+        }, [ open ]);
 
         /**
      * Called when the assertion input changes.
@@ -171,6 +179,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
      */
         const handlePrimaryActionClick = (e: MouseEvent<HTMLButtonElement>) => {
             setAssertionInput("");
+            setAssertionDisabled(true);
             setConfirmed(false);
             onPrimaryActionClick(e);
         };
@@ -311,6 +320,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                                 : assertionHint
                         }
                         <Input
+                            disabled={ assertionDisabled }
                             data-componentid={ `${ componentId }-assertion-input` }
                             data-testid={ `${ testId }-assertion-input` }
                             onChange={ (e: ChangeEvent<HTMLInputElement>): void => setAssertionInput(e.target?.value) }
@@ -327,6 +337,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
 
                 return (
                     <Checkbox
+                        disabled={ assertionDisabled }
                         label={ assertionHint }
                         checked={ confirmed }
                         onChange={ (): void => setConfirmed(!confirmed) }
@@ -343,6 +354,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
             <Modal
                 data-componentid={ componentId }
                 data-testid={ testId }
+                open={ open }
                 { ...rest }
                 className={ classes }
             >

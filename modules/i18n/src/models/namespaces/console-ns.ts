@@ -2360,6 +2360,7 @@ export interface ConsoleNS {
                         formatError: string;
                         dateFormatError: string;
                         mobileFormatError: string;
+                        futureDateError: string;
                     };
                 };
                 list: {

@@ -5,12 +5,12 @@ Look through here if you come across any issue.
 ✨ If your issues isn't here and you were able to figure a solution, please consider contribute to the guide.
 
 * [Node](#node)
-    * [Dev Server Failures](#dev-server-failures)
-        * [File watchers exceed error](#file-watchers-exceed-error)
-    * [Package Install Failures](#package-install-failures)
-        * [Global npm package install errors on Mac System](#global-npm-package-install-errors-on-mac-ystem)
+  * [Dev Server Failures](#dev-server-failures)
+    * [File watchers exceed error](#file-watchers-exceed-error)
+  * [Package Install Failures](#package-install-failures)
+    * [Global npm package install errors on Mac System](#global-npm-package-install-errors-on-mac-ystem)
 * [Maven](#maven)
-    * [Build Failures](#build-failures)
+  * [Build Failures](#build-failures)
 
 ## Node
 
@@ -20,11 +20,11 @@ Look through here if you come across any issue.
 
 - Error: ENOSPC: System limit for number of file watchers reached
 - Steps to resolve:
-    - Need to increase the amount of max_user_watches in system file.
-    - Use 'sudo nano /etc/sysctl.conf' to access the file.
-    - Then add 'fs.inotify.max_user_watches = 5242881' at the end of the file.
-    - Next save the file and exit.
-    - Finally use 'sudo sysctl -p' to apply changes.
+  - Need to increase the amount of max_user_watches in system file.
+  - Use 'sudo nano /etc/sysctl.conf' to access the file.
+  - Then add 'fs.inotify.max_user_watches = 5242881' at the end of the file.
+  - Next save the file and exit.
+  - Finally use 'sudo sysctl -p' to apply changes.
 
 ### Package Install Failures
 
@@ -67,7 +67,7 @@ The reason for this is that your user does not have permissions to write to `/us
     ls -la /usr/local/lib/node_modules
     ```
 
-    If the above command shows the owner as `root` then you need to change it so that your user can modify the path.
+   If the above command shows the owner as `root` then you need to change it so that your user can modify the path.
 
 2. Checking your username if you do not know already.
 

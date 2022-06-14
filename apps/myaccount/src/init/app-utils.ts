@@ -178,6 +178,7 @@ export const AppUtils = (function() {
                     : _config.clientID + "_" + this.getTenantName(),
                 clientOrigin: _config.clientOrigin,
                 clientOriginWithTenant: _config.clientOrigin + this.getTenantPath(true),
+                customServerHost: _config.customServerHost,
                 debug: _config.debug,
                 extensions: _config.extensions,
                 idpConfigs: this.resolveIdpConfigs(),

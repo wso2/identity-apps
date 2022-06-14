@@ -20,6 +20,7 @@ import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosResponse } from "axios";
+import { LocalAuthenticatorInterface } from "../../../features/identity-providers";
 import { store } from "../../core";
 import { ServerConfigurationsConstants } from "../constants";
 import {
@@ -27,7 +28,6 @@ import {
     RealmConfigInterface,
     UpdateGovernanceConnectorConfigInterface
 } from "../models";
-import { LocalAuthenticatorInterface } from ",,/../../src/features/identity-providers/models/identity-provider";
 
 /**
  * Initialize an axios Http client.

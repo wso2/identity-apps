@@ -4281,7 +4281,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     pageLayout: {
-                        description: "යතුරු ගබඩාවේ සහතික සාදන්න සහ කළමනාකරණය කරන්න",
+                        description: "යතුරු ගබඩාවේ සහතික කළමනාකරණය කරන්න.",
                         primaryAction: "ආනයන සහතිකය",
                         title: "සහතික"
                     },
@@ -6024,6 +6024,8 @@ export const console: ConsoleNS = {
                         },
                         dangerZone: {
                             actionTitle: "{{type}} මකන්න",
+                            buttonDisableHint: "මෙම {{type}} දුරස්ථ පරිශීලක වෙළඳසැලක කළමනාකරණය කර ඇති " +
+                                "නිසා මකන්න විකල්පය අබල කර ඇත.",
                             header: "{{type}} මකන්න",
                             subheader: "ඔබ {{type}} මකා දැමූ පසු, ආපසු යාමක් නොමැත. කරුණාකර ස්ථිර වන්න."
                         },
@@ -7008,6 +7010,7 @@ export const console: ConsoleNS = {
                     validation: {
                         dateFormatError: "ඇතුළත් කළ {{field}} ආකෘතිය වැරදිය. වලංගු ආකෘතිය YYYY-MM-DD වේ.",
                         formatError: "ඇතුළත් කළ {{field}} ආකෘතිය වැරදිය.",
+                        futureDateError: "ඔබ {{field}} ක්ෂේත්‍රය සඳහා ඇතුළත් කළ දිනය වලංගු නැත.",
                         mobileFormatError: "ඇතුළත් කළ {{field}} ආකෘතිය වැරදිය. වලංගු ආකෘතිය " +
                             "[+][රට කේතය][ප්‍රදේශ කේතය][දේශීය දුරකථන අංකය] වේ."
                     }
@@ -7421,7 +7424,7 @@ export const console: ConsoleNS = {
                     darkMode: "අඳුරු ප්‍රකාරය",
                     delete: "මකන්න",
                     read: "කියවන්න",
-                    reset: "නැවත සකසන්න",
+                    reset: "වෙනස්කම් යළි පිහිටුවන්න",
                     title: "SQL විමසුම් වර්ග",
                     update: "යාවත්කාලීන කරන්න"
                 },
