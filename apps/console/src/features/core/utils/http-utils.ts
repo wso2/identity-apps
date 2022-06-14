@@ -24,6 +24,7 @@ import { EventPublisher } from "./event-publisher";
 import { AppConstants } from "../constants";
 import { history } from "../helpers";
 import { store } from "../store";
+import { HttpResponse } from "@asgardeo/auth-react";
 
 /**
  * Utility class for http operations.
@@ -49,8 +50,17 @@ export class HttpUtils {
     /**
      * Callback to be fired on every Http request success.
      */
-    public static onHttpRequestSuccess(): void {
+    public static onHttpRequestSuccess(response: HttpResponse): void {
         // TODO: Handle any conditions required on request success.
+        const timeStamp = new Date().getTime()
+        const duration = timeStamp - response?.config?.startTimeInMs
+        EventPublisher.getInstance().record(
+            new URL(response.config.url).pathname,
+            response?.config?.startTimeInMs,
+            duration,
+            response?.status,
+            true
+        )
     }
 
     /**
@@ -69,17 +79,16 @@ export class HttpUtils {
         /**
          * Publish an event on the http request error.
         */
-        if (
-            error.response &&
-            error.response.data &&
-            error.response.data.code
-        ) {
-            EventPublisher.getInstance().publish("console-error-http-request-error", {
-                "code": error.response.data.code,
-                "status": error.response.status ? error.response.status as number : "",
-                "type": "error-response"
-            });
-        }
+        const currentTimeStamp = new Date().getTime()
+        const errDuration = currentTimeStamp - error?.config?.startTimeInMs
+
+        EventPublisher.getInstance().record(
+            new URL(error?.config?.url).pathname,
+            error?.config?.startTimeInMs,
+            errDuration,
+            error?.response?.status,
+            false
+        )
 
         // Terminate the session if the token endpoint returns a bad request(400)
         // The token binding feature will return a 400 status code when the session

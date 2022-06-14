@@ -95,6 +95,34 @@ export class EventPublisher {
             analyticsConfig.EventPublisherExtension.publish(eventId);
     }
 
+    public record(
+        pathname: any, startTime: any, duration: any, responseCode: any, isSuccess: any,
+        customProperties?: {
+            [key: string]: string | Record<string, unknown> |
+            number
+        }): void {
+
+        /**
+         * If you want to do any event logging, do it here.
+         * custom properties are passed here.
+        */
+        if (customProperties) {
+            analyticsConfig.EventPublisherExtension.record &&
+                analyticsConfig.EventPublisherExtension.record(
+                    pathname, startTime, duration, responseCode, isSuccess,
+                    customProperties
+                );
+        }
+
+        analyticsConfig.EventPublisherExtension.record &&
+            analyticsConfig.EventPublisherExtension.record(
+                pathname, startTime, duration, responseCode, isSuccess,
+            );
+
+        return;
+
+    }
+
     /**
      * Function to initialize event publisher.
     */
