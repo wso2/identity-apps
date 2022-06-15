@@ -6024,6 +6024,8 @@ export const console: ConsoleNS = {
                         },
                         dangerZone: {
                             actionTitle: "{{type}} මකන්න",
+                            buttonDisableHint: "මෙම {{type}} දුරස්ථ පරිශීලක වෙළඳසැලක කළමනාකරණය කර ඇති " +
+                                "නිසා මකන්න විකල්පය අබල කර ඇත.",
                             header: "{{type}} මකන්න",
                             subheader: "ඔබ {{type}} මකා දැමූ පසු, ආපසු යාමක් නොමැත. කරුණාකර ස්ථිර වන්න."
                         },
