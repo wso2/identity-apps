@@ -23,11 +23,11 @@ import { Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Divider, Form as SemanticForm, Grid, Modal } from "semantic-ui-react";
+import { Divider, Grid, Message, Modal, Form as SemanticForm } from "semantic-ui-react";
 import { EventPublisher } from "../../core";
-import { addOrganization } from "../api";
+import { addOrganization, getOrganizations } from "../api";
 import { ORGANIZATION_TYPE } from "../constants";
-import { AddOrganizationInterface, OrganizationInterface } from "../models";
+import { AddOrganizationInterface, OrganizationInterface, OrganizationListInterface } from "../models";
 
 interface OrganizationAddFormProps {
     name: string;
@@ -63,12 +63,26 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ type, setType ] = useState<ORGANIZATION_TYPE>(ORGANIZATION_TYPE.STRUCTURAL);
+    const [ duplicateName, setDuplicateName ] = useState<boolean>(false);
 
     const submitForm = useRef<() => void>();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const submitOrganization = (values: OrganizationAddFormProps): void => {
+    const submitOrganization = async (values: OrganizationAddFormProps): Promise<void> => {
+        if (values?.name) {
+            const response: OrganizationListInterface
+                = await getOrganizations(`name eq ${ values.name }`, 1, null, null);
+
+            if (response?.organizations?.length > 0) {
+                setDuplicateName(true);
+
+                return;
+            } else {
+                setDuplicateName(false);
+            }
+        }
+
         const organization: AddOrganizationInterface = {
             description: values?.description,
             domain: values?.domainName,
@@ -94,7 +108,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                     onUpdate();
                 }
             })
-            .catch((error) => {
+            .catch(() => {
                 dispatch(
                     addAlert({
                         description: t("adminPortal:components.applications.notifications.add.description"),
@@ -108,11 +122,11 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
             });
     };
 
-    const validate = (values: OrganizationAddFormProps): Partial<OrganizationAddFormProps> => {
+    const validate = async (values: OrganizationAddFormProps): Promise<Partial<OrganizationAddFormProps>> => {
         const error: Partial<OrganizationAddFormProps> = {};
 
         if (!values?.name) {
-            error.name ="Organization name is required";
+            error.name = "Organization name is required";
         }
 
         if (!values?.domainName && type === ORGANIZATION_TYPE.TENANT) {
@@ -149,11 +163,16 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                     <Grid>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 }>
+                                { duplicateName && (
+                                    <Message negative>
+                                        <Message.Content>The organization name already exists.</Message.Content>
+                                    </Message>
+                                ) }
                                 <Form
                                     uncontrolledForm={ false }
                                     onSubmit={ submitOrganization }
                                     validate={ validate }
-                                    triggerSubmit={ (submit) => submitForm.current = submit }
+                                    triggerSubmit={ (submit) => (submitForm.current = submit) }
                                 >
                                     <Field.Input
                                         ariaLabel="Organization Name"
@@ -166,6 +185,9 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                         minLength={ 3 }
                                         data-testid={ `${ testId }-organization-name-input` }
                                         width={ 16 }
+                                        listen={ () => {
+                                            setDuplicateName(false);
+                                        } }
                                     />
                                     <Field.Input
                                         ariaLabel="Description"
@@ -192,8 +214,8 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                         width={ 16 }
                                     />
                                 </Form>
-                                <Divider hidden/>
-                                   <SemanticForm>
+                                <Divider hidden />
+                                <SemanticForm>
                                     <SemanticForm.Group grouped>
                                         <label>Type</label>
                                         <SemanticForm.Radio
