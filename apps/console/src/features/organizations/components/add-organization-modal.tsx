@@ -18,22 +18,29 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { Field, Form } from "@wso2is/form";
 import { Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Form, Grid, Modal } from "semantic-ui-react";
+import { Divider, Form as SemanticForm, Grid, Modal } from "semantic-ui-react";
 import { EventPublisher } from "../../core";
 import { addOrganization } from "../api";
 import { ORGANIZATION_TYPE } from "../constants";
-import { AddOrganizationInterface } from "../models";
+import { AddOrganizationInterface, OrganizationInterface } from "../models";
+
+interface OrganizationAddFormProps {
+    name: string;
+    domainName?: string;
+    description?: string;
+}
 
 /**
  * Prop types of the `AddOrganizationModal` component.
  */
 interface AddOrganizationModalPropsInterface extends TestableComponentInterface {
     closeWizard: () => void;
-    parentID?: string;
+    parent?: OrganizationInterface;
     /**
      * Callback to update the organization details.
      */
@@ -48,26 +55,25 @@ interface AddOrganizationModalPropsInterface extends TestableComponentInterface 
 export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsInterface> = (
     props: AddOrganizationModalPropsInterface
 ): ReactElement => {
-    const { closeWizard, parentID, onUpdate, [ "data-testid" ]: testId } = props;
+    const { closeWizard, parent, onUpdate, [ "data-testid" ]: testId } = props;
 
     const { t } = useTranslation();
 
     const dispatch = useDispatch();
 
-    const [ organizationName, setOrganizationName ] = useState<string>("");
-    const [ description, setDescription ] = useState<string>("");
-    const [ domain, setDomain ] = useState<string>("");
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ type, setType ] = useState<ORGANIZATION_TYPE>(ORGANIZATION_TYPE.STRUCTURAL);
 
+    const submitForm = useRef<() => void>();
+
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const submitOrganization = (): void => {
+    const submitOrganization = (values: OrganizationAddFormProps): void => {
         const organization: AddOrganizationInterface = {
-            description: description,
-            domain: domain,
-            name: organizationName,
-            parentId: parentID,
+            description: values?.description,
+            domain: values?.domainName,
+            name: values?.name,
+            parentId: parent?.id,
             type: type
         };
 
@@ -102,6 +108,20 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
             });
     };
 
+    const validate = (values: OrganizationAddFormProps): Partial<OrganizationAddFormProps> => {
+        const error: Partial<OrganizationAddFormProps> = {};
+
+        if (!values?.name) {
+            error.name ="Organization name is required";
+        }
+
+        if (!values?.domainName && type === ORGANIZATION_TYPE.TENANT) {
+            error.domainName = "Domain name is required";
+        }
+
+        return error;
+    };
+
     /**
      * Close the wizard.
      */
@@ -114,7 +134,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
             <Modal
                 open={ true }
                 className="wizard application-create-wizard"
-                size="small"
+                size="tiny"
                 dimmer="blurring"
                 onClose={ handleWizardClose }
                 closeOnDimmerClick={ false }
@@ -123,53 +143,73 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
             >
                 <Modal.Header className="wizard-header">
                     Create Organization
-                    <Heading as="h6">Create a new organization</Heading>
+                    <Heading as="h6">Create a new organization in { parent?.name ?? "root" }.</Heading>
                 </Modal.Header>
                 <Modal.Content>
                     <Grid>
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column width={ 8 }>
-                                <Form>
-                                    <Form.Field>
-                                        <label>Organization Name</label>
-                                        <input
-                                            type="text"
-                                            value={ organizationName }
-                                            onChange={ (e) => setOrganizationName(e.target.value) }
-                                        />
-                                    </Form.Field>
-                                    <Form.Field>
-                                        <label>Description</label>
-                                        <input
-                                            type="text"
-                                            value={ description }
-                                            onChange={ (e) => setDescription(e.target.value) }
-                                        />
-                                    </Form.Field>
-                                    <Form.Field>
-                                        <label>Domain Name</label>
-                                        <input
-                                            type="text"
-                                            value={ domain }
-                                            onChange={ (e) => setDomain(e.target.value) }
-                                        />
-                                    </Form.Field>
-                                    <Form.Group grouped>
+                            <Grid.Column width={ 16 }>
+                                <Form
+                                    uncontrolledForm={ false }
+                                    onSubmit={ submitOrganization }
+                                    validate={ validate }
+                                    triggerSubmit={ (submit) => submitForm.current = submit }
+                                >
+                                    <Field.Input
+                                        ariaLabel="Organization Name"
+                                        inputType="name"
+                                        name="name"
+                                        label="Organization Name"
+                                        required={ true }
+                                        placeholder="Enter the organization name"
+                                        maxLength={ 32 }
+                                        minLength={ 3 }
+                                        data-testid={ `${ testId }-organization-name-input` }
+                                        width={ 16 }
+                                    />
+                                    <Field.Input
+                                        ariaLabel="Description"
+                                        inputType="description"
+                                        name="description"
+                                        label="Description"
+                                        required={ false }
+                                        placeholder="Enter description"
+                                        maxLength={ 32 }
+                                        minLength={ 3 }
+                                        data-testid={ `${ testId }-description-input` }
+                                        width={ 16 }
+                                    />
+                                    <Field.Input
+                                        ariaLabel="Domain Name"
+                                        inputType="default"
+                                        name="domainName"
+                                        label="Domain Name"
+                                        placeholder="Enter domain name"
+                                        required={ type === ORGANIZATION_TYPE.TENANT }
+                                        maxLength={ 32 }
+                                        minLength={ 3 }
+                                        data-testid={ `${ testId }-domain-name-input` }
+                                        width={ 16 }
+                                    />
+                                </Form>
+                                <Divider hidden/>
+                                   <SemanticForm>
+                                    <SemanticForm.Group grouped>
                                         <label>Type</label>
-                                        <Form.Radio
+                                        <SemanticForm.Radio
                                             label="Structural"
                                             value={ ORGANIZATION_TYPE.STRUCTURAL }
                                             checked={ type === ORGANIZATION_TYPE.STRUCTURAL }
                                             onChange={ () => setType(ORGANIZATION_TYPE.STRUCTURAL) }
                                         />
-                                        <Form.Radio
+                                        <SemanticForm.Radio
                                             label="Tenant"
                                             value={ ORGANIZATION_TYPE.TENANT }
                                             checked={ type === ORGANIZATION_TYPE.TENANT }
                                             onChange={ () => setType(ORGANIZATION_TYPE.TENANT) }
                                         />
-                                    </Form.Group>
-                                </Form>
+                                    </SemanticForm.Group>
+                                </SemanticForm>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
@@ -186,7 +226,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                 <PrimaryButton
                                     floated="right"
                                     onClick={ () => {
-                                        submitOrganization();
+                                        submitForm?.current && submitForm?.current();
                                     } }
                                     data-testid={ `${ testId }-next-button` }
                                     loading={ isSubmitting }
