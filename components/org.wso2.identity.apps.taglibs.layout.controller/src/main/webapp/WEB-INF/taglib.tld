@@ -6,11 +6,11 @@
   version="2.0">
 
   <description>
-    A tag library for control the authentication portal page layouts
+    A tag library for control the login portal page layouts
   </description>
   <tlib-version>1.0</tlib-version>
-  <short-name>layout</short-name>
-  <uri>org.wso2.carbon.identity.application.authentication.endpoint.taglibs.layout.controller</uri>
+  <short-name>layout.controller</short-name>
+  <uri>org.wso2.identity.apps.taglibs.layout.controller</uri>
   
   <tag>
     <description>
@@ -18,7 +18,7 @@
        JSP page
     </description>
     <name>main</name>
-    <tag-class>org.wso2.carbon.identity.application.authentication.endpoint.taglibs.layout.controller.MainTagHandler</tag-class>
+    <tag-class>org.wso2.identity.apps.taglibs.layout.controller.MainTagHandler</tag-class>
     <body-content>JSP</body-content>
 	
 	<attribute>
@@ -68,7 +68,7 @@
        Component code will be hold this tag
     </description>
     <name>component</name>
-    <tag-class>org.wso2.carbon.identity.application.authentication.endpoint.taglibs.layout.controller.ComponentTagHandler</tag-class>
+    <tag-class>org.wso2.identity.apps.taglibs.layout.controller.ComponentTagHandler</tag-class>
     <body-content>JSP</body-content>
 
     <attribute>
@@ -86,7 +86,7 @@
        Dynamic component will be called inside this tag - Using an include action statement
     </description>
     <name>dynamicComponent</name>
-    <tag-class>org.wso2.carbon.identity.application.authentication.endpoint.taglibs.layout.controller.DynamicComponentTagHandler</tag-class>
+    <tag-class>org.wso2.identity.apps.taglibs.layout.controller.DynamicComponentTagHandler</tag-class>
     <body-content>JSP</body-content>
     
     <attribute>
