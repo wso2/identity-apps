@@ -107,6 +107,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 }
             }
 
+            // Update runtime configurations.
+            ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
+
             // Update post_logout_redirect_uri of logout_url with tenant qualified url
             if (sessionStorage.getItem(LOGOUT_URL)) {
                 logoutUrl = sessionStorage.getItem(LOGOUT_URL);
@@ -151,18 +154,23 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 .get(Config.getServiceResourceEndpoints().wellKnown)
                 .then((response: AxiosResponse) => {
                     // Use token endpoint to extract the host url.
-                    const splitted: string[] = response.data.token_endpoint?.split("/") ?? [];
+                    const splitted: string[] = response?.data?.token_endpoint?.split("/") ?? [];
                     const serverHost: string = splitted.slice(0, -2).join("/");
-                    
+
                     window[ "AppUtils" ].updateCustomServerHost(serverHost);
+                })
+                .catch((error) => {
+                    // In case of failure customServerHost is set to the serverHost
+                    window[ "AppUtils" ].updateCustomServerHost(Config.getDeploymentConfig().serverHost);
+                    
+                    throw error;
+                })
+                .finally(() => {
                     // Update store with custom server host.
                     dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
 
                     // Update runtime configurations.
                     ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
-                })
-                .catch((error) => {
-                    throw error;
                 });
 
             getDecodedIDToken()
