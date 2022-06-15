@@ -38,9 +38,9 @@ import java.util.Map;
  */
 public class DefaultExecutor implements Executor {
 
-	private static final long serialVersionUID = -6320882487995318374L;
-    private Map<String, Object> data;
-    private ArrayList<Integer> deepIterationPath;
+    private static final long serialVersionUID = -6320882487995318374L;
+    private final Map<String, Object> data;
+    private final ArrayList<Integer> deepIterationPath;
     private int iterationLevel;
     private String componentName;
     private boolean activeComponentExecution;
@@ -144,7 +144,7 @@ public class DefaultExecutor implements Executor {
      * Execute the provided default identifier
      *
      * @param identifier Default identifier (Set of identifiers)
-     * @param out The output will be written to this writer
+     * @param out        The output will be written to this writer
      */
     @Override
     public void execute(DefaultIdentifier identifier, Writer out) {
@@ -155,7 +155,7 @@ public class DefaultExecutor implements Executor {
      * Execute the provided component identifier
      *
      * @param identifier Component identifier
-     * @param out The output will be written to this writer
+     * @param out        The output will be written to this writer
      */
     @Override
     public void execute(ComponentIdentifier identifier, Writer out) {
@@ -169,7 +169,7 @@ public class DefaultExecutor implements Executor {
      * Execute the provided data identifier
      *
      * @param identifier Data identifier
-     * @param out The output will be written to this writer
+     * @param out        The output will be written to this writer
      */
     @Override
     public void execute(DataIdentifier identifier, Writer out) {
@@ -186,7 +186,7 @@ public class DefaultExecutor implements Executor {
      * Execute the provided condition identifier
      *
      * @param identifier Condition identifier
-     * @param out The output will be written to this writer
+     * @param out        The output will be written to this writer
      */
     @Override
     public void execute(ConditionIdentifier identifier, Writer out) {
@@ -218,7 +218,7 @@ public class DefaultExecutor implements Executor {
      * Execute the provided not condition identifier
      *
      * @param identifier Not condition identifier
-     * @param out The output will be written to this writer
+     * @param out        The output will be written to this writer
      */
     @Override
     public void execute(NotConditionIdentifier identifier, Writer out) {
@@ -252,7 +252,7 @@ public class DefaultExecutor implements Executor {
      * Execute the provided no identifier
      *
      * @param identifier No identifier
-     * @param out The output will be written to this writer
+     * @param out        The output will be written to this writer
      */
     @Override
     public void execute(NoIdentifier identifier, Writer out) {
@@ -265,7 +265,7 @@ public class DefaultExecutor implements Executor {
      *
      * @param content Output text
      * @param encode  Text encode enable or not
-     * @param out The output will be written to this writer
+     * @param out     The output will be written to this writer
      */
     private void write(String content, boolean encode, Writer out) {
         try {

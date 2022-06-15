@@ -30,7 +30,7 @@ import java.util.ArrayList;
 public class DefaultIdentifier implements ExecutableIdentifier {
 
     private static final long serialVersionUID = -962894494415101423L;
-    private ExecutableIdentifier[] allIdentifiers;
+    private final ExecutableIdentifier[] allIdentifiers;
 
     /**
      * Constructor
@@ -38,13 +38,7 @@ public class DefaultIdentifier implements ExecutableIdentifier {
      * @param allIdentifiers Set of identifiers as a array list
      */
     public DefaultIdentifier(ArrayList<ExecutableIdentifier> allIdentifiers) {
-    	ExecutableIdentifier[] identifiers = new ExecutableIdentifier[allIdentifiers.size()];
-    	
-    	ExecutableIdentifier[] emptyList = new ExecutableIdentifier[0];
-
-        identifiers = allIdentifiers.toArray(emptyList);
-    	
-        this.allIdentifiers = identifiers;
+        this.allIdentifiers = allIdentifiers.toArray(new ExecutableIdentifier[0]);
     }
 
     /**
@@ -52,7 +46,7 @@ public class DefaultIdentifier implements ExecutableIdentifier {
      *
      * @param executor This the object which is responsible for
      *                 executing each identifier and generate the page content in-order
-     * @param out The output will be written to this writer
+     * @param out      The output will be written to this writer
      */
     public void accept(Executor executor, Writer out) {
         executor.execute(this, out);

@@ -52,6 +52,8 @@ public class FileResolver implements Resolver {
             inputStream = file.openStream();
             streamReader = new InputStreamReader(inputStream, "UTF-8");
             reader = new BufferedReader(streamReader);
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Exception e) {
             throw new CompilerException("Can't initialize a reader for the given file", e);
         }

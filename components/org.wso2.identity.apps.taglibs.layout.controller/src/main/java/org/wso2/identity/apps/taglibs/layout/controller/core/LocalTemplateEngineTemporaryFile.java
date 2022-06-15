@@ -37,9 +37,9 @@ import java.util.Map;
  * Temporary file implementation of the TemplateEngine interface using local compiler
  */
 public class LocalTemplateEngineTemporaryFile implements TemplateEngine {
-	
-	private static final long serialVersionUID = -1616511592819700247L;
-	public ExecutableIdentifier compiledObject = null;
+
+    private static final long serialVersionUID = -1616511592819700247L;
+    public ExecutableIdentifier compiledObject = null;
     public DefaultExecutor executor = null;
 
     /**
@@ -71,7 +71,7 @@ public class LocalTemplateEngineTemporaryFile implements TemplateEngine {
 
                 try (
                         ObjectInputStream objectReader =
-                                new ObjectInputStream(new FileInputStream(tempFilePath));
+                                new ObjectInputStream(new FileInputStream(tempFilePath))
                 ) {
                     compiledObject = (ExecutableIdentifier) objectReader.readObject();
                 } catch (ClassNotFoundException | IOException e1) {
@@ -82,7 +82,7 @@ public class LocalTemplateEngineTemporaryFile implements TemplateEngine {
 
                     try (
                             ObjectOutputStream objectWriter = new
-                                    ObjectOutputStream(new FileOutputStream(file));
+                                    ObjectOutputStream(new FileOutputStream(file))
                     ) {
                         objectWriter.writeObject(compiledObject);
                     } catch (IOException e2) {

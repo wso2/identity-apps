@@ -41,9 +41,9 @@ import javax.cache.spi.CachingProvider;
  * Caching implementation of the TemplateEngine interface with more controls using local compiler
  */
 public class LocalTemplateEngineCacheWithTier implements TemplateEngine {
-	
-	private static final long serialVersionUID = 8574215169965654726L;
-	public ExecutableIdentifier compiledObject = null;
+
+    private static final long serialVersionUID = 8574215169965654726L;
+    public ExecutableIdentifier compiledObject = null;
     public DefaultExecutor executor = null;
 
     /**
