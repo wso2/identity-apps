@@ -151,22 +151,5 @@
         <%
             }
         %>
-
-        <!-- <script type="text/javascript">
-            $(document).ready(function() {
-                $('#update').click(function() {
-                    var orgName = document
-                            .getElementById("ORG_NAME").value;
-                    if (orgName == "") {
-                        document.getElementById('alertDiv').innerHTML
-                            = '<div id="error-msg" class="ui negative message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.enter.email")%></div>'
-                              +'<div class="ui divider hidden"></div>';
-                    } else {
-                        $('#pin_form').submit();
-                    }
-                });
-            });
-
-        </script> -->
     </body>
 </html>
