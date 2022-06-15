@@ -472,7 +472,8 @@ module.exports = (env) => {
                     vwoScriptVariable: "<%= vwo_ac_id %>",
                     // eslint-disable-next-line max-len
                     vwoSystemVariable: "<% String vwo_ac_id_system_var = System.getenv().getOrDefault(\"vwo_account_id\", null); %>",
-                    vwoSystemVariableNullCheck: "<% String vwo_ac_id = StringUtils.isNotBlank(vwo_ac_id_system_var) ? vwo_ac_id_system_var : null; %>"
+                    vwoSystemVariableNullCheck: "<% String vwo_ac_id = StringUtils.isNotBlank(vwo_ac_id_system_var) ? vwo_ac_id_system_var : null; %>",
+                    importStringUtils: "<%@ page import=\"org.apache.commons.lang.StringUtils\" %>"
                 })
                 : new HtmlWebpackPlugin({
                     filename: path.join(distFolder, "index.html"),
