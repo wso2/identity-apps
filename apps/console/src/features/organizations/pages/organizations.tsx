@@ -26,7 +26,17 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Breadcrumb, DropdownItemProps, DropdownProps, Icon, PaginationProps, Segment } from "semantic-ui-react";
+import {
+    Breadcrumb,
+    Divider,
+    DropdownItemProps,
+    DropdownProps,
+    Header,
+    Icon,
+    PaginationProps,
+    Placeholder,
+    Segment
+} from "semantic-ui-react";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
@@ -36,7 +46,7 @@ import {
 } from "../../core";
 import { getOrganization, getOrganizations } from "../api";
 import { AddOrganizationModal, OrganizationList } from "../components";
-import { OrganizationInterface, OrganizationListInterface, OrganizationResponseInterface } from "../models";
+import { OrganizationInterface, OrganizationLinkInterface, OrganizationListInterface, OrganizationResponseInterface } from "../models";
 
 const ORGANIZATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -46,18 +56,8 @@ const ORGANIZATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     },
     {
         key: 2,
-        text: I18n.instance.t("common:type"),
-        value: "type"
-    },
-    {
-        key: 3,
-        text: I18n.instance.t("common:createdOn"),
-        value: "createdDate"
-    },
-    {
-        key: 4,
-        text: I18n.instance.t("common:lastUpdatedOn"),
-        value: "lastUpdated"
+        text: "Parent",
+        value: "parentId"
     }
 ];
 
@@ -99,24 +99,55 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     const [ parent, setParent ] = useState<OrganizationInterface>(null);
     const [ organizations, setOrganizations ] = useState<OrganizationInterface[]>([]);
     const [ organization, setOrganization ] = useState<OrganizationResponseInterface>(null);
+    const [ after, setAfter ] = useState<string>("");
+    const [ before, setBefore ] = useState<string>("");
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     useEffect(() => {
         if (!parent || isEmpty(parent)) {
             if (searchQuery) {
-                getOrganizationLists(listItemLimit, listOffset, searchQuery);
+                getOrganizationLists(listItemLimit, searchQuery, after, before);
             } else {
-                getOrganizationLists(listItemLimit, listOffset, null);
+                getOrganizationLists(listItemLimit, null, after, before);
             }
         } else {
             if (searchQuery) {
-                getOrganizationLists(listItemLimit, listOffset, searchQuery);
+                getOrganizationLists(listItemLimit, searchQuery, after, before);
             } else {
-                getOrganizationLists(listItemLimit, listOffset, `parentId eq ${ parent.id }`);
+                getOrganizationLists(listItemLimit, `parentId eq ${ parent.id }`, after, before);
             }
         }
     }, [ parent, listOffset, listItemLimit ]);
+
+    useEffect(() => {
+        let nextFound: boolean = false;
+        let prevFound: boolean = false;
+
+        organizationList?.links?.forEach((link: OrganizationLinkInterface) => {
+            if (link.rel === "next") {
+                const afterID = link.href.split("after=")[ 1 ];
+
+                setAfter(afterID);
+                nextFound = true;
+            }
+
+            if (link.rel === "prev") {
+                const beforeID = link.href.split("before=")[ 1 ];
+
+                setBefore(beforeID);
+                prevFound = true;
+            }
+        });
+
+        if (!nextFound) {
+            setAfter("");
+        }
+
+        if (!prevFound) {
+            setBefore("");
+        }
+    }, [ organizationList ]);
 
     useEffect(() => {
         if (!parent || isEmpty(parent)) {
@@ -139,10 +170,10 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      * @param {number} offset - List offset.
      * @param {string} filter - Search query.
      */
-    const getOrganizationLists = (limit: number, offset: number, filter: string): void => {
+    const getOrganizationLists = (limit?: number, filter?: string, after?: string, before?: string): void => {
         setOrganizationListRequestLoading(true);
 
-        getOrganizations(filter, limit, null, null)
+        getOrganizations(filter, limit, after, before)
             .then((response: OrganizationListInterface) => {
                 handleNextButtonVisibility(response);
                 setOrganizationList(response);
@@ -201,14 +232,14 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      *
      * Sets the Next button visibility.
      *
-     * @param appList - List of organizations.
+     * @param {OrganizationListInterface} list - List of organizations.
      */
-    const handleNextButtonVisibility = (appList: any): void => {
-        if (appList.startIndex + appList.count === appList.totalResults + 1) {
-            setIsOrganizationsNextPageAvailable(false);
-        } else {
-            setIsOrganizationsNextPageAvailable(true);
-        }
+    const handleNextButtonVisibility = (list: OrganizationListInterface): void => {
+        list.links?.forEach(link => {
+            link.rel === "next"
+                ? setIsOrganizationsNextPageAvailable(true)
+                : setIsOrganizationsNextPageAvailable(false);
+        });
     };
 
     /**
@@ -219,7 +250,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      */
     const handleOrganizationFilter = (query: string): void => {
         setSearchQuery(query);
-        getOrganizationLists(listItemLimit, listOffset, query);
+        getOrganizationLists(listItemLimit, query, after, before);
     };
 
     /**
@@ -243,10 +274,17 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     };
 
     /**
-     * Handles application delete action.
+     * Handles organization delete action.
      */
     const handleOrganizationDelete = (): void => {
-        getOrganizationLists(listItemLimit, listOffset, null);
+        getOrganizationLists(listItemLimit, null, after, before);
+    };
+
+    /**
+     * Handles organization list update action.
+     */
+    const handleOrganizationListUpdate = (): void => {
+        getOrganizationLists(listItemLimit, null, after, before);
     };
 
     /**
@@ -254,7 +292,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      */
     const handleSearchQueryClear = (): void => {
         setSearchQuery("");
-        getOrganizationLists(listItemLimit, listOffset, null);
+        getOrganizationLists(listItemLimit, null, after, before);
         setTriggerClearQuery(!triggerClearQuery);
     };
 
@@ -273,36 +311,6 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
 
     return (
         <>
-            { parent && organizations.length > 0 && (
-                <Segment basic>
-                    <Breadcrumb>
-                        <Breadcrumb.Section
-                            onClick={ () => {
-                                handleBreadCrumbClick(null, -1);
-                            } }
-                        >
-                            Home
-                        </Breadcrumb.Section>
-                        { organizations?.map((organization: OrganizationInterface, index: number) => {
-                            if (index === organizations.length - 1) {
-                                return;
-                            }
-
-                            return (
-                                <React.Fragment key={ index }>
-                                    <Breadcrumb.Divider />
-                                    <Breadcrumb.Section
-                                        active={ index === organizations.length - 2 }
-                                        onClick={ () => handleBreadCrumbClick(organization, index) }
-                                    >
-                                        { organization.name }
-                                    </Breadcrumb.Section>
-                                </React.Fragment>
-                            );
-                        }) }
-                    </Breadcrumb>
-                </Segment>
-            ) }
             <PageLayout
                 action={
                     !isLoading &&
@@ -325,15 +333,56 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                 }
                 title={ organization ? organization.name : t("console:manage.pages.organizations.title") }
                 description={
-                    (<p>
-                        {
-                            organization
-                                ? organization.description
-                                : t("console:manage.pages.organizations.subTitle")
-                        }
-                    </p>)
+                    (<p>{ organization
+                        ? organization.description
+                        : t("console:manage.pages.organizations.subTitle")
+                    }</p>)
                 }
                 data-testid={ `${ testId }-page-layout` }
+                titleAs="h3"
+                componentAbovePageHeader={
+                    (<>
+                        <Header as="h1">
+                            { t("console:manage.pages.organizations.title") }
+                            <Header.Subheader
+                                data-componentid={ "organization-sub-title" }
+                                data-testid={ `${ testId }-sub-title` }
+                            >
+                                { t("console:manage.pages.organizations.subTitle") }
+                            </Header.Subheader>
+                        </Header>
+                        <Divider hidden />
+                        { parent && organizations.length > 0 && (
+                            <Breadcrumb className="margined">
+                                <Breadcrumb.Section
+                                    onClick={ () => {
+                                        handleBreadCrumbClick(null, -1);
+                                    } }
+                                >
+                                    Home
+                                </Breadcrumb.Section>
+                                { organizations?.map((organization: OrganizationInterface, index: number) => {
+                                    return (
+                                        <React.Fragment key={ index }>
+                                            <Breadcrumb.Divider icon="right chevron" />
+                                            <Breadcrumb.Section
+                                                active={ index === organizations.length - 1 }
+                                                link={ index !== organizations.length - 1 }
+                                                onClick={
+                                                    index !== organizations.length - 1
+                                                        ? () => handleBreadCrumbClick(organization, index)
+                                                        : null
+                                                }
+                                            >
+                                                { organization.name }
+                                            </Breadcrumb.Section>
+                                        </React.Fragment>
+                                    );
+                                }) }
+                            </Breadcrumb>
+                        ) }{ " " }
+                    </>)
+                }
             >
                 { !isLoading ? (
                     <>
@@ -346,6 +395,11 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                             key: 0,
                                             text: t("common:name"),
                                             value: "name"
+                                        },
+                                        {
+                                            key: 1,
+                                            text: "Parent",
+                                            value: "parent"
                                         }
                                     ] }
                                     filterAttributePlaceholder={ t(
@@ -381,7 +435,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                             }
                             sortOptions={ ORGANIZATIONS_LIST_SORTING_OPTIONS }
                             sortStrategy={ listSortingStrategy }
-                            totalPages={ Math.ceil(organizationList?.organizations?.length / listItemLimit) }
+                            totalPages={ after ? 2 : 0 }
                             totalListSize={ organizationList?.organizations?.length }
                             paginationOptions={ {
                                 disableNextButton: !isOrganizationsNextPageAvailable
@@ -449,9 +503,9 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                         </ListLayout>
                         { showWizard && (
                             <AddOrganizationModal
-                                onUpdate={ () => null }
+                                onUpdate={ handleOrganizationListUpdate }
                                 closeWizard={ () => setShowWizard(false) }
-                                parentID={ parent.id }
+                                parent={ parent }
                             />
                         ) }
                     </>
