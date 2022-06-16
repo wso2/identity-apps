@@ -135,7 +135,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      * @param values - Form values.
      */
     const handleAuthenticatorConfigFormSubmit = (values: FederatedAuthenticatorListItemInterface, 
-        isDefaultAuthSet = true): void => {
+        isDefaultAuthSet: boolean = true): void => {
 
         addCallbackUrl(values);
         setIsPageLoading(true);
