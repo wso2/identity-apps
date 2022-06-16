@@ -23,7 +23,7 @@ import { I18n } from "@wso2is/i18n";
 import { GridLayout, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import find from "lodash-es/find";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -89,7 +89,6 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
         ORGANIZATIONS_LIST_SORTING_OPTIONS[ 0 ]
     );
-    const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ isOrganizationListRequestLoading, setOrganizationListRequestLoading ] = useState<boolean>(false);
     const [ isLoading, setLoading ] = useState<boolean>(true);
@@ -103,22 +102,6 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     const [ before, setBefore ] = useState<string>("");
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
-
-    useEffect(() => {
-        if (!parent || isEmpty(parent)) {
-            if (searchQuery) {
-                getOrganizationLists(listItemLimit, searchQuery, after, before);
-            } else {
-                getOrganizationLists(listItemLimit, null, after, before);
-            }
-        } else {
-            if (searchQuery) {
-                getOrganizationLists(listItemLimit, searchQuery, after, before);
-            } else {
-                getOrganizationLists(listItemLimit, `parentId eq ${ parent.id }`, after, before);
-            }
-        }
-    }, [ parent, listOffset, listItemLimit ]);
 
     useEffect(() => {
         let nextFound: boolean = false;
@@ -163,6 +146,18 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
             });
     }, [ parent ]);
 
+    const filterQuery = useMemo(() => {
+        let filterQuery: string = "";
+
+        if (!parent || isEmpty(parent)) {
+            filterQuery = searchQuery;
+        } else {
+            filterQuery = `${ searchQuery ? searchQuery + " and" : "" } parentId eq ${ parent.id }`;
+        }
+
+        return filterQuery;
+    }, [ searchQuery, parent ]);
+
     /**
      * Retrieves the list of organizations.
      *
@@ -170,7 +165,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      * @param {number} offset - List offset.
      * @param {string} filter - Search query.
      */
-    const getOrganizationLists = (limit?: number, filter?: string, after?: string, before?: string): void => {
+    const getOrganizationLists = useCallback((limit?: number, filter?: string, after?: string, before?: string): void => {
         setOrganizationListRequestLoading(true);
 
         getOrganizations(filter, limit, after, before)
@@ -212,7 +207,13 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                 setOrganizationListRequestLoading(false);
                 setLoading(false);
             });
-    };
+    }, [ dispatch, t ]);
+
+    useEffect(() => {
+        console.log(filterQuery, listItemLimit);
+        getOrganizationLists(listItemLimit, filterQuery, null, null);
+
+    }, [ listItemLimit, getOrganizationLists, filterQuery ]);
 
     /**
      * Sets the list sorting strategy.
@@ -250,7 +251,6 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      */
     const handleOrganizationFilter = (query: string): void => {
         setSearchQuery(query);
-        getOrganizationLists(listItemLimit, query, after, before);
     };
 
     /**
@@ -260,7 +260,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      * @param {PaginationProps} data - Pagination component data.
      */
     const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
-        setListOffset(((data.activePage as number) - 1) * listItemLimit);
+        console.log();
     };
 
     /**
@@ -277,14 +277,14 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      * Handles organization delete action.
      */
     const handleOrganizationDelete = (): void => {
-        getOrganizationLists(listItemLimit, null, after, before);
+        getOrganizationLists(listItemLimit, filterQuery, after, before);
     };
 
     /**
      * Handles organization list update action.
      */
     const handleOrganizationListUpdate = (): void => {
-        getOrganizationLists(listItemLimit, null, after, before);
+        getOrganizationLists(listItemLimit, filterQuery, after, before);
     };
 
     /**
@@ -292,7 +292,6 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      */
     const handleSearchQueryClear = (): void => {
         setSearchQuery("");
-        getOrganizationLists(listItemLimit, null, after, before);
         setTriggerClearQuery(!triggerClearQuery);
     };
 
@@ -307,6 +306,22 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         if (!organization) {
             setOrganization(null);
         }
+    };
+
+    const handleListItemClick=(_e, organization: OrganizationInterface): void => {
+        if (
+            organizations.find((org: OrganizationInterface) => org.id === organization.id)
+        ) {
+            return;
+        }
+
+        handleSearchQueryClear();
+        setParent(organization);
+
+        const newOrganizations = [ ...organizations ];
+
+        newOrganizations.push(organization);
+        setOrganizations(newOrganizations);
     };
 
     return (
@@ -485,20 +500,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                 searchQuery={ searchQuery }
                                 data-testid={ `${ testId }-list` }
                                 data-componentid="application"
-                                onListItemClick={ (_e, organization: OrganizationInterface): void => {
-                                    if (
-                                        organizations.find((org: OrganizationInterface) => org.id === organization.id)
-                                    ) {
-                                        return;
-                                    }
-
-                                    setParent(organization);
-
-                                    const newOrganizations = [ ...organizations ];
-
-                                    newOrganizations.push(organization);
-                                    setOrganizations(newOrganizations);
-                                } }
+                                onListItemClick={ handleListItemClick }
                             />
                         </ListLayout>
                         { showWizard && (
