@@ -162,6 +162,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ activeTabIndex, setActiveTabIndex ] = useState<number>(undefined);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(undefined);
     const [ totalTabs, setTotalTabs ] = useState<number>(undefined);
+    const [ isEnterpriseLoginMgt, setIsEnterpriseLoginMgt ] = useState<boolean>(false);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -373,6 +374,18 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         inboundProtocolConfig,
         isInboundProtocolConfigRequestLoading
     ]);
+
+    useEffect(() => {
+
+        if (application?.advancedConfigurations?.additionalSpProperties?.length > 0) {
+            application?.advancedConfigurations?.additionalSpProperties?.
+            forEach((item, index) => {
+                if (item.name === "isEnterpriseLoginManagementApp" && item.value === "true") {
+                    setIsEnterpriseLoginMgt(true);
+                }
+            });
+        }
+    }, [application]);
 
     useEffect(() => {
 
@@ -591,10 +604,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onUpdate={ handleApplicationUpdate }
                 featureConfig={ featureConfig }
                 template={ template }
-                readOnly={ readOnly || applicationConfig.editApplication.getTabPanelReadOnlyStatus(
+                readOnly={ readOnly || isEnterpriseLoginMgt || applicationConfig.editApplication.getTabPanelReadOnlyStatus(
                                 "APPLICATION_EDIT_GENERAL_SETTINGS", application.name) }
                 data-testid={ `${ testId }-general-settings` }
                 isManagementApp={ application.isManagementApp }
+                isEnterpriseLoginMgtApp={ isEnterpriseLoginMgt }
             />
         </ResourceTab.Pane>
     );
@@ -621,7 +635,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 inboundProtocols={ inboundProtocolList }
                 featureConfig={ featureConfig }
                 template={ template }
-                readOnly={ readOnly || applicationConfig.editApplication.getTabPanelReadOnlyStatus(
+                readOnly={ readOnly || isEnterpriseLoginMgt || applicationConfig.editApplication.getTabPanelReadOnlyStatus(
                                 "APPLICATION_EDIT_ACCESS_CONFIG", application.name) }
                 data-testid={ `${ testId }-access-settings` }
             />

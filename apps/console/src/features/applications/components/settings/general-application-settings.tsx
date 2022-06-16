@@ -97,6 +97,10 @@ interface GeneralApplicationSettingsInterface extends SBACInterface<FeatureConfi
      * Specifies a Management Application
      */
     isManagementApp?: boolean;
+    /**
+     * Specifies an Enterprise Login Mgt Application
+     */
+    isEnterpriseLoginMgtApp?: boolean;
 }
 
 /**
@@ -124,6 +128,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         onUpdate,
         readOnly,
         isManagementApp,
+        isEnterpriseLoginMgtApp,
         [ "data-testid" ]: testId
     } = props;
 
@@ -238,7 +243,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
             return null;
         }
 
-        if (!applicationConfig.editApplication.showDangerZone(name)) {
+        if ( isEnterpriseLoginMgtApp || !applicationConfig.editApplication.showDangerZone(name)) {
             return null;
         }
 
@@ -301,6 +306,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                             data-testid={ `${ testId }-form` }
                             isSubmitting={ isSubmitting }
                             isManagementApp={ isManagementApp }
+                            isEnterpriseLoginMgtApp={ isEnterpriseLoginMgtApp }
                         />
                     </EmphasizedSegment>
                     <Divider hidden />

@@ -76,6 +76,10 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
      */
     isManagementApp?: boolean;
     /**
+     * Specifies a Management Application
+     */
+    isEnterpriseLoginMgtApp?: boolean;
+    /**
      * Specifies whether having edit-permissions
      */
     hasRequiredScope?: boolean;
@@ -115,6 +119,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         hasRequiredScope,
         isSubmitting,
         isManagementApp,
+        isEnterpriseLoginMgtApp,
         [ "data-testid" ]: testId
     } = props;
 
@@ -360,8 +365,9 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         ".placeholder")
                 }
                 value={ accessUrl }
-                readOnly={ !hasRequiredScope || ( readOnly && applicationConfig.generalSettings.getFieldReadOnlyStatus(
-                     name, "ACCESS_URL"))}
+                readOnly={ !hasRequiredScope || !isEnterpriseLoginMgtApp ||
+                    ( readOnly && applicationConfig.generalSettings.getFieldReadOnlyStatus(
+                        name, "ACCESS_URL"))}
                 maxLength={ 200 }
                 minLength={ 3 }
                 data-testid={ `${ testId }-application-access-url-input` }

@@ -206,6 +206,15 @@ export interface AdvancedConfigurationsInterface {
     skipLogoutConsent?: boolean;
     returnAuthenticatedIdpList?: boolean;
     enableAuthorization?: boolean;
+    additionalSpProperties?: additionalSpProperty[]
+}
+/**
+ * Interface for the additional sp properties.
+ */
+export interface additionalSpProperty {
+    name: string;
+    value: string;
+    displayName?: string;
 }
 
 export enum AuthenticationSequenceType {
