@@ -19,6 +19,7 @@
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { useTrigger } from "@wso2is/forms";
 import { I18n } from "@wso2is/i18n";
 import { GridLayout, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import find from "lodash-es/find";
@@ -33,9 +34,7 @@ import {
     DropdownProps,
     Header,
     Icon,
-    PaginationProps,
-    Placeholder,
-    Segment
+    PaginationProps
 } from "semantic-ui-react";
 import {
     AdvancedSearchWithBasicFilters,
@@ -100,8 +99,11 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     const [ organization, setOrganization ] = useState<OrganizationResponseInterface>(null);
     const [ after, setAfter ] = useState<string>("");
     const [ before, setBefore ] = useState<string>("");
+    const [ activePage, setActivePage ] = useState<number>(1);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    const [ paginationReset, triggerResetPagination ] = useTrigger();
 
     useEffect(() => {
         let nextFound: boolean = false;
@@ -131,6 +133,11 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
             setBefore("");
         }
     }, [ organizationList ]);
+
+    const resetPagination = (): void => {
+        setActivePage(1);
+        triggerResetPagination();
+    };
 
     useEffect(() => {
         if (!parent || isEmpty(parent)) {
@@ -210,9 +217,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     }, [ dispatch, t ]);
 
     useEffect(() => {
-        console.log(filterQuery, listItemLimit);
         getOrganizationLists(listItemLimit, filterQuery, null, null);
-
     }, [ listItemLimit, getOrganizationLists, filterQuery ]);
 
     /**
@@ -260,7 +265,14 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      * @param {PaginationProps} data - Pagination component data.
      */
     const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
-        console.log();
+        const newPage = parseInt(data?.activePage as string);
+
+        if (newPage > activePage) {
+            getOrganizationLists(listItemLimit, filterQuery, after, null);
+        } else if(newPage < activePage) {
+            getOrganizationLists(listItemLimit, filterQuery, null, before);
+        }
+        setActivePage(newPage);
     };
 
     /**
@@ -302,13 +314,14 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         setOrganizations(newOrganizations);
 
         setParent(organization);
+        resetPagination();
 
         if (!organization) {
             setOrganization(null);
         }
     };
 
-    const handleListItemClick=(_e, organization: OrganizationInterface): void => {
+    const handleListItemClick = (_e, organization: OrganizationInterface): void => {
         if (
             organizations.find((org: OrganizationInterface) => org.id === organization.id)
         ) {
@@ -317,6 +330,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
 
         handleSearchQueryClear();
         setParent(organization);
+        resetPagination();
 
         const newOrganizations = [ ...organizations ];
 
@@ -450,12 +464,13 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                             }
                             sortOptions={ ORGANIZATIONS_LIST_SORTING_OPTIONS }
                             sortStrategy={ listSortingStrategy }
-                            totalPages={ after ? 2 : 0 }
+                            totalPages={ after ? activePage + 1 : 1 }
                             totalListSize={ organizationList?.organizations?.length }
                             paginationOptions={ {
                                 disableNextButton: !isOrganizationsNextPageAvailable
                             } }
                             data-testid={ `${ testId }-list-layout` }
+                            resetPagination={ paginationReset }
                         >
                             <OrganizationList
                                 advancedSearch={
