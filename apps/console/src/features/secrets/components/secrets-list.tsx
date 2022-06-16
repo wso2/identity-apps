@@ -27,25 +27,25 @@ import {
     EmptyPlaceholder,
     GenericIcon,
     GridLayout,
+    Message,
     LinkButton,
     ListLayout,
     TableActionsInterface,
-    TableColumnInterface,
-    Text
+    TableColumnInterface
 } from "@wso2is/react-components";
 import find from "lodash-es/find";
 import React, { FC, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { DropdownItemProps, DropdownProps, Header, Message, SemanticICONS } from "semantic-ui-react";
+import { DropdownItemProps, DropdownProps, Header, SemanticICONS } from "semantic-ui-react";
 import { EmptySecretListPlaceholder } from "./empty-secret-list-placeholder";
-import { 
-    AdvancedSearchWithBasicFilters, 
-    AppConstants, 
-    AppState, 
-    FeatureConfigInterface, 
-    getEmptyPlaceholderIllustrations, 
-    getSecretManagementIllustrations, 
+import {
+    AdvancedSearchWithBasicFilters,
+    AppConstants,
+    AppState,
+    FeatureConfigInterface,
+    getEmptyPlaceholderIllustrations,
+    getSecretManagementIllustrations,
     history
 } from "../../core";
 import { deleteSecret } from "../api/secret";
@@ -360,13 +360,13 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
         if (!query) {
             setFilteredSecrets(secretList.reverse());
         }
-        
+
         const records =  query?.split(" ");
 
         if (!records) {
             return;
         }
-        
+
         // const attribute  = records[0];
         const operator = records[1];
         const keyWords = records.splice(2).join("");
@@ -387,7 +387,7 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
             }
         });
         setFilteredSecrets(filteredArray.reverse());
-        
+
     };
 
     /**
@@ -443,16 +443,12 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
         <GridLayout isLoading={ isSecretListLoading } showTopActionPanel={ false }>
             {
                 showAdaptiveAuthSecretBanner && selectedSecretType === ADAPTIVE_SCRIPT_SECRETS && (
-                    <Message data-componentid={ `${ testId }-page-message` }>
-                        <Message.Header>
-                            <strong>
-                                { t("console:develop.features.secrets.banners.adaptiveAuthSecretType.title") }
-                            </strong>
-                        </Message.Header>
-                        <Text>
-                            { t("console:develop.features.secrets.banners.adaptiveAuthSecretType.content") }
-                        </Text>
-                    </Message>
+                    <Message
+                        type="info"
+                        data-componentid={ `${ testId }-page-message` }
+                        header={ t("console:develop.features.secrets.banners.adaptiveAuthSecretType.title") }
+                        content={ t("console:develop.features.secrets.banners.adaptiveAuthSecretType.content") }
+                    />
                 )
             }
             { secretList?.length > 0
