@@ -66,8 +66,8 @@ public class LocalTemplateEngineCache implements TemplateEngine {
                 compiledObject = parser.compile(testLayoutFile);
                 executor = new DefaultExecutor(data);
             } else {
-                // Acquire the default cache provider
-                CachingProvider cachingProvider = Caching.getCachingProvider();
+                CachingProvider cachingProvider = 
+                    Caching.getCachingProvider("org.ehcache.jsr107.EhcacheCachingProvider");
 
                 // Acquire the default cache manager
                 CacheManager manager = cachingProvider.getCacheManager();
