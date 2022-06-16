@@ -27,6 +27,12 @@
             }
         }
     }
+
+    .associations-list-avatar-wrapper {
+        display: flex;
+        align-items: center;
+        column-gap: 5px;
+    }
 }
 
 /*******************************

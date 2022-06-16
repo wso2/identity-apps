@@ -134,7 +134,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      *
      * @param values - Form values.
      */
-    const handleAuthenticatorConfigFormSubmit = (values: FederatedAuthenticatorListItemInterface): void => {
+    const handleAuthenticatorConfigFormSubmit = (values: FederatedAuthenticatorListItemInterface, 
+        isDefaultAuthSet: boolean = true): void => {
 
         addCallbackUrl(values);
         setIsPageLoading(true);
@@ -167,15 +168,17 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
         updateFederatedAuthenticator(identityProvider.id, values)
             .then(() => {
-                dispatch(addAlert({
-                    description: t("console:develop.features.authenticationProvider" +
-                        ".notifications.updateFederatedAuthenticator." +
-                        "success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.authenticationProvider.notifications." +
-                        "updateFederatedAuthenticator." +
-                        "success.message")
-                }));
+                if (isDefaultAuthSet) {
+                    dispatch(addAlert({
+                        description: t("console:develop.features.authenticationProvider" +
+                            ".notifications.updateFederatedAuthenticator." +
+                            "success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("console:develop.features.authenticationProvider.notifications." +
+                            "updateFederatedAuthenticator." +
+                            "success.message")
+                    }));
+                }
                 onUpdate(identityProvider.id);
             })
             .catch((error) => {
@@ -205,7 +208,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             })
             .finally(() => {
                 setIsSubmitting(false);
-             });
+            });
     };
 
     /**
@@ -303,7 +306,12 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 if (!identityProvider.federatedAuthenticators.defaultAuthenticatorId &&
                     identityProvider.federatedAuthenticators.authenticators.length > 0) {
                     authenticator.isDefault = true;
-                    handleAuthenticatorConfigFormSubmit(authenticator);
+
+                    const isDefaultAuthIdSet = Boolean(
+                        identityProvider?.federatedAuthenticators?.defaultAuthenticatorId
+                    );
+
+                    handleAuthenticatorConfigFormSubmit(authenticator, isDefaultAuthIdSet);
                 }
                 setAvailableAuthenticators(res);
                 setIsPageLoading(false);
@@ -593,6 +601,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     identityProvider.federatedAuthenticators.defaultAuthenticatorId === authenticator.id
                 ));
 
+            if (!authenticator) {
+                return;
+            }
+                
             // TODO: Need to update below values in the OIDC authenticator metadata API
             // Set additional meta data if the authenticator is OIDC
             if (authenticator.id === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID) {

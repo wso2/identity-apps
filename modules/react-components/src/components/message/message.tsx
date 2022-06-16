@@ -17,74 +17,135 @@
  */
 
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Divider, Header, Icon, MessageProps, Message as SemanticMessage } from "semantic-ui-react";
+import {
+    Header,
+    Icon,
+    MessageHeaderProps,
+    MessageProps,
+    Message as SemanticMessage,
+    SemanticShorthandContent,
+    SemanticShorthandItem
+} from "semantic-ui-react";
 
 /**
- * Proptypes for the message component.
+ * Proptypes for the message with icon component.
  */
-export interface MessageComponentPropsInterface extends MessageProps, IdentifiableComponentInterface,
-    TestableComponentInterface { }
+export interface MessagePropsInterface extends MessageProps, IdentifiableComponentInterface,
+    TestableComponentInterface {
+    /**
+     * Type of the message.
+     */
+    type?: "info" | "warning" | "error" | "success";
+    /**
+     * Additional CSS classes.
+     */
+    className?: string;
+    /**
+     * Content of the message.
+     * */
+    content?: SemanticShorthandContent;
+    /**
+     * Header of the message.
+     * */
+    header?: SemanticShorthandItem<MessageHeaderProps>;
+    /**
+     * Change the visibility of the message.
+     * */
+    visible?: boolean;
+
+}
 
 /**
- * Message component.
+ * Message with icon component.
  *
- * @param {MessageComponentProps} props - Props injected in to the message component.
+ * @param {MessagePropsInterface} props - Props injected in to the message with icon component.
  *
  * @return {React.ReactElement}
  */
-export const Message: FunctionComponent<MessageComponentPropsInterface> = (
-    props: MessageComponentPropsInterface): ReactElement => {
+export const Message: FunctionComponent<MessagePropsInterface> = (props: MessagePropsInterface): ReactElement => {
 
     const {
+        className,
+        type,
         header,
         content,
+        visible,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
-        ... rest
+        ...rest
     } = props;
 
-    const generateContent = () => {
+    const classes = classNames(
+        `${ type }-message-with-icon`,
+        className
+    );
 
-        return (
-            <>
-                <div>
-                    { (content) }
-                </div>
-            </>
-        );
+    const resolveMessageIcon = () => {
+        switch (type) {
+            case "info":
+                return (<Icon name="info circle"/>);
+            case "warning":
+                return (<Icon name="warning circle"/>);
+            case "success":
+                return (<Icon name="check circle"/>);
+            case "error":
+                return (<Icon name="times circle"/>);
+            default:
+                return (<Icon name="info circle"/>);
+        }
     };
 
     return (
         <SemanticMessage
-            className={ props.onDismiss ? "with-close-button" : "" }
-            { ...rest }
+            className={ classes }
+            visible={ visible }
             header={
                 header
                     ? (
-                        <Header as="h4">
+                        <Header as="h5" className={ !props?.icon ? "mb-3" : null }>
                             <Header.Content>
-                                <Icon name="info circle"/>
+                                {
+                                    !props?.icon
+                                        ? resolveMessageIcon()
+                                        : null
+                                }
                                 { (header) }
-                                <Divider hidden/>
                             </Header.Content>
                         </Header>
-                    )
-                    : null
+                    ) : undefined
             }
-            content={ generateContent() }
+            content={
+                header
+                    ? (
+                        <div>
+                            { content }
+                        </div>
+                    )
+                    : (
+                        <div>
+                            { resolveMessageIcon() }
+                            { content }
+                        </div>
+                    )
+            }
             data-componentid={ componentId }
             data-testid={ testId }
+            info={ type === "info" }
+            warning={ type === "warning" }
+            error={ type === "error" }
+            success={ type === "success" }
+            { ...rest }
         />
     );
 };
 
 /**
- * Default proptypes for the message component.
+ * Default proptypes for the message with icon component.
  */
 Message.defaultProps = {
-    content: null,
-    "data-componentid": "message-component",
-    "data-testid": "message-component",
-    header: null
+    "data-componentid": "message-info",
+    "data-testid": "message-info",
+    visible: true
 };

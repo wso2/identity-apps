@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Hint, MessageWithIcon } from "@wso2is/react-components";
+import { Hint, Message } from "@wso2is/react-components";
 import React, { Fragment, FunctionComponent, ReactElement } from "react";
 import { Field as FinalFormField } from "react-final-form";
 import { CheckboxAdapter } from "./adapters";
@@ -63,7 +63,7 @@ export const FieldCheckbox: FunctionComponent<FieldCheckboxPropsInterface> = (
         switch (props.message.type) {
             case "info":
                 return (
-                    <MessageWithIcon
+                    <Message
                         type={ props.message.type }
                         content={ props.message.content }
                         header={ props.message.header }
@@ -71,7 +71,7 @@ export const FieldCheckbox: FunctionComponent<FieldCheckboxPropsInterface> = (
                 );
             case "warning":
                 return (
-                    <MessageWithIcon
+                    <Message
                         type={ props.message.type }
                         content={ props.message.content }
                         header={ props.message.header }
@@ -79,7 +79,7 @@ export const FieldCheckbox: FunctionComponent<FieldCheckboxPropsInterface> = (
                 );
             case "error":
                 return (
-                    <MessageWithIcon
+                    <Message
                         type={ props.message.type }
                         content={ props.message.content }
                         header={ props.message.header }
