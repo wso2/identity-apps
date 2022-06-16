@@ -17,5 +17,4 @@
  */
 
 export * from "./message-info";
-export * from "./message-with-icon";
 export * from "./message";

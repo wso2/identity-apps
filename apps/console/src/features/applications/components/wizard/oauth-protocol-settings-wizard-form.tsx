@@ -19,13 +19,13 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms } from "@wso2is/forms";
-import { ContentLoader, Hint, LinkButton, URLInput } from "@wso2is/react-components";
+import { ContentLoader, Hint, LinkButton, Message, URLInput } from "@wso2is/react-components";
 import intersection from "lodash-es/intersection";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Grid, Icon, Message } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface } from "../../../../features/core";
 import { getAuthProtocolMetadata } from "../../api";
 import SinglePageApplicationTemplate
@@ -548,44 +548,46 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         showLessContent={ t("common:showLess") }
                                         showMoreContent={ t("common:showMore") }
                                     />
-                                    {
-                                        (callBackURLFromTemplate) && (
-                                            <Message className="with-inline-icon" icon visible info>
-                                                <Icon name="info" size="mini" />
-                                                <Message.Content> {
-                                                    <Trans
-                                                        i18nKey={ "console:develop.features.applications.forms." +
-                                                        "inboundOIDC.fields.callBackUrls.info" }
-                                                        tOptions={ {
-                                                            callBackURLFromTemplate: callBackURLFromTemplate
-                                                        } }
-                                                    >
-                                                        Don’t have an app? Try out a sample app
-                                                        using <strong>{ callBackURLFromTemplate }</strong>
-                                                        as the Authorized URL.
-                                                    </Trans>
-                                                }
-                                                {
-                                                    (callBackUrls === undefined || callBackUrls === "") && (
-                                                        <LinkButton
-                                                            className={ "m-1 p-1 with-no-border orange" }
-                                                            onClick={ (e) => {
-                                                                e.preventDefault();
-                                                                const host = new URL(callBackURLFromTemplate);
+                                    { (callBackURLFromTemplate) && (
+                                        <Message
+                                             type="info"
+                                             content={
+                                                 <>
+                                                     {
+                                                         <Trans
+                                                             i18nKey={ "console:develop.features." +
+                                                             "applications.forms.inboundOIDC.fields." +
+                                                             "callBackUrls.info" }
+                                                             tOptions={ {
+                                                                 callBackURLFromTemplate: callBackURLFromTemplate
+                                                             } }
+                                                         >
+                                                             Don’t have an app? Try out a sample app
+                                                             using <strong>{ callBackURLFromTemplate }</strong>
+                                                             as the Authorized URL.
+                                                         </Trans>
+                                                     }
+                                                     {
+                                                         (callBackUrls === undefined || callBackUrls === "") && (
+                                                             <LinkButton
+                                                                 className={ "m-1 p-1 with-no-border orange" }
+                                                                 onClick={ (e) => {
+                                                                     e.preventDefault();
+                                                                     const host = new URL(callBackURLFromTemplate);
 
-                                                                handleAddAllowOrigin(host.origin);
-                                                                setCallBackUrls(callBackURLFromTemplate);
-                                                            } }
-                                                            data-testid={ `${ testId }-add-now-button` }
-                                                        >
-                                                            <span style={ { fontWeight: "bold" } }>Add Now</span>
-                                                        </LinkButton>
-                                                    )
-                                                }
-                                                </Message.Content>
-                                            </Message>
-                                        )
-                                    }
+                                                                     handleAddAllowOrigin(host.origin);
+                                                                     setCallBackUrls(callBackURLFromTemplate);
+                                                                 } }
+                                                                 data-testid={ `${ testId }-add-now-button` }
+                                                             >
+                                                                 <span style={ { fontWeight: "bold" } }>Add Now</span>
+                                                             </LinkButton>
+                                                         )
+                                                     }
+                                                 </>
+                                             }
+                                        />
+                                    ) }
                                 </Grid.Column>
                             </Grid.Row>
                         ) }
