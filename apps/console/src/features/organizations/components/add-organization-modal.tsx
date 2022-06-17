@@ -99,23 +99,42 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                 closeWizard();
                 dispatch(
                     addAlert({
-                        description: t("adminPortal:components.applications.notifications.add.description"),
+                        description: t("console:manage.features.organizations.notifications." +
+                            "addOrganization.success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("adminPortal:components.applications.notifications.add.message")
+                        message: t("console:manage.features.organizations.notifications." +
+                            "addOrganization.success.message")
                     })
                 );
                 if (onUpdate) {
                     onUpdate();
                 }
             })
-            .catch(() => {
-                dispatch(
-                    addAlert({
-                        description: t("adminPortal:components.applications.notifications.add.description"),
-                        level: AlertLevels.ERROR,
-                        message: t("adminPortal:components.applications.notifications.add.message")
-                    })
-                );
+            .catch((error) => {
+                if (error?.description) {
+                    dispatch(
+                        addAlert({
+                            description: t("console:manage.features.organizations.notifications." +
+                                "addOrganization.error.description",
+                            {
+                                description: error.description
+                            }),
+                            level: AlertLevels.ERROR,
+                            message: t("console:manage.features.organizations.notifications." +
+                                "addOrganization.error.message")
+                        })
+                    );
+                } else {
+                    dispatch(
+                        addAlert({
+                            description: t("console:manage.features.organizations.notifications." +
+                                "addOrganization.genericError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("console:manage.features.organizations.notifications." +
+                                "addOrganization.genericError.message")
+                        })
+                    );
+                }
             })
             .finally(() => {
                 setIsSubmitting(false);
@@ -126,11 +145,12 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
         const error: Partial<OrganizationAddFormProps> = {};
 
         if (!values?.name) {
-            error.name = "Organization name is required";
+            error.name = t("console:manage.features.organizations.forms.addOrganization.name.validation.empty");
         }
 
         if (!values?.domainName && type === ORGANIZATION_TYPE.TENANT) {
-            error.domainName = "Domain name is required";
+            error.domainName = t("console:manage.features.organizations.forms.addOrganization." +
+                "domainName.validation.empty");
         }
 
         return error;
@@ -156,8 +176,14 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                 data-testid={ `${ testId }-modal` }
             >
                 <Modal.Header className="wizard-header">
-                    Create Organization
-                    <Heading as="h6">Create a new organization in { parent?.name ?? "root" }.</Heading>
+                    { t("console:manage.features.organizations.modals.addOrganization.header") }
+                    <Heading as="h6">
+                        { parent?.name
+                            ? t("console:manage.features.organizations.modals.addOrganization.subtitle1",
+                                { parent: parent?.name })
+                            :  t("console:manage.features.organizations.modals.addOrganization.subtitle2") }
+
+                    </Heading>
                 </Modal.Header>
                 <Modal.Content>
                     <Grid>
@@ -165,7 +191,10 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                             <Grid.Column width={ 16 }>
                                 { duplicateName && (
                                     <Message negative>
-                                        <Message.Content>The organization name already exists.</Message.Content>
+                                        <Message.Content>{
+                                            t("console:manage.features.organizations.forms." +
+                                                "addOrganization.name.validation.duplicate")
+                                        }</Message.Content>
                                     </Message>
                                 ) }
                                 <Form
@@ -178,9 +207,11 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                         ariaLabel="Organization Name"
                                         inputType="name"
                                         name="name"
-                                        label="Organization Name"
+                                        label={ t("console:manage.features.organizations.forms." +
+                                            "addOrganization.name.label") }
                                         required={ true }
-                                        placeholder="Enter the organization name"
+                                        placeholder={ t("console:manage.features.organizations.forms." +
+                                            "addOrganization.name.placeholder") }
                                         maxLength={ 32 }
                                         minLength={ 3 }
                                         data-testid={ `${ testId }-organization-name-input` }
@@ -193,9 +224,11 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                         ariaLabel="Description"
                                         inputType="description"
                                         name="description"
-                                        label="Description"
+                                        label={ t("console:manage.features.organizations.forms." +
+                                            "addOrganization.description.label") }
                                         required={ false }
-                                        placeholder="Enter description"
+                                        placeholder={ t("console:manage.features.organizations.forms." +
+                                            "addOrganization.description.placeholder") }
                                         maxLength={ 32 }
                                         minLength={ 3 }
                                         data-testid={ `${ testId }-description-input` }
@@ -205,8 +238,10 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                         ariaLabel="Domain Name"
                                         inputType="default"
                                         name="domainName"
-                                        label="Domain Name"
-                                        placeholder="Enter domain name"
+                                        label={ t("console:manage.features.organizations.forms." +
+                                            "addOrganization.domainName.label") }
+                                        placeholder={ t("console:manage.features.organizations.forms." +
+                                            "addOrganization.domainName.placeholder") }
                                         required={ type === ORGANIZATION_TYPE.TENANT }
                                         maxLength={ 32 }
                                         minLength={ 3 }
@@ -217,15 +252,19 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                 <Divider hidden />
                                 <SemanticForm>
                                     <SemanticForm.Group grouped>
-                                        <label>Type</label>
+                                        <label>
+                                            { t("console:manage.features.organizations.forms.addOrganization.type") }
+                                        </label>
                                         <SemanticForm.Radio
-                                            label="Structural"
+                                            label={ t("console:manage.features.organizations.forms." +
+                                                "addOrganization.structural") }
                                             value={ ORGANIZATION_TYPE.STRUCTURAL }
                                             checked={ type === ORGANIZATION_TYPE.STRUCTURAL }
                                             onChange={ () => setType(ORGANIZATION_TYPE.STRUCTURAL) }
                                         />
                                         <SemanticForm.Radio
-                                            label="Tenant"
+                                            label={ t("console:manage.features.organizations." +
+                                                "forms.addOrganization.tenant") }
                                             value={ ORGANIZATION_TYPE.TENANT }
                                             checked={ type === ORGANIZATION_TYPE.TENANT }
                                             onChange={ () => setType(ORGANIZATION_TYPE.TENANT) }
