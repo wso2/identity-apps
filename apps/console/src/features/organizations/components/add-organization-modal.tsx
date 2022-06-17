@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
@@ -55,7 +55,7 @@ interface AddOrganizationModalPropsInterface extends IdentifiableComponentInterf
 export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsInterface> = (
     props: AddOrganizationModalPropsInterface
 ): ReactElement => {
-    const { closeWizard, parent, onUpdate, [ "data-testid" ]: testId } = props;
+    const { closeWizard, parent, onUpdate, [ "data-componentid" ]: testId } = props;
 
     const { t } = useTranslation();
 
@@ -294,5 +294,5 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
  * Default props for the application creation wizard.
  */
 AddOrganizationModal.defaultProps = {
-    "data-testid": "organization-create-wizard"
+    "data-componentid": "organization-create-wizard"
 };

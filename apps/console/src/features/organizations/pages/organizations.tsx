@@ -17,7 +17,7 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { I18n } from "@wso2is/i18n";
@@ -72,7 +72,7 @@ const ORGANIZATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
 /**
  * Props for the Organizations page.
  */
-type OrganizationsPageInterface = TestableComponentInterface;
+type OrganizationsPageInterface = IdentifiableComponentInterface;
 
 /**
  * Organizations page.
@@ -84,7 +84,7 @@ type OrganizationsPageInterface = TestableComponentInterface;
 const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     props: OrganizationsPageInterface
 ): ReactElement => {
-    const { [ "data-testid" ]: testId } = props;
+    const { [ "data-componentid" ]: testId } = props;
 
     const { t } = useTranslation();
 
@@ -584,7 +584,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
  * Default props for the component.
  */
 OrganizationsPage.defaultProps = {
-    "data-testid": "organizations"
+    "data-componentid": "organizations"
 };
 
 /**
