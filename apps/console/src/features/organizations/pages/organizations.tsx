@@ -24,7 +24,16 @@ import { I18n } from "@wso2is/i18n";
 import { GridLayout, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import find from "lodash-es/find";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+    FunctionComponent,
+    MouseEvent,
+    ReactElement,
+    SyntheticEvent,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -45,7 +54,12 @@ import {
 } from "../../core";
 import { getOrganization, getOrganizations } from "../api";
 import { AddOrganizationModal, OrganizationList } from "../components";
-import { OrganizationInterface, OrganizationLinkInterface, OrganizationListInterface, OrganizationResponseInterface } from "../models";
+import {
+    OrganizationInterface,
+    OrganizationLinkInterface,
+    OrganizationListInterface,
+    OrganizationResponseInterface
+} from "../models";
 
 const ORGANIZATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -144,9 +158,35 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                 setOrganization(organization);
             })
             .catch((error) => {
-                // TODO: Handle error
+                if (error?.description) {
+                    dispatch(
+                        addAlert({
+                            description: error.description,
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "console:manage.features.organizations.notifications." + "getOrganization.error.message"
+                            )
+                        })
+                    );
+
+                    return;
+                }
+
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "console:manage.features.organizations.notifications.fetchOrganizations" +
+                            ".genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "console:manage.features.organizations.notifications." +
+                            "getOrganization.genericError.message"
+                        )
+                    })
+                );
             });
-    }, [ parent ]);
+    }, [ parent, dispatch, t ]);
 
     const filterQuery = useMemo(() => {
         let filterQuery: string = "";
@@ -167,49 +207,52 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      * @param {number} offset - List offset.
      * @param {string} filter - Search query.
      */
-    const getOrganizationLists = useCallback((limit?: number, filter?: string, after?: string, before?: string): void => {
-        setOrganizationListRequestLoading(true);
+    const getOrganizationLists = useCallback(
+        (limit?: number, filter?: string, after?: string, before?: string): void => {
+            setOrganizationListRequestLoading(true);
 
-        getOrganizations(filter, limit, after, before)
-            .then((response: OrganizationListInterface) => {
-                handleNextButtonVisibility(response);
-                setOrganizationList(response);
-            })
-            .catch((error) => {
-                if (error?.description) {
+            getOrganizations(filter, limit, after, before)
+                .then((response: OrganizationListInterface) => {
+                    handleNextButtonVisibility(response);
+                    setOrganizationList(response);
+                })
+                .catch((error) => {
+                    if (error?.description) {
+                        dispatch(
+                            addAlert({
+                                description: error.description,
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "console:manage.features.organizations.notifications." +
+                                    "fetchOrganizations.error.message"
+                                )
+                            })
+                        );
+
+                        return;
+                    }
+
                     dispatch(
                         addAlert({
-                            description: error.description,
+                            description: t(
+                                "console:manage.features.organizations.notifications.fetchOrganizations" +
+                                ".genericError.description"
+                            ),
                             level: AlertLevels.ERROR,
                             message: t(
                                 "console:manage.features.organizations.notifications." +
-                                "fetchOrganizations.error.message"
+                                "fetchOrganizations.genericError.message"
                             )
                         })
                     );
-
-                    return;
-                }
-
-                dispatch(
-                    addAlert({
-                        description: t(
-                            "console:manage.features.organizations.notifications.fetchOrganizations" +
-                            ".genericError.description"
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "console:manage.features.organizations.notifications." +
-                            "fetchOrganizations.genericError.message"
-                        )
-                    })
-                );
-            })
-            .finally(() => {
-                setOrganizationListRequestLoading(false);
-                setLoading(false);
-            });
-    }, [ dispatch, t ]);
+                })
+                .finally(() => {
+                    setOrganizationListRequestLoading(false);
+                    setLoading(false);
+                });
+        },
+        [ dispatch, t ]
+    );
 
     useEffect(() => {
         getOrganizationLists(listItemLimit, filterQuery, null, null);
@@ -242,7 +285,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
             return;
         }
 
-        list.links?.forEach(link => {
+        list.links?.forEach((link) => {
             link.rel === "next"
                 ? setIsOrganizationsNextPageAvailable(true)
                 : setIsOrganizationsNextPageAvailable(false);
@@ -271,7 +314,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
 
         if (newPage > activePage) {
             getOrganizationLists(listItemLimit, filterQuery, after, null);
-        } else if(newPage < activePage) {
+        } else if (newPage < activePage) {
             getOrganizationLists(listItemLimit, filterQuery, null, before);
         }
         setActivePage(newPage);
@@ -326,9 +369,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     };
 
     const handleListItemClick = (_e, organization: OrganizationInterface): void => {
-        if (
-            organizations.find((org: OrganizationInterface) => org.id === organization.id)
-        ) {
+        if (organizations.find((org: OrganizationInterface) => org.id === organization.id)) {
             return;
         }
 
@@ -366,10 +407,12 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                 }
                 title={ organization ? organization.name : t("console:manage.pages.organizations.title") }
                 description={
-                    (<p>{ organization
-                        ? organization.description
-                        : t("console:manage.pages.organizations.subTitle")
-                    }</p>)
+                    (<p>
+                        { organization
+                            ? organization.description
+                            : t("console:manage.pages.organizations.subTitle")
+                        }
+                    </p>)
                 }
                 data-testid={ `${ testId }-page-layout` }
                 titleAs="h3"
