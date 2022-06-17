@@ -282,4 +282,29 @@ export class AccessControlConstants {
      */
     public static readonly USER_STORE_DELETE: string = "userStores:delete";
 
+    /**
+     * Organization feature permission.
+     */
+    public static readonly ORGANIZATION: string = "organization";
+
+    /**
+     * Organization write permission.
+     */
+    public static readonly ORGANIZATION_WRITE: string = "organization:write";
+
+    /**
+     * Organization edit permission.
+     */
+    public static readonly ORGANIZATION_EDIT: string = "organization:edit";
+
+    /**
+     * Organization delete permission.
+     */
+    public static readonly ORGANIZATION_DELETE: string = "organization:delete";
+
+    /**
+     * Organization read permission.
+     */
+    public static readonly ORGANIZATION_READ: string = "organization:read";
+
 }

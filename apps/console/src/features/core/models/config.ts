@@ -88,6 +88,10 @@ export interface FeatureConfigInterface {
      */
     oidcScopes?: FeatureAccessConfigInterface;
     /**
+     * Organization management feature.
+     */
+    organizations?: FeatureAccessConfigInterface;
+    /**
      * Remote Fetch Config management feature.
      */
     remoteFetchConfig?: FeatureAccessConfigInterface;
