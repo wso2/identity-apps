@@ -38,9 +38,9 @@ import javax.cache.spi.CachingProvider;
  * Cache implementation of the TemplateEngine interface using local compiler
  */
 public class LocalTemplateEngineCache implements TemplateEngine {
-	
+
     private static final long serialVersionUID = 128582202509525932L;
-	public ExecutableIdentifier compiledObject = null;
+    public ExecutableIdentifier compiledObject = null;
     public DefaultExecutor executor = null;
 
     /**
@@ -67,8 +67,8 @@ public class LocalTemplateEngineCache implements TemplateEngine {
                 compiledObject = parser.compile(testLayoutFile);
                 executor = new DefaultExecutor(data);
             } else {
-            	CachingProvider cachingProvider = 
-                    Caching.getCachingProvider("org.ehcache.jsr107.EhcacheCachingProvider");
+                CachingProvider cachingProvider =
+                        Caching.getCachingProvider("org.ehcache.jsr107.EhcacheCachingProvider");
 
                 // Acquire the default cache manager
                 CacheManager manager = cachingProvider.getCacheManager();

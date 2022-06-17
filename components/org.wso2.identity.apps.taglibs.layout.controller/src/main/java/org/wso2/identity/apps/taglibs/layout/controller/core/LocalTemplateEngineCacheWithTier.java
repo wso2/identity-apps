@@ -32,9 +32,9 @@ import java.util.Map;
  * Caching implementation of the TemplateEngine interface with more controls using local compiler
  */
 public class LocalTemplateEngineCacheWithTier implements TemplateEngine {
-	
+
     private static final long serialVersionUID = 8574215169965654726L;
-	public ExecutableIdentifier compiledObject = null;
+    public ExecutableIdentifier compiledObject = null;
     public DefaultExecutor executor = null;
 
     /**
@@ -62,7 +62,7 @@ public class LocalTemplateEngineCacheWithTier implements TemplateEngine {
                 executor = new DefaultExecutor(data);
             } else {
                 LayoutCache layoutCache = LayoutCache.getInstance();
-                
+
                 compiledObject = layoutCache.getLayout(layoutName, layoutFile);
 
                 executor = new DefaultExecutor(data);
