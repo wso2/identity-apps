@@ -52,8 +52,7 @@ export class HttpUtils {
      */
     public static onHttpRequestSuccess(response: HttpResponse): void {
         // TODO: Handle any conditions required on request success.
-        const timeStamp = new Date().getTime()
-        const duration = timeStamp - response?.config?.startTimeInMs
+        const duration: number = new Date().getTime() - response?.config?.startTimeInMs
         EventPublisher.getInstance().record(
             new URL(response.config.url).pathname,
             response?.config?.startTimeInMs,
@@ -79,13 +78,12 @@ export class HttpUtils {
         /**
          * Publish an event on the http request error.
         */
-        const currentTimeStamp = new Date().getTime()
-        const errDuration = currentTimeStamp - error?.config?.startTimeInMs
+        const duration: number = new Date().getTime() - error?.config?.startTimeInMs
 
         EventPublisher.getInstance().record(
             new URL(error?.config?.url).pathname,
             error?.config?.startTimeInMs,
-            errDuration,
+            duration,
             error?.response?.status,
             false
         )
