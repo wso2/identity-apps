@@ -405,12 +405,16 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                         </Show>
                     )
                 }
-                title={ organization ? organization.name : t("console:manage.pages.organizations.title") }
+                title={ isOrganizationListRequestLoading
+                    ? null
+                    : organization ? organization.name : t("console:manage.features.organizations.homeList.name") }
                 description={
                     (<p>
-                        { organization
-                            ? organization.description
-                            : t("console:manage.pages.organizations.subTitle")
+                        { isOrganizationListRequestLoading
+                            ? null
+                            : organization
+                                ? organization.description
+                                : t("console:manage.features.organizations.homeList.description")
                         }
                     </p>)
                 }
@@ -435,7 +439,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                         handleBreadCrumbClick(null, -1);
                                     } }
                                 >
-                                    Home
+                                    <Icon name="home" />
                                 </Breadcrumb.Section>
                                 { organizations?.map((organization: OrganizationInterface, index: number) => {
                                     return (
