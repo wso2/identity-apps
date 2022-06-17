@@ -24,6 +24,7 @@ import { identityProviderConfig } from "../../../extensions/configs";
  * Class containing app constants.
  */
 export class AppConstants {
+
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
@@ -39,7 +40,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getAdminViewBasePath(): string {
-        return window[ "AppUtils" ].getConfig().adminApp.basePath;
+        return window["AppUtils"].getConfig().adminApp.basePath;
     }
 
     /**
@@ -48,7 +49,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getAdminViewHomePath(): string {
-        return window[ "AppUtils" ].getConfig().adminApp.path;
+        return window["AppUtils"].getConfig().adminApp.path;
     }
 
     /**
@@ -66,7 +67,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getDeveloperViewBasePath(): string {
-        return window[ "AppUtils" ].getConfig().developerApp.basePath;
+        return window["AppUtils"].getConfig().developerApp.basePath;
     }
 
     /**
@@ -75,7 +76,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getDeveloperViewHomePath(): string {
-        return window[ "AppUtils" ].getConfig().developerApp.path;
+        return window["AppUtils"].getConfig().developerApp.path;
     }
 
     /**
@@ -86,7 +87,9 @@ export class AppConstants {
      * @return {string}
      */
     public static getMainViewBasePath(): string {
-        return this.getTenantQualifiedAppBasePath() !== "/" ? this.getTenantQualifiedAppBasePath() : "";
+        return this.getTenantQualifiedAppBasePath() !== "/"
+            ? this.getTenantQualifiedAppBasePath()
+            : "";
     }
 
     /**
@@ -95,7 +98,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getTenantQualifiedAppBasename(): string {
-        return window[ "AppUtils" ].getConfig().appBaseWithTenant;
+        return window["AppUtils"].getConfig().appBaseWithTenant;
     }
 
     /**
@@ -113,7 +116,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getAppBasename(): string {
-        return window[ "AppUtils" ].getConfig().appBase;
+        return window["AppUtils"].getConfig().appBase;
     }
 
     /**
@@ -131,7 +134,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getAppHomePath(): string {
-        return window[ "AppUtils" ].getConfig().routes.home;
+        return window["AppUtils"].getConfig().routes.home;
     }
 
     /**
@@ -158,7 +161,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getClientID(): string {
-        return window[ "AppUtils" ].getConfig().clientID;
+        return window["AppUtils"].getConfig().clientID;
     }
 
     /**
@@ -167,7 +170,7 @@ export class AppConstants {
      * @return {AppThemeConfigInterface}
      */
     public static getAppTheme(): AppThemeConfigInterface {
-        return window[ "AppUtils" ].getConfig().ui?.theme;
+        return window["AppUtils"].getConfig().ui?.theme;
     }
 
     /**
@@ -176,6 +179,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getMyAccountPath(): string {
+
         return window[ "AppUtils" ].getConfig().accountApp.path;
     }
 
@@ -185,7 +189,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getTenantPath(): string {
-        return window[ "AppUtils" ].getConfig().tenantPath;
+        return window["AppUtils"].getConfig().tenantPath;
     }
 
     /**
@@ -194,7 +198,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getTenant(): string {
-        return window[ "AppUtils" ].getConfig().tenant;
+        return window["AppUtils"].getConfig().tenant;
     }
 
     /**
@@ -203,7 +207,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getSuperTenant(): string {
-        return window[ "AppUtils" ].getConfig().superTenant;
+        return window["AppUtils"].getConfig().superTenant;
     }
 
     /**
@@ -212,7 +216,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getClientOrigin(): string {
-        return window[ "AppUtils" ].getConfig().clientOrigin;
+        return window["AppUtils"].getConfig().clientOrigin;
     }
 
     /**
@@ -221,7 +225,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getClientOriginWithTenant(): string {
-        return window[ "AppUtils" ].getConfig().clientOriginWithTenant;
+        return window["AppUtils"].getConfig().clientOriginWithTenant;
     }
 
     /**
@@ -237,6 +241,7 @@ export class AppConstants {
      * @return {Map<string, string>}
      */
     public static getPaths(): Map<string, string> {
+        
         const useNewConnectionsView: boolean = identityProviderConfig?.useNewConnectionsView;
 
         return new Map<string, string>()
@@ -254,43 +259,34 @@ export class AppConstants {
             .set("DEVELOPER_OVERVIEW", `${ AppConstants.getDeveloperViewBasePath() }/overview`)
             .set("EMAIL_TEMPLATE_TYPES", `${ AppConstants.getAdminViewBasePath() }/email-templates`)
             .set("EMAIL_TEMPLATES", `${ AppConstants.getAdminViewBasePath() }/email-templates/:templateTypeId`)
-            .set(
-                "EMAIL_TEMPLATE",
-                `${ AppConstants.getAdminViewBasePath() }/email-templates/:templateTypeId/:templateId`
-            )
-            .set(
-                "EMAIL_TEMPLATE_ADD",
-                `${
-                    AppConstants.getAdminViewBasePath() }/email-templates/:templateTypeId/${
-                    AppConstants.EMAIL_TEMPLATE_ADD_URL_PARAM
-                }`
-            )
+            .set("EMAIL_TEMPLATE", `${
+                AppConstants.getAdminViewBasePath() }/email-templates/:templateTypeId/:templateId`)
+            .set("EMAIL_TEMPLATE_ADD", `${
+                AppConstants.getAdminViewBasePath() }/email-templates/:templateTypeId/${
+                AppConstants.EMAIL_TEMPLATE_ADD_URL_PARAM }`)
             .set("EXTERNAL_DIALECT_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attribute-mappings/:id`)
             .set("GROUPS", `${ AppConstants.getAdminViewBasePath() }/groups`)
             .set("GROUP_EDIT", `${ AppConstants.getAdminViewBasePath() }/groups/:id`)
-            .set(
-                "IDP",
+            .set("IDP",
                 useNewConnectionsView
                     ? `${ AppConstants.getDeveloperViewBasePath() }/connections`
                     : `${ AppConstants.getDeveloperViewBasePath() }/identity-providers`
             )
-            .set(
-                "IDP_TEMPLATES",
+            .set("IDP_TEMPLATES",
                 useNewConnectionsView
                     ? `${ AppConstants.getDeveloperViewBasePath() }/connections/templates`
                     : `${ AppConstants.getDeveloperViewBasePath() }/identity-providers/templates`
             )
-            .set(
-                "IDP_EDIT",
+            .set("IDP_EDIT",
                 useNewConnectionsView
-                    ? `${ AppConstants.getDeveloperViewBasePath() }/identity-providers/:id`
-                    : `${ AppConstants.getDeveloperViewBasePath() }/connections/:id`
+                    ?`${ AppConstants.getDeveloperViewBasePath() }/identity-providers/:id`
+                    :`${ AppConstants.getDeveloperViewBasePath() }/connections/:id`
             )
             .set("LOCAL_CLAIMS", `${ AppConstants.getAdminViewBasePath() }/attributes`)
             .set("LOCAL_CLAIMS_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attributes/:id`)
-            .set("LOGIN", window[ "AppUtils" ].getConfig().routes.login)
+            .set("LOGIN",  window[ "AppUtils" ].getConfig().routes.login)
             .set("SCIM_MAPPING", `${ AppConstants.getAdminViewBasePath() }/attribute-mappings/scim`)
-            .set("LOGOUT", window[ "AppUtils" ].getConfig().routes.logout)
+            .set("LOGOUT",  window[ "AppUtils" ].getConfig().routes.logout)
             .set("OIDC_SCOPES", `${ AppConstants.getAdminViewBasePath() }/oidc-scopes`)
             .set("OIDC_SCOPES_EDIT", `${ AppConstants.getAdminViewBasePath() }/oidc-scopes/:id`)
             .set("PAGE_NOT_FOUND", `${ AppConstants.getMainViewBasePath() }/404`)
@@ -308,15 +304,13 @@ export class AppConstants {
             .set("USERSTORE_TEMPLATES", `${ AppConstants.getAdminViewBasePath() }/userstore-templates`)
             .set("STORING_DATA_DISABLED", `${ AppConstants.getMainViewBasePath() }/storing_data_disabled`)
             .set("GOVERNANCE_CONNECTOR", `${ AppConstants.getAdminViewBasePath() }/connector/:id`)
-            .set(
-                "GOVERNANCE_CONNECTOR_EDIT",
-                `${ AppConstants.getAdminViewBasePath() }/connector/:categoryId/:connectorId`
-            )
+            .set("GOVERNANCE_CONNECTOR_EDIT", `${ 
+                AppConstants.getAdminViewBasePath() }/connector/:categoryId/:connectorId`)
             .set("SECRETS", `${ AppConstants.getDeveloperViewBasePath() }/secrets`)
             .set("SECRET_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/secrets/:type/:name`)
             .set("ATTRIBUTE_MAPPINGS", `${ AppConstants.getAdminViewBasePath() }/attribute-mappings/:type`)
-            .set("CREATE_TENANT", `${ AppConstants.getMainViewBasePath() }/create-tenant`)
-            .set("ORGANIZATIONS", `${ AppConstants.getAdminViewBasePath() }/organizations`);
+            .set("CREATE_TENANT", `${ AppConstants.getMainViewBasePath() }/create-tenant`);
+            
     }
 
     /**
