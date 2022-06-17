@@ -509,6 +509,19 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         path: AppConstants.getPaths().get("GOVERNANCE_CONNECTORS"),
                         protected: true,
                         showOnSidePanel: false
+                    },
+                    {
+                        category: "console:manage.features.sidePanel.categories.organizations",
+                        component: lazy(() => import("../../organizations/pages/organizations")),
+                        icon: {
+                            icon: getSidePanelIcons().organization
+                        },
+                        id: "organizations",
+                        name: "console:manage.features.sidePanel.organizations",
+                        order: 12,
+                        path: AppConstants.getPaths().get("ORGANIZATIONS"),
+                        protected: true,
+                        showOnSidePanel: true
                     }
                 ],
                 "id"

@@ -50,6 +50,7 @@ import {
 import {
     ReactComponent as ApplicationsOutlineIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/application-outline.svg";
+import { ReactComponent as HomeIcon } from "../../../themes/default/assets/images/icons/outline-icons/home-outline.svg";
 import {
     ReactComponent as IDPOutlineIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/idp-provider-outline.svg";
@@ -135,7 +136,6 @@ import { ReactComponent as ReactLogo } from "../../../themes/default/assets/imag
 import { ReactComponent as VueLogo } from "../../../themes/default/assets/images/technologies/vue-logo.svg";
 import { ReactComponent as WindowsLogo } from "../../../themes/default/assets/images/technologies/windows-logo.svg";
 import { ServerConfigurationsConstants } from "../../server-configurations/constants";
-import { ReactComponent as HomeIcon } from "../../../themes/default/assets/images/icons/outline-icons/home-outline.svg";
 
 /**
  * Typed interface of {@link getTechnologyLogos}
@@ -209,6 +209,7 @@ export type GetSidePanelIconsInterface = {
     emailTemplates: FunctionComponent,
     groups: FunctionComponent,
     identityProviders: FunctionComponent,
+    organization: FunctionComponent,
     overview: FunctionComponent,
     remoteFetch: FunctionComponent,
     roles: FunctionComponent,
@@ -247,6 +248,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
         emailTemplates: PaperRocketIcon,
         groups: UserGroupIcon,
         identityProviders: IDPOutlineIcon,
+        organization: LDAPOutlineIcon,
         overview: DashboardIcon,
         remoteFetch: CodeForkIcon,
         roles: BriefcaseIcon,

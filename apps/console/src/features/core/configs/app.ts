@@ -27,6 +27,7 @@ import { getEmailTemplatesResourceEndpoints } from "../../email-templates";
 import { getGroupsResourceEndpoints } from "../../groups";
 import { getIDPResourceEndpoints } from "../../identity-providers";
 import { getScopesResourceEndpoints } from "../../oidc-scopes";
+import { getOrganizationsResourceEndpoints } from "../../organizations/configs";
 import { getRemoteFetchConfigResourceEndpoints } from "../../remote-repository-configuration";
 import { getRolesResourceEndpoints } from "../../roles";
 import { getSecretsManagementEndpoints } from "../../secrets/configs/endpoints";
@@ -181,6 +182,7 @@ export class Config {
             ...getRemoteFetchConfigResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getSecretsManagementEndpoints(this.getDeploymentConfig().serverHost),
             ...getExtendedFeatureResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getOrganizationsResourceEndpoints(this.getDeploymentConfig().serverHost),
             CORSOrigins: `${this.getDeploymentConfig().serverHost}/api/server/v1/cors/origins`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${this.getDeploymentConfig().serverHost}/scim2/Me`,
