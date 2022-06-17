@@ -18,11 +18,7 @@
 
 package org.wso2.identity.apps.taglibs.layout.controller.core;
 
-import org.ehcache.config.builders.CacheConfigurationBuilder;
-import org.ehcache.config.builders.ResourcePoolsBuilder;
-import org.ehcache.config.units.EntryUnit;
-import org.ehcache.config.units.MemoryUnit;
-import org.ehcache.jsr107.Eh107Configuration;
+import org.wso2.identity.apps.taglibs.layout.controller.cache.LayoutCache;
 import org.wso2.identity.apps.taglibs.layout.controller.compiler.executors.DefaultExecutor;
 import org.wso2.identity.apps.taglibs.layout.controller.compiler.identifiers.ExecutableIdentifier;
 import org.wso2.identity.apps.taglibs.layout.controller.compiler.parsers.DefaultParser;
@@ -32,18 +28,13 @@ import java.io.Writer;
 import java.net.URL;
 import java.util.Map;
 
-import javax.cache.Cache;
-import javax.cache.CacheManager;
-import javax.cache.Caching;
-import javax.cache.spi.CachingProvider;
-
 /**
  * Caching implementation of the TemplateEngine interface with more controls using local compiler
  */
 public class LocalTemplateEngineCacheWithTier implements TemplateEngine {
-
+	
     private static final long serialVersionUID = 8574215169965654726L;
-    public ExecutableIdentifier compiledObject = null;
+	public ExecutableIdentifier compiledObject = null;
     public DefaultExecutor executor = null;
 
     /**
@@ -70,42 +61,9 @@ public class LocalTemplateEngineCacheWithTier implements TemplateEngine {
                 compiledObject = parser.compile(testLayoutFile);
                 executor = new DefaultExecutor(data);
             } else {
-                CachingProvider cachingProvider = 
-                    Caching.getCachingProvider("org.ehcache.jsr107.EhcacheCachingProvider");
-
-                // Acquire the default cache manager
-                CacheManager manager = cachingProvider.getCacheManager();
-
-                // Get the cache
-                Cache<String, ExecutableIdentifier> cache = manager.getCache(
-                        "layouts",
-                        String.class,
-                        ExecutableIdentifier.class
-                );
-
-                if (cache == null) {
-                    // Create the cache
-                    cache = manager.createCache("layouts",
-                            Eh107Configuration.fromEhcacheCacheConfiguration(
-                                    CacheConfigurationBuilder.newCacheConfigurationBuilder(
-                                            String.class,
-                                            ExecutableIdentifier.class,
-                                            ResourcePoolsBuilder.newResourcePoolsBuilder()
-                                                    .heap(10, EntryUnit.ENTRIES)
-                                                    .offheap(10, MemoryUnit.MB)
-                                                    .build()
-                                    )
-                            )
-                    );
-                }
-
-                if (!cache.containsKey(layoutName)) {
-                    Parser parser = new DefaultParser();
-                    compiledObject = parser.compile(layoutFile);
-                    cache.put(layoutName, compiledObject);
-                } else {
-                    compiledObject = cache.get(layoutName);
-                }
+                LayoutCache layoutCache = LayoutCache.getInstance();
+                
+                compiledObject = layoutCache.getLayout(layoutName, layoutFile);
 
                 executor = new DefaultExecutor(data);
             }

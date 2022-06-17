@@ -24,4 +24,10 @@ package org.wso2.identity.apps.taglibs.layout.controller;
 public class Constant {
     public static final String COMPONENT_NAME_STORING_VAR = "componentLiteralName";
     public static final String DYNAMIC_COMPONENT_FILES_DIRECTORY_PATH = "extensions/";
+    
+    public static final String LAYOUT_CACHE_NAME = "layouts";
+    public static final String LAYOUT_CACHE_STORE_DIRECTORY_NAME = "layouts";
+    public static final int LAYOUT_CACHE_HEAP_ENTRIES = 20;
+    public static final int LAYOUT_CACHE_OFF_HEAP_SIZE = 10; // Unit is MB
+    public static final int LAYOUT_CACHE_DISK_SIZE = 1; // Unit is GB
 }
