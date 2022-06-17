@@ -85,7 +85,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
 
         const organization: AddOrganizationInterface = {
             description: values?.description,
-            domain: values?.domainName,
+            domain: null,
             name: values?.name,
             parentId: parent?.id,
             type: type
@@ -232,20 +232,6 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                         maxLength={ 32 }
                                         minLength={ 3 }
                                         data-testid={ `${ testId }-description-input` }
-                                        width={ 16 }
-                                    />
-                                    <Field.Input
-                                        ariaLabel="Domain Name"
-                                        inputType="default"
-                                        name="domainName"
-                                        label={ t("console:manage.features.organizations.forms." +
-                                            "addOrganization.domainName.label") }
-                                        placeholder={ t("console:manage.features.organizations.forms." +
-                                            "addOrganization.domainName.placeholder") }
-                                        required={ type === ORGANIZATION_TYPE.TENANT }
-                                        maxLength={ 32 }
-                                        minLength={ 3 }
-                                        data-testid={ `${ testId }-domain-name-input` }
                                         width={ 16 }
                                     />
                                 </Form>
