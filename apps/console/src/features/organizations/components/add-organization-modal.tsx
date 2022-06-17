@@ -38,7 +38,7 @@ interface OrganizationAddFormProps {
 /**
  * Prop types of the `AddOrganizationModal` component.
  */
-interface AddOrganizationModalPropsInterface extends TestableComponentInterface {
+interface AddOrganizationModalPropsInterface extends IdentifiableComponentInterface {
     closeWizard: () => void;
     parent?: OrganizationInterface;
     /**
