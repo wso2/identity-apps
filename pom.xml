@@ -45,6 +45,7 @@
 
     <modules>
         <module>components/org.wso2.identity.apps.taglibs.layout.controller</module>
+        <module>components/login-portal-layouts</module>
         <module>apps/myaccount</module>
         <module>apps/console</module>
         <module>apps/authentication-portal</module>
