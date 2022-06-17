@@ -146,6 +146,8 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
 
         useEffect(() => {
             if (open) {
+                setAssertionInput("");
+                setConfirmed(false);
                 setAssertionDisabled(false);
             }
         }, [ open ]);
@@ -169,8 +171,6 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
      * Handler for the secondary button click event.
      */
         const handleSecondaryActionClick = (e: MouseEvent<HTMLButtonElement>) => {
-            setAssertionInput("");
-            setConfirmed(false);
             onSecondaryActionClick(e);
         };
 
@@ -178,9 +178,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
      * Handler for the primary button click event.
      */
         const handlePrimaryActionClick = (e: MouseEvent<HTMLButtonElement>) => {
-            setAssertionInput("");
             setAssertionDisabled(true);
-            setConfirmed(false);
             onPrimaryActionClick(e);
         };
 
@@ -189,7 +187,6 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
      */
         const handleKeyDown = (k: KeyboardEvent, e: MouseEvent<HTMLButtonElement> ) => {
             if (k.key === "Enter" && confirmed) {
-                setAssertionInput("");        
                 onPrimaryActionClick(e);
             }
         };
