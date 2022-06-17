@@ -5851,6 +5851,10 @@ export const console: ConsoleNS = {
                         type: "Taper"
                     }
                 },
+                homeList: {
+                    description: "Consultez la liste de toutes les organisations disponibles.",
+                    name: "Toutes les organisations"
+                },
                 list: {
                     actions: {
                         add: "Ajouter une organisation"

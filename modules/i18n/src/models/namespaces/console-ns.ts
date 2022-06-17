@@ -2308,7 +2308,11 @@ export interface ConsoleNS {
                         type: string;
                         structural: string;
                         tenant: string;
-                    }
+                    };
+                };
+                homeList: {
+                    name: string;
+                    description: string;
                 }
             };
             users: {

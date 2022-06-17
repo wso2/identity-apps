@@ -7279,6 +7279,10 @@ export const console: ConsoleNS = {
                         type: "Type"
                     }
                 },
+                homeList: {
+                    description: "View the list of all the available organizations.",
+                    name: "All Organizations"
+                },
                 list: {
                     actions: {
                         add: "Add Organization"
