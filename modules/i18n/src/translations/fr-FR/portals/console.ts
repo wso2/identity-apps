@@ -5824,6 +5824,33 @@ export const console: ConsoleNS = {
                         message: "Cette action est irréversible et supprimera entièrement l'organisation."
                     }
                 },
+                forms: {
+                    addOrganization: {
+                        description: {
+                            label: "La description",
+                            placeholder: "Entrez la description"
+                        },
+                        domainName: {
+                            label: "Nom de domaine",
+                            placeholder: "Entrez le nom de domaine",
+                            validation: {
+                                duplicate: "Le nom de domaine existe déjà",
+                                empty: "Le nom de domaine est requis"
+                            }
+                        },
+                        name: {
+                            label: "nom de l'organisation",
+                            placeholder: "Entrez le nom de l'organisation",
+                            validation: {
+                                duplicate: "Le nom de l'organisation existe déjà",
+                                empty: "Le nom de l'organisation est requis"
+                            }
+                        },
+                        structural: "De construction",
+                        tenant: "Locataire",
+                        type: "Taper"
+                    }
+                },
                 list: {
                     actions: {
                         add: "Ajouter une organisation"
@@ -5833,7 +5860,28 @@ export const console: ConsoleNS = {
                         name: "Nom"
                     }
                 },
+                modals: {
+                    addOrganization: {
+                        header: "Ajouter une organisation",
+                        subtitle1: "Créez une nouvelle organisation dans {{parent}}.",
+                        subtitle2: "Créer une nouvelle organisation."
+                    }
+                },
                 notifications: {
+                    addOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur lors de l'ajout de l'organisation"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de l'ajout de l'organisation",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "L'organisation a bien été ajoutée",
+                            message: "Organisation ajoutée avec succès"
+                        }
+                    },
                     deleteOrganization: {
                         error: {
                             description: "{{description}}",
@@ -5860,6 +5908,16 @@ export const console: ConsoleNS = {
                         success: {
                             description: "L'organisation a bien été récupérée",
                             message: "Organisation récupérée avec succès"
+                        }
+                    },
+                    getOrganizationList: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur lors de l'obtention de la liste des organisations"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de l'obtention de la liste des organisations",
+                            message: "Quelque chose s'est mal passé"
                         }
                     }
                 },

@@ -7252,6 +7252,33 @@ export const console: ConsoleNS = {
                         message: "This action is irreversible and will remove the organization entirely."
                     }
                 },
+                forms: {
+                    addOrganization:{
+                        description: {
+                            label: "Description",
+                            placeholder: "Enter description"
+                        },
+                        domainName: {
+                            label: "Domain Name",
+                            placeholder: "Enter domain name",
+                            validation: {
+                                duplicate: "Domain name already exists",
+                                empty: "Domain name is required"
+                            }
+                        },
+                        name: {
+                            label: "Organization Name",
+                            placeholder: "Enter organization name",
+                            validation: {
+                                duplicate: "Organization name already exists",
+                                empty: "Organization name is required"
+                            }
+                        },
+                        structural: "Structural",
+                        tenant: "Tenant",
+                        type: "Type"
+                    }
+                },
                 list: {
                     actions: {
                         add: "Add Organization"
@@ -7261,7 +7288,28 @@ export const console: ConsoleNS = {
                         name: "Name"
                     }
                 },
+                modals: {
+                    addOrganization: {
+                        header: "Add Organization",
+                        subtitle1: "Create a new organization in {{parent}}.",
+                        subtitle2: "Create a new organization."
+                    }
+                },
                 notifications: {
+                    addOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while adding the organization"
+                        },
+                        genericError: {
+                            description: "An error occurred while adding the organization",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully added the organization",
+                            message: "Organization added successfully"
+                        }
+                    },
                     deleteOrganization: {
                         error: {
                             description: "{{description}}",
@@ -7288,6 +7336,16 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Successfully fetched the organization",
                             message: "Organization fetched successfully"
+                        }
+                    },
+                    getOrganizationList: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while getting the organization list"
+                        },
+                        genericError: {
+                            description: "An error occurred while getting the organization list",
+                            message: "Something went wrong"
                         }
                     }
                 },

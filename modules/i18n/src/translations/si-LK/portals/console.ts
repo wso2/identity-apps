@@ -5694,6 +5694,33 @@ export const console: ConsoleNS = {
                         message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර සංවිධානය සම්පූර්ණයෙන්ම ඉවත් කරනු ඇත."
                     }
                 },
+                forms: {
+                    addOrganization: {
+                        description: {
+                            label: "විස්තර",
+                            placeholder: "විස්තරය ඇතුලත් කරන්න"
+                        },
+                        domainName: {
+                            label: "වසම් නාමය",
+                            placeholder: "වසම් නාමය ඇතුලත් කරන්න",
+                            validation: {
+                                duplicate: "වසම් නාමය දැනටමත් පවතී",
+                                empty: "වසම් නාමය අවශ්ය වේ"
+                            }
+                        },
+                        name: {
+                            label: "සංවිධානයේ නම",
+                            placeholder: "සංවිධානයේ නම ඇතුළත් කරන්න",
+                            validation: {
+                                duplicate: "සංවිධානයේ නම දැනටමත් පවතී",
+                                empty: "සංවිධානයේ නම අවශ්‍යයි"
+                            }
+                        },
+                        structural: "ව්යුහාත්මක",
+                        tenant: "කුලී නිවැසියා",
+                        type: "ටයිප් කරන්න"
+                    }
+                },
                 list: {
                     actions: {
                         add: "සංවිධානය එකතු කරන්න"
@@ -5703,7 +5730,28 @@ export const console: ConsoleNS = {
                         name: "නම"
                     }
                 },
+                modals: {
+                    addOrganization: {
+                        header: "සංවිධානය එකතු කරන්න",
+                        subtitle1: "{{parent}} තුළ නව සංවිධානයක් සාදන්න.",
+                        subtitle2: "නව සංවිධානයක් සාදන්න."
+                    }
+                },
                 notifications: {
+                    addOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "සංවිධානය එක් කිරීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "සංවිධානය එක් කිරීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        success: {
+                            description: "සංවිධානය සාර්ථකව එකතු කරන ලදී",
+                            message: "සංවිධානය සාර්ථකව එකතු කරන ලදී"
+                        }
+                    },
                     deleteOrganization: {
                         error: {
                             description: "{{description}}",
@@ -5730,6 +5778,16 @@ export const console: ConsoleNS = {
                         success: {
                             description: "සංවිධානය සාර්ථකව ගෙන එන ලදී",
                             message: "සංවිධානය සාර්ථකව ලබා ගන්නා ලදී"
+                        }
+                    },
+                    getOrganizationList: {
+                        error: {
+                            description: "{{description}}",
+                            message: "සංවිධාන ලැයිස්තුව ලබා ගැනීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "සංවිධාන ලැයිස්තුව ලබා ගැනීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
                         }
                     }
                 },

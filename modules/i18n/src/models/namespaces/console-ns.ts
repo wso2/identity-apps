@@ -2279,7 +2279,8 @@ export interface ConsoleNS {
                 notifications: {
                     fetchOrganization: Notification;
                     deleteOrganization: Notification;
-
+                    addOrganization: Notification;
+                    getOrganizationList: Notification;
                 };
                 confirmations: {
                     deleteOrganization: {
@@ -2292,6 +2293,23 @@ export interface ConsoleNS {
                 placeholders: {
                     emptyList: Placeholder;
                 };
+                modals: {
+                    addOrganization: {
+                        header: string;
+                        subtitle1: string;
+                        subtitle2: string;
+                    };
+                };
+                forms: {
+                    addOrganization: {
+                        name: FormAttributes;
+                        description: FormAttributes;
+                        domainName: FormAttributes;
+                        type: string;
+                        structural: string;
+                        tenant: string;
+                    }
+                }
             };
             users: {
                 consumerUsers: {
