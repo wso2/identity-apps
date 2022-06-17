@@ -294,7 +294,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
 
     /**
      * Handles the `onFilter` callback action from the
-     * application search component.
+     * organization search component.
      *
      * @param {string} query - Search query.
      */
@@ -394,7 +394,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                 disabled={ isOrganizationListRequestLoading }
                                 loading={ isOrganizationListRequestLoading }
                                 onClick={ (): void => {
-                                    eventPublisher.publish("application-click-new-application-button");
+                                    eventPublisher.publish("organization-click-new-organization-button");
                                     setShowWizard(true);
                                 } }
                                 data-testid={ `${ testId }-list-layout-add-button` }
@@ -560,7 +560,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                 onSearchQueryClear={ handleSearchQueryClear }
                                 searchQuery={ searchQuery }
                                 data-testid={ `${ testId }-list` }
-                                data-componentid="application"
+                                data-componentid="organization"
                                 onListItemClick={ handleListItemClick }
                             />
                         </ListLayout>
