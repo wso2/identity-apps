@@ -5721,6 +5721,10 @@ export const console: ConsoleNS = {
                         type: "ටයිප් කරන්න"
                     }
                 },
+                homeList: {
+                    description: "පවතින සියලුම සංවිධාන ලැයිස්තුව බලන්න.",
+                    name: "සියලුම සංවිධාන"
+                },
                 list: {
                     actions: {
                         add: "සංවිධානය එකතු කරන්න"
