@@ -49,14 +49,9 @@ import { OrganizationInterface, OrganizationLinkInterface, OrganizationListInter
 
 const ORGANIZATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
-        key: 1,
+        key: 0,
         text: I18n.instance.t("common:name"),
         value: "name"
-    },
-    {
-        key: 2,
-        text: "Parent",
-        value: "parentId"
     }
 ];
 
@@ -241,6 +236,12 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      * @param {OrganizationListInterface} list - List of organizations.
      */
     const handleNextButtonVisibility = (list: OrganizationListInterface): void => {
+        if (!list.links) {
+            setIsOrganizationsNextPageAvailable(false);
+
+            return;
+        }
+
         list.links?.forEach(link => {
             link.rel === "next"
                 ? setIsOrganizationsNextPageAvailable(true)
@@ -255,6 +256,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      * @param {string} query - Search query.
      */
     const handleOrganizationFilter = (query: string): void => {
+        resetPagination();
         setSearchQuery(query);
     };
 
@@ -283,6 +285,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      */
     const handleItemsPerPageDropdownChange = (event: MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
         setListItemLimit(data.value as number);
+        resetPagination();
     };
 
     /**
@@ -304,6 +307,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      */
     const handleSearchQueryClear = (): void => {
         setSearchQuery("");
+        resetPagination();
         setTriggerClearQuery(!triggerClearQuery);
     };
 
@@ -424,11 +428,6 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                             key: 0,
                                             text: t("common:name"),
                                             value: "name"
-                                        },
-                                        {
-                                            key: 1,
-                                            text: "Parent",
-                                            value: "parent"
                                         }
                                     ] }
                                     filterAttributePlaceholder={ t(
