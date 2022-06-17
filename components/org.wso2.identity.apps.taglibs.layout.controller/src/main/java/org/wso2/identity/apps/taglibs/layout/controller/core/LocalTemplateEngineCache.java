@@ -18,6 +18,7 @@
 
 package org.wso2.identity.apps.taglibs.layout.controller.core;
 
+import org.wso2.identity.apps.taglibs.layout.controller.Constant;
 import org.wso2.identity.apps.taglibs.layout.controller.compiler.executors.DefaultExecutor;
 import org.wso2.identity.apps.taglibs.layout.controller.compiler.identifiers.ExecutableIdentifier;
 import org.wso2.identity.apps.taglibs.layout.controller.compiler.parsers.DefaultParser;
@@ -37,9 +38,9 @@ import javax.cache.spi.CachingProvider;
  * Cache implementation of the TemplateEngine interface using local compiler
  */
 public class LocalTemplateEngineCache implements TemplateEngine {
-
+	
     private static final long serialVersionUID = 128582202509525932L;
-    public ExecutableIdentifier compiledObject = null;
+	public ExecutableIdentifier compiledObject = null;
     public DefaultExecutor executor = null;
 
     /**
@@ -66,7 +67,7 @@ public class LocalTemplateEngineCache implements TemplateEngine {
                 compiledObject = parser.compile(testLayoutFile);
                 executor = new DefaultExecutor(data);
             } else {
-                CachingProvider cachingProvider = 
+            	CachingProvider cachingProvider = 
                     Caching.getCachingProvider("org.ehcache.jsr107.EhcacheCachingProvider");
 
                 // Acquire the default cache manager
@@ -74,7 +75,7 @@ public class LocalTemplateEngineCache implements TemplateEngine {
 
                 // Get the cache
                 Cache<String, ExecutableIdentifier> cache =
-                        manager.getCache("layouts", String.class, ExecutableIdentifier.class);
+                        manager.getCache(Constant.LAYOUT_CACHE_NAME, String.class, ExecutableIdentifier.class);
 
                 if (cache == null) {
                     // Define a cache
@@ -84,7 +85,7 @@ public class LocalTemplateEngineCache implements TemplateEngine {
                                     .setTypes(String.class, ExecutableIdentifier.class);
 
                     // Create the cache
-                    cache = manager.createCache("layouts", cacheConfig);
+                    cache = manager.createCache(Constant.LAYOUT_CACHE_NAME, cacheConfig);
                 }
 
                 if (!cache.containsKey(layoutName)) {
