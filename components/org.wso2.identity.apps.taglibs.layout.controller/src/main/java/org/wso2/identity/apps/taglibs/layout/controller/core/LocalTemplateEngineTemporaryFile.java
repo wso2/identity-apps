@@ -38,9 +38,9 @@ import java.util.Map;
  * Temporary file implementation of the TemplateEngine interface using local compiler
  */
 public class LocalTemplateEngineTemporaryFile implements TemplateEngine {
-	
+
     private static final long serialVersionUID = -1616511592819700247L;
-	public ExecutableIdentifier compiledObject = null;
+    public ExecutableIdentifier compiledObject = null;
     public DefaultExecutor executor = null;
 
     /**
@@ -67,17 +67,17 @@ public class LocalTemplateEngineTemporaryFile implements TemplateEngine {
                 compiledObject = parser.compile(testLayoutFile);
                 executor = new DefaultExecutor(data);
             } else {
-            	File file = new File(
-                    new File(
-                        System.getProperty("java.io.tmpdir"), 
-                        Constant.LAYOUT_CACHE_STORE_DIRECTORY_NAME
-                    ), 
-                    layoutName + ".tmp"
+                File file = new File(
+                        new File(
+                                System.getProperty("java.io.tmpdir"),
+                                Constant.LAYOUT_CACHE_STORE_DIRECTORY_NAME
+                        ),
+                        layoutName + ".tmp"
                 );
 
                 try (
                         ObjectInputStream objectReader =
-                                new ObjectInputStream(new FileInputStream(file));
+                                new ObjectInputStream(new FileInputStream(file))
                 ) {
                     compiledObject = (ExecutableIdentifier) objectReader.readObject();
                 } catch (ClassNotFoundException | IOException e1) {
@@ -87,7 +87,7 @@ public class LocalTemplateEngineTemporaryFile implements TemplateEngine {
 
                     try (
                             ObjectOutputStream objectWriter = new
-                                    ObjectOutputStream(new FileOutputStream(file));
+                                    ObjectOutputStream(new FileOutputStream(file))
                     ) {
                         objectWriter.writeObject(compiledObject);
                     } catch (IOException e2) {

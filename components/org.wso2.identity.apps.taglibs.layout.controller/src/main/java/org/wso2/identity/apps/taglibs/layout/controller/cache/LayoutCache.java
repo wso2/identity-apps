@@ -43,39 +43,43 @@ import javax.cache.spi.CachingProvider;
  * Class wrapper to control the JCache + Ehcache
  */
 public class LayoutCache {
-	
-	private static LayoutCache instance;
-	
-	private CachingProvider cachingProvider;
-	private EhcacheCachingProvider ehcacheProvider;
-	private CacheManager cacheManager;
-	private Cache<String, ExecutableIdentifier> cache;
-	
-	/**
+
+    private static volatile LayoutCache instance;
+
+    private final CachingProvider cachingProvider;
+    private final EhcacheCachingProvider ehcacheProvider;
+    private final CacheManager cacheManager;
+    private Cache<String, ExecutableIdentifier> cache;
+
+    /**
      * Initialize the layout cache, Other classes can't initialize this class
      */
-	private LayoutCache() {
-		cachingProvider = Caching.getCachingProvider("org.ehcache.jsr107.EhcacheCachingProvider");
-        
+    private LayoutCache() {
+        cachingProvider =
+                Caching.getCachingProvider("org.ehcache.jsr107.EhcacheCachingProvider");
+
         ehcacheProvider = (EhcacheCachingProvider) cachingProvider;
-        
+
         DefaultConfiguration configuration = new DefaultConfiguration(
-        		ehcacheProvider.getDefaultClassLoader(),
-        		new DefaultPersistenceConfiguration(
-    				new File(System.getProperty("java.io.tmpdir"), Constant.LAYOUT_CACHE_STORE_DIRECTORY_NAME)
-				)
-		);
+                ehcacheProvider.getDefaultClassLoader(),
+                new DefaultPersistenceConfiguration(
+                        new File(
+                                System.getProperty("java.io.tmpdir"),
+                                Constant.LAYOUT_CACHE_STORE_DIRECTORY_NAME
+                        )
+                )
+        );
 
         cacheManager = ehcacheProvider.getCacheManager(ehcacheProvider.getDefaultURI(), configuration);
-        
+
         cache = cacheManager.getCache(
-              Constant.LAYOUT_CACHE_NAME,
-              String.class,
-              ExecutableIdentifier.class
-		);
-        
+                Constant.LAYOUT_CACHE_NAME,
+                String.class,
+                ExecutableIdentifier.class
+        );
+
         if (cache == null) {
-        	cache = cacheManager.createCache("layouts",
+            cache = cacheManager.createCache("layouts",
                     Eh107Configuration.fromEhcacheCacheConfiguration(
                             CacheConfigurationBuilder.newCacheConfigurationBuilder(
                                     String.class,
@@ -89,51 +93,51 @@ public class LayoutCache {
                     )
             );
         }
-	}
-	
-	/**
+    }
+
+    /**
      * Get the instance of the LayoutCache using singleton method
      */
-	public static LayoutCache getInstance() {
-		if (instance == null) {
-			synchronized (LayoutCache.class) {
-				if (instance == null) {
-					instance = new LayoutCache();
-				}
-			}
-		}
-		
-		return instance;
-	}
-	
-	/**
+    public static LayoutCache getInstance() {
+        if (instance == null) {
+            synchronized (LayoutCache.class) {
+                if (instance == null) {
+                    instance = new LayoutCache();
+                }
+            }
+        }
+
+        return instance;
+    }
+
+    /**
      * Get the layout from the layout cache
      *
-     * @param layoutName     Name of the layout
-     * @param layoutFile     Layout file path as a URL object
+     * @param layoutName Name of the layout
+     * @param layoutFile Layout file path as a URL object
      */
-	public ExecutableIdentifier getLayout(String layoutName, URL layoutFile) {
-		ExecutableIdentifier compiledLayout;
-		
-		if (!cache.containsKey(layoutName)) {
+    public ExecutableIdentifier getLayout(String layoutName, URL layoutFile) {
+        ExecutableIdentifier compiledLayout;
+
+        if (!cache.containsKey(layoutName)) {
             Parser parser = new DefaultParser();
             compiledLayout = parser.compile(layoutFile);
             cache.put(layoutName, compiledLayout);
         } else {
             compiledLayout = cache.get(layoutName);
         }
-		
-		return compiledLayout;
-	}
-	
-	/**
+
+        return compiledLayout;
+    }
+
+    /**
      * Close all resources
      */
-	public void close() {
-		cache.close();
-		cacheManager.close();
-		ehcacheProvider.close();
-		cachingProvider.close();
-	}
+    public void close() {
+        cache.close();
+        cacheManager.close();
+        ehcacheProvider.close();
+        cachingProvider.close();
+    }
 
 }
