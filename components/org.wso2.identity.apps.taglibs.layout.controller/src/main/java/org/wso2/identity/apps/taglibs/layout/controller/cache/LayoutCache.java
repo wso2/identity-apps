@@ -33,6 +33,7 @@ import org.wso2.identity.apps.taglibs.layout.controller.compiler.parsers.Parser;
 
 import java.io.File;
 import java.net.URL;
+import java.util.UUID;
 
 import javax.cache.Cache;
 import javax.cache.CacheManager;
@@ -65,7 +66,7 @@ public class LayoutCache {
                 new DefaultPersistenceConfiguration(
                         new File(
                                 System.getProperty("java.io.tmpdir"),
-                                Constant.LAYOUT_CACHE_STORE_DIRECTORY_NAME
+                                Constant.LAYOUT_CACHE_STORE_DIRECTORY_NAME + "-" + UUID.randomUUID().toString()
                         )
                 )
         );
