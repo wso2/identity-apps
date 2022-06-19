@@ -27,8 +27,6 @@ jobs:
       - name: ⬇️ Checkout
         id: checkout
         uses: actions/checkout@v2.3.3
-        with:
-          fetch-depth: 2
 
       - name: 🟢 Setup node
         id: setup-node
