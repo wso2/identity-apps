@@ -25,6 +25,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="includes/localize.jsp" %>
 <%@ include file="includes/init-url.jsp" %>
+<%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
+
+<!-- Branding Preferences -->
+<jsp:directive.include file="extensions/branding-preferences.jsp"/>
 
 <% request.getSession().invalidate(); String queryString=request.getQueryString();
     Map<String, String> idpAuthenticatorMapping = null;
@@ -45,67 +49,68 @@
         }
     }
 %>
-    <html>
-        <head>
-            <!-- header -->
-            <% File headerFile=new File(getServletContext().getRealPath("extensions/header.jsp"));
-                if (headerFile.exists()) {
-            %>
-            <jsp:include page="extensions/header.jsp" />
-            <% } else { %>
-            <jsp:include page="includes/header.jsp" />
-            <% } %>
+<html>
+    <head>
+        <!-- header -->
+        <% File headerFile=new File(getServletContext().getRealPath("extensions/header.jsp"));
+            if (headerFile.exists()) {
+        %>
+        <jsp:include page="extensions/header.jsp" />
+        <% } else { %>
+        <jsp:include page="includes/header.jsp" />
+        <% } %>
 
-            <script src="js/scripts.js"></script>
-            <!--[if lt IE 9]>
-            <script src="js/html5shiv.min.js"></script>
-            <script src="js/respond.min.js"></script>
-            <![endif]-->
+        <script src="js/scripts.js"></script>
+        <!--[if lt IE 9]>
+        <script src="js/html5shiv.min.js"></script>
+        <script src="js/respond.min.js"></script>
+        <![endif]-->
 
-            <script>
-                // Handle form submission preventing double submission.
-                $(document).ready(function () {
-                    $.fn.preventDoubleSubmission = function () {
-                        $(this).on('submit', function (e) {
-                            var $form = $(this);
-                            if ($form.data('submitted') === true) {
-                                // Previously submitted - don't submit again.
-                                e.preventDefault();
-                                console.warn("Prevented a possible double submit event");
-                            } else {
-                                // Mark it so that the next submit can be ignored.
-                                $form.data('submitted', true);
-                            }
-                        });
+        <script>
+            // Handle form submission preventing double submission.
+            $(document).ready(function () {
+                $.fn.preventDoubleSubmission = function () {
+                    $(this).on('submit', function (e) {
+                        var $form = $(this);
+                        if ($form.data('submitted') === true) {
+                            // Previously submitted - don't submit again.
+                            e.preventDefault();
+                            console.warn("Prevented a possible double submit event");
+                        } else {
+                            // Mark it so that the next submit can be ignored.
+                            $form.data('submitted', true);
+                        }
+                    });
 
-                        return this;
-                    };
-                    $('#backupCodeForm').preventDoubleSubmission();
-                });
-            </script>
-                                                            
-        </head>
-        <body class="login-portal layout backup-code-portal-layout">
-            <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
-                <jsp:include page="extensions/timeout.jsp" />
-            <% } else { %>
+                    return this;
+                };
+                $('#backupCodeForm').preventDoubleSubmission();
+            });
+        </script>
+                                                        
+    </head>
+    <body class="login-portal layout backup-code-portal-layout">
+        <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
+            <jsp:include page="extensions/timeout.jsp" />
+        <% } else { %>
             <jsp:include page="util/timeout.jsp" />
-            <% } %>
+        <% } %>
 
-            <main class="center-segment">
-                <div class="ui container medium center aligned middle aligned">
-                    <!-- product-title -->
-                    <%
-                        File productTitleFile = new File(getServletContext()
-                                                .getRealPath("extensions/product-title.jsp"));
-                        if (productTitleFile.exists()) {
-                    %>
+        <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+            <layout:component name="ProductHeader" >
+                <!-- product-title -->
+                <%
+                    File productTitleFile = new File(getServletContext()
+                                            .getRealPath("extensions/product-title.jsp"));
+                    if (productTitleFile.exists()) {
+                %>
                     <jsp:include page="extensions/product-title.jsp" />
-                    <% } else { %>
+                <% } else { %>
                     <jsp:include page="includes/product-title.jsp" />
-                    <% } %>
-
-                    <div class="ui segment">
+                <% } %>
+            </layout:component>
+            <layout:component name="MainSection" >
+                <div class="ui segment">
                     <!-- page content -->
                     <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "auth.backup.code")%></h2>
                     <div class="uii divider hidden"></div>
@@ -137,29 +142,30 @@
                             <a class="ui button secondary" id="goBackLink" href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "choose.other.option")%>
                             </a>
-                        <% } %>
-                    </div>
+                    <%  } %>
                 </div>
-            </main>
+            </layout:component>
+            <layout:component name="ProductFooter" >
+                <!-- product-footer -->
+                <%
+                    File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                    if (productFooterFile.exists()) {
+                %>
+                    <jsp:include page="extensions/product-footer.jsp" />
+                <% } else { %>
+                    <jsp:include page="includes/product-footer.jsp" />
+                <% } %>
+            </layout:component>
+        </layout:main>
 
-            <!-- product-footer -->
-            <%
-                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-                if (productFooterFile.exists()) {
-            %>
-            <jsp:include page="extensions/product-footer.jsp" />
-            <% } else { %>
-            <jsp:include page="includes/product-footer.jsp" />
-            <% } %>
-
-            <!-- footer -->
-            <%
-                File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-                if (footerFile.exists()) {
-            %>
-            <jsp:include page="extensions/footer.jsp" />
-            <% } else { %>
-            <jsp:include page="includes/footer.jsp" />
-            <% } %>
-        </body>
-    </html>
+        <!-- footer -->
+        <%
+            File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+            if (footerFile.exists()) {
+        %>
+        <jsp:include page="extensions/footer.jsp" />
+        <% } else { %>
+        <jsp:include page="includes/footer.jsp" />
+        <% } %>
+    </body>
+</html>

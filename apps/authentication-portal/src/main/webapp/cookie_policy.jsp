@@ -18,8 +18,17 @@
 
 <%@ page import="java.io.File" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
+
+<!-- Branding Preferences -->
+<jsp:directive.include file="extensions/branding-preferences.jsp"/>
 
 <%@ include file="includes/localize.jsp" %>
+
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("isPolicyPage", true);
+%>
 
 <!doctype html>
 <html>
@@ -35,47 +44,41 @@
     <% } %>
 </head>
 <body class="login-portal layout authentication-portal-layout policy-page-layout cookie-policy-page-layout">
-    <main class="policy-page">
-        <div id="app-header" class="ui borderless top fixed app-header menu">
-            <div class="ui container">
-                <div class="header item product-logo">
-                    <!-- product-title -->
-                    <%
-                        File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
-                        if (productTitleFile.exists()) {
-                    %>
-                        <jsp:include page="extensions/product-title.jsp"/>
-                    <% } else { %>
-                        <jsp:include page="includes/product-title.jsp"/>
-                    <% } %>
-                </div>
-            </div>
-        </div>
-
-        <div class="app-content policy-page-content" style="padding-top: 62px;">
-            <div class="ui container">
-                <!-- page content -->
-                <%
-                File cookiePolicyFile = new File(getServletContext().getRealPath("extensions/cookie-policy-content.jsp"));
-                if (cookiePolicyFile.exists()) {
-                %>
-                    <jsp:include page="extensions/cookie-policy-content.jsp"/>
-                <% } else { %>
-                    <jsp:include page="includes/cookie-policy-content.jsp"/>
-                <% } %>
-            </div>
-        </div>
-    </main>
-
-    <!-- product-footer -->
-    <%
-        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-        if (productFooterFile.exists()) {
-    %>
-        <jsp:include page="extensions/product-footer.jsp"/>
-    <% } else { %>
-        <jsp:include page="includes/product-footer.jsp"/>
-    <% } %>
+    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+        <layout:component name="ProductHeader" >
+            <!-- product-title -->
+            <%
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+                <jsp:include page="includes/product-title.jsp"/>
+            <% } %>
+        </layout:component>
+        <layout:component name="MainSection" >
+            <!-- page content -->
+            <%
+            File cookiePolicyFile = new File(getServletContext().getRealPath("extensions/cookie-policy-content.jsp"));
+            if (cookiePolicyFile.exists()) {
+            %>
+                <jsp:include page="extensions/cookie-policy-content.jsp"/>
+            <% } else { %>
+                <jsp:include page="includes/cookie-policy-content.jsp"/>
+            <% } %>
+        </layout:component>
+        <layout:component name="ProductFooter" >
+            <!-- product-footer -->
+            <%
+                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                if (productFooterFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-footer.jsp"/>
+            <% } else { %>
+                <jsp:include page="includes/product-footer.jsp"/>
+            <% } %>
+        </layout:component>
+    </layout:main>
 
     <!-- footer -->
     <%
