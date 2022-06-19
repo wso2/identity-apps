@@ -2,6 +2,11 @@
     "accountApp": {
         "path": "/myaccount/overview"
     },
+    "analytics": {
+        "metrics": {
+            "dependencyTrackingEnabled": false
+        }
+    },
     "appBaseName": "console",
     "appBaseNameForHistoryAPI": "/",
     "clientID": "CONSOLE",
