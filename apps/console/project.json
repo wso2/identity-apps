@@ -110,7 +110,21 @@
                     "pnpm nx run console:build-base",
                     "pnpm nx run console:build-windup"
                 ],
-                "cwd": ".",
+                "cwd": "apps/console",
+                "parallel": false
+            }
+        },
+
+        "clean": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    {
+                        "command": "pnpm clean",
+                        "description": "Cleaning Console"
+                    }
+                ],
+                "cwd": "apps/console",
                 "parallel": false
             }
         },
@@ -155,7 +169,7 @@
                     "pnpm nx run console:serve-prepare",
                     "pnpm nx run console:serve-base"
                 ],
-                "cwd": ".",
+                "cwd": "apps/console",
                 "parallel": false
             }
         },

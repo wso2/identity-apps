@@ -551,10 +551,9 @@
                         </goals>
                         <phase>initialize</phase>
                         <configuration>
-                            <executable>npm</executable>
+                            <executable>pnpm</executable>
                             <arguments>
-                                <argument>run</argument>
-                                <argument>bootstrap</argument>
+                                <argument>install</argument>
                             </arguments>
                             <skip>${bootstrap.exec.skip}</skip>
                             <workingDirectory>${basedir}</workingDirectory>
@@ -567,9 +566,8 @@
                         </goals>
                         <phase>process-resources</phase>
                         <configuration>
-                            <executable>npm</executable>
+                            <executable>pnpm</executable>
                             <arguments>
-                                <argument>run</argument>
                                 <argument>lint:ci</argument>
                             </arguments>
                             <skip>${lint.exec.skip}</skip>
@@ -583,9 +581,8 @@
                         </goals>
                         <phase>compile</phase>
                         <configuration>
-                            <executable>npm</executable>
+                            <executable>pnpm</executable>
                             <arguments>
-                                <argument>run</argument>
                                 <argument>build</argument>
                             </arguments>
                             <workingDirectory>${basedir}</workingDirectory>

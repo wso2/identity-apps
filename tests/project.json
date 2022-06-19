@@ -12,7 +12,7 @@
             ],
             "options": {
                 "tsconfig": "tests/tsconfig.json",
-                "command": "npm run build",
+                "command": "pnpm build",
                 "cwd": "tests"
             }
         }

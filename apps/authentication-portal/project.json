@@ -1,4 +1,32 @@
 {
     "root": "apps/authentication-portal",
-    "projectType": "application"
+    "projectType": "application",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    {
+                        "command": "pnpm build",
+                        "description": "Building Authentication Portal"
+                    }
+                ],
+                "cwd": "apps/authentication-portal",
+                "parallel": false
+            }
+        },
+        "clean": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    {
+                        "command": "pnpm clean",
+                        "description": "Cleaning Authentication Portal"
+                    }
+                ],
+                "cwd": "apps/authentication-portal",
+                "parallel": false
+            }
+        }
+    }
 }

@@ -13,7 +13,7 @@
             "options": {
                 "outputPath": "modules/i18n/dist",
                 "tsconfig": "modules/i18n/tsconfig.json",
-                "command": "npm run build",
+                "command": "pnpm build",
                 "cwd": "modules/i18n"
             }
         }

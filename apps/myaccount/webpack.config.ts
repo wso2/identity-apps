@@ -456,7 +456,15 @@ const getThemeConfigs = () => {
 
 const getI18nConfigs = () => {
     const I18N_DIR = path.resolve(__dirname, "src", "extensions", "i18n", "tmp");
-    const metaFiles = fs.readdirSync(I18N_DIR);
+
+    let metaFiles = null;
+
+    try {
+        metaFiles = fs.readdirSync(I18N_DIR);
+    } catch(e) {
+        // Log Infastructure Error.
+    }
+
     const metaFile = metaFiles ? metaFiles.filter(file => file.startsWith("meta"))[ 0 ] : null;
 
     return {

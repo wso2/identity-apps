@@ -1,4 +1,32 @@
 {
     "root": "apps/sms-otp-authentication-portal",
-    "projectType": "application"
+    "projectType": "application",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    {
+                        "command": "pnpm build",
+                        "description": "Building SMS OTP Authentication Portal"
+                    }
+                ],
+                "cwd": "apps/sms-otp-authentication-portal",
+                "parallel": false
+            }
+        },
+        "clean": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    {
+                        "command": "pnpm clean",
+                        "description": "Cleaning SMS OTP Authentication Portal"
+                    }
+                ],
+                "cwd": "apps/sms-otp-authentication-portal",
+                "parallel": false
+            }
+        }
+    }
 }

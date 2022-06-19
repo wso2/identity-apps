@@ -91,7 +91,21 @@
                     "pnpm nx run myaccount:build-prepare",
                     "pnpm nx run myaccount:build-base"
                 ],
-                "cwd": ".",
+                "cwd": "apps/myaccount",
+                "parallel": false
+            }
+        },
+
+        "clean": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    {
+                        "command": "pnpm clean",
+                        "description": "Cleaning My Account"
+                    }
+                ],
+                "cwd": "apps/myaccount",
                 "parallel": false
             }
         },
@@ -136,7 +150,7 @@
                     "pnpm nx run myaccount:serve-prepare",
                     "pnpm nx run myaccount:serve-base"
                 ],
-                "cwd": ".",
+                "cwd": "apps/myaccount",
                 "parallel": false
             }
         },
