@@ -20,6 +20,9 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="java.io.File" %>
 
+<!-- Branding Preferences -->
+<jsp:directive.include file="../extensions/branding-preferences.jsp"/>
+
 <!-- Extract the name of the stylesheet-->
 <%
     String themeName = "default";
@@ -41,6 +44,14 @@
 
 <link rel="icon" href="libs/themes/default/assets/images/branding/favicon.ico" type="image/x-icon"/>
 <link href="libs/themes/default/<%= themeFileName %>" rel="stylesheet">
+
+<!-- Layout specific style sheet -->
+<%
+    String styleFilePath = "extensions/layouts/" + layout + "/styles.css";
+    if (config.getServletContext().getResource(styleFilePath) != null) {
+%>
+    <link rel="stylesheet" href="<%= styleFilePath %>">
+<% } %>
 
 <title><%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%></title>
 

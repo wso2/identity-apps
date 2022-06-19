@@ -16,6 +16,12 @@
   ~ under the License.
 --%>
 
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.HashMap" %>
+
 <%
     String supportEmail = "";
+    String layout = "default";
+    String layoutFileRelativePath = "extensions/layouts/" + layout + "/body.html";
+    Map<String, Object> layoutData = new HashMap<String, Object>();
 %>
