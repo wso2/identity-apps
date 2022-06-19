@@ -15,3 +15,31 @@
  * specific language governing permissions and limitations
  * under the License.
  -->
+
+{{^isPolicyPage}}
+    <main class="center-segment">
+        <div class="ui container medium center aligned middle aligned">
+            {{{ProductHeader}}}
+            {{{MainSection}}}
+        </div>
+    </main>
+    {{{ProductFooter}}}
+{{/isPolicyPage}}
+
+{{#isPolicyPage}}
+    <main class="policy-page">
+        <div id="app-header" class="ui borderless top fixed app-header menu">
+            <div class="ui container">
+                <div class="header item product-logo">
+                    {{{ProductHeader}}}
+                </div>
+            </div>
+        </div>
+        <div class="app-content policy-page-content" style="padding-top: 62px;">
+            <div class="ui container">
+                {{{MainSection}}}
+            </div>
+        </div>
+    </main>
+    {{{ProductFooter}}}
+{{/isPolicyPage}}
