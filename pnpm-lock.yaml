@@ -106,7 +106,7 @@ importers:
       lodash: ^4.17.21
       lodash-es: ^4.17.21
       mini-css-extract-plugin: ^0.4.3
-      moment: 2.24.0
+      moment: 2.29.2
       node-forge: ^0.10.0
       nx: ^14.1.5
       nyc: ^15.1.0
@@ -189,7 +189,7 @@ importers:
       jshint: 2.13.4
       jsrsasign: 10.5.24
       lodash-es: 4.17.21
-      moment: 2.24.0
+      moment: 2.29.2
       node-forge: 0.10.0
       rc-tree: 4.2.2_wcqkhtmu7mswc6yz4uyexck3ty
       react: 16.14.0
@@ -738,7 +738,7 @@ importers:
       jest: ^26.4.2
       js-yaml: 3.13.1
       lodash-es: ^4.17.21
-      moment: 2.24.0
+      moment: 2.29.2
       node-forge: ^0.10.0
       react-notification-system: ^0.3.0
       rimraf: ^3.0.2
@@ -758,7 +758,7 @@ importers:
       jest: 26.6.3_ts-node@10.8.1
       js-yaml: 3.13.1
       lodash-es: 4.17.21
-      moment: 2.24.0
+      moment: 2.29.2
       node-forge: 0.10.0
       react-notification-system: 0.3.0
       ts-jest: 26.5.6_rnfpnlbz3wqspag7uftsmccrvy
@@ -13946,7 +13946,7 @@ packages:
       mississippi: 3.0.0
       mkdirp: 0.5.6
       move-concurrently: 1.0.1
-      promise-inflight: 1.0.1_bluebird@3.7.2
+      promise-inflight: 1.0.1
       rimraf: 2.7.1
       ssri: 6.0.2
       unique-filename: 1.1.1
@@ -17922,17 +17922,6 @@ packages:
       debug:
         optional: true
 
-  /follow-redirects/1.15.1_debug@4.3.4:
-    resolution: {integrity: sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dependencies:
-      debug: 4.3.4_supports-color@6.1.0
-
   /follow-redirects/1.5.10:
     resolution: {integrity: sha512-0V5l4Cizzvqt5D44aTXbFZz+FtyXV1vrDN6qrelxtfYQKW0KO0W2T/hkE8xvGa/540LkZlkaUjO4ailYTFtHVQ==}
     engines: {node: '>=4.0'}
@@ -19348,7 +19337,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.15.1_debug@4.3.4
+      follow-redirects: 1.15.1
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -23727,6 +23716,11 @@ packages:
 
   /moment/2.24.0:
     resolution: {integrity: sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==}
+    dev: false
+
+  /moment/2.29.2:
+    resolution: {integrity: sha512-UgzG4rvxYpN15jgCmVJwac49h9ly9NurikMWGPdVxm8GZD6XjkKPxDTjQQ43gtGgnV3X0cAyWDdP2Wexoquifg==}
+    dev: false
 
   /moment/2.29.3:
     resolution: {integrity: sha512-c6YRvhEo//6T2Jz/vVtYzqBzwvPT95JBQ+smCytzf7c50oMZRsR/a4w88aD34I+/QVSfnoAnSBFPJHItlOMJVw==}
@@ -25935,16 +25929,6 @@ packages:
     peerDependenciesMeta:
       bluebird:
         optional: true
-
-  /promise-inflight/1.0.1_bluebird@3.7.2:
-    resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
-    peerDependencies:
-      bluebird: '*'
-    peerDependenciesMeta:
-      bluebird:
-        optional: true
-    dependencies:
-      bluebird: 3.7.2
 
   /promise-polyfill/6.1.0:
     resolution: {integrity: sha512-g0LWaH0gFsxovsU7R5LrrhHhWAWiHRnh1GPrhXnPgYsDkIqjRYUYSZEsej/wtleDrz5xVSIDbeKfidztp2XHFQ==}
@@ -32352,7 +32336,7 @@ packages:
       filesize: 3.6.1
       lodash: 4.17.21
       mkdirp: 0.5.6
-      moment: 2.24.0
+      moment: 2.29.3
       write-file-atomic: 2.4.3
     transitivePeerDependencies:
       - supports-color
