@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/webapps",
-    "version": "1.2.985",
+    "version": "1.2.995",
     "description": "WSO2 Identity Server Web Applications",
     "keywords": [
         "WSO2",
@@ -72,7 +72,7 @@
         "jshint": "^2.13.4",
         "jsrsasign": "^10.0.5",
         "lodash-es": "^4.17.21",
-        "moment": "2.24.0",
+        "moment": "2.29.2",
         "node-forge": "^0.10.0",
         "rc-tree": "^4.0.0-beta.2",
         "react": "^16.9.0",

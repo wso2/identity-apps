@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Hint, MessageWithIcon } from "@wso2is/react-components";
+import { Hint, Message } from "@wso2is/react-components";
 import React, { ReactElement } from "react";
 import { Field as FinalFormField } from "react-final-form";
 import { TextAreaAdapter } from "./adapters";
@@ -63,7 +63,7 @@ export const FieldTextarea = (props: FieldTextareaPropsInterface): ReactElement 
         switch (props.message.type) {
             case "info":
                 return (
-                    <MessageWithIcon
+                    <Message
                         type={ props.message.type }
                         content={ props.message.content }
                         header={ props.message.header }
@@ -71,7 +71,7 @@ export const FieldTextarea = (props: FieldTextareaPropsInterface): ReactElement 
                 );
             case "warning":
                 return (
-                    <MessageWithIcon
+                    <Message
                         type={ props.message.type }
                         content={ props.message.content }
                         header={ props.message.header }
@@ -79,7 +79,7 @@ export const FieldTextarea = (props: FieldTextareaPropsInterface): ReactElement 
                 );
             case "error":
                 return (
-                    <MessageWithIcon
+                    <Message
                         type={ props.message.type }
                         content={ props.message.content }
                         header={ props.message.header }

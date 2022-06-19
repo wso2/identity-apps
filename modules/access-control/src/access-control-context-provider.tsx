@@ -178,6 +178,32 @@ export const AccessControlContext: FunctionComponent<PropsWithChildren<AccessCon
                     featureConfig?.secretsManagement,
                     featureConfig?.secretsManagement?.scopes?.delete,
                     allowedScopes
+                ),
+
+                [ AccessControlConstants.ORGANIZATION ]: hasRequiredScopes(
+                    featureConfig?.organizations,
+                    featureConfig?.organizations?.scopes?.feature,
+                    allowedScopes
+                ),
+                [ AccessControlConstants.ORGANIZATION_READ ]: hasRequiredScopes(
+                    featureConfig?.organizations,
+                    featureConfig?.organizations?.scopes?.read,
+                    allowedScopes
+                ),
+                [ AccessControlConstants.ORGANIZATION_EDIT ]: hasRequiredScopes(
+                    featureConfig?.organizations,
+                    featureConfig?.organizations?.scopes?.update,
+                    allowedScopes
+                ),
+                [ AccessControlConstants.ORGANIZATION_DELETE ]: hasRequiredScopes(
+                    featureConfig?.organizations,
+                    featureConfig?.organizations?.scopes?.delete,
+                    allowedScopes
+                ),
+                [ AccessControlConstants.ORGANIZATION_WRITE ]: hasRequiredScopes(
+                    featureConfig?.organizations,
+                    featureConfig?.organizations?.scopes?.create,
+                    allowedScopes
                 )
             }
         });
