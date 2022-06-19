@@ -76,7 +76,7 @@ jobs:
 
       - name: 👷 Build Re-usable Modules
         id: build-reusable-modules
-        run:  pnpm build:modules
+        run: pnpm build:modules
 
       - name: ☄️ Check Type Errors
         run: pnpm typecheck
