@@ -21,7 +21,7 @@ import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { Divider } from "semantic-ui-react";
 import { PageHeader, PageHeaderPropsInterface } from "../components";
-import {Helmet} from "react-helmet"
+import { Helmet } from "react-helmet"
 
 /**
  * Page layout component Prop types.
@@ -93,22 +93,21 @@ export const PageLayout: FunctionComponent<PropsWithChildren<PageLayoutPropsInte
 
     return (
         <>
-        <Helmet>
-            <meta charSet="utf-8" />
-            <title>{pageTitle}</title>
-        </Helmet>
-        <div className={ layoutClasses } data-testid={ testId } data-componentid={ componentId }>
-            <div className={ layoutContentClasses }>
-                <PageHeader
-                    action={ action }
-                    data-testid={ `${ testId }-page-header` }
-                    data-componentid={ `${ componentId }-page-header` }
-                    { ...rest }
-                />
-                { contentTopMargin && <Divider hidden/> }
-                { children }
+            <Helmet>
+                <title>{ pageTitle }</title>
+            </Helmet>
+            <div className={layoutClasses} data-testid={testId} data-componentid={componentId}>
+                <div className={layoutContentClasses}>
+                    <PageHeader
+                        action={action}
+                        data-testid={`${testId}-page-header`}
+                        data-componentid={`${componentId}-page-header`}
+                        {...rest}
+                    />
+                    {contentTopMargin && <Divider hidden />}
+                    {children}
+                </div>
             </div>
-        </div>
         </>
     );
 };
