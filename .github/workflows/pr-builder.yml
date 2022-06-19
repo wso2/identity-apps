@@ -41,7 +41,7 @@ jobs:
           run_install: true
 
       - name: ⏳ Lint
-        run: pnpm run lint:ci
+        run: pnpm lint:ci
 
       - name: 🔆 Cache pnpm modules
         uses: actions/cache@v2
@@ -74,8 +74,12 @@ jobs:
           version: 6.0.2
           run_install: true
 
+      - name: 👷 Build Re-usable Modules
+        id: build-reusable-modules
+        run:  pnpm build:modules
+
       - name: ☄️ Check Type Errors
-        run: pnpm run typecheck
+        run: pnpm typecheck
 
       - name: 🔆 Cache pnpm modules
         uses: actions/cache@v2
@@ -111,18 +115,18 @@ jobs:
 
       - name: 👷 Build Re-usable Modules
         id: build-reusable-modules
-        run:  pnpm run build:modules
+        run:  pnpm build:modules
 
       - name: 🃏 Run Jest & Collect Coverage
         id: run-jest-test-and-coverage
-        run: pnpm run test:unit:coverage
+        run: pnpm test:unit:coverage
 
       - name: 🤖 Aggregate Test Coverage
         id: aggregate-coverage-reports
         run: |
-          pnpm run test:unit:coverage:aggregate
-          pnpm run nyc:text-summary-report
-          pnpm run nyc:text-report
+          pnpm test:unit:coverage:aggregate
+          pnpm nyc:text-summary-report
+          pnpm nyc:text-report
 
       - name: 🔆 Cache pnpm modules
         uses: actions/cache@v2
