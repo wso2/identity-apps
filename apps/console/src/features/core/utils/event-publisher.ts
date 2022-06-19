@@ -96,7 +96,7 @@ export class EventPublisher {
     }
 
     public record(
-        pathname: any, startTime: any, duration: any, responseCode: any, isSuccess: any,
+        pathname: string, startTimeInMs: number, duration: number, responseCode: number, isSuccess: boolean,
         customProperties?: {
             [key: string]: string | Record<string, unknown> |
             number
@@ -109,14 +109,14 @@ export class EventPublisher {
         if (customProperties) {
             analyticsConfig.EventPublisherExtension.record &&
                 analyticsConfig.EventPublisherExtension.record(
-                    pathname, startTime, duration, responseCode, isSuccess,
+                    pathname, startTimeInMs, duration, responseCode, isSuccess,
                     customProperties
                 );
         }
 
         analyticsConfig.EventPublisherExtension.record &&
             analyticsConfig.EventPublisherExtension.record(
-                pathname, startTime, duration, responseCode, isSuccess,
+                pathname, startTimeInMs, duration, responseCode, isSuccess,
             );
 
         return;
