@@ -18,8 +18,13 @@
 
 <%@ page import="java.io.File" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
+
+<!-- Branding Preferences -->
+<jsp:directive.include file="../extensions/branding-preferences.jsp"/>
 
 <%@ include file="../includes/localize.jsp" %>
+<jsp:directive.include file="../includes/init-url.jsp"/>
 
 <!doctype html>
 <html>
@@ -35,9 +40,8 @@
     <% } %>
 </head>
 <body class="login-portal layout authentication-portal-layout">
-    <main class="center-segment">
-        <div class="ui container medium center aligned middle aligned">
-
+    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+        <layout:component name="ProductHeader" >
             <!-- product-title -->
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -47,24 +51,26 @@
             <% } else { %>
                 <jsp:include page="../includes/product-title.jsp"/>
             <% } %>
-
+        </layout:component>
+        <layout:component name="MainSection" >
             <div class="ui segment">
                 <div class="ui visible negative message">
                    Error 403 - Forbidden
                 </div>
             </div>
-        </div>
-    </main>
-
-    <!-- product-footer -->
-    <%
-        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-        if (productFooterFile.exists()) {
-    %>
-        <jsp:include page="../extensions/product-footer.jsp"/>
-    <% } else { %>
-        <jsp:include page="../includes/product-footer.jsp"/>
-    <% } %>
+        </layout:component>
+        <layout:component name="ProductFooter" >
+            <!-- product-footer -->
+            <%
+                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                if (productFooterFile.exists()) {
+            %>
+                <jsp:include page="../extensions/product-footer.jsp"/>
+            <% } else { %>
+                <jsp:include page="../includes/product-footer.jsp"/>
+            <% } %>
+        </layout:component>
+    </layout:main>
 
     <!-- footer -->
     <%

@@ -34,6 +34,10 @@
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
+<%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
+
+<!-- Branding Preferences -->
+<jsp:directive.include file="extensions/branding-preferences.jsp"/>
 
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
@@ -149,8 +153,8 @@
     %>
 </head>
 <body class="login-portal layout recovery-layout">
-    <main class="center-segment">
-        <div class="ui container large center aligned middle aligned">
+    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+        <layout:component name="ProductHeader" >
             <!-- product-title -->
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -160,6 +164,8 @@
             <% } else { %>
             <jsp:include page="includes/product-title.jsp"/>
             <% } %>
+        </layout:component>
+        <layout:component name="MainSection" >
             <div class="ui segment">
                 <h2><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Recover.password")%></h2>
                 <% if (error) { %>
@@ -295,70 +301,72 @@
                     </form>
                 </div>
             </div>
-        </div>
-    </main>
-    <!-- /content/body -->
-
-<!-- product-footer -->
-<%
-    File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-    if (productFooterFile.exists()) {
-%>
-<jsp:include page="extensions/product-footer.jsp"/>
-<% } else { %>
-<jsp:include page="includes/product-footer.jsp"/>
-<% } %>
-<!-- footer -->
-<%
-    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-    if (footerFile.exists()) {
-%>
-<jsp:include page="extensions/footer.jsp"/>
-<% } else { %>
-<jsp:include page="includes/footer.jsp"/>
-<% } %>
-
-<script type="text/javascript">
-    function goBack() {
-        window.history.back();
-    }
-
-    $(document).ready(function () {
-
-        $("#recoverDetailsForm").submit(function (e) {
-            var errorMessage = $("#error-msg");
-            errorMessage.hide();
-
-            var claimFields = document.querySelectorAll(".claims");
-            var filled = 0;
-            for(var i = 0;i < claimFields.length;i++){
-                var input = claimFields[i];
-                if(input.value.length > 0)
-                {
-                    filled++;
-                }
-            }
-            if(filled < 1) {
-                errorMessage.text("Please fill at least one user details field.");
-                errorMessage.show();
-                $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
-                return false;
-            }
-
-            <% if (reCaptchaEnabled) { %>
-            var reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
-
-            if (reCaptchaResponse.trim() == '') {
-                errorMessage.text("Please select reCaptcha.");
-                errorMessage.show();
-                $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
-                return false;
-            }
+        </layout:component>
+        <layout:component name="ProductFooter" >
+            <!-- product-footer -->
+            <%
+                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                if (productFooterFile.exists()) {
+            %>
+            <jsp:include page="extensions/product-footer.jsp"/>
+            <% } else { %>
+            <jsp:include page="includes/product-footer.jsp"/>
             <% } %>
+        </layout:component>
+    </layout:main>
 
-            return true;
+
+    <!-- footer -->
+    <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+    %>
+    <jsp:include page="extensions/footer.jsp"/>
+    <% } else { %>
+    <jsp:include page="includes/footer.jsp"/>
+    <% } %>
+
+    <script type="text/javascript">
+        function goBack() {
+            window.history.back();
+        }
+
+        $(document).ready(function () {
+
+            $("#recoverDetailsForm").submit(function (e) {
+                var errorMessage = $("#error-msg");
+                errorMessage.hide();
+
+                var claimFields = document.querySelectorAll(".claims");
+                var filled = 0;
+                for(var i = 0;i < claimFields.length;i++){
+                    var input = claimFields[i];
+                    if(input.value.length > 0)
+                    {
+                        filled++;
+                    }
+                }
+                if(filled < 1) {
+                    errorMessage.text("Please fill at least one user details field.");
+                    errorMessage.show();
+                    $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
+                    return false;
+                }
+
+                <% if (reCaptchaEnabled) { %>
+                var reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
+
+                if (reCaptchaResponse.trim() == '') {
+                    errorMessage.text("Please select reCaptcha.");
+                    errorMessage.show();
+                    $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
+                    return false;
+                }
+                <% } %>
+
+                return true;
+            });
         });
-    });
-</script>
+    </script>
 </body>
 </html>
