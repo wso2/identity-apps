@@ -206,6 +206,8 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     const updateRoleName = (values: Map<string, FormValue>): void => {
         const newRoleName: string = values?.get("roleName")?.toString();
 
+        console.log(values);
+
         const roleData: PatchRoleDataInterface = {
             Operations: [ {
                 "op": "replace",

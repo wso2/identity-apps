@@ -163,19 +163,11 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
      * @param {string} organizationId - Organization id.
      */
     const handleOrganizationEdit = (organizationId: string): void => {
-        if (isSetStrongerAuth) {
-            history.push({
-                pathname: AppConstants.getPaths()
-                    .get("ORGANIZATION_UPDATE")
-                    .replace(":id", organizationId)
-            });
-        } else {
-            history.push({
-                pathname: AppConstants.getPaths()
-                    .get("ORGANIZATION_UPDATE")
-                    .replace(":id", organizationId)
-            });
-        }
+        history.push({
+            pathname: AppConstants.getPaths()
+                .get("ORGANIZATION_UPDATE")
+                .replace(":id", organizationId)
+        });
     };
 
     /**
