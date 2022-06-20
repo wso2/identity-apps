@@ -17,7 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Hint, MessageWithIcon } from "@wso2is/react-components";
+import { Hint, Message } from "@wso2is/react-components";
 import React, { Fragment, FunctionComponent, ReactElement } from "react";
 import { Field as FinalFormField } from "react-final-form";
 import { RadioAdapter } from "./adapters";
@@ -72,7 +72,7 @@ export const FieldRadio: FunctionComponent<FieldRadioPropsInterface> = (
         switch (type) {
             case "info":
                 return (
-                    <MessageWithIcon
+                    <Message
                         type={ type }
                         content={ content }
                         header={ header }
@@ -80,7 +80,7 @@ export const FieldRadio: FunctionComponent<FieldRadioPropsInterface> = (
                 );
             case "warning":
                 return (
-                    <MessageWithIcon
+                    <Message
                         type={ type }
                         content={ content }
                         header={ header }
@@ -88,7 +88,7 @@ export const FieldRadio: FunctionComponent<FieldRadioPropsInterface> = (
                 );
             case "error":
                 return (
-                    <MessageWithIcon
+                    <Message
                         type={ type }
                         content={ content }
                         header={ header }

@@ -53,6 +53,10 @@ export interface PageLayoutPropsInterface extends PageHeaderPropsInterface, Test
      * Flag to determine whether max width should be added to page header.
      */
     pageHeaderMaxWidth?: boolean;
+    /**
+     * This injects teh passed component above teh page header.
+     */
+    componentAbovePageHeader?: ReactElement;
 }
 
 /**
@@ -75,6 +79,7 @@ export const PageLayout: FunctionComponent<PropsWithChildren<PageLayoutPropsInte
         [ "data-testid" ]: testId,
         padded,
         pageTitle,
+        componentAbovePageHeader,
         ...rest
     } = props;
 
@@ -98,6 +103,7 @@ export const PageLayout: FunctionComponent<PropsWithChildren<PageLayoutPropsInte
             </Helmet>
             <div className={layoutClasses} data-testid={testId} data-componentid={componentId}>
                 <div className={layoutContentClasses}>
+                    { componentAbovePageHeader && componentAbovePageHeader }
                     <PageHeader
                         action={action}
                         data-testid={`${testId}-page-header`}

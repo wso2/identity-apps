@@ -19,19 +19,22 @@
 import { DocumentationLinksExtensionInterface } from "./models";
 
 export const getDocumentationLinksExtension = () : DocumentationLinksExtensionInterface => {
+    const documentationBaseUrl: string = "https://is.docs.wso2.com/en/6.0.0";
+
     return {
         develop: {
             applications: {
                 editApplication: {
                     signInMethod: {
-                        fido: "#"
+                        fido: `${documentationBaseUrl}/learn/multi-factor-authentication-using-fido/`
                     }
                 }
             },
             connections: {
                 edit: {
                     advancedSettings: {
-                        jit: "#"
+                        jit: `${documentationBaseUrl
+                        }/learn/configuring-just-in-time-provisioning-for-an-identity-provider/`
                     }
                 }
             }

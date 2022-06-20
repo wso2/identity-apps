@@ -17,9 +17,9 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Heading } from "@wso2is/react-components";
+import { Heading, Message } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Divider, Message } from "semantic-ui-react";
+import { Divider } from "semantic-ui-react";
 import { ApplicationManagementConstants } from "../../../constants";
 import {
     ApplicationTemplateListItemInterface,
@@ -89,12 +89,17 @@ export const GenericMinimalWizardFormHelp: FunctionComponent<GenericMinimalWizar
                                         the
                                         application.
                                     </p>
-                                    <Message info>
-                                        <a href="#" target="_blank">
-                                            Click here
-                                        </a>{ " " }
-                                        to learn more about supported protocols for agent-based single sign-on.
-                                    </Message>
+                                    <Message
+                                        type="info"
+                                        content={
+                                            <>
+                                                <a href="#" target="_blank">
+                                                    Click here
+                                                </a>{ " " }
+                                                to learn more about supported protocols for agent-based single sign-on.
+                                            </>
+                                        }
+                                    />
                                 </>
                             )
                         }

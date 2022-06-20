@@ -1516,14 +1516,14 @@ export const console: ConsoleNS = {
                                     },
                                     implicit: {
                                         hint: "L'utilisation de l'octroi implicite avec des applications publiques " +
-                                            "n'est pas recommandée. {{productName}} adhérer aux meilleures " + 
+                                            "n'est pas recommandée. {{productName}} adhérer aux meilleures " +
                                             "pratiques desécurité et ne pas mettre en œuvre l'octroi implicite",
                                         label: "{{grantType}} (non recommandé)"
                                     },
                                     password: {
                                         hint: "L'utilisation de l'octroi de mot de passe avec des applications " +
-                                            "publiques n'est pas recommandée. {{productName}} respectez les " + 
-                                            "meilleures pratiques de sécurité et n'implémentez pas l'octroi " + 
+                                            "publiques n'est pas recommandée. {{productName}} respectez les " +
+                                            "meilleures pratiques de sécurité et n'implémentez pas l'octroi " +
                                             "de mot de passe",
                                         label: "{{grantType}} (non recommandé)"
                                     }
@@ -5798,6 +5798,147 @@ export const console: ConsoleNS = {
                     }
                 }
             },
+            organizations: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "Par exemple. Nom etc"
+                            },
+                            filterCondition: {
+                                placeholder: "Par exemple. Commence par etc.."
+                            },
+                            filterValue: {
+                                placeholder: "Entrez la valeur à rechercher"
+                            }
+                        }
+                    },
+                    placeholder: "Rechercher par nom"
+                },
+                confirmations: {
+                    deleteOrganization: {
+                        assertionHint: "Veuillez confirmer votre action.",
+                        content: "Si vous supprimez cette organisation, toutes les données associées à cette " +
+                            "organisation seront supprimées. Veuillez procéder avec prudence.",
+                        header: "Êtes-vous sûr?",
+                        message: "Cette action est irréversible et supprimera entièrement l'organisation."
+                    }
+                },
+                forms: {
+                    addOrganization: {
+                        description: {
+                            label: "La description",
+                            placeholder: "Entrez la description"
+                        },
+                        domainName: {
+                            label: "Nom de domaine",
+                            placeholder: "Entrez le nom de domaine",
+                            validation: {
+                                duplicate: "Le nom de domaine existe déjà",
+                                empty: "Le nom de domaine est requis"
+                            }
+                        },
+                        name: {
+                            label: "nom de l'organisation",
+                            placeholder: "Entrez le nom de l'organisation",
+                            validation: {
+                                duplicate: "Le nom de l'organisation existe déjà",
+                                empty: "Le nom de l'organisation est requis"
+                            }
+                        },
+                        structural: "De construction",
+                        tenant: "Locataire",
+                        type: "Taper"
+                    }
+                },
+                homeList: {
+                    description: "Consultez la liste de toutes les organisations disponibles.",
+                    name: "Toutes les organisations"
+                },
+                list: {
+                    actions: {
+                        add: "Ajouter une organisation"
+                    },
+                    columns: {
+                        actions: "Actions",
+                        name: "Nom"
+                    }
+                },
+                modals: {
+                    addOrganization: {
+                        header: "Ajouter une organisation",
+                        subtitle1: "Créez une nouvelle organisation dans {{parent}}.",
+                        subtitle2: "Créer une nouvelle organisation."
+                    }
+                },
+                notifications: {
+                    addOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur lors de l'ajout de l'organisation"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de l'ajout de l'organisation",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "L'organisation a bien été ajoutée",
+                            message: "Organisation ajoutée avec succès"
+                        }
+                    },
+                    deleteOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur lors de la suppression de l'organisation"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la suppression de l'organisation",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "L'organisation a bien été supprimée",
+                            message: "Organisation supprimée avec succès"
+                        }
+                    },
+                    fetchOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur lors de la récupération de l'organisation"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération de l'organisation",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "L'organisation a bien été récupérée",
+                            message: "Organisation récupérée avec succès"
+                        }
+                    },
+                    getOrganizationList: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur lors de l'obtention de la liste des organisations"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de l'obtention de la liste des organisations",
+                            message: "Quelque chose s'est mal passé"
+                        }
+                    }
+                },
+                placeholders: {
+                    emptyList: {
+                        action: "Ajouter une organisation",
+                        subtitles: {
+                            0: "Il n'y a pas d'organisations pour le moment.",
+                            1: "Vous pouvez facilement ajouter une nouvelle organisation en",
+                            2: "en cliquant sur le bouton ci-dessous."
+                        },
+                        title: "Ajouter une nouvelle organisation"
+                    }
+                },
+                subTitle: "Créer et gérer des organisations.",
+                title: "Organisations"
+            },
             overview: {
                 widgets: {
                     insights: {
@@ -6163,6 +6304,8 @@ export const console: ConsoleNS = {
                         },
                         dangerZone: {
                             actionTitle: "Supprimer {{type}}",
+                            buttonDisableHint: "L'option de suppression est désactivée car ce {{type}} est géré " +
+                                "dans un magasin d'utilisateurs distant.",
                             header: "Supprimer {{type}}",
                             subheader: "Une fois que vous avez supprimé le {{type}}, il n'y a plus de retour " +
                                 "en arrière. Veuillez en être certain."
@@ -6404,6 +6547,7 @@ export const console: ConsoleNS = {
                     certificates: "Certificats",
                     configurations: "Configurations",
                     general: "Général",
+                    organizations: "Organisations",
                     users: "Utilisateurs",
                     userstores: "Annuaires"
                 },
@@ -6421,6 +6565,7 @@ export const console: ConsoleNS = {
                 generalConfigurations: "Général",
                 groups: "Groupes",
                 localDialect: "Dialecte local",
+                organizations: "Organisations",
                 overview: "Vue d'ensemble",
                 roles: "Rôles",
                 users: "Utilisateurs",
@@ -7306,7 +7451,7 @@ export const console: ConsoleNS = {
                                 message: "Erreur de récupération"
                             },
                             genericError: {
-                                description: "Une erreur s'est produite lors de la récupération du type" + 
+                                description: "Une erreur s'est produite lors de la récupération du type" +
                                     "d'utilisateur actuel.",
                                 message: "Erreur de récupération"
                             }
@@ -7711,6 +7856,10 @@ export const console: ConsoleNS = {
                 backButton: "Revenir aux scopes",
                 subTitle: "Ajouter ou supprimer des attributs OIDC du scope",
                 title: "Modifier le scope : {{ name }}"
+            },
+            organizations: {
+                subTitle: "Créer et gérer des organisations.",
+                title: "Organisations"
             },
             overview: {
                 subTitle: "Configurer et gérer les utilisateurs, les rôles, les claims " +

@@ -1484,13 +1484,13 @@ export const console: ConsoleNS = {
                                     },
                                     implicit: {
                                         hint: "පොදු අයදුම්පත් සමඟ ව්‍යංග ප්‍රදානය භාවිතා කිරීම නිර්දේශ නොකරයි. " +
-                                            "{{productName}} ආරක්ෂක පිළිවෙත් පිළිපදි, ව්‍යංග ප්‍රදානය " + 
+                                            "{{productName}} ආරක්ෂක පිළිවෙත් පිළිපදි, ව්‍යංග ප්‍රදානය " +
                                             "ක්‍රියාත්මක නොකරන්න.",
                                         label: "{{grantType}} (නිර්දේශ නොකරයි)"
                                     },
                                     password: {
                                         hint: "පොදු යෙදුම් සමඟ මුරපද ප්‍රදානය භාවිතා කිරීම නිර්දේශ නොකරයි. " +
-                                            "{{productName}} ආරක්ෂක පිළිවෙත් පිළිපදි, මුරපද ප්‍රදානය " + 
+                                            "{{productName}} ආරක්ෂක පිළිවෙත් පිළිපදි, මුරපද ප්‍රදානය " +
                                             "ක්‍රියාත්මක නොකරන්න.",
                                         label: "{{grantType}} (නිර්දේශ නොකරයි)"
                                     }
@@ -5668,6 +5668,147 @@ export const console: ConsoleNS = {
                     }
                 }
             },
+            organizations: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "උදා. නම ආදිය."
+                            },
+                            filterCondition: {
+                                placeholder: "උදා. ආදියෙන් ආරම්භ වේ."
+                            },
+                            filterValue: {
+                                placeholder: "සෙවීමට අගය ඇතුලත් කරන්න"
+                            }
+                        }
+                    },
+                    placeholder: "නම අනුව සොයන්න"
+                },
+                confirmations: {
+                    deleteOrganization: {
+                        assertionHint: "කරුණාකර ඔබගේ ක්‍රියාව තහවුරු කරන්න.",
+                        content: "ඔබ මෙම සංවිධානය ඉවත් කළහොත්, මෙම සංවිධානය හා සම්බන්ධ සියලු " +
+                            "දත්ත ඉවත් කරනු ලැබේ. කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
+                        header: "ඔබට විශ්වාසද?",
+                        message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර සංවිධානය සම්පූර්ණයෙන්ම ඉවත් කරනු ඇත."
+                    }
+                },
+                forms: {
+                    addOrganization: {
+                        description: {
+                            label: "විස්තර",
+                            placeholder: "විස්තරය ඇතුලත් කරන්න"
+                        },
+                        domainName: {
+                            label: "වසම් නාමය",
+                            placeholder: "වසම් නාමය ඇතුලත් කරන්න",
+                            validation: {
+                                duplicate: "වසම් නාමය දැනටමත් පවතී",
+                                empty: "වසම් නාමය අවශ්ය වේ"
+                            }
+                        },
+                        name: {
+                            label: "සංවිධානයේ නම",
+                            placeholder: "සංවිධානයේ නම ඇතුළත් කරන්න",
+                            validation: {
+                                duplicate: "සංවිධානයේ නම දැනටමත් පවතී",
+                                empty: "සංවිධානයේ නම අවශ්‍යයි"
+                            }
+                        },
+                        structural: "ව්යුහාත්මක",
+                        tenant: "කුලී නිවැසියා",
+                        type: "ටයිප් කරන්න"
+                    }
+                },
+                homeList: {
+                    description: "පවතින සියලුම සංවිධාන ලැයිස්තුව බලන්න.",
+                    name: "සියලුම සංවිධාන"
+                },
+                list: {
+                    actions: {
+                        add: "සංවිධානය එකතු කරන්න"
+                    },
+                    columns: {
+                        actions: "ක්රියාවන්",
+                        name: "නම"
+                    }
+                },
+                modals: {
+                    addOrganization: {
+                        header: "සංවිධානය එකතු කරන්න",
+                        subtitle1: "{{parent}} තුළ නව සංවිධානයක් සාදන්න.",
+                        subtitle2: "නව සංවිධානයක් සාදන්න."
+                    }
+                },
+                notifications: {
+                    addOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "සංවිධානය එක් කිරීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "සංවිධානය එක් කිරීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        success: {
+                            description: "සංවිධානය සාර්ථකව එකතු කරන ලදී",
+                            message: "සංවිධානය සාර්ථකව එකතු කරන ලදී"
+                        }
+                    },
+                    deleteOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "සංවිධානය මකා දැමීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "සංවිධානය මකා දැමීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        success: {
+                            description: "සංවිධානය සාර්ථකව මකා දමන ලදී",
+                            message: "සංවිධානය සාර්ථකව මකා ඇත"
+                        }
+                    },
+                    fetchOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "සංවිධානය ලබා ගැනීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "සංවිධානය ලබා ගැනීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        success: {
+                            description: "සංවිධානය සාර්ථකව ගෙන එන ලදී",
+                            message: "සංවිධානය සාර්ථකව ලබා ගන්නා ලදී"
+                        }
+                    },
+                    getOrganizationList: {
+                        error: {
+                            description: "{{description}}",
+                            message: "සංවිධාන ලැයිස්තුව ලබා ගැනීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "සංවිධාන ලැයිස්තුව ලබා ගැනීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        }
+                    }
+                },
+                placeholders: {
+                    emptyList: {
+                        action: "සංවිධානය එකතු කරන්න",
+                        subtitles: {
+                            0: "මේ මොහොතේ සංවිධාන නොමැත.",
+                            1: "ඔබට පහසුවෙන් නව සංවිධානයක් එක් කළ හැකිය",
+                            2: "පහත බොත්තම මත ක්ලික් කිරීම."
+                        },
+                        title: "නව සංවිධානයක් එක් කරන්න"
+                    }
+                },
+                subTitle: "ආයතන සාදන්න සහ කළමනාකරණය කරන්න.",
+                title: "ආයතන"
+            },
             overview: {
                 widgets: {
                     insights: {
@@ -6024,6 +6165,8 @@ export const console: ConsoleNS = {
                         },
                         dangerZone: {
                             actionTitle: "{{type}} මකන්න",
+                            buttonDisableHint: "මෙම {{type}} දුරස්ථ පරිශීලක වෙළඳසැලක කළමනාකරණය කර ඇති " +
+                                "නිසා මකන්න විකල්පය අබල කර ඇත.",
                             header: "{{type}} මකන්න",
                             subheader: "ඔබ {{type}} මකා දැමූ පසු, ආපසු යාමක් නොමැත. කරුණාකර ස්ථිර වන්න."
                         },
@@ -6259,6 +6402,7 @@ export const console: ConsoleNS = {
                     certificates: "සහතික",
                     configurations: "වින්‍යාස කිරීම්",
                     general: "ජනරාල්",
+                    organizations: "ආයතන",
                     users: "පරිශීලකයින්",
                     userstores: "පරිශීලක වෙළඳසැල්"
                 },
@@ -6276,6 +6420,7 @@ export const console: ConsoleNS = {
                 generalConfigurations: "ජනරාල්",
                 groups: "කණ්ඩායම්",
                 localDialect: "දේශීය උපභාෂාව",
+                organizations: "ආයතන",
                 overview: "දළ විශ්ලේෂණය",
                 roles: "භූමිකාවන්",
                 users: "පරිශීලකයින්",
@@ -7532,6 +7677,10 @@ export const console: ConsoleNS = {
                 backButton: "විෂය පථ වෙත ආපසු යන්න",
                 subTitle: "විෂය පථයේ OIDC ගුණාංග එකතු කිරීම හෝ ඉවත් කිරීම",
                 title: "විෂය පථය සංස්කරණය කරන්න"
+            },
+            organizations: {
+                subTitle: "ආයතන සාදන්න සහ කළමනාකරණය කරන්න.",
+                title: "ආයතන"
             },
             overview: {
                 subTitle: "පරිශීලකයින්, භූමිකාවන්, උපභාෂා, සේවාදායක වින්‍යාසයන් වින්‍යාස කිරීම " +

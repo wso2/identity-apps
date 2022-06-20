@@ -1174,6 +1174,7 @@ export const myAccount: MyAccountNS = {
                     inputs: {
                         date: {
                             validations: {
+                                futureDateError: "The date you entered for the {{field}} field is invalid.",
                                 invalidFormat: "Please enter a valid {{fieldName}} in the format YYYY-MM-DD."
                             }
                         }
