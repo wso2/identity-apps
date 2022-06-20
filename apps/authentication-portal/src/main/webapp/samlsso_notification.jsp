@@ -59,6 +59,11 @@
     session.invalidate();
 %>
 
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("isLargeContainer", true);
+%>
+
 <!doctype html>
 <html>
 <head>

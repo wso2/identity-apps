@@ -18,7 +18,7 @@
 
 {{^isPolicyPage}}
     <main class="center-segment">
-        <div class="ui container medium center aligned middle aligned">
+        <div class="ui container {{^isLargeContainer}}medium{{/isLargeContainer}} {{#isLargeContainer}}large{{/isLargeContainer}} center aligned middle aligned">
             {{{ProductHeader}}}
             {{{MainSection}}}
         </div>

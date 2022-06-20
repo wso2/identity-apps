@@ -23,8 +23,13 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.net.URISyntaxException" %>
+<%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
+
+<!-- Branding Preferences -->
+<jsp:directive.include file="extensions/branding-preferences.jsp"/>
 
 <jsp:directive.include file="includes/localize.jsp"/>
+<jsp:directive.include file="tenant-resolve.jsp"/>
 
 <%
     String callback = IdentityManagementEndpointUtil.getStringValue(request.getParameter("callback"));
@@ -48,6 +53,18 @@
     <% } %>
 </head>
 <body>
+    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+        <layout:component name="ProductHeader" >
+
+        </layout:component>
+        <layout:component name="MainSection" >
+
+        </layout:component>
+        <layout:component name="ProductFooter" >
+
+        </layout:component>
+    </layout:main>
+
     <div class="ui tiny modal notify">
         <div class="header">
             <h4>

@@ -20,6 +20,11 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="java.io.File" %>
+<%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
+
+<!-- Branding Preferences -->
+<jsp:directive.include file="extensions/branding-preferences.jsp"/>
 <jsp:directive.include file="includes/localize.jsp"/>
 
 <!doctype html>
@@ -35,49 +40,61 @@
     <% } %>
 </head>
 <body>
-<div class="ui tiny modal notify">
-    <div class="header">
-        <h4>
-            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Information")%>
-        </h4>
-    </div>
-    <div class="content">
-        <p><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                "Account.confirmation.sent.to.your.email")%>
-        </p>
-    </div>
-    <div class="actions">
-        <button type="button" class="ui primary button cancel" data-dismiss="modal">
-            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Close")%>
-        </button>
-    </div>
-</div>
+    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+        <layout:component name="ProductHeader" >
 
-<!-- footer -->
-<%
-    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-    if (footerFile.exists()) {
-%>
-<jsp:include page="extensions/footer.jsp"/>
-<% } else { %>
-<jsp:include page="includes/footer.jsp"/>
-<% } %>
+        </layout:component>
+        <layout:component name="MainSection" >
 
-<script type="application/javascript">
-    $(document).ready(function () {
-        $('.notify').modal({
-            onHide: function () {
-                location.href = "<%=Encode.forJavaScript(IdentityManagementEndpointUtil.getUserPortalUrl(
-                        application.getInitParameter(
-                            IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL)))%>";
-            },
-            blurring: true,
-            detachable: true,
-            closable: false,
-            centered: true,
-        }).modal("show");
+        </layout:component>
+        <layout:component name="ProductFooter" >
 
-    });
-</script>
+        </layout:component>
+    </layout:main>
+
+    <div class="ui tiny modal notify">
+        <div class="header">
+            <h4>
+                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Information")%>
+            </h4>
+        </div>
+        <div class="content">
+            <p><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                    "Account.confirmation.sent.to.your.email")%>
+            </p>
+        </div>
+        <div class="actions">
+            <button type="button" class="ui primary button cancel" data-dismiss="modal">
+                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Close")%>
+            </button>
+        </div>
+    </div>
+
+    <!-- footer -->
+    <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+    %>
+    <jsp:include page="extensions/footer.jsp"/>
+    <% } else { %>
+    <jsp:include page="includes/footer.jsp"/>
+    <% } %>
+
+    <script type="application/javascript">
+        $(document).ready(function () {
+            $('.notify').modal({
+                onHide: function () {
+                    location.href = "<%=Encode.forJavaScript(IdentityManagementEndpointUtil.getUserPortalUrl(
+                            application.getInitParameter(
+                                IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL)))%>";
+                },
+                blurring: true,
+                detachable: true,
+                closable: false,
+                centered: true,
+            }).modal("show");
+
+        });
+    </script>
 </body>
 </html>

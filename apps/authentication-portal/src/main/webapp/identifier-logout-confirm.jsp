@@ -26,6 +26,11 @@
 <%@include file="includes/localize.jsp" %>
 <%@include file="includes/init-url.jsp" %>
 
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("isLargeContainer", true);
+%>
+
 <!doctype html>
 <html>
 <head>
