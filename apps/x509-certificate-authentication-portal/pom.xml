@@ -67,6 +67,12 @@
         <dependency>
             <groupId>org.wso2.identity.apps</groupId>
             <artifactId>org.wso2.identity.apps.taglibs.layout.controller</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
