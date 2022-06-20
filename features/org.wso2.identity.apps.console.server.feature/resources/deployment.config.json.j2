@@ -25,9 +25,11 @@
     },
     "analytics": {
         {% if console.analytics.metrics is defined %}
+        "metrics": {
         {% for param, value in console.analytics.metrics.items() %}
             "{{ param }}": {{ value }}{{ "," if not loop.last }}
         {% endfor %}
+        }
         {% endif %}
     },
     "appBaseName": "{{ console.app_base_name }}",
