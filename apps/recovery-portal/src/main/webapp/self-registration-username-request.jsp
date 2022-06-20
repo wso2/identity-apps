@@ -200,6 +200,9 @@
             $.fn.preventDoubleSubmission = function() {
                 $(this).on("submit", function(e){
                     var $form = $(this);
+                    $("#error-msg").hide(); 
+                    $("#server-error-msg").hide();
+                    $("#error-msg").text(null);
 
                     if ($form.data("submitted") === true) {
                         // Previously submitted - don't submit again.
@@ -209,7 +212,17 @@
                         e.preventDefault();
 
                         var userName = document.getElementById("username");
-                        userName.value = userName.value.trim();
+                        var normalizedUsername = userName.value.trim();
+                        userName.value =normalizedUsername;
+                        
+                        if (normalizedUsername) {
+                            if (!/^[^/].*[^@]$/g.test(normalizedUsername)) {
+                                $("#error-msg").text("Username pattern policy violated");
+                                $("#error-msg").show();
+                                $("#username").val("");
+                                return;
+                            }
+                        }
 
                         // Mark it so that the next submit can be ignored.
                         $form.data("submitted", true);
