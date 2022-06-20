@@ -457,6 +457,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
 
     return (
         <PageLayout
+            pageTitle="Connections"
             action={
                 (isIdPListRequestLoading ||
                     isAuthenticatorFetchRequestRequestLoading ||
