@@ -28,122 +28,128 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.TenantDataManager" %>
 <%@ page import="java.util.ResourceBundle" %>
 <%@ include file="includes/localize.jsp" %>
-    <%
-        request.getSession().invalidate();
-        Map<String, String> idpAuthenticatorMapping = null;
-        if (request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP) != null) {
-            idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
-        }
+<%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
-        String errorCode = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"unknown.error.code");
-        String authenticationFailed = "false";
-        String errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"unknown.error.message");
+<!-- Branding Preferences -->
+<jsp:directive.include file="extensions/branding-preferences.jsp"/>
 
-        if (Boolean.parseBoolean(request.getParameter("authFailure"))) {
-            authenticationFailed = "true";
+<%
+    request.getSession().invalidate();
+    Map<String, String> idpAuthenticatorMapping = null;
+    if (request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP) != null) {
+        idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
+    }
 
-            if (request.getParameter("errorCode") != null) {
-                errorCode = request.getParameter("errorCode");
+    String errorCode = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"unknown.error.code");
+    String authenticationFailed = "false";
+    String errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"unknown.error.message");
 
-                if (errorCode.equalsIgnoreCase("18013")) {
-                    errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"certificateNotFound.error.message");
-                } else if (errorCode.equalsIgnoreCase("18003")) {
-                    errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"userNotFound.error.message");
-                } else if (errorCode.equalsIgnoreCase("20015")) {
-                    errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"userNamesConflict.error.message");
-                } else if (errorCode.equalsIgnoreCase("17001")) {
-                    errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"userNotFoundInUserStore.error.message");
-                } else if (errorCode.equalsIgnoreCase("17002")) {
-                    errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"user.account.locked");
-                } else if (errorCode.equalsIgnoreCase("18015")) {
-                    errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"not.valid.certificate");
-                } else if (errorCode.equalsIgnoreCase("17003")) {
-                    errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"fail.validation.certificate");
-                } else if (errorCode.equalsIgnoreCase("17004")) {
-                    errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                            "x509certificateauthenticator.alternativenames.regex.multiplematches.code.17004.error.message");
-                } else if (errorCode.equalsIgnoreCase("17005")) {
-                    errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                            "x509certificateauthenticator.alternativenames.regex.nomatches.code.17005.error.message");
-                } else if (errorCode.equalsIgnoreCase("17006")) {
-                    errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                            "x509certificateauthenticator.subjectdn.regex.multiplematches.code.17006.error.message");
-                } else if (errorCode.equalsIgnoreCase("17007")) {
-                    errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                            "x509certificateauthenticator.subjectdn.regex.nomatches.code.17007.error.message");
-                } else if (errorCode.equalsIgnoreCase("17008")) {
-                    errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                            "x509certificateauthenticator.alternativenames.notfound.code.17008.error.message");
-                } else if (errorCode.equalsIgnoreCase("17010")) {
-                    errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"user.account.disabled");
-                }
+    if (Boolean.parseBoolean(request.getParameter("authFailure"))) {
+        authenticationFailed = "true";
+
+        if (request.getParameter("errorCode") != null) {
+            errorCode = request.getParameter("errorCode");
+
+            if (errorCode.equalsIgnoreCase("18013")) {
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"certificateNotFound.error.message");
+            } else if (errorCode.equalsIgnoreCase("18003")) {
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"userNotFound.error.message");
+            } else if (errorCode.equalsIgnoreCase("20015")) {
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"userNamesConflict.error.message");
+            } else if (errorCode.equalsIgnoreCase("17001")) {
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"userNotFoundInUserStore.error.message");
+            } else if (errorCode.equalsIgnoreCase("17002")) {
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"user.account.locked");
+            } else if (errorCode.equalsIgnoreCase("18015")) {
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"not.valid.certificate");
+            } else if (errorCode.equalsIgnoreCase("17003")) {
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"fail.validation.certificate");
+            } else if (errorCode.equalsIgnoreCase("17004")) {
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                        "x509certificateauthenticator.alternativenames.regex.multiplematches.code.17004.error.message");
+            } else if (errorCode.equalsIgnoreCase("17005")) {
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                        "x509certificateauthenticator.alternativenames.regex.nomatches.code.17005.error.message");
+            } else if (errorCode.equalsIgnoreCase("17006")) {
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                        "x509certificateauthenticator.subjectdn.regex.multiplematches.code.17006.error.message");
+            } else if (errorCode.equalsIgnoreCase("17007")) {
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                        "x509certificateauthenticator.subjectdn.regex.nomatches.code.17007.error.message");
+            } else if (errorCode.equalsIgnoreCase("17008")) {
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                        "x509certificateauthenticator.alternativenames.notfound.code.17008.error.message");
+            } else if (errorCode.equalsIgnoreCase("17010")) {
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"user.account.disabled");
             }
         }
-    %>
+    }
+%>
 
-    <html>
-        <head>
-            <!-- header -->
-            <%
-                File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
-                if (headerFile.exists()) {
-            %>
-            <jsp:include page="extensions/header.jsp"/>
-            <% } else { %>
-            <jsp:include page="includes/header.jsp"/>
-            <% } %>
-            <script src="js/scripts.js"></script>
-            <!--[if lt IE 9]>
-            <script src="js/html5shiv.min.js"></script>
-            <script src="js/respond.min.js"></script>
-            <![endif]-->
-        </head>
+<html>
+    <head>
+        <!-- header -->
+        <%
+            File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
+            if (headerFile.exists()) {
+        %>
+        <jsp:include page="extensions/header.jsp"/>
+        <% } else { %>
+        <jsp:include page="includes/header.jsp"/>
+        <% } %>
+        <script src="js/scripts.js"></script>
+        <!--[if lt IE 9]>
+        <script src="js/html5shiv.min.js"></script>
+        <script src="js/respond.min.js"></script>
+        <![endif]-->
+    </head>
 
-        <body class="login-portal layout x509-certificate-portal-layout">
-            <main class="center-segment">
-                <div class="ui container medium center aligned middle aligned">
-                    <!-- product-title -->
+    <body class="login-portal layout x509-certificate-portal-layout">
+        <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+            <layout:component name="ProductHeader" >
+                <!-- product-title -->
+                <%
+                    File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                    if (productTitleFile.exists()) {
+                %>
+                <jsp:include page="extensions/product-title.jsp"/>
+                <% } else { %>
+                <jsp:include page="includes/product-title.jsp"/>
+                <% } %>
+            </layout:component>
+            <layout:component name="MainSection" >
+                <div class="ui segment">
+                    <!-- page content -->
+                    <h2><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "failed.auth")%></h2>
                     <%
-                        File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
-                        if (productTitleFile.exists()) {
+                        if ("true".equals(authenticationFailed)) {
                     %>
-                    <jsp:include page="extensions/product-title.jsp"/>
-                    <% } else { %>
-                    <jsp:include page="includes/product-title.jsp"/>
+                            <div class="ui negative message" id="failed-msg"><%=errorMessage%></div>
                     <% } %>
-
-                    <div class="ui segment">
-                        <!-- page content -->
-                        <h2><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "failed.auth")%></h2>
-                        <%
-                            if ("true".equals(authenticationFailed)) {
-                        %>
-                                <div class="ui negative message" id="failed-msg"><%=errorMessage%></div>
-                        <% } %>
-                        <div id="alertDiv"></div>
-                    </div>
+                    <div id="alertDiv"></div>
                 </div>
-            </main>
+            </layout:component>
+            <layout:component name="ProductFooter" >
+                <!-- product-footer -->
+                <%
+                    File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                    if (productFooterFile.exists()) {
+                %>
+                <jsp:include page="extensions/product-footer.jsp"/>
+                <% } else { %>
+                <jsp:include page="includes/product-footer.jsp"/>
+                <% } %>
+            </layout:component>
+        </layout:main>
 
-            <!-- product-footer -->
-            <%
-                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-                if (productFooterFile.exists()) {
-            %>
-            <jsp:include page="extensions/product-footer.jsp"/>
-            <% } else { %>
-            <jsp:include page="includes/product-footer.jsp"/>
-            <% } %>
-
-            <!-- footer -->
-            <%
-                File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-                if (footerFile.exists()) {
-            %>
-            <jsp:include page="extensions/footer.jsp"/>
-            <% } else { %>
-            <jsp:include page="includes/footer.jsp"/>
-            <% } %>
-        </body>
-    </html>
-
+        <!-- footer -->
+        <%
+            File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+            if (footerFile.exists()) {
+        %>
+        <jsp:include page="extensions/footer.jsp"/>
+        <% } else { %>
+        <jsp:include page="includes/footer.jsp"/>
+        <% } %>
+    </body>
+</html>
