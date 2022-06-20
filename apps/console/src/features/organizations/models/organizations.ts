@@ -68,3 +68,12 @@ export interface UpdateOrganizationInterface {
     status: string;
     attributes: OrganizationAttributes[];
 }
+
+/**
+ * Type of patch data
+ */
+export interface PatchData {
+    operation: string;
+    path: string;
+    value: string;
+}
