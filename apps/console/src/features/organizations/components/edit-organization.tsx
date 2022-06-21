@@ -1,13 +1,11 @@
-
 import { SBACInterface } from "@wso2is/core/models";
 import { ResourceTab } from "@wso2is/react-components";
-import React, { FunctionComponent, useCallback } from "react";
+import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { OrganizationAttributes } from "./organization-attributes";
 import { OrganizationProfile } from "./organization-profile";
-import { AppConstants, FeatureConfigInterface, history } from "../../core";
-import { UserGroupsList, UserProfile, UserRolesList, UserSessions } from "../../users";
-import { OrganizationInterface, OrganizationResponseInterface } from "../models";
+import { FeatureConfigInterface } from "../../core";
+import { OrganizationResponseInterface } from "../models";
 
 interface EditOrganizationPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
@@ -62,7 +60,11 @@ export const EditOrganization: FunctionComponent<EditOrganizationPropsInterface>
             menuItem: t("Organization Attributes"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <div>Organization Attributes</div>
+                    <OrganizationAttributes
+                        organization={ organization }
+                        isReadOnly={ isReadOnly }
+                        onAttributeUpdate={ onOrganizationUpdate }
+                    />
                 </ResourceTab.Pane>
             )
         }
