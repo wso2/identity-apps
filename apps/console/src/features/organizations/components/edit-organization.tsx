@@ -16,9 +16,19 @@ interface EditOrganizationPropsInterface extends SBACInterface<FeatureConfigInte
     organization: OrganizationResponseInterface;
 
     /**
-     * Handles org update callback
+     * Is Readonly access
      */
-    handleOrganizationUpdate: (orgId: string) => void;
+    isReadOnly: boolean;
+
+    /**
+     * on org update callback
+     */
+    onOrganizationUpdate: (orgId: string) => void;
+
+    /**
+     * on org delete callback
+     */
+    onOrganizationDelete: (orgId: string) => void;
 }
 
 export const EditOrganization: FunctionComponent<EditOrganizationPropsInterface> = (
@@ -27,16 +37,12 @@ export const EditOrganization: FunctionComponent<EditOrganizationPropsInterface>
 
     const {
         organization,
-        handleOrganizationUpdate
+        isReadOnly,
+        onOrganizationUpdate,
+        onOrganizationDelete
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
-
-    const onOrganizationDelete = useCallback(() =>
-        history.push(AppConstants.getPaths().get("ORGANIZATIONS")),
-    []
-    );
 
     const panes = () => ([
         {
@@ -45,8 +51,9 @@ export const EditOrganization: FunctionComponent<EditOrganizationPropsInterface>
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <OrganizationProfile 
                         organization={ organization }
+                        isReadOnly={ isReadOnly }
+                        onOrganizationUpdate={ onOrganizationUpdate }
                         onOrganizationDelete={ onOrganizationDelete }
-                        isReadOnly={ false }
                     />
                 </ResourceTab.Pane>
             )

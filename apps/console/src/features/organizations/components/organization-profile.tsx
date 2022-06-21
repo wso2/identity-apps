@@ -30,9 +30,13 @@ interface OrganizationProfilePropsInterface extends SBACInterface<FeatureConfigI
      */
     isReadOnly: boolean;
     /**
+     * Callback for when organization update
+     */
+    onOrganizationUpdate: (organizationId: string) => void;
+    /**
      * Callback for when organization delete
      */
-    onOrganizationDelete: (organizationId: string) => void
+    onOrganizationDelete: (organizationId: string) => void;
 }
 
 export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInterface> = (
@@ -42,11 +46,10 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
     const {
         organization,
         isReadOnly,
+        onOrganizationUpdate,
         onOrganizationDelete,
         ["data-testid"]: testId
     } = props;
-
-    console.log(organization);
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -87,6 +90,8 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                             )
                         })
                     );
+
+                    onOrganizationUpdate(organization.id);
                 }).catch((error) => {
                     if (error.response && error.response.data && error.response.data.description) {
                         dispatch(

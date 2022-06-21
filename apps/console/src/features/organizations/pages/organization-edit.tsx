@@ -19,10 +19,10 @@
 import { AlertLevels } from "@wso2is/core/src/models";
 import { addAlert } from "@wso2is/core/store";
 import { GenericIcon, PageLayout } from "@wso2is/react-components";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { history } from "../../core";
+import { AppConstants, history } from "../../core";
 import { getOrganization } from "../api";
 import { EditOrganization } from "../components/edit-organization";
 import { OrganizationIcon } from "../configs";
@@ -44,9 +44,11 @@ const OrganizationEditPage = (): ReactElement => {
         const path = history.location.pathname.split("/");
         const id = path[path.length - 1];
 
-        console.log(`Org Id: ${id}`);
+        getOrganizationData(id);
+    }, []);
 
-        getOrganization(id)
+    const getOrganizationData = useCallback((organizationId: string) => {
+        getOrganization(organizationId)
             .then((organization) => {
                 setOrganization(organization);
             }).catch((error) => {
@@ -66,7 +68,13 @@ const OrganizationEditPage = (): ReactElement => {
                     message: t("Error getting organization details")
                 }));
             });
-    }, []);
+    }, [ organization, getOrganization, dispatch ]
+    );
+
+    const goBackToOrganizationList = useCallback(() =>
+        history.push(AppConstants.getPaths().get("ORGANIZATIONS")),[ history ]
+    );
+
 
     return (
         <PageLayout
@@ -84,7 +92,7 @@ const OrganizationEditPage = (): ReactElement => {
             ) }
             backButton={ {
                 "data-testid": "org-mgt-edit-org-back-button",
-                onClick: () => console.log("BACK"),
+                onClick: goBackToOrganizationList,
                 text: "BACK"
             } }
             titleTextAlign="left"
@@ -92,7 +100,10 @@ const OrganizationEditPage = (): ReactElement => {
         >
             <EditOrganization
                 organization={ organization }
-                handleOrganizationUpdate={ (orgId) => console.log(orgId) }/>
+                isReadOnly={ false }
+                onOrganizationUpdate={ getOrganizationData }
+                onOrganizationDelete={ goBackToOrganizationList }
+            />
         </PageLayout>
     );
 };
