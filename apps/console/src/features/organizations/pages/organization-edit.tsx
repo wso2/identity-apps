@@ -16,29 +16,39 @@
  * under the License.
  */
 
+import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { AlertLevels } from "@wso2is/core/src/models";
 import { addAlert } from "@wso2is/core/store";
 import { GenericIcon, PageLayout } from "@wso2is/react-components";
-import React, { ReactElement, useCallback, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { AppConstants, history } from "../../core";
+import { AppConstants, FeatureConfigInterface, history } from "../../core";
 import { getOrganization } from "../api";
 import { EditOrganization } from "../components/edit-organization";
 import { OrganizationIcon } from "../configs";
+import { OrganizationManagementConstants } from "../constants";
 import { OrganizationResponseInterface } from "../models";
 
-/**
- * User Edit page.
- *
- * @return {React.ReactElement}
- */
-const OrganizationEditPage = (): ReactElement => {
+
+interface OrganizationEditPagePropsInterface extends SBACInterface<FeatureConfigInterface>,
+    TestableComponentInterface{
+}
+
+const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface> = (
+    props: OrganizationEditPagePropsInterface
+): ReactElement => {
+
+    const {
+        featureConfig
+    } = props;
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
     const [ organization, setOrganization ] = useState<OrganizationResponseInterface>();
+    const [ isReadOnly, setIsReadOnly ] = useState(true);
 
     useEffect(() => {
         const path = history.location.pathname.split("/");
@@ -46,6 +56,14 @@ const OrganizationEditPage = (): ReactElement => {
 
         getOrganizationData(id);
     }, []);
+
+    useEffect(() => {
+        setIsReadOnly(isFeatureEnabled(
+            featureConfig?.organizations,
+            OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE")
+        ));
+    }, [ featureConfig ]);
+
 
     const getOrganizationData = useCallback((organizationId: string) => {
         getOrganization(organizationId)
@@ -103,7 +121,8 @@ const OrganizationEditPage = (): ReactElement => {
         >
             <EditOrganization
                 organization={ organization }
-                isReadOnly={ false }
+                isReadOnly={ isReadOnly }
+                featureConfig={ featureConfig }
                 onOrganizationUpdate={ getOrganizationData }
                 onOrganizationDelete={ goBackToOrganizationList }
             />
