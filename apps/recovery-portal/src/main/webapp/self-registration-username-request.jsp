@@ -213,7 +213,7 @@
 
                         var userName = document.getElementById("username");
                         var normalizedUsername = userName.value.trim();
-                        userName.value =normalizedUsername;
+                        userName.value = normalizedUsername;
                         
                         if (normalizedUsername) {
                             if (!/^[^/].*[^@]$/g.test(normalizedUsername)) {
