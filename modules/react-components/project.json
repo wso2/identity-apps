@@ -16,6 +16,10 @@
                 "external": [
                     "react/jsx-runtime"
                 ],
+                "format": [
+                    "esm",
+                    "cjs"
+                ],
                 "rollupConfig": "modules/react-components/rollup.config.cjs",
                 "compiler": "babel",
                 "assets": [
@@ -28,24 +32,19 @@
             }
         },
         "lint": {
-            "executor": "@nrwl/linter:eslint",
-            "outputs": [
-                "{options.outputFile}"
-            ],
+            "executor": "@nrwl/workspace:run-commands",
             "options": {
-                "lintFilePatterns": [
-                    "modules/react-components/**/*.{ts,tsx,js,jsx}"
-                ]
+                "command": "pnpm lint",
+                "cwd": "modules/react-components",
+                "parallel": false
             }
         },
         "test": {
-            "executor": "@nrwl/jest:jest",
-            "outputs": [
-                "coverage/modules/react-components"
-            ],
+            "executor": "@nrwl/workspace:run-commands",
             "options": {
-                "jestConfig": "modules/react-components/jest.config.js",
-                "passWithNoTests": true
+                "command": "pnpm test",
+                "cwd": "modules/react-components",
+                "parallel": false
             }
         },
         "storybook": {

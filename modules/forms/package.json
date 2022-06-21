@@ -9,8 +9,6 @@
         "WSO2 Identity Apps",
         "form"
     ],
-    "main": "dist/src/index.js",
-    "types": "dist/types/index.d.ts",
     "scripts": {
         "prebuild": "npm run clean:build",
         "build": "pnpm prebuild && npm run compile",
@@ -54,7 +52,7 @@
         "rimraf": "^3.0.2",
         "run-script-os": "^1.0.7",
         "ts-jest": "^26.4.0",
-        "ts-node": "^10.5.0",
+        "ts-node": "^10.8.1",
         "typescript": "^4.6.4"
     },
     "peerDependencies": {

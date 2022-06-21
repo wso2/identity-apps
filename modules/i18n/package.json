@@ -16,7 +16,7 @@
     "types": "dist/types/index.d.ts",
     "scripts": {
         "prebuild": "npm run clean:build",
-        "build": "pnpm prebuild && npm run compile && pnpm postbuild",
+        "build": "pnpm prebuild && pnpm run compile && pnpm postbuild",
         "postbuild": "node scripts/post-build.js",
         "clean": "pnpm clean:lock-files && pnpm clean:build && pnpm clean:node-modules",
         "clean:build": "pnpx rimraf dist",
@@ -66,7 +66,7 @@
         "rimraf": "^3.0.2",
         "run-script-os": "^1.0.7",
         "ts-jest": "^26.4.0",
-        "ts-node": "^10.5.0",
+        "ts-node": "^10.8.1",
         "typescript": "^4.6.4"
     }
 }

@@ -16,6 +16,22 @@
                 "command": "npm run build",
                 "cwd": "modules/access-control"
             }
+        },
+        "lint": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "command": "pnpm lint",
+                "cwd": "modules/access-control",
+                "parallel": false
+            }
+        },
+        "test": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "command": "pnpm test",
+                "cwd": "modules/access-control",
+                "parallel": false
+            }
         }
     },
     "outputs": [

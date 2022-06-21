@@ -16,6 +16,22 @@
                 "command": "npm run build",
                 "cwd": "modules/validation"
             }
+        },
+        "lint": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "command": "pnpm lint",
+                "cwd": "modules/validation",
+                "parallel": false
+            }
+        },
+        "test": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "command": "pnpm test",
+                "cwd": "modules/validation",
+                "parallel": false
+            }
         }
     }
 }

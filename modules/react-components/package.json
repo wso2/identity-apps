@@ -11,8 +11,6 @@
         "react-components",
         "component-library"
     ],
-    "main": "dist/index.esm.js",
-    "types": "dist/index.d.ts",
     "scripts": {
         "start:storybook": "NODE_PATH=src start-storybook -p 6006 -c .storybook -s ./dist",
         "build:storybook": "build-storybook",

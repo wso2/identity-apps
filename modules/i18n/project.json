@@ -16,6 +16,22 @@
                 "command": "pnpm build",
                 "cwd": "modules/i18n"
             }
+        },
+        "lint": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "command": "pnpm lint",
+                "cwd": "modules/i18n",
+                "parallel": false
+            }
+        },
+        "test": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "command": "pnpm test",
+                "cwd": "modules/i18n",
+                "parallel": false
+            }
         }
     }
 }

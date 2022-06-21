@@ -16,6 +16,22 @@
                 "command": "npm run build",
                 "cwd": "modules/core"
             }
+        },
+        "lint": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "command": "pnpm lint",
+                "cwd": "modules/core",
+                "parallel": false
+            }
+        },
+        "test": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "command": "pnpm test",
+                "cwd": "modules/core",
+                "parallel": false
+            }
         }
     },
     "outputs": [

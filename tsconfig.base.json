@@ -23,6 +23,9 @@
             ],
             "@wso2is/form": [
                 "modules/form/src/index.ts"
+            ],
+            "@wso2is/forms": [
+                "modules/forms/src/index.ts"
             ]
         }
     },

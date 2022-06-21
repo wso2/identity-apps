@@ -174,25 +174,19 @@
             }
         },
         "lint": {
-            "executor": "@nrwl/linter:eslint",
-            "outputs": [
-                "{options.outputFile}"
-            ],
+            "executor": "@nrwl/workspace:run-commands",
             "options": {
-                "lintFilePatterns": [
-                    "apps/console/**/*.{ts,tsx,js,jsx}"
-                ],
-                "eslintConfig": "apps/console/.eslintrc.js"
+                "command": "pnpm lint",
+                "cwd": "apps/console",
+                "parallel": false
             }
         },
         "test": {
-            "executor": "@nrwl/jest:jest",
-            "outputs": [
-                "coverage/apps/console"
-            ],
+            "executor": "@nrwl/workspace:run-commands",
             "options": {
-                "jestConfig": "apps/console/jest.config.ts",
-                "passWithNoTests": true
+                "command": "pnpm test",
+                "cwd": "apps/console",
+                "parallel": false
             }
         }
     },

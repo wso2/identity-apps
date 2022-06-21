@@ -7,6 +7,7 @@
         "jsx": "react",
         "outDir": "dist/src",
         "rootDir": "src",
+        "resolveJsonModule": true,
         "types": [ "node", "jest" ]
     },
     "exclude": [

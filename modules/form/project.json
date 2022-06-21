@@ -15,6 +15,10 @@
                 "external": ["react/jsx-runtime"],
                 "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
                 "compiler": "babel",
+                "format": [
+                    "esm",
+                    "cjs"
+                ],
                 "assets": [
                     {
                         "glob": "modules/form/README.md",
@@ -25,18 +29,19 @@
             }
         },
         "lint": {
-            "executor": "@nrwl/linter:eslint",
-            "outputs": ["{options.outputFile}"],
+            "executor": "@nrwl/workspace:run-commands",
             "options": {
-                "lintFilePatterns": ["modules/form/**/*.{ts,tsx,js,jsx}"]
+                "command": "pnpm lint",
+                "cwd": "modules/form",
+                "parallel": false
             }
         },
         "test": {
-            "executor": "@nrwl/jest:jest",
-            "outputs": ["coverage/modules/form"],
+            "executor": "@nrwl/workspace:run-commands",
             "options": {
-                "jestConfig": "modules/form/jest.config.ts",
-                "passWithNoTests": true
+                "command": "pnpm test",
+                "cwd": "modules/form",
+                "parallel": false
             }
         }
     }
