@@ -202,7 +202,7 @@
                     var $form = $(this);
                     $("#error-msg").hide(); 
                     $("#server-error-msg").hide();
-                    $("#error-msg").text(null);
+                    $("#error-msg").text("");
 
                     if ($form.data("submitted") === true) {
                         // Previously submitted - don't submit again.
