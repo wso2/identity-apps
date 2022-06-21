@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ConsoleNS } from "../../../models";
+import {ConsoleNS, FormAttributes} from "../../../models";
 
 export const console: ConsoleNS = {
     common: {
@@ -7289,6 +7289,34 @@ export const console: ConsoleNS = {
                             description: "Successfully fetched the organization",
                             message: "Organization fetched successfully"
                         }
+                    },
+                    updateOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while updating the organization"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating the organization",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully updated the organization",
+                            message: "Organization updated successfully"
+                        }
+                    },
+                    updateOrganizationAttributes: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while updating the organization attributes"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating the organization attributes",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully updated the organization attributes",
+                            message: "Organization attributes updated successfully"
+                        }
                     }
                 },
                 placeholders: {
@@ -7303,7 +7331,58 @@ export const console: ConsoleNS = {
                     }
                 },
                 subTitle: "Create and manage organizations.",
-                title: "Organizations"
+                title: "Organizations",
+                edit: {
+                    description: "Edit Organization",
+                    back: "Back",
+                    tabTitles: {
+                        profile: "Profile",
+                        attributes: "Attributes"
+                    },
+                    fields: {
+                        id: {
+                            label: "Organization ID",
+                            ariaLabel: "Organization ID"
+                        },
+                        name: {
+                            label: "Organization Name",
+                            placeholder: "Enter organization name",
+                            ariaLabel: "Organization Name"
+                        },
+                        description: {
+                            label: "Organization Description",
+                            placeholder: "Enter organization description",
+                            ariaLabel: "Organization Description"
+                        },
+                        domain: {
+                            label: "Organization Domain",
+                            ariaLabel: "Organization Domain"
+                        },
+                        type: {
+                            label: "Organization Type",
+                            ariaLabel: "Organization Type"
+                        },
+                        created: {
+                            label: "Created",
+                            ariaLabel: "Created"
+                        },
+                        lastModified: {
+                            label: "Last Modified",
+                            ariaLabel: "Last Modified"
+                        },
+                    },
+                    dangerZone: {
+                        title: "Delete Organization",
+                        subHeader: "Are you sure you want to delete this organization?"
+                    },
+                    attributes: {
+                        hint: "Configure organization attributes",
+                        key: "Name",
+                        value: "Value",
+                        keyRequiredErrorMessage: "Name is required",
+                        valueRequiredErrorMessage: "Value is required"
+                    }
+                }
             },
             overview: {
                 widgets: {

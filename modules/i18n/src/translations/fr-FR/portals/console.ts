@@ -5861,6 +5861,34 @@ export const console: ConsoleNS = {
                             description: "L'organisation a bien été récupérée",
                             message: "Organisation récupérée avec succès"
                         }
+                    },
+                    updateOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur lors de la mise à jour de l'organisation"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la mise à jour de l'organisation",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "Mise à jour réussie de l'organisation",
+                            message: "Organisation mise à jour avec succès"
+                        }
+                    },
+                    updateOrganizationAttributes: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur lors de la mise à jour des attributs de l'organisation"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la mise à jour des attributs de l'organisation",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "Mise à jour réussie des attributs de l'organisation",
+                            message: "Les attributs de l'organisation ont bien été mis à jour"
+                        }
                     }
                 },
                 placeholders: {
@@ -5875,7 +5903,58 @@ export const console: ConsoleNS = {
                     }
                 },
                 subTitle: "Créer et gérer des organisations.",
-                title: "Organisations"
+                title: "Organisations",
+                edit: {
+                    back: "Retour",
+                    description: "Modifier l'organisation",
+                    tabTitles: {
+                        attributes: "Les attributs",
+                        profile: "Profil"
+                    },
+                    fields: {
+                        id: {
+                            ariaLabel: "ID de l'organisation",
+                            label: "ID de l'organisation"
+                        },
+                        name: {
+                            label: "Nom de l'organisation",
+                            placeholder: "Entrez le nom de l'organisation",
+                            ariaLabel: "Nom de l'organisation"
+                        },
+                        description: {
+                            label: "Description de l'organisation",
+                            placeholder: "Entrez la description de l'organisation",
+                            ariaLabel: "Description de l'organisation"
+                        },
+                        domain: {
+                            label: "Domaine de l'organisation",
+                            ariaLabel: "Domaine de l'organisation"
+                        },
+                        type: {
+                            label: "Type d'Organisation",
+                            ariaLabel: "Type d'Organisation"
+                        },
+                        created: {
+                            label: "Établi",
+                            ariaLabel: "Établi"
+                        },
+                        lastModified: {
+                            label: "Dernière modification",
+                            ariaLabel: "Dernière modification"
+                        }
+                    },
+                    dangerZone: {
+                        title: "Supprimer l'organisation",
+                        subHeader: "Voulez-vous vraiment supprimer cette organisation ?"
+                    },
+                    attributes: {
+                        hint: "Configurer les attributs de l'organisation",
+                        key: "Nom",
+                        value: "Évaluer",
+                        keyRequiredErrorMessage: "Le nom est requis",
+                        valueRequiredErrorMessage: "Valeur est requise"
+                    }
+                }
             },
             overview: {
                 widgets: {

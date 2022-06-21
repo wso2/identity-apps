@@ -56,16 +56,19 @@ const OrganizationEditPage = (): ReactElement => {
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("Error getting organization details")
+                        message: t("console:manage.features.organizations.notifications.fetchOrganization." +
+                            "genericError.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: t("Error getting organization details"),
+                    description: t("console:manage.features.organizations.notifications.fetchOrganization." +
+                        "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("Error getting organization details")
+                    message: t("console:manage.features.organizations.notifications.fetchOrganization." +
+                        "genericError.message")
                 }));
             });
     }, [ organization, getOrganization, dispatch ]
@@ -79,8 +82,8 @@ const OrganizationEditPage = (): ReactElement => {
     return (
         <PageLayout
             isLoading={ false }
-            title={ organization?.name ?? "Organization" }
-            description={ "Edit Organization" }
+            title={ organization?.name ?? t("console:manage.features.organizations.title") }
+            description={ t("console:manage.features.organizations.edit.description") }
             image={ (
                 <GenericIcon
                     defaultIcon
@@ -93,7 +96,7 @@ const OrganizationEditPage = (): ReactElement => {
             backButton={ {
                 "data-testid": "org-mgt-edit-org-back-button",
                 onClick: goBackToOrganizationList,
-                text: "BACK"
+                text: t("console:manage.features.organizations.edit.back")
             } }
             titleTextAlign="left"
             bottomMargin={ false }

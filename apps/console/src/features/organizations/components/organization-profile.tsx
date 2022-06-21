@@ -61,7 +61,7 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
     ];
 
     const [ isSubmitting, setIsSubmitting ] = useState(false);
-    const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState(false);
+    const [ showOrgDeleteConfirmation, setShowOrgDeleteConfirmationModal ] = useState(false);
 
     const handleSubmit = useCallback(
         async (values: OrganizationResponseInterface): Promise<void> => {
@@ -81,13 +81,11 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                 .then((_response) => {
                     dispatch(
                         addAlert({
-                            description: t(
-                                "Organization updated successfully"
-                            ),
+                            description: t("console:manage.features.organizations.notifications.updateOrganization." +
+                                "success.description"),
                             level: AlertLevels.SUCCESS,
-                            message: t(
-                                "Organization Update"
-                            )
+                            message: t("console:manage.features.organizations.notifications.updateOrganization." +
+                                "success.message")
                         })
                     );
 
@@ -98,9 +96,8 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                             addAlert({
                                 description: error.response.data.description,
                                 level: AlertLevels.ERROR,
-                                message: t(
-                                    "Organization update failed!"
-                                )
+                                message: t("console:manage.features.organizations.notifications.updateOrganization." +
+                                    "error.message")
                             })
                         );
 
@@ -109,13 +106,11 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
 
                     dispatch(
                         addAlert({
-                            description: t(
-                                "Organization update failed!"
-                            ),
+                            description: t("console:manage.features.organizations.notifications" +
+                                ".updateOrganization.genericError.description"),
                             level: AlertLevels.ERROR,
-                            message: t(
-                                "Organization Update Failed"
-                            )
+                            message: t("console:manage.features.organizations.notifications" +
+                                ".updateOrganization.genericError.message")
                         })
                     );
                 })
@@ -139,7 +134,7 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                     })
                 );
 
-                setShowDeleteConfirmationModal(false);
+                setShowOrgDeleteConfirmationModal(false);
                 onOrganizationDelete(organizationId);
             })
             .catch((error) => {
@@ -172,7 +167,7 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                     })
                 );
             })
-            .finally(() => setShowDeleteConfirmationModal(false));
+            .finally(() => setShowOrgDeleteConfirmationModal(false));
     }, [ organization ]
     );
 
@@ -328,7 +323,7 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                                                         submitForm?.current && submitForm?.current();
                                                     } }
                                                 >
-                                                    Update
+                                                    { t("common:update") }
                                                 </Button>
                                             )
                                         }
@@ -341,18 +336,20 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                 <Divider hidden/>
                 {
                     !isReadOnly && (
-                        <DangerZoneGroup sectionHeader="Danger Zone">
+                        <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
                             <DangerZone
                                 actionTitle={
-                                    t("Delete organization")
+                                    t("console:manage.features.organizations.edit" +
+                                        ".dangerZone.title")
                                 }
                                 header={
-                                    t("Danger Zone")
+                                    t("common:dangerZone")
                                 }
                                 subheader={
-                                    t("Once you delete the organization, it cannot be recovered.")
+                                    t("console:manage.features.organizations.edit" +
+                                        ".dangerZone.subHeader")
                                 }
-                                onActionClick={ () => setShowDeleteConfirmationModal(!showRoleDeleteConfirmation) }
+                                onActionClick={ () => setShowOrgDeleteConfirmationModal(!showOrgDeleteConfirmation) }
                                 data-testid={
                                     `${testId}-role-danger-zone`
                                 }
@@ -361,16 +358,17 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                     )
                 }
                 {
-                    showRoleDeleteConfirmation && (
+                    showOrgDeleteConfirmation && (
                         <ConfirmationModal
-                            onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                            onClose={ (): void => setShowOrgDeleteConfirmationModal(false) }
                             type="warning"
-                            open={ showRoleDeleteConfirmation }
-                            assertionHint={ t("console:manage.features.roles.edit.basics.confirmation.assertionHint") }
+                            open={ showOrgDeleteConfirmation }
+                            assertionHint={ t("console:manage.features.organizations.confirmations." +
+                                "deleteOrganization.assertionHint") }
                             assertionType="checkbox"
                             primaryAction="Confirm"
                             secondaryAction="Cancel"
-                            onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
+                            onSecondaryActionClick={ (): void => setShowOrgDeleteConfirmationModal(false) }
                             onPrimaryActionClick={ (): void => handleOnDeleteOrganization(organization.id) }
                             data-testid={
                                 `${testId}-role-confirmation-modal`
@@ -378,16 +376,13 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                             closeOnDimmerClick={ false }
                         >
                             <ConfirmationModal.Header>
-                                { t("Are you sure?") }
+                                { t("console:manage.features.organizations.confirmations.deleteOrganization.header") }
                             </ConfirmationModal.Header>
                             <ConfirmationModal.Message attached warning>
-                                { t("This action is irreversible and will permanently delete the selected role.") }
+                                { t("console:manage.features.organizations.confirmations.deleteOrganization.message") }
                             </ConfirmationModal.Message>
                             <ConfirmationModal.Content>
-                                { t("If you remove this organization, all the data associated with this " +
-                                    "organization will be removed. Please proceed with caution. Also, please note that " +
-                                    "if this organization have any child organizations, you have to delete theme " +
-                                    "beforehand remove this parent organization") }
+                                { t("console:manage.features.organizations.confirmations.deleteOrganization.content") }
                             </ConfirmationModal.Content>
                         </ConfirmationModal>
                     )

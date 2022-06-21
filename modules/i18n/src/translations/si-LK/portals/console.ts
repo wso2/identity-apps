@@ -5731,6 +5731,34 @@ export const console: ConsoleNS = {
                             description: "සංවිධානය සාර්ථකව ගෙන එන ලදී",
                             message: "සංවිධානය සාර්ථකව ලබා ගන්නා ලදී"
                         }
+                    },
+                    updateOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "සංවිධානය යාවත්කාලීන කිරීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "සංවිධානය යාවත්කාලීන කිරීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        success: {
+                            description: "සංවිධානය සාර්ථකව යාවත්කාලීන කරන ලදී",
+                            message: "යාවත්කාලීන සංවිධානය"
+                        }
+                    },
+                    updateOrganizationAttributes: {
+                        error: {
+                            description: "{{description}}",
+                            message: "සංවිධානයේ ගුණාංග යාවත්කාලීන කිරීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "සංවිධාන ගුණාංග යාවත්කාලීන කිරීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        success: {
+                            description: "සංවිධානයේ උපලක්ෂණ සාර්ථකව යාවත්කාලීන කරන ලදී",
+                            message: "සංවිධානයේ උපලක්ෂණ යාවත්කාලීන කරන ලදී"
+                        }
                     }
                 },
                 placeholders: {
@@ -5745,7 +5773,58 @@ export const console: ConsoleNS = {
                     }
                 },
                 subTitle: "ආයතන සාදන්න සහ කළමනාකරණය කරන්න.",
-                title: "ආයතන"
+                title: "ආයතන",
+                edit: {
+                    description: "සංවිධානය සංස්කරණය කරන්න",
+                    back: "ආපසු",
+                    tabTitles: {
+                        profile: "පැතිකඩ",
+                        attributes: "ගුණාංග"
+                    },
+                    fields: {
+                        id: {
+                            label: "සංවිධාන හැඳුනුම්පත",
+                            ariaLabel: "සංවිධාන හැඳුනුම්පත"
+                        },
+                        name: {
+                            label: "සංවිධානයේ නම",
+                            placeholder: "සංවිධානයේ නම ඇතුළත් කරන්න",
+                            ariaLabel: "සංවිධානයේ නම"
+                        },
+                        description: {
+                            label: "සංවිධානයේ විස්තරය",
+                            placeholder: "සංවිධානයේ විස්තරය ඇතුළත් කරන්න",
+                            ariaLabel: "සංවිධානයේ විස්තරය"
+                        },
+                        domain: {
+                            label: "සංවිධාන වසම",
+                            ariaLabel: "සංවිධාන වසම"
+                        },
+                        type: {
+                            label: "සංවිධානයේ වර්ගය",
+                            ariaLabel: "සංවිධානයේ වර්ගය"
+                        },
+                        created: {
+                            label: "නනිර්මාණය කළ කාලය",
+                            ariaLabel: "නිර්මාණය කළ කාලය"
+                        },
+                        lastModified: {
+                            label: "අවසන් වරට වෙනස් කළ කාලය",
+                            ariaLabel: "අවසන් වරට වෙනස් කළ කාලය"
+                        }
+                    },
+                    dangerZone: {
+                        title: "සංවිධානය මකන්න",
+                        subHeader: "ඔබට මෙම සංවිධානය මැකීමට අවශ්‍ය බව විශ්වාසද?"
+                    },
+                    attributes: {
+                        hint: "සංවිධාන ගුණාංග වින්‍යාස කරන්න",
+                        key: "නාමය",
+                        value: "අගය",
+                        keyRequiredErrorMessage: "නම අවශ්‍යයි",
+                        valueRequiredErrorMessage: "අගය අවශ්ය වේ"
+                    }
+                }
             },
             overview: {
                 widgets: {

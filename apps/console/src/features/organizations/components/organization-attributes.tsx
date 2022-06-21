@@ -85,11 +85,13 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
                 dispatch(
                     addAlert({
                         description: t(
-                            "Organization attributes updated successfully."
+                            "console:manage.features.organizations.notifications.updateOrganizationAttributes." +
+                            "success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "Organization attributes updated."
+                            "console:manage.features.organizations.notifications.updateOrganizationAttributes." +
+                            "success.message"
                         )
                     })
                 );
@@ -102,7 +104,8 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
                             description: error.response.data.description,
                             level: AlertLevels.ERROR,
                             message: t(
-                                "Organization delete failed"
+                                "console:manage.features.organizations.notifications.updateOrganizationAttributes." +
+                                "error.message"
                             )
                         })
                     );
@@ -113,11 +116,13 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
                 dispatch(
                     addAlert({
                         description: t(
-                            "Organization delete failed."
+                            "console:manage.features.organizations.notifications.updateOrganizationAttributes." +
+                            "genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "Organization delete failed"
+                            "console:manage.features.organizations.notifications.updateOrganizationAttributes." +
+                            "genericError.message"
                         )
                     })
                 );
@@ -130,19 +135,19 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
-                        <p>{ t("console:manage.features.claims.local.additionalProperties.hint") }</p>
+                        <p>{ t("console:manage.features.organizations.edit.attributes.hint") }</p>
                         <DynamicField
                             data={ organization.attributes }
                             keyType="text"
-                            keyName={ t("console:manage.features.claims.local.additionalProperties.key") }
-                            valueName={ t("console:manage.features.claims.local.additionalProperties.value") }
+                            keyName={ t("console:manage.features.organizations.edit.attributes.key") }
+                            valueName={ t("console:manage.features.organizations.edit.attributes.value") }
                             submit={ submit }
                             keyRequiredMessage={ t(
-                                "console:manage.features.claims.local.additionalProperties." +
+                                "console:manage.features.organizations.edit.attributes." +
                                 "keyRequiredErrorMessage"
                             ) }
                             valueRequiredErrorMessage={ t(
-                                "console:manage.features.claims.local.additionalProperties." +
+                                "console:manage.features.organizations.edit.attributes." +
                                 "valueRequiredErrorMessage"
                             ) }
                             requiredField={ true }
