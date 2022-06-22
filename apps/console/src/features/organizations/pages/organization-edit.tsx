@@ -70,9 +70,9 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
             .then((organization) => {
                 setOrganization(organization);
             }).catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
+                if (error?.description) {
                     dispatch(addAlert({
-                        description: error.response.data.description,
+                        description: error.description,
                         level: AlertLevels.ERROR,
                         message: t("console:manage.features.organizations.notifications.fetchOrganization." +
                             "genericError.message")
@@ -89,8 +89,7 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
                         "genericError.message")
                 }));
             });
-    }, [ organization, getOrganization, dispatch ]
-    );
+    }, [ organization, getOrganization, dispatch ]);
 
     const goBackToOrganizationList = useCallback(() =>
         history.push(AppConstants.getPaths().get("ORGANIZATIONS")),[ history ]

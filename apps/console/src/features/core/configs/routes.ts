@@ -441,7 +441,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                                     icon: getSidePanelIcons().organization
                                 },
                                 id: "organization-edit",
-                                name: "Edit Org",
+                                name: "Edit Organization",
                                 path: AppConstants.getPaths().get("ORGANIZATION_UPDATE"),
                                 protected: true,
                                 showOnSidePanel: false

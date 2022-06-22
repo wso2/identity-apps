@@ -22,7 +22,8 @@ import { store } from "../../core";
 import {
     AddOrganizationInterface,
     OrganizationListInterface,
-    OrganizationResponseInterface, PatchData,
+    OrganizationPatchData,
+    OrganizationResponseInterface,
     UpdateOrganizationInterface
 } from "../models";
 
@@ -178,14 +179,15 @@ export const updateOrganization = (
 
 /**
  * Patch update an organization
+ *
  * @param { string } organizationId - Organization ID which needs to be updated
- * @param { PatchData[] } patchData - Data to be updated in the PatchData format
+ * @param { OrganizationPatchData[] } patchData - Data to be updated in the PatchData format
  *
  * @returns { OrganizationResponseInterface }
  */
 export const patchOrganization = (
     organizationId: string,
-    patchData: PatchData[]
+    patchData: OrganizationPatchData[]
 ): Promise<OrganizationResponseInterface> => {
     const config: HttpRequestConfig = {
         data: patchData,

@@ -69,7 +69,7 @@ export interface UpdateOrganizationInterface {
     attributes: OrganizationAttributesInterface[];
 }
 
-export interface PatchData {
+export interface OrganizationPatchData {
     operation: string;
     path: string;
     value: string;

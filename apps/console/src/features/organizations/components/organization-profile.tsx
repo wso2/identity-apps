@@ -17,7 +17,7 @@ import { Button, Divider, Grid } from "semantic-ui-react";
 import { FeatureConfigInterface } from "../../core";
 import { deleteOrganization, patchOrganization } from "../api";
 import { ORGANIZATION_TYPE } from "../constants";
-import { OrganizationResponseInterface, PatchData } from "../models";
+import { OrganizationPatchData, OrganizationResponseInterface } from "../models";
 
 interface OrganizationProfilePropsInterface extends SBACInterface<FeatureConfigInterface>,
     TestableComponentInterface {
@@ -67,7 +67,7 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
         async (values: OrganizationResponseInterface): Promise<void> => {
             setIsSubmitting(true);
 
-            const patchData: PatchData[] = Object.keys(values)
+            const patchData: OrganizationPatchData[] = Object.keys(values)
                 .filter((field) => editableFields.includes(field))
                 .map((field) => {
                     return {
@@ -91,10 +91,10 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
 
                     onOrganizationUpdate(organization.id);
                 }).catch((error) => {
-                    if (error.response && error.response.data && error.response.data.description) {
+                    if (error.description) {
                         dispatch(
                             addAlert({
-                                description: error.response.data.description,
+                                description: error.description,
                                 level: AlertLevels.ERROR,
                                 message: t("console:manage.features.organizations.notifications.updateOrganization." +
                                     "error.message")
@@ -192,8 +192,8 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                                             value={ organization.id }
                                             required={ true }
                                             readOnly={ true }
-                                            ariaLabel={ "Organization ID" }
-                                            inputType={ "identifier" }
+                                            ariaLabel="Organization ID"
+                                            inputType="identifier"
                                             maxLength={ 32 }
                                             minLength={ 3 }
                                         />
@@ -208,9 +208,9 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                                             required={ true }
                                             requiredErrorMessage="Please enter the organization name"
                                             value={ organization.name }
-                                            ariaLabel={ "Organization Name" }
-                                            placeholder={ "Enter the name of the organization" }
-                                            inputType={ "name" }
+                                            ariaLabel="Organization Name"
+                                            placeholder="Enter the name of the organization"
+                                            inputType="name"
                                             maxLength={ 32 }
                                             minLength={ 3 }
                                         />
@@ -225,9 +225,9 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                                             required={ false }
                                             requiredErrorMessage=""
                                             value={ organization?.description ?? "" }
-                                            placeholder={ "Enter a description for the organization" }
-                                            ariaLabel={ "Organization Description" }
-                                            inputType={ "description" }
+                                            placeholder="Enter a description for the organization"
+                                            ariaLabel="Organization Description"
+                                            inputType="description"
                                             maxLength={ 50 }
                                             minLength={ 3 }
                                         />
@@ -243,8 +243,8 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                                             requiredErrorMessage=""
                                             value={ organization?.domain || "" }
                                             readOnly={ true }
-                                            ariaLabel={ "Organization Domain" }
-                                            inputType={ "url" }
+                                            ariaLabel="Organization Domain"
+                                            inputType="url"
                                             maxLength={ 32 }
                                             minLength={ 3 }
                                         />
@@ -264,8 +264,8 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                                                 ? "Structural"
                                                 : "Tenant"
                                             }
-                                            ariaLabel={ "Organization Type" }
-                                            inputType={ "name" }
+                                            ariaLabel="Organization Type"
+                                            inputType="name"
                                             maxLength={ 32 }
                                             minLength={ 3 }
                                         />
@@ -282,8 +282,8 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                                             type="text"
                                             readOnly={ true }
                                             value={ moment(organization.created).format("YYYY-MM-DD hh:mm:ss") }
-                                            ariaLabel={ "Created" }
-                                            inputType={ "default" }
+                                            ariaLabel="Created"
+                                            inputType="default"
                                             maxLength={ 32 }
                                             minLength={ 3 }
                                         />
@@ -300,8 +300,8 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                                             type="text"
                                             readOnly={ true }
                                             value={ moment(organization.lastModified).format("YYYY-MM-DD hh:mm:ss") }
-                                            ariaLabel={ "Last Modified" }
-                                            inputType={ "default" }
+                                            ariaLabel="Last Modified"
+                                            inputType="default"
                                             maxLength={ 32 }
                                             minLength={ 3 }
                                         />

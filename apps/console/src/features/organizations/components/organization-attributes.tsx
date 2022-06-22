@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { FeatureConfigInterface } from "../../core";
 import { patchOrganization } from "../api";
-import { OrganizationResponseInterface, PatchData } from "../models";
+import { OrganizationPatchData, OrganizationResponseInterface } from "../models";
 
 interface OrganizationAttributesPropsInterface extends SBACInterface<FeatureConfigInterface>,
     TestableComponentInterface {
@@ -49,16 +49,26 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
         setIsSubmitting(true);
         const attributes = organization.attributes;
 
-        const updatedAttributes: PatchData[] = attributes
-            .map((attribute) => data.find((updated) => updated.key === attribute.key))
-            .filter((updated) => updated !== undefined)
-            .map((updated) => ({
-                operation: "REPLACE",
-                path: `/attributes/${updated.key}`,
-                value: updated.value
-            }));
+        const updatedAttributes: OrganizationPatchData[] = attributes
+            .map((attribute) => {
+                const updated = data.find((updated) => updated.key === attribute.key);
 
-        const addedAttributes: PatchData[] = data
+                if (updated !== undefined) {
+                    return {
+                        operation: "REPLACE",
+                        path: `/attributes/${updated.key}`,
+                        value: updated.value
+                    };
+                } else {
+                    return {
+                        operation: "REMOVE",
+                        path: `/attributes/${attribute?.key}`,
+                        value: ""
+                    };
+                }
+            });
+
+        const addedAttributes: OrganizationPatchData[] = data
             .filter((updated) => attributes.findIndex((attribute) => attribute.key === updated.key) === -1)
             .map((attribute) => ({
                 operation: "ADD",
@@ -66,18 +76,10 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
                 value: attribute.value
             }));
 
-        const removedAttributes: PatchData[] = attributes
-            .filter((attribute) => data.findIndex((updated) => updated?.key === attribute?.key) === -1)
-            .map((attribute) => ({
-                operation: "REMOVE",
-                path: `/attributes/${attribute?.key}`,
-                value: attribute.value ?? ""
-            }));
 
-        const patchData: PatchData[] = [
+        const patchData: OrganizationPatchData[] = [
             ...updatedAttributes,
-            ...addedAttributes,
-            ...removedAttributes
+            ...addedAttributes
         ];
 
         patchOrganization(organization.id, patchData)
@@ -98,10 +100,10 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
 
                 onAttributeUpdate(organization.id);
             }).catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
+                if (error?.description) {
                     dispatch(
                         addAlert({
-                            description: error.response.data.description,
+                            description: error.description,
                             level: AlertLevels.ERROR,
                             message: t(
                                 "console:manage.features.organizations.notifications.updateOrganizationAttributes." +
