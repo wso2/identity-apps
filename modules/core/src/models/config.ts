@@ -107,6 +107,11 @@ export interface CommonDeploymentConfigInterface<T = {}, S = {}> {
      */
     serverHost: string;
     /**
+     * Custom branded host of the Identity Sever.
+     * ex: https://localhost:9443/t/test -> https://api.test.com
+     */
+    customServerHost: string;
+    /**
      * Server origin. Usually same as `serverHost`.
      */
     serverOrigin: string;

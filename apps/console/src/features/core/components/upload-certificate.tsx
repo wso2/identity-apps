@@ -614,14 +614,13 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
             {
                 (fileError || certEmpty) && (
                     <Message
-                        negative
+                        type="error"
                         data-testid={ `${ testId }-error-message` }
-                        content =
-                            {
-                                fileError
-                                    ? t("console:manage.features.certificates.keystore.errorCertificate")
-                                    : t("console:manage.features.certificates.keystore.errorEmpty")
-                            }
+                        content={
+                            fileError
+                                ? t("console:manage.features.certificates.keystore.errorCertificate")
+                                : t("console:manage.features.certificates.keystore.errorEmpty")
+                        }
                     />
                 )
             }

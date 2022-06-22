@@ -2,6 +2,15 @@
        Message Variables
 *******************************/
 
+@infoMessageBackgroundColor: #eff7fd;
+@successMessageBackgroundColor: #dffee3;
+@errorMessageBackgroundColor: #ffd8d8;
+@warningMessageBackgroundColor: #fff6e7;
+@infoMessageIconColor: #0095ff;
+@successMessageIconColor: #1ebc30;
+@errorMessageIconColor: #ff0f0f;
+@warningMessageIconColor: #ffa500;
+
 /*-------------------
     Announcement
 --------------------*/

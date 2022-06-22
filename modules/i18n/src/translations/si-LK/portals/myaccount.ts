@@ -1166,6 +1166,7 @@ export const myAccount: MyAccountNS = {
                     inputs: {
                         date: {
                             validations: {
+                                futureDateError: "ඔබ {{field}} ක්ෂේත්‍රය සඳහා ඇතුළත් කළ දිනය වලංගු නැත.",
                                 invalidFormat: "කරුණාකර වලංගු {{fieldName}} YYYY-MM-DD ආකෘතියෙන් ඇතුළත් කරන්න."
                             }
                         }

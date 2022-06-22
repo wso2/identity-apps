@@ -20,6 +20,7 @@ import {
     AsgardeoSPAClient
 } from "@asgardeo/auth-react";
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { AppAvatar } from "@wso2is/react-components";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, List, Modal, Popup } from "semantic-ui-react";
@@ -31,7 +32,7 @@ import {
     AlertLevels
 } from "../../models";
 import { FederatedAssociation } from "../../models/federated-associations";
-import { SettingsSection, UserAvatar } from "../shared";
+import { SettingsSection } from "../shared";
 
 /**
  * Prop types for `FederatedAssociations` component
@@ -115,6 +116,9 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
                 }
                 if (response.amr[i].includes("Github")) {
                     setCurrentIDP("GitHub");
+                }
+                if (response.amr[i].includes("OpenIDConnect")) {
+                    setCurrentIDP("Microsoft");
                 }
             }
         });
@@ -232,22 +236,24 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
                                     <Grid padded>
                                         <Grid.Row columns={ 2 }>
                                             <Grid.Column width={ 11 } className="first-column">
-                                                <UserAvatar
-                                                    floated="left"
-                                                    spaced="right"
-                                                    size="mini"
-                                                    image={ federatedAssociation.idp.imageUrl }
-                                                    name={ federatedAssociation.federatedUserId }
-                                                />
-                                                <List.Header>
-                                                    {
-                                                        federatedAssociation.idp.displayName
-                                                        || federatedAssociation.idp.name
-                                                    }
-                                                </List.Header>
-                                                <List.Description>
-                                                    { linkedAttribute }
-                                                </List.Description>
+                                                <div className="associations-list-avatar-wrapper">
+                                                    <AppAvatar
+                                                            size="mini"
+                                                            image={ federatedAssociation.idp.imageUrl }
+                                                            name={ federatedAssociation.federatedUserId }
+                                                        />
+                                                    <List.Content>
+                                                        <List.Header>
+                                                        {
+                                                            federatedAssociation.idp.displayName
+                                                            || federatedAssociation.idp.name
+                                                        }
+                                                        </List.Header>
+                                                        <List.Description>
+                                                            { linkedAttribute }
+                                                        </List.Description>
+                                                    </List.Content>
+                                                </div>
                                             </Grid.Column>
                                             { !isNonLocalCredentialUser &&
                                                 !(currentIDP==federatedAssociation.idp.name ||

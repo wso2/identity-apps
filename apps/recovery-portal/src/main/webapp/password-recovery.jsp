@@ -165,7 +165,7 @@
                             <label for="username">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, enterUsernameHereText)%>
                             </label>
-                            <input id="username" name="username" value="<%=username%>" type="text" tabindex="0" required>
+                            <input id="username" name="username" value="<%=Encode.forHtmlAttribute(username)%>" type="text" tabindex="0" required>
                             <%
                                 if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
                             %>

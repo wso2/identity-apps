@@ -71,3 +71,49 @@
         }
     }
 }
+
+/*---------------------------
+    Message Box Overrides
+---------------------------*/
+
+.ui.message {
+    box-shadow: none !important;
+    color: black !important;
+
+    h5.ui.header {
+        font-weight: 550 !important;
+        color: black !important;
+    }
+}
+
+.ui.info.message {
+    background-color: @infoMessageBackgroundColor !important;
+
+    i.info.circle.icon {
+        color: @infoMessageIconColor !important;
+    }
+}
+
+.ui.error.message {
+    background-color: @errorMessageBackgroundColor !important;
+
+    i.times.circle.icon {
+        color: @errorMessageIconColor !important;
+    }
+}
+
+.ui.success.message {
+    background-color: @successMessageBackgroundColor !important;
+
+    i.check.circle.icon {
+        color: @successMessageIconColor !important;
+    }
+}
+
+.ui.warning.message {
+    background-color: @warningMessageBackgroundColor !important;
+
+    i.warning.circle.icon {
+        color: @warningMessageIconColor !important;
+    }
+}

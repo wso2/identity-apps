@@ -52,6 +52,7 @@ export class Config {
             clientID: window["AppUtils"].getConfig().clientID,
             clientOrigin: window["AppUtils"].getConfig().clientOrigin,
             consoleApp: window["AppUtils"].getConfig().consoleApp,
+            customServerHost: window["AppUtils"].getConfig().customServerHost,
             idpConfigs: window["AppUtils"].getConfig().idpConfigs,
             loginCallbackUrl: window["AppUtils"].getConfig().loginCallbackURL,
             serverHost: window["AppUtils"].getConfig().serverOriginWithTenant,

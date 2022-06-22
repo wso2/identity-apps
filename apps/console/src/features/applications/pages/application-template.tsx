@@ -404,6 +404,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
 
     return (
         <PageLayout
+            pageTitle="Register New Application"
             title={ t("console:develop.pages.applicationTemplate.title") }
             contentTopMargin={ true }
             description={ t("console:develop.pages.applicationTemplate.subTitle") }
