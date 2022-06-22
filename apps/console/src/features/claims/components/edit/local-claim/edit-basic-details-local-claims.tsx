@@ -24,6 +24,7 @@ import {
     AlertInterface,
     AlertLevels,
     Claim,
+    Message,
     ProfileSchemaInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
@@ -42,7 +43,7 @@ import Axios from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid, Message, Form as SemanticForm } from "semantic-ui-react";
+import { Divider, Grid, Form as SemanticForm } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
 import { SCIMConfigs } from "../../../../../extensions/configs/scim";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../core";
@@ -398,34 +399,33 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             !hideSpecialClaims &&
                             (<Grid.Row columns={ 1 } >
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                                    <Message color="teal">
-                                        <Hint>
-                                            {
-                                                !hasMapping ? (
-                                                    <>
-                                                        { t("console:manage.features.claims.local.forms.infoMessages." +
-                                                            "disabledConfigInfo") }
-                                                        <div>
-                                                            Add SCIM mapping from
-                                                            <Link
-                                                                external={ false }
-                                                                onClick={ () => {
-                                                                    history.push(
-                                                                        AppConstants.getPaths().get("SCIM_MAPPING")
-                                                                    );
-                                                                }
-                                                                }
-                                                            >
-                                                            </Link>.
-                                                        </div>
-                                                    </>
-                                                ):(
-                                                    t("console:manage.features.claims.local.forms.infoMessages." +
+                                    <Message
+                                        type="info"
+                                        content={
+                                            !hasMapping ? (
+                                                <>
+                                                    { t("console:manage.features.claims.local.forms.infoMessages." +
+                                                        "disabledConfigInfo") }
+                                                    <div>
+                                                        Add SCIM mapping from
+                                                        <Link
+                                                            external={ false }
+                                                            onClick={ () => {
+                                                                history.push(
+                                                                    AppConstants.getPaths().get("SCIM_MAPPING")
+                                                                );
+                                                            }
+                                                            }
+                                                        >
+                                                        </Link>.
+                                                    </div>
+                                                </>
+                                            ):(
+                                                t("console:manage.features.claims.local.forms.infoMessages." +
                                                     "configApplicabilityInfo")
-                                                )
-                                            }
-                                        </Hint>
-                                    </Message>
+                                            )
+                                        }
+                                    />
                                 </Grid.Column>
                             </Grid.Row>)
                         )
